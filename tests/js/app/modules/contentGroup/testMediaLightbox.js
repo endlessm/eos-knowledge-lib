@@ -23,12 +23,12 @@ describe('ContentGroup.MediaLightbox', function () {
         dispatcher = MockDispatcher.mock_default();
         engine = MockEngine.mock_default();
 
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('lightbox-card', Minimal.MinimalCard);
-        factory.add_named_mock('lightbox', MediaLightbox.MediaLightbox, {
-            'card-type': 'lightbox-card',
+        [module, factory] = MockFactory.setup_tree({
+            type: MediaLightbox.MediaLightbox,
+            slots: {
+                'card-type': { type: Minimal.MinimalCard },
+            },
         });
-        module = factory.create_named_module('lightbox');
     });
 
     it('can be constructed', function () {});
@@ -68,7 +68,7 @@ describe('ContentGroup.MediaLightbox', function () {
             action_type: Actions.SHOW_MEDIA,
             model: media_object,
         });
-        expect(factory.get_created_named_mocks('lightbox-card').length).toBe(1);
+        expect(factory.get_created('card-type').length).toBe(1);
 
         let nonexistant_media_object = new MediaObjectModel.MediaObjectModel({
             ekn_id: 'ekn://no/media',
@@ -77,6 +77,6 @@ describe('ContentGroup.MediaLightbox', function () {
             action_type: Actions.SHOW_MEDIA,
             model: nonexistant_media_object,
         });
-        expect(factory.get_created_named_mocks('lightbox-card').length).toBe(1);
+        expect(factory.get_created('card-type').length).toBe(1);
     });
 });

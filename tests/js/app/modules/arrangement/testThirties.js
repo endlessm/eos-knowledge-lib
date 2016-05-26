@@ -18,20 +18,18 @@ describe('Arrangement.Thirties', function () {
     let arrangement, factory;
 
     beforeEach(function () {
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('card', Minimal.MinimalCard);
-        factory.add_named_mock('order', Minimal.MinimalOrder);
-        factory.add_named_mock('filter', Minimal.TitleFilter);
-        factory.add_named_mock('arrangement', Thirties.Thirties, {
-            'card-type': 'card',
-            'order': 'order',
-            'filter': 'filter',
+        [arrangement, factory] = MockFactory.setup_tree({
+            type: Thirties.Thirties,
+            slots: {
+                'card-type': { type: Minimal.MinimalCard },
+                'order': { type: Minimal.MinimalOrder },
+                'filter': { type: Minimal.TitleFilter },
+            },
         });
-        arrangement = factory.create_named_module('arrangement');
     });
 
     it('does not fade in cards if it has a fixed size', function () {
-        arrangement = factory.create_named_module('arrangement', {
+        arrangement = factory.create_module_tree({
             max_rows: 1,
             fade_cards: true,
         });
@@ -66,7 +64,7 @@ describe('Arrangement.Thirties', function () {
                 win.set_size_request(arr_width, arr_height);
                 Utils.update_gui();
 
-                let cards = factory.get_created_named_mocks('card');
+                let cards = factory.get_created('card-type');
                 cards.forEach((card, i) => {
                     if (i < visible_children) {
                         expect(card.get_allocation().width).toBe(child_width);

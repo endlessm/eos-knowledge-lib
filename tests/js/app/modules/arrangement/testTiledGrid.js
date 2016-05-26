@@ -14,23 +14,21 @@ describe('Arrangement.TiledGrid', function () {
     let arrangement, factory;
 
     beforeEach(function () {
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('card', Minimal.MinimalCard);
-        factory.add_named_mock('order', Minimal.MinimalOrder);
-        factory.add_named_mock('filter', Minimal.TitleFilter);
-        factory.add_named_mock('arrangement', TiledGrid.TiledGrid, {
-            'card-type': 'card',
-            'order': 'order',
-            'filter': 'filter',
+        [arrangement, factory] = MockFactory.setup_tree({
+            type: TiledGrid.TiledGrid,
+            slots: {
+                'card-type': { type: Minimal.MinimalCard },
+                'order': { type: Minimal.MinimalOrder },
+                'filter': { type: Minimal.TitleFilter },
+            },
         });
-        arrangement = factory.create_named_module('arrangement');
     });
 
     function add_cards(ncards) {
         Minimal.add_ordered_cards(arrangement, ncards);
         Minimal.add_filtered_cards(arrangement, 1, 0);
         Utils.update_gui();
-        return factory.get_created_named_mocks('card');
+        return factory.get_created('card-type');
     }
 
     function check_card_placement(card, left, top, width, height) {

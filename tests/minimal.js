@@ -3,7 +3,7 @@
 /* exported add_filtered_cards, add_ordered_cards, MinimalOrder,
 MinimalArrangement, MinimalBackCover, MinimalBinModule, MinimalCard,
 MinimalDocumentCard, MinimalHomePage, MinimalController, MinimalModule,
-MinimalPage, TitleFilter */
+TitleFilter */
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -92,16 +92,6 @@ const MinimalController = new Module.Class({
     Implements: [Launcher.Launcher, Controller.Controller],
 
     desktop_launch: function () {},
-});
-
-const MinimalPage = new Module.Class({
-    Name: 'MinimalPage',
-    Extends: Gtk.Grid,
-
-    _init: function (props={}) {
-        this.parent(props);
-        this.show_all();
-    },
 });
 
 const MinimalBackCover = new Module.Class({

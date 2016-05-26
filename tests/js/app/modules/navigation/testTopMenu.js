@@ -9,18 +9,16 @@ const TopMenu = imports.app.modules.navigation.topMenu;
 const Utils = imports.tests.utils;
 
 describe('Navigation.TopMenu', function () {
-let module, factory;
+    let module;
 
     beforeEach(function () {
-        factory = new MockFactory.MockFactory();
-
-        factory.add_named_mock('banner', Gtk.Frame);
-        factory.add_named_mock('menu', Gtk.Frame);
-        factory.add_named_mock('top-menu', TopMenu.TopMenu, {
-            'banner': 'banner',
-            'menu': 'menu',
+        [module] = MockFactory.setup_tree({
+            type: TopMenu.TopMenu,
+            slots: {
+                'banner': { type: null },
+                'menu': { type: null },
+            },
         });
-        module = factory.create_named_module('top-menu');
     });
 
     describe('sizing allocation', function () {

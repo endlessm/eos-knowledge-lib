@@ -22,16 +22,14 @@ describe('Layout.SideMenu', function () {
 
         dispatcher = MockDispatcher.mock_default();
 
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('mock-content', Gtk.Label);
-        factory.add_named_mock('mock-context', Gtk.Label);
-        factory.add_named_mock('mock-sidebar', Gtk.Label);
-        factory.add_named_mock('template', SideMenu.SideMenu, {
-            'content': 'mock-content',
-            'context': 'mock-context',
-            'sidebar': 'mock-sidebar',
+        [template, factory] = MockFactory.setup_tree({
+            type: SideMenu.SideMenu,
+            slots: {
+                'content': { type: null },
+                'context': { type: null },
+                'sidebar': { type: null },
+            },
         });
-        template = factory.create_named_module('template');
     });
 
     it('constructs', function () {
@@ -47,12 +45,9 @@ describe('Layout.SideMenu', function () {
     });
 
     it('packs all its children', function () {
-        let content = factory.get_created_named_mocks('mock-content')[0];
-        let context = factory.get_created_named_mocks('mock-context')[0];
-        let sidebar = factory.get_created_named_mocks('mock-sidebar')[0];
-        expect(template).toHaveDescendant(content);
-        expect(template).toHaveDescendant(context);
-        expect(template).toHaveDescendant(sidebar);
+        expect(template).toHaveDescendant(factory.get_last_created('content'));
+        expect(template).toHaveDescendant(factory.get_last_created('context'));
+        expect(template).toHaveDescendant(factory.get_last_created('sidebar'));
     });
 
     it('has the menu closed by default', function () {

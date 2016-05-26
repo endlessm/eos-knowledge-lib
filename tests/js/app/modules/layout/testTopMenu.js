@@ -8,6 +8,7 @@ Utils.register_gresource();
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const MockFactory = imports.tests.mockFactory;
+const MockWidgets = imports.tests.mockWidgets;
 const TopMenu = imports.app.modules.layout.topMenu;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
@@ -18,14 +19,13 @@ describe('Layout.TopMenu', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('mock-content', Gtk.ScrolledWindow);
-        factory.add_named_mock('mock-menu', Gtk.Label);
-        factory.add_named_mock('template', TopMenu.TopMenu, {
-            'content': 'mock-content',
-            'top-menu': 'mock-menu',
+        [template, factory] = MockFactory.setup_tree({
+            type: TopMenu.TopMenu,
+            slots: {
+                'content': { type: MockWidgets.MockScrollingLayout },
+                'top-menu': { type: null },
+            },
         });
-        template = factory.create_named_module('template');
     });
 
     it('constructs', function () {
@@ -37,8 +37,8 @@ describe('Layout.TopMenu', function () {
     });
 
     it('packs all its children', function () {
-        let content = factory.get_created_named_mocks('mock-content')[0];
-        let menu = factory.get_created_named_mocks('mock-menu')[0];
+        let content = factory.get_last_created('content');
+        let menu = factory.get_last_created('top-menu');
         expect(template).toHaveDescendant(content);
         expect(template).toHaveDescendant(menu);
     });

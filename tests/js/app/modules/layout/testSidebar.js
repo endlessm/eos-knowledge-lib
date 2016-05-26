@@ -12,23 +12,23 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 Gtk.init(null);
 
 describe('Sidebar template', function () {
-    let template, factory, content, sidebar;
+    let template, content, sidebar;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('mock-sidebar', Gtk.Label);
-        factory.add_named_mock('mock-content', Gtk.Label);
-        factory.add_named_mock('sidebar-template', Sidebar.Sidebar, {
-            'sidebar': 'mock-sidebar',
-            'content': 'mock-content',
+        let factory;
+        [template, factory] = MockFactory.setup_tree({
+            type: Sidebar.Sidebar,
+            slots: {
+                'sidebar': { type: null },
+                'content': { type: null },
+            },
         });
-        template = factory.create_named_module('sidebar-template');
 
-        sidebar = factory.get_created_named_mocks('mock-sidebar')[0];
-        content = factory.get_created_named_mocks('mock-content')[0];
+        sidebar = factory.get_last_created('sidebar');
+        content = factory.get_last_created('content');
     });
 
     it('constructs', function () {});

@@ -52,13 +52,12 @@ describe('Controller.Buffet', function () {
 
         spyOn(reading_history, 'mark_article_read');
 
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('window', MockView);
-        factory.add_named_mock('controller', Buffet.Buffet, {
-            'window': 'window',
+        [buffet, factory] = MockFactory.setup_tree({
+            type: Buffet.Buffet,
+            slots: {
+                'window': { type: MockView },
+            },
         });
-
-        buffet = factory.create_named_module('controller');
         spyOn(buffet, 'record_search_metric');
     });
 

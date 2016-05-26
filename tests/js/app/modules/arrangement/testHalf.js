@@ -18,16 +18,14 @@ describe('Arrangement.Half', function () {
     let factory, arrangement, win;
 
     beforeEach(function () {
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('card', Minimal.MinimalCard);
-        factory.add_named_mock('order', Minimal.MinimalOrder);
-        factory.add_named_mock('filter', Minimal.TitleFilter);
-        factory.add_named_mock('arrangement', Half.Half, {
-            'card-type': 'card',
-            'order': 'order',
-            'filter': 'filter',
+        [arrangement, factory] = MockFactory.setup_tree({
+            type: Half.Half,
+            slots: {
+                'card-type': { type: Minimal.MinimalCard },
+                'order': { type: Minimal.MinimalOrder },
+                'filter': { type: Minimal.TitleFilter },
+            },
         });
-        arrangement = factory.create_named_module('arrangement');
 
         win = new Gtk.OffscreenWindow();
         win.add(arrangement);
@@ -47,7 +45,7 @@ describe('Arrangement.Half', function () {
             win.queue_resize();
             Utils.update_gui();
 
-            let all_cards = factory.get_created_named_mocks('card');
+            let all_cards = factory.get_created('card-type');
             // Test featured cards
             all_cards.slice(0, 2).forEach((card) => {
                 expect(card.get_child_visible()).toBe(true);
@@ -75,7 +73,7 @@ describe('Arrangement.Half', function () {
             win.queue_resize();
             Utils.update_gui();
 
-            let cards = factory.get_created_named_mocks('card');
+            let cards = factory.get_created('card-type');
             cards.slice(0, featured_cards).forEach((card) => {
                 expect(card.get_allocation().width).toBe(featured_size);
             });

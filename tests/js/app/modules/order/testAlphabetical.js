@@ -16,13 +16,14 @@ describe('Order.Alphabetical', function () {
     beforeEach(function () {
         models = UNSORTED_TITLES.map(title =>
             new ContentObjectModel.ContentObjectModel({ title: title }));
+        factory = new MockFactory.MockFactory({
+            type: Alphabetical.Alphabetical,
+        });
     });
 
     describe('ascending', function () {
         beforeEach(function () {
-            factory = new MockFactory.MockFactory();
-            factory.add_named_mock('order', Alphabetical.Alphabetical);
-            order = factory.create_named_module('order');
+            order = factory.create_module_tree();
         });
 
         it('is the default', function () {
@@ -37,11 +38,9 @@ describe('Order.Alphabetical', function () {
 
     describe('descending', function () {
         beforeEach(function () {
-            factory = new MockFactory.MockFactory();
-            factory.add_named_mock('order', Alphabetical.Alphabetical, {}, {
+            order = factory.create_module_tree({
                 ascending: false,
             });
-            order = factory.create_named_module('order');
         });
 
         it('sorts models by title', function () {

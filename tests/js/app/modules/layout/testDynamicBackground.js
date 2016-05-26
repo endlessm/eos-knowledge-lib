@@ -15,16 +15,16 @@ const TEST_CONTENT_BUILDDIR = Utils.get_test_content_builddir();
 Gtk.init(null);
 
 describe('Layout.DynamicBackground', function () {
-    let module, factory, dispatcher;
+    let module, dispatcher;
 
     beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('content', Gtk.Label);
-        factory.add_named_mock('module', DynamicBackground.DynamicBackground, {
-            'content': 'content',
+        [module] = MockFactory.setup_tree({
+            type: DynamicBackground.DynamicBackground,
+            slots: {
+                'content': { type: null },
+            },
         });
-        module = factory.create_named_module('module');
 
         let resource = Gio.Resource.load(TEST_CONTENT_BUILDDIR + 'test-content.gresource');
         resource._register();

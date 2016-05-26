@@ -26,12 +26,12 @@ describe('Layout.ResponsiveMargins', function () {
     let responsive_margins, factory;
 
     beforeEach(function () {
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('content', MockWidgets.MockSizeWidget);
-        factory.add_named_mock('module', ResponsiveMargins.ResponsiveMargins, {
-            'content': 'content',
+        [responsive_margins, factory] = MockFactory.setup_tree({
+            type: ResponsiveMargins.ResponsiveMargins,
+            slots: {
+                'content': { type: MockWidgets.MockSizeWidget },
+            },
         });
-        responsive_margins = factory.create_named_module('module');
 
         let provider = new Gtk.CssProvider();
         provider.load_from_data('\
@@ -70,14 +70,14 @@ describe('Layout.ResponsiveMargins', function () {
             });
 
             it ('minimal includes tiny margins', function () {
-                let content = factory.get_last_created_named_mock('content');
+                let content = factory.get_last_created('content');
                 content[primary + '_spy'].and.returnValue([50, 50]);
                 content.queue_resize();
                 expect(responsive_margins['get_preferred_' + primary]()[0]).toBe(70);
             });
 
             it ('natural includes xlarge margins', function () {
-                let content = factory.get_last_created_named_mock('content');
+                let content = factory.get_last_created('content');
                 content[primary + '_spy'].and.returnValue([50, 50]);
                 content.queue_resize();
                 expect(responsive_margins['get_preferred_' + primary]()[1]).toBe(150);
@@ -88,7 +88,7 @@ describe('Layout.ResponsiveMargins', function () {
     test_constant_size_requests('height');
 
     it ('height for width passes correct width for tiny and xlarge margins', function () {
-        let content = factory.get_last_created_named_mock('content');
+        let content = factory.get_last_created('content');
         content.mode_spy.and.returnValue(Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH);
 
         let win = new Gtk.OffscreenWindow();

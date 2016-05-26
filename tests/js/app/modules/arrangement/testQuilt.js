@@ -16,16 +16,14 @@ describe('Arrangement.Quilt', function () {
     let arrangement, factory;
 
     beforeEach(function () {
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('card', Minimal.MinimalCard);
-        factory.add_named_mock('order', Minimal.MinimalOrder);
-        factory.add_named_mock('filter', Minimal.TitleFilter);
-        factory.add_named_mock('arrangement', Quilt.Quilt, {
-            'card-type': 'card',
-            'order': 'order',
-            'filter': 'filter',
+        [arrangement, factory] = MockFactory.setup_tree({
+            type: Quilt.Quilt,
+            slots: {
+                'card-type': { type: Minimal.MinimalCard },
+                'order': { type: Minimal.MinimalOrder },
+                'filter': { type: Minimal.TitleFilter },
+            },
         });
-        arrangement = factory.create_named_module('arrangement');
     });
 
     describe('sizing allocation', function () {
@@ -51,7 +49,7 @@ describe('Arrangement.Quilt', function () {
                 win.set_size_request(arr_width, arr_height);
                 Utils.update_gui();
 
-                let cards = factory.get_created_named_mocks('card');
+                let cards = factory.get_created('card-type');
                 cards.forEach((card, i) => {
                     if (i < visible_cards) {
                         if (i === 0) {

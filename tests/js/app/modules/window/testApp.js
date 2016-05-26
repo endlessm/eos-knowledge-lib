@@ -9,7 +9,6 @@ const Actions = imports.app.actions;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Launcher = imports.app.interfaces.launcher;
-const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
 const MockWidgets = imports.tests.mockWidgets;
@@ -25,7 +24,7 @@ let resource = Gio.Resource.load(TEST_CONTENT_BUILDDIR + 'test-content.gresource
 resource._register();
 
 describe('Window.App', function () {
-    let app, factory, dispatcher;
+    let app, dispatcher;
 
     beforeAll(function (done) {
         // Generate a unique ID for each app instance that we test
@@ -49,58 +48,28 @@ describe('Window.App', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
         dispatcher = MockDispatcher.mock_default();
-
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('top-bar-search', MockWidgets.MockSearchBox);
-        factory.add_named_mock('item-group', MockWidgets.MockItemGroupModule);
-        factory.add_named_mock('search-results', MockWidgets.MockItemGroupModule);
-        factory.add_named_mock('home-page', Minimal.MinimalPage);
-        factory.add_named_mock('section-page', Minimal.MinimalPage);
-        factory.add_named_mock('search-page', Minimal.MinimalPage);
-        factory.add_named_mock('article-page', Minimal.MinimalPage);
-        factory.add_named_mock('all-sets-page', Minimal.MinimalPage);
-        factory.add_named_mock('lightbox', Minimal.MinimalBinModule);
-        factory.add_named_mock('navigation', Minimal.MinimalBinModule);
-        factory.add_named_mock('brand-page', Minimal.MinimalPage);
-        factory.add_named_mock('real-search-box', SearchBox.SearchBox);
-        factory.add_named_mock('window', AppWindow.App, {
-            'home-page': 'home-page',
-            'section-page': 'section-page',
-            'search-page': 'search-page',
-            'article-page': 'article-page',
-            'all-sets-page': 'all-sets-page',
-            'navigation': 'navigation',
-            'lightbox': 'lightbox',
-            'search': 'top-bar-search',
-        }, {
-            application: app,
-        });
-        factory.add_named_mock('window-with-brand-page', AppWindow.App, {
-            'brand-page': 'brand-page',
-            'home-page': 'home-page',
-            'section-page': 'section-page',
-            'search-page': 'real-search-box',
-            'article-page': 'article-page',
-            'all-sets-page': 'all-sets-page',
-            'search': 'top-bar-search',
-        }, {
-            application: app,
-        });
-        factory.add_named_mock('window-without-optional-pages', AppWindow.App, {
-            'home-page': 'home-page',
-            'search-page': 'real-search-box',
-            'article-page': 'article-page',
-            'search': 'top-bar-search',
-        }, {
-            application: app,
-        });
     });
 
     describe('without brand page', function () {
-        let view;
+        let view, factory;
 
         beforeEach(function () {
-            view = factory.create_named_module('window');
+            [view, factory] = MockFactory.setup_tree({
+                type: AppWindow.App,
+                properties: {
+                    application: app,
+                },
+                slots: {
+                    'home-page': { type: null },
+                    'section-page': { type: null },
+                    'search-page': { type: null },
+                    'article-page': { type: null },
+                    'all-sets-page': { type: null },
+                    'navigation': { type: null },
+                    'lightbox': { type: null },
+                    'search': { type: MockWidgets.MockSearchBox },
+                },
+            });
         });
 
         afterEach(function () {
@@ -117,11 +86,11 @@ describe('Window.App', function () {
         });
 
         it('updates visible page with show_page', function () {
-            let home_page = factory.get_created_named_mocks('home-page')[0];
-            let section_page = factory.get_created_named_mocks('section-page')[0];
-            let search_page = factory.get_created_named_mocks('search-page')[0];
-            let article_page = factory.get_created_named_mocks('article-page')[0];
-            let all_sets_page = factory.get_created_named_mocks('all-sets-page')[0];
+            let home_page = factory.get_last_created('home-page');
+            let section_page = factory.get_last_created('section-page');
+            let search_page = factory.get_last_created('search-page');
+            let article_page = factory.get_last_created('article-page');
+            let all_sets_page = factory.get_last_created('all-sets-page');
             view.show_page(home_page);
             expect(view.get_visible_page()).toBe(home_page);
             view.show_page(section_page);
@@ -135,7 +104,7 @@ describe('Window.App', function () {
         });
 
         it('starts on home page', function () {
-            let home_page = factory.get_created_named_mocks('home-page')[0];
+            let home_page = factory.get_last_created('home-page');
             expect(view.get_visible_page()).toBe(home_page);
         });
 
@@ -195,8 +164,8 @@ describe('Window.App', function () {
         });
 
         it('disables the home button when in the home page', function () {
-            let home_page = factory.get_created_named_mocks('home-page')[0];
-            let other_page = factory.get_created_named_mocks('section-page')[0];
+            let home_page = factory.get_last_created('home-page');
+            let other_page = factory.get_last_created('section-page');
             expect(view._home_button).toBeDefined();
             view.show_page(other_page);
             expect(view._home_button.sensitive).toBe(true);
@@ -206,12 +175,26 @@ describe('Window.App', function () {
     });
 
     describe('with a brand page and no lightbox / navigation', function () {
-        let view;
+        let view, factory;
 
         beforeEach(function () {
             jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
-            view = factory.create_named_module('window-with-brand-page');
+            [view, factory] = MockFactory.setup_tree({
+                type: AppWindow.App,
+                properties: {
+                    'application': app,
+                },
+                slots: {
+                    'brand-page': { type: null },
+                    'home-page': { type: null },
+                    'section-page': { type: null },
+                    'search-page': { type: SearchBox.SearchBox },
+                    'article-page': { type: null },
+                    'all-sets-page': { type: null },
+                    'search': { type: MockWidgets.MockSearchBox },
+                },
+            });
         });
 
         afterEach(function () {
@@ -219,12 +202,12 @@ describe('Window.App', function () {
         });
 
         it('starts on the brand page page', function () {
-            let brand_page = factory.get_created_named_mocks('brand-page')[0];
+            let brand_page = factory.get_last_created('brand-page');
             expect(view.get_visible_page()).toBe(brand_page);
         });
 
         it('switches to the brand page when show-brand-page is dispatched', function () {
-            let brand_page = factory.get_created_named_mocks('brand-page')[0];
+            let brand_page = factory.get_last_created('brand-page');
             dispatcher.dispatch({
                 action_type: Actions.SHOW_BRAND_PAGE,
             });
@@ -232,7 +215,7 @@ describe('Window.App', function () {
         });
 
         it('switches to the categories page after the show-all-sets page is dispatched', function () {
-            let all_sets_page = factory.get_created_named_mocks('all-sets-page')[0];
+            let all_sets_page = factory.get_last_created('all-sets-page');
             dispatcher.dispatch({
                 action_type: Actions.SHOW_ALL_SETS_PAGE,
             });
@@ -240,7 +223,7 @@ describe('Window.App', function () {
         });
 
         it('still packs the pages even without a lightbox and navigation module', function () {
-            let home_page = factory.get_created_named_mocks('home-page')[0];
+            let home_page = factory.get_last_created('home-page');
             expect(view).toHaveDescendant(home_page);
         });
 
@@ -249,7 +232,7 @@ describe('Window.App', function () {
                 action_type: Actions.SHOW_HOME_PAGE,
             });
             Utils.update_gui();
-            let search = factory.get_created_named_mocks('top-bar-search')[0];
+            let search = factory.get_last_created('search');
             expect(search.get_child_visible()).toBeTruthy();
         });
 
@@ -258,13 +241,13 @@ describe('Window.App', function () {
                 action_type: Actions.SHOW_SEARCH_PAGE,
             });
             Utils.update_gui();
-            let search = factory.get_created_named_mocks('top-bar-search')[0];
+            let search = factory.get_last_created('search');
             expect(search.get_child_visible()).toBeFalsy();
         });
 
         it('disables the home button when in the brand page', function () {
-            let brand_page = factory.get_created_named_mocks('brand-page')[0];
-            let other_page = factory.get_created_named_mocks('section-page')[0];
+            let brand_page = factory.get_last_created('brand-page');
+            let other_page = factory.get_last_created('section-page');
             expect(view._home_button).toBeDefined();
             view.show_page(other_page);
             expect(view._home_button.sensitive).toBe(true);
@@ -274,10 +257,18 @@ describe('Window.App', function () {
     });
 
     it('still works without all optional components', function () {
-        let view;
         expect(() => {
-            view = factory.create_named_module('window-without-optional-pages');
+            let [view] = MockFactory.setup_tree({
+                type: AppWindow.App,
+                properties: {
+                    'application': app,
+                },
+                slots: {
+                    'home-page': { type: null },
+                    'search': { type: MockWidgets.MockSearchBox },
+                },
+            });
+            view.destroy();
         }).not.toThrow();
-        view.destroy();
     });
 });

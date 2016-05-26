@@ -8,7 +8,6 @@ Utils.register_gresource();
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HamburgerBasement = imports.app.modules.layout.hamburgerBasement;
 const MockFactory = imports.tests.mockFactory;
-const MockPlaceholder = imports.tests.mockPlaceholder;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
@@ -20,31 +19,27 @@ describe('Layout.HamburgerBasement', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('Placeholder1', MockPlaceholder.MockPlaceholder);
-        factory.add_named_mock('Placeholder2', MockPlaceholder.MockPlaceholder);
-        factory.add_named_mock('Placeholder3', MockPlaceholder.MockPlaceholder);
-        factory.add_named_mock('Placeholder4', MockPlaceholder.MockPlaceholder);
-        factory.add_named_mock('home-page-template', HamburgerBasement.HamburgerBasement,
-        {
-            'top': 'Placeholder1',
-            'middle': 'Placeholder2',
-            'bottom': 'Placeholder3',
-            'basement': 'Placeholder4',
+        [home_page, factory] = MockFactory.setup_tree({
+            type: HamburgerBasement.HamburgerBasement,
+            slots: {
+                'top': { type: null },
+                'middle': { type: null },
+                'bottom': { type: null },
+                'basement': { type: null },
+            },
         });
-        home_page = factory.create_named_module('home-page-template');
     });
 
     it('constructs', function () {});
 
     it('packs all its children', function () {
-        let top = factory.get_created_named_mocks('Placeholder1')[0];
+        let top = factory.get_last_created('top');
         expect(home_page).toHaveDescendant(top);
-        let middle = factory.get_created_named_mocks('Placeholder2')[0];
+        let middle = factory.get_last_created('middle');
         expect(home_page).toHaveDescendant(middle);
-        let bottom = factory.get_created_named_mocks('Placeholder3')[0];
+        let bottom = factory.get_last_created('bottom');
         expect(home_page).toHaveDescendant(bottom);
-        let basement = factory.get_created_named_mocks('Placeholder4')[0];
+        let basement = factory.get_last_created('basement');
         expect(home_page).toHaveDescendant(basement);
     });
 

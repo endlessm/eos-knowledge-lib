@@ -16,16 +16,14 @@ describe('Arrangement.Windshield', function () {
     let arrangement, factory;
 
     beforeEach(function () {
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('card', Minimal.MinimalCard);
-        factory.add_named_mock('order', Minimal.MinimalOrder);
-        factory.add_named_mock('filter', Minimal.TitleFilter);
-        factory.add_named_mock('arrangement', Windshield.Windshield, {
-            'card-type': 'card',
-            'order': 'order',
-            'filter': 'filter',
+        [arrangement, factory] = MockFactory.setup_tree({
+            type: Windshield.Windshield,
+            slots: {
+                'card-type': { type: Minimal.MinimalCard },
+                'order': { type: Minimal.MinimalOrder },
+                'filter': { type: Minimal.TitleFilter },
+            },
         });
-        arrangement = factory.create_named_module('arrangement');
     });
 
     describe('sizing allocation', function () {
@@ -48,7 +46,7 @@ describe('Arrangement.Windshield', function () {
                 win.set_size_request(total_width, total_height);
                 Utils.update_gui();
 
-                let cards = factory.get_created_named_mocks('card');
+                let cards = factory.get_created('card-type');
                 cards.forEach((card, i) => {
                     if (i === 0) {
                         // FIXME: For now we're treating the first card as the

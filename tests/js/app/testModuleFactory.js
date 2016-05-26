@@ -187,6 +187,7 @@ const MockModule = new Module.Class({
 
 const MockWarehouse = new Knowledge.Class({
     Name: 'MockWarehouse',
+    GTypeName: 'testModuleFactory_MockWarehouse',
     Extends: GObject.Object,
     // ModuleFactory has a 'warehouse' property with an object param spec, so
     // this class is required to extend GObject.Object even though it doesn't

@@ -16,10 +16,11 @@ describe('Arrangement.SquareGuys', function () {
     let factory;
 
     beforeEach(function () {
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('card', Minimal.MinimalCard);
-        factory.add_named_mock('arrangement', SquareGuys.SquareGuys, {
-            'card-type': 'card',
+        factory = new MockFactory.MockFactory({
+            type: SquareGuys.SquareGuys,
+            slots: {
+                'card-type': { type: Minimal.MinimalCard },
+            }
         });
     });
 
@@ -58,21 +59,21 @@ describe('Arrangement.SquareGuys', function () {
 
     describe('get_max_cards', function () {
         it ('is 4 for one row', function () {
-            let arrangement = factory.create_named_module('arrangement', {
+            let arrangement = factory.create_module_tree({
                 max_rows: 1,
             });
             expect(arrangement.get_max_cards()).toBe(4);
         });
 
         it ('is 8 for two rows', function () {
-            let arrangement = factory.create_named_module('arrangement', {
+            let arrangement = factory.create_module_tree({
                 max_rows: 2,
             });
             expect(arrangement.get_max_cards()).toBe(8);
         });
 
         it ('is -1 if max rows unset', function () {
-            let arrangement = factory.create_named_module('arrangement');
+            let arrangement = factory.create_module_tree();
             expect(arrangement.get_max_cards()).toBe(-1);
         });
     });
@@ -80,21 +81,21 @@ describe('Arrangement.SquareGuys', function () {
 
 function testSizingArrangementForDimensions(message, arr_width, arr_height, max_rows, visible_children, child_width, child_height) {
     it(message + ' (' + arr_width + 'x' + arr_height + ')', function () {
-        let factory = new MockFactory.MockFactory();
-        factory.add_named_mock('card', Minimal.MinimalCard);
-        factory.add_named_mock('order', Minimal.MinimalOrder);
-        factory.add_named_mock('filter', Minimal.TitleFilter);
-        factory.add_named_mock('arrangement', SquareGuys.SquareGuys, {
-            'card-type': 'card',
-            'order': 'order',
-            'filter': 'filter',
-        }, {
-            hexpand: false,
-            valign: Gtk.Align.START,
-            spacing: 0,
-            max_rows: max_rows,
+        let [arrangement, factory] = MockFactory.setup_tree({
+            type: SquareGuys.SquareGuys,
+            properties: {
+                'hexpand': false,
+                'valign': 'start',
+                'spacing': 0,
+                'max-rows': max_rows,
+            },
+            slots: {
+                'card-type': { type: Minimal.MinimalCard },
+                'order': { type: Minimal.MinimalOrder },
+                'filter': { type: Minimal.TitleFilter },
+            },
         });
-        let arrangement = factory.create_named_module('arrangement');
+
         Minimal.add_ordered_cards(arrangement, 8);
         Minimal.add_filtered_cards(arrangement, 1, 0);
 
@@ -106,7 +107,7 @@ function testSizingArrangementForDimensions(message, arr_width, arr_height, max_
         win.queue_resize();
         Utils.update_gui();
 
-        let cards = factory.get_created_named_mocks('card');
+        let cards = factory.get_created('card-type');
         cards.forEach((card, i) => {
             if (i < visible_children) {
                 expect(card.get_allocation().width).toBe(child_width);
