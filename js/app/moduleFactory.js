@@ -260,9 +260,6 @@ const ModuleFactory = new Knowledge.Class({
             let is_multi = this._is_multi_slot(parent_description, slot_name, parent_is_multi);
             if(!slot_value)
                 return;
-            if (typeof slot_value === 'string')
-                slot_value = this._path_to_description.get(slot_value);
-
             this._extract_ids(slot_value, is_multi);
         });
     },
