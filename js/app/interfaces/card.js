@@ -458,13 +458,17 @@ const Card = new Lang.Interface({
         });
 
         let context = this.get_style_context();
-        if (typeof width_class !== undefined && !context.has_class(width_class)) {
-            Object.keys(WIDTH_STYLE_CLASSES).forEach(klass => context.remove_class(klass));
+        if (!context.has_class(width_class)) {
+            Object.keys(WIDTH_STYLE_CLASSES)
+                .filter(klass => klass !== width_class)
+                .forEach(klass => context.remove_class(klass));
             context.add_class(width_class);
         }
 
-        if (typeof width_class !== undefined && !context.has_class(height_class)) {
-            Object.keys(HEIGHT_STYLE_CLASSES).forEach(klass => context.remove_class(klass));
+        if (!context.has_class(height_class)) {
+            Object.keys(HEIGHT_STYLE_CLASSES)
+                .filter(klass => klass !== height_class)
+                .forEach(klass => context.remove_class(klass));
             context.add_class(height_class);
         }
     },
