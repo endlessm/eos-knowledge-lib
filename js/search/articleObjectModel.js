@@ -68,6 +68,17 @@ const ArticleObjectModel = new Lang.Class({
          */
         'published': GObject.ParamSpec.string('published', 'Publication Date', 'Publication Date of the article',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+
+        /**
+         * Property: is-server-templated
+         * Whether the article is "server-templated". Server-templated articles
+         * are articles which don't require additional client-side, source-specific
+         * templating.
+         */
+        'is-server-templated': GObject.ParamSpec.boolean('is-server-templated',
+            'Is Server Templated', 'Is Server Templated',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            false),
     },
 
     _init: function (props={}, json_ld=null) {
@@ -121,5 +132,8 @@ const ArticleObjectModel = new Lang.Class({
 
         if (json_ld.hasOwnProperty('published'))
             props.published = json_ld.published;
+
+        if (json_ld.hasOwnProperty('isServerTemplated'))
+            props.is_server_templated = json_ld.isServerTemplated;
     },
 });

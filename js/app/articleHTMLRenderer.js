@@ -210,6 +210,9 @@ const ArticleHTMLRenderer = new Knowledge.Class({
     },
 
     _render_content: function (model) {
+        if (model.is_server_templated)
+            return this._get_html(model);
+
         switch (model.source) {
         case 'wikipedia':
         case 'wikibooks':
@@ -218,8 +221,6 @@ const ArticleHTMLRenderer = new Knowledge.Class({
             return this._render_legacy_content(model);
         case 'prensa-libre':
             return this._render_prensa_libre_content(model);
-        case 'server-template-v1':
-            return this._get_html(model);
         default:
             return null;
         }
