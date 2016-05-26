@@ -54,10 +54,6 @@ describe('ContentGroup.HierarchicalSet', function () {
         arrangement = factory.get_last_created('content.arrangement');
     });
 
-    it('constructs', function () {
-        expect(module).toBeDefined();
-    });
-
     it('starts with an empty arrangement', function () {
         expect(arrangement).toBeDefined();
         expect(module).toHaveDescendant(arrangement);

@@ -20,8 +20,6 @@ describe('Module interface', function () {
         module = factory.create_module_tree();
     });
 
-    it ('Constructs', function () {});
-
     it('reports having no slots if none defined in Slots', function () {
         expect(Minimal.MinimalModule.get_slot_names()).toEqual([]);
     });

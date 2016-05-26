@@ -286,7 +286,6 @@ javascript_tests = \
 	tests/eosknowledgeprivate/testHistoryModel.js \
 	tests/js/app/interfaces/testArrangement.js \
 	tests/js/app/interfaces/testCard.js \
-	tests/js/app/interfaces/testController.js \
 	tests/js/app/interfaces/testModule.js \
 	tests/js/app/interfaces/testOrder.js \
 	tests/js/app/modules/arrangement/testGrid.js \

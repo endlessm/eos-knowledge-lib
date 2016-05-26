@@ -48,10 +48,6 @@ describe('ContentGroup.Thematic', function () {
         module.show();
     });
 
-    it('constructs', function () {
-        expect(module).toBeDefined();
-    });
-
     it('does not create a card widget at construct time', function () {
         let cards = factory.get_created('content.arrangement.card-type');
         expect(cards.length).toEqual(0);

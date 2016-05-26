@@ -53,8 +53,6 @@ describe('Layout.ResponsiveMargins', function () {
         responsive_margins.get_style_context().add_provider(provider, 800);
     });
 
-    it('constructs', function () {});
-
     function test_constant_size_requests (primary) {
         describe('get preferred ' + primary, function () {
             let win;

@@ -34,10 +34,6 @@ describe('ContentGroup.SuggestedArticles', function () {
         arrangement = factory.get_last_created('arrangement');
     });
 
-    it('constructs', function () {
-        expect(suggestions).toBeDefined();
-    });
-
     it('creates and packs an arrangement widget', function () {
         expect(suggestions).toHaveDescendant(arrangement);
     });

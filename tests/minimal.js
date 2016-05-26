@@ -1,9 +1,8 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 /* exported add_filtered_cards, add_ordered_cards, MinimalArrangement,
-MinimalBinModule, MinimalCard, MinimalController, MinimalDocumentCard,
-MinimalHomePage, MinimalModule, MinimalNavigationCard, MinimalOrder,
-TitleFilter */
+MinimalBinModule, MinimalCard, MinimalDocumentCard, MinimalHomePage,
+MinimalModule, MinimalNavigationCard, MinimalOrder, TitleFilter */
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -14,8 +13,6 @@ const Card = imports.app.interfaces.card;
 const ContentObjectModel = imports.search.contentObjectModel;
 const DocumentCard = imports.app.interfaces.documentCard;
 const Filter = imports.app.interfaces.filter;
-const Controller = imports.app.interfaces.controller;
-const Launcher = imports.app.interfaces.launcher;
 const Module = imports.app.interfaces.module;
 const NavigationCard = imports.app.interfaces.navigationCard;
 const Order = imports.app.interfaces.order;
@@ -84,14 +81,6 @@ const MinimalNavigationCard = new Module.Class({
     Name: 'MinimalNavigationCard',
     Extends: Gtk.Button,
     Implements: [Card.Card, NavigationCard.NavigationCard],
-});
-
-const MinimalController = new Module.Class({
-    Name: 'MinimalController',
-    Extends: GObject.Object,
-    Implements: [Launcher.Launcher, Controller.Controller],
-
-    desktop_launch: function () {},
 });
 
 const MinimalModule = new Module.Class({

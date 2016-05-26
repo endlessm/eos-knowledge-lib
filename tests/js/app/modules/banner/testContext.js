@@ -18,10 +18,6 @@ describe('Banner.Context', function () {
         module.label = 'clobber me';
     });
 
-    it('constructs', function () {
-        expect(module).toEqual(jasmine.anything());
-    });
-
     it('changes the context label when going to the home page', function () {
         dispatcher.dispatch({
             action_type: Actions.SHOW_HOME_PAGE,

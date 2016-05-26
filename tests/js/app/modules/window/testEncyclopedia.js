@@ -49,10 +49,6 @@ describe('Window.Encyclopedia', function () {
         view.destroy();
     });
 
-    it('can be constructed', function () {
-        expect(view).toBeDefined();
-    });
-
     it('disables the home button when in the home page', function () {
         let home_page = factory.get_last_created('home-page');
         let other_page = factory.get_last_created('search-page');

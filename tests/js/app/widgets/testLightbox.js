@@ -29,8 +29,6 @@ describe('Lightbox widget', function () {
         });
     });
 
-    it('can be constructed', function () {});
-
     it('overlays-revealed property follows reveal-overlays property', function () {
         // No animation time (and not mapped) so overlays-revealed should
         // update instantly

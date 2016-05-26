@@ -22,10 +22,6 @@ describe('Previewer widget', function () {
         previewer = new Previewer.Previewer();
     });
 
-    it('can be constructed', function () {
-        expect(previewer).toBeDefined();
-    });
-
     it('can open an image file', function () {
         let fn = function () {
             let stream = Gio.File.new_for_path(TEST_CONTENT_DIR + 'joffrey.jpg').read(null);

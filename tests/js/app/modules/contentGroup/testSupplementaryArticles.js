@@ -37,10 +37,6 @@ describe('ContentGroup.SupplementaryArticles', function () {
         arrangement = factory.get_last_created('arrangement');
     });
 
-    it('constructs', function () {
-        expect(supplementary).toBeDefined();
-    });
-
     it('creates and packs an arrangement widget', function () {
         expect(supplementary).toHaveDescendant(arrangement);
     });

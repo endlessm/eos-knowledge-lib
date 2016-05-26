@@ -30,8 +30,6 @@ describe('Layout.HamburgerBasement', function () {
         });
     });
 
-    it('constructs', function () {});
-
     it('packs all its children', function () {
         let top = factory.get_last_created('top');
         expect(home_page).toHaveDescendant(top);

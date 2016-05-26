@@ -87,8 +87,6 @@ describe('Controller.Mesh', function () {
         spyOn(mesh, '_record_search_metric');
     });
 
-    it('can be constructed', function () {});
-
     it('dispatches category models for home page', () => {
         mesh.desktop_launch(0);
         Utils.update_gui();

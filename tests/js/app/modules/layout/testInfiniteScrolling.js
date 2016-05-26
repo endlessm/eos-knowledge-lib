@@ -27,8 +27,6 @@ describe('Layout.InfiniteScrolling', function () {
         });
     });
 
-    it('constructs', function () {});
-
     it('packs all its children', function () {
         let content = factory.get_last_created('content');
         expect(template).toHaveDescendant(content);

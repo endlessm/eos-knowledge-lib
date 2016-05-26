@@ -35,10 +35,6 @@ describe('ContentGroup.Set', function () {
         arrangement = factory.get_last_created('arrangement');
     });
 
-    it('constructs', function () {
-        expect(group).toBeDefined();
-    });
-
     it('creates and packs an arrangement widget', function () {
         expect(group).toHaveDescendant(arrangement);
     });

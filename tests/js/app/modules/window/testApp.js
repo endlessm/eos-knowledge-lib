@@ -76,10 +76,6 @@ describe('Window.App', function () {
             view.destroy();
         });
 
-        it('can be constructed', function () {
-            expect(view).toBeDefined();
-        });
-
         it('correctly sets background image', function () {
             view.background_image_uri = BACKGROUND_URI;
             expect(view.background_image_uri).toBe(BACKGROUND_URI);

@@ -26,10 +26,6 @@ describe('Arrangement interface', function () {
         arrangement = factory.create_module_tree();
     });
 
-    it('has a minimal implementation', function () {
-        expect(arrangement).toBeDefined();
-    });
-
     it('returns -1 for default card limit', function () {
         expect(arrangement.get_max_cards()).toBe(-1);
     });

@@ -32,10 +32,6 @@ describe('Layout.DynamicBackground', function () {
         spyOn(Gtk.CssProvider.prototype, 'load_from_data');
     });
 
-    it('constructs', function () {
-        expect(module).toBeDefined();
-    });
-
     it('listens to the corresponding event', function () {
         let color = /#604C28/;
         let image = 'resource:///com/endlessm/thrones/red_wedding.jpg';

@@ -45,8 +45,6 @@ describe('ContentGroup.Search', function () {
         spyOn(arrangement, 'highlight_string');
     });
 
-    it('constructs', function () {});
-
     it('creates and packs an arrangement widget', function () {
         expect(search_module).toHaveDescendant(arrangement);
     });

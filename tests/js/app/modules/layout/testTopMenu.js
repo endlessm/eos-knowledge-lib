@@ -28,10 +28,6 @@ describe('Layout.TopMenu', function () {
         });
     });
 
-    it('constructs', function () {
-        expect(template).toEqual(jasmine.anything());
-    });
-
     it('has widgets with the proper CSS classes', function () {
         expect(template).toHaveDescendantWithCssClass('top-menu');
     });

@@ -51,10 +51,6 @@ describe('Layout.ArticleStack', function () {
         card = factory.get_last_created('card-type');
     });
 
-    it('can be constructed', function () {
-        expect(module).toBeDefined();
-    });
-
     it('transitions in new content when show-article dispatched', function () {
         expect(module).toHaveDescendant(card);
     });

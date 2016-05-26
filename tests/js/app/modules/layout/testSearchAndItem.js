@@ -29,10 +29,6 @@ describe('Layout.SearchAndItem', function () {
         item = factory.get_last_created('item');
     });
 
-    it('constructs', function () {
-        expect(module).toBeDefined();
-    });
-
     it('creates and packs item module', function () {
         expect(module).toHaveDescendant(item);
     });

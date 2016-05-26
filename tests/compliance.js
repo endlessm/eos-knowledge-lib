@@ -68,10 +68,6 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
             });
         });
 
-        it('by constructing', function () {
-            expect(arrangement).toBeDefined();
-        });
-
         function add_cards(a, ncards) {
             let models = [];
             for (let ix = 0; ix < ncards; ix++) {

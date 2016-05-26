@@ -31,8 +31,6 @@ describe('ContentGroup.MediaLightbox', function () {
         });
     });
 
-    it('can be constructed', function () {});
-
     it('creates pack a card module from the card-type slot', function () {
         let media_object_uri = 'ekn://foo/bar';
         let media_object = new MediaObjectModel.MediaObjectModel({

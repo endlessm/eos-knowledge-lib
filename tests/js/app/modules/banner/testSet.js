@@ -27,8 +27,6 @@ describe('Banner.Set', function () {
         });
     });
 
-    it('constructs', function () {});
-
     it('creates a card when show-set is dispatched', function () {
         let model = new ContentObjectModel.ContentObjectModel();
         dispatcher.dispatch({

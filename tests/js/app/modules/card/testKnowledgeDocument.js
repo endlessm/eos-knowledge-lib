@@ -59,10 +59,6 @@ describe('Card.KnowledgeDocument', function () {
         Object.defineProperty(Gio.DBus, 'session', real_session_descriptor);
     });
 
-    it('can be constructed', function () {
-        expect(card).toBeDefined();
-    });
-
     it('instantiates a table of contents widget', function () {
         expect(card.toc).toBeA(TableOfContents.TableOfContents);
     });

@@ -38,10 +38,6 @@ describe('Order interface', function () {
             new ContentObjectModel.ContentObjectModel(properties));
     });
 
-    it('has a minimal implementation', function () {
-        expect(order).toBeDefined();
-    });
-
     it('sorts models correctly', function () {
         expect(models.sort(order.compare.bind(order)).map((model) => {
             return { title: model.title, synopsis: model.synopsis };

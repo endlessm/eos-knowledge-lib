@@ -31,8 +31,6 @@ describe('Sidebar template', function () {
         content = factory.get_last_created('content');
     });
 
-    it('constructs', function () {});
-
     it('packs all its children', function () {
         expect(template).toHaveDescendant(sidebar);
         expect(template).toHaveDescendant(content);

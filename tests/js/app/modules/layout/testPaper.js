@@ -27,8 +27,6 @@ describe('Layout.Paper', function () {
         });
     });
 
-    it('can be constructed', function () {});
-
     it('has the paper-template CSS class', function () {
         expect(paper_template).toHaveCssClass('paper-template');
     });
