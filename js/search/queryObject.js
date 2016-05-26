@@ -24,7 +24,6 @@ const _XAPIAN_SYNTAX_CHARACTERS = ['(', ')', '+', '-', '\'', '"'];
 // The value numbers where certain info is stored in our Xapian documents
 const _XAPIAN_SOURCE_URL_VALUE_NO = 0;
 const _XAPIAN_RANK_VALUE_NO = 1;
-const _XAPIAN_ARTICLE_NUMBER_VALUE_NO = 2;
 
 const _DEFAULT_CUTOFF = 10;
 const _MATCH_SYNOPSIS_CUTOFF = 20;
@@ -56,11 +55,9 @@ const QueryObjectMatch = Utils.define_enum(['TITLE_ONLY', 'TITLE_SYNOPSIS']);
  *
  * RELEVANCE      - Use xapian relevance ranking to sort articles. Exact title
  *                  matches will be weighted most heavily.
- * ARTICLE_NUMBER - Use the article number field to sort results.
- *                  Currently only reader app databases have article numbers.
  * RANK           - Uses the article page rank to sort results.
  */
-const QueryObjectSort = Utils.define_enum(['RELEVANCE', 'ARTICLE_NUMBER', 'RANK']);
+const QueryObjectSort = Utils.define_enum(['RELEVANCE', 'RANK']);
 
 /**
  * Enum: QueryObjectOrder
@@ -411,8 +408,6 @@ const QueryObject = Lang.Class({
         switch (this.sort) {
             case QueryObjectSort.RANK:
                 return _XAPIAN_RANK_VALUE_NO;
-            case QueryObjectSort.ARTICLE_NUMBER:
-                return _XAPIAN_ARTICLE_NUMBER_VALUE_NO;
             default:
                 return undefined;
         }

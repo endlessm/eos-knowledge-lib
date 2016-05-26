@@ -45,7 +45,6 @@ describe('Card interface', function () {
             title: 'record title &',
             thumbnail_uri: 'ekn://foo/bar',
             authors: ['record author &'],
-            article_number: 0,
             tags: ['foo', 'bar'],
         });
         card = new Minimal.MinimalCard({
@@ -142,17 +141,6 @@ describe('Card interface', function () {
         let frame = new Gtk.Frame();
         card.set_thumbnail_frame_from_model(frame);
         expect(frame.visible).toBeTruthy();
-    });
-
-    it('adds a style variant if the model has an article number', function () {
-        card.set_style_variant_from_model();
-        expect(card).toHaveCssClass('variant0');
-    });
-
-    it('only has three different style variants', function () {
-        card.model.article_number = 5;
-        card.set_style_variant_from_model();
-        expect(card).toHaveCssClass('variant2');
     });
 
     describe ('sequence', function () {
