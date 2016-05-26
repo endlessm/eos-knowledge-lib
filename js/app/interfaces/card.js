@@ -317,19 +317,6 @@ const Card = new Lang.Interface({
     },
 
     /**
-     * Method: add_contextual_css_class
-     *
-     * Adds a css class based on the type of model this is.
-     */
-    add_contextual_css_class: function () {
-        if (this.model instanceof SetObjectModel.SetObjectModel) {
-            this.get_style_context().add_class('set');
-        } else if (this.model instanceof ArticleObjectModel.ArticleObjectModel) {
-            this.get_style_context().add_class('article');
-        }
-    },
-
-    /**
      * Method: set_thumbnail_frame_from_model
      *
      * Sets up a frame to show the model's thumbnail uri.

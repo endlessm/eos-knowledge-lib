@@ -5,16 +5,16 @@ Utils.register_gresource();
 
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const Post = imports.app.modules.card.post;
+const Deck = imports.app.modules.card.deck;
 
 Gtk.init(null);
 
-describe('Postcard widget', function () {
+describe('Card.Deck', function () {
     let card;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
-        card = new Post.Post({
+        card = new Deck.Deck({
             model: new ContentObjectModel.ContentObjectModel({
                 title: '!!!',
             }),
@@ -22,7 +22,7 @@ describe('Postcard widget', function () {
     });
 
     it('has the correct style classes', function () {
-        expect(card).toHaveCssClass('post-card');
+        expect(card).toHaveCssClass('deck');
         expect(card).toHaveDescendantWithCssClass('content-frame');
         expect(card).toHaveDescendantWithCssClass('title');
         expect(card).toHaveDescendantWithCssClass('thumbnail');

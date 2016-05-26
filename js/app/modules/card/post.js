@@ -5,12 +5,19 @@ const Gtk = imports.gi.Gtk;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
-const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.app.utils;
 
 /**
  * Class: Post
  * A card the resembles a postcard, the entire background being an image.
+ *
+ * CSS classes:
+ *   - card - deprecated, should be replaced by CSS name
+ *   - content-frame - on the frame around the title and context; used for
+ *     shading behind the text so that you can see it above the background
+ *   - post-card
+ *   - title - on the document title
+ *   - thumbnail - on the image thumbnail
  */
 const Post = new Module.Class({
     Name: 'PostCard',
@@ -24,30 +31,17 @@ const Post = new Module.Class({
     _init: function (props={}) {
         this.parent(props);
 
-        this._showing_set = (this.model instanceof SetObjectModel.SetObjectModel);
-
         this.set_title_label_from_model(this._title_label);
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
-        this.add_contextual_css_class();
         this.set_size_request(Card.MinSize.A, Card.MinSize.A);
 
         Utils.set_hand_cursor_on_widget(this);
 
-        if (this._showing_set) {
-            this._inner_content_grid.valign = Gtk.Align.CENTER;
-            this._thumbnail_frame.margin = 13;
-            this._thumbnail_frame.connect_after('draw', (widget, cr) => {
-                Utils.render_border_with_arrow(this._thumbnail_frame, cr);
-                cr.$dispose();  // workaround not freeing cairo context
-                return Gdk.EVENT_PROPAGATE;
-            });
-        } else {
-            this._context_widget = this.create_context_widget_from_model();
-            this._inner_content_grid.add(this._context_widget);
-            this._title_label.halign = this._context_widget.halign = this.text_halign;
-            this._title_label.justify = Utils.alignment_to_justification(this.text_halign);
-            this._title_label.xalign = Utils.alignment_to_xalign(this.text_halign);
-        }
+        this._context_widget = this.create_context_widget_from_model();
+        this._inner_content_grid.add(this._context_widget);
+        this._title_label.halign = this._context_widget.halign = this.text_halign;
+        this._title_label.justify = Utils.alignment_to_justification(this.text_halign);
+        this._title_label.xalign = Utils.alignment_to_xalign(this.text_halign);
 
         this._overlay.connect('get-child-position', this._overlay_get_child_position.bind(this));
     },
@@ -58,17 +52,10 @@ const Post = new Module.Class({
         allocation.x = 0;
         allocation.width = width;
         let [min_height,] = child.get_preferred_height_for_width(width);
-        if (this._showing_set) {
-            let sleeve_height = height > Card.MaxSize.B ? 120 : 80;
-            sleeve_height = Math.max(sleeve_height, min_height);
-            allocation.y = (height / 2) - (sleeve_height / 2);
-            allocation.height = sleeve_height;
-        } else {
-            let content_height = this._get_content_height(height);
-            content_height = Math.max(content_height, min_height);
-            allocation.y = height - content_height;
-            allocation.height = content_height;
-        }
+        let content_height = this._get_content_height(height);
+        content_height = Math.max(content_height, min_height);
+        allocation.y = height - content_height;
+        allocation.height = content_height;
         return [true, allocation];
     },
 
@@ -78,38 +65,8 @@ const Post = new Module.Class({
     },
 
     vfunc_draw: function (cr) {
-        if (this._showing_set) {
-            // FIXME: Would really be better to draw inside the frame directly
-            // than try to suss out the position here. Really really, lets just
-            // make this a border image in css
-            let margin = this._thumbnail_frame.margin;
-            let sleeve_alloc = this._shadow_frame.get_allocation();
-            let sleeve_offset = this._shadow_frame.get_window().get_position()[1] - this._overlay.get_allocation().y;
-            let shadow_top = sleeve_alloc.y + sleeve_alloc.height + sleeve_offset;
-
-            cr.save();
-            Gdk.cairo_set_source_rgba(cr, new Gdk.RGBA({
-                red: 0.6,
-                green: 0.6,
-                blue: 0.6,
-                alpha: 1.0,
-            }));
-            cr.moveTo(0, shadow_top);
-            cr.lineTo(margin, shadow_top);
-            cr.lineTo(margin, shadow_top + margin);
-            cr.fill();
-            cr.moveTo(sleeve_alloc.width, shadow_top);
-            cr.lineTo(sleeve_alloc.width - margin, shadow_top);
-            cr.lineTo(sleeve_alloc.width - margin, shadow_top + margin);
-            cr.fill();
-            cr.restore();
-        }
-
         this.parent(cr);
-
-        if (!this._showing_set)
-            Utils.render_border_with_arrow(this, cr);
-
+        Utils.render_border_with_arrow(this, cr);
         cr.$dispose();  // workaround not freeing cairo context
         return Gdk.EVENT_PROPAGATE;
     },

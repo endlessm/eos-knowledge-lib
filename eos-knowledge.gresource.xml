@@ -49,6 +49,7 @@
     <file compressed="true">data/templates/js/jquery-min.js</file>
     <file compressed="true">data/templates/js/scroll-manager.js</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/appBanner.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/deckCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/gridArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/hamburgerBasementTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/infiniteScrollingLayout.ui</file>
@@ -113,6 +114,7 @@
     <file>js/app/modules/banner/context.js</file>
     <file>js/app/modules/banner/search.js</file>
     <file>js/app/modules/banner/set.js</file>
+    <file>js/app/modules/card/deck.js</file>
     <file>js/app/modules/card/knowledgeDocument.js</file>
     <file>js/app/modules/card/legacyPolaroid.js</file>
     <file>js/app/modules/card/legacyPost.js</file>

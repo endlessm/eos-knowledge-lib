@@ -84,7 +84,7 @@ EknSearch .suggested-articles {
 }
 
 .thumb-card.arrow,
-.post-card.article.arrow,
+.post-card.arrow,
 .list-card.arrow {
     -gtk-icon-source: url('../images/arrow-gray.svg');
     -gtk-icon-transform: rotate(45deg);
@@ -92,10 +92,10 @@ EknSearch .suggested-articles {
 
 .thumb-card:hover,
 .thumb-card:active,
-.post-card.article:hover,
-.post-card.article:active,
-.post-card.set:hover .thumbnail,
-.post-card.set:active .thumbnail,
+.post-card:hover,
+.post-card:active,
+.deck:hover .thumbnail,
+.deck:active .thumbnail,
 .list-card:hover,
 .list-card:active {
     outline: 1px solid #49bde3;
@@ -105,16 +105,16 @@ EknSearch .suggested-articles {
 }
 
 .thumb-card:active,
-.post-card.article:active,
+.post-card:active,
 .list-card:active {
     box-shadow: none;
 }
 
 .thumb-card.arrow:hover,
 .thumb-card.arrow:active,
-.post-card.article.arrow:hover,
-.post-card.article.arrow:active,
-.post-card.set .thumbnail.arrow, /* both hover and non-hover */
+.post-card.arrow:hover,
+.post-card.arrow:active,
+.deck .thumbnail.arrow, /* both hover and non-hover */
 .list-card.arrow:hover,
 .list-card.arrow:active {
     -gtk-icon-source: url('../images/arrow-white.svg');

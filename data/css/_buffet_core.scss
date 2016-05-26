@@ -124,43 +124,44 @@ EknSetPreviewCard:hover .title,
 }
 
 .thumb-card,
-.post-card.article,
+.post-card,
 .list-card {
     background-color: white;
     box-shadow: 0 0 5px transparentize(black, 1 - 0.25);
     border-color: transparent;  /* used for the triangle in the corner */
 }
 
-.post-card.set .thumbnail {
+.deck .thumbnail {
     border: 0px solid transparent;  /* used for the triangle in the corner */
+    margin: 13px;
 }
 
-.post-card.article .content-frame {
+.post-card .content-frame {
     background-image: linear-gradient(to top, black 0%, transparentize(black, 1 - 0.69) 30%, transparentize(black, 1 - 0.5) 49%, transparentize(black, 1) 100%);
 }
 
-.post-card.article .title {
+.card.post-card .title {
     padding-bottom: 20px;
     color: white;
 }
 
-.post-card.set {
+.deck {
     background-image: url('../images/deckbg.svg');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-position: center;
 }
 
-.post-card.set:active {
+.deck:active {
     background-size: 98% 98%;
 }
 
-.post-card.set .content-frame {
+.deck .content-frame {
     padding: 20px 0px 20px 0px;
     background-color: transparentize(white, 1 - 0.949);
 }
 
-.post-card.set .title {
+.deck .title {
     font-weight: 300;
 }
 
@@ -302,7 +303,7 @@ EknResponsiveMargins.xlarge {
 .composite EknThematic .title-card .title.label,
 .composite EknSetPreviewCard .title,
 .composite .browse-content .title,
-.composite .post-card.set .title {
+.composite .deck .title {
     font-weight: normal;
 }
 
