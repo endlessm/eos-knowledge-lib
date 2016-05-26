@@ -63,7 +63,7 @@ scss_toplevels = \
 	$(srcdir)/data/css/picard.scss \
 	$(srcdir)/data/templates/css/embedly.scss \
 	$(srcdir)/data/templates/css/prensa-libre.scss \
-	$(srcdir)/data/templates/css/reader2.scss \
+	$(srcdir)/data/templates/css/buffet-custom.scss \
 	$(srcdir)/data/templates/css/wikihow.scss \
 	$(srcdir)/data/templates/css/wikimedia.scss \
 	$(srcdir)/data/templates/css/clipboard.scss \

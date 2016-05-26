@@ -175,7 +175,7 @@ defines:
           properties:
             show-titles: false
             show-toc: false
-            custom-css: reader2.css
+            custom-css: buffet-custom.css
         nav-card-type: Card.Sequence
 
 root:

@@ -87,10 +87,10 @@ describe('Article HTML Renderer', function () {
 
     it('links to the custom css only when told to', function () {
         let no_reader_html = renderer.render(embedly_model);
-        renderer.set_custom_css_files(['reader2.css']);
+        renderer.set_custom_css_files(['buffet-custom.css']);
         let html = renderer.render(embedly_model);
-        expect(html).toMatch('reader2.css');
-        expect(no_reader_html).not.toMatch('reader2.css');
+        expect(html).toMatch('buffet-custom.css');
+        expect(no_reader_html).not.toMatch('buffet-custom.css');
     });
 
     it('escapes html special characters in title', function () {
