@@ -210,18 +210,27 @@ const ArticleHTMLRenderer = new Knowledge.Class({
     },
 
     _render_content: function (model) {
-        switch (model.source) {
-        case 'wikipedia':
-        case 'wikibooks':
-        case 'wikisource':
-        case 'wikihow':
-            return this._render_legacy_content(model);
-        case 'prensa-libre':
-            return this._render_prensa_libre_content(model);
-        case 'server-template-v1':
+        // We have two code paths here. Newer content is server-templated, which means that
+        // the HTML content in the web view has been pre-styled and we don't need much
+        // additional processing.
+        //
+        // "Legacy" content, including most wiki sources and also 2.6 Prensa Libre content,
+        // is templated and styled on the client.
+
+        if (model.is_server_templated) {
             return this._get_html(model);
-        default:
-            return null;
+        } else {
+            switch (model.source) {
+            case 'wikipedia':
+            case 'wikibooks':
+            case 'wikisource':
+            case 'wikihow':
+                return this._render_legacy_content(model);
+            case 'prensa-libre':
+                return this._render_prensa_libre_content(model);
+            default:
+                return null;
+            }
         }
     },
 

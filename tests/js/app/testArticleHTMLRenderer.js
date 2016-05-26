@@ -165,4 +165,31 @@ describe('Article HTML Renderer', function () {
             expect(html).toMatch('prensa-libre.css');
         });
     });
+
+    describe('Server templated content', function () {
+        let server_templated_model, html;
+
+        beforeEach(function() {
+            server_templated_model = new ArticleObjectModel.ArticleObjectModel({
+                get_content_stream: () => { return SearchUtils.string_to_stream('<html><body><p>Excellent server templated content</p></body></html>'); },
+                content_type: 'text/html',
+                is_server_templated: true,
+                title: 'Some good server templated content',
+            });
+            let renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
+            html = renderer.render(server_templated_model);
+        });
+
+        it('can render server-templated content', function () {
+            expect(html).toBeDefined();
+        });
+
+        it('was sent through the wrapper', function () {
+            expect(html).toMatch(/window\.LINKS/);
+        });
+
+        it('contains the body of the content as well', function () {
+            expect(html).toMatch(/Excellent server templated content/);
+        });
+    });
 });
