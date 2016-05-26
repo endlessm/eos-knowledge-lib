@@ -1,27 +1,14 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported MockButton, MockHistoryButtons, MockItemGroupModule,
-MockScrolledLayout, MockSearchBox, MockSidebarTemplate, MockEknWebview */
+/* exported MockEknWebview, MockHistoryButtons, MockRenderer,
+MockScrolledLayout, MockSearchBox, MockSizeWidget */
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Knowledge = imports.app.knowledge;
 const Minimal = imports.tests.minimal;
 const Module = imports.app.interfaces.module;
-
-const MockButton = new Knowledge.Class({
-    Name: 'MockButton',
-    Extends: GObject.Object,
-    Properties: {
-        'sensitive': GObject.ParamSpec.boolean('sensitive', '', '',
-            GObject.ParamFlags.READWRITE, true),
-    },
-    Signals: {
-        'clicked': {},
-    },
-});
 
 const MockScrolledLayout = new Module.Class({
     Name: 'MockScrolledLayout',
@@ -51,32 +38,6 @@ const MockSearchBox = new Module.Class({
     set_menu_items: function () {},
 
     set_text_programmatically: function () {},
-});
-
-const MockItemGroupModule = new Module.Class({
-    Name: 'MockItemGroupModule',
-    Extends: Gtk.Widget,
-
-    Signals: {
-        'article-selected': {},
-        'need-more-content': {},
-    },
-
-    add_card: function () {},
-});
-
-const MockSidebarTemplate = new Knowledge.Class({
-    Name: 'MockSidebarTemplate',
-    Extends: Gtk.Grid,
-    _init: function (props={}) {
-        Lang.copyProperties(props, this);
-        this.parent({});
-        this.content_frame = new Gtk.Grid();
-        this.sidebar_frame = new Gtk.Grid();
-        this.add(this.content_frame);
-        this.add(this.sidebar_frame);
-    },
-    connect: function () {},
 });
 
 const MockRenderer = new Knowledge.Class({

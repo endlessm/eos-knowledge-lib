@@ -1,8 +1,8 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported add_filtered_cards, add_ordered_cards, MinimalOrder,
-MinimalArrangement, MinimalBackCover, MinimalBinModule, MinimalCard,
-MinimalDocumentCard, MinimalHomePage, MinimalController, MinimalModule,
+/* exported add_filtered_cards, add_ordered_cards, MinimalArrangement,
+MinimalBinModule, MinimalCard, MinimalController, MinimalDocumentCard,
+MinimalHomePage, MinimalModule, MinimalNavigationCard, MinimalOrder,
 TitleFilter */
 
 const GLib = imports.gi.GLib;
@@ -92,22 +92,6 @@ const MinimalController = new Module.Class({
     Implements: [Launcher.Launcher, Controller.Controller],
 
     desktop_launch: function () {},
-});
-
-const MinimalBackCover = new Module.Class({
-    Name: 'MinimalBackCover',
-    Extends: Gtk.Widget,
-
-    Properties: {
-        'progress-label': GObject.ParamSpec.object('progress-label', 'Progress label',
-            '', GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
-            Gtk.Widget),
-    },
-
-    _init: function (props={}) {
-        props.progress_label = props.progress_label || new Gtk.Label();
-        this.parent(props);
-    },
 });
 
 const MinimalModule = new Module.Class({
