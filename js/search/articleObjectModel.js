@@ -21,8 +21,8 @@ const ArticleObjectModel = new Lang.Class({
         /**
          * Property: source
          *
-         * Source of the HTML. Right now can be embedly, wikipedia, wikihow,
-         * wikisource or wikibooks.
+         * Source of the HTML. Right now can be wikipedia, wikihow, wikisource
+         * or wikibooks.
          */
         'source': GObject.ParamSpec.string('source', 'Source of the HTML',
             'Where the article html was retrieved from.',

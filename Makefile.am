@@ -61,7 +61,6 @@ scss_toplevels = \
 	$(srcdir)/data/css/mesh.scss \
 	$(srcdir)/data/css/news.scss \
 	$(srcdir)/data/css/picard.scss \
-	$(srcdir)/data/templates/css/embedly.scss \
 	$(srcdir)/data/templates/css/prensa-libre.scss \
 	$(srcdir)/data/templates/css/buffet-custom.scss \
 	$(srcdir)/data/templates/css/wikihow.scss \

@@ -97,14 +97,6 @@ const ArticleHTMLRenderer = new Knowledge.Class({
                 return _("See {wikihow-article-link} for more details, videos, pictures and attribution. Courtesy of {wikihow-link}, where anyone can easily learn how to do anything.")
                 .replace('{wikihow-article-link}', wikihow_article_link)
                 .replace('{wikihow-link}', wikihow_link);
-            case 'embedly':
-                let blog_link;
-                if (model.original_uri)
-                    blog_link = _to_link(model.original_uri, model.source_name);
-                else
-                    blog_link = model.source_name;
-                let message = _get_display_string_for_license(model.license);
-                return message.replace('{blog-link}', blog_link);
             default:
                 return false;
         }
@@ -126,9 +118,6 @@ const ArticleHTMLRenderer = new Knowledge.Class({
                 break;
             case 'wikihow':
                 css_files.push('wikihow.css');
-                break;
-            case 'embedly':
-                css_files.push('embedly.css');
                 break;
         }
         return css_files;
@@ -226,7 +215,6 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         case 'wikibooks':
         case 'wikisource':
         case 'wikihow':
-        case 'embedly':
             return this._render_legacy_content(model);
         case 'prensa-libre':
             return this._render_prensa_libre_content(model);

@@ -7,7 +7,7 @@ const SetMap = imports.app.setMap;
 const SetObjectModel = imports.search.setObjectModel;
 
 describe('Article HTML Renderer', function () {
-    let wikihow_model, wikibooks_model, embedly_model, javascripty_model;
+    let wikihow_model, wikibooks_model, javascripty_model;
     let renderer;
 
     beforeEach(function () {
@@ -34,15 +34,6 @@ describe('Article HTML Renderer', function () {
             license: 'CC-BY-SA 3.0',
             title: 'Wikibooks title',
         });
-        embedly_model = new ArticleObjectModel.ArticleObjectModel({
-            get_content_stream: () => { return SearchUtils.string_to_stream('<html><body><p>embedly html</p></body></html>'); },
-            content_type: 'text/html',
-            source: 'embedly',
-            original_uri: 'http://blog.ly/post/2015/03/12/rendering-an-article',
-            source_name: 'Pantheon Blog',
-            license: 'CC-BY-SA 4.0',
-            title: 'Embedly title',
-        });
         javascripty_model = new ArticleObjectModel.ArticleObjectModel({
             get_content_stream: () => { return SearchUtils.string_to_stream('<html>{{{#javascript-files}}}{{{.}}}{{{#javascript-files}}}</html>'); },
             content_type: 'text/html',
@@ -62,11 +53,11 @@ describe('Article HTML Renderer', function () {
     });
 
     it('shows a title only when told to', function () {
-        let html_no_title = renderer.render(embedly_model);
+        let html_no_title = renderer.render(wikibooks_model);
         renderer.show_title = true;
-        let html_with_title = renderer.render(embedly_model);
-        expect(html_with_title).toMatch('Embedly title');
-        expect(html_no_title).not.toMatch('Embedly title');
+        let html_with_title = renderer.render(wikibooks_model);
+        expect(html_with_title).toMatch('Wikibooks title');
+        expect(html_no_title).not.toMatch('Wikibooks title');
     });
 
     it('links to creative commons license on wikimedia pages', function () {
@@ -82,15 +73,6 @@ describe('Article HTML Renderer', function () {
     it('includes correct css for article type', function () {
         expect(renderer.render(wikihow_model)).toMatch('wikihow.css');
         expect(renderer.render(wikibooks_model)).toMatch('wikimedia.css');
-        expect(renderer.render(embedly_model)).toMatch('embedly.css');
-    });
-
-    it('links to the custom css only when told to', function () {
-        let no_reader_html = renderer.render(embedly_model);
-        renderer.set_custom_css_files(['buffet-custom.css']);
-        let html = renderer.render(embedly_model);
-        expect(html).toMatch('buffet-custom.css');
-        expect(no_reader_html).not.toMatch('buffet-custom.css');
     });
 
     it('escapes html special characters in title', function () {
@@ -104,23 +86,12 @@ describe('Article HTML Renderer', function () {
     });
 
     it('includes scroll_manager.js only when told to', function () {
-        let html_without_scroll_manager = renderer.render(embedly_model);
+        let html_without_scroll_manager = renderer.render(wikibooks_model);
         renderer.enable_scroll_manager = true;
-        let html_with_scroll_manager = renderer.render(embedly_model);
+        let html_with_scroll_manager = renderer.render(wikibooks_model);
 
         expect(html_with_scroll_manager).toMatch('scroll-manager.js');
         expect(html_without_scroll_manager).not.toMatch('scroll-manager.js');
-    });
-
-    it('links to the original blog in embedly articles', function () {
-        let html = renderer.render(embedly_model);
-        expect(html).toMatch(/<a.*>Pantheon Blog<\/a>/);
-        expect(html).toMatch('http://blog.ly/post/2015/03/12/rendering-an-article');
-    });
-
-    it('links to the license in embedly articles', function () {
-        let html = renderer.render(embedly_model);
-        expect(html).toMatch('creativecommons');
     });
 
     it('includes MathJax in rendered Wikipedia, Wikibooks, and Wikisource articles', function () {
@@ -136,8 +107,6 @@ describe('Article HTML Renderer', function () {
 
     it('does not include MathJax in articles from other sources', function () {
         let html = renderer.render(wikihow_model);
-        expect(html).not.toMatch('<script type="text/x-mathjax-config">');
-        html = renderer.render(embedly_model);
         expect(html).not.toMatch('<script type="text/x-mathjax-config">');
     });
 
