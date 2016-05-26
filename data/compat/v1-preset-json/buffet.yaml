@@ -59,7 +59,7 @@ defines:
   slots:
     <<: *page-with-menu-slots
     content:
-      type: Layout.InfiniteScrolling
+      type: Layout.Scrolling
       slots:
         content:
           type: Layout.ResponsiveMargins

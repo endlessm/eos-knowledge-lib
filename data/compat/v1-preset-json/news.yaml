@@ -65,7 +65,7 @@ defines:
   slots:
     <<: *menu-slots
     content:
-      type: Layout.InfiniteScrolling
+      type: Layout.Scrolling
       slots:
         content:
           shortdef: 'Layout.DynamicBackground(page-mode: home)'
