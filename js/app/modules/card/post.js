@@ -26,7 +26,8 @@ const Post = new Module.Class({
     Implements: [Card.Card],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/postCard.ui',
-    InternalChildren: [ 'thumbnail-frame', 'title-label', 'inner-content-grid', 'shadow-frame', 'overlay' ],
+    InternalChildren: ['inner-content-grid', 'shadow-frame', 'thumbnail-frame',
+        'title-label'],
 
     _init: function (props={}) {
         this.parent(props);
@@ -42,21 +43,6 @@ const Post = new Module.Class({
         this._title_label.halign = this._context_widget.halign = this.text_halign;
         this._title_label.justify = Utils.alignment_to_justification(this.text_halign);
         this._title_label.xalign = Utils.alignment_to_xalign(this.text_halign);
-
-        this._overlay.connect('get-child-position', this._overlay_get_child_position.bind(this));
-    },
-
-    _overlay_get_child_position: function (overlay, child, allocation) {
-        let width = overlay.get_allocated_width();
-        let height = overlay.get_allocated_height();
-        allocation.x = 0;
-        allocation.width = width;
-        let [min_height,] = child.get_preferred_height_for_width(width);
-        let content_height = this._get_content_height(height);
-        content_height = Math.max(content_height, min_height);
-        allocation.y = height - content_height;
-        allocation.height = content_height;
-        return [true, allocation];
     },
 
     vfunc_size_allocate: function (alloc) {
@@ -70,16 +56,4 @@ const Post = new Module.Class({
         cr.$dispose();  // workaround not freeing cairo context
         return Gdk.EVENT_PROPAGATE;
     },
-
-    _get_content_height: function (height) {
-        if (height <= Card.MaxSize.B) {
-            return 90;
-        } else if (height <= Card.MaxSize.C) {
-            return 140;
-        } else if (height <= Card.MaxSize.D) {
-            return 190;
-        } else {
-            return 290;
-        }
-    }
 });

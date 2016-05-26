@@ -45,22 +45,6 @@ const Deck = new Module.Class({
             cr.$dispose();  // workaround not freeing cairo context
             return Gdk.EVENT_PROPAGATE;
         });
-
-        this._overlay.connect('get-child-position',
-            this._overlay_get_child_position.bind(this));
-    },
-
-    _overlay_get_child_position: function (overlay, child, allocation) {
-        let width = overlay.get_allocated_width();
-        let height = overlay.get_allocated_height();
-        allocation.x = 0;
-        allocation.width = width;
-        let [min_height,] = child.get_preferred_height_for_width(width);
-        let sleeve_height = height > Card.MaxSize.B ? 120 : 80;
-        sleeve_height = Math.max(sleeve_height, min_height);
-        allocation.y = (height / 2) - (sleeve_height / 2);
-        allocation.height = sleeve_height;
-        return [true, allocation];
     },
 
     vfunc_size_allocate: function (alloc) {
