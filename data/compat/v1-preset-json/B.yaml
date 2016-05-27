@@ -7,7 +7,7 @@ defines:
   arrangement:
     type: Arrangement.ScrollingList
     slots:
-      card-type: Card.Title
+      card: Card.Title
 
 - &section-items
   type: ContentGroup.Item
@@ -38,7 +38,7 @@ defines:
         arrangement:
           type: Arrangement.TiledGrid
           slots:
-            card-type: Card.LegacyPost
+            card: Card.LegacyPost
 
 - &section-page
   <<: *sidebar-right
@@ -46,7 +46,7 @@ defines:
     content:
       shortdef: 'Banner.Set(valign: end)'
       slots:
-        card-type: Card.Title
+        card: Card.Title
     sidebar: *section-items
 
 - &search-page
@@ -61,7 +61,7 @@ defines:
     content:
       type: Layout.ArticleStack
       slots:
-        card-type:
+        card:
           type: Card.KnowledgeDocument
           properties:
             show-titles: false
@@ -82,7 +82,7 @@ root:
         lightbox:
           type: ContentGroup.MediaLightbox
           slots:
-            card-type: Card.Media
+            card: Card.Media
         home-page: *home-page
         section-page: *section-page
         search-page: *search-page

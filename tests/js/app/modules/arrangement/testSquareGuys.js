@@ -19,7 +19,7 @@ describe('Arrangement.SquareGuys', function () {
         factory = new MockFactory.MockFactory({
             type: SquareGuys.SquareGuys,
             slots: {
-                'card-type': { type: Minimal.MinimalCard },
+                'card': { type: Minimal.MinimalCard },
             }
         });
     });
@@ -90,7 +90,7 @@ function testSizingArrangementForDimensions(message, arr_width, arr_height, max_
                 'max-rows': max_rows,
             },
             slots: {
-                'card-type': { type: Minimal.MinimalCard },
+                'card': { type: Minimal.MinimalCard },
                 'order': { type: Minimal.MinimalOrder },
                 'filter': { type: Minimal.TitleFilter },
             },
@@ -107,7 +107,7 @@ function testSizingArrangementForDimensions(message, arr_width, arr_height, max_
         win.queue_resize();
         Utils.update_gui();
 
-        let cards = factory.get_created('card-type');
+        let cards = factory.get_created('card');
         cards.forEach((card, i) => {
             if (i < visible_children) {
                 expect(card.get_allocation().width).toBe(child_width);

@@ -32,7 +32,7 @@ defines:
                 arrangement:
                   shortdef: 'Arrangement.SideBySide(halign: center)'
                   slots:
-                    card-type:
+                    card:
                       type: Card.Title
                       properties:
                         title-capitalization: lowercase
@@ -43,7 +43,7 @@ defines:
 - &suggestions-arrangement
   shortdef: 'Arrangement.SquareGuys(max-rows: 1, spacing: 20)'
   slots:
-    card-type:
+    card:
       type: Card.Thumb
       properties: *common-card-properties
 
@@ -53,10 +53,10 @@ defines:
     arrangement:
       shortdef: 'Arrangement.Thirties(max-rows: 1, spacing: 20)'
       slots:
-        card-type: *main-card
+        card: *main-card
         filter: *no-sets
         order: 'Order.PublishedDate(ascending: false)'
-    header-card-type: *header-card
+    header-card: *header-card
 
 # Pages
 - &home-page
@@ -81,10 +81,10 @@ defines:
                     highlight-arrangement:
                       shortdef: 'Arrangement.Piano(spacing: 20)'
                       slots:
-                        card-type: *main-card
+                        card: *main-card
                         filter: *no-sets
                         order: 'Order.PublishedDate(ascending: false)'
-                    support-card-type: *set-preview
+                    support-card: *set-preview
                     sets-filter: Filter.Featured
 
 - &section-page
@@ -106,7 +106,7 @@ defines:
                 contents:
                 - shortdef: 'Banner.Set(halign: center)'
                   slots:
-                    card-type: 'Card.Title(title-capitalization: lowercase)'
+                    card: 'Card.Title(title-capitalization: lowercase)'
                 - Decoration.Separator
                 - shortdef: 'Layout.Box(orientation: vertical)'
                   slots:
@@ -122,9 +122,9 @@ defines:
                                 row-spacing: 20
                                 orientation: vertical
                               slots:
-                                card-type: Card.List
+                                card: Card.List
                                 order: 'Order.PublishedDate(ascending: false)'
-                            set-card-type: *set-preview
+                            set-card: *set-preview
                           references:
                             scroll-server: theme-scroll
                     - type: Layout.ResponsiveMargins
@@ -159,7 +159,7 @@ defines:
                 arrangement:
                   type: Arrangement.ScrollingList
                   slots:
-                    card-type: Card.List
+                    card: Card.List
                 article-suggestions:
                   type: Layout.ResponsiveMargins
                   slots:
@@ -179,8 +179,8 @@ defines:
         do-sliding-animation: false
         allow-navigation: next
       slots:
-        card-type: 'Card.KnowledgeDocument(show-titles: false, show-toc: false)'
-        nav-card-type: 'Card.List(show-synopsis: false)'
+        card: 'Card.KnowledgeDocument(show-titles: false, show-toc: false)'
+        nav-card: 'Card.List(show-synopsis: false)'
 
 root:
   shortdef: 'Controller.Buffet(theme: news)'
@@ -192,7 +192,7 @@ root:
         lightbox:
           type: ContentGroup.MediaLightbox
           slots:
-            card-type: Card.Media
+            card: Card.Media
         brand-page: 'Banner.App(show-subtitle: true)'
         home-page: *home-page
         section-page: *section-page

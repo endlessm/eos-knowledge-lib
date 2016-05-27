@@ -19,7 +19,7 @@ describe('Arrangement.Windshield', function () {
         [arrangement, factory] = MockFactory.setup_tree({
             type: Windshield.Windshield,
             slots: {
-                'card-type': { type: Minimal.MinimalCard },
+                'card': { type: Minimal.MinimalCard },
                 'order': { type: Minimal.MinimalOrder },
                 'filter': { type: Minimal.TitleFilter },
             },
@@ -46,7 +46,7 @@ describe('Arrangement.Windshield', function () {
                 win.set_size_request(total_width, total_height);
                 Utils.update_gui();
 
-                let cards = factory.get_created('card-type');
+                let cards = factory.get_created('card');
                 cards.forEach((card, i) => {
                     if (i === 0) {
                         // FIXME: For now we're treating the first card as the

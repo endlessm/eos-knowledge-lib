@@ -21,7 +21,7 @@ describe('Arrangement.Thirties', function () {
         [arrangement, factory] = MockFactory.setup_tree({
             type: Thirties.Thirties,
             slots: {
-                'card-type': { type: Minimal.MinimalCard },
+                'card': { type: Minimal.MinimalCard },
                 'order': { type: Minimal.MinimalOrder },
                 'filter': { type: Minimal.TitleFilter },
             },
@@ -64,7 +64,7 @@ describe('Arrangement.Thirties', function () {
                 win.set_size_request(arr_width, arr_height);
                 Utils.update_gui();
 
-                let cards = factory.get_created('card-type');
+                let cards = factory.get_created('card');
                 cards.forEach((card, i) => {
                     if (i < visible_children) {
                         expect(card.get_allocation().width).toBe(child_width);

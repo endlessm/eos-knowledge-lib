@@ -10,7 +10,7 @@ const Module = imports.app.interfaces.module;
  * A module which displays media content over other
  *
  * Slots:
- *   card-type
+ *   card
  */
 const MediaLightbox = new Module.Class({
     Name: 'ContentGroup.MediaLightbox',
@@ -18,7 +18,7 @@ const MediaLightbox = new Module.Class({
     Extends: Lightbox.Lightbox,
 
     Slots: {
-        'card-type': {
+        'card': {
             multi: true,
         },
     },
@@ -89,7 +89,7 @@ const MediaLightbox = new Module.Class({
         if (this._current_index === -1)
             return;
 
-        let card = this.create_submodule('card-type', {
+        let card = this.create_submodule('card', {
             model: media_object
         });
         this.lightbox_widget = card;

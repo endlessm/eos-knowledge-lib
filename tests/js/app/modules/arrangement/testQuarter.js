@@ -20,7 +20,7 @@ describe('Arrangement.Quarter', function () {
         [arrangement, factory] = MockFactory.setup_tree({
             type: Quarter.Quarter,
             slots: {
-                'card-type': { type: Minimal.MinimalCard },
+                'card': { type: Minimal.MinimalCard },
                 'order': { type: Minimal.MinimalOrder },
                 'filter': { type: Minimal.TitleFilter },
             },
@@ -46,7 +46,7 @@ describe('Arrangement.Quarter', function () {
                 win.queue_resize();
                 Utils.update_gui();
 
-                let cards = factory.get_created('card-type');
+                let cards = factory.get_created('card');
                 let featured_cards = cards.slice(0, featured_cards_per_row);
                 let support_cards = cards.slice(featured_cards_per_row);
 

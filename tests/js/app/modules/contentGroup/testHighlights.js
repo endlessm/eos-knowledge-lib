@@ -48,16 +48,16 @@ describe('ContentGroup.Highlights', function () {
                 'highlight-arrangement': {
                     type: LimitedArrangement,
                     slots: {
-                        'card-type': { type: Minimal.MinimalCard },
+                        'card': { type: Minimal.MinimalCard },
                     },
                 },
-                'support-card-type': { type: Minimal.MinimalCard },
+                'support-card': { type: Minimal.MinimalCard },
             },
         });
     });
 
     it('does not create a card widget at construct time', function () {
-        let cards = factory.get_created('set-card-type');
+        let cards = factory.get_created('set-card');
         expect(cards.length).toEqual(0);
     });
 
@@ -87,8 +87,8 @@ describe('ContentGroup.Highlights', function () {
             });
 
             highlight = factory.get_last_created('highlight-arrangement');
-            support1 = factory.get_created('set-card-type')[0];
-            support2 = factory.get_created('set-card-type')[1];
+            support1 = factory.get_created('set-card')[0];
+            support2 = factory.get_created('set-card')[1];
         });
 
         it('sends the items it is displaying, so they can be filtered', function() {
@@ -99,7 +99,7 @@ describe('ContentGroup.Highlights', function () {
 
         it('adds one highlight arrangement and two support arrangements', function () {
             expect(factory.get_created('highlight-arrangement').length).toBe(1);
-            expect(factory.get_created('support-card-type').length).toBe(2);
+            expect(factory.get_created('support-card').length).toBe(2);
         });
 
         it('puts cards in the highlight arrangement', function () {
@@ -137,7 +137,7 @@ describe('ContentGroup.Highlights', function () {
             models: models,
         });
         expect(factory.get_created('highlight-arrangement').length).toBe(1);
-        expect(factory.get_created('support-card-type').length).toBe(1);
+        expect(factory.get_created('support-card').length).toBe(1);
     });
 
     it('handles only one set', function () {
@@ -147,6 +147,6 @@ describe('ContentGroup.Highlights', function () {
             models: models,
         });
         expect(factory.get_created('highlight-arrangement').length).toBe(1);
-        expect(factory.get_created('support-card-type').length).toBe(0);
+        expect(factory.get_created('support-card').length).toBe(0);
     });
 });

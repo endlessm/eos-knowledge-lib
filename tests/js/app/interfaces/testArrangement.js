@@ -13,7 +13,7 @@ describe('Arrangement interface', function () {
         factory = new MockFactory.MockFactory({
             type: Minimal.MinimalArrangement,
             slots: {
-                'card-type': { type: Minimal.MinimalCard },
+                'card': { type: Minimal.MinimalCard },
                 'order': {
                     type: Minimal.MinimalOrder,
                     properties: {
@@ -44,7 +44,7 @@ describe('Arrangement interface', function () {
             expect(clicked_model).toBe(model);
             done();
         });
-        factory.get_last_created('card-type').emit('clicked');
+        factory.get_last_created('card').emit('clicked');
     });
 
     it('packs its cards in the correct order', function () {

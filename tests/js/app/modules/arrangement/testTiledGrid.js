@@ -17,7 +17,7 @@ describe('Arrangement.TiledGrid', function () {
         [arrangement, factory] = MockFactory.setup_tree({
             type: TiledGrid.TiledGrid,
             slots: {
-                'card-type': { type: Minimal.MinimalCard },
+                'card': { type: Minimal.MinimalCard },
                 'order': { type: Minimal.MinimalOrder },
                 'filter': { type: Minimal.TitleFilter },
             },
@@ -28,7 +28,7 @@ describe('Arrangement.TiledGrid', function () {
         Minimal.add_ordered_cards(arrangement, ncards);
         Minimal.add_filtered_cards(arrangement, 1, 0);
         Utils.update_gui();
-        return factory.get_created('card-type');
+        return factory.get_created('card');
     }
 
     function check_card_placement(card, left, top, width, height) {

@@ -7,7 +7,7 @@ defines:
   arrangement:
     type: Arrangement.Grid
     slots:
-      card-type: *card
+      card: *card
 
 - &home-page
   type: Layout.HamburgerBasement
@@ -26,7 +26,7 @@ defines:
         arrangement:
           shortdef: 'Arrangement.Overflow(orientation: horizontal)'
           slots:
-            card-type: *card
+            card: *card
     basement:
       shortdef: 'ContentGroup.Set(expand: true)'
       slots: *main-arrangement-slot
@@ -37,7 +37,7 @@ defines:
     contents:
     - shortdef: 'Banner.Set(halign: center)'
       slots:
-        card-type: Card.Title
+        card: Card.Title
     - Decoration.Separator
     - type: ContentGroup.Item
       slots: *main-arrangement-slot
@@ -57,7 +57,7 @@ defines:
 - &article-page
   type: Layout.ArticleStack
   slots:
-    card-type: 'Card.KnowledgeDocument(show-toc: true)'
+    card: 'Card.KnowledgeDocument(show-toc: true)'
 
 root:
   type: Controller.Mesh
@@ -73,7 +73,7 @@ root:
         lightbox:
           type: ContentGroup.MediaLightbox
           slots:
-            card-type: Card.Media
+            card: Card.Media
         home-page: *home-page
         section-page: *section-page
         search-page: *search-page

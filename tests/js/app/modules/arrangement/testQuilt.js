@@ -19,7 +19,7 @@ describe('Arrangement.Quilt', function () {
         [arrangement, factory] = MockFactory.setup_tree({
             type: Quilt.Quilt,
             slots: {
-                'card-type': { type: Minimal.MinimalCard },
+                'card': { type: Minimal.MinimalCard },
                 'order': { type: Minimal.MinimalOrder },
                 'filter': { type: Minimal.TitleFilter },
             },
@@ -49,7 +49,7 @@ describe('Arrangement.Quilt', function () {
                 win.set_size_request(arr_width, arr_height);
                 Utils.update_gui();
 
-                let cards = factory.get_created('card-type');
+                let cards = factory.get_created('card');
                 cards.forEach((card, i) => {
                     if (i < visible_cards) {
                         if (i === 0) {

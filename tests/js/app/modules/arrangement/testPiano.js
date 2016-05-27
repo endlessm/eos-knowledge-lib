@@ -19,7 +19,7 @@ describe('Arrangement.Piano', function () {
         [arrangement, factory] = MockFactory.setup_tree({
             type: Piano.Piano,
             slots: {
-                'card-type': { type: Minimal.MinimalCard },
+                'card': { type: Minimal.MinimalCard },
                 'order': { type: Minimal.MinimalOrder },
                 'filter': { type: Minimal.TitleFilter },
             },
@@ -49,7 +49,7 @@ describe('Arrangement.Piano', function () {
 
                 expect(arrangement.all_visible).toBe(all_visible);
 
-                let cards = factory.get_created('card-type');
+                let cards = factory.get_created('card');
                 cards.forEach((card, i) => {
                     if (i === 0) {
                         // FIXME: For now we're treating the first card as the featured card.

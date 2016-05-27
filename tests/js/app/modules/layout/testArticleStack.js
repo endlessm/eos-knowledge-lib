@@ -27,8 +27,8 @@ describe('Layout.ArticleStack', function () {
         [module, factory] = new MockFactory.setup_tree({
             type: ArticleStack.ArticleStack,
             slots: {
-                'card-type': { type: Minimal.MinimalDocumentCard },
-                'nav-card-type': { type: Minimal.MinimalNavigationCard },
+                'card': { type: Minimal.MinimalDocumentCard },
+                'nav-card': { type: Minimal.MinimalNavigationCard },
             },
         });
 
@@ -48,7 +48,7 @@ describe('Layout.ArticleStack', function () {
             next_model: next_model,
         });
 
-        card = factory.get_last_created('card-type');
+        card = factory.get_last_created('card');
     });
 
     it('transitions in new content when show-article dispatched', function () {

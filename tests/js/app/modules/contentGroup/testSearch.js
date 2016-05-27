@@ -35,7 +35,7 @@ describe('ContentGroup.Search', function () {
                 'arrangement': {
                     type: Minimal.MinimalArrangement,
                     slots: {
-                        'card-type': { type: Minimal.MinimalCard },
+                        'card': { type: Minimal.MinimalCard },
                     },
                 },
             },
@@ -50,7 +50,7 @@ describe('ContentGroup.Search', function () {
     });
 
     it('does not create a card widget at construct time', function () {
-        let cards = factory.get_created('arrangement.card-type');
+        let cards = factory.get_created('arrangement.card');
         expect(cards.length).toEqual(0);
     });
 
@@ -153,7 +153,7 @@ describe('ContentGroup.Search', function () {
                 'arrangement': {
                     type: InfiniteArrangement,
                     slots: {
-                        'card-type': Minimal.MinimalCard,
+                        'card': Minimal.MinimalCard,
                     },
                 },
             },

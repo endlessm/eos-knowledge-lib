@@ -14,7 +14,7 @@ const Module = imports.app.interfaces.module;
  * creates a card for the selected model.
  *
  * Slots:
- *   card-type
+ *   card
  */
 const Set = new Module.Class({
     Name: 'Banner.Set',
@@ -22,7 +22,7 @@ const Set = new Module.Class({
     Extends: Gtk.Frame,
 
     Slots: {
-        'card-type': {
+        'card': {
             multi: true,
         },
     },
@@ -32,7 +32,7 @@ const Set = new Module.Class({
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
                 case Actions.SHOW_SET:
-                    let card = this.create_submodule('card-type', {
+                    let card = this.create_submodule('card', {
                         model: payload.model,
                     });
                     // Cards on the banner should not look clickable

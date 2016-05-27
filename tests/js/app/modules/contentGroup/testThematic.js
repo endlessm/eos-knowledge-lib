@@ -36,10 +36,10 @@ describe('ContentGroup.Thematic', function () {
                         'arrangement': {
                             type: Minimal.MinimalArrangement,
                             slots: {
-                                'card-type': { type: Minimal.MinimalCard },
+                                'card': { type: Minimal.MinimalCard },
                             },
                         },
-                        'header-card-type': { type: Minimal.MinimalCard },
+                        'header-card': { type: Minimal.MinimalCard },
                     },
                 },
             },
@@ -49,9 +49,9 @@ describe('ContentGroup.Thematic', function () {
     });
 
     it('does not create a card widget at construct time', function () {
-        let cards = factory.get_created('content.arrangement.card-type');
+        let cards = factory.get_created('content.arrangement.card');
         expect(cards.length).toEqual(0);
-        cards = factory.get_created('content.header-card-type');
+        cards = factory.get_created('content.header-card');
         expect(cards.length).toEqual(0);
     });
 
@@ -80,7 +80,7 @@ describe('ContentGroup.Thematic', function () {
             });
 
             arrangements = factory.get_created('content.arrangement');
-            headers = factory.get_created('content.header-card-type');
+            headers = factory.get_created('content.header-card');
         });
 
         it('adds arrangements for each dispatched set', function () {
@@ -163,7 +163,7 @@ describe('ContentGroup.Thematic', function () {
                     dispatcher.dispatch({
                         action_type: Actions.CLEAR_ITEMS,
                     });
-                    let cards = factory.get_created('content.arrangement.card-type');
+                    let cards = factory.get_created('content.arrangement.card');
                     arrangements.forEach(arrangement =>
                         expect(module).toHaveDescendant(arrangement));
                     headers.forEach(header => expect(module).toHaveDescendant(header));

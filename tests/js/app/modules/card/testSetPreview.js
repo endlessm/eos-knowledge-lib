@@ -43,10 +43,10 @@ describe('Card.SetPreview', function () {
                 'arrangement': {
                     type: Minimal.MinimalArrangement,
                     slots: {
-                        'card-type': { type: Minimal.MinimalCard },
+                        'card': { type: Minimal.MinimalCard },
                     },
                 },
-                'header-card-type': { type: Minimal.MinimalCard },
+                'header-card': { type: Minimal.MinimalCard },
             }
         });
         card = factory.create_module_tree();
@@ -73,8 +73,7 @@ describe('Card.SetPreview', function () {
         it('queries the set when instructed to', function () {
             expect(engine.get_objects_by_query).toHaveBeenCalled();
             expect(engine.get_objects_by_query_finish).toHaveBeenCalled();
-            expect(factory.get_created('arrangement.card-type').length)
-                .toEqual(3);
+            expect(factory.get_created('arrangement.card').length).toEqual(3);
         });
 
         it('clears its cards when clear-items is dispatched', function () {
@@ -82,12 +81,12 @@ describe('Card.SetPreview', function () {
                 action_type: Actions.CLEAR_ITEMS,
             });
             Utils.update_gui();
-            let support_cards = factory.get_created('arrangement.card-type');
+            let support_cards = factory.get_created('arrangement.card');
             support_cards.forEach(widget => expect(card).not.toHaveDescendant(widget));
         });
 
         it('dispatches set-clicked when the title card is clicked', function () {
-            let header = factory.get_last_created('header-card-type');
+            let header = factory.get_last_created('header-card');
             header.emit('clicked');
             Utils.update_gui();
             let payload = dispatcher.last_payload_with_type(Actions.SET_CLICKED);
@@ -118,7 +117,7 @@ describe('Card.SetPreview', function () {
                 ids: ['ekn://test/1', 'ekn://test/3'],
             });
             let arrangement = factory.get_last_created('arrangement');
-            let support_cards = factory.get_created('arrangement.card-type');
+            let support_cards = factory.get_created('arrangement.card');
             expect(arrangement.get_count()).toBe(1);
             expect(card).not.toHaveDescendant(support_cards[0]);
             expect(card).toHaveDescendant(support_cards[1]);

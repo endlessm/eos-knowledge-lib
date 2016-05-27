@@ -21,7 +21,7 @@ describe('Arrangement.Half', function () {
         [arrangement, factory] = MockFactory.setup_tree({
             type: Half.Half,
             slots: {
-                'card-type': { type: Minimal.MinimalCard },
+                'card': { type: Minimal.MinimalCard },
                 'order': { type: Minimal.MinimalOrder },
                 'filter': { type: Minimal.TitleFilter },
             },
@@ -45,7 +45,7 @@ describe('Arrangement.Half', function () {
             win.queue_resize();
             Utils.update_gui();
 
-            let all_cards = factory.get_created('card-type');
+            let all_cards = factory.get_created('card');
             // Test featured cards
             all_cards.slice(0, 2).forEach((card) => {
                 expect(card.get_child_visible()).toBe(true);
@@ -73,7 +73,7 @@ describe('Arrangement.Half', function () {
             win.queue_resize();
             Utils.update_gui();
 
-            let cards = factory.get_created('card-type');
+            let cards = factory.get_created('card');
             cards.slice(0, featured_cards).forEach((card) => {
                 expect(card.get_allocation().width).toBe(featured_size);
             });

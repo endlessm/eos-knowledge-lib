@@ -27,7 +27,7 @@ describe('ContentGroup.Set', function () {
                 'arrangement': {
                     type: Minimal.MinimalArrangement,
                     slots: {
-                        'card-type': { type: Minimal.MinimalCard },
+                        'card': { type: Minimal.MinimalCard },
                     },
                 },
             },
@@ -40,7 +40,7 @@ describe('ContentGroup.Set', function () {
     });
 
     it('does not create a card widget at construct time', function () {
-        let cards = factory.get_created('arrangement.card-type');
+        let cards = factory.get_created('arrangement.card');
         expect(cards.length).toEqual(0);
     });
 
@@ -55,7 +55,7 @@ describe('ContentGroup.Set', function () {
             models: models,
         });
         expect(arrangement.get_count()).toBe(3);
-        expect(factory.get_created('arrangement.card-type').length).toBe(3);
+        expect(factory.get_created('arrangement.card').length).toBe(3);
     });
 
     it('clears the existing cards when clear called', function () {
@@ -77,7 +77,7 @@ describe('ContentGroup.Set', function () {
             models: models,
         });
         expect(arrangement.get_count()).toBe(3);
-        expect(factory.get_created('arrangement.card-type').length).toBe(6);
+        expect(factory.get_created('arrangement.card').length).toBe(6);
     });
 
     it('dispatches set clicked', function () {

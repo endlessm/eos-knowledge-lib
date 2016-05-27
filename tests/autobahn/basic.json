@@ -12,10 +12,10 @@
               "allow-navigation": "next"
             },
             "slots": {
-              "card-type": {
+              "card": {
                 "type": "Card.FakeVideoDocument"
               },
-              "nav-card-type": {
+              "nav-card": {
                 "type": "Card.Title"
               }
             }
@@ -49,7 +49,7 @@
                       "arrangement": {
                         "type": "Arrangement.List",
                         "slots": {
-                          "card-type": {
+                          "card": {
                             "type": "Card.List"
                           }
                         },
@@ -92,7 +92,7 @@
                       "arrangement": {
                         "type": "Arrangement.List",
                         "slots": {
-                          "card-type": {
+                          "card": {
                             "type": "Card.List"
                           }
                         },

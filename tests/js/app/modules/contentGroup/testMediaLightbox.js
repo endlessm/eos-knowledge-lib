@@ -26,12 +26,12 @@ describe('ContentGroup.MediaLightbox', function () {
         [module, factory] = MockFactory.setup_tree({
             type: MediaLightbox.MediaLightbox,
             slots: {
-                'card-type': { type: Minimal.MinimalCard },
+                'card': { type: Minimal.MinimalCard },
             },
         });
     });
 
-    it('creates pack a card module from the card-type slot', function () {
+    it('creates pack a card module from the card slot', function () {
         let media_object_uri = 'ekn://foo/bar';
         let media_object = new MediaObjectModel.MediaObjectModel({
             ekn_id: media_object_uri,
@@ -66,7 +66,7 @@ describe('ContentGroup.MediaLightbox', function () {
             action_type: Actions.SHOW_MEDIA,
             model: media_object,
         });
-        expect(factory.get_created('card-type').length).toBe(1);
+        expect(factory.get_created('card').length).toBe(1);
 
         let nonexistant_media_object = new MediaObjectModel.MediaObjectModel({
             ekn_id: 'ekn://no/media',
@@ -75,6 +75,6 @@ describe('ContentGroup.MediaLightbox', function () {
             action_type: Actions.SHOW_MEDIA,
             model: nonexistant_media_object,
         });
-        expect(factory.get_created('card-type').length).toBe(1);
+        expect(factory.get_created('card').length).toBe(1);
     });
 });

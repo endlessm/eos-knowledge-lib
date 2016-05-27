@@ -29,7 +29,7 @@ describe('ContentGroup.SupplementaryArticles', function () {
                 'arrangement': {
                     type: Minimal.MinimalArrangement,
                     slots: {
-                        'card-type': { type: Minimal.MinimalCard },
+                        'card': { type: Minimal.MinimalCard },
                     },
                 },
             },
@@ -53,7 +53,7 @@ describe('ContentGroup.SupplementaryArticles', function () {
             same_set: true,
         });
         expect(arrangement.get_count()).toBe(3);
-        expect(factory.get_created('arrangement.card-type').length).toBe(3);
+        expect(factory.get_created('arrangement.card').length).toBe(3);
     });
 
     it('does not add cards that are not for its set', function () {
@@ -111,7 +111,7 @@ describe('ContentGroup.SupplementaryArticles', function () {
             same_set: true,
         });
         expect(arrangement.get_count()).toBe(3);
-        expect(factory.get_created('arrangement.card-type').length).toBe(6);
+        expect(factory.get_created('arrangement.card').length).toBe(6);
     });
 
     it('dispatches item clicked', function () {

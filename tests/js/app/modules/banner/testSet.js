@@ -22,7 +22,7 @@ describe('Banner.Set', function () {
         [module, factory] = MockFactory.setup_tree({
             type: Set.Set,
             slots: {
-                'card-type': { type: Minimal.MinimalCard },
+                'card': { type: Minimal.MinimalCard },
             },
         });
     });
@@ -33,7 +33,7 @@ describe('Banner.Set', function () {
             action_type: Actions.SHOW_SET,
             model: model,
         });
-        let card = factory.get_last_created('card-type');
+        let card = factory.get_last_created('card');
         expect(card.model).toBe(model);
         expect(module).toHaveDescendant(card);
     });
@@ -48,6 +48,6 @@ describe('Banner.Set', function () {
             action_type: Actions.SHOW_SET,
             model: model,
         });
-        expect(factory.get_created('card-type').length).toBe(2);
+        expect(factory.get_created('card').length).toBe(2);
     });
 });

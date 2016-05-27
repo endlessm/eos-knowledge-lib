@@ -73,10 +73,10 @@ const ArticleStack = new Module.Class({
     },
 
     Slots: {
-        'card-type': {
+        'card': {
             multi: true,
         },
-        'nav-card-type': {
+        'nav-card': {
             multi: true,
         },
     },
@@ -117,7 +117,7 @@ const ArticleStack = new Module.Class({
         };
         if (payload.previous_model &&
             (this.allow_navigation === Navigation.PREVIOUS || this.allow_navigation === Navigation.BOTH)) {
-            let card = this.create_submodule('nav-card-type', {
+            let card = this.create_submodule('nav-card', {
                 model: payload.previous_model,
                 sequence: Card.Sequence.PREVIOUS,
                 navigation_context: _("Previous Article"),
@@ -134,7 +134,7 @@ const ArticleStack = new Module.Class({
         }
         if (payload.next_model &&
             (this.allow_navigation === Navigation.NEXT || this.allow_navigation === Navigation.BOTH)) {
-            let card = this.create_submodule('nav-card-type', {
+            let card = this.create_submodule('nav-card', {
                 model: payload.next_model,
                 sequence: Card.Sequence.NEXT,
                 navigation_context: _("Next Article"),
@@ -149,7 +149,7 @@ const ArticleStack = new Module.Class({
                 });
             }
         }
-        let document_card = this.create_submodule('card-type', document_card_props);
+        let document_card = this.create_submodule('card', document_card_props);
 
         document_card.connect('ekn-link-clicked', (card, ekn_id) => {
             Dispatcher.get_default().dispatch({

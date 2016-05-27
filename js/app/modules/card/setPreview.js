@@ -27,7 +27,7 @@ const _BATCH_SIZE = 50;
  *   card - on the widget itself
  *
  * Slots:
- *   header-card-type - type of card to create for title label
+ *   header-card - type of card to create for title label
  */
 const SetPreview = new Module.Class({
     Name: 'Card.SetPreview',
@@ -36,7 +36,7 @@ const SetPreview = new Module.Class({
     Implements: [Card.Card],
 
     Slots: {
-        'header-card-type': {
+        'header-card': {
             multi: true,
         },
     },
@@ -47,7 +47,7 @@ const SetPreview = new Module.Class({
         // Replace CardContainer's title button with a real card (usually a
         // TitleCard)
         this.title_button.hide();
-        let header_card = this.create_submodule('header-card-type', {
+        let header_card = this.create_submodule('header-card', {
             model: this.model,
             halign: Gtk.Align.START,
         });

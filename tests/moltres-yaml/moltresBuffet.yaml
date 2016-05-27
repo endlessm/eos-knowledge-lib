@@ -24,7 +24,7 @@ defines:
       # Note spacing different from all the other arrangements; on purpose?
       shortdef: 'Arrangement.SquareGuys(max-rows: 1, spacing: 10)'
       slots:
-        card-type: *main-card
+        card: *main-card
 
 - &category-suggestions
   type: ContentGroup.SuggestedCategories
@@ -36,7 +36,7 @@ defines:
         max-rows: 1
         valign: end
       slots:
-        card-type: *set-card
+        card: *set-card
 
 - &page-with-menu
   type: Layout.SideMenu
@@ -49,7 +49,7 @@ defines:
         arrangement:
           type: Arrangement.ScrollingList
           slots:
-            card-type:
+            card:
               type: Card.Title
               properties: *card-all-uppercase-properties
             filter: Filter.Featured
@@ -74,11 +74,11 @@ defines:
                       type: Arrangement.Windshield
                       properties: *arrangement-spacing-properties
                       slots:
-                        card-type:
+                        card:
                           type: Card.Post
                           properties: *card-all-uppercase-properties
                         filter: *no-sets
-                    support-card-type:
+                    support-card:
                       shortdef: 'Card.SetPreview(show-trigger: false)'
                       slots:
                         arrangement:
@@ -87,9 +87,9 @@ defines:
                             <<: *arrangement-spacing-properties
                             max-rows: 2
                           slots:
-                            card-type: *main-card
+                            card: *main-card
                             filter: *no-sets
-                        header-card-type: *header-card
+                        header-card: *header-card
                     sets-filter: 'Filter.Featured(invert: true)'
                 - *category-suggestions
 
@@ -114,8 +114,8 @@ defines:
                       type: Arrangement.Half
                       properties: *arrangement-spacing-properties
                       slots:
-                        card-type: *main-card
-                    header-card-type: *header-card
+                        card: *main-card
+                    header-card: *header-card
                   references:
                     scroll-server: theme-scroll
                 - *category-suggestions
@@ -134,7 +134,7 @@ defines:
         arrangement:
           type: Arrangement.ScrollingList
           slots:
-            card-type: Card.List
+            card: Card.List
         article-suggestions: *article-suggestions
         category-suggestions: *category-suggestions
 
@@ -155,7 +155,7 @@ defines:
                   type: Arrangement.SquareGuys
                   properties: *arrangement-spacing-properties
                   slots:
-                    card-type: *set-card
+                    card: *set-card
 
 - &article-page
   <<: *page-with-menu
@@ -167,13 +167,13 @@ defines:
         do-sliding-animation: false
         allow-navigation: next
       slots:
-        card-type:
+        card:
           type: Card.KnowledgeDocument
           properties:
             show-titles: false
             show-toc: false
             custom-css: buffet-custom.css
-        nav-card-type: Card.Sequence
+        nav-card: Card.Sequence
 
 root:
   shortdef: 'Controller.Buffet(theme: buffet)'
@@ -185,7 +185,7 @@ root:
         lightbox:
           type: ContentGroup.MediaLightbox
           slots:
-            card-type: Card.Media
+            card: Card.Media
         brand-page:
           type: Banner.App
           properties:

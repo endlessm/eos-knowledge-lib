@@ -42,10 +42,10 @@ describe('ContentGroup.HierarchicalSet', function () {
                         'arrangement': {
                             type: Minimal.MinimalArrangement,
                             slots: {
-                                'card-type': { type: Minimal.MinimalCard },
+                                'card': { type: Minimal.MinimalCard },
                             },
                         },
-                        'set-card-type': { type: Minimal.MinimalCard },
+                        'set-card': { type: Minimal.MinimalCard },
                     },
                 },
             },
@@ -61,9 +61,9 @@ describe('ContentGroup.HierarchicalSet', function () {
     });
 
     it('does not create a card widget at construct time', function () {
-        let cards = factory.get_created('content.arrangement.card-type');
+        let cards = factory.get_created('content.arrangement.card');
         expect(cards.length).toEqual(0);
-        cards = factory.get_created('content.arrangement.set-card-type');
+        cards = factory.get_created('content.arrangement.set-card');
         expect(cards.length).toEqual(0);
     });
 
@@ -122,7 +122,7 @@ describe('ContentGroup.HierarchicalSet', function () {
             });
 
             arrangement = factory.get_last_created('content.arrangement');
-            set_cards = factory.get_created('content.set-card-type');
+            set_cards = factory.get_created('content.set-card');
         });
 
         it('makes a request for objects of this set', function () {
@@ -164,8 +164,8 @@ describe('ContentGroup.HierarchicalSet', function () {
             dispatcher.dispatch({
                 action_type: Actions.CLEAR_ITEMS,
             });
-            let cards = factory.get_created('content.arrangement.card-type');
-            let set_cards = factory.get_created('content.set-card-type');
+            let cards = factory.get_created('content.arrangement.card');
+            let set_cards = factory.get_created('content.set-card');
             expect(module).toHaveDescendant(arrangement);
 
             set_cards.forEach(set_card => expect(module).not.toHaveDescendant(set_card));
