@@ -18,23 +18,24 @@ defines:
   slots: *sidebar-list-slots
 
 - &home-page
-  shortdef: 'Layout.DividedBanner(row-spacing: 30, row-homogeneous: true)'
+  shortdef: 'Layout.Box(orientation: vertical, row-spacing: 30)'
   slots:
-    top-left:
-      type: Banner.App
-      properties:
-        min-fraction: 0.2  # FIXME remove fractions
-        max-fraction: 0.7
-        valign: center
-        halign: center
-    top-right:
-      type: Navigation.SearchBox
-      properties:
-        shadow-type: none
-        halign: center
-        valign: center
-    bottom:
-      shortdef: 'ContentGroup.Set(expand: true)'
+    contents:
+    - shortdef: 'Layout.Box(homogeneous: true, valign: start)'
+      slots:
+        contents:
+        - type: Banner.App
+          properties:
+            min-fraction: 0.2  # FIXME remove fractions
+            max-fraction: 0.7
+            valign: center
+            halign: center
+        - type: Navigation.SearchBox
+          properties:
+            shadow-type: none
+            halign: center
+            valign: center
+    - shortdef: 'ContentGroup.Set(expand: true)'
       slots:
         arrangement:
           type: Arrangement.TiledGrid

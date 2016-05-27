@@ -1,9 +1,6 @@
 const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
 
-const Engine = imports.search.engine;
 const ModuleFactory = imports.app.moduleFactory;
-const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.app.utils;
 
 function load_v1_compatibility_preset (templateType) {
@@ -26,6 +23,9 @@ function transform_v1_description(json) {
                 return;
             for (let slot in module['slots']) {
                 let slot_value = module['slots'][slot];
+                if (Array.isArray(slot_value))
+                    slot_value.forEach(recurse);
+
                 if (typeof slot_value === 'object' && slot_value !== null)
                     recurse(slot_value);
             }

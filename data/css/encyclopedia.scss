@@ -91,15 +91,16 @@ EosWindow {
     margin: 20px;
 }
 
-.divided-banner-template EknAppBanner {
+.search-page EknAppBanner,
+.article-page EknAppBanner {
     margin: 10px 0;
 }
 
-.divided-banner-template EknBannerTemplate {
+.search-page EknPaperTemplate EknBoxLayout {
     padding: 0 45px;
 }
 
-.divided-banner-template .title {
+.search-page EknSearchBanner {
     font-weight: 300;
     font-size: 2em; /* 24px / 12px/em */
     color: #7e7e7e;
@@ -107,27 +108,27 @@ EosWindow {
     padding-bottom: 20px;
 }
 
-.divided-banner-template separator {
+.search-page separator {
     min-height: 15px;
     background-image: url('../images/separator.png');
     background-size: 100%;
     background-repeat: no-repeat;
 }
 
-.divided-banner-template .title.query {
+.search-page .title.query {
     font-weight: normal;
     color: black;
 }
 
-.divided-banner-template .title.error-message {
+.search-page .title.error-message {
     font-weight: bold;
 }
 
-.divided-banner-template .search-results {
+.search-page .search-results {
     margin-top: 20px;
 }
 
-.divided-banner-template .search-results separator {
+.search-page .search-results separator {
     min-height: 1px;
     background-image: none;
     background-color: #888a85;
@@ -204,7 +205,7 @@ scrollbar slider {
     background-color: transparentize(black, 1 - 0.8);
 }
 
-.composite .divided-banner-template .title {
+.composite .search-page EknSearchBanner {
     font-weight: normal;
     font-size: 23.5px;  /* 20px spec * 88% */
     font-weight: bold;

@@ -424,7 +424,7 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 }
 
 .home-page-b .search-box {
-    min-width: 350px;
+    min-width: 320px;
 }
 
 .home-page-a .search-box selection, .home-page-b .search-box selection {
@@ -444,6 +444,10 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 .home-page-a .search-box image, .home-page-b .search-box image {
     color: #919191;
     margin: 3px 5px;
+}
+
+.home-page-b EknBoxLayout {
+    min-height: 240px;
 }
 
 .home-page-b .set-group {
@@ -630,6 +634,10 @@ EosWindow scrollbar trough {
 .composite .home-page-a .search-box,
 .composite .home-page-b .search-box {
     font-size: 18.8px;  /* 16px spec * 88% */
+}
+
+.composite .home-page-b EknBoxLayout {
+    min-height: 120px;
 }
 
 .composite .section-page-b EknItemGroup,
