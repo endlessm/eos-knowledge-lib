@@ -393,14 +393,7 @@ yaml_tests = \
 	tests/autobahn/fullApp.yaml \
 	$(NULL)
 test_content = \
-	tests/test-content/agot.svg \
-	tests/test-content/app.json \
-	tests/test-content/emacs.html \
-	tests/test-content/mexico.html \
-	tests/test-content/mexico.jsonld \
-	tests/test-content/overrides.css \
-	tests/test-content/overrides-a.css \
-	tests/test-content/overrides-b.css \
+	tests/test-content/pig1.jpg \
 	tests/test-content/pdf-sample1.pdf \
 	$(NULL)
 EXTRA_DIST += \
