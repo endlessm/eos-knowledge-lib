@@ -293,29 +293,41 @@ const DomainV2 = new Lang.Class({
         }
     },
 
-    get_object_by_id: function (id, cancellable, callback) {
+    load_record_from_hash: function (hash, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         this.load(cancellable, task.catch_callback_errors((source, load_task) => {
             this.load_finish(load_task);
 
-            let shard_file = this._get_shard_file();
-            let [domain, hash] = Utils.components_from_ekn_id(id);
-            let record = shard_file.find_record_by_hex_name(hash);
-            if (!record)
-                throw new Error('Could not find epak record for ' + id);
-
-            let metadata_stream = record.metadata.get_stream();
-            Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
-                let data = Utils.read_stream_finish(stream_task);
-                let json_ld = JSON.parse(data);
-                let props = {
-                    ekn_version: 2,
-                    get_content_stream: () => record.data.get_stream(),
-                };
-                let model = this._get_model_from_json_ld(props, json_ld);
-                this._handle_redirect(task, model, cancellable);
-            }));
+            let record = this._shard_file.find_record_by_hex_name(hash);
+            task.return_value(record);
         }));
+        return task;
+    },
+
+    load_record_from_hash_finish: function (task) {
+        return task.finish();
+    },
+
+    get_object_by_id: function (id, cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        task.catch_errors(() => {
+            let [domain, hash] = Utils.components_from_ekn_id(id);
+
+            this.load_record_from_hash(hash, cancellable, task.catch_callback_errors((source, load_task) => {
+                let record = this.load_record_from_hash_finish(load_task);
+
+                let metadata_stream = record.metadata.get_stream();
+                Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
+                    let data = Utils.read_stream_finish(stream_task);
+                    let json_ld = JSON.parse(data);
+                    let props = {
+                        ekn_version: 2,
+                        get_content_stream: () => record.data.get_stream(),
+                    };
+                    this._handle_redirect(task, model, cancellable);
+                }));
+            }));
+        });
         return task;
     },
 
@@ -523,9 +535,11 @@ const DomainV3 = new Lang.Class({
         return params;
     },
 
-    get_object_by_id: function (id, cancellable, callback) {
+    load_record_from_hash: function (hash, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        task.catch_errors(() => {
+        this.load(cancellable, task.catch_callback_errors((source, load_task) => {
+            this.load_finish(load_task);
+
             let find_record = (hash) => {
                 for (let i = 0; i < this._shards.length; i++) {
                     let shard_file = this._shards[i];
@@ -537,18 +551,33 @@ const DomainV3 = new Lang.Class({
                 throw new Error('Could not find shard record for ' + hash);
             };
 
-            let [domain, hash] = Utils.components_from_ekn_id(id);
             let record = find_record(hash);
+            task.return_value(record);
+        }));
+        return task;
+    },
 
-            let metadata_stream = record.metadata.get_stream();
-            Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
-                let data = Utils.read_stream_finish(stream_task);
-                let json_ld = JSON.parse(data);
-                let props = {
-                    ekn_version: 3,
-                    get_content_stream: () => record.data.get_stream(),
-                };
-                task.return_value(this._get_model_from_json_ld(props, json_ld));
+    load_record_from_hash_finish: function (task) {
+        return task.finish();
+    },
+
+    get_object_by_id: function (id, cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        task.catch_errors(() => {
+            let [domain, hash] = Utils.components_from_ekn_id(id);
+            this.load_record_from_hash(hash, cancellable, task.catch_callback_errors((source, load_task) => {
+                let record = this.load_record_from_hash_finish(load_task);
+
+                let metadata_stream = record.metadata.get_stream();
+                Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
+                    let data = Utils.read_stream_finish(stream_task);
+                    let json_ld = JSON.parse(data);
+                    let props = {
+                        ekn_version: 3,
+                        get_content_stream: () => record.data.get_stream(),
+                    };
+                    task.return_value(this._get_model_from_json_ld(props, json_ld));
+                }));
             }));
         });
         return task;

@@ -240,6 +240,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         let template = _load_template('article-wrapper.mst');
 
         return Mustache.render(template, {
+            'id': model.ekn_id,
             'css-files': css_files,
             'javascript-files': js_files,
             'link-array': this._find_active_links(model),

@@ -76,6 +76,24 @@ const Engine = Lang.Class({
         this._domain_cache = {};
     },
 
+    load_record_by_id: function (id, cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        task.catch_errors(() => {
+            let [domain, hash] = Utils.components_from_ekn_id(id);
+            let domain_obj = this._get_domain(domain);
+
+            domain_obj.load_record_from_hash(hash, cancellable, task.catch_callback_errors((domain_obj, domain_task) => {
+                let model = domain_obj.load_record_from_hash_finish(domain_task);
+                task.return_value(model);
+            }));
+        });
+        return task;
+    },
+
+    load_record_by_id_finish: function (task) {
+        return task.finish();
+    },
+
     /**
      * Function: get_object_by_id
      *
