@@ -48,29 +48,29 @@
     <file compressed="true">data/templates/js/hide-broken-images.js</file>
     <file compressed="true">data/templates/js/jquery-min.js</file>
     <file compressed="true">data/templates/js/scroll-manager.js</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/appBanner.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/deckCard.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/gridArrangement.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/hamburgerBasementTemplate.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/infiniteScrollingLayout.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/knowledgeDocumentCard.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/legacyPolaroidCard.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/legacyPostCard.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/listCard.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/mediaCard.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/paperTemplate.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/postCard.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/scrollingListArrangement.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/search.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchBanner.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/sequenceCard.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/sideMenuTemplate.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedCategories.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/textCard.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/thumbCard.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/titleCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/arrangement/grid.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/arrangement/scrollingList.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/app.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/search.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/deck.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/knowledgeDocument.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/legacyPolaroid.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/legacyPost.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/list.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/media.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/post.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/sequence.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/text.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/thumb.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/title.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/contentGroup/search.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/contentGroup/suggestedCategories.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/hamburgerBasement.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/infiniteScrolling.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/paper.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/sideMenu.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/topMenu.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/tooltips.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/topMenuTemplate.ui</file>
     <file>js/app/actions.js</file>
     <file>js/app/application.js</file>
     <file>js/app/articleHTMLRenderer.js</file>

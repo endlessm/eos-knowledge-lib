@@ -9,7 +9,7 @@ const Post = imports.app.modules.card.post;
 
 Gtk.init(null);
 
-describe('Postcard widget', function () {
+describe('Card.Post', function () {
     let card;
 
     beforeEach(function () {

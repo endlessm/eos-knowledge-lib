@@ -13,7 +13,7 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
-describe('Suggested articles module', function () {
+describe('ContentGroup.SuggestedArticles', function () {
     let suggestions, arrangement, factory, dispatcher;
 
     beforeEach(function () {

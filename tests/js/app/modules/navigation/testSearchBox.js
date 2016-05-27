@@ -11,7 +11,7 @@ const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const SearchBox = imports.app.modules.navigation.searchBox;
 
-describe('Search box module', function () {
+describe('Navigation.SearchBox', function () {
     let box, engine, dispatcher;
 
     beforeEach(function () {

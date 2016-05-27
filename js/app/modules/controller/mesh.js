@@ -35,7 +35,7 @@ const RESULTS_SIZE = 10;
  * may have filters, but can be reached through many different paths.
  */
 const Mesh = new Module.Class({
-    Name: 'MeshController',
+    Name: 'Controller.Mesh',
     Extends: GObject.Object,
     Implements: [Launcher.Launcher, Controller.Controller],
 

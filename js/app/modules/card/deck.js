@@ -27,7 +27,7 @@ const Deck = new Module.Class({
     Extends: Gtk.Button,
     Implements: [Card.Card],
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/deckCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/card/deck.ui',
     InternalChildren: ['overlay', 'shadow-frame', 'thumbnail-frame',
         'title-label'],
 

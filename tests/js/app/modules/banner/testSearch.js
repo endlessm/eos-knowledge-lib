@@ -9,7 +9,7 @@ const Search = imports.app.modules.banner.search;
 
 Gtk.init(null);
 
-describe('Search banner widget', function () {
+describe('Banner.Search', function () {
     let searchBanner, dispatcher;
 
     beforeEach(function () {

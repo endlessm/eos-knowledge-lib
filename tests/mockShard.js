@@ -2,7 +2,7 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 const MockShardFile = new Lang.Class({
-    Name: 'MockShard',
+    Name: 'MockShardFile',
     Extends: GObject.Object,
 
     _init: function (props={}) {

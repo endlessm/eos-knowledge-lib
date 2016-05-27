@@ -3,7 +3,7 @@
 const ContentObjectModel = imports.search.contentObjectModel;
 const Featured = imports.app.modules.filter.featured;
 
-describe('Featured filter', function () {
+describe('Filter.Featured', function () {
     const MODELS = [true, false].map(featured =>
         new ContentObjectModel.ContentObjectModel({
             featured: featured,

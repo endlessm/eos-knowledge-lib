@@ -8,7 +8,7 @@ const Filter = imports.app.interfaces.filter;
 const Module = imports.app.interfaces.module;
 
 const Sets = new Module.Class({
-    Name: 'SetsFilter',
+    Name: 'Filter.Sets',
     Extends: GObject.Object,
     Implements: [Filter.Filter],
 

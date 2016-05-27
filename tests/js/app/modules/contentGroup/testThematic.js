@@ -16,7 +16,7 @@ const Thematic = imports.app.modules.contentGroup.thematic;
 const Utils = imports.tests.utils;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
-describe('Thematic module', function () {
+describe('ContentGroup.Thematic', function () {
     let module, factory, dispatcher;
 
     beforeEach(function () {

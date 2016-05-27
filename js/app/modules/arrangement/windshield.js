@@ -17,7 +17,7 @@ const CARD_SIZE_BIG = Card.MinSize.C;
 const CARD_SIZE_MAX = Card.MinSize.D;
 
 const _WindshieldLayout = new Knowledge.Class({
-    Name: 'WindshieldArrangementLayout',
+    Name: 'WindshieldLayout',
     CssName: 'EknWindshieldArrangement',
     Extends: Endless.CustomContainer,
 
@@ -113,7 +113,7 @@ const _WindshieldLayout = new Knowledge.Class({
  * three secondary cards.
  */
 const Windshield = new Module.Class({
-    Name: 'WindshieldArrangement',
+    Name: 'Arrangement.Windshield',
     CssName: 'EknWindshieldArrangement',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],

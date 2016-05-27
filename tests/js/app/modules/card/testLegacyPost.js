@@ -9,7 +9,7 @@ const CssClassMatcher = imports.tests.CssClassMatcher;
 
 Gtk.init(null);
 
-describe('Legacy Post Card', function () {
+describe('Card.LegacyPost', function () {
     let card;
 
     beforeEach(function () {

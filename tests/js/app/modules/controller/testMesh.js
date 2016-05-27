@@ -35,7 +35,7 @@ const MockView = new Knowledge.Class({
     },
 });
 
-describe('Mesh controller', function () {
+describe('Controller.Mesh', function () {
     let mesh, engine, factory, sections, dispatcher;
 
     beforeEach(function () {

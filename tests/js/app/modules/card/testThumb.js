@@ -9,7 +9,7 @@ const CssClassMatcher = imports.tests.CssClassMatcher;
 
 Gtk.init(null);
 
-describe('Thumb card widget', function () {
+describe('Card.Thumb', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
     });

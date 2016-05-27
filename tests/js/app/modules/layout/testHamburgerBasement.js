@@ -13,7 +13,7 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
-describe('HamburgerBasementTemplate module', function () {
+describe('Layout.HamburgerBasement', function () {
     let home_page, factory;
 
     beforeEach(function () {

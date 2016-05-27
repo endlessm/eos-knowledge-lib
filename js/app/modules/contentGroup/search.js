@@ -44,7 +44,7 @@ const SPINNER_PAGE_NAME = 'spinner';
  *   category-suggestions - optional
  */
 const Search = new Module.Class({
-    Name: 'Search',
+    Name: 'ContentGroup.Search',
     CssName: 'EknSearch',
     Extends: Gtk.Stack,
 
@@ -90,7 +90,7 @@ const Search = new Module.Class({
         'category-suggestions': {},  // optional
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/search.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/contentGroup/search.ui',
     InternalChildren: [ 'message-grid', 'message-subtitle', 'message-title',
         'no-results-grid', 'spinner' ],
 

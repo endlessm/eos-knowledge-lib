@@ -21,7 +21,7 @@ const Utils = imports.app.utils;
  *   content
  */
 const Paper = new Module.Class({
-    Name: 'PaperTemplate',
+    Name: 'Layout.Paper',
     CssName: 'EknPaperTemplate',
     Extends: Gtk.Bin,
 
@@ -29,7 +29,7 @@ const Paper = new Module.Class({
         'content': {},
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/paperTemplate.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/layout/paper.ui',
     InternalChildren: [ 'content-frame' ],
 
     // The fraction of extra space each margin should grab, from [0, 0.5]

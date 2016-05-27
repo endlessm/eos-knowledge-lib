@@ -20,7 +20,7 @@ const Utils = imports.app.utils;
  *   subtitle - on the label displaying the app's subtitle
  */
 const App = new Module.Class({
-    Name: 'AppBanner',
+    Name: 'Banner.App',
     CssName: 'EknAppBanner',
     Extends: Gtk.Grid,
 
@@ -79,7 +79,7 @@ const App = new Module.Class({
             0.0, 1.0, 1.0),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/appBanner.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/banner/app.ui',
     InternalChildren: [ 'subtitle-label' ],
 
     _init: function (props={}) {

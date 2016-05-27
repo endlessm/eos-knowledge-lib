@@ -20,7 +20,7 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
-describe('Search module', function () {
+describe('ContentGroup.Search', function () {
     let factory, search_module, arrangement, dispatcher;
 
     beforeEach(function () {

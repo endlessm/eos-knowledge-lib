@@ -4,7 +4,7 @@ const ContentObjectModel = imports.search.contentObjectModel;
 const Featured = imports.app.modules.order.featured;
 const MockFactory = imports.tests.mockFactory;
 
-describe('Featured order', function () {
+describe('Order.Featured', function () {
     let order, models, factory;
 
     const UNSORTED = [

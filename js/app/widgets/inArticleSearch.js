@@ -11,7 +11,7 @@ const Knowledge = imports.app.knowledge;
 const ARTICLE_SEARCH_MAX_RESULTS = 200;
 
 const InArticleSearch = new Knowledge.Class({
-    Name: 'ArticleSearch',
+    Name: 'InArticleSearch',
     Extends: Gtk.Frame,
 
     _init: function(web_view) {

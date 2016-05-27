@@ -13,7 +13,7 @@ const SetObjectModel = imports.search.setObjectModel;
 
 Gtk.init(null);
 
-describe('Text Card', function () {
+describe('Card.Text', function () {
     let card, set;
 
     beforeEach(function () {

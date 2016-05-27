@@ -33,7 +33,7 @@ const Utils = imports.app.utils;
  * content frame surrounds the <webview> on the left.
  */
 const KnowledgeDocument = new Module.Class({
-    Name: 'KnowledgeDocumentCard',
+    Name: 'Card.KnowledgeDocument',
     CssName: 'EknKnowledgeDocumentCard',
     Extends: Endless.CustomContainer,
     Implements: [Card.Card, DocumentCard.DocumentCard],
@@ -81,7 +81,7 @@ const KnowledgeDocument = new Module.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, Gtk.Widget),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/knowledgeDocumentCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/card/knowledgeDocument.ui',
     InternalChildren: [ 'title-label', 'top-title-label', 'toolbar-frame',
         'toolbar-grid', 'content-frame', 'content-grid' ],
 

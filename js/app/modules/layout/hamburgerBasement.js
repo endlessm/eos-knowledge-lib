@@ -27,7 +27,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *   basement
  */
 const HamburgerBasement = new Module.Class({
-    Name: 'HamburgerBasementTemplate',
+    Name: 'Layout.HamburgerBasement',
     CssName: 'EknHamburgerBasementTemplate',
     Extends: Gtk.Stack,
 
@@ -57,7 +57,7 @@ const HamburgerBasement = new Module.Class({
         'basement': {},
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/hamburgerBasementTemplate.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/layout/hamburgerBasement.ui',
     InternalChildren: [ 'upper-grid', 'inner-grid', 'basement-grid' ],
 
     _BUTTON_TRANSITION_TIME: 500,

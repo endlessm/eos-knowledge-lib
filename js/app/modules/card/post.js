@@ -20,12 +20,12 @@ const Utils = imports.app.utils;
  *   - thumbnail - on the image thumbnail
  */
 const Post = new Module.Class({
-    Name: 'PostCard',
+    Name: 'Card.Post',
     CssName: 'EknPostCard',
     Extends: Gtk.Button,
     Implements: [Card.Card],
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/postCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/card/post.ui',
     InternalChildren: ['inner-content-grid', 'shadow-frame', 'thumbnail-frame',
         'title-label'],
 

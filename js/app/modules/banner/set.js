@@ -17,7 +17,7 @@ const Module = imports.app.interfaces.module;
  *   card-type
  */
 const Set = new Module.Class({
-    Name: 'SetBanner',
+    Name: 'Banner.Set',
     CssName: 'EknSetBanner',
     Extends: Gtk.Frame,
 

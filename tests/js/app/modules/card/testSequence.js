@@ -9,7 +9,7 @@ const Sequence = imports.app.modules.card.sequence;
 
 Gtk.init(null);
 
-describe('Sequence card widget', function () {
+describe('Card.Sequence', function () {
     let model;
 
     beforeEach(function () {

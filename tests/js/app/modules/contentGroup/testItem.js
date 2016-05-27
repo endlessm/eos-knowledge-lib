@@ -12,7 +12,7 @@ const MockFactory = imports.tests.mockFactory;
 const Utils = imports.tests.utils;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
-describe('Item group module', function () {
+describe('ContentGroup.Item', function () {
     let group, arrangement, factory, dispatcher;
 
     beforeEach(function () {

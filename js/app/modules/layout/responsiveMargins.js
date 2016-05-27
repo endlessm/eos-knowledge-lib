@@ -19,7 +19,7 @@ const Utils = imports.app.utils;
  *   content
  */
 const ResponsiveMargins = new Module.Class({
-    Name: 'ResponsiveMargins',
+    Name: 'Layout.ResponsiveMargins',
     CssName: 'EknResponsiveMargins',
     Extends: Gtk.Bin,
 

@@ -4,7 +4,7 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const MockFactory = imports.tests.mockFactory;
 const PublishedDate = imports.app.modules.order.publishedDate;
 
-describe('Published date order', function () {
+describe('Order.PublishedDate', function () {
     let order, models, factory;
 
     const UNSORTED_DATES = [

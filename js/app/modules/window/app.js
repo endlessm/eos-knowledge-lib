@@ -41,7 +41,7 @@ const PARALLAX_BACKGROUND_SCALE = 1.1;
  *   section-page
  */
 const App = new Module.Class({
-    Name: 'Window',
+    Name: 'Window.App',
     Extends: Endless.Window,
 
     Properties: {

@@ -26,7 +26,7 @@ const Module = imports.app.interfaces.module;
  *   arrangement
  */
 const Set = new Module.Class({
-    Name: 'SetGroup',
+    Name: 'ContentGroup.Set',
     CssName: 'EknSetGroup',
     Extends: Gtk.Frame,
     Implements: [Expandable.Expandable],

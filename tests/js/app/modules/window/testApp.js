@@ -24,7 +24,7 @@ const BACKGROUND_URI = 'resource:///com/endlessm/thrones/kings_landing.jpg';
 let resource = Gio.Resource.load(TEST_CONTENT_BUILDDIR + 'test-content.gresource');
 resource._register();
 
-describe('Window', function () {
+describe('Window.App', function () {
     let app, factory, dispatcher;
 
     beforeAll(function (done) {

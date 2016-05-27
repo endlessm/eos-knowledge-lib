@@ -16,7 +16,7 @@ print(Thirties)
 Compliance.test_arrangement_compliance(Thirties.Thirties);
 // Compliance.test_arrangement_fade_in_compliance(Thirties.Thirties);
 
-describe('Thirties arrangement', function () {
+describe('Arrangement.Thirties', function () {
     let arrangement, factory;
 
     beforeEach(function () {

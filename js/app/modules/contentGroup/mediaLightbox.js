@@ -13,7 +13,7 @@ const Module = imports.app.interfaces.module;
  *   card-type
  */
 const MediaLightbox = new Module.Class({
-    Name: 'MediaLightbox',
+    Name: 'ContentGroup.MediaLightbox',
     CssName: 'EknMediaLightbox',
     Extends: Lightbox.Lightbox,
 

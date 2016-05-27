@@ -40,7 +40,7 @@ const _BATCH_SIZE = 50;
  *   sets-filter - <Filter> for deciding which sets to show
  */
 const Highlights = new Module.Class({
-    Name: 'Highlights',
+    Name: 'ContentGroup.Highlights',
     CssName: 'EknHighlights',
     Extends: Gtk.Grid,
 

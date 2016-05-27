@@ -1,7 +1,7 @@
-data/widgets/legacyPolaroidCard.ui
-data/widgets/sequenceCard.ui
-data/widgets/sideMenuTemplate.ui
-data/widgets/suggestedCategories.ui
+data/widgets/card/legacyPolaroid.ui
+data/widgets/card/sequence.ui
+data/widgets/contentGroup/suggestedCategories.ui
+data/widgets/layout/sideMenu.ui
 js/app/articleHTMLRenderer.js
 js/app/modules/banner/context.js
 js/app/modules/banner/search.js

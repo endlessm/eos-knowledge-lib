@@ -24,7 +24,7 @@ const Utils = imports.app.utils;
  *   card-context - on the context label
  */
 const Text = new Module.Class({
-    Name: 'TextCard',
+    Name: 'Card.Text',
     CssName: 'EknTextCard',
     Extends: Gtk.Button,
     Implements: [Card.Card],
@@ -37,7 +37,7 @@ const Text = new Module.Class({
             false),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/textCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/card/text.ui',
     InternalChildren: ['title-label', 'synopsis-label', 'context-label'],
 
     _init: function (props={}) {

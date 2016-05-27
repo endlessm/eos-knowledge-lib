@@ -10,7 +10,7 @@ const CssClassMatcher = imports.tests.CssClassMatcher;
 
 Gtk.init(null);
 
-describe('Legacy Polaroid Card', function () {
+describe('Card.LegacyPolaroid', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
     });

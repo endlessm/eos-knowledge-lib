@@ -13,7 +13,7 @@ Gtk.init(null);
 Compliance.test_arrangement_compliance(Quarter.Quarter);
 Compliance.test_arrangement_fade_in_compliance(Quarter.Quarter);
 
-describe('Quarter Arrangement', function () {
+describe('Arrangement.Quarter', function () {
     let arrangement, win, factory;
 
     beforeEach(function () {

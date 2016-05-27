@@ -12,7 +12,7 @@ const Order = imports.app.interfaces.order;
  * Order that sorts cards by placing featured before non-featured
  */
 const Featured = new Module.Class({
-    Name: 'FeaturedOrder',
+    Name: 'Order.Featured',
     Extends: GObject.Object,
     Implements: [Order.Order],
 

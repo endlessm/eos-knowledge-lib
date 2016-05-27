@@ -7,7 +7,7 @@ const SpaceContainer = imports.app.widgets.spaceContainer;
 const Module = imports.app.interfaces.module;
 
 const Overflow = new Module.Class({
-    Name: 'OverflowArrangement',
+    Name: 'Arrangement.Overflow',
     CssName: 'EknOverflowArrangement',
     Extends: SpaceContainer.SpaceContainer,
     Implements: [Arrangement.Arrangement],

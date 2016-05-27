@@ -9,12 +9,12 @@ const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 
 const ScrollingList = new Module.Class({
-    Name: 'ScrollingListArrangement',
+    Name: 'Arrangement.ScrollingList',
     CssName: 'EknScrollingListArrangement',
     Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
     Implements: [Arrangement.Arrangement],
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/scrollingListArrangement.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/arrangement/scrollingList.ui',
     InternalChildren: [ 'grid', 'size-group' ],
 
     _init: function (props={}) {

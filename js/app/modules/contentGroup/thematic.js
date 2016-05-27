@@ -37,7 +37,7 @@ const QueryObject = imports.search.queryObject;
  *   header-card-type - type of cards to create for sets
  */
 const Thematic = new Module.Class({
-    Name: 'Thematic',
+    Name: 'ContentGroup.Thematic',
     CssName: 'EknThematic',
     Extends: Gtk.Grid,
 

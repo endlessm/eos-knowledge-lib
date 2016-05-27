@@ -14,7 +14,7 @@ Compliance.test_arrangement_compliance(SideBySide.SideBySide);
 
 const CHILD_WIDTH = 100;
 
-describe('SideBySide Arrangement', function () {
+describe('Arrangement.SideBySide', function () {
     let arrangement, factory;
 
     beforeEach(function () {

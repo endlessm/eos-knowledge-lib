@@ -14,7 +14,7 @@ const TEST_CONTENT_BUILDDIR = Utils.get_test_content_builddir();
 
 Gtk.init(null);
 
-describe('Background Module', function () {
+describe('Layout.DynamicBackground', function () {
     let module, factory, dispatcher;
 
     beforeEach(function () {

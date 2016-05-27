@@ -10,7 +10,7 @@ const Utils = imports.tests.utils;
 
 Gtk.init(null);
 
-describe('Responsive margins module', function () {
+describe('Layout.ResponsiveMargins', function () {
     let provider;
     beforeAll(function () {
        provider = Utils.create_reset_provider();

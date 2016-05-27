@@ -10,7 +10,7 @@ const List = imports.app.modules.card.list;
 
 Gtk.init(null);
 
-describe('Search result card widget', function () {
+describe('Card.List', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
     });

@@ -9,7 +9,7 @@ const Context = imports.app.modules.banner.context;
 const MockDispatcher = imports.tests.mockDispatcher;
 const SetObjectModel = imports.search.setObjectModel;
 
-describe('Context banner', function () {
+describe('Banner.Context', function () {
     let module, dispatcher;
 
     beforeEach(function () {

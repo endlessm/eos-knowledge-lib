@@ -15,7 +15,7 @@ const Utils = imports.app.utils;
  * A long skinny card good for showing results in a vertical list format.
  */
 const List = new Module.Class({
-    Name: 'ListCard',
+    Name: 'Card.List',
     CssName: 'EknListCard',
     Extends: Gtk.Button,
     Implements: [Card.Card, NavigationCard.NavigationCard],
@@ -31,7 +31,7 @@ const List = new Module.Class({
             true),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/listCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/card/list.ui',
     InternalChildren: [ 'thumbnail-frame', 'content-frame', 'title-label', 'synopsis-label', 'navigation-context-label'],
 
     _init: function (props={}) {

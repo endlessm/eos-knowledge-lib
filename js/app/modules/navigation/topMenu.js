@@ -30,7 +30,7 @@ const TOP_MENU_HEIGHT = 50;
  *   menu - Module that contains the horizontal menu
  */
 const TopMenu = new Module.Class({
-    Name: 'TopMenu',
+    Name: 'Navigation.TopMenu',
     CssName: 'EknTopMenu',
     Extends: Endless.CustomContainer,
 

@@ -12,7 +12,7 @@ Gtk.init(null);
 
 Compliance.test_arrangement_compliance(ThirdRock.ThirdRock);
 
-describe('ThirdRock arrangement', function () {
+describe('Arrangement.ThirdRock', function () {
     let arrangement, factory;
 
     beforeEach(function () {

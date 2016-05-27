@@ -15,7 +15,7 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
-describe('Lightbox module', function () {
+describe('ContentGroup.MediaLightbox', function () {
     let module, engine, factory, dispatcher;
 
     beforeEach(function () {

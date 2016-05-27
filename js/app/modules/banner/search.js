@@ -26,11 +26,11 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *   query - on the portion of the banner indicating a user query string
  */
 const Search = new Module.Class({
-    Name: 'SearchBanner',
+    Name: 'Banner.Search',
     CssName: 'EknSearchBanner',
     Extends: Gtk.Label,
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/searchBanner.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/banner/search.ui',
 
     _init: function (props={}) {
         this.parent(props);
