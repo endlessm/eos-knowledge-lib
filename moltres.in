@@ -25,10 +25,11 @@ if [ "$#" -lt 1 ]; then
 fi
 
 YAML_PATH="$1" && shift
-autobahn -o output.json $YAML_PATH
+JSON_PATH="$(mktemp --tmpdir XXXXXX.json)"
+autobahn -o $JSON_PATH $YAML_PATH
 
 # Cleanup the temp JSON file
-trap "rm -f output.json" EXIT
+trap "rm -f $JSON_PATH" EXIT
 
 SCRIPT="const Gio = imports.gi.Gio;
 Gio.Resource.load('%pkgdatadir%/eos-knowledge.gresource')._register();
@@ -36,7 +37,7 @@ imports.searchPath.unshift('resource:///com/endlessm/knowledge/js');
 
 const MoltresApplication = imports.app.moltresApplication;
 let application = new MoltresApplication.MoltresApplication({
-    app_json_path: 'output.json',
+    app_json_path: '$JSON_PATH',
     application_id: 'com.endlessm.moltres',
 });
 application.run(['$0'].concat(ARGV));"
