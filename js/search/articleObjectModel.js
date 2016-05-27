@@ -21,8 +21,8 @@ const ArticleObjectModel = new Lang.Class({
         /**
          * Property: source
          *
-         * Source of the HTML. Right now can be embedly, wikipedia, wikihow,
-         * wikisource or wikibooks.
+         * Source of the HTML. Right now can be wikipedia, wikihow, wikisource
+         * or wikibooks.
          */
         'source': GObject.ParamSpec.string('source', 'Source of the HTML',
             'Where the article html was retrieved from.',
@@ -60,28 +60,6 @@ const ArticleObjectModel = new Lang.Class({
              'Tree representing the article\'s table of contents',
              GObject.ParamFlags.READWRITE,
              Gtk.TreeStore),
-
-        /**
-         * Property: issue-number
-         * Integer indicating the issue number for the Reader application.
-         * Defaults to 0, which means that this ArticleObject is not part of the
-         * Reader application and hence it does not have an issue number.
-         */
-        'issue-number': GObject.ParamSpec.uint('issue-number', 'Reader\'s Issue Number',
-            'Issue Number for the Reader App',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            0, GLib.MAXUINT32, 0),
-
-        /**
-         * Property: article-number
-         * Integer that indicates the order of the ArticleObject within the issue.
-         * Defaults to 0, which means that this ArticleObject is not part of the
-         * Reader application and hence it does not have an article number.
-         */
-        'article-number': GObject.ParamSpec.uint('article-number', 'Reader\'s Article Number',
-            'Article Number for the Reader App',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            0, GLib.MAXUINT32, 0),
 
         /**
          * Property: published
@@ -140,12 +118,6 @@ const ArticleObjectModel = new Lang.Class({
 
         if (json_ld.hasOwnProperty('sourceName'))
             props.source_name = json_ld.sourceName;
-
-        if (json_ld.hasOwnProperty('articleNumber')) {
-            if (json_ld.articleNumber < 0)
-                throw new Error('Article number must be a non-negative integer.');
-            props.article_number = parseInt(json_ld.articleNumber);
-        }
 
         if (json_ld.hasOwnProperty('published'))
             props.published = json_ld.published;

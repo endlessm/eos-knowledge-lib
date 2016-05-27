@@ -33,20 +33,10 @@ function transform_v1_description(json) {
         recurse(preset[ModuleFactory.ROOT_NAME]);
     }
 
-    if (json.templateType === "reader")
-        set_prop_for_type('Layout.SplitPercentage', 'background-image-uri', json['backgroundHomeURI']);
-
     set_prop_for_type('Banner.App', 'image-uri', json['titleImageURI']);
-    set_prop_for_type('Page.BackCover', 'background-image-uri', json['backgroundSectionURI']);
     set_prop_for_type('Window.Encyclopedia', 'title', json['appTitle']);
     set_prop_for_type('Window.Encyclopedia', 'home-background-uri', json['backgroundHomeURI']);
     set_prop_for_type('Window.Encyclopedia', 'results-background-uri', json['backgroundSectionURI']);
-    set_prop_for_type('Window.Reader', 'title', json['appTitle']);
-    set_prop_for_type('Window.Reader', 'title-image-uri', json['titleImageURI']);
-    set_prop_for_type('Window.Reader', 'home-background-uri', json['backgroundHomeURI']);
-    set_prop_for_type('Banner.Standalone', 'title', json['appTitle']);
-    set_prop_for_type('Banner.Standalone', 'title-image-uri', json['titleImageURI']);
-    set_prop_for_type('Banner.Standalone', 'background-image-uri', json['backgroundHomeURI']);
     set_prop_for_type('Window.App', 'title', json['appTitle']);
     set_prop_for_type('Window.App', 'background-image-uri', json['backgroundHomeURI']);
     set_prop_for_type('Window.App', 'blur-background-image-uri', json['backgroundSectionURI']);

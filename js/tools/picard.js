@@ -100,7 +100,6 @@ function get_available_modules_for_type (type) {
 
 const UNUSED_CARDS = [
     'KnowledgeDocumentCard',
-    'ReaderDocumentCard',
     'SetPreviewCard',
     'MediaCard',
 ];

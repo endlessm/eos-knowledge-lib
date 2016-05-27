@@ -100,7 +100,8 @@ const ThumbCardLayout = new Knowledge.Class({
 /**
  * Class: Thumb
  *
- * A thumbnail card for the new reader app
+ * A card displaying a thumbnail with an area underneath for title and tag
+ * information.
  */
 const Thumb = new Module.Class({
     Name: 'ThumbCard',

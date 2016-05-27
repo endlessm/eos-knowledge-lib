@@ -10,7 +10,7 @@ const Utils = imports.app.utils;
 
 /**
  * Class: Post
- * A postcard for the new reader app.
+ * A card the resembles a postcard, the entire background being an image.
  */
 const Post = new Module.Class({
     Name: 'PostCard',

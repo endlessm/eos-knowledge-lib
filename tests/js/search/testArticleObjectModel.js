@@ -52,32 +52,3 @@ describe ('Article Object Model', function () {
         });
     });
 });
-
-describe ('Reader App Article Object', function () {
-    let readerArticleObject, jsonld;
-
-    beforeEach(function () {
-        jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-
-        jsonld = {
-            '@id': 'ekn:cooking_magazine/Frango_Frito',
-            'title': 'Receita de frango frito',
-            'issueNumber': 12,
-            'articleNumber': 25,
-        };
-        readerArticleObject = new ArticleObjectModel.ArticleObjectModel({}, jsonld);
-    });
-
-    it ('should present the properties inherent to the Reader App', function () {
-        expect(readerArticleObject.issue_number).toBeDefined();
-        expect(readerArticleObject.article_number).toBeDefined();
-    });
-
-    it ('should properly parse properties inherent to the Reader App', function () {
-        expect(readerArticleObject.issue_number).toEqual(jasmine.any(Number));
-        expect(readerArticleObject.issue_number).toBeGreaterThan(-1);
-
-        expect(readerArticleObject.article_number).toEqual(jasmine.any(Number));
-        expect(readerArticleObject.article_number).toBeGreaterThan(-1);
-    });
-});

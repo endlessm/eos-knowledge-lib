@@ -245,7 +245,6 @@ const Buffet = new Module.Class({
         let random_query = new QueryObject.QueryObject({
             offset: hash % this._TOTAL_ARTICLES,
             limit: RESULTS_SIZE,
-            sort: QueryObject.QueryObjectSort.ARTICLE_NUMBER,
             tags: ['EknArticleObject'],
         });
         Engine.get_default().get_objects_by_query(random_query, null, (engine, task) => {

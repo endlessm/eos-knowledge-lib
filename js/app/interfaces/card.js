@@ -438,21 +438,6 @@ const Card = new Lang.Interface({
     },
 
     /**
-     * Method: set_style_variant_from_model
-     * Uses the article number to set a style variant CSS class
-     *
-     * Adds one of the CSS classes 'variant0', 'variant1', or 'variant2' to the
-     * card, depending on the <ArticleObjectModel.article_number> property if it
-     * is present.
-     */
-    set_style_variant_from_model: function () {
-        if (this.model.article_number !== undefined) {
-            let style = this.model.article_number % this.NUM_STYLE_VARIANTS;
-            this.get_style_context().add_class('variant' + style);
-        }
-    },
-
-    /**
      * Method: update_card_sizing_classes
      * Assigns the appropriate CSS classes based on the height and width
      *

@@ -59,16 +59,6 @@ const HistoryItem = new Knowledge.Class({
             'The context label describing what category this item belongs to',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
-        /**
-         * Property: from-global-search
-         *
-         * True if this history object was activated from global search,
-         * currently only used for reader app standalone page, which shows a
-         * different banner in that case.
-         */
-        'from-global-search': GObject.ParamSpec.boolean('from-global-search',
-            'From Global Search', 'From Global Search',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, false),
     },
 
     _init: function (props={}) {
@@ -101,11 +91,9 @@ const HistoryItem = new Knowledge.Class({
     equals: function (item) {
         if (this.model)
             return this.page_type === item.page_type &&
-            (this.model === null && item.model === null || this.model.ekn_id === item.model.ekn_id) &&
-            this.from_global_search === item.from_global_search;
+            (this.model === null && item.model === null || this.model.ekn_id === item.model.ekn_id);
         return this.page_type === item.page_type &&
-            this.query === item.query &&
-            this.from_global_search === item.from_global_search;
+            this.query === item.query;
     },
 });
 
