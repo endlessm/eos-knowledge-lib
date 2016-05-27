@@ -4,7 +4,7 @@ const ContentObjectModel = imports.search.contentObjectModel;
 const SetObjectModel = imports.search.setObjectModel;
 const Sets = imports.app.modules.filter.sets;
 
-describe('Featured filter', function () {
+describe('Filter.Sets', function () {
     const MODELS = [
         new ContentObjectModel.ContentObjectModel({
             tags: ['a', 'b', 'EknArticleObject'],

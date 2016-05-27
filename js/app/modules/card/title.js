@@ -27,7 +27,7 @@ const HIGHLIGHT_DECORATION_DIMENSION = 5;
  *   title - on the title label
  */
 const Title = new Module.Class({
-    Name: 'TitleCard',
+    Name: 'Card.Title',
     CssName: 'EknTitleCard',
     Extends: Gtk.Button,
     Implements: [Card.Card, NavigationCard.NavigationCard],
@@ -43,7 +43,7 @@ const Title = new Module.Class({
             false),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/titleCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/card/title.ui',
     InternalChildren: [ 'grid', 'title-label' ],
 
     _init: function (params={}) {

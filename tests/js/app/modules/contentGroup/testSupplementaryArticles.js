@@ -13,7 +13,7 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
-describe('Supplementary articles module', function () {
+describe('ContentGroup.SupplementaryArticles', function () {
     let supplementary, arrangement, factory, dispatcher;
 
     beforeEach(function () {

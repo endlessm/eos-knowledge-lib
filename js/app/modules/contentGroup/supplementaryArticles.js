@@ -19,7 +19,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  * unread articles are available it will show read articles with the same criteria.
  */
 const SupplementaryArticles = new Module.Class({
-    Name: 'SupplementaryArticles',
+    Name: 'ContentGroup.SupplementaryArticles',
     CssName: 'EknSupplementaryArticles',
     Extends: CardContainer.CardContainer,
 

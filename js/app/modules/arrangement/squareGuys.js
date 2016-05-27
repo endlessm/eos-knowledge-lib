@@ -20,7 +20,7 @@ const CARD_SIZE_BIG = Card.MinSize.C;
 const CARD_SIZE_MAX = Card.MaxSize.C;
 
 const _SquareGuysLayout = new Knowledge.Class({
-    Name: 'SquareGuysArrangementLayout',
+    Name: 'SquareGuysLayout',
     Extends: Endless.CustomContainer,
 
     _init: function (props={}) {
@@ -106,7 +106,7 @@ const _SquareGuysLayout = new Knowledge.Class({
  * Class: SquareGuys
  */
 const SquareGuys = new Module.Class({
-    Name: 'SquareGuysArrangement',
+    Name: 'Arrangement.SquareGuys',
     CssName: 'EknSquareGuysArrangement',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],

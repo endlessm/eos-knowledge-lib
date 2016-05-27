@@ -9,7 +9,7 @@ const Module = imports.app.interfaces.module;
  * A module which displays navigation arrows on either side of a page.
  */
 const Navigation = new Module.Class({
-    Name: 'Navigation',
+    Name: 'Layout.Navigation',
     CssName: 'EknNavigation',
     Extends: NavButtonOverlay.NavButtonOverlay,
 

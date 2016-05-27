@@ -21,7 +21,7 @@ const HORIZONTAL_PROPORTION = 3;
 const FEATURED_CARD_WIDTH_FRACTION = 2 / 3;
 
 const _PianoLayout = new Knowledge.Class({
-    Name: 'PianoArrangementLayout',
+    Name: 'PianoLayout',
     Extends: Endless.CustomContainer,
 
     _init: function (props={}) {
@@ -144,7 +144,7 @@ const _PianoLayout = new Knowledge.Class({
  * three secondary cards at its right side.
  */
 const Piano = new Module.Class({
-    Name: 'PianoArrangement',
+    Name: 'Arrangement.Piano',
     CssName: 'EknPianoArrangement',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],

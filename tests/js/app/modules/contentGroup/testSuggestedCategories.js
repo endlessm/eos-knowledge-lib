@@ -13,7 +13,7 @@ const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
-describe('Suggested categories module', function () {
+describe('ContentGroup.SuggestedCategories', function () {
     let suggestions, arrangement, factory, dispatcher;
 
     beforeEach(function () {

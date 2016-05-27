@@ -36,7 +36,7 @@ const _CardHeight = {
 const _CARD_COUNT = 3;
 
 const _ThirdRockLayout = new Knowledge.Class({
-    Name: 'ThirdRockArrangementLayout',
+    Name: 'ThirdRockLayout',
     Extends: Endless.CustomContainer,
 
     _init: function (props={}) {
@@ -121,7 +121,7 @@ const _ThirdRockLayout = new Knowledge.Class({
  *    adjust accordingly.
  */
 const ThirdRock = new Module.Class({
-    Name: 'ThirdRockArrangement',
+    Name: 'Arrangement.ThirdRock',
     CssName: 'EknThirdRockArrangement',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],

@@ -9,7 +9,7 @@ const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const Encyclopedia = imports.app.modules.window.encyclopedia;
 
-describe('Encyclopedia Window', function () {
+describe('Window.Encyclopedia', function () {
     let view, app, factory, dispatcher;
 
     beforeAll(function (done) {

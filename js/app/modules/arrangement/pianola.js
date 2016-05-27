@@ -19,7 +19,7 @@ const Piano = imports.app.modules.arrangement.piano;
  * arrangement and pass the `compact-mode` property as needed.
  */
 const Pianola = new Module.Class({
-    Name: 'PianolaArrangement',
+    Name: 'Arrangement.Pianola',
     CssName: 'EknPianolaArrangement',
     Extends: Piano.Piano,
 

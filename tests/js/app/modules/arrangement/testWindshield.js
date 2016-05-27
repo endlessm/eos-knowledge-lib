@@ -12,7 +12,7 @@ Gtk.init(null);
 
 Compliance.test_arrangement_compliance(Windshield.Windshield);
 
-describe('Windshield Arrangement', function () {
+describe('Arrangement.Windshield', function () {
     let arrangement, factory;
 
     beforeEach(function () {

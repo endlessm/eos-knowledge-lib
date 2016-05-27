@@ -16,7 +16,7 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
-describe('Set Preview card widget', function () {
+describe('Card.SetPreview', function () {
     let card, factory, engine, dispatcher;
 
     beforeEach(function () {

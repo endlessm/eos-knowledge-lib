@@ -21,7 +21,7 @@ const Module = imports.app.interfaces.module;
  *   arrangement
  */
 const Item = new Module.Class({
-    Name: 'ItemGroup',
+    Name: 'ContentGroup.Item',
     CssName: 'EknItemGroup',
     Extends: Gtk.Frame,
 

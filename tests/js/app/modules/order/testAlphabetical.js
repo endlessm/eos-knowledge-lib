@@ -4,7 +4,7 @@ const Alphabetical = imports.app.modules.order.alphabetical;
 const ContentObjectModel = imports.search.contentObjectModel;
 const MockFactory = imports.tests.mockFactory;
 
-describe('Alphabetical order', function () {
+describe('Order.Alphabetical', function () {
     let order, models, factory;
 
     const UNSORTED_TITLES = ['Frilled shark', 'Goldfish', 'Squid',

@@ -9,7 +9,7 @@ const MockFactory = imports.tests.mockFactory;
 const SearchAndItem = imports.app.modules.layout.searchAndItem;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
-describe('Search and item module', function () {
+describe('Layout.SearchAndItem', function () {
     let module, search, item, factory, dispatcher;
 
     beforeEach(function () {

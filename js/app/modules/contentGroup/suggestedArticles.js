@@ -17,7 +17,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  * A module that displays all suggested articles as cards in an arrangement.
  */
 const SuggestedArticles = new Module.Class({
-    Name: 'SuggestedArticles',
+    Name: 'ContentGroup.SuggestedArticles',
     CssName: 'EknSuggestedArticles',
     Extends: CardContainer.CardContainer,
 

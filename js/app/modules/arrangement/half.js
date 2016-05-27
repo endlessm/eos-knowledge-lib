@@ -22,7 +22,7 @@ const CARD_HEIGHT_MAX = Card.MaxSize.C;
 const MINIMUM_ARRANGEMENT_WIDTH = 2 * Card.MinSize.C;
 
 const _HalfLayout = new Knowledge.Class({
-    Name: 'HalfArrangementLayout',
+    Name: 'HalfLayout',
     Extends: Endless.CustomContainer,
 
     _init: function (props={}) {
@@ -131,7 +131,7 @@ const _HalfLayout = new Knowledge.Class({
  * total width of the arrangement.
  */
 const Half = new Module.Class({
-    Name: 'HalfArrangement',
+    Name: 'Arrangement.Half',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],
 

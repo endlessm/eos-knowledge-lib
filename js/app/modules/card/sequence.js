@@ -21,12 +21,12 @@ const Utils = imports.app.utils;
  *   title - on the title label
  */
 const Sequence = new Module.Class({
-    Name: 'SequenceCard',
+    Name: 'Card.Sequence',
     CssName: 'EknSequenceCard',
     Extends: Gtk.Button,
     Implements: [Card.Card, NavigationCard.NavigationCard],
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/sequenceCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/card/sequence.ui',
     InternalChildren: [ 'title-label', 'next-label', 'previous-label' ],
 
     _init: function (params={}) {

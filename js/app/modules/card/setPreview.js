@@ -30,7 +30,7 @@ const _BATCH_SIZE = 50;
  *   header-card-type - type of card to create for title label
  */
 const SetPreview = new Module.Class({
-    Name: 'SetPreviewCard',
+    Name: 'Card.SetPreview',
     CssName: 'EknSetPreviewCard',
     Extends: CardContainer.CardContainer,
     Implements: [Card.Card],

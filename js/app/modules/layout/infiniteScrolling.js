@@ -15,7 +15,7 @@ const Module = imports.app.interfaces.module;
  *   content - where to put the content
  */
 const InfiniteScrolling = new Module.Class({
-    Name: 'InfiniteScrollingLayout',
+    Name: 'Layout.InfiniteScrolling',
     CssName: 'EknInfiniteScrollingLayout',
     Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
 
@@ -23,7 +23,7 @@ const InfiniteScrolling = new Module.Class({
         'content': {},
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/infiniteScrollingLayout.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/layout/infiniteScrolling.ui',
     InternalChildren: [ 'viewport' ],
 
     _init: function (props={}) {

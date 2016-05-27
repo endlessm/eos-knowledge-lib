@@ -10,7 +10,7 @@ const Media = imports.app.modules.card.media;
 
 Gtk.init(null);
 
-describe ('Media Card', function () {
+describe ('Card.Media', function () {
     let imageObject;
 
     beforeEach(function () {

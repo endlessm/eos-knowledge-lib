@@ -12,7 +12,7 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
-describe('Paper Template module', function () {
+describe('Layout.Paper', function () {
     let paper_template;
 
     beforeEach(function () {

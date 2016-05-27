@@ -11,7 +11,7 @@ const MockFactory = imports.tests.mockFactory;
 const TopMenu = imports.app.modules.layout.topMenu;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
-describe('Top menu template', function () {
+describe('Layout.TopMenu', function () {
     let template, factory;
 
     beforeEach(function () {

@@ -45,7 +45,7 @@ const _MENU_HOT_ZONE_WIDTH_PX = 3;
  *   menu-button - on the button that opens the menu
  */
 const SideMenu = new Module.Class({
-    Name: 'SideMenuTemplate',
+    Name: 'Layout.SideMenu',
     CssName: 'EknSideMenuTemplate',
     Extends: SlidingPanelOverlay.SlidingPanelOverlay,
 
@@ -60,7 +60,7 @@ const SideMenu = new Module.Class({
         'sidebar': {},
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/sideMenuTemplate.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/layout/sideMenu.ui',
     Children: [ 'home-button', 'menu-button', 'menu-close-button' ],
     InternalChildren: [ 'context-bar', 'grid', 'menu-grid', 'separator' ],
 

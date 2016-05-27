@@ -7,7 +7,7 @@ const ContentObjectModel = imports.search.contentObjectModel;
 const Unread = imports.app.modules.filter.unread;
 const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 
-describe('Unread filter', function () {
+describe('Filter.Unread', function () {
     let filter, history_model, models;
 
     const IDS = ['read', 'unread'];

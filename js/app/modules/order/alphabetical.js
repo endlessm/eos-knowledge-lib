@@ -12,7 +12,7 @@ const Order = imports.app.interfaces.order;
  * Order that sorts cards alphabetically by title
  */
 const Alphabetical = new Module.Class({
-    Name: 'AlphabeticalOrder',
+    Name: 'Order.Alphabetical',
     Extends: GObject.Object,
     Implements: [Order.Order],
 

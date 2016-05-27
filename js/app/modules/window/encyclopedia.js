@@ -17,7 +17,7 @@ const Utils = imports.app.utils;
  *   search-page
  */
 const Encyclopedia = new Module.Class({
-    Name: 'EncyclopediaWindow',
+    Name: 'Window.Encyclopedia',
     Extends: Endless.Window,
 
     Properties: {

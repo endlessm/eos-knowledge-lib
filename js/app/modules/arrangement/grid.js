@@ -13,7 +13,7 @@ const Module = imports.app.interfaces.module;
  * Class: Grid
  */
 const Grid = new Module.Class({
-    Name: 'GridArrangement',
+    Name: 'Arrangement.Grid',
     CssName: 'EknGridArrangement',
     Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
     Implements: [Arrangement.Arrangement],
@@ -31,7 +31,7 @@ const Grid = new Module.Class({
             0, GLib.MAXINT32, 7),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/gridArrangement.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/arrangement/grid.ui',
     InternalChildren: [ 'flow_box' ],
 
     _init: function (props={}) {

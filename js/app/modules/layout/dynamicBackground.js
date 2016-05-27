@@ -58,7 +58,7 @@ EknDynamicBackground.big {\
  *   content - a template module
  */
 const DynamicBackground = new Module.Class({
-    Name: 'DynamicBackground',
+    Name: 'Layout.DynamicBackground',
     CssName: 'EknDynamicBackground',
     Extends: Gtk.Frame,
 

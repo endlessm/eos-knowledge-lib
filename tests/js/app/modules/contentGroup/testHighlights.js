@@ -26,7 +26,7 @@ const LimitedArrangment = new Module.Class({
     },
 });
 
-describe('Highlights module', function () {
+describe('ContentGroup.Highlights', function () {
     let module, factory, dispatcher, engine;
 
     beforeEach(function () {

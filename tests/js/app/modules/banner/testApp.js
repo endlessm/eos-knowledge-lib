@@ -14,7 +14,7 @@ Gtk.init(null);
 
 const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 
-describe('App banner module', function () {
+describe('Banner.App', function () {
     let app_banner;
     let pig_uri = Gio.File.new_for_path(TEST_CONTENT_DIR).get_child('pig1.jpg').get_uri();
 

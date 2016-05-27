@@ -14,12 +14,12 @@ const Previewer = imports.app.widgets.previewer;
  * used with a MediaObject Model.
  */
 const Media = new Module.Class({
-    Name: 'MediaCard',
+    Name: 'Card.Media',
     CssName: 'EknMediaCard',
     Extends: Gtk.Frame,
     Implements: [Card.Card],
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/mediaCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/card/media.ui',
     InternalChildren: [ 'caption-label', 'attribution-label', 'grid',
         'attribution-button', 'separator' ],
 

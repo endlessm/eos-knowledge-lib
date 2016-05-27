@@ -308,6 +308,7 @@ javascript_tests = \
 	tests/js/app/modules/banner/testContext.js \
 	tests/js/app/modules/banner/testSearch.js \
 	tests/js/app/modules/banner/testSet.js \
+	tests/js/app/modules/card/testDeck.js \
 	tests/js/app/modules/card/testKnowledgeDocument.js \
 	tests/js/app/modules/card/testLegacyPolaroid.js \
 	tests/js/app/modules/card/testLegacyPost.js \

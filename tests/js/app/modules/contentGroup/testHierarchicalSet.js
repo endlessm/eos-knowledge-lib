@@ -19,7 +19,7 @@ const SetObjectModel = imports.search.setObjectModel;
 const HierarchicalSet = imports.app.modules.contentGroup.hierarchicalSet;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
-describe('Hierarchical set module', function () {
+describe('ContentGroup.HierarchicalSet', function () {
     let module, factory, dispatcher, arrangement;
 
     beforeEach(function () {

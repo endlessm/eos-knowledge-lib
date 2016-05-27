@@ -8,7 +8,7 @@ const Filter = imports.app.interfaces.filter;
 const Module = imports.app.interfaces.module;
 
 const Featured = new Module.Class({
-    Name: 'FeaturedFilter',
+    Name: 'Filter.Featured',
     Extends: GObject.Object,
     Implements: [Filter.Filter],
 

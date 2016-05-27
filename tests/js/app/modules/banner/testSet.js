@@ -12,7 +12,7 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
-describe('SetBanner module', function () {
+describe('Banner.Set', function () {
     let module, factory, dispatcher;
 
     beforeEach(function () {

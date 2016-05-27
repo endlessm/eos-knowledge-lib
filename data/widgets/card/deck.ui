@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.18.3 -->
 <interface domain="eos-knowledge">
   <requires lib="gtk+" version="3.12"/>
-  <template class="EknPostCard" parent="GtkButton">
+  <template class="EknCard_Deck" parent="GtkButton">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="receives_default">False</property>
@@ -26,29 +26,22 @@
           <object class="GtkFrame" id="shadow-frame">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="vexpand">True</property>
+            <property name="valign">center</property>
             <child>
-              <object class="GtkGrid" id="inner-content-grid">
-                <property name="visible">True</property>
+              <object class="GtkLabel" id="title-label">
                 <property name="can_focus">False</property>
-                <property name="valign">end</property>
-                <property name="orientation">vertical</property>
-                <child>
-                  <object class="GtkLabel" id="title-label">
-                    <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
-                    <property name="halign">center</property>
-                    <property name="use_markup">True</property>
-                    <property name="wrap_mode">word-char</property>
-                    <property name="wrap">True</property>
-                    <property name="ellipsize">end</property>
-                    <property name="lines">2</property>
-                    <property name="justify">center</property>
-                    <style>
-                      <class name="title"/>
-                    </style>
-                  </object>
-                </child>
+                <property name="hexpand">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="use_markup">True</property>
+                <property name="wrap_mode">word-char</property>
+                <property name="wrap">True</property>
+                <property name="ellipsize">end</property>
+                <property name="lines">2</property>
+                <property name="justify">center</property>
+                <style>
+                  <class name="title"/>
+                </style>
               </object>
             </child>
             <style>
@@ -62,7 +55,7 @@
       </object>
     </child>
     <style>
-      <class name="post-card"/>
+      <class name="deck"/>
       <class name="card"/>
     </style>
   </template>

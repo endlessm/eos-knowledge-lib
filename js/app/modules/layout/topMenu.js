@@ -29,7 +29,7 @@ const SlidingPanelOverlay = imports.app.widgets.slidingPanelOverlay;
  *
  */
 const TopMenu = new Module.Class({
-    Name: 'TopMenuTemplate',
+    Name: 'Layout.TopMenu',
     CssName: 'EknTopMenuTemplate',
     Extends: SlidingPanelOverlay.SlidingPanelOverlay,
 
@@ -43,7 +43,7 @@ const TopMenu = new Module.Class({
         'content': {},
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/topMenuTemplate.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/layout/topMenu.ui',
     InternalChildren: [ 'grid' ],
 
     _init: function (props={}) {

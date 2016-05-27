@@ -12,7 +12,7 @@ Gtk.init(null);
 
 Compliance.test_arrangement_compliance(Quilt.Quilt);
 
-describe('Quilt arrangement', function () {
+describe('Arrangement.Quilt', function () {
     let arrangement, factory;
 
     beforeEach(function () {

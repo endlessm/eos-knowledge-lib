@@ -19,7 +19,7 @@ const Utils = imports.app.utils;
  *   content
  */
 const ResponsiveMargins = new Module.Class({
-    Name: 'ResponsiveMargins',
+    Name: 'Layout.ResponsiveMargins',
     CssName: 'EknResponsiveMargins',
     Extends: Gtk.Bin,
 
@@ -113,7 +113,7 @@ const ResponsiveMargins = new Module.Class({
         let [min,] = this.parent(min_width);
         let [, nat] = this.parent(nat_width);
         return [margins.tiny.top + min + margins.tiny.bottom,
-                margins.xlarge.top + nat + margins.xlarge.bottom];
+                margins.xlarge.top + Math.max(min, nat) + margins.xlarge.bottom];
     },
 
     vfunc_size_allocate: function (alloc) {

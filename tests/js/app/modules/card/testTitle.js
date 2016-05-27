@@ -9,7 +9,7 @@ const Title = imports.app.modules.card.title;
 
 Gtk.init(null);
 
-describe('Title card widget', function () {
+describe('Card.Title', function () {
     let card;
 
     beforeEach(function () {

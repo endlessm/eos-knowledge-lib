@@ -14,7 +14,7 @@ defines:
   type: Card.Thumb
   properties: *card-all-uppercase-properties
 - &set-card
-  type: Card.Post
+  type: Card.Deck
   properties: *card-all-uppercase-properties
 
 - &article-suggestions

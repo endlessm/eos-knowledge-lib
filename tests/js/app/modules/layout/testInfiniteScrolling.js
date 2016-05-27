@@ -14,7 +14,7 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
-describe('Scrolling template', function () {
+describe('Layout.InfiniteScrolling', function () {
     let factory, template;
 
     beforeEach(function () {

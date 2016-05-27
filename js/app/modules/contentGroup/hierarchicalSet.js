@@ -37,7 +37,7 @@ const BATCH_SIZE = 15;
  *   set-card-type - type of cards to create for sets
  */
 const HierarchicalSet = new Module.Class({
-    Name: 'HierarchicalSet',
+    Name: 'ContentGroup.HierarchicalSet',
     CssName: 'EknHierarchicalSet',
     Extends: Gtk.Grid,
 

@@ -10,7 +10,7 @@ const Utils = imports.tests.utils;
 
 Compliance.test_arrangement_compliance(TiledGrid.TiledGrid);
 
-describe('Tiled grid arrangement', function () {
+describe('Arrangement.TiledGrid', function () {
     let arrangement, factory;
 
     beforeEach(function () {

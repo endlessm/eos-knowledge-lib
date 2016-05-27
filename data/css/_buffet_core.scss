@@ -124,43 +124,91 @@ EknSetPreviewCard:hover .title,
 }
 
 .thumb-card,
-.post-card.article,
+.post-card,
 .list-card {
     background-color: white;
     box-shadow: 0 0 5px transparentize(black, 1 - 0.25);
     border-color: transparent;  /* used for the triangle in the corner */
 }
 
-.post-card.set .thumbnail {
+.deck .thumbnail {
     border: 0px solid transparent;  /* used for the triangle in the corner */
+    margin: 13px;
 }
 
-.post-card.article .content-frame {
+.post-card .content-frame {
     background-image: linear-gradient(to top, black 0%, transparentize(black, 1 - 0.69) 30%, transparentize(black, 1 - 0.5) 49%, transparentize(black, 1) 100%);
+    min-height: 50px;  /* 90px, compensated for 20px padding */
 }
 
-.post-card.article .title {
+.post-card.width-e .content-frame,
+.post-card.width-f .content-frame,
+.post-card.width-g .content-frame,
+.post-card.width-h .content-frame {
+    min-height: 10px;  /* 90px, compensated for 40px padding */
+}
+
+.post-card.height-e .content-frame {
+    min-height: 250px;  /* 290px, compensated for 20px padding */
+}
+
+.post-card.height-e.width-e .content-frame,
+.post-card.height-e.width-f .content-frame,
+.post-card.height-e.width-g .content-frame,
+.post-card.height-e.width-h .content-frame {
+    min-height: 210px;  /* 290px, compensated for 40px padding */
+}
+
+.post-card.height-d .content-frame {
+    min-height: 150px;  /* 190px, compensated for 20px padding */
+}
+
+.post-card.height-d.width-e .content-frame,
+.post-card.height-d.width-f .content-frame,
+.post-card.height-d.width-g .content-frame,
+.post-card.height-d.width-h .content-frame {
+    min-height: 110px;  /* 190px, compensated for 40px padding */
+}
+
+.post-card.height-c .content-frame {
+    min-height: 100px;  /* 140px, compensated for 20px padding */
+}
+
+.post-card.height-c.width-e .content-frame,
+.post-card.height-c.width-f .content-frame,
+.post-card.height-c.width-g .content-frame,
+.post-card.height-c.width-h .content-frame {
+    min-height: 60px;  /* 140px, compensated for 40px padding */
+}
+
+.card.post-card .title {
     padding-bottom: 20px;
     color: white;
 }
 
-.post-card.set {
+.deck {
     background-image: url('../images/deckbg.svg');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-position: center;
 }
 
-.post-card.set:active {
+.deck:active {
     background-size: 98% 98%;
 }
 
-.post-card.set .content-frame {
+.deck .content-frame {
     padding: 20px 0px 20px 0px;
     background-color: transparentize(white, 1 - 0.949);
+    min-height: 80px;  /* 120px, compensated for 20px padding */
 }
 
-.post-card.set .title {
+.deck.height-b .content-frame,
+.deck.height-a .content-frame {
+    min-height: 40px;  /* 80px, compensated for 20px padding */
+}
+
+.deck .title {
     font-weight: 300;
 }
 
@@ -302,7 +350,7 @@ EknResponsiveMargins.xlarge {
 .composite EknThematic .title-card .title.label,
 .composite EknSetPreviewCard .title,
 .composite .browse-content .title,
-.composite .post-card.set .title {
+.composite .deck .title {
     font-weight: normal;
 }
 

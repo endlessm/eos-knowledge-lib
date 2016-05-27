@@ -31,7 +31,7 @@ const MockView = new Module.Class({
     },
 });
 
-describe('Buffet controller', function () {
+describe('Controller.Buffet', function () {
     let buffet, dispatcher, engine, factory, set_models, article_model, media_model, reading_history;
 
     beforeEach(function () {

@@ -14,7 +14,7 @@ const Set = imports.app.modules.contentGroup.set;
 const Utils = imports.tests.utils;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
-describe('Set group module', function () {
+describe('ContentGroup.Set', function () {
     let group, arrangement, factory, dispatcher;
 
     beforeEach(function () {

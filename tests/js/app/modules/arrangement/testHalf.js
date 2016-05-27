@@ -14,7 +14,7 @@ Gtk.init(null);
 Compliance.test_arrangement_compliance(Half.Half);
 Compliance.test_arrangement_fade_in_compliance(Half.Half);
 
-describe('Half Arrangement', function () {
+describe('Arrangement.Half', function () {
     let factory, arrangement, win;
 
     beforeEach(function () {

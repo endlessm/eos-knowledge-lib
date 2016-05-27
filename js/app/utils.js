@@ -289,12 +289,13 @@ function set_container_clip (container) {
 
 function render_border_with_arrow (widget, cr) {
     let context = widget.get_style_context();
-    let width = widget.get_allocated_width();
-    let height = widget.get_allocated_height();
+    let margins = context.get_margin(widget.get_state_flags());
+    let width = widget.get_allocated_width() - margins.left - margins.right;
+    let height = widget.get_allocated_height() - margins.top - margins.bottom;
 
     // Draw focus rectangle even when the widget is not focused, so we can
     // style it with outline
-    Gtk.render_focus(context, cr, 0, 0, width, height);
+    Gtk.render_focus(context, cr, margins.left, margins.top, width, height);
 
     // Render the triangle in the corner
     // FIXME: gtk_style_context_get_border_color is deprecated; ideally we
@@ -303,16 +304,19 @@ function render_border_with_arrow (widget, cr) {
     let color = context.get_border_color(context.get_state());
     cr.save();
     Gdk.cairo_set_source_rgba(cr, color);
-    cr.moveTo(width, height);
-    cr.lineTo(width - 36, height);
-    cr.lineTo(width, height - 36);
+    let corner_x = margins.left + width;
+    let corner_y = margins.top + height;
+    let TRIANGLE_SIDE = 36;
+    cr.moveTo(corner_x, corner_y);
+    cr.lineTo(corner_x - TRIANGLE_SIDE, corner_y);
+    cr.lineTo(corner_x, corner_y - TRIANGLE_SIDE);
     cr.fill();
     cr.restore();
 
     // Render the arrow on top of the triangle
     context.save();
     context.add_class('arrow');
-    Gtk.render_arrow(context, cr, 0, width - 15, height - 15, 12);
+    Gtk.render_arrow(context, cr, 0, corner_x - 15, corner_y - 15, 12);
     context.restore();
 }
 

@@ -8,7 +8,7 @@ const MockFactory = imports.tests.mockFactory;
 const TopMenu = imports.app.modules.navigation.topMenu;
 const Utils = imports.tests.utils;
 
-describe('TopMenu module', function () {
+describe('Navigation.TopMenu', function () {
 let module, factory;
 
     beforeEach(function () {

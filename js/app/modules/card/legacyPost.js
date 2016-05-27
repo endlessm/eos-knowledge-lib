@@ -13,12 +13,12 @@ const Utils = imports.app.utils;
  * Will only show a title and image.
  */
 const LegacyPost = new Module.Class({
-    Name: 'LegacyPostCard',
+    Name: 'Card.LegacyPost',
     CssName: 'EknLegacyPostCard',
     Extends: Gtk.Button,
     Implements: [Card.Card],
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/legacyPostCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/card/legacyPost.ui',
     InternalChildren: [ 'thumbnail-frame', 'title-label' ],
 
     _init: function (props={}) {

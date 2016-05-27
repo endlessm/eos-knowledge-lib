@@ -12,7 +12,7 @@ Gtk.init(null);
 
 Compliance.test_arrangement_compliance(Piano.Piano);
 
-describe('Piano Arrangement', function () {
+describe('Arrangement.Piano', function () {
     let arrangement, factory;
 
     beforeEach(function () {

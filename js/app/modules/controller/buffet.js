@@ -53,7 +53,7 @@ const SEARCH_METRIC_EVENT_ID = 'a628c936-5d87-434a-a57a-015a0f223838';
  *    <Module>, <Launcher>, <Controller>
  */
 const Buffet = new Module.Class({
-    Name: 'BuffetController',
+    Name: 'Controller.Buffet',
     Extends: GObject.Object,
     Implements: [Launcher.Launcher, Controller.Controller],
 

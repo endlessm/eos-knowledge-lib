@@ -317,19 +317,6 @@ const Card = new Lang.Interface({
     },
 
     /**
-     * Method: add_contextual_css_class
-     *
-     * Adds a css class based on the type of model this is.
-     */
-    add_contextual_css_class: function () {
-        if (this.model instanceof SetObjectModel.SetObjectModel) {
-            this.get_style_context().add_class('set');
-        } else if (this.model instanceof ArticleObjectModel.ArticleObjectModel) {
-            this.get_style_context().add_class('article');
-        }
-    },
-
-    /**
      * Method: set_thumbnail_frame_from_model
      *
      * Sets up a frame to show the model's thumbnail uri.
@@ -458,13 +445,17 @@ const Card = new Lang.Interface({
         });
 
         let context = this.get_style_context();
-        if (typeof width_class !== undefined && !context.has_class(width_class)) {
-            Object.keys(WIDTH_STYLE_CLASSES).forEach(klass => context.remove_class(klass));
+        if (!context.has_class(width_class)) {
+            Object.keys(WIDTH_STYLE_CLASSES)
+                .filter(klass => klass !== width_class)
+                .forEach(klass => context.remove_class(klass));
             context.add_class(width_class);
         }
 
-        if (typeof width_class !== undefined && !context.has_class(height_class)) {
-            Object.keys(HEIGHT_STYLE_CLASSES).forEach(klass => context.remove_class(klass));
+        if (!context.has_class(height_class)) {
+            Object.keys(HEIGHT_STYLE_CLASSES)
+                .filter(klass => klass !== height_class)
+                .forEach(klass => context.remove_class(klass));
             context.add_class(height_class);
         }
     },

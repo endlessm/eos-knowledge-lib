@@ -23,12 +23,12 @@ const HOVER_HEIGHT = Math.ceil(HEIGHT * (1 + GROW_FRACTION));
  * A card implementation with sizing and styling specific to template A
  */
 const LegacyPolaroid = new Module.Class({
-    Name: 'LegacyPolaroidCard',
+    Name: 'Card.LegacyPolaroid',
     CssName: 'EknLegacyPolaroidCard',
     Extends: Gtk.Button,
     Implements: [Card.Card],
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/legacyPolaroidCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/card/legacyPolaroid.ui',
     InternalChildren: [ 'thumbnail-frame', 'title-label', 'synopsis-label',
         'pdf-icon', 'pdf-label' ],
 

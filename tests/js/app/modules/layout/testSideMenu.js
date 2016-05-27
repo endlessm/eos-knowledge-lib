@@ -13,7 +13,7 @@ const MockFactory = imports.tests.mockFactory;
 const SideMenu = imports.app.modules.layout.sideMenu;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
-describe('Side menu template', function () {
+describe('Layout.SideMenu', function () {
     let template, factory, dispatcher;
 
     beforeEach(function () {

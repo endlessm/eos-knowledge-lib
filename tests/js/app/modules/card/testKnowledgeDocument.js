@@ -21,7 +21,7 @@ EvinceDocument.init();
 
 const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 
-describe('Knowledge Document Card', function () {
+describe('Card.KnowledgeDocument', function () {
     let card, model, real_session_descriptor, toc_json, toc;
 
     beforeEach(function () {

@@ -24,7 +24,7 @@ const Utils = imports.app.utils;
  *   arrangement
  */
 const SuggestedCategories = new Module.Class({
-    Name: 'SuggestedCategories',
+    Name: 'ContentGroup.SuggestedCategories',
     CssName: 'EknSuggestedCategories',
     Extends: Gtk.Grid,
 
@@ -46,7 +46,7 @@ const SuggestedCategories = new Module.Class({
         'arrangement': {},
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/suggestedCategories.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/contentGroup/suggestedCategories.ui',
     InternalChildren: [ 'title-button', 'title-button-grid' ],
 
     _init: function (props={}) {

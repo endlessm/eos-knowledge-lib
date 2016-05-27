@@ -104,12 +104,12 @@ const ThumbCardLayout = new Knowledge.Class({
  * information.
  */
 const Thumb = new Module.Class({
-    Name: 'ThumbCard',
+    Name: 'Card.Thumb',
     CssName: 'EknThumbCard',
     Extends: Gtk.Button,
     Implements: [Card.Card],
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/thumbCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/card/thumb.ui',
     InternalChildren: [ 'thumbnail-frame', 'inner-grid', 'content-frame', 'title-label', 'synopsis-label' ],
 
     _init: function (props={}) {
