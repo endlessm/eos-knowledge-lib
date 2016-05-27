@@ -324,6 +324,7 @@ const DomainV2 = new Lang.Class({
                         ekn_version: 2,
                         get_content_stream: () => record.data.get_stream(),
                     };
+                    let model = this._get_model_from_json_ld(props, json_ld);
                     this._handle_redirect(task, model, cancellable);
                 }));
             }));
