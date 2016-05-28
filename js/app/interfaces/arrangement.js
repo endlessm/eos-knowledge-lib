@@ -97,16 +97,9 @@ const Arrangement = new Lang.Interface({
         },
     },
 
-    _cards_by_id: function () {
-        if (!this._cards_by_id_map)
-            this._cards_by_id_map = new Map();
-        return this._cards_by_id_map;
-    },
-
-    _models_by_id: function () {
-        if (!this._models_by_id_map)
-            this._models_by_id_map = new Map();
-        return this._models_by_id_map;
+    _interface_init: function () {
+        this._cards_by_id = new Map();
+        this._models_by_id = new Map();
     },
 
     /**
@@ -120,7 +113,7 @@ const Arrangement = new Lang.Interface({
      *   Number of card models in the arrangement
      */
     get_count: function () {
-        return this._models_by_id().size;
+        return this._models_by_id.size;
     },
 
     /**
@@ -139,7 +132,7 @@ const Arrangement = new Lang.Interface({
      *   Number of cards in the arrangement
      */
     get_card_count: function () {
-        return this._cards_by_id().size;
+        return this._cards_by_id.size;
     },
 
     _create_card: function (model) {
@@ -147,7 +140,7 @@ const Arrangement = new Lang.Interface({
         if (this._highlight_string)
             card_props.highlight_string = this._highlight_string;
         let card = this.create_submodule('card-type', card_props);
-        this._cards_by_id().set(model.ekn_id, card);
+        this._cards_by_id.set(model.ekn_id, card);
 
         // It's either this or have Card require Gtk.Button, but that would be
         // very bad for DocumentCards.
@@ -171,7 +164,7 @@ const Arrangement = new Lang.Interface({
      *   model - a <ContentObjectModel>
      */
     add_model: function (model) {
-        this._models_by_id().set(model.ekn_id, model);
+        this._models_by_id.set(model.ekn_id, model);
 
         let max_cards = this.get_max_cards();
         let order = this.get_order();
@@ -213,10 +206,10 @@ const Arrangement = new Lang.Interface({
      *   model - a <ContentObjectModel>
      */
     remove_model: function (model) {
-        this._models_by_id().delete(model.ekn_id);
-        let card = this._cards_by_id().get(model.ekn_id);
+        this._models_by_id.delete(model.ekn_id);
+        let card = this._cards_by_id.get(model.ekn_id);
         if (card) {
-            this._cards_by_id().delete(model.ekn_id);
+            this._cards_by_id.delete(model.ekn_id);
             this.unpack_card(card);
         }
     },
@@ -226,7 +219,7 @@ const Arrangement = new Lang.Interface({
      * Get all card models in the arrangement
      */
     get_models: function () {
-        let models = [...this._models_by_id().values()];
+        let models = [...this._models_by_id.values()];
         let order = this.get_order();
         if (order)
             models.sort(order.compare.bind(order));
@@ -275,7 +268,7 @@ const Arrangement = new Lang.Interface({
      *   it, or because @model is not in the arrangement
      */
     get_card_for_model: function (model) {
-        return this._cards_by_id().get(model.ekn_id);
+        return this._cards_by_id.get(model.ekn_id);
     },
 
     get_max_cards: function () {
@@ -287,10 +280,10 @@ const Arrangement = new Lang.Interface({
      * Remove all cards from the arrangement
      */
     clear: function () {
-        for (let card of this._cards_by_id().values())
+        for (let card of this._cards_by_id.values())
             this.unpack_card(card);
-        this._cards_by_id().clear();
-        this._models_by_id().clear();
+        this._cards_by_id.clear();
+        this._models_by_id.clear();
     },
 
     highlight: function (highlight_model) {
@@ -301,7 +294,7 @@ const Arrangement = new Lang.Interface({
     },
 
     clear_highlight: function() {
-        for (let card of this._cards_by_id().values()) {
+        for (let card of this._cards_by_id.values()) {
             card.get_style_context().remove_class('highlighted');
         }
     },
@@ -339,7 +332,7 @@ const Arrangement = new Lang.Interface({
             return;
         this._highlight_string = str;
 
-        for (let card of this._cards_by_id().values()) {
+        for (let card of this._cards_by_id.values()) {
             let str_to_set = str ? str : '';
             if (card.highlight_string !== str_to_set)
                 card.highlight_string = str_to_set;

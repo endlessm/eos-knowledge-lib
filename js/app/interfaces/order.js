@@ -46,6 +46,10 @@ const Order = new Lang.Interface({
         'sub-order': {},
     },
 
+    _interface_init: function () {
+        this._sub_order = this.create_submodule('sub-order');
+    },
+
     /**
      * Method: compare
      * Determine the sort order of two models
@@ -61,16 +65,9 @@ const Order = new Lang.Interface({
      */
     compare: function (left, right) {
         let result = this.compare_impl(left, right);
-        if (result === 0 && this._get_sub_order())
+        if (result === 0 && this._sub_order)
             result = this._sub_order.compare(left, right);
         return (this.ascending ? 1 : -1) * result;
-    },
-
-    _get_sub_order: function () {
-        // null is a valid value for sub-order
-        if (typeof this._sub_order === 'undefined')
-            this._sub_order = this.create_submodule('sub-order');
-        return this._sub_order;
     },
 
     /**

@@ -108,4 +108,63 @@ describe('Syntactic sugar metaclass', function () {
             },
         })).toThrow();
     });
+
+    const MyInitInterface = new Lang.Interface({
+        Name: 'MyInitInterface',
+        _interface_init: function () {
+            this.my_interface_inited = true;
+        },
+    });
+    const MyInitGObjectInterface = new Lang.Interface({
+        Name: 'MyInitGObjectInterface',
+        Requires: [GObject.Object],
+        _interface_init: function () {
+            this.my_gobject_interface_inited = true;
+        },
+    });
+    const MyInitedClass = new Knowledge.Class({
+        Name: 'MyInitedClass',
+        Extends: GObject.Object,
+        Implements: [MyInitInterface, MyInitGObjectInterface],
+        _init: function (props={}) {
+            this.parent(props);
+            this.class_inited = true;
+        },
+    });
+
+    it('calls _interface_init() functions of implemented interfaces', function () {
+        let object = new MyInitedClass();
+        expect(object.my_interface_inited).toBeTruthy();
+        expect(object.my_gobject_interface_inited).toBeTruthy();
+        expect(object.class_inited).toBeTruthy();
+    });
+
+    it('calls _interface_init() functions of interfaces implemented by parents', function () {
+        const MyInitedSubclass = new Knowledge.Class({
+            Name: 'MyInitedSubclass',
+            Extends: MyInitedClass,
+        });
+        let object = new MyInitedSubclass();
+        expect(object.my_interface_inited).toBeTruthy();
+        expect(object.my_gobject_interface_inited).toBeTruthy();
+        expect(object.class_inited).toBeTruthy();
+    });
+
+    it('does not clobber unoverridden _init() functions of parents', function () {
+        const MyPropertiesClass = new Knowledge.Class({
+            Name: 'MyPropertiesClass',
+            Extends: GObject.Object,
+            Implements: [MyInitInterface],
+            Properties: {
+                'foo': GObject.ParamSpec.string('foo', '', '',
+                    GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+                    'not inited'),
+            },
+        });
+        let object = new MyPropertiesClass({
+            'foo': 'inited',
+        });
+        expect(object.my_interface_inited).toBeTruthy();
+        expect(object.foo).toEqual('inited');
+    });
 });
