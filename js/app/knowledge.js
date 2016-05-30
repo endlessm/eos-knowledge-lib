@@ -29,6 +29,8 @@ const Lang = imports.lang;
  * Properties from interfaces listed in Implements: are overridden
  * automatically, meaning there's no need for you to use
  * GObject.ParamSpec.override.
+ * Also, any _interface_init() functions on interfaces listed in Implements:
+ * will be called on the object at construct time.
  *
  * You can also supply a StyleProperties key when defining a class.
  * This only works for classes that inherit from Gtk.Widget.
@@ -64,6 +66,21 @@ const Class = new Lang.Class({
         // Remove StyleProperties before chaining
         let style_properties = props.StyleProperties || {};
         delete props.StyleProperties;
+
+        let old_init = props._init;
+        props._init = function () {
+            if (old_init)
+                old_init.apply(this, arguments);
+            else
+                this.parent.apply(this, arguments);
+            for (let current = this.constructor; current; current = current.__super__) {
+                let interfaces = current.prototype.__interfaces__ || [];
+                interfaces.forEach(iface => {
+                    if (iface._interface_init)
+                        iface._interface_init(this);
+                });
+            }
+        };
 
         let metaclass = Lang.getMetaClass(props) || Lang.Class;
         let newclass = metaclass.prototype._construct(props);
