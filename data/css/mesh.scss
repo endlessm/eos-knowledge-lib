@@ -10,6 +10,12 @@ EosWindow {
     background-color: #888888;
 }
 
+EknAppBanner .image {
+    -EknThemeableImage-sizing: "size-down";
+    min-width: 200px;
+    min-height: 200px;
+}
+
 .article-search {
     background-color: #dbdbdb;
     padding: 3px;
@@ -553,14 +559,14 @@ EosWindow scrollbar trough {
 
 .nav-back-button .image {
     -gtk-icon-source: -gtk-icontheme("go-previous-symbolic");
-    -EknThemeableImage-min-width: 22;
-    -EknThemeableImage-min-height: 22;
+    min-width: 22px;
+    min-height: 22px;
 }
 
 .nav-forward-button .image {
     -gtk-icon-source: -gtk-icontheme("go-next-symbolic");
-    -EknThemeableImage-min-width: 22;
-    -EknThemeableImage-min-height: 22;
+    min-width: 22px;
+    min-height: 22px;
 }
 
 .nav-back-button:dir(rtl) .image {

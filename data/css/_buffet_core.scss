@@ -20,6 +20,12 @@ EknSuggestedCategories separator {
     margin: 4px 50px 20px 50px;
 }
 
+EknAppBanner.brand-page .image {
+    -EknThemeableImage-sizing: "size-down";
+    min-width: 200px;
+    min-height: 200px;
+}
+
 .browse-content {
     padding: 20px 50px 0px 50px;
 }
@@ -257,14 +263,6 @@ EknSetPreviewCard:hover .title,
 
 .home-button {
     font-weight: bold;
-}
-
-EknAppBanner {
-    font-size: 1.19em; /* 19px / 12px/em * 72/96 */
-}
-
-EknAppBanner .subtitle {
-    margin-top: 70px;
 }
 
 .document-card WebKitWebView {

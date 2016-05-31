@@ -31,12 +31,31 @@ gboolean ekn_param_spec_enum_value_from_string (GParamSpecEnum *pspec,
                                                 gint *value);
 
 EKN_AVAILABLE_IN_0_0
-gfloat ekn_widget_style_get_float (GtkWidget *widget,
-                                   const gchar *name);
+gint ekn_style_context_get_int (GtkStyleContext *context,
+                                const gchar *name,
+                                GtkStateFlags state);
 
 EKN_AVAILABLE_IN_0_0
-gint ekn_widget_style_get_int (GtkWidget *widget,
-                               const gchar *name);
+gfloat ekn_style_context_get_float (GtkStyleContext *context,
+                                    const gchar *name,
+                                    GtkStateFlags state);
+
+EKN_AVAILABLE_IN_0_0
+const gchar * ekn_style_context_get_string (GtkStyleContext *context,
+                                            const gchar *name,
+                                            GtkStateFlags state);
+
+EKN_AVAILABLE_IN_0_0
+gint ekn_style_context_get_custom_int (GtkStyleContext *context,
+                                       const gchar *name);
+
+EKN_AVAILABLE_IN_0_0
+gfloat ekn_style_context_get_custom_float (GtkStyleContext *context,
+                                           const gchar *name);
+
+EKN_AVAILABLE_IN_0_0
+const gchar * ekn_style_context_get_custom_string (GtkStyleContext *context,
+                                                   const gchar *name);
 
 EKN_AVAILABLE_IN_0_4
 gchar* ekn_extract_pixbuf_dominant_color (GdkPixbuf *pixbuf);

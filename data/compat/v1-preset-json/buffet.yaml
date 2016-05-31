@@ -189,7 +189,6 @@ root:
         brand-page:
           type: Banner.App
           properties:
-            max-fraction: 0.6  # FIXME remove fraction
             show-subtitle: true
             subtitle-capitalization: uppercase
         home-page: *home-page

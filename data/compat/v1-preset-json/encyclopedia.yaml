@@ -4,8 +4,7 @@ defines:
     shortdef: 'Layout.Box(orientation: vertical, halign: center, valign: center)'
     slots:
       contents:
-      # FIXME remove fractions
-      - 'Banner.App(min-fraction: 0.5, max-fraction: 0.5, expand: true)'
+      - 'Banner.App(expand: true)'
       - 'Navigation.SearchBox(halign: center)'
 
   - &inner-page-layout
@@ -14,8 +13,6 @@ defines:
       contents:
       - type: Banner.App
         properties:
-          min-fraction: 0.2  # FIXME remove fractions
-          max-fraction: 0.2
           valign: start
           halign: center
           hexpand: true

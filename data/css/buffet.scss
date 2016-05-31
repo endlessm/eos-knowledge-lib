@@ -44,8 +44,8 @@ EknHighlights .title-card .after,
 EknSetPreviewCard .title .after,
 EknThematic .title-card .after {
     -gtk-icon-source: url('../images/title-arrow-dark.svg');
-    -EknThemeableImage-min-height: 10;
-    -EknThemeableImage-min-width: 11;
+    min-height: 10px;
+    min-width: 11px;
     margin-left: 8px;
     margin-top: 6px;
 }

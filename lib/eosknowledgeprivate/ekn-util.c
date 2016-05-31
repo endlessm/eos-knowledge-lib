@@ -74,34 +74,139 @@ ekn_param_spec_enum_value_from_string (GParamSpecEnum *pspec, const gchar *name,
   return FALSE;
 }
 
-/**
- * ekn_widget_style_get_float:
- * @name: style property name
- *
- * Calls the non-introspectable varargs function gtk_widget_style_get to read a
- * floating point value from a style property.
- */
-gfloat
-ekn_widget_style_get_float (GtkWidget *widget, const gchar *name)
+static void
+ekn_style_context_convert_property_value (GtkStyleContext *context,
+                                          const gchar *name,
+                                          GtkStateFlags state,
+                                          GValue *dest_value)
 {
-  gfloat ret;
-  gtk_widget_style_get (widget, name, &ret, NULL);
-  return ret;
+  GValue value = G_VALUE_INIT;
+  gtk_style_context_get_property (context, name, state, &value);
+  if (g_value_type_transformable (G_VALUE_TYPE (dest_value), G_VALUE_TYPE (&value)))
+    g_value_transform (&value, dest_value);
+  else
+    g_warning ("Can't convert %s value to type %s\n", name, G_VALUE_TYPE_NAME (dest_value));
 }
 
 /**
- * ekn_widget_style_get_int:
- * @name: style property name
+ * ekn_style_context_get_int:
+ * @context: the style context
+ * @name: the style property name
+ * @state: the widget state flags to query for
  *
- * Calls the non-introspectable varargs function gtk_widget_style_get to read a
- * integer point value from a style property.
+ * Introspection workaround. Queries a widget's style context for a gtk css
+ * property and returns an int. Make sure the style you are querying for
+ * actually has an integer value.
  */
 gint
-ekn_widget_style_get_int (GtkWidget *widget, const gchar *name)
+ekn_style_context_get_int (GtkStyleContext *context,
+                           const gchar *name,
+                           GtkStateFlags state)
 {
-  gint ret;
-  gtk_widget_style_get (widget, name, &ret, NULL);
-  return ret;
+  GValue value = G_VALUE_INIT;
+  g_value_init (&value, G_TYPE_INT);
+  ekn_style_context_convert_property_value (context, name, state, &value);
+  return g_value_get_int (&value);
+}
+
+/**
+ * ekn_style_context_get_float:
+ * @context: the style context
+ * @name: the style property name
+ * @state: the widget state flags to query for
+ *
+ * Introspection workaround. Queries a widget's style context for a gtk css
+ * property and returns a float. Make sure the style you are querying for
+ * actually has an floating point value.
+ */
+gfloat
+ekn_style_context_get_float (GtkStyleContext *context,
+                             const gchar *name,
+                             GtkStateFlags state)
+{
+  GValue value = G_VALUE_INIT;
+  g_value_init (&value, G_TYPE_FLOAT);
+  ekn_style_context_convert_property_value (context, name, state, &value);
+  return g_value_get_float (&value);
+}
+
+/**
+ * ekn_style_context_get_string:
+ * @context: the style context
+ * @name: the style property name
+ * @state: the widget state flags to query for
+ *
+ * Introspection workaround. Queries a widget's style context for a gtk css
+ * property and returns a string. Make sure the style you are querying for
+ * actually has an string value.
+ */
+const gchar *
+ekn_style_context_get_string (GtkStyleContext *context,
+                              const gchar *name,
+                              GtkStateFlags state)
+{
+  // FIXME: return transfer value.
+  GValue value = G_VALUE_INIT;
+  g_value_init (&value, G_TYPE_STRING);
+  ekn_style_context_convert_property_value (context, name, state, &value);
+  return g_value_get_string (&value);
+}
+
+/**
+ * ekn_style_context_get_custom_int:
+ * @context: the style context
+ * @name: the style property name
+ *
+ * Introspection workaround. Queries a widget's style context for a custom
+ * widget style property and returns an int. Make sure the style you are
+ * querying for actually has an integer value.
+ */
+gint
+ekn_style_context_get_custom_int (GtkStyleContext *context,
+                                  const gchar *name)
+{
+  GValue value = G_VALUE_INIT;
+  g_value_init (&value, G_TYPE_INT);
+  gtk_style_context_get_style_property (context, name, &value);
+  return g_value_get_int (&value);
+}
+
+/**
+ * ekn_style_context_get_custom_float:
+ * @context: the style context
+ * @name: the style property name
+ *
+ * Introspection workaround. Queries a widget's style context for a custom
+ * widget style property and returns a float. Make sure the style you are
+ * querying for actually has a float value.
+ */
+gfloat
+ekn_style_context_get_custom_float (GtkStyleContext *context,
+                                    const gchar *name)
+{
+  GValue value = G_VALUE_INIT;
+  g_value_init (&value, G_TYPE_FLOAT);
+  gtk_style_context_get_style_property (context, name, &value);
+  return g_value_get_float (&value);
+}
+
+/**
+ * ekn_style_context_get_custom_string:
+ * @context: the style context
+ * @name: the style property name
+ *
+ * Introspection workaround. Queries a widget's style context for a custom
+ * widget style property and returns a string. Make sure the style you are
+ * querying for actually has a string value.
+ */
+const gchar *
+ekn_style_context_get_custom_string (GtkStyleContext *context,
+                                     const gchar *name)
+{
+  GValue value = G_VALUE_INIT;
+  g_value_init (&value, G_TYPE_STRING);
+  gtk_style_context_get_style_property (context, name, &value);
+  return g_value_get_string (&value);
 }
 
 /**

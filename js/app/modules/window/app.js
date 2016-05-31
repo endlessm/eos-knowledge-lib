@@ -135,6 +135,8 @@ const App = new Module.Class({
         this._search_page = this.create_submodule('search-page');
         this._article_page = this.create_submodule('article-page');
         this._brand_page = this.create_submodule('brand-page');
+        if (this._brand_page)
+            this._brand_page.get_style_context().add_class('brand-page');
 
         if (this.template_type === 'B') {
             this._home_page.get_style_context().add_class('home-page-b');

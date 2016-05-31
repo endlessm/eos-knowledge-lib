@@ -1,22 +1,46 @@
 /* exported ThemeableImage */
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const Gdk = imports.gi.Gdk;
+const GdkPixbuf = imports.gi.GdkPixbuf;
+const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
-const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 
 const Knowledge = imports.app.knowledge;
+const WidgetSurfaceCache = imports.app.widgetSurfaceCache;
 
+/**
+ * Class: ThemeableImage
+ *
+ * ThemeableImage is a bit of a weird science experiment, one that can maybe
+ * go away as Gtk gets more expressive. It renders an image that very
+ * customizable in css.
+ *
+ * This widget has two main rendering modes. It can render an image file if
+ * image-uri is set, or a icon set directly in css with -gtk-icon-source.
+ *
+ * If an image (and not icon) is being rendered, the -EknThemeableImage-sizing
+ * custom style property governs it sizing behavior.
+ * If the value is 'size-full' the image will always appear at full size
+ * If the value is 'size-down' the image will shrink from full to min size
+ * If the value is 'size-min' the image will always appear at min size
+ */
 const ThemeableImage = new Knowledge.Class({
     Name: 'ThemeableImage',
     Extends: Gtk.Widget,
+    Properties: {
+        /**
+         * Property: image-uri
+         * A URI to the title image. Defaults to an empty string.
+         */
+        'image-uri': GObject.ParamSpec.string('image-uri', 'image-uri', 'image-uri',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+    },
 
     StyleProperties: {
-        // FIXME: Standin till these are supported in gtk.
-        'min-height': GObject.ParamSpec.int('min-height', 'Min Height',
-            'Min Height', GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0),
-        'min-width': GObject.ParamSpec.int('min-width', 'Min Width',
-            'Min Width', GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0),
+        'sizing': GObject.ParamSpec.string('sizing', 'sizing', 'sizing',
+            GObject.ParamFlags.READWRITE, 'size-full'),
     },
 
     _init: function (props={}) {
@@ -25,23 +49,33 @@ const ThemeableImage = new Knowledge.Class({
         this.set_has_window(false);
         this._min_width = 0;
         this._min_height = 0;
+        this._sizing = 'full-size';
 
         let provider = new Gtk.CssProvider();
         provider.load_from_data('* { -gtk-icon-source: none; }');
-        this.get_style_context().add_provider(provider,  Gtk.STYLE_PROVIDER_PRIORITY_FALLBACK);
+        this.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION - 10);
+
+        this._pixbuf = null;
+        this._surface_cache = null;
+        this._image_width = 0;
+        this._image_height = 0;
+        if (this.image_uri.length > 0) {
+            let stream = Gio.File.new_for_uri(this.image_uri).read(null);
+            this._pixbuf = GdkPixbuf.Pixbuf.new_from_stream(stream, null);
+            this._surface_cache = new WidgetSurfaceCache.WidgetSurfaceCache(this, this._draw_scaled_pixbuf.bind(this));
+        }
 
         this.connect('style-set', () => this._update_custom_style());
         this.connect('style-updated', () => this._update_custom_style());
     },
 
     _update_custom_style: function () {
-        let min_width = EosKnowledgePrivate.widget_style_get_int(this, 'min-width');
-        let min_height = EosKnowledgePrivate.widget_style_get_int(this, 'min-height');
-        if (min_width !== this._min_width || min_height !== this._min_height)
-            this.queue_resize();
-        this._min_width = min_width;
-        this._min_height = min_height;
-    },
+        this._sizing = EosKnowledgePrivate.style_context_get_custom_string(this.get_style_context(), 'sizing');
+        if (['size-full', 'size-down', 'size-min'].indexOf(this._sizing) == -1) {
+            let error = new Error('Unrecognized option style property value for -EknThemeableImage-sizing ' + this._sizing);
+            logError(error);
+        }
+     },
 
     _get_margin: function () {
         return this.get_style_context().get_margin(this.get_state_flags());
@@ -60,19 +94,43 @@ const ThemeableImage = new Knowledge.Class({
     },
 
     vfunc_get_preferred_width: function () {
-        let width = Math.max(this._min_width, this.width_request);
-        width = [this._get_margin(), this._get_border(), this._get_padding()].reduce((total, border) => {
+        let min_width = EosKnowledgePrivate.style_context_get_int(this.get_style_context(),
+                                                                  'min-width',
+                                                                  this.get_state_flags());
+        min_width = Math.max(min_width, this.width_request);
+        let nat_width = min_width;
+        if (this._pixbuf) {
+            nat_width = Math.max(nat_width, this._pixbuf.width);
+            if (this._sizing === 'size-min') {
+                nat_width = min_width;
+            } else if (this._sizing === 'size-full') {
+                min_width = nat_width;
+            }
+        }
+        let extra = [this._get_margin(), this._get_border(), this._get_padding()].reduce((total, border) => {
             return total + border.left + border.right;
-        }, width);
-        return [width, width];
+        }, 0);
+        return [min_width, nat_width];
     },
 
     vfunc_get_preferred_height: function () {
-        let height = Math.max(this._min_height, this.height_request);
-        height = [this._get_margin(), this._get_border(), this._get_padding()].reduce((total, border) => {
+        let min_height = EosKnowledgePrivate.style_context_get_int(this.get_style_context(),
+                                                                   'min-height',
+                                                                   this.get_state_flags());
+        min_height = Math.max(min_height, this.height_request);
+        let nat_height = min_height;
+        if (this._pixbuf) {
+            nat_height = Math.max(nat_height, this._pixbuf.height);
+            if (this._sizing === 'size-min') {
+                nat_height = min_height;
+            } else if (this._sizing === 'size-full') {
+                min_height = nat_height;
+            }
+        }
+        let extra = [this._get_margin(), this._get_border(), this._get_padding()].reduce((total, border) => {
             return total + border.top + border.bottom;
-        }, height);
-        return [height, height];
+        }, 0);
+        return [min_height, nat_height];
     },
 
     vfunc_size_allocate: function (allocation) {
@@ -87,6 +145,20 @@ const ThemeableImage = new Knowledge.Class({
         // a patch to fix this in Gtk if the need arises
     },
 
+    _draw_scaled_pixbuf: function (cr) {
+        // Helps to read these transforms in reverse. We center the pixbuf at
+        // the origin, scale it to fit, then translate its center to the
+        // center of our allocation.
+        cr.translate(this._image_width / 2, this._image_height / 2);
+        let scale = Math.min(this._image_width / this._pixbuf.get_width(),
+                             this._image_height / this._pixbuf.get_height());
+        cr.scale(scale, scale);
+        cr.translate(-this._pixbuf.get_width() / 2, -this._pixbuf.get_height() / 2);
+
+        Gdk.cairo_set_source_pixbuf(cr, this._pixbuf, 0, 0);
+        cr.paint();
+    },
+
     vfunc_draw: function (cr) {
         let width = this.get_allocated_width();
         let height = this.get_allocated_height();
@@ -98,11 +170,23 @@ const ThemeableImage = new Knowledge.Class({
             0, 0, width, height);
         let padding = this._get_padding();
         let border = this._get_border();
-        Gtk.render_activity(this.get_style_context(), cr,
-            padding.left + border.left,
-            padding.top + border.top,
-            width - padding.left - padding.right - border.left - border.right,
-            height - padding.top - padding.bottom - border.top - border.bottom);
+
+        width = width - padding.left - padding.right - border.left - border.right;
+        height = height - padding.top - padding.bottom - border.top - border.bottom;
+        if (this._pixbuf) {
+            let do_invalidate = this._image_width !== width || this._image_height !== height;
+            this._image_width = width;
+            this._image_height = height;
+            if (do_invalidate)
+                this._surface_cache.invalidate();
+            cr.setSourceSurface(this._surface_cache.get_surface(),
+                                padding.left + border.left, padding.top + border.top);
+            cr.paint();
+        } else {
+            Gtk.render_activity(this.get_style_context(), cr,
+                padding.left + border.left, padding.top + border.top,
+                width, height);
+        }
         cr.$dispose();
     },
 });

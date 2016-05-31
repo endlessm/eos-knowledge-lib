@@ -91,7 +91,7 @@ describe('Syntactic sugar metaclass', function () {
                     GObject.ParamFlags.READABLE, 0, 10, 5),
             },
             read_foo: function () {
-                return EosKnowledgePrivate.widget_style_get_int(this, 'foo');
+                return EosKnowledgePrivate.style_context_get_custom_int(this.get_style_context(), 'foo');
             },
         });
         let widget = new MyStyleModule();

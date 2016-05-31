@@ -40,8 +40,8 @@ EknSearch .scrolling-list-grid {
 
 .trigger .image {
     -gtk-icon-source: url('../images/news-arrow-dark.svg');
-    -EknThemeableImage-min-height: 14;
-    -EknThemeableImage-min-width: 14;
+    min-height: 14px;
+    min-width: 14px;
     margin-left: 5px;
     margin-bottom: 5px;
 }
@@ -79,6 +79,12 @@ EknSetPreviewCard separator {
 EknAppBanner {
     font-family: 'Fira Sans';
     color: $context-blue;
+}
+
+.top-menu EknAppBanner .image {
+    -EknThemeableImage-sizing: "size-min";
+    min-width: 146px;
+    min-height: 30px;
 }
 
 EknPanelFrame .top-menu {

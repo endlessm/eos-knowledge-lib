@@ -60,7 +60,8 @@ const ResponsiveMargins = new Module.Class({
     _update_custom_style: function () {
         let changed = false;
         ['small', 'medium', 'large', 'xlarge'].forEach((klass) => {
-            let threshold = EosKnowledgePrivate.widget_style_get_int(this, 'margin-threshold-' + klass);
+            let threshold = EosKnowledgePrivate.style_context_get_custom_int(this.get_style_context(),
+                                                                             'margin-threshold-' + klass);
             if (threshold === this._thresholds[klass])
                 return;
             this._thresholds[klass] = threshold;

@@ -26,8 +26,6 @@ defines:
         contents:
         - type: Banner.App
           properties:
-            min-fraction: 0.2  # FIXME remove fractions
-            max-fraction: 0.7
             valign: center
             halign: center
         - type: Navigation.SearchBox
