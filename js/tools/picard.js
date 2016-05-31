@@ -84,16 +84,16 @@ function load_arrangement (arrangement_type, card_type) {
 }
 
 function get_available_modules_for_type (type) {
-    let modules_dir = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/js/app/modules');
+    let modules_dir = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/js/app/modules/' + type.toLowerCase());
     let iter = modules_dir.enumerate_children('standard::*',
         Gio.FileQueryInfoFlags.NONE, null);
     let info;
     let arr = [];
     while ((info = iter.next_file(null))) {
         let name = info.get_display_name();
-        if (!name.endsWith(type + '.js'))
+        if (!name.endsWith('.js'))
             continue;
-        arr.push(name[0].toUpperCase() + name.slice(1, -3)); // remove .js extension
+        arr.push(type + '.' + name[0].toUpperCase() + name.slice(1, -3)); // remove .js extension
     }
     return arr;
 }
