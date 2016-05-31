@@ -308,7 +308,6 @@ const DomainV2 = new Lang.Class({
                     let data = Utils.read_stream_finish(stream_task);
                     let json_ld = JSON.parse(data);
                     let props = {
-                        ekn_version: 2,
                         get_content_stream: () => record.data.get_stream(),
                     };
                     task.return_value(this._get_model_from_json_ld(props, json_ld));
@@ -560,7 +559,6 @@ const DomainV3 = new Lang.Class({
                     let data = Utils.read_stream_finish(stream_task);
                     let json_ld = JSON.parse(data);
                     let props = {
-                        ekn_version: 3,
                         get_content_stream: () => record.data.get_stream(),
                     };
                     task.return_value(this._get_model_from_json_ld(props, json_ld));

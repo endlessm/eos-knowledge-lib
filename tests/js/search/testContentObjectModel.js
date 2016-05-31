@@ -49,10 +49,6 @@ describe ('Content Object Model', function () {
             contentObject = new ContentObjectModel.ContentObjectModel({}, MOCK_CONTENT_DATA);
         });
 
-        it ('ekn_version defaults to 1', function () {
-            expect(contentObject.ekn_version).toEqual(1);
-        });
-
         it ('should have an ID', function () {
             expect(contentObject.ekn_id).toEqual(MOCK_CONTENT_DATA['@id']);
         });
