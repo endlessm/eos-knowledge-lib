@@ -96,9 +96,3 @@ const Title = new Module.Class({
         return Gdk.EVENT_PROPAGATE;
     },
 });
-
-function get_css_for_module (css_data) {
-    let str = '@define-color template-b-text-color ' + css_data['title-color'] + ';\n';
-    str += '@define-color template-b-text-color-hover ' + css_data['hover-color'] + ';\n';
-    return str;
-}
