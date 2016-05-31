@@ -325,16 +325,6 @@ describe('QueryObject', function () {
                     query_obj.get_query_parser_string(query_obj);
                 }).toThrow();
             });
-
-            it('rejects on an EKN ID domain mismatch', function () {
-                let query_obj = new QueryObject.QueryObject({
-                    domain: 'travel-es',
-                    ids: ['ekn://animals-es/2e11617b6bce1e6d'],
-                });
-                expect(function () {
-                    query_obj.get_query_parser_string(query_obj);
-                }).toThrow();
-            });
         });
     });
 });

@@ -371,11 +371,6 @@ const QueryObject = Lang.Class({
         if (path.length !== 2)
             throw new Error('EKN ID has unexpected structure ' + uri);
 
-        // EKN domain is the last part of the app ID (without the reverse domain name)
-        let id_domain = path[0];
-        if (this.domain !== id_domain)
-            throw new Error('EKN ID has domain ' + id_domain + ', but QueryObject has domain ' + this.domain);
-
         // EKN ID is a 16 or 40-hexdigit hash
         let hash = path[1];
         if (hash.search(/^(?=[A-Za-z0-9]*$)(?:.{16}|.{40})$/) === -1)

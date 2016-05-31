@@ -195,7 +195,7 @@ const Domain = new Lang.Class({
     get_object_by_id: function (id, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
-            let [domain, hash] = Utils.components_from_ekn_id(id);
+            let [hash] = Utils.components_from_ekn_id(id);
             this.load_record_from_hash(hash, cancellable, task.catch_callback_errors((source, load_task) => {
                 let record = this.load_record_from_hash_finish(load_task);
 

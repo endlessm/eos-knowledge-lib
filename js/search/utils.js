@@ -33,11 +33,18 @@ function define_enum (values) {
 }
 
 function components_from_ekn_id (ekn_id) {
-    // Chop the URI off of an ekn id: 'ekn://football-es/hash' => 'football-es/hash'
+    // The URI is of form 'ekn://domain/hash[/resource]'.
+    // Domain is usually empty string, but can contain something for older bundles.
+
+    // Chop off our constant scheme identifier.
     let stripped_ekn_id = ekn_id.slice('ekn://'.length);
 
-    // return an array like [domain, hash]
-    return stripped_ekn_id.split('/');
+    let components = stripped_ekn_id.split('/');
+
+    // Pop off the domain component.
+    components.shift();
+
+    return components;
 }
 
 function domain_from_app_id (app_id) {
