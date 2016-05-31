@@ -221,7 +221,6 @@ function build_ui () {
         direction: Gtk.ArrowType.NONE,
         image: icon,
     });
-    resize_separator.get_style_context().add_class('titlebar-hamburger');
 
     widgets.module_selection = new Gtk.MenuButton({
         popover: get_module_menu(),
