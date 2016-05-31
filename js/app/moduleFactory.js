@@ -115,6 +115,11 @@ const ModuleFactory = new Knowledge.Class({
         }
         Lang.copyProperties(extra_props, module_props);
 
+        // Make modules visible by default, as this should be a simpler API
+        // than GTK widgets
+        if (module_class.prototype.show && !('visible' in module_props))
+            module_props['visible'] = true;
+
         let module = new module_class(module_props);
 
         if (styles) {
