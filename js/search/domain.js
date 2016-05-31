@@ -151,23 +151,13 @@ const Domain = new Lang.Class({
         return task.finish();
     },
 
-    /**
-     * Function: resolve_xapian_result
-     *
-     * Private method, intended to be overridden by subclasses.
-     *
-     * Given data returned from Xapian bridge, return a Model constructed
-     * for it. The data stored in Xapian is domain-version specific.
-     *
-     * Parameters:
-     *   result: The body of a Xapian result returned from Xapian bridge
-     */
     resolve_xapian_result: function (result, cancellable, callback) {
-        throw new Error('Should be overridden in subclasses');
+        let id = result;
+        return this.get_object_by_id(id, cancellable, callback);
     },
 
     resolve_xapian_result_finish: function (task) {
-        throw new Error('Should be overridden in subclasses');
+        return task.finish();
     },
 
     get_objects_by_query: function (query_obj, cancellable, callback) {
@@ -199,6 +189,31 @@ const Domain = new Lang.Class({
     },
 
     get_objects_by_query_finish: function (task) {
+        return task.finish();
+    },
+
+    get_object_by_id: function (id, cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        task.catch_errors(() => {
+            let [domain, hash] = Utils.components_from_ekn_id(id);
+            this.load_record_from_hash(hash, cancellable, task.catch_callback_errors((source, load_task) => {
+                let record = this.load_record_from_hash_finish(load_task);
+
+                let metadata_stream = record.metadata.get_stream();
+                Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
+                    let data = Utils.read_stream_finish(stream_task);
+                    let json_ld = JSON.parse(data);
+                    let props = {
+                        get_content_stream: () => record.data.get_stream(),
+                    };
+                    task.return_value(this._get_model_from_json_ld(props, json_ld));
+                }));
+            }));
+        });
+        return task;
+    },
+
+    get_object_by_id_finish: function (task) {
         return task.finish();
     },
 
@@ -293,40 +308,6 @@ const DomainV2 = new Lang.Class({
     },
 
     load_record_from_hash_finish: function (task) {
-        return task.finish();
-    },
-
-    get_object_by_id: function (id, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        task.catch_errors(() => {
-            let [domain, hash] = Utils.components_from_ekn_id(id);
-            this.load_record_from_hash(hash, cancellable, task.catch_callback_errors((source, load_task) => {
-                let record = this.load_record_from_hash_finish(load_task);
-
-                let metadata_stream = record.metadata.get_stream();
-                Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
-                    let data = Utils.read_stream_finish(stream_task);
-                    let json_ld = JSON.parse(data);
-                    let props = {
-                        get_content_stream: () => record.data.get_stream(),
-                    };
-                    task.return_value(this._get_model_from_json_ld(props, json_ld));
-                }));
-            }));
-        });
-        return task;
-    },
-
-    get_object_by_id_finish: function (task) {
-        return task.finish();
-    },
-
-    resolve_xapian_result: function (result, cancellable, callback) {
-        let id = result;
-        return this.get_object_by_id(id, cancellable, callback);
-    },
-
-    resolve_xapian_result_finish: function (task) {
         return task.finish();
     },
 });
@@ -544,40 +525,6 @@ const DomainV3 = new Lang.Class({
     },
 
     load_record_from_hash_finish: function (task) {
-        return task.finish();
-    },
-
-    get_object_by_id: function (id, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        task.catch_errors(() => {
-            let [domain, hash] = Utils.components_from_ekn_id(id);
-            this.load_record_from_hash(hash, cancellable, task.catch_callback_errors((source, load_task) => {
-                let record = this.load_record_from_hash_finish(load_task);
-
-                let metadata_stream = record.metadata.get_stream();
-                Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
-                    let data = Utils.read_stream_finish(stream_task);
-                    let json_ld = JSON.parse(data);
-                    let props = {
-                        get_content_stream: () => record.data.get_stream(),
-                    };
-                    task.return_value(this._get_model_from_json_ld(props, json_ld));
-                }));
-            }));
-        });
-        return task;
-    },
-
-    get_object_by_id_finish: function (task) {
-        return task.finish();
-    },
-
-    resolve_xapian_result: function (result, cancellable, callback) {
-        let id = result;
-        return this.get_object_by_id(id, cancellable, callback);
-    },
-
-    resolve_xapian_result_finish: function (task) {
         return task.finish();
     },
 
