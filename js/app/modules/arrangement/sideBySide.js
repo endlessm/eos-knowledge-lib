@@ -18,7 +18,7 @@ const _HorizontalSpacing = {
 };
 
 const _SideBySideLayout = new Knowledge.Class({
-    Name: 'SideBySideLayout',
+    Name: 'Arrangement.SideBySideLayout',
     Extends: Endless.CustomContainer,
 
     _init: function (props={}) {

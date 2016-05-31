@@ -18,9 +18,9 @@ const SMALL_WIDTH = 190;
 const MEDIUM_WIDTH = 290;
 const LARGE_WIDTH = 390;
 
-const ThumbCardLayout = new Knowledge.Class({
-    Name: 'ThumbCardLayout',
-    CssName: 'EknThumbCardLayout',
+const ThumbLayout = new Knowledge.Class({
+    Name: 'Card.ThumbLayout',
+    CssName: 'EknThumbLayout',
     Extends: Endless.CustomContainer,
 
     _init: function (thumbnail, content, props={}) {
@@ -122,7 +122,7 @@ const Thumb = new Module.Class({
         this._inner_grid.add(this._context_widget);
 
         this.set_size_request(Card.MinSize.B, Card.MinSize.B);
-        this._layout = new ThumbCardLayout(this._thumbnail_frame, this._content_frame, {
+        this._layout = new ThumbLayout(this._thumbnail_frame, this._content_frame, {
             visible: true,
         });
         this.add(this._layout);

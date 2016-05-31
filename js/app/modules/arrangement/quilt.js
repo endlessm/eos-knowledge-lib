@@ -69,7 +69,7 @@ const SECONDARY_HORIZONTAL_PROPORTION = {
 };
 
 const _QuiltLayout = new Knowledge.Class({
-    Name: 'QuiltLayout',
+    Name: 'Arrangement.QuiltLayout',
     Extends: Endless.CustomContainer,
 
     _init: function (props={}) {

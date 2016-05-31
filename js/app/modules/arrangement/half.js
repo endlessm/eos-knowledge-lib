@@ -22,7 +22,7 @@ const CARD_HEIGHT_MAX = Card.MaxSize.C;
 const MINIMUM_ARRANGEMENT_WIDTH = 2 * Card.MinSize.C;
 
 const _HalfLayout = new Knowledge.Class({
-    Name: 'HalfLayout',
+    Name: 'Arrangement.HalfLayout',
     Extends: Endless.CustomContainer,
 
     _init: function (props={}) {

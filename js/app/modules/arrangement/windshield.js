@@ -17,7 +17,7 @@ const CARD_SIZE_BIG = Card.MinSize.C;
 const CARD_SIZE_MAX = Card.MinSize.D;
 
 const _WindshieldLayout = new Knowledge.Class({
-    Name: 'WindshieldLayout',
+    Name: 'Arrangement.WindshieldLayout',
     CssName: 'EknWindshieldArrangement',
     Extends: Endless.CustomContainer,
 
