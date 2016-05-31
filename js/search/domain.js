@@ -281,18 +281,6 @@ const DomainV2 = new Lang.Class({
         return params;
     },
 
-    _handle_redirect: function (task, model, cancellable) {
-        // If the requested model should redirect to another, then fetch
-        // that model instead.
-        if (model.redirects_to.length > 0) {
-            this.get_object_by_id(model.redirects_to, cancellable, task.catch_callback_errors((engine, redirect_task) => {
-                task.return_value(this.get_object_by_id_finish(redirect_task));
-            }));
-        } else {
-            task.return_value(model);
-        }
-    },
-
     load_record_from_hash: function (hash, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         this.load(cancellable, task.catch_callback_errors((source, load_task) => {
@@ -312,7 +300,6 @@ const DomainV2 = new Lang.Class({
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
             let [domain, hash] = Utils.components_from_ekn_id(id);
-
             this.load_record_from_hash(hash, cancellable, task.catch_callback_errors((source, load_task) => {
                 let record = this.load_record_from_hash_finish(load_task);
 
@@ -324,8 +311,7 @@ const DomainV2 = new Lang.Class({
                         ekn_version: 2,
                         get_content_stream: () => record.data.get_stream(),
                     };
-                    let model = this._get_model_from_json_ld(props, json_ld);
-                    this._handle_redirect(task, model, cancellable);
+                    task.return_value(this._get_model_from_json_ld(props, json_ld));
                 }));
             }));
         });

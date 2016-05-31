@@ -221,32 +221,6 @@ describe('DomainV2', function () {
                 done();
             }, 25); // pause for a moment for any more callbacks
         });
-
-        it('performs redirect resolution', function (done) {
-            let metadata_to_return = [
-                {
-                    '@id': 'ekn://foo/0123456789abcdef',
-                    '@type': 'ekn://_vocab/ArticleObject',
-                    redirectsTo: 'ekn://foo/fedcba9876543210',
-                },
-                {
-                    '@id': 'ekn://foo/fedcba9876543210',
-                    '@type': 'ekn://_vocab/ArticleObject',
-                },
-            ];
-            mock_shard_file.find_record_by_hex_name.and.callFake(function () {
-                let result = JSON.stringify(metadata_to_return.pop());
-                let result_stream = Utils.string_to_stream(result);
-                mock_metadata.get_stream.and.returnValue(result_stream);
-                return mock_shard_record;
-            });
-
-            domain.get_object_by_id('ekn://foo/fedcba9876543210', null, function (domain, task) {
-                let result = domain.get_object_by_id_finish(task);
-                expect(result.ekn_id).toEqual('ekn://foo/fedcba9876543210');
-                done();
-            });
-        });
     });
 
     describe('get_objects_by_query', function () {

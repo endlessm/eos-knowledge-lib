@@ -123,13 +123,6 @@ const ContentObjectModel = new Lang.Class({
         'license': GObject.ParamSpec.string('license', 'License', 'License of the document or media object',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
-         * Property: redirects-to
-         * The EKN ID of the ContentObject to which this model should redirect.
-         */
-        'redirects-to': GObject.ParamSpec.string('redirects-to', 'Redirects To',
-            'EKN ID of the object to which this model should redirect',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
-        /**
          * Property: featured
          * Whether this content should be given priority in the UI
          */
@@ -230,9 +223,6 @@ const ContentObjectModel = new Lang.Class({
 
         if (json_ld.hasOwnProperty('thumbnail'))
             props.thumbnail_uri = json_ld.thumbnail;
-
-        if (json_ld.hasOwnProperty('redirectsTo'))
-            props.redirects_to = json_ld.redirectsTo;
 
         if (json_ld.hasOwnProperty('featured'))
             props.featured = json_ld.featured;

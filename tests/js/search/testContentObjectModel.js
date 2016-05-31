@@ -11,7 +11,6 @@ const MOCK_CONTENT_DATA = {
     'license': 'Creative-Commons',
     'thumbnail': 'ekn://text_editors/Stallman.jpg',
     'resources': ['ekn://text_editors/stallman_the_bard', 'ekn://text_editors/emacs_screenshot'],
-    'redirectsTo': 'http://en.wikipedia.org/wiki/Inferiority_complex',
     'featured': true,
 };
 
@@ -93,10 +92,6 @@ describe ('Content Object Model', function () {
 
         it ('should have resources', function () {
             expect(contentObject.resources).toEqual(MOCK_CONTENT_DATA.resources);
-        });
-
-        it ('should have redirects-to', function () {
-            expect(contentObject.redirects_to).toEqual(MOCK_CONTENT_DATA.redirectsTo);
         });
 
         it('has a featured flag', function () {
