@@ -182,7 +182,6 @@ const _QuiltLayout = new Knowledge.Class({
  */
 const Quilt = new Module.Class({
     Name: 'Arrangement.Quilt',
-    CssName: 'EknQuiltArrangement',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],
 

@@ -27,7 +27,6 @@ const Utils = imports.app.utils;
  */
 const Sidebar = new Module.Class({
     Name: 'Layout.Sidebar',
-    CssName: 'EknSidebarTemplate',
     Extends: Endless.CustomContainer,
 
     Properties: {

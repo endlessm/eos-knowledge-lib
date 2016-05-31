@@ -36,7 +36,6 @@ const Navigation = {
  */
 const ArticleStack = new Module.Class({
     Name: 'Layout.ArticleStack',
-    CssName: 'EknArticleStack',
     Extends: Gtk.Stack,
 
     Properties: {

@@ -123,7 +123,6 @@ const _SideBySideLayout = new Knowledge.Class({
  */
 const SideBySide = new Module.Class({
     Name: 'Arrangement.SideBySide',
-    CssName: 'EknSideBySideArrangement',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],
 

@@ -34,7 +34,6 @@ const Utils = imports.app.utils;
  */
 const KnowledgeDocument = new Module.Class({
     Name: 'Card.KnowledgeDocument',
-    CssName: 'EknKnowledgeDocumentCard',
     Extends: Endless.CustomContainer,
     Implements: [Card.Card, DocumentCard.DocumentCard],
 

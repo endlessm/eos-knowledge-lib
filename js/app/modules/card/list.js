@@ -16,7 +16,6 @@ const Utils = imports.app.utils;
  */
 const List = new Module.Class({
     Name: 'Card.List',
-    CssName: 'EknListCard',
     Extends: Gtk.Button,
     Implements: [Card.Card, NavigationCard.NavigationCard],
 

@@ -10,7 +10,6 @@ const Module = imports.app.interfaces.module;
  */
 const Navigation = new Module.Class({
     Name: 'Layout.Navigation',
-    CssName: 'EknNavigation',
     Extends: NavButtonOverlay.NavButtonOverlay,
 
     _init: function (props={}) {

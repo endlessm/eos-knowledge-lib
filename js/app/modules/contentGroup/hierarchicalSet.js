@@ -38,7 +38,6 @@ const BATCH_SIZE = 15;
  */
 const HierarchicalSet = new Module.Class({
     Name: 'ContentGroup.HierarchicalSet',
-    CssName: 'EknHierarchicalSet',
     Extends: Gtk.Grid,
 
     Slots: {

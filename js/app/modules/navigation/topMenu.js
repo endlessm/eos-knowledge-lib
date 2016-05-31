@@ -31,7 +31,6 @@ const TOP_MENU_HEIGHT = 50;
  */
 const TopMenu = new Module.Class({
     Name: 'Navigation.TopMenu',
-    CssName: 'EknTopMenu',
     Extends: Endless.CustomContainer,
 
     Slots: {

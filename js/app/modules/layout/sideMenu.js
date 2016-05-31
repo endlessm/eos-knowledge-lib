@@ -46,7 +46,6 @@ const _MENU_HOT_ZONE_WIDTH_PX = 3;
  */
 const SideMenu = new Module.Class({
     Name: 'Layout.SideMenu',
-    CssName: 'EknSideMenuTemplate',
     Extends: SlidingPanelOverlay.SlidingPanelOverlay,
 
     Properties: {

@@ -107,7 +107,6 @@ const _SquareGuysLayout = new Knowledge.Class({
  */
 const SquareGuys = new Module.Class({
     Name: 'Arrangement.SquareGuys',
-    CssName: 'EknSquareGuysArrangement',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],
 

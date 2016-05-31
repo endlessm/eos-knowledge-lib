@@ -154,7 +154,6 @@ const _QuarterLayout = new Knowledge.Class({
  */
 const Quarter = new Module.Class({
     Name: 'Arrangement.Quarter',
-    CssName: 'EknQuarterArrangement',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],
 

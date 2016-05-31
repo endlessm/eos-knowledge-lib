@@ -28,7 +28,6 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  */
 const HamburgerBasement = new Module.Class({
     Name: 'Layout.HamburgerBasement',
-    CssName: 'EknHamburgerBasementTemplate',
     Extends: Gtk.Stack,
 
     Properties: {

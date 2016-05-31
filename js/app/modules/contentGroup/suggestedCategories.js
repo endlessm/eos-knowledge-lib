@@ -25,7 +25,6 @@ const Utils = imports.app.utils;
  */
 const SuggestedCategories = new Module.Class({
     Name: 'ContentGroup.SuggestedCategories',
-    CssName: 'EknSuggestedCategories',
     Extends: Gtk.Grid,
 
     Properties: {

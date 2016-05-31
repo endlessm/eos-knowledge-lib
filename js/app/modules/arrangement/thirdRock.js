@@ -122,7 +122,6 @@ const _ThirdRockLayout = new Knowledge.Class({
  */
 const ThirdRock = new Module.Class({
     Name: 'Arrangement.ThirdRock',
-    CssName: 'EknThirdRockArrangement',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],
 

@@ -8,7 +8,6 @@ const Module = imports.app.interfaces.module;
 
 const Overflow = new Module.Class({
     Name: 'Arrangement.Overflow',
-    CssName: 'EknOverflowArrangement',
     Extends: SpaceContainer.SpaceContainer,
     Implements: [Arrangement.Arrangement],
 

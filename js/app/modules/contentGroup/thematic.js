@@ -38,7 +38,6 @@ const QueryObject = imports.search.queryObject;
  */
 const Thematic = new Module.Class({
     Name: 'ContentGroup.Thematic',
-    CssName: 'EknThematic',
     Extends: Gtk.Grid,
 
     Slots: {

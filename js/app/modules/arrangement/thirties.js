@@ -112,7 +112,6 @@ const _ThirtiesLayout = new Knowledge.Class({
  */
 const Thirties = new Module.Class({
     Name: 'Arrangement.Thirties',
-    CssName: 'EknThirtiesArrangement',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],
 

@@ -21,7 +21,6 @@ const Utils = imports.app.utils;
  */
 const App = new Module.Class({
     Name: 'Banner.App',
-    CssName: 'EknAppBanner',
     Extends: Gtk.Grid,
 
     Properties: {

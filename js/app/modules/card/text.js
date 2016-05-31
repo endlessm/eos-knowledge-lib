@@ -25,7 +25,6 @@ const Utils = imports.app.utils;
  */
 const Text = new Module.Class({
     Name: 'Card.Text',
-    CssName: 'EknTextCard',
     Extends: Gtk.Button,
     Implements: [Card.Card],
 

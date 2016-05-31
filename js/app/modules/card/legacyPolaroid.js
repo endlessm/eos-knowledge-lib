@@ -24,7 +24,6 @@ const HOVER_HEIGHT = Math.ceil(HEIGHT * (1 + GROW_FRACTION));
  */
 const LegacyPolaroid = new Module.Class({
     Name: 'Card.LegacyPolaroid',
-    CssName: 'EknLegacyPolaroidCard',
     Extends: Gtk.Button,
     Implements: [Card.Card],
 

@@ -18,7 +18,6 @@ const Module = imports.app.interfaces.module;
  */
 const Set = new Module.Class({
     Name: 'Banner.Set',
-    CssName: 'EknSetBanner',
     Extends: Gtk.Frame,
 
     Slots: {

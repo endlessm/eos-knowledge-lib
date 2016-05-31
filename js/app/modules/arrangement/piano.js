@@ -145,7 +145,6 @@ const _PianoLayout = new Knowledge.Class({
  */
 const Piano = new Module.Class({
     Name: 'Arrangement.Piano',
-    CssName: 'EknPianoArrangement',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],
 

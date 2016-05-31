@@ -30,7 +30,6 @@ const SlidingPanelOverlay = imports.app.widgets.slidingPanelOverlay;
  */
 const TopMenu = new Module.Class({
     Name: 'Layout.TopMenu',
-    CssName: 'EknTopMenuTemplate',
     Extends: SlidingPanelOverlay.SlidingPanelOverlay,
 
     Properties: {

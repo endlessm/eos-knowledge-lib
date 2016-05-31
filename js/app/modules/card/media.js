@@ -15,7 +15,6 @@ const Previewer = imports.app.widgets.previewer;
  */
 const Media = new Module.Class({
     Name: 'Card.Media',
-    CssName: 'EknMediaCard',
     Extends: Gtk.Frame,
     Implements: [Card.Card],
 

@@ -22,7 +22,6 @@ const Module = imports.app.interfaces.module;
  */
 const Item = new Module.Class({
     Name: 'ContentGroup.Item',
-    CssName: 'EknItemGroup',
     Extends: Gtk.Frame,
 
     Slots: {

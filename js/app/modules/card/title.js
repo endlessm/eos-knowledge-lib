@@ -28,7 +28,6 @@ const HIGHLIGHT_DECORATION_DIMENSION = 5;
  */
 const Title = new Module.Class({
     Name: 'Card.Title',
-    CssName: 'EknTitleCard',
     Extends: Gtk.Button,
     Implements: [Card.Card, NavigationCard.NavigationCard],
 

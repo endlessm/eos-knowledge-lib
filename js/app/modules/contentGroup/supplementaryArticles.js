@@ -20,7 +20,6 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  */
 const SupplementaryArticles = new Module.Class({
     Name: 'ContentGroup.SupplementaryArticles',
-    CssName: 'EknSupplementaryArticles',
     Extends: CardContainer.CardContainer,
 
     Properties: {

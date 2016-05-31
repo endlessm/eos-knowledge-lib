@@ -41,7 +41,6 @@ const _BATCH_SIZE = 50;
  */
 const Highlights = new Module.Class({
     Name: 'ContentGroup.Highlights',
-    CssName: 'EknHighlights',
     Extends: Gtk.Grid,
 
     Properties: {

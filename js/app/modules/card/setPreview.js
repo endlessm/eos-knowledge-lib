@@ -31,7 +31,6 @@ const _BATCH_SIZE = 50;
  */
 const SetPreview = new Module.Class({
     Name: 'Card.SetPreview',
-    CssName: 'EknSetPreviewCard',
     Extends: CardContainer.CardContainer,
     Implements: [Card.Card],
 

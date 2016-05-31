@@ -21,7 +21,6 @@ const Module = imports.app.interfaces.module;
  */
 const Box = new Module.Class({
     Name: 'Layout.Box',
-    CssName: 'EknBoxLayout',
     Extends: Gtk.Grid,
 
     Properties: {

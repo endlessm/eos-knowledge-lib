@@ -23,7 +23,6 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  */
 const SearchBox = new Module.Class({
     Name: 'Navigation.SearchBox',
-    CssName: 'EknSearchBox',
     Extends: Endless.SearchBox,
 
     _init: function (props={}) {
