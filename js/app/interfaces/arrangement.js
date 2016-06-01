@@ -64,8 +64,7 @@ const Arrangement = new Lang.Interface({
          * *invisible* and *fade-in* CSS classes on the <Card> widget.
          *
          * You can opt out of this if the arrangement should never fade in
-         * its cards, for instance <CarouselArrangement>.
-         * In that case, override <Arrangement.fade_card>.
+         * its cards. In that case, override <Arrangement.fade_card>.
          *
          * Default:
          *   false
