@@ -163,4 +163,16 @@ const Module = new Lang.Interface({
     reference_module: function (reference_slot, callback) {
         this.factory.request_module_reference(this, reference_slot, callback);
     },
+
+    /**
+     * Method: make_ready
+     * Prepare the module to show contents on screen
+     *
+     * Parameters:
+     *   callback - function to be called whenever the module is ready.
+     */
+    make_ready: function (cb) {
+        if (typeof cb !== 'undefined')
+            cb();
+    },
 });

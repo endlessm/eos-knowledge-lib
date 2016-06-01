@@ -124,11 +124,9 @@ const Mesh = new Module.Class({
 
         this._window.connect('key-press-event', this._on_key_press_event.bind(this));
         this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
-
-        this._load_sets_on_home_page ();
     },
 
-    _load_sets_on_home_page: function () {
+    make_ready: function (cb) {
         let query_obj = new QueryObject.QueryObject({
             limit: -1,
             tags: [ Engine.HOME_PAGE_TAG, 'EknSetObject' ],
@@ -151,6 +149,9 @@ const Mesh = new Module.Class({
                 action_type: Actions.APPEND_SETS,
                 models: sorted_models,
             });
+        });
+
+        this._window.make_ready(() => {
             this._home_content_loaded = true;
             this._show_home_if_ready();
         });

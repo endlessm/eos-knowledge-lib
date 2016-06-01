@@ -109,6 +109,7 @@ const Application = new Knowledge.Class({
     ensure_controller: function () {
         if (this._controller === null) {
             this._controller = ControllerLoader.create_controller(this, this.resource_path);
+            this._controller.make_ready();
         }
     },
 

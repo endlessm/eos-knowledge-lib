@@ -56,11 +56,11 @@ const ContentGroup = new Module.Class({
         });
 
         this.attach(stack, 0, 1, 1, 1);
+    },
 
-        // These two lines are just to demonstrate getting something on screen.
-        // They will be replaced by the generic MAKE_READY method on the module interface.
+    make_ready: function (cb) {
         this.load();
-        this._title.make_ready();
+        this._title.make_ready(cb);
     },
 
     get_selection: function () {
