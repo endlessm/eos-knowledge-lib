@@ -27,7 +27,8 @@ const ContentGroup = new Module.Class({
         this.parent(props);
 
         this._title = this.create_submodule('title');
-        this.attach(this._title, 0, 0, 1, 1);
+        if (this._title)
+            this.attach(this._title, 0, 0, 1, 1);
         this._arrangement = this.create_submodule('arrangement');
         this._arrangement.connect('card-clicked', (arrangement, model) => {
             Dispatcher.get_default().dispatch({
