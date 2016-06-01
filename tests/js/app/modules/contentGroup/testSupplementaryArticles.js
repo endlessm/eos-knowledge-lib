@@ -104,6 +104,7 @@ describe('ContentGroup.SupplementaryArticles', function () {
         dispatcher.dispatch({
             action_type: Actions.CLEAR_SUPPLEMENTARY_ARTICLES,
             models: models,
+            same_set: true,
         });
         dispatcher.dispatch({
             action_type: Actions.APPEND_SUPPLEMENTARY_ARTICLES,
