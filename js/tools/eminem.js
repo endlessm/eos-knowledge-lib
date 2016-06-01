@@ -172,18 +172,19 @@ function regenerate (path) {
     out_stream.write_bytes(bytes, null);
 }
 
-function inspect_domain (domain) {
+function inspect_app_id (app_id) {
     let cancellable = null;
 
+    let domain = Utils.domain_from_app_id(app_id);
     print(Format.vprintf("domain: %s", [domain]));
 
-    let data_dir = Datadir.get_data_dir_for_domain(domain);
+    let data_dir = Datadir.get_data_dir(app_id);
     print(Format.vprintf("data dir: %s", [data_dir.get_path()]));
 
-    let ekn_version = Utils.get_ekn_version_for_domain(domain);
+    let ekn_version = Domain.get_ekn_version(app_id);
     print(Format.vprintf("EKN_VERSION: %s", [ekn_version]));
 
-    let domain_obj = Domain.get_domain_impl(domain, null);
+    let domain_obj = Domain.get_domain_impl(app_id, null);
 
     if (ekn_version === 2) {
         print(Format.vprintf("media shard: %s", [GLib.build_filenamev(data_dir, 'media.shard')]));
@@ -195,11 +196,6 @@ function inspect_domain (domain) {
     }
 }
 
-function inspect_app_id (app_id) {
-    let domain = Utils.domain_from_app_id(app_id);
-    inspect_domain(domain);
-}
-
 const USAGE = [
     'usage: eminem freeze <subscription_id>',
     '         Freeze the current state of the subscription to a file in the current directory.',
@@ -209,9 +205,6 @@ const USAGE = [
     '',
     '       eminem regenerate <directory>',
     '         Regenerate a manifest given a directory of shards.',
-    '',
-    '       eminem inspect-domain <domain>',
-    '         Inspect various information about the given domain.',
     '',
     '       eminem inspect-app-id <app_id>',
     '         Inspect various information about the given app ID.',

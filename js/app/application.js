@@ -50,7 +50,7 @@ const Application = new Knowledge.Class({
         this._controller = null;
         this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
 
-        Engine.get_default().default_domain = Utils.domain_from_app_id(this.application_id);
+        Engine.get_default().default_app_id = this.application_id;
 
         this.add_main_option('data-path', 0, GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Optional argument to set the default data path', null);
@@ -67,7 +67,7 @@ const Application = new Knowledge.Class({
     vfunc_handle_local_options: function (options) {
         let path = options.lookup_value('data-path', null);
         if (path)
-            Engine.get_default().default_domain_path = path.deep_unpack().toString();
+            Engine.get_default().default_data_path = path.deep_unpack().toString();
         return -1;
     },
 

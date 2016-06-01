@@ -97,13 +97,13 @@ const QueryObject = Lang.Class({
 
     Properties: {
         /**
-         * Property: domain
+         * Property: app-id
          *
-         * The ekn domain of the database to query to. If not set, the <Engine>
-         * will fill this in with the <Engine.default-domain> property.
+         * The app ID of the database to query. If not set, the <Engine>
+         * will fill this in with the <Engine.default-app-id> property.
          */
-        'domain': GObject.ParamSpec.string('domain', 'Domain',
-            'Ekn domain of the knowledge database to query to',
+        'app-id': GObject.ParamSpec.string('app-id', 'App ID',
+            'App ID of the database to query',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: query
@@ -428,5 +428,6 @@ QueryObject.new_from_object = function (source, props={}) {
     for (let prop_names of prop_names) {
         all_props[prop_names] = props.hasOwnProperty(prop_names) ? props[prop_names] : source[prop_names];
     }
+
     return new QueryObject(all_props);
 };

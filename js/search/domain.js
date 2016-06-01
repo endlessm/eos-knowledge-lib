@@ -26,8 +26,8 @@ const Domain = new Lang.Class({
     Name: 'Domain',
     Abstract: true,
 
-    _init: function (domain, xapian_bridge) {
-        this._domain = domain;
+    _init: function (app_id, xapian_bridge) {
+        this._app_id = app_id;
         this._xapian_bridge = xapian_bridge;
 
         this._content_dir = null;
@@ -36,7 +36,7 @@ const Domain = new Lang.Class({
 
     _get_content_dir: function () {
         if (this._content_dir === null)
-            this._content_dir = datadir.get_data_dir_for_domain(this._domain);
+            this._content_dir = datadir.get_data_dir(this._app_id);
 
         return this._content_dir;
     },
@@ -544,8 +544,22 @@ const DomainV3 = new Lang.Class({
     },
 });
 
-function get_domain_impl (domain, xapian_bridge) {
-    let ekn_version = Utils.get_ekn_version_for_domain(domain);
+/* Returns the EKN Version of the given app ID. Defaults to 1 if
+   no EKN_VERSION file is found. This function does synchronous file I/O. */
+function get_ekn_version (app_id) {
+    let dir = datadir.get_data_dir(app_id);
+    let ekn_version_file = dir.get_child('EKN_VERSION');
+    try {
+        let [success, contents, _] = ekn_version_file.load_contents(null);
+        let version_string = contents.toString();
+        return parseInt(version_string);
+    } catch (e) {
+        return 1;
+    }
+}
+
+function get_domain_impl (app_id, xapian_bridge) {
+    let ekn_version = get_ekn_version(app_id);
     let impls = {
         '2': DomainV2,
         '3': DomainV3,
@@ -555,5 +569,5 @@ function get_domain_impl (domain, xapian_bridge) {
     if (!impl)
         throw new Error(Format.vprintf('Invalid ekn version for domain %s: %s', [domain, ekn_version]));
 
-    return new impl(domain, xapian_bridge);
+    return new impl(app_id, xapian_bridge);
 }

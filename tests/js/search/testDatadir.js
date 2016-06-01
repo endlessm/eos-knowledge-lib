@@ -28,13 +28,13 @@ describe('Data dir finder', function () {
     });
 
     it('returns a path to a Xapian database dir', function () {
-        let found_dir = Datadir.get_data_dir_for_domain('scuba-diving-fr');
+        let found_dir = Datadir.get_data_dir('com.endlessm.scuba-diving-fr');
         expect(found_dir).not.toBeNull();
         expect(found_dir.get_path()).toMatch(/ekn\/data\/scuba-diving-fr$/);
     });
 
     it('returns the first path that exists', function () {
-        let found_dir = Datadir.get_data_dir_for_domain('scuba-diving-fr');
+        let found_dir = Datadir.get_data_dir('com.endlessm.scuba-diving-fr');
         expect(found_dir).not.toBeNull();
         let found_path = found_dir.get_path();
         expect(found_path).not.toMatch(/mydatadir/);
@@ -43,7 +43,7 @@ describe('Data dir finder', function () {
     });
 
     it('returns null if the domain was not found', function () {
-        let found_dir = Datadir.get_data_dir_for_domain('this-knowledge-app-should-never-exist');
+        let found_dir = Datadir.get_data_dir('this-knowledge-app-should-never-exist');
         expect(found_dir).toBeNull();
     });
 

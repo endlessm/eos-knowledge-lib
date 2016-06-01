@@ -9,7 +9,7 @@ const USAGE = [
     'usage: kermit grep <shard path> <pattern>',
     '       kermit list <shard path>',
     '       kermit dump <shard path> <ekn id> <data|metadata|another blob name>',
-    '       kermit query <domain> "<querystring>"',
+    '       kermit query <app_id> "<querystring>"',
     '',
     'kermit is a shard inspection utility for Knowledge Apps.',
 ].join('\n');
@@ -84,12 +84,12 @@ function grep (path, pattern) {
     });
 }
 
-function query (domain, query_string) {
+function query (app_id, query_string) {
     let engine = new Engine.Engine();
     let query_obj = new QueryObject.QueryObject({
         query: query_string,
         limit: BATCH_SIZE,
-        domain: domain,
+        app_id: app_id,
     });
     perform_query(engine, query_obj);
 

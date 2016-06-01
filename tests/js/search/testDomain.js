@@ -2,6 +2,7 @@ const Gio = imports.gi.Gio;
 
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ContentObjectModel = imports.search.contentObjectModel;
+const Domain = imports.search.domain;
 const Engine = imports.search.engine;
 const QueryObject = imports.search.queryObject;
 const MediaObjectModel = imports.search.mediaObjectModel;
@@ -89,7 +90,7 @@ function create_mock_domain_for_version (versionNo) {
     let engine = new Engine.Engine();
     let bridge = engine._xapian_bridge;
 
-    spyOn(Utils, 'get_ekn_version_for_domain').and.callFake(() => versionNo);
+    spyOn(Domain, 'get_ekn_version').and.callFake(() => versionNo);
     let domain = engine._get_domain('foo');
 
     // Don't hit the disk.

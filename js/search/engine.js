@@ -29,28 +29,28 @@ const Engine = Lang.Class({
 
     Properties: {
         /**
-         * Property: default-domain
+         * Property: default-app-id
          *
-         * The domain to use to find content in case none is explicitly
-         * passed into the query.
+         * The app ID to use to find content for in case none is passed
+         * into the query.
          *
-         * e.g. animals-es
+         * e.g. com.endlessm.animals-es
          */
-        'default-domain': GObject.ParamSpec.string('default-domain',
-            'Default Domain', 'The default domain to use for queries',
+        'default-app-id': GObject.ParamSpec.string('default-app-id',
+            'Default App ID', 'The default app ID to fetch data from',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             ''),
 
         /**
-         * Property: default-domain-path
+         * Property: default-data-path
          *
          * The path to the default domains database, if unset will be search for
          * in XDG_DATA_DIRS normally.
          *
          * e.g. /endless/share/ekn/data/animals-es
          */
-        'default-domain-path': GObject.ParamSpec.string('default-domain-path',
-            'Default Domain Path', 'The path to the default domain database',
+        'default-data-path': GObject.ParamSpec.string('default-data-path',
+            'Default Domain Path', 'The path to the data of the default app ID',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             ''),
 
@@ -80,7 +80,7 @@ const Engine = Lang.Class({
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
             let [hash] = Utils.components_from_ekn_id(id);
-            let domain_obj = this._get_domain(this.default_domain);
+            let domain_obj = this._get_domain(this.default_app_id);
 
             domain_obj.load_record_from_hash(hash, cancellable, task.catch_callback_errors((domain_obj, domain_task) => {
                 let model = domain_obj.load_record_from_hash_finish(domain_task);
@@ -111,7 +111,7 @@ const Engine = Lang.Class({
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
             let [hash] = Utils.components_from_ekn_id(id);
-            let domain_obj = this._get_domain(this.default_domain);
+            let domain_obj = this._get_domain(this.default_app_id);
 
             domain_obj.get_object_by_id(id, cancellable, task.catch_callback_errors((domain_obj, domain_task) => {
                 let model = domain_obj.get_object_by_id_finish(domain_task);
@@ -151,10 +151,10 @@ const Engine = Lang.Class({
     get_objects_by_query: function (query_obj, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
-            if (query_obj.domain === '')
-                query_obj = QueryObject.QueryObject.new_from_object(query_obj, { domain: this.default_domain });
+            if (query_obj.app_id === '')
+                query_obj = QueryObject.QueryObject.new_from_object(query_obj, { app_id: this.default_app_id });
 
-            let domain_obj = this._get_domain(query_obj.domain);
+            let domain_obj = this._get_domain(query_obj.app_id);
 
             let do_query = (query_obj) => {
                 domain_obj.get_objects_by_query(query_obj, cancellable, task.catch_callback_errors((domain_obj, query_task) => {
@@ -206,17 +206,17 @@ const Engine = Lang.Class({
         return task.finish();
     },
 
-    _get_domain: function (domain) {
-        if (this._domain_cache[domain] === undefined) {
-            let domain_obj = Domain.get_domain_impl(domain, this._xapian_bridge);
+    _get_domain: function (app_id) {
+        if (this._domain_cache[app_id] === undefined) {
+            let domain_obj = Domain.get_domain_impl(app_id, this._xapian_bridge);
 
-            if (domain === this.default_domain && this.default_domain_path)
-                domain_obj._content_path = this.default_domain_path;
+            if (app_id === this.default_app_id && this.default_data_path)
+                domain_obj._content_path = this.default_data_path;
 
-            this._domain_cache[domain] = domain_obj;
+            this._domain_cache[app_id] = domain_obj;
         }
 
-        return this._domain_cache[domain];
+        return this._domain_cache[app_id];
     },
 
     /**
@@ -225,7 +225,7 @@ const Engine = Lang.Class({
      * Synchronously checks for updates to apply to the current domain.
      */
     update_and_preload_default_domain: function () {
-        let domain = this._get_domain(this.default_domain);
+        let domain = this._get_domain(this.default_app_id);
 
         if (!GLib.getenv('EKN_DISABLE_UPDATES'))
             domain.check_for_updates();
@@ -234,7 +234,7 @@ const Engine = Lang.Class({
     },
 
     test_link: function (link) {
-        return this._get_domain(this.default_domain).test_link(link);
+        return this._get_domain(this.default_app_id).test_link(link);
     },
 });
 
