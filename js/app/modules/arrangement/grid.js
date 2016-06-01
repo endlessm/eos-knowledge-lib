@@ -61,6 +61,7 @@ const Grid = new Module.Class({
         this._flow_box.get_children().some(flow_box_child => {
             if (flow_box_child.get_child() === card) {
                 this._flow_box.remove(flow_box_child);
+                flow_box_child.remove(card);
                 return true;
             }
             return false;
