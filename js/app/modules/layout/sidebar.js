@@ -26,7 +26,7 @@ const Utils = imports.app.utils;
  *   content - a frame containing the content module
  */
 const Sidebar = new Module.Class({
-    Name: 'SidebarTemplate',
+    Name: 'Layout.Sidebar',
     CssName: 'EknSidebarTemplate',
     Extends: Endless.CustomContainer,
 
