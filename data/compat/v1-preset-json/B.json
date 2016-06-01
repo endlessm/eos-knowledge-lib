@@ -145,7 +145,10 @@
                     "type": "ArticleStackModule",
                     "slots": {
                         "card-type": {
-                            "type": "KnowledgeDocumentCard"
+                            "type": "KnowledgeDocumentCard",
+                            "properties": {
+                                "show-titles": false
+                            }
                         }
                     }
                 },
