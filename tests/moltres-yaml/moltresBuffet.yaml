@@ -14,7 +14,7 @@ defines:
   type: Card.Thumb
   properties: *card-all-uppercase-properties
 - &set-card
-  type: Card.Post
+  type: Card.Deck
   properties: *card-all-uppercase-properties
 
 - &article-suggestions
@@ -59,19 +59,16 @@ defines:
   slots:
     <<: *page-with-menu-slots
     content:
-      type: Layout.InfiniteScrolling
+      type: Layout.Scrolling
       slots:
         content:
           type: Layout.ResponsiveMargins
           slots:
             content:
-              shortdef: 'Layout.TwoPiece(orientation: vertical)'
+              shortdef: 'Layout.Box(orientation: vertical)'
               slots:
-                first:
-                  type: ContentGroup.Highlights
-                  properties:
-                    halign: center
-                    support-sets: 2
+                contents:
+                - shortdef: 'ContentGroup.Highlights(halign: center, support-sets: 2)'
                   slots:
                     highlight-arrangement:
                       type: Arrangement.Windshield
@@ -94,7 +91,7 @@ defines:
                             filter: *no-sets
                         header-card-type: *header-card
                     sets-filter: 'Filter.Featured(invert: true)'
-                second: *category-suggestions
+                - *category-suggestions
 
 - &section-page
   <<: *page-with-menu
@@ -108,10 +105,10 @@ defines:
           type: Layout.ResponsiveMargins
           slots:
             content:
-              shortdef: 'Layout.TwoPiece(orientation: vertical)'
+              shortdef: 'Layout.Box(orientation: vertical)'
               slots:
-                first:
-                  shortdef: 'ContentGroup.Thematic(halign: center)'
+                contents:
+                - shortdef: 'ContentGroup.Thematic(halign: center)'
                   slots:
                     arrangement:
                       type: Arrangement.Half
@@ -121,7 +118,7 @@ defines:
                     header-card-type: *header-card
                   references:
                     scroll-server: theme-scroll
-                second: *category-suggestions
+                - *category-suggestions
 
 - &search-page
   <<: *page-with-menu
@@ -135,7 +132,7 @@ defines:
         message-justify: left
       slots:
         arrangement:
-          shortdef: 'Arrangement.ScrollingList(bottom-buffer: 250)'
+          type: Arrangement.ScrollingList
           slots:
             card-type: Card.List
         article-suggestions: *article-suggestions
@@ -179,7 +176,7 @@ defines:
         nav-card-type: Card.Sequence
 
 root:
-  shortdef: 'Controller.Buffet(theme: endless_buffet)'
+  shortdef: 'Controller.Buffet(theme: buffet)'
   slots:
     window:
       shortdef: 'Window.App(animations: false)'
@@ -192,7 +189,6 @@ root:
         brand-page:
           type: Banner.App
           properties:
-            max-fraction: 0.6  # FIXME remove fraction
             show-subtitle: true
             subtitle-capitalization: uppercase
         home-page: *home-page

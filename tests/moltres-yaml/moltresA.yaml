@@ -5,7 +5,7 @@ defines:
 
 - &main-arrangement-slot
   arrangement:
-    shortdef: 'Arrangement.Grid(bottom-buffer: 250)'
+    type: Arrangement.Grid
     slots:
       card-type: *card
 
@@ -13,7 +13,7 @@ defines:
   type: Layout.HamburgerBasement
   slots:
     # FIXME remove fractions
-    top: 'Banner.App(min-fraction: 0.1, max-fraction: 0.7)'
+    top: Banner.App
     middle: 'Navigation.SearchBox(halign: center)'
     bottom:
       type: ContentGroup.Set
@@ -32,22 +32,23 @@ defines:
       slots: *main-arrangement-slot
 
 - &section-page
-  type: Layout.Banner
+  shortdef: 'Layout.Box(orientation: vertical)'
   slots:
-    banner:
-      shortdef: 'Banner.Set(halign: center)'
+    contents:
+    - shortdef: 'Banner.Set(halign: center)'
       slots:
         card-type: Card.Title
-    content:
-      type: ContentGroup.Item
+    - Decoration.Separator
+    - type: ContentGroup.Item
       slots: *main-arrangement-slot
 
 - &search-page
-  type: Layout.Banner
+  shortdef: 'Layout.Box(orientation: vertical)'
   slots:
-    banner: 'Banner.Search(halign: center)'
-    content:
-      type: ContentGroup.Search
+    contents:
+    - 'Banner.Search(halign: center)'
+    - Decoration.Separator
+    - type: ContentGroup.Search
       properties:
         message-justify: left
         message-halign: center
