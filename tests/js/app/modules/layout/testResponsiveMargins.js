@@ -53,8 +53,8 @@ describe('Layout.ResponsiveMargins', function () {
         responsive_margins.get_style_context().add_provider(provider, 800);
     });
 
-    function test_constant_size_requests (primary) {
-        describe('get preferred ' + primary, function () {
+    function test_constant_size_requests (dimension) {
+        describe('get preferred ' + dimension, function () {
             let win;
 
             beforeEach(function () {
@@ -69,16 +69,16 @@ describe('Layout.ResponsiveMargins', function () {
 
             it ('minimal includes tiny margins', function () {
                 let content = factory.get_last_created('content');
-                content[primary + '_spy'].and.returnValue([50, 50]);
+                content[dimension + '_spy'].and.returnValue([50, 50]);
                 content.queue_resize();
-                expect(responsive_margins['get_preferred_' + primary]()[0]).toBe(70);
+                expect(responsive_margins['get_preferred_' + dimension]()[0]).toBe(70);
             });
 
             it ('natural includes xlarge margins', function () {
                 let content = factory.get_last_created('content');
-                content[primary + '_spy'].and.returnValue([50, 50]);
+                content[dimension + '_spy'].and.returnValue([50, 50]);
                 content.queue_resize();
-                expect(responsive_margins['get_preferred_' + primary]()[1]).toBe(150);
+                expect(responsive_margins['get_preferred_' + dimension]()[1]).toBe(150);
             });
         });
     }
