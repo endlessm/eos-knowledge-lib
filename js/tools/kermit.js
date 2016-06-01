@@ -53,12 +53,21 @@ function grep (path, pattern) {
     records.forEach(function (record, i) {
         let regex = new RegExp(pattern);
         let id = record.get_hex_name();
-        let offset = record.data.get_offset();
-        let content_type = record.data.get_content_type();
+        let offset, content_type;
+
+        if (record.data) {
+            offset = record.data.get_offset();
+            content_type = record.data.get_content_type();
+        } else {
+            offset = undefined;
+            content_type = "Unknown - no data";
+        }
+
         if (!record.metadata) {
             print_result(id, content_type, "Unknown - no metadata", offset);
             return;
         }
+
         let metadata_text = record.metadata.load_contents().get_data().toString();
 
         if (metadata_text.match(regex) !== null) {
