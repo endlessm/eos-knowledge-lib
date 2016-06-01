@@ -185,10 +185,7 @@ function inspect_domain (domain) {
 
     let domain_obj = Domain.get_domain_impl(domain, null);
 
-    if (ekn_version === 1) {
-        print(Format.vprintf("media dir: %s", [GLib.build_filenamev(data_dir, 'media')]));
-        print(Format.vprintf("db dir: %s", [GLib.build_filenamev(data_dir, 'db')]));
-    } else if (ekn_version === 2) {
+    if (ekn_version === 2) {
         print(Format.vprintf("media shard: %s", [GLib.build_filenamev(data_dir, 'media.shard')]));
         print(Format.vprintf("db dir: %s", [GLib.build_filenamev(data_dir, 'db')]));
     } else if (ekn_version === 3) {
