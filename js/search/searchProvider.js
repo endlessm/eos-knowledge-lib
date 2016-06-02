@@ -140,7 +140,7 @@ const AppSearchProvider = Lang.Class({
         let query_obj = new QueryObject.QueryObject({
             query: query,
             limit: this.NUM_RESULTS,
-            domain: Utils.domain_from_app_id(this.application_id),
+            app_id: this.application_id,
         });
         this._engine.get_objects_by_query(query_obj,
                                           this._cancellable,

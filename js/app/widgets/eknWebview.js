@@ -143,7 +143,7 @@ const EknWebview = new Knowledge.Class({
         let id = req.get_uri();
 
         let components = SearchUtils.components_from_ekn_id(id);
-        if (components.length === 2) {
+        if (components.length === 1) {
             this._load_object(id, cancellable, (source, load_task) => {
                 try {
                     let [stream, content_type] = load_task.finish();
@@ -153,7 +153,7 @@ const EknWebview = new Knowledge.Class({
                 }
             });
         } else {
-            let [domain, hash, blob_name] = components;
+            let [hash, blob_name] = components;
             this._load_record(id, cancellable, (source, load_task) => {
                 try {
                     let record = load_task.finish();

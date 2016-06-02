@@ -26,8 +26,8 @@ const Domain = new Lang.Class({
     Name: 'Domain',
     Abstract: true,
 
-    _init: function (domain, xapian_bridge) {
-        this._domain = domain;
+    _init: function (app_id, xapian_bridge) {
+        this._app_id = app_id;
         this._xapian_bridge = xapian_bridge;
 
         this._content_dir = null;
@@ -36,7 +36,7 @@ const Domain = new Lang.Class({
 
     _get_content_dir: function () {
         if (this._content_dir === null)
-            this._content_dir = datadir.get_data_dir_for_domain(this._domain);
+            this._content_dir = datadir.get_data_dir(this._app_id);
 
         return this._content_dir;
     },
@@ -151,23 +151,13 @@ const Domain = new Lang.Class({
         return task.finish();
     },
 
-    /**
-     * Function: resolve_xapian_result
-     *
-     * Private method, intended to be overridden by subclasses.
-     *
-     * Given data returned from Xapian bridge, return a Model constructed
-     * for it. The data stored in Xapian is domain-version specific.
-     *
-     * Parameters:
-     *   result: The body of a Xapian result returned from Xapian bridge
-     */
     resolve_xapian_result: function (result, cancellable, callback) {
-        throw new Error('Should be overridden in subclasses');
+        let id = result;
+        return this.get_object_by_id(id, cancellable, callback);
     },
 
     resolve_xapian_result_finish: function (task) {
-        throw new Error('Should be overridden in subclasses');
+        return task.finish();
     },
 
     get_objects_by_query: function (query_obj, cancellable, callback) {
@@ -199,6 +189,31 @@ const Domain = new Lang.Class({
     },
 
     get_objects_by_query_finish: function (task) {
+        return task.finish();
+    },
+
+    get_object_by_id: function (id, cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        task.catch_errors(() => {
+            let [hash] = Utils.components_from_ekn_id(id);
+            this.load_record_from_hash(hash, cancellable, task.catch_callback_errors((source, load_task) => {
+                let record = this.load_record_from_hash_finish(load_task);
+
+                let metadata_stream = record.metadata.get_stream();
+                Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
+                    let data = Utils.read_stream_finish(stream_task);
+                    let json_ld = JSON.parse(data);
+                    let props = {
+                        get_content_stream: () => record.data.get_stream(),
+                    };
+                    task.return_value(this._get_model_from_json_ld(props, json_ld));
+                }));
+            }));
+        });
+        return task;
+    },
+
+    get_object_by_id_finish: function (task) {
         return task.finish();
     },
 
@@ -281,18 +296,6 @@ const DomainV2 = new Lang.Class({
         return params;
     },
 
-    _handle_redirect: function (task, model, cancellable) {
-        // If the requested model should redirect to another, then fetch
-        // that model instead.
-        if (model.redirects_to.length > 0) {
-            this.get_object_by_id(model.redirects_to, cancellable, task.catch_callback_errors((engine, redirect_task) => {
-                task.return_value(this.get_object_by_id_finish(redirect_task));
-            }));
-        } else {
-            task.return_value(model);
-        }
-    },
-
     load_record_from_hash: function (hash, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         this.load(cancellable, task.catch_callback_errors((source, load_task) => {
@@ -305,43 +308,6 @@ const DomainV2 = new Lang.Class({
     },
 
     load_record_from_hash_finish: function (task) {
-        return task.finish();
-    },
-
-    get_object_by_id: function (id, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        task.catch_errors(() => {
-            let [domain, hash] = Utils.components_from_ekn_id(id);
-
-            this.load_record_from_hash(hash, cancellable, task.catch_callback_errors((source, load_task) => {
-                let record = this.load_record_from_hash_finish(load_task);
-
-                let metadata_stream = record.metadata.get_stream();
-                Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
-                    let data = Utils.read_stream_finish(stream_task);
-                    let json_ld = JSON.parse(data);
-                    let props = {
-                        ekn_version: 2,
-                        get_content_stream: () => record.data.get_stream(),
-                    };
-                    let model = this._get_model_from_json_ld(props, json_ld);
-                    this._handle_redirect(task, model, cancellable);
-                }));
-            }));
-        });
-        return task;
-    },
-
-    get_object_by_id_finish: function (task) {
-        return task.finish();
-    },
-
-    resolve_xapian_result: function (result, cancellable, callback) {
-        let id = result;
-        return this.get_object_by_id(id, cancellable, callback);
-    },
-
-    resolve_xapian_result_finish: function (task) {
         return task.finish();
     },
 });
@@ -562,41 +528,6 @@ const DomainV3 = new Lang.Class({
         return task.finish();
     },
 
-    get_object_by_id: function (id, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        task.catch_errors(() => {
-            let [domain, hash] = Utils.components_from_ekn_id(id);
-            this.load_record_from_hash(hash, cancellable, task.catch_callback_errors((source, load_task) => {
-                let record = this.load_record_from_hash_finish(load_task);
-
-                let metadata_stream = record.metadata.get_stream();
-                Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
-                    let data = Utils.read_stream_finish(stream_task);
-                    let json_ld = JSON.parse(data);
-                    let props = {
-                        ekn_version: 3,
-                        get_content_stream: () => record.data.get_stream(),
-                    };
-                    task.return_value(this._get_model_from_json_ld(props, json_ld));
-                }));
-            }));
-        });
-        return task;
-    },
-
-    get_object_by_id_finish: function (task) {
-        return task.finish();
-    },
-
-    resolve_xapian_result: function (result, cancellable, callback) {
-        let id = result;
-        return this.get_object_by_id(id, cancellable, callback);
-    },
-
-    resolve_xapian_result_finish: function (task) {
-        return task.finish();
-    },
-
     check_for_updates: function () {
         try {
             let proxy = new DownloaderProxy(Gio.DBus.session, 'com.endlessm.EknDownloader', '/com/endlessm/EknDownloader');
@@ -613,8 +544,22 @@ const DomainV3 = new Lang.Class({
     },
 });
 
-function get_domain_impl (domain, xapian_bridge) {
-    let ekn_version = Utils.get_ekn_version_for_domain(domain);
+/* Returns the EKN Version of the given app ID. Defaults to 1 if
+   no EKN_VERSION file is found. This function does synchronous file I/O. */
+function get_ekn_version (app_id) {
+    let dir = datadir.get_data_dir(app_id);
+    let ekn_version_file = dir.get_child('EKN_VERSION');
+    try {
+        let [success, contents, _] = ekn_version_file.load_contents(null);
+        let version_string = contents.toString();
+        return parseInt(version_string);
+    } catch (e) {
+        return 1;
+    }
+}
+
+function get_domain_impl (app_id, xapian_bridge) {
+    let ekn_version = get_ekn_version(app_id);
     let impls = {
         '2': DomainV2,
         '3': DomainV3,
@@ -624,5 +569,5 @@ function get_domain_impl (domain, xapian_bridge) {
     if (!impl)
         throw new Error(Format.vprintf('Invalid ekn version for domain %s: %s', [domain, ekn_version]));
 
-    return new impl(domain, xapian_bridge);
+    return new impl(app_id, xapian_bridge);
 }

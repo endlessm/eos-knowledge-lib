@@ -1,4 +1,5 @@
 const ContentObjectModel = imports.search.contentObjectModel;
+const Domain = imports.search.domain;
 const Engine = imports.search.engine;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const MockShard = imports.tests.mockShard;
@@ -13,7 +14,7 @@ describe('Engine', function () {
         engine = new Engine.Engine();
         engine.default_domain = 'foo';
 
-        spyOn(Utils, 'get_ekn_version_for_domain').and.returnValue(2);
+        spyOn(Domain, 'get_ekn_version').and.returnValue(2);
         let domain = engine._get_domain('foo');
 
         // Don't hit the disk.

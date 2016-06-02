@@ -97,13 +97,13 @@ const QueryObject = Lang.Class({
 
     Properties: {
         /**
-         * Property: domain
+         * Property: app-id
          *
-         * The ekn domain of the database to query to. If not set, the <Engine>
-         * will fill this in with the <Engine.default-domain> property.
+         * The app ID of the database to query. If not set, the <Engine>
+         * will fill this in with the <Engine.default-app-id> property.
          */
-        'domain': GObject.ParamSpec.string('domain', 'Domain',
-            'Ekn domain of the knowledge database to query to',
+        'app-id': GObject.ParamSpec.string('app-id', 'App ID',
+            'App ID of the database to query',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: query
@@ -371,11 +371,6 @@ const QueryObject = Lang.Class({
         if (path.length !== 2)
             throw new Error('EKN ID has unexpected structure ' + uri);
 
-        // EKN domain is the last part of the app ID (without the reverse domain name)
-        let id_domain = path[0];
-        if (this.domain !== id_domain)
-            throw new Error('EKN ID has domain ' + id_domain + ', but QueryObject has domain ' + this.domain);
-
         // EKN ID is a 16 or 40-hexdigit hash
         let hash = path[1];
         if (hash.search(/^(?=[A-Za-z0-9]*$)(?:.{16}|.{40})$/) === -1)
@@ -433,5 +428,6 @@ QueryObject.new_from_object = function (source, props={}) {
     for (let prop_names of prop_names) {
         all_props[prop_names] = props.hasOwnProperty(prop_names) ? props[prop_names] : source[prop_names];
     }
+
     return new QueryObject(all_props);
 };

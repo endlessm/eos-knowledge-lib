@@ -115,7 +115,7 @@ describe('XapianBridge', function () {
         it('does not set path', function () {
             let query_obj = new QueryObject.QueryObject({
                 query: 'tyrion',
-                domain: 'foo',
+                app_id: 'foo',
             });
 
             let uri = bridge._get_xapian_query_uri(query_obj);

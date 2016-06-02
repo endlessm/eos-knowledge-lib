@@ -23,19 +23,6 @@ const ContentObjectModel = new Lang.Class({
         'ekn-id': GObject.ParamSpec.string('ekn-id', 'Object\'s ID', 'The ID of a document or media object',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
-         * Property: ekn-version
-         *
-         * The version of the on-disk data format for this bundle. This value
-         * is incremented whenever we have a major change in this format, and
-         * is used to support backwards compatible changes.
-         *
-         * Defaults to 1
-         */
-        'ekn-version': GObject.ParamSpec.int('ekn-version', 'EKN Version',
-            'The version of the knowledge app.',
-             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-             0, GLib.MAXINT32, 1),
-        /**
          * Property: title
          * A string with the title of the content object. Defaults to an empty string.
          */
@@ -121,13 +108,6 @@ const ContentObjectModel = new Lang.Class({
          * The license for this content object. Defaults to an empty string.
          */
         'license': GObject.ParamSpec.string('license', 'License', 'License of the document or media object',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
-        /**
-         * Property: redirects-to
-         * The EKN ID of the ContentObject to which this model should redirect.
-         */
-        'redirects-to': GObject.ParamSpec.string('redirects-to', 'Redirects To',
-            'EKN ID of the object to which this model should redirect',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: featured
@@ -230,9 +210,6 @@ const ContentObjectModel = new Lang.Class({
 
         if (json_ld.hasOwnProperty('thumbnail'))
             props.thumbnail_uri = json_ld.thumbnail;
-
-        if (json_ld.hasOwnProperty('redirectsTo'))
-            props.redirects_to = json_ld.redirectsTo;
 
         if (json_ld.hasOwnProperty('featured'))
             props.featured = json_ld.featured;

@@ -9,7 +9,7 @@ const USAGE = [
     'usage: kermit grep <shard path> <pattern>',
     '       kermit list <shard path>',
     '       kermit dump <shard path> <ekn id> <data|metadata|another blob name>',
-    '       kermit query <domain> "<querystring>"',
+    '       kermit query <app_id> "<querystring>"',
     '',
     'kermit is a shard inspection utility for Knowledge Apps.',
 ].join('\n');
@@ -53,12 +53,21 @@ function grep (path, pattern) {
     records.forEach(function (record, i) {
         let regex = new RegExp(pattern);
         let id = record.get_hex_name();
-        let offset = record.data.get_offset();
-        let content_type = record.data.get_content_type();
+        let offset, content_type;
+
+        if (record.data) {
+            offset = record.data.get_offset();
+            content_type = record.data.get_content_type();
+        } else {
+            offset = undefined;
+            content_type = "Unknown - no data";
+        }
+
         if (!record.metadata) {
             print_result(id, content_type, "Unknown - no metadata", offset);
             return;
         }
+
         let metadata_text = record.metadata.load_contents().get_data().toString();
 
         if (metadata_text.match(regex) !== null) {
@@ -75,12 +84,12 @@ function grep (path, pattern) {
     });
 }
 
-function query (domain, query_string) {
+function query (app_id, query_string) {
     let engine = new Engine.Engine();
     let query_obj = new QueryObject.QueryObject({
         query: query_string,
         limit: BATCH_SIZE,
-        domain: domain,
+        app_id: app_id,
     });
     perform_query(engine, query_obj);
 
