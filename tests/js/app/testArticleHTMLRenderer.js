@@ -7,7 +7,7 @@ const SetMap = imports.app.setMap;
 const SetObjectModel = imports.search.setObjectModel;
 
 describe('Article HTML Renderer', function () {
-    let wikihow_model, wikibooks_model, javascripty_model;
+    let wikihow_model, wikibooks_model;
     let renderer;
 
     beforeEach(function () {
@@ -33,12 +33,6 @@ describe('Article HTML Renderer', function () {
             source_name: 'Wikibooks',
             license: 'CC-BY-SA 3.0',
             title: 'Wikibooks title',
-        });
-        javascripty_model = new ArticleObjectModel.ArticleObjectModel({
-            get_content_stream: () => { return SearchUtils.string_to_stream('<html>{{{#javascript-files}}}{{{.}}}{{{#javascript-files}}}</html>'); },
-            content_type: 'text/html',
-            source: 'wikihow',
-            title: 'Javascripts Galore',
         });
     });
 
