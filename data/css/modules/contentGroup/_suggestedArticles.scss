@@ -11,8 +11,6 @@ EknSuggestedArticles {
     }
 }
 
-/* Selects the background around the suggested articles modules; cumbersome! */
-.vertical EknResponsiveMargins.supplementary-articles,
-.no-results .vertical EknResponsiveMargins {
+.suggested-articles {
     background-color: $background-dark-color;
 }
