@@ -89,7 +89,6 @@ const XapianBridge = new Lang.Class({
 
     _get_xapian_query_uri: function (query_obj, domain_params) {
         let uri_query_args = {
-            collapse: query_obj.get_collapse_value(),
             cutoff: query_obj.get_cutoff(),
             lang: this.language,
             limit: query_obj.limit,

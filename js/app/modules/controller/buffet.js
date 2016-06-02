@@ -195,6 +195,7 @@ const Buffet = new Module.Class({
     _load_more_supplementary_articles: function (payload) {
         let query_props = {
             tag_match: QueryObject.QueryObjectTagMatch.ALL,
+            sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
         };
 
         if (payload.need_unread) {

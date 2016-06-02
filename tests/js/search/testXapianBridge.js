@@ -124,12 +124,10 @@ describe('XapianBridge', function () {
         });
 
         it('calls into QueryObject for other uri fields', function () {
-            let fakeCollapse = 5;
             let fakeCutoff = 42;
             let fakeSortBy = 512;
             let fakeQ = 'not a real query string';
             let mock_obj = {
-                get_collapse_value: function () { return fakeCollapse; },
                 get_cutoff: function () { return fakeCutoff; },
                 get_sort_value: function () { return fakeSortBy; },
                 get_query_parser_string: function () { return fakeQ; },
@@ -138,7 +136,6 @@ describe('XapianBridge', function () {
 
             let uri = bridge._get_xapian_query_uri(mock_obj);
             mock_obj = uri.get_query();
-            expect(get_query_vals_for_key(mock_obj, 'collapse')).toEqual(String(fakeCollapse));
             expect(get_query_vals_for_key(mock_obj, 'cutoff')).toEqual(String(fakeCutoff));
             expect(get_query_vals_for_key(mock_obj, 'sortBy')).toEqual(String(fakeSortBy));
             expect(get_query_vals_for_key(mock_obj, 'q')).toEqual(fakeQ);
