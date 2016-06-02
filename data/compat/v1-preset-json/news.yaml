@@ -41,7 +41,7 @@ defines:
                     filter: Filter.Featured
 
 - &suggestions-arrangement
-  shortdef: 'Arrangement.SquareGuys(max-rows: 1, spacing: 20)'
+  shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
   slots:
     card:
       type: Card.Thumb
@@ -51,7 +51,7 @@ defines:
   shortdef: 'Card.SetPreview(trigger-capitalization: lowercase)'
   slots:
     arrangement:
-      shortdef: 'Arrangement.Thirties(max-rows: 1, spacing: 20)'
+      shortdef: 'Arrangement.Thirties(max-rows: 1)'
       slots:
         card: *main-card
         filter: *no-sets
@@ -79,7 +79,7 @@ defines:
                     support-sets: 4
                   slots:
                     highlight-arrangement:
-                      shortdef: 'Arrangement.Piano(spacing: 20)'
+                      type: Arrangement.Piano
                       slots:
                         card: *main-card
                         filter: *no-sets

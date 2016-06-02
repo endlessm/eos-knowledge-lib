@@ -11,11 +11,6 @@ const Knowledge = imports.app.knowledge;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
-const _HorizontalMode = {
-    TINY: 1,
-    SMALL: 2,
-    LARGE: 3,
-};
 const _HorizontalThreshold = {
     TINY: 720,
     SMALL: 900,
@@ -36,8 +31,6 @@ const _QuarterLayout = new Knowledge.Class({
     Extends: Endless.CustomContainer,
 
     _init: function (props={}) {
-        this.spacing = 0;
-
         this.parent(props);
     },
 
@@ -52,8 +45,8 @@ const _QuarterLayout = new Knowledge.Class({
     },
 
     vfunc_get_preferred_width: function () {
-        return [Arrangement.get_size_with_spacing(FEATURED_CARD_MIN_WIDTH, _FeaturedCardCount.TINY, this.spacing),
-            Arrangement.get_size_with_spacing(FEATURED_CARD_MAX_WIDTH, _FeaturedCardCount.LARGE, this.spacing)];
+        return [FEATURED_CARD_MIN_WIDTH * _FeaturedCardCount.TINY,
+            FEATURED_CARD_MAX_WIDTH * _FeaturedCardCount.LARGE];
     },
 
     vfunc_get_preferred_height_for_width: function (width) {
@@ -61,12 +54,12 @@ const _QuarterLayout = new Knowledge.Class({
         let all_cards_count = this.get_children().length;
 
         // Calculate vertical space for featured cards row
-        let featured_cards_height_alloc = FEATURED_CARD_HEIGHT + this.spacing;
+        let featured_cards_height_alloc = FEATURED_CARD_HEIGHT;
 
         // Calculate vertical space for support card rows
         let support_cards = all_cards_count - featured_cards_to_show;
         let support_rows = Math.ceil(support_cards / support_cards_per_row);
-        let support_cards_height_alloc = Arrangement.get_size_with_spacing(SUPPORT_CARD_HEIGHT, support_rows, this.spacing);
+        let support_cards_height_alloc = SUPPORT_CARD_HEIGHT * support_rows;
         let height = featured_cards_height_alloc + support_cards_height_alloc;
 
         return [height, height];
@@ -83,11 +76,11 @@ const _QuarterLayout = new Knowledge.Class({
         let [featured_cards_to_show, support_cards_per_row] = this._determine_horizontal_mode(alloc.width);
 
         let featured_card_width = this._get_card_width(alloc.width, featured_cards_to_show);
-        let spare_pixels = alloc.width - Arrangement.get_size_with_spacing(featured_card_width, featured_cards_to_show, this.spacing);
+        let spare_pixels = alloc.width - (featured_card_width * featured_cards_to_show);
 
         let x = alloc.x;
         let y = alloc.y;
-        let delta_x = featured_card_width + this.spacing + spare_pixels;
+        let delta_x = featured_card_width + spare_pixels;
 
         // Featured cards:
         // Place two-four featured cards per row at top of arrangement
@@ -97,12 +90,12 @@ const _QuarterLayout = new Knowledge.Class({
         });
 
         let support_card_width = this._get_card_width(alloc.width, support_cards_per_row);
-        spare_pixels = alloc.width - Arrangement.get_size_with_spacing(support_card_width, support_cards_per_row, this.spacing);
+        spare_pixels = alloc.width - (support_card_width * support_cards_per_row);
 
         x = alloc.x;
-        y += FEATURED_CARD_HEIGHT + this.spacing;
-        delta_x = support_card_width + this.spacing + spare_pixels;
-        let delta_y = SUPPORT_CARD_HEIGHT + this.spacing;
+        y += FEATURED_CARD_HEIGHT;
+        delta_x = support_card_width + spare_pixels;
+        let delta_y = SUPPORT_CARD_HEIGHT;
 
         // Support cards:
         // Place rest of cards below the featured cards, in as many rows as needed
@@ -122,7 +115,7 @@ const _QuarterLayout = new Knowledge.Class({
 
     _determine_horizontal_mode: function (width) {
         let featured_cards_to_show;
-        let support_cards_per_row
+        let support_cards_per_row;
         if (width <= _HorizontalThreshold.TINY) {
             featured_cards_to_show = _FeaturedCardCount.TINY;
             support_cards_per_row = SUPPORT_CARD_COUNT - 1;
@@ -137,7 +130,7 @@ const _QuarterLayout = new Knowledge.Class({
     },
 
     _get_card_width: function (total_width, card_count) {
-        return Math.floor((total_width - (this.spacing * (card_count - 1))) / card_count);
+        return Math.floor(total_width / card_count);
     },
 });
 
@@ -175,17 +168,5 @@ const Quarter = new Module.Class({
     // Arrangement override
     unpack_card: function (card) {
         this._layout.remove(card);
-    },
-
-    get spacing() {
-        return this._layout.spacing;
-    },
-
-    set spacing(value) {
-        if (this._layout.spacing === value)
-            return;
-        this._layout.spacing = value;
-        this.notify('spacing');
-        this._layout.queue_resize();
     },
 });

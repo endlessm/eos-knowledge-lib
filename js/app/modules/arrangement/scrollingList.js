@@ -2,8 +2,6 @@
 
 /* exported ScrollingList */
 
-const GObject = imports.gi.GObject;
-
 const Arrangement = imports.app.interfaces.arrangement;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
@@ -18,8 +16,6 @@ const ScrollingList = new Module.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        this.bind_property('spacing', this._grid, 'row-spacing',
-            GObject.BindingFlags.SYNC_CREATE);
     },
 
     // Arrangement override

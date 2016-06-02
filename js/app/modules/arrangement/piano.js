@@ -25,7 +25,6 @@ const _PianoLayout = new Knowledge.Class({
     Extends: Endless.CustomContainer,
 
     _init: function (props={}) {
-        this.spacing = 0;
         this._compact_mode = false;
         this._support_card_count = DEFAULT_SUPPORT_CARD_COUNT;
 
@@ -63,13 +62,12 @@ const _PianoLayout = new Knowledge.Class({
     },
 
     vfunc_get_preferred_width: function () {
-        return [Arrangement.get_size_with_spacing(CARD_WIDTH_SMALL, HORIZONTAL_PROPORTION, this.spacing),
-            Arrangement.get_size_with_spacing(CARD_SIZE_MAX, HORIZONTAL_PROPORTION, this.spacing)];
+        return [CARD_WIDTH_SMALL * HORIZONTAL_PROPORTION, CARD_SIZE_MAX * HORIZONTAL_PROPORTION];
     },
 
     vfunc_get_preferred_height_for_width: function (width) {
         this._support_cards_shown = this._calculate_support_cards_shown(width);
-        let height = Arrangement.get_size_with_spacing(CARD_HEIGHT, this._support_cards_shown, this.spacing);
+        let height = CARD_HEIGHT * this._support_cards_shown;
         return [height, height];
     },
 
@@ -83,17 +81,16 @@ const _PianoLayout = new Knowledge.Class({
         let all_cards = this.get_parent().get_cards();
 
         this._support_cards_shown = this._calculate_support_cards_shown(alloc.width);
-        let available_width = alloc.width - this.spacing;
 
-        let featured_width = Math.floor(available_width * FEATURED_CARD_WIDTH_FRACTION);
-        let featured_height = Arrangement.get_size_with_spacing(CARD_HEIGHT, this._support_cards_shown, this.spacing);
-        let child_width = Math.floor(available_width * (1 - FEATURED_CARD_WIDTH_FRACTION));
+        let featured_width = Math.floor(alloc.width * FEATURED_CARD_WIDTH_FRACTION);
+        let featured_height = CARD_HEIGHT * this._support_cards_shown;
+        let child_width = Math.floor(alloc.width * (1 - FEATURED_CARD_WIDTH_FRACTION));
         let child_height = CARD_HEIGHT;
-        let delta_y = child_height + this.spacing;
+        let delta_y = child_height;
 
         // Calculate spare pixels
         // The floor operation we do above may lead us to have 1,2 spare pixels
-        let spare_pixels = alloc.height - (Arrangement.get_size_with_spacing(child_height, this._support_cards_shown, this.spacing));
+        let spare_pixels = alloc.height - (child_height * this._support_cards_shown);
 
         // Featured card:
         // Place the featured card at the left hand side of the arrangement
@@ -104,7 +101,7 @@ const _PianoLayout = new Knowledge.Class({
         let featured_card = all_cards[0];
         Arrangement.place_card(featured_card, alloc.x, alloc.y, featured_width, featured_height);
 
-        let x = alloc.x + featured_width + this.spacing;
+        let x = alloc.x + featured_width;
         let y = alloc.y;
 
         // Support cards:
@@ -128,7 +125,7 @@ const _PianoLayout = new Knowledge.Class({
             return this._support_card_count;
         }
 
-        if (width < Arrangement.get_size_with_spacing(CARD_WIDTH_BIG, HORIZONTAL_PROPORTION, this.spacing)) {
+        if (width < CARD_WIDTH_BIG * HORIZONTAL_PROPORTION) {
             return this._support_card_count - 1;
         } else {
             return this._support_card_count;
@@ -205,17 +202,5 @@ const Piano = new Module.Class({
 
     get all_visible() {
         return this._layout.all_visible;
-    },
-
-    get spacing() {
-        return this._layout.spacing;
-    },
-
-    set spacing(value) {
-        if (this._layout.spacing === value)
-            return;
-        this._layout.spacing = value;
-        this.notify('spacing');
-        this._layout.queue_resize();
     },
 });

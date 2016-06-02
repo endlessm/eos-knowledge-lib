@@ -27,7 +27,6 @@ const _ThirtiesLayout = new Knowledge.Class({
 
     _init: function (props={}) {
         this.max_rows = 0;
-        this.spacing = 0;
 
         this.parent(props);
     },
@@ -37,15 +36,14 @@ const _ThirtiesLayout = new Knowledge.Class({
     },
 
     vfunc_get_preferred_width: function () {
-        return [Arrangement.get_size_with_spacing(CARD_WIDTH_SMALL, COL_COUNT, this.spacing),
-            Arrangement.get_size_with_spacing(CARD_WIDTH_BIG, COL_COUNT, this.spacing)];
+        return [CARD_WIDTH_SMALL * COL_COUNT, CARD_WIDTH_BIG * COL_COUNT];
     },
 
     vfunc_get_preferred_height_for_width: function (width) {
         let card_height = this._get_card_height(width);
         let rows_for_children = Math.ceil(this.get_children().length / COL_COUNT);
         let rows_visible = this.max_rows === 0 ? rows_for_children : Math.min(this.max_rows, rows_for_children);
-        let height = Arrangement.get_size_with_spacing(card_height, rows_visible, this.spacing);
+        let height = card_height * rows_visible;
         return [height, height];
     },
 
@@ -59,15 +57,14 @@ const _ThirtiesLayout = new Knowledge.Class({
         let visible_children_count = this.max_rows === 0 ? count :
             Math.min(count, this.max_rows  * COL_COUNT);
 
-        let available_width = alloc.width - ((COL_COUNT - 1) * this.spacing);
-        let child_width = Math.floor(available_width / COL_COUNT);
+        let child_width = Math.floor(alloc.width / COL_COUNT);
         let child_height = this._get_card_height(alloc.width);
-        let delta_x = child_width + this.spacing;
-        let delta_y = child_height + this.spacing;
+        let delta_x = child_width;
+        let delta_y = child_height;
 
         // Calculate spare pixels
         // The floor operation we do above may lead us to have 1,2 spare pixels
-        let spare_pixels = alloc.width - (Arrangement.get_size_with_spacing(child_width, COL_COUNT, this.spacing));
+        let spare_pixels = alloc.width - (child_width * COL_COUNT);
 
         let x = alloc.x;
         let y = alloc.y;
@@ -102,7 +99,7 @@ const _ThirtiesLayout = new Knowledge.Class({
     },
 
     _get_card_height: function (width) {
-        let small_mode = (width < Arrangement.get_size_with_spacing(CARD_WIDTH_THRESHOLD, COL_COUNT, this.spacing));
+        let small_mode = (width < CARD_WIDTH_THRESHOLD * COL_COUNT);
         return small_mode ? CARD_HEIGHT_SMALL : CARD_HEIGHT_BIG;
     },
 });
@@ -168,18 +165,6 @@ const Thirties = new Module.Class({
 
     get all_visible() {
         return this.get_card_count() <= COL_COUNT * this.max_rows;
-    },
-
-    get spacing() {
-        return this._layout.spacing;
-    },
-
-    set spacing(value) {
-        if (this._layout.spacing === value)
-            return;
-        this._layout.spacing = value;
-        this.notify('spacing');
-        this._layout.queue_resize();
     },
 
     get max_rows() {

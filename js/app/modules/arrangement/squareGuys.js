@@ -24,7 +24,6 @@ const _SquareGuysLayout = new Knowledge.Class({
     Extends: Endless.CustomContainer,
 
     _init: function (props={}) {
-        this.spacing = 0;
         this.max_rows = 0;
         this.parent(props);
 
@@ -39,37 +38,34 @@ const _SquareGuysLayout = new Knowledge.Class({
     },
 
     vfunc_get_preferred_width: function () {
-        return [Arrangement.get_size_with_spacing(CARD_SIZE_SMALL, COL_COUNT_MIN, this.spacing),
-            Arrangement.get_size_with_spacing(CARD_SIZE_MAX, COL_COUNT_MAX, this.spacing)];
+        return [CARD_SIZE_SMALL * COL_COUNT_MIN, CARD_SIZE_MAX * COL_COUNT_MAX];
     },
 
     vfunc_get_preferred_height: function () {
         let card_size = this._small_mode ? CARD_SIZE_SMALL : CARD_SIZE_BIG;
         let rows_for_children = Math.ceil(this.get_children().length / this._get_columns_per_row());
         let rows_visible = this.max_rows === 0 ? rows_for_children : Math.min(this.max_rows, rows_for_children);
-        let height = Arrangement.get_size_with_spacing(card_size, rows_visible, this.spacing);
+        let height = card_size * rows_visible;
         return [height, height];
     },
 
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        this._small_mode = (alloc.width < Arrangement.get_size_with_spacing(CARD_SIZE_BIG, COL_COUNT_MIN, this.spacing));
-        this._three_column_mode = (alloc.width < Arrangement.get_size_with_spacing(CARD_SIZE_BIG, COL_COUNT_MAX, this.spacing));
+        this._small_mode = alloc.width < CARD_SIZE_BIG * COL_COUNT_MIN;
+        this._three_column_mode = alloc.width < CARD_SIZE_BIG * COL_COUNT_MAX;
 
         let col_count = this._get_columns_per_row();
 
-        let available_width = alloc.width - (this.spacing * (col_count - 1));
-
         // Cards width and height cannot be larger than the max sizes of the cards
-        let child_width = Math.min(Math.floor(available_width / (col_count)), CARD_SIZE_MAX);
+        let child_width = Math.min(Math.floor(alloc.width / (col_count)), CARD_SIZE_MAX);
         let child_height = Math.min(this._small_mode ? CARD_SIZE_SMALL : CARD_SIZE_BIG);
         let x = alloc.x;
         let y = alloc.y;
-        let delta_x = child_width + this.spacing;
-        let delta_y = child_height + this.spacing;
+        let delta_x = child_width;
+        let delta_y = child_height;
 
-        let extra_arrangement_space = alloc.width - Arrangement.get_size_with_spacing(CARD_SIZE_MAX, COL_COUNT_MAX, this.spacing);
+        let extra_arrangement_space = alloc.width - (CARD_SIZE_MAX * COL_COUNT_MAX);
         if (extra_arrangement_space > 0) {
             // If we get extra card spacing, we pad the cards horizontally, increasing the delta_x
             let extra_card_spacing = Math.floor(extra_arrangement_space / (col_count - 1));
@@ -156,18 +152,6 @@ const SquareGuys = new Module.Class({
     // Arrangement override
     unpack_card: function (card) {
         this._layout.remove(card);
-    },
-
-    get spacing() {
-        return this._layout.spacing;
-    },
-
-    set spacing(value) {
-        if (this._layout.spacing === value)
-            return;
-        this._layout.spacing = value;
-        this.notify('spacing');
-        this._layout.queue_resize();
     },
 
     get max_rows() {

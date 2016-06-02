@@ -1,9 +1,8 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported Arrangement */
+/* exported Arrangement, place_card, get_spare_pixels_for_card_index */
 
 const Gdk = imports.gi.Gdk;
-const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -40,17 +39,6 @@ const Arrangement = new Lang.Interface({
             'All children visible',
             GObject.ParamFlags.READABLE,
             true),
-        /**
-         * Property: spacing
-         * The amount of space in pixels between cards
-         *
-         * Default:
-         *   0
-         */
-        'spacing': GObject.ParamSpec.uint('spacing', 'Spacing',
-            'The amount of space in pixels between cards',
-            GObject.ParamFlags.READWRITE,
-            0, GLib.MAXUINT16, 0),
         /**
          * Property: fade-cards
          * Whether to fade in cards or just show them
@@ -401,8 +389,4 @@ function get_spare_pixels_for_card_index (spare_pixels, cards_per_row, idx) {
     if (column >= num_gutters - Math.floor(spare_pixels / 2))
         return 1;
     return 0;
-}
-
-function get_size_with_spacing (size, count, spacing) {
-    return size * count + spacing * (count - 1);
 }

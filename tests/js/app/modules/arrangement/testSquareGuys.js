@@ -86,7 +86,6 @@ function testSizingArrangementForDimensions(message, arr_width, arr_height, max_
             properties: {
                 'hexpand': false,
                 'valign': 'start',
-                'spacing': 0,
                 'max-rows': max_rows,
             },
             slots: {

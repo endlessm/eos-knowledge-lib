@@ -73,7 +73,6 @@ const _QuiltLayout = new Knowledge.Class({
     Extends: Endless.CustomContainer,
 
     _init: function (props={}) {
-        this.spacing = 0;
         this.total_cards_to_show = 4;
 
         this.parent(props);
@@ -92,8 +91,7 @@ const _QuiltLayout = new Knowledge.Class({
     },
 
     vfunc_get_preferred_width: function () {
-        return [_PrimaryCard.Width.TINY + _SecondaryCard.Width.TINY + this.spacing,
-            Arrangement.get_size_with_spacing(Card.MinSize.H, 4, this.spacing)];
+        return [_PrimaryCard.Width.TINY + _SecondaryCard.Width.TINY, 4 * Card.MinSize.H];
     },
 
     vfunc_get_preferred_height_for_width: function (width) {
@@ -122,31 +120,27 @@ const _QuiltLayout = new Knowledge.Class({
         let x = alloc.x;
         let y = alloc.y;
 
-        let available_width = alloc.width - this.spacing;
-        if (horizontal_mode === _HorizontalMode.LARGE)
-            available_width -= this.spacing;  // Additional spacing before third column
-
-        let primary_width = Math.floor(available_width * PRIMARY_HORIZONTAL_PROPORTION[horizontal_mode]);
-        let secondary_width = Math.floor(available_width * SECONDARY_HORIZONTAL_PROPORTION[horizontal_mode]);
-        let support_width = available_width - primary_width - secondary_width;
+        let primary_width = Math.floor(alloc.width * PRIMARY_HORIZONTAL_PROPORTION[horizontal_mode]);
+        let secondary_width = Math.floor(alloc.width * SECONDARY_HORIZONTAL_PROPORTION[horizontal_mode]);
+        let support_width = alloc.width - primary_width - secondary_width;
 
         // Place primary card
-        Arrangement.place_card(all_cards[0], x, y, primary_width, _PrimaryCard.Height[horizontal_mode] + this.spacing);
-        x += primary_width + this.spacing;
+        Arrangement.place_card(all_cards[0], x, y, primary_width, _PrimaryCard.Height[horizontal_mode]);
+        x += primary_width;
 
         if (count === 1)
             return;
 
         // Place secondary card
-        Arrangement.place_card(all_cards[1], x, y, secondary_width, _SecondaryCard.Height[horizontal_mode] + this.spacing);
-        x += secondary_width + this.spacing;
+        Arrangement.place_card(all_cards[1], x, y, secondary_width, _SecondaryCard.Height[horizontal_mode]);
+        x += secondary_width;
 
         let invisible_cards_offset = 4;
         // Place support cards, if needed
         if (horizontal_mode === _HorizontalMode.LARGE) {
             all_cards.slice(2, 4).forEach((card) => {
                 Arrangement.place_card(card, x, y, support_width, _SupportCards.HEIGHT);
-                y += _SupportCards.HEIGHT + this.spacing;
+                y += _SupportCards.HEIGHT;
             });
         } else {
             invisible_cards_offset = 2;
@@ -215,17 +209,5 @@ const Quilt = new Module.Class({
 
     get all_visible() {
         return this.get_count() <= this._layout.total_cards_to_show;
-    },
-
-    get spacing() {
-        return this._layout.spacing;
-    },
-
-    set spacing(value) {
-        if (this._layout.spacing === value)
-            return;
-        this._layout.spacing = value;
-        this.notify('spacing');
-        this._layout.queue_resize();
     },
 });

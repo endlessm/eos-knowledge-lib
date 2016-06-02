@@ -40,7 +40,6 @@ const _ThirdRockLayout = new Knowledge.Class({
     Extends: Endless.CustomContainer,
 
     _init: function (props={}) {
-        this.spacing = 0;
         this.compact_mode = false;
 
         this.parent(props);
@@ -57,8 +56,7 @@ const _ThirdRockLayout = new Knowledge.Class({
     },
 
     vfunc_get_preferred_width: function () {
-        return [Arrangement.get_size_with_spacing(_PreferredCardWidth.TINY, _CARD_COUNT, this.spacing),
-            Arrangement.get_size_with_spacing(_PreferredCardWidth.LARGE, _CARD_COUNT, this.spacing)];
+        return [_PreferredCardWidth.TINY * _CARD_COUNT, _PreferredCardWidth.LARGE * _CARD_COUNT];
     },
 
     vfunc_get_preferred_height_for_width: function (width) {
@@ -77,12 +75,11 @@ const _ThirdRockLayout = new Knowledge.Class({
         let all_cards = this.get_parent().get_cards();
 
         let horizontal_mode = this._get_horizontal_mode(alloc.width);
-        let available_width = alloc.width - (_CARD_COUNT - 1) * this.spacing;
-        let child_width = Math.floor(available_width / _CARD_COUNT);
-        let child_height = _CardHeight[this.compact_mode ? 'Compact' : 'Normal'][horizontal_mode];;
+        let child_width = Math.floor(alloc.width / _CARD_COUNT);
+        let child_height = _CardHeight[this.compact_mode ? 'Compact' : 'Normal'][horizontal_mode];
 
-        let delta_x = child_width + this.spacing;
-        let spare_pixels = alloc.width - (Arrangement.get_size_with_spacing(child_width, _CARD_COUNT, this.spacing));
+        let delta_x = child_width;
+        let spare_pixels = alloc.width - (child_width * _CARD_COUNT);
         let x = alloc.x;
         let y = alloc.y;
 
@@ -182,17 +179,5 @@ const ThirdRock = new Module.Class({
 
     get all_visible() {
         return this.get_card_count() <= _CARD_COUNT;
-    },
-
-    get spacing() {
-        return this._layout.spacing;
-    },
-
-    set spacing(value) {
-        if (this._layout.spacing === value)
-            return;
-        this._layout.spacing = value;
-        this.notify('spacing');
-        this._layout.queue_resize();
     },
 });

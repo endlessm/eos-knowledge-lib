@@ -38,10 +38,6 @@ const Grid = new Module.Class({
         this.bind_property('max-children-per-line',
             this._flow_box, 'max-children-per-line',
             GObject.BindingFlags.SYNC_CREATE);
-        this.bind_property('spacing', this._flow_box, 'column-spacing',
-            GObject.BindingFlags.SYNC_CREATE);
-        this.bind_property('spacing', this._flow_box, 'row-spacing',
-            GObject.BindingFlags.SYNC_CREATE);
 
         let order = this.get_order();
         if (order) {

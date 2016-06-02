@@ -302,6 +302,26 @@
     margin: 0px 120px;
 }
 
+.ArrangementHalf,
+.ArrangementList,
+.ArrangementPiano,
+.ArrangementScrollingList,
+.ArrangementSquareGuys,
+.ArrangementThirties,
+.ArrangementWindshield {
+  margin: -10px;
+}
+
+.ArrangementHalf .Card,
+.ArrangementList .Card,
+.ArrangementPiano .Card,
+.ArrangementScrollingList .Card,
+.ArrangementSquareGuys .Card,
+.ArrangementThirties .Card,
+.ArrangementWindshield .Card {
+  margin: 10px;
+}
+
 .endless-search-box frame {
    background-color: #d5e1ed;
 }

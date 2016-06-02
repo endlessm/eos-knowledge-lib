@@ -79,16 +79,15 @@ const _SideBySideLayout = new Knowledge.Class({
 
         let leftover = (alloc.width - cards_width) / (all_cards.length - 1);
         let spacing = this._get_horizontal_spacing(leftover);
-        let available_width = alloc.width;
         let x = alloc.x;
         let y = alloc.y;
 
         all_cards.forEach((card) => {
             let [, card_nat] = card.get_preferred_width();
-            if (card_nat <= available_width) {
+            if (card_nat <= alloc.width) {
                 let offset = card_nat + spacing;
                 Arrangement.place_card(card, x, y, card_nat, MENU_HEIGHT);
-                available_width -= offset;
+                alloc.width -= offset;
                 x += offset;
             } else {
                 this.all_visible = false;
