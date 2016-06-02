@@ -167,4 +167,26 @@ describe('Syntactic sugar metaclass', function () {
         expect(object.my_interface_inited).toBeTruthy();
         expect(object.foo).toEqual('inited');
     });
+
+    it('does not call _interface_init() functions twice', function () {
+        const MyCounterInterface = new Lang.Interface({
+            Name: 'MyCounterInterface',
+            _interface_init: function () {
+                if (!this.iface_init_count)
+                    this.iface_init_count = 0;
+                this.iface_init_count++;
+            },
+        });
+        const MyCounterParent = new Knowledge.Class({
+            Name: 'MyCounterParent',
+            Extends: GObject.Object,
+        });
+        const MyCounterSubclass = new Knowledge.Class({
+            Name: 'MyCounterSubclass',
+            Extends: MyCounterParent,
+            Implements: [MyCounterInterface],
+        });
+        let object = new MyCounterSubclass();
+        expect(object.iface_init_count).toEqual(1);
+    });
 });

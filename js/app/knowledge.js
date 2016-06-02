@@ -73,6 +73,9 @@ const Class = new Lang.Class({
                 old_init.apply(this, arguments);
             else
                 this.parent.apply(this, arguments);
+
+            if (this._interfaces_inited)
+                return;
             for (let current = this.constructor; current; current = current.__super__) {
                 let interfaces = current.prototype.__interfaces__ || [];
                 interfaces.forEach(iface => {
@@ -80,6 +83,7 @@ const Class = new Lang.Class({
                         iface._interface_init(this);
                 });
             }
+            this._interfaces_inited = true;
         };
 
         let metaclass = Lang.getMetaClass(props) || Lang.Class;
