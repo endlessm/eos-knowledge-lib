@@ -34,6 +34,10 @@ const MockDispatcher = new Knowledge.Class({
         this._processing = false;
     },
 
+    pause: function () {},
+
+    resume: function () {},
+
     dispatch: function (payload) {
         this._queue.push(payload);
         if (!this._processing)
