@@ -77,7 +77,7 @@ const _SideBySideLayout = new Knowledge.Class({
             return accum + card_nat;
         }, 0);
 
-        let leftover = (alloc.width - cards_width) / (all_cards.length - 1)
+        let leftover = (alloc.width - cards_width) / (all_cards.length - 1);
         let spacing = this._get_horizontal_spacing(leftover);
         let available_width = alloc.width;
         let x = alloc.x;
@@ -147,6 +147,6 @@ const SideBySide = new Module.Class({
     },
 
     get all_visible() {
-        return this_layout.all_visible;
+        return this._layout.all_visible;
     },
 });

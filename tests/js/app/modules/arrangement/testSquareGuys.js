@@ -25,7 +25,7 @@ describe('Arrangement.SquareGuys', function () {
     });
 
     describe('maximum rows', function () {
-        let msg = 'shows correct number of cards for max_rows = '
+        let msg = 'shows correct number of cards for max_rows = ';
         // At 2000x2000, and unlimited max_rows, all 20 cards should be visible
         testSizingArrangementForDimensions(msg + 0, 2000, 2000, 0, 20, 399, 300);
 
