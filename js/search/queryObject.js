@@ -22,7 +22,6 @@ const _XAPIAN_OP_NOT = 'NOT ';
 const _XAPIAN_SYNTAX_CHARACTERS = ['(', ')', '+', '-', '\'', '"'];
 
 // The value numbers where certain info is stored in our Xapian documents
-const _XAPIAN_SOURCE_URL_VALUE_NO = 0;
 const _XAPIAN_RANK_VALUE_NO = 1;
 
 const _DEFAULT_CUTOFF = 10;
@@ -406,10 +405,6 @@ const QueryObject = Lang.Class({
             default:
                 return undefined;
         }
-    },
-
-    get_collapse_value: function () {
-        return _XAPIAN_SOURCE_URL_VALUE_NO;
     },
 });
 
