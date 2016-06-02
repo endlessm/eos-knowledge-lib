@@ -61,7 +61,10 @@ defines:
     content:
       type: Layout.ArticleStack
       slots:
-        card-type: Card.KnowledgeDocument
+        card-type:
+          type: Card.KnowledgeDocument
+          properties:
+            show-titles: false
     sidebar:
       type: Layout.SearchAndItem
       slots:
