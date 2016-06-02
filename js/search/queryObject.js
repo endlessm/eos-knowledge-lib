@@ -22,7 +22,7 @@ const _XAPIAN_OP_NOT = 'NOT ';
 const _XAPIAN_SYNTAX_CHARACTERS = ['(', ')', '+', '-', '\'', '"'];
 
 // The value numbers where certain info is stored in our Xapian documents
-const _XAPIAN_RANK_VALUE_NO = 1;
+const _XAPIAN_SEQUENCE_NUMBER_VALUE_NO = 0;
 
 const _DEFAULT_CUTOFF = 10;
 const _MATCH_SYNOPSIS_CUTOFF = 20;
@@ -52,11 +52,11 @@ const QueryObjectMatch = Utils.define_enum(['TITLE_ONLY', 'TITLE_SYNOPSIS']);
 /**
  * Enum: QueryObjectSort
  *
- * RELEVANCE      - Use xapian relevance ranking to sort articles. Exact title
- *                  matches will be weighted most heavily.
- * RANK           - Uses the article page rank to sort results.
+ * RELEVANCE       - Use xapian relevance ranking to sort articles. Exact title
+ *                   matches will be weighted most heavily.
+ * SEQUENCE_NUMBER - Uses the article page rank to sort results.
  */
-const QueryObjectSort = Utils.define_enum(['RELEVANCE', 'RANK']);
+const QueryObjectSort = Utils.define_enum(['RELEVANCE', 'SEQUENCE_NUMBER']);
 
 /**
  * Enum: QueryObjectOrder
@@ -400,8 +400,8 @@ const QueryObject = Lang.Class({
 
     get_sort_value: function () {
         switch (this.sort) {
-            case QueryObjectSort.RANK:
-                return _XAPIAN_RANK_VALUE_NO;
+            case QueryObjectSort.SEQUENCE_NUMBER:
+                return _XAPIAN_SEQUENCE_NUMBER_VALUE_NO;
             default:
                 return undefined;
         }

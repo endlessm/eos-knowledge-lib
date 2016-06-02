@@ -113,6 +113,7 @@ const HierarchicalSet = new Module.Class({
             limit: BATCH_SIZE,
             tags: this._current_model.child_tags,
             tag_match: QueryObject.QueryObjectTagMatch.ALL,
+            sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
         });
 
         this._load_content(query);

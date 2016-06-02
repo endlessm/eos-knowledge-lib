@@ -59,10 +59,10 @@ describe('QueryObject', function () {
     it('should map sort property to xapian sort value', function () {
         let query_obj = new QueryObject.QueryObject({
             query: 'tyrion wins',
-            sort: QueryObject.QueryObjectSort.RANK,
+            sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
         });
         let result = query_obj.get_sort_value(query_obj);
-        expect(result).toBe(1);
+        expect(result).toBe(0);
 
         query_obj = new QueryObject.QueryObject({
             query: 'tyrion wins',

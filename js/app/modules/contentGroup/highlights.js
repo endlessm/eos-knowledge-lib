@@ -140,6 +140,7 @@ const Highlights = new Module.Class({
         let query = new QueryObject.QueryObject({
             limit: _BATCH_SIZE,
             tags: set.child_tags,
+            sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
         });
         Engine.get_default().get_objects_by_query(query, null, (engine, res) => {
             let models, get_more;

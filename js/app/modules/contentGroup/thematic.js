@@ -105,6 +105,7 @@ const Thematic = new Module.Class({
             limit: -1,
             tags: this._current_model.child_tags.concat(arrangement.accepted_child_tags),
             tag_match: QueryObject.QueryObjectTagMatch.ALL,
+            sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
         });
         Engine.get_default().get_objects_by_query(query, null, (engine, task) => {
             let results;

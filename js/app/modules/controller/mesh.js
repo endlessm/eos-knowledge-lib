@@ -133,6 +133,7 @@ const Mesh = new Module.Class({
         let query_obj = new QueryObject.QueryObject({
             limit: -1,
             tags: [ Engine.HOME_PAGE_TAG, 'EknSetObject' ],
+            sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
         });
         Engine.get_default().get_objects_by_query(query_obj, null, (engine, inner_task) => {
             let [models] = engine.get_objects_by_query_finish(inner_task);
@@ -384,6 +385,7 @@ const Mesh = new Module.Class({
         let query_obj = new QueryObject.QueryObject({
             tags: item.model.child_tags,
             limit: RESULTS_SIZE,
+            sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
         });
 
         let dispatcher = Dispatcher.get_default();
