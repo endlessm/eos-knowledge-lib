@@ -55,7 +55,6 @@ const ArticleHTMLRenderer = new Knowledge.Class({
     _init: function (props={}) {
         this.parent(props);
         this._custom_css_files = [];
-        this._custom_javascript_files = [];
     },
 
     _strip_tags: function (html) {
@@ -64,10 +63,6 @@ const ArticleHTMLRenderer = new Knowledge.Class({
 
     set_custom_css_files: function (custom_css_files) {
         this._custom_css_files = custom_css_files;
-    },
-
-    set_custom_javascript_files: function (custom_javascript_files) {
-        this._custom_javascript_files = custom_javascript_files;
     },
 
     _get_legacy_disclaimer: function (model) {
@@ -239,7 +234,10 @@ const ArticleHTMLRenderer = new Knowledge.Class({
     },
 
     _get_wrapper_js_files: function () {
-        return ['jquery-min.js', 'clipboard-manager.js'].concat(this._custom_javascript_files);
+        return [
+            'jquery-min.js',
+            'clipboard-manager.js',
+        ];
     },
 
     _render_wrapper: function (content, model) {
