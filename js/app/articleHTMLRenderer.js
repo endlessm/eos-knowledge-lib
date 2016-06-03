@@ -237,6 +237,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
             'jquery-min.js',
             'clipboard-manager.js',
             'crosslink.js',
+            'chunk.js',
         ];
     },
 
@@ -244,6 +245,20 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         let engine = Engine.get_default();
         let links = model.outgoing_links.map((link) => engine.test_link(link));
         return JSON.stringify(links);
+    },
+
+    _get_chunk_data: function (model) {
+        function get_parent_featured_sets () {
+            return model.tags
+                .filter(tag => !tag.startsWith('Ekn'))
+                .map(tag => SetMap.get_set_for_tag(tag))
+                .filter(set => typeof set !== 'undefined')
+                .filter(set => set.featured);
+        }
+
+        return JSON.stringify({
+            'ParentFeaturedSets': get_parent_featured_sets(),
+        });
     },
 
     _render_wrapper: function (content, model) {
@@ -259,6 +274,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
             'copy-button-text': _("Copy"),
             'content': content,
             'crosslink-data': this._get_crosslink_data(model),
+            'chunk-data': this._get_chunk_data(model),
         });
     },
 

@@ -43,6 +43,7 @@
     <file>data/templates/images/object-view.png</file>
     <file compressed="true" preprocess="xml-stripblanks">data/templates/images/prensa-libre.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">data/templates/images/quote.svg</file>
+    <file compressed="true">data/templates/js/chunk.js</file>
     <file compressed="true">data/templates/js/clipboard-manager.js</file>
     <file compressed="true">data/templates/js/content-fixes.js</file>
     <file compressed="true">data/templates/js/crosslink.js</file>

@@ -15,6 +15,7 @@
         {{/javascript-files}}
         <script type="text/javascript">
             window.crosslink_init({{{crosslink-data}}});
+            window.chunk_init({{{chunk-data}}});
         </script>
     </body>
 </html>
