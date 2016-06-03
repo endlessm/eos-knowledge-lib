@@ -3,7 +3,7 @@ defines:
 - &list
   type: Arrangement.List
   slots:
-    card-type: Card.List  # was previously named SearchResultCard
+    card: Card.List  # was previously named SearchResultCard
 
 - &home-page
   type: Layout.Scrolling
@@ -49,8 +49,8 @@ defines:
 - &article-page
   shortdef: 'Layout.ArticleStack(allow-navigation: next)'
   slots:
-    card-type: Card.FakeVideoDocument
-    nav-card-type: Card.Title
+    card: Card.FakeVideoDocument
+    nav-card: Card.Title
 
 - &window
   type: Window.App

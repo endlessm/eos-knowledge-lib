@@ -26,8 +26,6 @@ describe('Table of contents widget', function () {
 
     });
 
-    it('can be constructed', function () {});
-
     it('can set section-list', function () {
         // Seems worth testing this as having a list property in javascript
         // isn't common

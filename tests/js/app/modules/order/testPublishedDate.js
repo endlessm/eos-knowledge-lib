@@ -1,11 +1,14 @@
 // Copyright 2016 Endless Mobile, Inc.
 
+const Gtk = imports.gi.Gtk;
+Gtk.init(null);
+
 const ArticleObjectModel = imports.search.articleObjectModel;
 const MockFactory = imports.tests.mockFactory;
 const PublishedDate = imports.app.modules.order.publishedDate;
 
 describe('Order.PublishedDate', function () {
-    let order, models, factory;
+    let order, models;
 
     const UNSORTED_DATES = [
         '2013-07-03T00:00:00',
@@ -29,9 +32,9 @@ describe('Order.PublishedDate', function () {
 
     describe('ascending', function () {
         beforeEach(function () {
-            factory = new MockFactory.MockFactory();
-            factory.add_named_mock('order', PublishedDate.PublishedDate);
-            order = factory.create_named_module('order');
+            [order] = MockFactory.setup_tree({
+                type: PublishedDate.PublishedDate,
+            });
         });
 
         it('is the default', function () {
@@ -46,11 +49,12 @@ describe('Order.PublishedDate', function () {
 
     describe('descending', function () {
         beforeEach(function () {
-            factory = new MockFactory.MockFactory();
-            factory.add_named_mock('order', PublishedDate.PublishedDate, {}, {
-                ascending: false,
+            [order] = MockFactory.setup_tree({
+                type: PublishedDate.PublishedDate,
+                properties: {
+                    'ascending': false,
+                },
             });
-            order = factory.create_named_module('order');
         });
 
         it('sorts models by published date', function () {

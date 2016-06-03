@@ -10,22 +10,20 @@ describe('Arrangement interface', function () {
     let arrangement, factory;
 
     beforeEach(function () {
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('card', Minimal.MinimalCard);
-        factory.add_named_mock('order', Minimal.MinimalOrder, {}, {
-            ascending: false,
+        factory = new MockFactory.MockFactory({
+            type: Minimal.MinimalArrangement,
+            slots: {
+                'card': { type: Minimal.MinimalCard },
+                'order': {
+                    type: Minimal.MinimalOrder,
+                    properties: {
+                        'ascending': false,
+                    },
+                },
+                'filter': { type: Minimal.TitleFilter },
+            },
         });
-        factory.add_named_mock('filter', Minimal.TitleFilter);
-        factory.add_named_mock('arrangement', Minimal.MinimalArrangement, {
-            'card-type': 'card',
-            'order': 'order',
-            'filter': 'filter',
-        });
-        arrangement = factory.create_named_module('arrangement');
-    });
-
-    it('has a minimal implementation', function () {
-        expect(arrangement).toBeDefined();
+        arrangement = factory.create_module_tree();
     });
 
     it('returns -1 for default card limit', function () {
@@ -46,7 +44,7 @@ describe('Arrangement interface', function () {
             expect(clicked_model).toBe(model);
             done();
         });
-        factory.get_last_created_named_mock('card').emit('clicked');
+        factory.get_last_created('card').emit('clicked');
     });
 
     it('packs its cards in the correct order', function () {

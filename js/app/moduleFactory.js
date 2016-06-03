@@ -65,9 +65,7 @@ const ModuleFactory = new Knowledge.Class({
         this._ids = new Set();
         this._id_to_module = new Map();
         this._id_to_pending_callbacks = new Map();
-        this._path_to_description = new Map();
         this._extract_ids(this.app_json[ROOT_NAME], false);
-        this._unique_count = 0;
     },
 
     get version() {
@@ -115,6 +113,11 @@ const ModuleFactory = new Knowledge.Class({
         }
         Lang.copyProperties(extra_props, module_props);
 
+        // Make modules visible by default, as this should be a simpler API
+        // than GTK widgets
+        if (module_class.prototype.show && !('visible' in module_props))
+            module_props['visible'] = true;
+
         let module = new module_class(module_props);
 
         if (styles) {
@@ -140,6 +143,9 @@ const ModuleFactory = new Knowledge.Class({
      *   extra_props - Extra construct properties for the module.
      */
     create_module_tree: function (extra_props={}) {
+        this._path_to_description = new Map();
+        this._unique_count = 0;
+
         return this._create_module(ROOT_NAME, this.app_json[ROOT_NAME],
             extra_props);
     },
@@ -260,9 +266,6 @@ const ModuleFactory = new Knowledge.Class({
             let is_multi = this._is_multi_slot(parent_description, slot_name, parent_is_multi);
             if(!slot_value)
                 return;
-            if (typeof slot_value === 'string')
-                slot_value = this._path_to_description.get(slot_value);
-
             this._extract_ids(slot_value, is_multi);
         });
     },

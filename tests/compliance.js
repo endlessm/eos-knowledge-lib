@@ -4,6 +4,7 @@
 test_card_container_fade_in_compliance, test_card_highlight_string_compliance */
 
 const Gtk = imports.gi.Gtk;
+const Lang = imports.lang;
 
 const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
@@ -46,6 +47,11 @@ function test_card_highlight_string_compliance(CardClass) {
     });
 }
 
+function _merge_slots_into(extra_slots, slots) {
+    Lang.copyProperties(extra_slots, slots);
+    return slots;
+}
+
 function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
     describe(ArrangementClass.$gtype.name + ' implements Arrangement correctly', function () {
         let factory, arrangement;
@@ -53,23 +59,13 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
         beforeEach(function () {
             jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
-            factory = new MockFactory.MockFactory();
-            factory.add_named_mock('card', Minimal.MinimalCard);
-            factory.add_named_mock('filter', Minimal.TitleFilter);
-            let slots = {
-                'card-type': 'card',
-                'filter': 'filter',
-            };
-            for (let slot in extra_slots) {
-                factory.add_named_mock(slot, extra_slots[slot]);
-                slots[slot] = slot;
-            }
-            factory.add_named_mock('arrangement', ArrangementClass, slots);
-            arrangement = factory.create_named_module('arrangement');
-        });
-
-        it('by constructing', function () {
-            expect(arrangement).toBeDefined();
+            [arrangement, factory] = MockFactory.setup_tree({
+                type: ArrangementClass,
+                slots: _merge_slots_into(extra_slots, {
+                    'card': { type: Minimal.MinimalCard },
+                    'filter': { type: Minimal.TitleFilter },
+                }),
+            });
         });
 
         function add_cards(a, ncards) {
@@ -80,7 +76,7 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
                 models.push(model);
             }
             Utils.update_gui();
-            let created_cards = factory.get_created_named_mocks('card');
+            let created_cards = factory.get_created('card');
             let cards = models.map(model => created_cards.filter(card => card.model === model)[0]);
             return cards.slice(cards.length - ncards);
         }
@@ -131,18 +127,13 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
         });
 
         it('by retrieving the models in sorted order', function () {
-            factory.add_named_mock('order', Minimal.MinimalOrder);
-            let slots = {
-                'card-type': 'card',
-                'order': 'order',
-            };
-            for (let slot in extra_slots) {
-                factory.add_named_mock(slot, extra_slots[slot]);
-                slots[slot] = slot;
-            }
-            factory.add_named_mock('ordered-arrangement', ArrangementClass,
-                slots);
-            arrangement = factory.create_named_module('ordered-arrangement');
+            [arrangement, factory] = MockFactory.setup_tree({
+                type: ArrangementClass,
+                slots: _merge_slots_into(extra_slots, {
+                    'card': { type: Minimal.MinimalCard },
+                    'order': { type: Minimal.MinimalOrder },
+                }),
+            });
 
             let models = [];
             for (let ix = 5; ix > 0; ix--) {
@@ -180,7 +171,7 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
 
         it('by not creating a card for a filtered-out model', function () {
             add_filtered_card(arrangement);
-            expect(factory.get_created_named_mocks('card').length).toBe(0);
+            expect(factory.get_created('card').length).toBe(0);
         });
 
         it('by not updating the card count for a filtered-out model', function () {
@@ -221,17 +212,12 @@ function test_arrangement_fade_in_compliance(ArrangementClass, extra_slots={}) {
         let factory, arrangement;
 
         beforeEach(function () {
-            factory = new MockFactory.MockFactory();
-            factory.add_named_mock('card', Minimal.MinimalCard);
-            let slots = {
-                'card-type': 'card',
-            };
-            for (let slot in extra_slots) {
-                factory.add_named_mock(slot, extra_slots[slot]);
-                slots[slot] = slot;
-            }
-            factory.add_named_mock('arrangement', ArrangementClass, slots);
-            arrangement = factory.create_named_module('arrangement');
+            [arrangement, factory] = MockFactory.setup_tree({
+                type: ArrangementClass,
+                slots: _merge_slots_into(extra_slots, {
+                    'card': { type: Minimal.MinimalCard },
+                }),
+            });
         });
 
         it('by fading in cards when requested to', function () {
@@ -258,22 +244,18 @@ function test_card_container_fade_in_compliance(action, CardContainerClass, extr
 
         beforeEach(function () {
             dispatcher = MockDispatcher.mock_default();
-            let factory = new MockFactory.MockFactory();
-
-            factory.add_named_mock('card', Minimal.MinimalCard);
-            factory.add_named_mock('arrangement', Minimal.MinimalArrangement, {
-                'card-type': 'card',
+            let [, factory] = MockFactory.setup_tree({
+                type: CardContainerClass,
+                slots: _merge_slots_into(extra_slots, {
+                    'arrangement': {
+                        type: Minimal.MinimalArrangement,
+                        slots: {
+                            'card': { type: Minimal.MinimalCard },
+                        },
+                    },
+                }),
             });
-            let slots = {
-                'arrangement': 'arrangement',
-            };
-            for (let slot in extra_slots) {
-                factory.add_named_mock(slot, extra_slots[slot]);
-                slots[slot] = slot;
-            }
-            factory.add_named_mock('card-container', CardContainerClass, slots);
-            factory.create_named_module('card-container');
-            arrangement = factory.get_last_created_named_mock('arrangement');
+            arrangement = factory.get_last_created('arrangement');
             model = new ContentObjectModel.ContentObjectModel();
             dispatcher.dispatch({
                 action_type: action,

@@ -21,10 +21,6 @@ describe('Navigation.SearchBox', function () {
         box = new SearchBox.SearchBox();
     });
 
-    it('constructs', function () {
-        expect(box).toBeDefined();
-    });
-
     it('has the correct style class', function () {
         expect(box).toHaveCssClass('search-box');
     });

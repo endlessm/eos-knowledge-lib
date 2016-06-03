@@ -14,14 +14,11 @@ describe('Module interface', function () {
     let module;
 
     beforeEach(function () {
-        let mock_factory = new MockFactory.MockFactory();
-
-        module = new Minimal.MinimalModule({
-            factory: mock_factory,
+        let factory = new MockFactory.MockFactory({
+            type: Minimal.MinimalModule,
         });
+        module = factory.create_module_tree();
     });
-
-    it ('Constructs', function () {});
 
     it('reports having no slots if none defined in Slots', function () {
         expect(Minimal.MinimalModule.get_slot_names()).toEqual([]);

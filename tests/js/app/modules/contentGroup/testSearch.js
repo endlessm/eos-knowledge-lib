@@ -28,28 +28,29 @@ describe('ContentGroup.Search', function () {
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
         dispatcher = MockDispatcher.mock_default();
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('results-card', Minimal.MinimalCard);
-        factory.add_named_mock('results-arrangement', Minimal.MinimalArrangement, {
-            'card-type': 'results-card',
+
+        [search_module, factory] = MockFactory.setup_tree({
+            type: Search.Search,
+            slots: {
+                'arrangement': {
+                    type: Minimal.MinimalArrangement,
+                    slots: {
+                        'card': { type: Minimal.MinimalCard },
+                    },
+                },
+            },
         });
-        factory.add_named_mock('search-module', Search.Search, {
-            'arrangement': 'results-arrangement',
-        });
-        search_module = factory.create_named_module('search-module');
         search_module.show_all();
-        arrangement = factory.get_created_named_mocks('results-arrangement')[0];
+        arrangement = factory.get_last_created('arrangement');
         spyOn(arrangement, 'highlight_string');
     });
-
-    it('constructs', function () {});
 
     it('creates and packs an arrangement widget', function () {
         expect(search_module).toHaveDescendant(arrangement);
     });
 
     it('does not create a card widget at construct time', function () {
-        let cards = factory.get_created_named_mocks('results-card');
+        let cards = factory.get_created('arrangement.card');
         expect(cards.length).toEqual(0);
     });
 
@@ -146,14 +147,19 @@ describe('ContentGroup.Search', function () {
             Implements: [Arrangement.Arrangement],
         });
 
-        factory.add_named_mock('infinite-arrangement', InfiniteArrangement, {
-            'card-type': 'results-card',
+        factory = new MockFactory.MockFactory({
+            type: Search.Search,
+            slots: {
+                'arrangement': {
+                    type: InfiniteArrangement,
+                    slots: {
+                        'card': Minimal.MinimalCard,
+                    },
+                },
+            },
         });
-        factory.add_named_mock('infinite-module', Search.Search, {
-            'arrangement': 'infinite-arrangement',
-        });
-        search_module = factory.create_named_module('infinite-module');
-        arrangement = factory.get_created_named_mocks('infinite-arrangement')[0];
+        search_module = factory.create_module_tree();
+        arrangement = factory.get_last_created('arrangement');
 
         arrangement.emit('need-more-content');
         expect(dispatcher.last_payload_with_type(Actions.NEED_MORE_SEARCH)).toBeDefined();

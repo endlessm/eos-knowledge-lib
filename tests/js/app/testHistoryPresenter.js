@@ -18,8 +18,6 @@ describe('History Presenter', function () {
         });
     });
 
-    it('can be constructed', function () {});
-
     it('can access a history item', function () {
         history_presenter.set_current_item_from_props({
             title: '',

@@ -5,7 +5,6 @@ const GLib = imports.gi.GLib;
 
 const Actions = imports.app.actions;
 const MockDispatcher = imports.tests.mockDispatcher;
-const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const Encyclopedia = imports.app.modules.window.encyclopedia;
 
@@ -32,34 +31,27 @@ describe('Window.Encyclopedia', function () {
 
     beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('home-page', Minimal.MinimalPage);
-        factory.add_named_mock('search-page', Minimal.MinimalPage);
-        factory.add_named_mock('article-page', Minimal.MinimalPage);
-        factory.add_named_mock('lightbox', Minimal.MinimalBinModule);
-        factory.add_named_mock('window', Encyclopedia.Encyclopedia, {
-            'home-page': 'home-page',
-            'search-page': 'search-page',
-            'article-page': 'article-page',
-            'lightbox': 'lightbox',
-        }, {
-            application: app,
+        [view, factory] = MockFactory.setup_tree({
+            type: Encyclopedia.Encyclopedia,
+            properties: {
+                'application': app,
+            },
+            slots: {
+                'home-page': { type: null },
+                'search-page': { type: null },
+                'article-page': { type: null },
+                'lightbox': { type: null },
+            }
         });
-
-        view = factory.create_named_module('window');
     });
 
     afterEach(function () {
         view.destroy();
     });
 
-    it('can be constructed', function () {
-        expect(view).toBeDefined();
-    });
-
     it('disables the home button when in the home page', function () {
-        let home_page = factory.get_created_named_mocks('home-page')[0];
-        let other_page = factory.get_created_named_mocks('search-page')[0];
+        let home_page = factory.get_last_created('home-page');
+        let other_page = factory.get_last_created('search-page');
         expect(view._home_button).toBeDefined();
         view.show_page(other_page);
         expect(view._home_button.sensitive).toBe(true);

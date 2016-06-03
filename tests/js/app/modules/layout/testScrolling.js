@@ -8,7 +8,6 @@ Utils.register_gresource();
 const Actions = imports.app.actions;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
-const MockPlaceholder = imports.tests.mockPlaceholder;
 const Scrolling = imports.app.modules.layout.scrolling;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
@@ -20,16 +19,16 @@ describe('Layout.Scrolling', function () {
     beforeEach(function () {
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('placeholder', MockPlaceholder.MockPlaceholder);
-        factory.add_named_mock('layout', Scrolling.Scrolling, {
-            'content': 'placeholder',
+        [layout, factory] = MockFactory.setup_tree({
+            type: Scrolling.Scrolling,
+            slots: {
+                'content': { type: null },
+            },
         });
-        layout = factory.create_named_module('layout');
     });
 
     it('packs all its children', function () {
-        let content = factory.get_created_named_mocks('placeholder')[0];
+        let content = factory.get_last_created('content');
         expect(layout).toHaveDescendant(content);
     });
 

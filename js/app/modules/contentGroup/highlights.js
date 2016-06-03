@@ -36,7 +36,7 @@ const _BATCH_SIZE = 50;
  *
  * Slots:
  *   highlight-arrangement - large arrangement to display highlighted category
- *   support-card-type - type of cards to create for sets
+ *   support-card - type of cards to create for sets
  *   sets-filter - <Filter> for deciding which sets to show
  */
 const Highlights = new Module.Class({
@@ -60,7 +60,7 @@ const Highlights = new Module.Class({
 
     Slots: {
         'highlight-arrangement': {},
-        'support-card-type': {
+        'support-card': {
             multi: true,
         },
         'sets-filter': {},
@@ -108,7 +108,7 @@ const Highlights = new Module.Class({
     },
 
     _add_set_card: function (model) {
-        let card = this.create_submodule('support-card-type', {
+        let card = this.create_submodule('support-card', {
             model: model,
             halign: Gtk.Align.START,
         });

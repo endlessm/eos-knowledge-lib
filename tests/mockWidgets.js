@@ -1,43 +1,32 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported MockButton, MockHistoryButtons, MockItemGroupModule,
-MockScrolledArrangement, MockSearchBox, MockSidebarTemplate, MockEknWebview */
+/* exported MockEknWebview, MockHistoryButtons, MockRenderer,
+MockScrolledLayout, MockSearchBox, MockSizeWidget */
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Knowledge = imports.app.knowledge;
 const Minimal = imports.tests.minimal;
 const Module = imports.app.interfaces.module;
 
-const MockButton = new Knowledge.Class({
-    Name: 'MockButton',
-    Extends: GObject.Object,
-    Properties: {
-        'sensitive': GObject.ParamSpec.boolean('sensitive', '', '',
-            GObject.ParamFlags.READWRITE, true),
-    },
-    Signals: {
-        'clicked': {},
-    },
-});
-
-const MockScrolledArrangement = new Knowledge.Class({
-    Name: 'MockScrolledArrangement',
-    Extends: Minimal.MinimalArrangement,
-    Properties: {
-        'bottom-buffer': GObject.ParamSpec.int('bottom-buffer', '', '',
-            GObject.ParamFlags.READWRITE, -1, 9999, -1),
-    },
+const MockScrolledLayout = new Module.Class({
+    Name: 'MockScrolledLayout',
+    Extends: Minimal.MinimalBinModule,
     Signals: {
         'need-more-content': {},  // needed for several arrangements
     },
-    new_content_added: function () {
+    Slots: {
+        'content': {},
     },
+    _init: function (props={}) {
+        this.parent(props);
+        this.create_submodule('content');
+    },
+    new_content_added: function () {},
 });
 
-const MockSearchBox = new Knowledge.Class({
+const MockSearchBox = new Module.Class({
     Name: 'MockSearchBox',
     Extends: Gtk.Label,
     Signals: {
@@ -49,32 +38,6 @@ const MockSearchBox = new Knowledge.Class({
     set_menu_items: function () {},
 
     set_text_programmatically: function () {},
-});
-
-const MockItemGroupModule = new Module.Class({
-    Name: 'MockItemGroupModule',
-    Extends: Gtk.Widget,
-
-    Signals: {
-        'article-selected': {},
-        'need-more-content': {},
-    },
-
-    add_card: function () {},
-});
-
-const MockSidebarTemplate = new Knowledge.Class({
-    Name: 'MockSidebarTemplate',
-    Extends: Gtk.Grid,
-    _init: function (props={}) {
-        Lang.copyProperties(props, this);
-        this.parent({});
-        this.content_frame = new Gtk.Grid();
-        this.sidebar_frame = new Gtk.Grid();
-        this.add(this.content_frame);
-        this.add(this.sidebar_frame);
-    },
-    connect: function () {},
 });
 
 const MockRenderer = new Knowledge.Class({
@@ -119,7 +82,7 @@ const MockEknWebview = new Knowledge.Class({
     get_page_id: function () { return 1; },
 });
 
-const MockSizeWidget = new Knowledge.Class({
+const MockSizeWidget = new Module.Class({
     Name: 'MockSkizeWidget',
     Extends: Gtk.Widget,
 

@@ -17,8 +17,8 @@ const Utils = imports.tests.utils;
 const UtilsApp = imports.app.utils;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
-const LimitedArrangment = new Module.Class({
-    Name: 'LimitedArrangment',
+const LimitedArrangement = new Module.Class({
+    Name: 'LimitedArrangement',
     Extends: Minimal.MinimalArrangement,
 
     get_max_cards: function () {
@@ -39,27 +39,25 @@ describe('ContentGroup.Highlights', function () {
 
         engine.get_objects_by_query_finish.and.returnValue([[], null]);
 
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('arrangement', LimitedArrangment, {
-            'card-type': 'article-card',
+        [module, factory] = MockFactory.setup_tree({
+            type: Highlights.Highlights,
+            properties: {
+                'support-sets': 2,
+            },
+            slots: {
+                'highlight-arrangement': {
+                    type: LimitedArrangement,
+                    slots: {
+                        'card': { type: Minimal.MinimalCard },
+                    },
+                },
+                'support-card': { type: Minimal.MinimalCard },
+            },
         });
-        factory.add_named_mock('article-card', Minimal.MinimalCard);
-        factory.add_named_mock('set-card', Minimal.MinimalCard);
-        factory.add_named_mock('highlights', Highlights.Highlights, {
-            'highlight-arrangement': 'arrangement',
-            'support-card-type': 'set-card',
-        });
-        module = factory.create_named_module('highlights', {
-            'support-sets': 2,
-        });
-    });
-
-    it('constructs', function () {
-        expect(module).toBeDefined();
     });
 
     it('does not create a card widget at construct time', function () {
-        let cards = factory.get_created_named_mocks('set-card');
+        let cards = factory.get_created('set-card');
         expect(cards.length).toEqual(0);
     });
 
@@ -88,9 +86,9 @@ describe('ContentGroup.Highlights', function () {
                 models: set_models,
             });
 
-            highlight = factory.get_created_named_mocks('arrangement')[0];
-            support1 = factory.get_created_named_mocks('set-card')[0];
-            support2 = factory.get_created_named_mocks('set-card')[1];
+            highlight = factory.get_last_created('highlight-arrangement');
+            support1 = factory.get_created('set-card')[0];
+            support2 = factory.get_created('set-card')[1];
         });
 
         it('sends the items it is displaying, so they can be filtered', function() {
@@ -100,8 +98,8 @@ describe('ContentGroup.Highlights', function () {
         });
 
         it('adds one highlight arrangement and two support arrangements', function () {
-            expect(factory.get_created_named_mocks('arrangement').length).toBe(1);
-            expect(factory.get_created_named_mocks('set-card').length).toBe(2);
+            expect(factory.get_created('highlight-arrangement').length).toBe(1);
+            expect(factory.get_created('support-card').length).toBe(2);
         });
 
         it('puts cards in the highlight arrangement', function () {
@@ -138,8 +136,8 @@ describe('ContentGroup.Highlights', function () {
             action_type: Actions.APPEND_SETS,
             models: models,
         });
-        expect(factory.get_created_named_mocks('arrangement').length).toBe(1);
-        expect(factory.get_created_named_mocks('set-card').length).toBe(1);
+        expect(factory.get_created('highlight-arrangement').length).toBe(1);
+        expect(factory.get_created('support-card').length).toBe(1);
     });
 
     it('handles only one set', function () {
@@ -148,7 +146,7 @@ describe('ContentGroup.Highlights', function () {
             action_type: Actions.APPEND_SETS,
             models: models,
         });
-        expect(factory.get_created_named_mocks('arrangement').length).toBe(1);
-        expect(factory.get_created_named_mocks('set-card').length).toBe(0);
+        expect(factory.get_created('highlight-arrangement').length).toBe(1);
+        expect(factory.get_created('support-card').length).toBe(0);
     });
 });

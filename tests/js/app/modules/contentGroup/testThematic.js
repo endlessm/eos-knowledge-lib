@@ -23,33 +23,35 @@ describe('ContentGroup.Thematic', function () {
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
         dispatcher = MockDispatcher.mock_default();
 
-        factory = new MockFactory.MockFactory();
-        factory.add_reference_mock('theme-scroll', MockWidgets.MockScrolledArrangement);
-        factory.add_named_mock('arrangement', Minimal.MinimalArrangement, {
-            'card-type': 'article-card',
+        [, factory] = MockFactory.setup_tree({
+            type: MockWidgets.MockScrolledLayout,
+            id: 'theme-scroll',
+            slots: {
+                'content': {
+                    type: Thematic.Thematic,
+                    references: {
+                        'scroll-server': 'theme-scroll',
+                    },
+                    slots: {
+                        'arrangement': {
+                            type: Minimal.MinimalArrangement,
+                            slots: {
+                                'card': { type: Minimal.MinimalCard },
+                            },
+                        },
+                        'header-card': { type: Minimal.MinimalCard },
+                    },
+                },
+            },
         });
-        factory.add_named_mock('article-card', Minimal.MinimalCard);
-        factory.add_named_mock('set-card', Minimal.MinimalCard);
-        factory.add_named_mock('highlights', Thematic.Thematic, {
-            'arrangement': 'arrangement',
-            'header-card-type': 'set-card',
-        }, {
-        }, {
-            'scroll-server': 'theme-scroll',
-        });
-        module = factory.create_named_module('highlights');
-
+        module = factory.get_last_created('content');
         module.show();
     });
 
-    it('constructs', function () {
-        expect(module).toBeDefined();
-    });
-
     it('does not create a card widget at construct time', function () {
-        let cards = factory.get_created_named_mocks('article-card');
+        let cards = factory.get_created('content.arrangement.card');
         expect(cards.length).toEqual(0);
-        cards = factory.get_created_named_mocks('set-card');
+        cards = factory.get_created('content.header-card');
         expect(cards.length).toEqual(0);
     });
 
@@ -77,8 +79,8 @@ describe('ContentGroup.Thematic', function () {
                 models: set_models,
             });
 
-            arrangements = factory.get_created_named_mocks('arrangement');
-            headers = factory.get_created_named_mocks('set-card');
+            arrangements = factory.get_created('content.arrangement');
+            headers = factory.get_created('content.header-card');
         });
 
         it('adds arrangements for each dispatched set', function () {
@@ -161,7 +163,7 @@ describe('ContentGroup.Thematic', function () {
                     dispatcher.dispatch({
                         action_type: Actions.CLEAR_ITEMS,
                     });
-                    let cards = factory.get_created_named_mocks('article-card');
+                    let cards = factory.get_created('content.arrangement.card');
                     arrangements.forEach(arrangement =>
                         expect(module).toHaveDescendant(arrangement));
                     headers.forEach(header => expect(module).toHaveDescendant(header));

@@ -34,7 +34,7 @@ const QueryObject = imports.search.queryObject;
  *
  * Slots:
  *   arrangement - arrangement to display cards in
- *   header-card-type - type of cards to create for sets
+ *   header-card - type of cards to create for sets
  */
 const Thematic = new Module.Class({
     Name: 'ContentGroup.Thematic',
@@ -45,7 +45,7 @@ const Thematic = new Module.Class({
         'arrangement': {
             multi: true,
         },
-        'header-card-type': {
+        'header-card': {
             multi: true,
         },
     },
@@ -155,7 +155,7 @@ const Thematic = new Module.Class({
     },
 
     _create_set_card: function (model) {
-        let card = this.create_submodule('header-card-type', {
+        let card = this.create_submodule('header-card', {
             model: model,
             visible: true,
             halign: Gtk.Align.START,

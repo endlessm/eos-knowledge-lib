@@ -30,8 +30,6 @@ describe('Banner.App', function () {
         });
     });
 
-    it('can be constructed', function () {});
-
     it('displays the subtitle if show subtitle true', function () {
         let subtitle_widget = Gtk.test_find_label(app_banner, 'A Cute Pig');
         expect(subtitle_widget).not.toBeNull();

@@ -16,16 +16,14 @@ describe('Arrangement.ThirdRock', function () {
     let arrangement, factory;
 
     beforeEach(function () {
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('card', Minimal.MinimalCard);
-        factory.add_named_mock('order', Minimal.MinimalOrder);
-        factory.add_named_mock('filter', Minimal.TitleFilter);
-        factory.add_named_mock('arrangement', ThirdRock.ThirdRock, {
-            'card-type': 'card',
-            'order': 'order',
-            'filter': 'filter',
+        [arrangement, factory] = MockFactory.setup_tree({
+            type: ThirdRock.ThirdRock,
+            slots: {
+                'card': { type: Minimal.MinimalCard },
+                'order': { type: Minimal.MinimalOrder },
+                'filter': { type: Minimal.TitleFilter },
+            },
         });
-        arrangement = factory.create_named_module('arrangement');
     });
 
     describe('sizing allocation', function () {
@@ -54,7 +52,7 @@ describe('Arrangement.ThirdRock', function () {
 
                 expect(arrangement.get_allocation().height).toBe(arr_height);
 
-                let all_cards = factory.get_created_named_mocks('card');
+                let all_cards = factory.get_created('card');
 
                 all_cards.slice(0, 3).forEach((card) => {
                     expect(card.get_allocation().width).toBe(child_width);

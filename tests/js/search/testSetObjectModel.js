@@ -17,10 +17,6 @@ describe('Set object model', function () {
         model = new SetObjectModel.SetObjectModel({}, jsonld);
     });
 
-    it('constructs from a JSON-LD document', function () {
-        expect(model).toBeDefined();
-    });
-
     it('inherits properties set from parent model', function () {
         expect(model.title).toEqual(jsonld['title']);
         expect(model.tags).toEqual(jasmine.arrayContaining(jsonld['tags']));

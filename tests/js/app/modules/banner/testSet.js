@@ -19,15 +19,13 @@ describe('Banner.Set', function () {
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
         dispatcher = MockDispatcher.mock_default();
 
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('mock-card', Minimal.MinimalCard);
-        factory.add_named_mock('set-banner-module', Set.Set, {
-            'card-type': 'mock-card',
+        [module, factory] = MockFactory.setup_tree({
+            type: Set.Set,
+            slots: {
+                'card': { type: Minimal.MinimalCard },
+            },
         });
-        module = factory.create_named_module('set-banner-module');
     });
-
-    it('constructs', function () {});
 
     it('creates a card when show-set is dispatched', function () {
         let model = new ContentObjectModel.ContentObjectModel();
@@ -35,7 +33,7 @@ describe('Banner.Set', function () {
             action_type: Actions.SHOW_SET,
             model: model,
         });
-        let card = factory.get_created_named_mocks('mock-card')[0];
+        let card = factory.get_last_created('card');
         expect(card.model).toBe(model);
         expect(module).toHaveDescendant(card);
     });
@@ -50,6 +48,6 @@ describe('Banner.Set', function () {
             action_type: Actions.SHOW_SET,
             model: model,
         });
-        expect(factory.get_created_named_mocks('mock-card').length).toBe(2);
+        expect(factory.get_created('card').length).toBe(2);
     });
 });

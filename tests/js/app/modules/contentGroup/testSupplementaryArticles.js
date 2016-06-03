@@ -20,22 +20,21 @@ describe('ContentGroup.SupplementaryArticles', function () {
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
         dispatcher = MockDispatcher.mock_default();
 
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('test-arrangement', Minimal.MinimalArrangement, {
-            'card-type': 'home-card',
+        [supplementary, factory] = MockFactory.setup_tree({
+            type: SupplementaryArticles.SupplementaryArticles,
+            properties: {
+                'same-set': true,
+            },
+            slots: {
+                'arrangement': {
+                    type: Minimal.MinimalArrangement,
+                    slots: {
+                        'card': { type: Minimal.MinimalCard },
+                    },
+                },
+            },
         });
-        factory.add_named_mock('home-card', Minimal.MinimalCard);
-        factory.add_named_mock('supplementary-articles', SupplementaryArticles.SupplementaryArticles, {
-            'arrangement': 'test-arrangement',
-        }, {
-            same_set: true,
-        });
-        supplementary = factory.create_named_module('supplementary-articles');
-        arrangement = factory.get_created_named_mocks('test-arrangement')[0];
-    });
-
-    it('constructs', function () {
-        expect(supplementary).toBeDefined();
+        arrangement = factory.get_last_created('arrangement');
     });
 
     it('creates and packs an arrangement widget', function () {
@@ -54,7 +53,7 @@ describe('ContentGroup.SupplementaryArticles', function () {
             same_set: true,
         });
         expect(arrangement.get_count()).toBe(3);
-        expect(factory.get_created_named_mocks('home-card').length).toBe(3);
+        expect(factory.get_created('arrangement.card').length).toBe(3);
     });
 
     it('does not add cards that are not for its set', function () {
@@ -112,7 +111,7 @@ describe('ContentGroup.SupplementaryArticles', function () {
             same_set: true,
         });
         expect(arrangement.get_count()).toBe(3);
-        expect(factory.get_created_named_mocks('home-card').length).toBe(6);
+        expect(factory.get_created('arrangement.card').length).toBe(6);
     });
 
     it('dispatches item clicked', function () {

@@ -86,10 +86,6 @@ describe('Space container', function () {
         win.destroy();
     });
 
-    it('constructs', function () {
-        let container = new SpaceContainer.SpaceContainer();
-    });
-
     it('inserts child widgets at a particular position', function () {
         let container = new SpaceContainer.SpaceContainer();
         let boxes = [150, 150, 150].map(size => new IncompressibleBox(size));

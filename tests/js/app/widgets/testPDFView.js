@@ -23,8 +23,6 @@ describe('PDF view', function () {
         view = new PDFView.PDFView();
     });
 
-    it('constructs', function () {});
-
     it('opens pdfs in Evince', function () {
         let stream = Gio.File.new_for_path(TEST_CONTENT_DIR + 'pdf-sample1.pdf').read(null);
         view.load_stream(stream, 'application/pdf');

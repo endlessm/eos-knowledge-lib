@@ -19,7 +19,7 @@ const Module = imports.app.interfaces.module;
  * Examples of arrangements: a list, a grid, etc.
  *
  * Slots:
- *   card-type - controls how the card models are converted into cards
+ *   card - controls how the card models are converted into cards
  *   order
  *   filter
  */
@@ -76,7 +76,7 @@ const Arrangement = new Lang.Interface({
     },
 
     Slots: {
-        'card-type': {
+        'card': {
             multi: true,
         },
         'order': {},
@@ -138,7 +138,7 @@ const Arrangement = new Lang.Interface({
         let card_props = { model: model };
         if (this._highlight_string)
             card_props.highlight_string = this._highlight_string;
-        let card = this.create_submodule('card-type', card_props);
+        let card = this.create_submodule('card', card_props);
         this._cards_by_id.set(model.ekn_id, card);
 
         // It's either this or have Card require Gtk.Button, but that would be

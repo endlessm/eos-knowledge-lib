@@ -57,6 +57,7 @@ const Mesh = new Module.Class({
         this._window = this.create_submodule('window', {
             application: this.application,
             template_type: this.template_type,
+            visible: false,
         });
 
         this._load_theme();

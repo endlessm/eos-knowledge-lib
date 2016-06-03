@@ -39,7 +39,7 @@ defines:
                   arrangement:
                     shortdef: 'ScrollingListArrangement(hexpand: true, halign: fill)'
                     slots:
-                      card-type: TitleCard
+                      card: TitleCard
 
   - &article-page
     <<: *inner-page-layout
@@ -51,7 +51,7 @@ defines:
           content:
             shortdef: 'ArticleStack(do-sliding-animation: false)'
             slots:
-              card-type: KnowledgeDocumentCard
+              card: KnowledgeDocumentCard
 
   - &window
     type: EncyclopediaWindow
@@ -59,7 +59,7 @@ defines:
       lightbox:
         type: MediaLightbox
         slots:
-          card-type: MediaCard
+          card: MediaCard
       home-page: *home-page
       search-page: *search-page
       article-page: *article-page

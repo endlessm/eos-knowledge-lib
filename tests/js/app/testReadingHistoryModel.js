@@ -13,13 +13,6 @@ describe('Reading History Model', function () {
     });
 
     describe('constructor', function () {
-
-        it('works', function () {
-            model = new ReadingHistoryModel.ReadingHistoryModel({
-                history_file: reading_history_file,
-            });
-        });
-
         it('correctly loads reading history from file', function () {
             let data = [
                 '100',

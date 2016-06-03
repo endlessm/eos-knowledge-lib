@@ -18,18 +18,19 @@ describe('Arrangement.SideBySide', function () {
     let arrangement, factory;
 
     beforeEach(function () {
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('card', Minimal.MinimalCard, {}, {
-            width_request: CHILD_WIDTH,
+        [arrangement, factory] = MockFactory.setup_tree({
+            type: SideBySide.SideBySide,
+            slots: {
+                'card': {
+                    type: Minimal.MinimalCard,
+                    properties: {
+                        'width-request': CHILD_WIDTH,
+                    },
+                },
+                'order': { type: Minimal.MinimalOrder },
+                'filter': { type: Minimal.TitleFilter },
+            },
         });
-        factory.add_named_mock('order', Minimal.MinimalOrder);
-        factory.add_named_mock('filter', Minimal.TitleFilter);
-        factory.add_named_mock('arrangement', SideBySide.SideBySide, {
-            'card-type': 'card',
-            'order': 'order',
-            'filter': 'filter',
-        });
-        arrangement = factory.create_named_module('arrangement');
     });
 
     describe('sizing allocation', function () {
@@ -55,7 +56,7 @@ describe('Arrangement.SideBySide', function () {
                 win.set_size_request(arr_width, 100);
                 Utils.update_gui();
 
-                let cards = factory.get_created_named_mocks('card');
+                let cards = factory.get_created('card');
                 cards.forEach((card, i) => {
                     if (i < visible_children) {
                         expect(card.get_child_visible()).toBe(true);

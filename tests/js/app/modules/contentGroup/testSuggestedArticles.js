@@ -20,20 +20,18 @@ describe('ContentGroup.SuggestedArticles', function () {
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
         dispatcher = MockDispatcher.mock_default();
 
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('test-arrangement', Minimal.MinimalArrangement, {
-            'card-type': 'home-card',
+        [suggestions, factory] = MockFactory.setup_tree({
+            type: SuggestedArticles.SuggestedArticles,
+            slots: {
+                'arrangement': {
+                    type: Minimal.MinimalArrangement,
+                    slots: {
+                        'card': { type: Minimal.MinimalCard },
+                    },
+                },
+            },
         });
-        factory.add_named_mock('home-card', Minimal.MinimalCard);
-        factory.add_named_mock('suggested-articles', SuggestedArticles.SuggestedArticles, {
-            'arrangement': 'test-arrangement',
-        });
-        suggestions = factory.create_named_module('suggested-articles');
-        arrangement = factory.get_created_named_mocks('test-arrangement')[0];
-    });
-
-    it('constructs', function () {
-        expect(suggestions).toBeDefined();
+        arrangement = factory.get_last_created('arrangement');
     });
 
     it('creates and packs an arrangement widget', function () {
@@ -41,7 +39,7 @@ describe('ContentGroup.SuggestedArticles', function () {
     });
 
     it('does not create a card widget at construct time', function () {
-        let cards = factory.get_created_named_mocks('home-card');
+        let cards = factory.get_created('arrangement.card');
         expect(cards.length).toEqual(0);
     });
 
@@ -56,7 +54,7 @@ describe('ContentGroup.SuggestedArticles', function () {
             models: models,
         });
         expect(arrangement.get_count()).toBe(3);
-        expect(factory.get_created_named_mocks('home-card').length).toBe(3);
+        expect(factory.get_created('arrangement.card').length).toBe(3);
     });
 
     it('clears the existing cards when clear called', function () {
@@ -78,7 +76,7 @@ describe('ContentGroup.SuggestedArticles', function () {
             models: models,
         });
         expect(arrangement.get_count()).toBe(3);
-        expect(factory.get_created_named_mocks('home-card').length).toBe(6);
+        expect(factory.get_created('arrangement.card').length).toBe(6);
     });
 
     it('dispatches item clicked', function () {

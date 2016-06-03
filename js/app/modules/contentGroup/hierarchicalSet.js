@@ -34,7 +34,7 @@ const BATCH_SIZE = 15;
  *
  * Slots:
  *   arrangement - arrangement to display article cards in
- *   set-card-type - type of cards to create for sets
+ *   set-card - type of cards to create for sets
  */
 const HierarchicalSet = new Module.Class({
     Name: 'ContentGroup.HierarchicalSet',
@@ -43,7 +43,7 @@ const HierarchicalSet = new Module.Class({
 
     Slots: {
         'arrangement': {},
-        'set-card-type': {
+        'set-card': {
             multi: true,
         },
     },
@@ -169,7 +169,7 @@ const HierarchicalSet = new Module.Class({
     },
 
     _add_set_card: function (model) {
-        let card = this.create_submodule('set-card-type', {
+        let card = this.create_submodule('set-card', {
             model: model,
             no_show_all: true,
         });

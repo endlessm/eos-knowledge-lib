@@ -1,78 +1,78 @@
+/* exported MockFactory, setup_tree */
+
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Knowledge = imports.app.knowledge;
-const Module = imports.app.interfaces.module;
+const Minimal = imports.tests.minimal;
+const ModuleFactory = imports.app.moduleFactory;
 
+const _MockWarehouse = new Knowledge.Class({
+    Name: 'MockWarehouse',
+    GTypeName: 'mockFactory_MockWarehouse',
+    Extends: GObject.Object,
+    // ModuleFactory has a 'warehouse' property with an object param spec, so
+    // this class is required to extend GObject.Object even though it doesn't
+    // use any GObject features.
+
+    // This warehouse doesn't take strings; instead, you pass the constructor
+    // in directly. If null, you get a minimal module
+    type_to_class: klass => klass || Minimal.MinimalBinModule,
+});
+
+/**
+ * Class: MockFactory
+ * Import and build modules from your local tree for tests only
+ *
+ * This class should be used instead of ModuleFactory for unit tests.
+ * Its constructor takes a module tree, such as what you would specify as the
+ * "root" key in an app.json file, with two differences.
+ * First, the "type" keys take actual class objects rather than strings, so you
+ * must import your modules and pass them to the factory in this way.
+ * Second, the "type" key's value may be null, in which case a minimal module
+ * will be put into that slot.
+ */
 const MockFactory = new Knowledge.Class({
     Name: 'MockFactory',
-    Extends: GObject.Object,
+    Extends: ModuleFactory.ModuleFactory,
 
-    _init: function (props={}) {
-        this.parent(props);
-        this._mock_classes = {};
-        this._created_mocks = {};
-        this._mock_slots = {};
-        this._mock_props = {};
-        this._mock_references = {};
-        this._mock_id_to_module = {};
+    _init: function (tree) {
+        this.parent({
+            app_json: {
+                version: 2,
+                root: tree,
+            },
+            warehouse: new _MockWarehouse(),
+        });
+        this._created_modules = new Map();
     },
 
-    create_named_module: function (name, props={}) {
-        this._created_mocks[name] = this._created_mocks[name] || [];
-        let retval = null;
-        if (this._mock_classes.hasOwnProperty(name)) {
-            // Unlike the real factory, we allow creating things that are not
-            // Modules in the mock factory, for convenience
-            let Klass = this._mock_classes[name];
-            // Lang.Class.implements() only works for GJS-defined classes
-            if (typeof Klass.implements !== 'undefined' && Klass.implements(Module.Module)) {
-                props.factory = this;
-                props.factory_path = name;
-            }
+    // Augment ModuleFactory's private method with some extra functionality
+    _create_module: function (path, description, extra_props={}) {
+        let module = this.parent(path, description, extra_props);
 
-            Lang.copyProperties(this._mock_props[name], props);
-            retval = new Klass(props);
-        }
-        this._created_mocks[name].push(retval);
-        return retval;
+        let key = path.replace(/\.[0-9]+/, '', 'g').replace(/^root\./, '');
+        if (!this._created_modules.has(key))
+            this._created_modules.set(key, []);
+
+        this._created_modules.get(key).push(module);
+        return module;
     },
 
-    add_named_mock: function (name, klass, slots={}, props={}, references={}) {
-        this._mock_classes[name] = klass;
-        this._mock_slots[name] = slots;
-        this._mock_props[name] = props;
-        this._mock_references[name] = references;
+    get_created: function (path) {
+        return this._created_modules.get(path) || [];
     },
 
-    add_reference_mock: function (id, klass) {
-        this._mock_id_to_module[id] = new klass();
-    },
-
-    get_created_named_mocks: function (name) {
-        return this._created_mocks[name] || [];
-    },
-
-    get_last_created_named_mock: function (name) {
-        let mocks = this.get_created_named_mocks(name);
+    get_last_created: function (path) {
+        let mocks = this.get_created(path);
         return mocks[mocks.length - 1];
     },
-
-    create_module_for_slot: function (parent, slot, props={}) {
-        if (!(slot in parent.constructor.__slots__))
-            throw new Error('No slot named ' + slot +
-                '; did you forget to define it in Slots?');
-        let module_name = this._mock_slots[parent.factory_path][slot];
-        if (module_name === null)
-            return null;
-
-        Lang.copyProperties(this._mock_props[module_name], props);
-
-        return this.create_named_module(module_name, props);
-    },
-
-    request_module_reference: function (parent, reference_slot, callback) {
-        let id = this._mock_references[parent.factory_path][reference_slot];
-        callback(this._mock_id_to_module[id]);
-    },
 });
+
+/**
+ * Function: setup_tree
+ * Convenience function for creating a MockFactory with module tree
+ */
+function setup_tree(tree, extra_props={}) {
+    let factory = new MockFactory(tree);
+    return [factory.create_module_tree(extra_props), factory];
+}

@@ -18,7 +18,7 @@
                       "do-sliding-animation": false
                     },
                     "slots": {
-                      "card-type": {
+                      "card": {
                         "type": "KnowledgeDocumentCard"
                       }
                     }
@@ -73,7 +73,7 @@
           "lightbox": {
             "type": "MediaLightbox",
             "slots": {
-              "card-type": {
+              "card": {
                 "type": "MediaCard"
               }
             }
@@ -112,7 +112,7 @@
                               "hexpand": true
                             },
                             "slots": {
-                              "card-type": {
+                              "card": {
                                 "type": "TitleCard"
                               }
                             }

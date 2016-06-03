@@ -68,7 +68,7 @@ function load_arrangement (arrangement_type, card_type) {
             "root": {
                 "type": arrangement_type,
                 "slots": {
-                    "card-type": {
+                    "card": {
                         "type": card_type,
                     },
                 },

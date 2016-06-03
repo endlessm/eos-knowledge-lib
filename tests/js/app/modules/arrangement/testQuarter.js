@@ -17,16 +17,14 @@ describe('Arrangement.Quarter', function () {
     let arrangement, win, factory;
 
     beforeEach(function () {
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('card', Minimal.MinimalCard);
-        factory.add_named_mock('order', Minimal.MinimalOrder);
-        factory.add_named_mock('filter', Minimal.TitleFilter);
-        factory.add_named_mock('arrangement', Quarter.Quarter, {
-            'card-type': 'card',
-            'order': 'order',
-            'filter': 'filter',
+        [arrangement, factory] = MockFactory.setup_tree({
+            type: Quarter.Quarter,
+            slots: {
+                'card': { type: Minimal.MinimalCard },
+                'order': { type: Minimal.MinimalOrder },
+                'filter': { type: Minimal.TitleFilter },
+            },
         });
-        arrangement = factory.create_named_module('arrangement');
 
         Minimal.add_ordered_cards(arrangement, 10);
         Minimal.add_filtered_cards(arrangement, 1, 0);
@@ -48,7 +46,7 @@ describe('Arrangement.Quarter', function () {
                 win.queue_resize();
                 Utils.update_gui();
 
-                let cards = factory.get_created_named_mocks('card');
+                let cards = factory.get_created('card');
                 let featured_cards = cards.slice(0, featured_cards_per_row);
                 let support_cards = cards.slice(featured_cards_per_row);
 

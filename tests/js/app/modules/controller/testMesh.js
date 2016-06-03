@@ -47,7 +47,6 @@ describe('Controller.Mesh', function () {
 
         let application = new GObject.Object();
         application.application_id = 'foobar';
-        factory = new MockFactory.MockFactory();
 
         // The mesh controller is going to sort these by featured boolean
         // so make sure they are ordered with featured ones first otherwise
@@ -74,19 +73,19 @@ describe('Controller.Mesh', function () {
         engine.get_objects_by_query_finish.and.returnValue([sections.map((section) =>
             new SetObjectModel.SetObjectModel(section)), null]);
 
-        factory.add_named_mock('window', MockView);
-        factory.add_named_mock('controller', Mesh.Mesh, {
-            'window': 'window',
-        }, {
-            application: application,
-            template_type: 'B',
+        [mesh, factory] = MockFactory.setup_tree({
+            type: Mesh.Mesh,
+            properties: {
+                'application': application,
+                'template-type': 'B',
+            },
+            slots: {
+                'window': { type: MockView },
+            },
         });
-        mesh = factory.create_named_module('controller');
         mesh.BRAND_PAGE_TIME_MS = 0;
         spyOn(mesh, '_record_search_metric');
     });
-
-    it('can be constructed', function () {});
 
     it('dispatches category models for home page', () => {
         mesh.desktop_launch(0);

@@ -17,8 +17,6 @@ describe('Banner.Search', function () {
         searchBanner = new Search.Search();
     });
 
-    it('constructs', function () {});
-
     it('displays the query string somewhere when the search starts', function () {
         expect(Gtk.test_find_label(searchBanner, '*myfoobar*')).toBeNull();
         dispatcher.dispatch({

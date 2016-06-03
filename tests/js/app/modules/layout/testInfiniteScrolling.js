@@ -8,7 +8,6 @@ Utils.register_gresource();
 const Actions = imports.app.actions;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
-const MockPlaceholder = imports.tests.mockPlaceholder;
 const InfiniteScrolling = imports.app.modules.layout.infiniteScrolling;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
@@ -20,18 +19,16 @@ describe('Layout.InfiniteScrolling', function () {
     beforeEach(function () {
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('placeholder', MockPlaceholder.MockPlaceholder);
-        factory.add_named_mock('template', InfiniteScrolling.InfiniteScrolling, {
-            'content': 'placeholder',
+        [template, factory] = MockFactory.setup_tree({
+            type: InfiniteScrolling.InfiniteScrolling,
+            slots: {
+                'content': { type: null },
+            },
         });
-        template = factory.create_named_module('template');
     });
 
-    it('constructs', function () {});
-
     it('packs all its children', function () {
-        let content = factory.get_created_named_mocks('placeholder')[0];
+        let content = factory.get_last_created('content');
         expect(template).toHaveDescendant(content);
     });
 

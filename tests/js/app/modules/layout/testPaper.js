@@ -19,15 +19,13 @@ describe('Layout.Paper', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
-        let factory = new MockFactory.MockFactory();
-        factory.add_named_mock('mock-content', Gtk.Label);
-        factory.add_named_mock('paper-template', Paper.Paper, {
-            'content': 'mock-content',
+        [paper_template] = MockFactory.setup_tree({
+            type: Paper.Paper,
+            slots: {
+                'content': { type: null },
+            },
         });
-        paper_template = factory.create_named_module('paper-template');
     });
-
-    it('can be constructed', function () {});
 
     it('has the paper-template CSS class', function () {
         expect(paper_template).toHaveCssClass('paper-template');

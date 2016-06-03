@@ -10,27 +10,23 @@ const SearchAndItem = imports.app.modules.layout.searchAndItem;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 describe('Layout.SearchAndItem', function () {
-    let module, search, item, factory, dispatcher;
+    let module, search, item, dispatcher;
 
     beforeEach(function () {
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
         dispatcher = MockDispatcher.mock_default();
 
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('test-search', Minimal.MinimalArrangement);
-        factory.add_named_mock('test-item', Minimal.MinimalArrangement);
-        factory.add_named_mock('module', SearchAndItem.SearchAndItem, {
-            'item': 'test-item',
-            'search': 'test-search',
+        let factory;
+        [module, factory] = MockFactory.setup_tree({
+            type: SearchAndItem.SearchAndItem,
+            slots: {
+                'item': { type: Minimal.MinimalArrangement },
+                'search': { type: Minimal.MinimalArrangement },
+            },
         });
-        module = factory.create_named_module('module');
         module.show_all();
-        search = factory.get_created_named_mocks('test-search')[0];
-        item = factory.get_created_named_mocks('test-item')[0];
-    });
-
-    it('constructs', function () {
-        expect(module).toBeDefined();
+        search = factory.get_last_created('search');
+        item = factory.get_last_created('item');
     });
 
     it('creates and packs item module', function () {

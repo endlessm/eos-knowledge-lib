@@ -40,7 +40,7 @@ defines:
                   arrangement:
                     shortdef: 'Arrangement.ScrollingList(hexpand: true)'
                     slots:
-                      card-type: Card.Title
+                      card: Card.Title
 
   - &article-page
     shortdef: 'Layout.Box(orientation: vertical, vexpand: false)'
@@ -52,7 +52,7 @@ defines:
           content:
             shortdef: 'Layout.ArticleStack(do-sliding-animation: false)'
             slots:
-              card-type: Card.KnowledgeDocument
+              card: Card.KnowledgeDocument
 
 root:
   type: Controller.Mesh
@@ -63,7 +63,7 @@ root:
         lightbox:
           type: ContentGroup.MediaLightbox
           slots:
-            card-type: Card.Media
+            card: Card.Media
         home-page: *home-page
         search-page: *search-page
         article-page: *article-page

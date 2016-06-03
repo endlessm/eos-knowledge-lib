@@ -28,10 +28,6 @@ describe ('Article Object Model', function () {
     });
 
     describe ('JSON-LD marshaler', function () {
-        it ('should construct from a JSON-LD document', function () {
-            expect(articleObject).toBeDefined();
-        });
-
         it ('should inherit properties set by parent class (ContentObjectModel)', function () {
             expect(articleObject.title).toBeDefined();
             expect(articleObject.synopsis).toBeDefined();

@@ -3,7 +3,7 @@ const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 
 describe('Order interface', function () {
-    let order, models, factory;
+    let order, models;
 
     const SORTED = [
         { title: 'A', synopsis: 'A' },
@@ -22,20 +22,20 @@ describe('Order interface', function () {
     ];
 
     beforeEach(function () {
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('sub-order', Minimal.MinimalOrder, {}, {
-            model_prop: 'synopsis',
+        let factory = new MockFactory.MockFactory({
+            type: Minimal.MinimalOrder,
+            slots: {
+                'sub-order': {
+                    type: Minimal.MinimalOrder,
+                    properties: {
+                        'model-prop': 'synopsis',
+                    },
+                },
+            },
         });
-        factory.add_named_mock('order', Minimal.MinimalOrder, {
-            'sub-order': 'sub-order',
-        });
-        order = factory.create_named_module('order');
+        order = factory.create_module_tree();
         models = UNSORTED.map(properties =>
             new ContentObjectModel.ContentObjectModel(properties));
-    });
-
-    it('has a minimal implementation', function () {
-        expect(order).toBeDefined();
     });
 
     it('sorts models correctly', function () {
