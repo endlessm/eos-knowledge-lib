@@ -185,7 +185,7 @@ describe('Article HTML Renderer', function () {
         });
 
         it('was sent through the wrapper', function () {
-            expect(html).toMatch(/window\.LINKS/);
+            expect(html).toMatch(/window\.crosslink_init/);
         });
 
         it('contains the body of the content as well', function () {

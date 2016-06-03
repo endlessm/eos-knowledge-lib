@@ -122,7 +122,6 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         let javascript_files = [
             'content-fixes.js',
             'hide-broken-images.js',
-            'crosslink.js',
         ];
 
         if (this.enable_scroll_manager)
@@ -237,7 +236,14 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         return [
             'jquery-min.js',
             'clipboard-manager.js',
+            'crosslink.js',
         ];
+    },
+
+    _get_crosslink_data: function (model) {
+        let engine = Engine.get_default();
+        let links = model.outgoing_links.map((link) => engine.test_link(link));
+        return JSON.stringify(links);
     },
 
     _render_wrapper: function (content, model) {
@@ -250,9 +256,9 @@ const ArticleHTMLRenderer = new Knowledge.Class({
             'id': model.ekn_id,
             'css-files': css_files,
             'javascript-files': js_files,
-            'link-array': this._find_active_links(model),
             'copy-button-text': _("Copy"),
             'content': content,
+            'crosslink-data': this._get_crosslink_data(model),
         });
     },
 
@@ -263,12 +269,6 @@ const ArticleHTMLRenderer = new Knowledge.Class({
     render: function (model) {
         let content = this._render_content(model);
         return this._render_wrapper(content, model);
-    },
-
-    _find_active_links: function (model) {
-        let engine = Engine.get_default();
-        let links = model.outgoing_links.map((link) => engine.test_link(link));
-        return JSON.stringify(links);
     },
 });
 
