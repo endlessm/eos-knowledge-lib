@@ -42,9 +42,6 @@ describe('Controller.Mesh', function () {
         dispatcher = MockDispatcher.mock_default();
         engine = MockEngine.mock_default();
 
-        // Prevent CSS from leaking into other tests
-        spyOn(Gtk.StyleContext, 'add_provider_for_screen');
-
         let application = new GObject.Object();
         application.application_id = 'foobar';
 
@@ -78,6 +75,7 @@ describe('Controller.Mesh', function () {
             properties: {
                 'application': application,
                 'template-type': 'B',
+                'theme': '',
             },
             slots: {
                 'window': { type: MockView },

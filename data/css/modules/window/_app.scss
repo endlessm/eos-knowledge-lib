@@ -1,0 +1,18 @@
+EosWindow {
+    background-size: cover;
+
+    scrollbar {
+        padding: 3px;
+        background-color: $background-light-color;
+
+        slider {
+            min-width: 8px;
+            background-color: #9b9b9b;
+            border-radius: 20px;
+        }
+    }
+}
+
+.search-page-a separator {
+    background-color: $black-20-color;
+}

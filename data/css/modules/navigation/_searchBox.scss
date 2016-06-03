@@ -1,0 +1,31 @@
+.endless-search-box {
+    .view {
+        padding: 10px;
+
+        .cell {
+            border-color: $background-light-color;
+            border-width: 3px;
+            border-radius: 2px;
+            border-style: solid;
+            background-color: white;
+
+            &:selected {
+                background-color: $background-dark-color;
+            }
+        }
+
+        &:nth-child(2) {
+            .cell {
+                color: $primary-light-color;
+                border-color: $background-light-color;
+                background-color: $background-light-color;
+
+                /* FIXME: remove or update color property after SeachBox specs are done */
+                &:selected {
+                    color: $primary-light-color;
+                    background-color: $background-dark-color;
+                }
+            }
+        }
+    }
+}

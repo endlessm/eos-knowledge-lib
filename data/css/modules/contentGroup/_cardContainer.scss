@@ -1,0 +1,21 @@
+.trigger {
+    font-family: $title-font;
+    font-size: 20px;
+    color: $accent-light-color;
+
+    .image {
+        -gtk-icon-source: url('../images/news-arrow-dark.svg');
+        min-height: 14px;
+        min-width: 14px;
+        margin-left: 5px;
+        margin-bottom: 5px;
+    }
+
+    &:hover {
+        color: $accent-dark-color;
+
+        .image {
+            -gtk-icon-source: url('../images/news-arrow-light.svg');
+        }
+    }
+}

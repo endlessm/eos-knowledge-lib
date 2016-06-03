@@ -4,11 +4,9 @@
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EosMetrics = imports.gi.EosMetrics;
-const Gdk = imports.gi.Gdk;
 const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 
 const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
@@ -27,8 +25,6 @@ const QueryObject = imports.search.queryObject;
 const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
-
-const CSS_RESOURCE_PATH = '/com/endlessm/knowledge/data/css/';
 
 const Pages = {
     HOME: 'home',
@@ -57,22 +53,6 @@ const Buffet = new Module.Class({
     Extends: GObject.Object,
     Implements: [Launcher.Launcher, Controller.Controller],
 
-    Properties: {
-        /**
-         * Property: theme
-         * Theme CSS specification filename
-         *
-         * The CSS filename that is associated with the app default design.
-         *
-         * Flags:
-         *   Construct only
-         */
-        'theme': GObject.ParamSpec.string('theme', 'Theme',
-            'Theme CSS specification filename',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            'buffet'),
-    },
-
     BRAND_PAGE_TIME_MS: 1500,
 
     _init: function (props={}) {
@@ -86,7 +66,7 @@ const Buffet = new Module.Class({
             visible: false,
         });
 
-        this._load_theme();
+        this.load_theme();
 
         this._history_presenter = new HistoryPresenter.HistoryPresenter({
             history_model: new EosKnowledgePrivate.HistoryModel(),
@@ -273,13 +253,6 @@ const Buffet = new Module.Class({
         });
 
         this._update_highlight();
-    },
-
-    _load_theme: function () {
-        let provider = new Gtk.CssProvider();
-        provider.load_from_resource(CSS_RESOURCE_PATH + this.theme + '.css');
-        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
-            provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     },
 
     _start_search_via_history: function (query) {

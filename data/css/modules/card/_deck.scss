@@ -1,0 +1,48 @@
+.deck {
+    background-image: url('../images/deckbg.svg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+
+    .title {
+        font-weight: 300;
+    }
+
+    .content-frame {
+        padding: 20px 0px 20px 0px;
+        background-color: transparentize(white, 1 - 0.949);
+        min-height: 80px;  /* 120px, compensated for 20px padding */
+    }
+
+    .thumbnail {
+        border: 0px solid transparent;  /* used for the triangle in the corner */
+        margin: 13px;
+
+        &.arrow {
+            -gtk-icon-source: url("../images/arrow-white.svg");
+            -gtk-icon-transform: rotate(45deg);
+        }
+    }
+
+    &:active {
+        background-size: 98% 98%;
+    }
+
+    &.height-b .content-frame,
+    &.height-a .content-frame {
+        min-height: 40px;  /* 80px, compensated for 20px padding */
+    }
+
+    &:hover .thumbnail,
+    &:active .thumbnail {
+        outline: 1px solid #49bde3;
+        border-color: #49bde3;
+        /* used for the triangle in the corner */
+        outline-offset: -1px;
+        -gtk-outline-radius: 0;
+    }
+
+    .composite & .title {
+        font-weight: normal;
+    }
+}

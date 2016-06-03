@@ -162,6 +162,8 @@ defines:
                     card: Card.List
                 article-suggestions:
                   type: Layout.ResponsiveMargins
+                  styles:
+                    - suggested-articles
                   slots:
                     content:
                       type: ContentGroup.SuggestedArticles

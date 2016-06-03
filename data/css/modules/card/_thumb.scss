@@ -1,0 +1,30 @@
+.thumb-card {
+    background-color: white;
+    box-shadow: 0px 5px 10px 0px transparentize(black, 1 - 0.22);
+    border-color: transparent;  /* used for the triangle in the corner */
+
+    .title {
+        font-family: $title-font;
+        font-weight: bold;
+        color: $primary-medium-color;
+        font-size: 18px;
+    }
+
+    .card-context {
+        font-family: $title-font;
+        font-weight: bold;
+        font-style: normal;
+        color: $primary-light-color;
+        font-size: 14px;
+    }
+
+    &.width-d.height-b .content-frame,
+    &.width-e.height-b .content-frame,
+    &.width-e.height-c .content-frame {
+        padding: 20px 30px 20px 30px;
+    }
+
+    .composite & .card-context {
+        color: gray;
+    }
+}

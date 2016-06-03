@@ -38,9 +38,6 @@ describe('Controller.Buffet', function () {
         dispatcher = MockDispatcher.mock_default();
         reading_history = MockReadingHistoryModel.mock_default();
 
-        // Prevent CSS from leaking into other tests
-        spyOn(Gtk.StyleContext, 'add_provider_for_screen');
-
         set_models = [0, 1, 2].map(() => new SetObjectModel.SetObjectModel());
         article_model = new ArticleObjectModel.ArticleObjectModel({
             ekn_id: 'ekn://test/article',
@@ -54,6 +51,9 @@ describe('Controller.Buffet', function () {
 
         [buffet, factory] = MockFactory.setup_tree({
             type: Buffet.Buffet,
+            properties: {
+                'theme': '',
+            },
             slots: {
                 'window': { type: MockView },
             },
