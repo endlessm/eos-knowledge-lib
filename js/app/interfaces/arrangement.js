@@ -99,6 +99,8 @@ const Arrangement = new Lang.Interface({
     _interface_init: function () {
         this._cards_by_id = new Map();
         this._models_by_id = new Map();
+        this._order = this.create_submodule('order');
+        this._filter = this.create_submodule('filter');
     },
 
     /**
@@ -166,17 +168,15 @@ const Arrangement = new Lang.Interface({
         this._models_by_id.set(model.ekn_id, model);
 
         let max_cards = this.get_max_cards();
-        let order = this.get_order();
 
-        if (!order && max_cards > -1 && this.get_count() > max_cards)
+        if (!this._order && max_cards > -1 && this.get_count() > max_cards)
             return;
 
-        let filter = this.get_filter();
-        if (filter && !filter.include(model))
+        if (this._filter && !this._filter.include(model))
             return;
 
         let card;
-        if (order) {
+        if (this._order) {
             let models = this.get_filtered_models();
             let position = models.indexOf(model);
             if (max_cards > -1 && position >= max_cards)
@@ -219,9 +219,8 @@ const Arrangement = new Lang.Interface({
      */
     get_models: function () {
         let models = [...this._models_by_id.values()];
-        let order = this.get_order();
-        if (order)
-            models.sort(order.compare.bind(order));
+        if (this._order)
+            models.sort(this._order.compare.bind(this._order));
         return models;
     },
 
@@ -236,11 +235,10 @@ const Arrangement = new Lang.Interface({
      *   an array of <ContentObjectModels>
      */
     get_filtered_models: function () {
-        let filter = this.get_filter();
         let models = this.get_models();
-        if (!filter)
+        if (!this._filter)
             return models;
-        return models.filter(filter.include.bind(filter));
+        return models.filter(this._filter.include.bind(this._filter));
     },
 
     /**
@@ -303,17 +301,11 @@ const Arrangement = new Lang.Interface({
      * Private method intended to be used from implementations
      */
     get_order: function () {
-        // null is a valid value for Order
-        if (typeof this._order_module === 'undefined')
-            this._order_module = this.create_submodule('order');
-        return this._order_module;
+        return this._order;
     },
 
     get_filter: function () {
-        // null is a valid value for Filter
-        if (typeof this._filter_module === 'undefined')
-            this._filter_module = this.create_submodule('filter');
-        return this._filter_module;
+        return this._filter;
     },
 
     /**
