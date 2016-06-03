@@ -96,11 +96,6 @@ describe('ContentGroup.Search', function () {
             query: 'myfoobar',
         });
 
-        expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({
-            action_type: Actions.NEED_MORE_SUGGESTED_ARTICLES,
-            query: 'myfoobar',
-        }));
-
         expect(search_module.visible_child_name).toBe('message');
         expect(search_module).toHaveCssClass('no-results');
         expect(search_module).toHaveDescendantWithCssClass('results-message-title');

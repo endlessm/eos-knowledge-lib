@@ -186,15 +186,6 @@ const Search = new Module.Class({
                   "  •  Try other words that mean the same thing\n" +
                   "  •  Try using more general words");
 
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.CLEAR_SUGGESTED_ARTICLES,
-            });
-
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.NEED_MORE_SUGGESTED_ARTICLES,
-                query: query,
-            });
-
             this.visible_child_name = MESSAGE_PAGE_NAME;
             this.get_style_context().add_class('no-results');
         }

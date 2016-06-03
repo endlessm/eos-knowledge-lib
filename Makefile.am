@@ -93,7 +93,6 @@ scss_partials = \
 	$(srcdir)/data/css/modules/contentGroup/_highlights.scss \
 	$(srcdir)/data/css/modules/contentGroup/_mediaLightbox.scss \
 	$(srcdir)/data/css/modules/contentGroup/_search.scss \
-	$(srcdir)/data/css/modules/contentGroup/_suggestedArticles.scss \
 	$(srcdir)/data/css/modules/contentGroup/_suggestedCategories.scss \
 	$(srcdir)/data/css/modules/contentGroup/_supplementaryArticles.scss \
 	$(srcdir)/data/css/modules/contentGroup/_thematic.scss \
@@ -360,7 +359,6 @@ javascript_tests = \
 	tests/js/app/modules/contentGroup/testMediaLightbox.js \
 	tests/js/app/modules/contentGroup/testSearch.js \
 	tests/js/app/modules/contentGroup/testSet.js \
-	tests/js/app/modules/contentGroup/testSuggestedArticles.js \
 	tests/js/app/modules/contentGroup/testSuggestedCategories.js \
 	tests/js/app/modules/contentGroup/testSupplementaryArticles.js \
 	tests/js/app/modules/contentGroup/testThematic.js \
@@ -386,6 +384,7 @@ javascript_tests = \
 	tests/js/app/modules/order/testAlphabetical.js \
 	tests/js/app/modules/order/testFeatured.js \
 	tests/js/app/modules/order/testPublishedDate.js \
+	tests/js/app/modules/selection/testSuggestedArticles.js \
 	tests/js/app/modules/window/testApp.js \
 	tests/js/app/modules/window/testEncyclopedia.js \
 	tests/js/app/testArticleHTMLRenderer.js \

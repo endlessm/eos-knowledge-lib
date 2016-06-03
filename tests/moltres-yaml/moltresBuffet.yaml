@@ -18,13 +18,19 @@ defines:
   properties: *card-all-uppercase-properties
 
 - &article-suggestions
-  type: ContentGroup.SuggestedArticles
+  type: ContentGroup.ContentGroup
   slots:
+    title:
+      type: 'ContentGroup.StaticText'
+      properties:
+        label: 'You might be interested in...'
     arrangement:
       # Note spacing different from all the other arrangements; on purpose?
       shortdef: 'Arrangement.SquareGuys(max-rows: 1, spacing: 10)'
       slots:
         card: *main-card
+    selection:
+      type: 'Selection.SuggestedArticles'
 
 - &category-suggestions
   type: ContentGroup.SuggestedCategories

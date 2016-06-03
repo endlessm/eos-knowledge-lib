@@ -162,14 +162,23 @@ defines:
                     card: Card.List
                 article-suggestions:
                   type: Layout.ResponsiveMargins
-                  styles:
-                    - suggested-articles
                   slots:
                     content:
-                      type: ContentGroup.SuggestedArticles
-                      properties: *suggestions-properties
+                      type: ContentGroup.ContentGroup
+                      styles:
+                        - search-page-suggestions
+                      properties:
+                        valign: end
                       slots:
+                        title:
+                          type: ContentGroup.StaticText
+                          styles:
+                            - content-group-title
+                          properties:
+                            label: 'you might be interested in...'
+                            halign: start
                         arrangement: *suggestions-arrangement
+                        selection: Selection.SuggestedArticles
 
 - &article-page
   <<: *menu
