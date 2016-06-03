@@ -34,7 +34,7 @@ describe('Arrangement.Thirties', function () {
             fade_cards: true,
         });
         let model = new ContentObjectModel.ContentObjectModel();
-        arrangement.add_model(model);
+        arrangement.set_models([model]);
         expect(arrangement.get_card_for_model(model).fade_in)
             .not.toHaveBeenCalled();
     });

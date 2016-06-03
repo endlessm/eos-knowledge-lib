@@ -16,6 +16,7 @@ const Filter = imports.app.interfaces.filter;
 const Module = imports.app.interfaces.module;
 const NavigationCard = imports.app.interfaces.navigationCard;
 const Order = imports.app.interfaces.order;
+const Selection = imports.app.modules.selection.selection;
 
 const MinimalArrangement = new Module.Class({
     Name: 'MinimalArrangement',
@@ -135,6 +136,19 @@ const MinimalBinModule = new Module.Class({
     Extends: Gtk.Frame,
 });
 
+const MinimalSelection = new Module.Class({
+    Name: 'MinimalSelection',
+    Extends: Selection.Selection,
+
+    queue_load_more: function (num_desired=5) {
+        for (let i = 0; i < num_desired; i++) {
+            let model = new ContentObjectModel.ContentObjectModel();
+            this.add_model(model);
+        }
+        this.emit('models-changed');
+    },
+});
+
 const MinimalOrder = new Module.Class({
     Name: 'MinimalOrder',
     Extends: GObject.Object,
@@ -168,8 +182,8 @@ function add_ordered_cards(arrangement, ncards) {
             title: i.toString(),
         });
         models.push(model);
-        arrangement.add_model(model);
     }
+    arrangement.set_models(arrangement.get_models().concat(models));
     return models;
 }
 
@@ -180,14 +194,13 @@ function add_filtered_cards(arrangement, n_yes, n_no) {
             title: '0Filter me out',
         });
         models.push(model);
-        arrangement.add_model(model);
     }
     for (let i = 0; i < n_no; i++) {
         let model = new ContentObjectModel.ContentObjectModel({
             title: '#nofilter',
         });
         models.push(model);
-        arrangement.add_model(model);
     }
+    arrangement.set_models(arrangement.get_models().concat(models));
     return models;
 }

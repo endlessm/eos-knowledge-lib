@@ -60,7 +60,7 @@ const SupplementaryArticles = new Module.Class({
                             need_unread: false,
                         });
                     }
-                    payload.models.forEach(this.arrangement.add_model, this.arrangement);
+                    this.arrangement.set_models(payload.models);
                     break;
             }
         });

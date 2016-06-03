@@ -126,7 +126,7 @@ const Thematic = new Module.Class({
     },
 
     _pack_arrangement: function (arrangement, models) {
-        models.forEach(arrangement.add_model, arrangement);
+        arrangement.set_models(models);
         arrangement.visible = true;
         this._scroll_server_module.new_content_added();
     },

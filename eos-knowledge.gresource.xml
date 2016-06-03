@@ -127,12 +127,14 @@
     <file>js/app/modules/card/thumb.js</file>
     <file>js/app/modules/card/title.js</file>
     <file>js/app/modules/contentGroup/cardContainer.js</file>
+    <file>js/app/modules/contentGroup/contentGroup.js</file>
     <file>js/app/modules/contentGroup/hierarchicalSet.js</file>
     <file>js/app/modules/contentGroup/highlights.js</file>
     <file>js/app/modules/contentGroup/item.js</file>
     <file>js/app/modules/contentGroup/mediaLightbox.js</file>
     <file>js/app/modules/contentGroup/search.js</file>
     <file>js/app/modules/contentGroup/set.js</file>
+    <file>js/app/modules/contentGroup/staticText.js</file>
     <file>js/app/modules/contentGroup/suggestedArticles.js</file>
     <file>js/app/modules/contentGroup/suggestedCategories.js</file>
     <file>js/app/modules/contentGroup/supplementaryArticles.js</file>
@@ -161,6 +163,8 @@
     <file>js/app/modules/order/alphabetical.js</file>
     <file>js/app/modules/order/featured.js</file>
     <file>js/app/modules/order/publishedDate.js</file>
+    <file>js/app/modules/selection/selection.js</file>
+    <file>js/app/modules/selection/xapian.js</file>
     <file>js/app/modules/window/app.js</file>
     <file>js/app/modules/window/encyclopedia.js</file>
     <file>js/app/moltresApplication.js</file>

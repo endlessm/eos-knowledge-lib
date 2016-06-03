@@ -107,11 +107,14 @@ const _QuiltLayout = new Knowledge.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        let count = this.get_children().length;
+        let parent = this.get_parent();
+        let count = parent.get_count();
         if (count === 0)
             return;
 
-        let all_cards = this.get_parent().get_cards();
+        let all_cards = parent.get_models()
+            .map(parent.get_card_for_model, parent)
+            .filter(card => card);
 
         let [horizontal_mode, total_cards_to_show] = this._determine_horizontal_mode(alloc.width);
         this.total_cards_to_show = total_cards_to_show;
@@ -211,7 +214,7 @@ const Quilt = new Module.Class({
     },
 
     get all_visible() {
-        return this.get_card_count() <= this._layout.total_cards_to_show;
+        return this.get_count() <= this._layout.total_cards_to_show;
     },
 
     get spacing() {

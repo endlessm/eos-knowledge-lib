@@ -97,7 +97,7 @@ const SetPreview = new Module.Class({
                 logError(e, 'Failed to load articles from database');
                 return;
             }
-            models.forEach(model => this.arrangement.add_model(model));
+            this.arrangement.set_models(models);
             if (done)
                 done();
         });

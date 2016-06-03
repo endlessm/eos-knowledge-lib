@@ -19,7 +19,7 @@ const Module = imports.app.interfaces.module;
  * Examples of arrangements: a list, a grid, etc.
  *
  * Slots:
- *   card - controls how the card models are converted into cards
+ *   card-type - controls how the card models are converted into cards
  *   order
  *   filter
  */
@@ -98,10 +98,11 @@ const Arrangement = new Lang.Interface({
 
     _interface_init: function () {
         this._cards_by_id = new Map();
-        this._models_by_id = new Map();
-        this._order = this.create_submodule('order');
-        this._filter = this.create_submodule('filter');
+        this._models = [];
+        this._order_module = this.create_submodule('order');
+        this._filter_module = this.create_submodule('filter');
     },
+
 
     /**
      * Method: get_count
@@ -114,7 +115,7 @@ const Arrangement = new Lang.Interface({
      *   Number of card models in the arrangement
      */
     get_count: function () {
-        return this._models_by_id.size;
+        return this._models.length;
     },
 
     /**
@@ -155,43 +156,54 @@ const Arrangement = new Lang.Interface({
     },
 
     /**
-     * Method: add_model
-     * Add a card model to the arrangement
+     * Method: set_models
+     * Display card models in the arrangement
      *
      * Note that adding a card directly with *Gtk.Container.add()* or one of its
      * more specialized relatives will not add a model to the arrangement.
      *
      * Parameters:
-     *   model - a <ContentObjectModel>
+     *   models - an array of <ContentObjectModel>s
      */
-    add_model: function (model) {
-        this._models_by_id.set(model.ekn_id, model);
+    set_models: function (models) {
+        // FIXME: Stopgap measure until all content groups use selections
+        models = models.slice();
+        if (this._filter_module)
+            models = models.filter(this._filter_module.include.bind(this._filter_module));
+        if (this._order_module)
+            models.sort(this._order_module.compare.bind(this._order_module));
 
-        let max_cards = this.get_max_cards();
+        // unpack all cards
+        let cards = [...this._cards_by_id.values()];
+        cards.forEach((card) => {
+            this.unpack_card(card);
+        });
 
-        if (!this._order && max_cards > -1 && this.get_count() > max_cards)
-            return;
+        this._models = models;
 
-        if (this._filter && !this._filter.include(model))
-            return;
+        // only maintain the number of models we care about
+        if (this.get_max_cards() > -1)
+            this._models = this._models.slice(0, this.get_max_cards());
 
-        let card;
-        if (this._order) {
-            let models = this.get_filtered_models();
-            let position = models.indexOf(model);
-            if (max_cards > -1 && position >= max_cards)
-                return;
-            card = this._create_card(model);
-            this.pack_card(card, position);
-        } else {
-            card = this._create_card(model);
+        let ekn_id_set = new Set();
+
+        // Add cards for models that we don't have yet.
+        this._models.forEach((model) => {
+            ekn_id_set.add(model.ekn_id);
+            if (!this._cards_by_id.get(model.ekn_id))
+                this._cards_by_id.set(model.ekn_id, this._create_card(model));
+
+            let card = this._cards_by_id.get(model.ekn_id);
             this.pack_card(card);
-        }
+            if (this.fade_cards)
+                this.fade_card_in(card);
+            else
+                card.show_all();
+        });
 
-        if (this.fade_cards)
-            this.fade_card_in(card);
-        else
-            card.show_all();
+        // Delete cards for models we don't need anymore
+        [...this._cards_by_id.keys()].filter((key) => !ekn_id_set.has(key))
+                                     .forEach((key) => this._cards_by_id.delete(key));
     },
 
     /**
@@ -205,7 +217,9 @@ const Arrangement = new Lang.Interface({
      *   model - a <ContentObjectModel>
      */
     remove_model: function (model) {
-        this._models_by_id.delete(model.ekn_id);
+        let match = this._models.filter((iter_m) => model.ekn_id === iter_m.ekn_id);
+        if (match.length > 0)
+            this._models.splice(this._models.indexOf(match[0]), 1);
         let card = this._cards_by_id.get(model.ekn_id);
         if (card) {
             this._cards_by_id.delete(model.ekn_id);
@@ -218,27 +232,7 @@ const Arrangement = new Lang.Interface({
      * Get all card models in the arrangement
      */
     get_models: function () {
-        let models = [...this._models_by_id.values()];
-        if (this._order)
-            models.sort(this._order.compare.bind(this._order));
-        return models;
-    },
-
-    /**
-     * Method: get_filtered_models
-     * Get card models in the arrangement that are to be displayed
-     *
-     * Use this function in your <Arrangement> implementation when you are
-     * deciding how to lay out the cards.
-     *
-     * Returns:
-     *   an array of <ContentObjectModels>
-     */
-    get_filtered_models: function () {
-        let models = this.get_models();
-        if (!this._filter)
-            return models;
-        return models.filter(this._filter.include.bind(this._filter));
+        return this._models.slice();
     },
 
     /**
@@ -248,7 +242,7 @@ const Arrangement = new Lang.Interface({
      * This method will return filtered and ordered cards.
      */
     get_cards: function () {
-        let models = this.get_filtered_models();
+        let models = this.get_models();
         return models.map((model) => this.get_card_for_model(model)).filter((card) => card);
     },
 
@@ -280,7 +274,7 @@ const Arrangement = new Lang.Interface({
         for (let card of this._cards_by_id.values())
             this.unpack_card(card);
         this._cards_by_id.clear();
-        this._models_by_id.clear();
+        this._models = [];
     },
 
     highlight: function (highlight_model) {
@@ -296,16 +290,14 @@ const Arrangement = new Lang.Interface({
         }
     },
 
-    /**
-     * Method: get_order
-     * Private method intended to be used from implementations
-     */
+    // FIXME: These two will go away once modules start using selections
+    // for ordering and filtering.
     get_order: function () {
-        return this._order;
+        return this._order_module;
     },
 
     get_filter: function () {
-        return this._filter;
+        return this._filter_module;
     },
 
     /**
@@ -339,12 +331,9 @@ const Arrangement = new Lang.Interface({
      *
      * Parameters:
      *   card - a <Card> implementation
-     *   position - an integer specifying in what order the card should be
-     *     packed, relative to other cards. -1 means "don't care".
      */
-    pack_card: function (card, position=-1) {
+    pack_card: function (card) {
         this.add(card);
-        void position;  // unused
     },
 
     /**

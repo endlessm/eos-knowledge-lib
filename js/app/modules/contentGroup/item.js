@@ -53,7 +53,7 @@ const Item = new Module.Class({
                     break;
                 case Actions.APPEND_ITEMS:
                     arrangement.fade_cards = (arrangement.get_count() > 0);
-                    payload.models.forEach(arrangement.add_model, arrangement);
+                    arrangement.set_models(payload.models);
                     if (arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
                         arrangement.new_content_added();
                     }

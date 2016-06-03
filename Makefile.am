@@ -353,6 +353,7 @@ javascript_tests = \
 	tests/js/app/modules/card/testText.js \
 	tests/js/app/modules/card/testThumb.js \
 	tests/js/app/modules/card/testTitle.js \
+	tests/js/app/modules/contentGroup/testContentGroup.js \
 	tests/js/app/modules/contentGroup/testHierarchicalSet.js \
 	tests/js/app/modules/contentGroup/testHighlights.js \
 	tests/js/app/modules/contentGroup/testItem.js \

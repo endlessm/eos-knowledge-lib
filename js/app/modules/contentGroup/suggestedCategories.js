@@ -96,8 +96,7 @@ const SuggestedCategories = new Module.Class({
                 case Actions.APPEND_SETS:
                     // Use the sets generated on app startup to populate the
                     // suggested categories module.
-                    payload.models.forEach(this._arrangement.add_model,
-                        this._arrangement);
+                    this._arrangement.set_models(payload.models);
                     break;
                 case Actions.CLEAR_SETS:
                     this._arrangement.clear();

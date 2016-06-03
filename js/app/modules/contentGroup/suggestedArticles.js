@@ -31,7 +31,7 @@ const SuggestedArticles = new Module.Class({
                     this.arrangement.clear();
                     break;
                 case Actions.APPEND_SUGGESTED_ARTICLES:
-                    payload.models.forEach(this.arrangement.add_model, this.arrangement);
+                    this.arrangement.set_models(payload.models);
                     break;
             }
         });
