@@ -72,9 +72,22 @@ const MoltresEngine = new Lang.Class({
         }
 
         this._to_return = [];
-        for (let i = 0; i < Math.min(10, query.limit); i++) {
-            this._to_return.push(generation_func());
+
+        let matching_strings = this._ARTICLES.concat(this._SETS)
+                                             .reduce((arr, obj) => {
+                                                return arr.concat(obj.title.toLowerCase().split(' '));
+                                             }, [])
+                                             .concat(this._SYNOPSIS.toLowerCase().split(' '));
+
+        // If the query matches any article or set title, or the synopsis, return some content.
+        // Otherwise, return nothing. If no query string was specified at all, we also want to
+        // return content since this handles e.g. suggested articles modules.
+        if (!query.query || query.query.toLowerCase().split(' ').some((token) => matching_strings.indexOf(token.trim()) > -1)) {
+            for (let i = 0; i < Math.min(10, query.limit); i++) {
+                this._to_return.push(generation_func());
+            }
         }
+
         callback(this);
     },
 
