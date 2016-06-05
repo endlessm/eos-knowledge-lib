@@ -67,12 +67,18 @@ const Class = new Lang.Class({
         let style_properties = props.StyleProperties || {};
         delete props.StyleProperties;
 
+        let metaclass = Lang.getMetaClass(props) || Lang.Class;
+        let is_widget = metaclass === Gtk.Widget.prototype.__metaclass__;
         let old_init = props._init;
         props._init = function () {
             if (old_init)
                 old_init.apply(this, arguments);
             else
                 this.parent.apply(this, arguments);
+
+            // Automatically give widgets a style class based on their name
+            if (is_widget)
+                this.get_style_context().add_class(props.Name.replace('.', '', 'g'));
 
             if (this._interfaces_inited)
                 return;
@@ -81,15 +87,19 @@ const Class = new Lang.Class({
                 interfaces.forEach(iface => {
                     if (iface._interface_init)
                         iface._interface_init(this);
+                    // We'll only add style classes for interfaces defined in
+                    // gjs, which will have proptotype.__name__ set
+                    let iface_name = iface.prototype.__name__;
+                    if (is_widget && iface_name)
+                        this.get_style_context().add_class(iface_name.replace('.', '', 'g'));
                 });
             }
             this._interfaces_inited = true;
         };
 
-        let metaclass = Lang.getMetaClass(props) || Lang.Class;
         let newclass = metaclass.prototype._construct(props);
 
-        if (metaclass === Gtk.Widget.prototype.__metaclass__) {
+        if (is_widget) {
             Object.keys(style_properties).forEach(prop =>
                 Gtk.Widget.install_style_property.call(newclass,
                     style_properties[prop]));

@@ -6,9 +6,14 @@ const Lang = imports.lang;
 
 Gtk.init(null);
 
+const CssClassMatcher = imports.tests.CssClassMatcher;
 const Knowledge = imports.app.knowledge;
 
 describe('Syntactic sugar metaclass', function () {
+    beforeEach(function () {
+        jasmine.addMatchers(CssClassMatcher.customMatchers);
+    });
+
     it('automatically sets the correct GTypeName', function () {
         const MyTypeName = new Knowledge.Class({
             Name: 'MyTypeName',
@@ -109,6 +114,24 @@ describe('Syntactic sugar metaclass', function () {
         })).toThrow();
     });
 
+    it('autogenerates css class name from class name', function () {
+        let MyStyleModule = new Knowledge.Class({
+            Name: 'MyClassyModule',
+            Extends: Gtk.Grid,
+        });
+        let widget = new MyStyleModule();
+        expect(widget).toHaveCssClass('MyClassyModule');
+    });
+
+    it('ignores dots in class name when generating css name', function () {
+        let MyStyleModule = new Knowledge.Class({
+            Name: 'My...Classy..Module',
+            Extends: Gtk.Grid,
+        });
+        let widget = new MyStyleModule();
+        expect(widget).toHaveCssClass('MyClassyModule');
+    });
+
     const MyInitInterface = new Lang.Interface({
         Name: 'MyInitInterface',
         _interface_init: function () {
@@ -124,7 +147,7 @@ describe('Syntactic sugar metaclass', function () {
     });
     const MyInitedClass = new Knowledge.Class({
         Name: 'MyInitedClass',
-        Extends: GObject.Object,
+        Extends: Gtk.Widget,
         Implements: [MyInitInterface, MyInitGObjectInterface],
         _init: function (props={}) {
             this.parent(props);
@@ -188,5 +211,11 @@ describe('Syntactic sugar metaclass', function () {
         });
         let object = new MyCounterSubclass();
         expect(object.iface_init_count).toEqual(1);
+    });
+
+    it('autogenerates css class name for implemented interfaces', function () {
+        let widget = new MyInitedClass();
+        expect(widget).toHaveCssClass('MyInitInterface');
+        expect(widget).toHaveCssClass('MyInitGObjectInterface');
     });
 });
