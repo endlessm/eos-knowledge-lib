@@ -13,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-05-24 01:46+0000\n"
-"PO-Revision-Date: 2016-03-24 00:01+0000\n"
-"Last-Translator: Fernando Farfan <fernando@endlessm.com>\n"
+"POT-Creation-Date: 2016-05-31 01:44+0000\n"
+"PO-Revision-Date: 2016-05-31 01:44+0000\n"
+"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,39 +23,26 @@ msgstr ""
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: data/widgets/backCover.ui:21
-msgid "Did you like this issue?"
-msgstr "¿Te gustó esta edición?"
-
-#: data/widgets/backCover.ui:34
-msgid ""
-"Don't miss next week's issue with more articles in your favorite magazine!"
-msgstr "¡No te pierdas la edición de la próxima semana que tendrá más artículos en tu revista favorita!"
-
-#: data/widgets/legacyPolaroidCard.ui:99
+#: data/widgets/card/legacyPolaroid.ui:99
 msgid "PDF"
 msgstr "PDF"
 
-#: data/widgets/readerCard.ui:106
-msgid "Archive"
-msgstr "Archivo"
-
-#: data/widgets/sequenceCard.ui:21 js/app/modules/layout/articleStack.js:140
+#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:140
 msgid "Next Article"
 msgstr "Próximo Artículo"
 
-#: data/widgets/sequenceCard.ui:59 js/app/modules/layout/articleStack.js:123
+#: data/widgets/card/sequence.ui:59 js/app/modules/layout/articleStack.js:123
 msgid "Previous Article"
 msgstr "Artículo Previo"
 
-#: data/widgets/sideMenuTemplate.ui:95
+#: data/widgets/contentGroup/suggestedCategories.ui:22
+msgid "Browse by topic"
+msgstr "Explora por tema"
+
+#: data/widgets/layout/sideMenu.ui:95
 #: js/app/modules/layout/hamburgerBasement.js:50
 msgid "HOME"
 msgstr "INICIO"
-
-#: data/widgets/suggestedCategories.ui:22
-msgid "Browse by topic"
-msgstr "Explora por tema"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -84,11 +71,11 @@ msgid ""
 "to do anything."
 msgstr "Ve {wikihow-article-link} para más detalles, videos, fotos y atribuciones. Por cortesía de {wikihow-link}, donde cualquier persona puede fácilmente aprender cómo hacer cualquier cosa."
 
-#: js/app/articleHTMLRenderer.js:167 js/app/articleHTMLRenderer.js:258
+#: js/app/articleHTMLRenderer.js:156 js/app/articleHTMLRenderer.js:247
 msgid "Copy"
 msgstr "Copiar"
 
-#: js/app/articleHTMLRenderer.js:196
+#: js/app/articleHTMLRenderer.js:185
 msgid "Legal Notice and Intellectual Property Policy"
 msgstr "Aviso Legal y Política de Propiedad Intelectual"
 
@@ -96,25 +83,25 @@ msgstr "Aviso Legal y Política de Propiedad Intelectual"
 #. substituted in code. Please make sure to leave the curly
 #. braces around any words that have them, and do not translate
 #. words inside curly braces.
-#: js/app/articleHTMLRenderer.js:202
+#: js/app/articleHTMLRenderer.js:191
 msgid "Read more at {link}"
 msgstr "Leer más en {link}"
 
-#: js/app/articleHTMLRenderer.js:208
+#: js/app/articleHTMLRenderer.js:197
 msgid "DISCLAIMER PLACEHOLDER"
 msgstr "La presente aplicación incluye reportes de noticias de interés que han sido obtenidos automáticamente de sus respectivas fuentes por medio del formato RSS que cada una de ellas ha hecho públicamente disponibles. En cada una se hace constar el titular de los derechos de autor del contenido, incluyendo pero no limitado a las imágenes en ellos incluidas. Las opiniones e información expresadas en las distintas notas, artículos, anuncios o cartas son responsabilidad exclusiva de sus autores. Endless no se hace responsable de la veracidad, del contenido o calidad de la información, ni de los productos, servicios, ofertas, promociones u otras que puedan estar ahí incluidas. El contenido es proporcionado acá de manera gratuita para uso no comercial. El contenido de los mismos y la información ahí expresada es responsabilidad exclusiva de sus autores. No asumimos responsabilidad alguna por el contenido de los mismos ni por cualquier acción u omisión tomada con base en esa información. El contenido puede incluir vínculos a páginas web de terceros que no se encuentran bajo nuestro control. No nos hacemos responsables por el contenido de esas páginas ni la inclusión de la información o de los vínculos constituye aceptación de las mismas, de sus autores o de los medios de comunicación que las han hecho públicas. Nos reservamos el derecho de modificar, suspender o descontinuar cualquier aspecto de esta aplicación y la información acá contenida en cualquier momento."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:296
+#: js/app/articleHTMLRenderer.js:285
 msgid "Content taken from {blog-link}."
 msgstr "Contenido tomado de {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:301
+#: js/app/articleHTMLRenderer.js:290
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "Contenido por cortesía de {blog-link}. Usado con permiso generoso."
 
@@ -122,7 +109,7 @@ msgstr "Contenido por cortesía de {blog-link}. Usado con permiso generoso."
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:309
+#: js/app/articleHTMLRenderer.js:298
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Contenido por cortesía de {blog-link}, bajo la licencia {license-link}."
 
@@ -175,24 +162,6 @@ msgstr "Resultados para \"%s\""
 msgid "OOPS!"
 msgstr "¡UY!"
 
-#: js/app/modules/banner/standalone.js:81
-#, javascript-format
-msgid "This article is part of the archive of the magazine %s."
-msgstr "Este artículo es parte del archivo de la revista %s."
-
-#: js/app/modules/banner/standalone.js:84
-msgid "Open the magazine"
-msgstr "Abre la revista"
-
-#: js/app/modules/card/reader.js:44
-#, javascript-format
-msgid "Page %s"
-msgstr "Página %s"
-
-#: js/app/modules/card/readerDocument.js:114
-msgid "This article is part of the archive."
-msgstr "Este artículo es parte del archivo."
-
 #. TRANSLATORS: %s will be replaced with the name of the category
 #. that we are offering to show more of.
 #: js/app/modules/contentGroup/cardContainer.js:145
@@ -228,30 +197,6 @@ msgstr "Tal vez te interese..."
 #: js/app/modules/contentGroup/supplementaryArticles.js:38
 msgid "Other news"
 msgstr "Otras noticias"
-
-#: js/app/modules/controller/aisle.js:749
-#: js/app/modules/controller/aisle.js:756
-msgid "Oops!"
-msgstr "¡Uy!"
-
-#: js/app/modules/controller/aisle.js:750
-msgid ""
-"We could not find this magazine!\n"
-"Please try again after restarting your computer."
-msgstr "¡No pudimos encontrar esta revista!\nPor favor intenta de nuevo después de reiniciar tu computadora."
-
-#: js/app/modules/controller/aisle.js:757
-msgid ""
-"There was an error loading that page.\n"
-"Try another one or try again after restarting your computer."
-msgstr "Hubo un error al cargar esa página.\nPor favor intenta con otra o intenta de nuevo después de reiniciar tu computadora."
-
-#. TRANSLATORS: This shows the page number; %d will be replaced with
-#. the page number of the article.
-#: js/app/modules/controller/aisle.js:796
-#, javascript-format
-msgid "Page %d"
-msgstr "Página %d"
 
 #: js/app/modules/layout/hamburgerBasement.js:42
 msgid "SEE ALL CATEGORIES"

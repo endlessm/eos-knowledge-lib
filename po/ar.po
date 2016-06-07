@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-05-24 01:46+0000\n"
-"PO-Revision-Date: 2016-03-23 23:05+0000\n"
-"Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
+"POT-Creation-Date: 2016-05-31 01:44+0000\n"
+"PO-Revision-Date: 2016-05-31 01:44+0000\n"
+"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,39 +18,26 @@ msgstr ""
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: data/widgets/backCover.ui:21
-msgid "Did you like this issue?"
-msgstr "هل أعجبك هذا الموضوع؟"
-
-#: data/widgets/backCover.ui:34
-msgid ""
-"Don't miss next week's issue with more articles in your favorite magazine!"
-msgstr "لا تفوت مسألة الأسبوع المقبل مع المزيد من المقالات في المجلة المفضلة لديك!"
-
-#: data/widgets/legacyPolaroidCard.ui:99
+#: data/widgets/card/legacyPolaroid.ui:99
 msgid "PDF"
 msgstr "صيغة PDF"
 
-#: data/widgets/readerCard.ui:106
-msgid "Archive"
-msgstr "الأرشيف"
-
-#: data/widgets/sequenceCard.ui:21 js/app/modules/layout/articleStack.js:140
+#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:140
 msgid "Next Article"
 msgstr "المقالة التالية"
 
-#: data/widgets/sequenceCard.ui:59 js/app/modules/layout/articleStack.js:123
+#: data/widgets/card/sequence.ui:59 js/app/modules/layout/articleStack.js:123
 msgid "Previous Article"
 msgstr "المقالة السابقة"
 
-#: data/widgets/sideMenuTemplate.ui:95
+#: data/widgets/contentGroup/suggestedCategories.ui:22
+msgid "Browse by topic"
+msgstr "الاستعراض حسب الموضوعات"
+
+#: data/widgets/layout/sideMenu.ui:95
 #: js/app/modules/layout/hamburgerBasement.js:50
 msgid "HOME"
 msgstr "الصفحة الرئيسية"
-
-#: data/widgets/suggestedCategories.ui:22
-msgid "Browse by topic"
-msgstr "الاستعراض حسب الموضوعات"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -79,11 +66,11 @@ msgid ""
 "to do anything."
 msgstr "اطلع على {wikihow-article-link} لمزيد من التفاصيل والفيديوهات والصور والإستنادات. بإذن \n {wikihow-link}، حيث يُمكن لاي شخص أن يتعلم بسهولة كيف يفعل أي شيء."
 
-#: js/app/articleHTMLRenderer.js:167 js/app/articleHTMLRenderer.js:258
+#: js/app/articleHTMLRenderer.js:156 js/app/articleHTMLRenderer.js:247
 msgid "Copy"
 msgstr "نسخة"
 
-#: js/app/articleHTMLRenderer.js:196
+#: js/app/articleHTMLRenderer.js:185
 msgid "Legal Notice and Intellectual Property Policy"
 msgstr ""
 
@@ -91,25 +78,25 @@ msgstr ""
 #. substituted in code. Please make sure to leave the curly
 #. braces around any words that have them, and do not translate
 #. words inside curly braces.
-#: js/app/articleHTMLRenderer.js:202
+#: js/app/articleHTMLRenderer.js:191
 msgid "Read more at {link}"
 msgstr "قُم بقراءة المزيد في {link}"
 
-#: js/app/articleHTMLRenderer.js:208
+#: js/app/articleHTMLRenderer.js:197
 msgid "DISCLAIMER PLACEHOLDER"
 msgstr ""
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:296
+#: js/app/articleHTMLRenderer.js:285
 msgid "Content taken from {blog-link}."
 msgstr "المُحتوى مأخوذ من {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:301
+#: js/app/articleHTMLRenderer.js:290
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "المحتوى مهدى من {blog-link}. تم استخدامه بإذن كريم من صاحبه."
 
@@ -117,7 +104,7 @@ msgstr "المحتوى مهدى من {blog-link}. تم استخدامه بإذن
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:309
+#: js/app/articleHTMLRenderer.js:298
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "المحتوى مهدى من {blog-link}، ومرخص بموجب {license-link}."
 
@@ -170,24 +157,6 @@ msgstr "النتائج عن “%s”"
 msgid "OOPS!"
 msgstr "عفواً!"
 
-#: js/app/modules/banner/standalone.js:81
-#, javascript-format
-msgid "This article is part of the archive of the magazine %s."
-msgstr "هذه المقالة هي جزء من أرشيف مجلة %s."
-
-#: js/app/modules/banner/standalone.js:84
-msgid "Open the magazine"
-msgstr "فتح المجلة"
-
-#: js/app/modules/card/reader.js:44
-#, javascript-format
-msgid "Page %s"
-msgstr "الصفحة %s"
-
-#: js/app/modules/card/readerDocument.js:114
-msgid "This article is part of the archive."
-msgstr "هذا المقال جزء من الأرشيف."
-
 #. TRANSLATORS: %s will be replaced with the name of the category
 #. that we are offering to show more of.
 #: js/app/modules/contentGroup/cardContainer.js:145
@@ -223,30 +192,6 @@ msgstr "ربما تكون مهتماً بـ..."
 #: js/app/modules/contentGroup/supplementaryArticles.js:38
 msgid "Other news"
 msgstr "الأخبار الأخرى"
-
-#: js/app/modules/controller/aisle.js:749
-#: js/app/modules/controller/aisle.js:756
-msgid "Oops!"
-msgstr "يا لهذا!"
-
-#: js/app/modules/controller/aisle.js:750
-msgid ""
-"We could not find this magazine!\n"
-"Please try again after restarting your computer."
-msgstr "لم نتمكن من إيجاد هذه المجلة!\nيُرجى المحاولة مرة أُخرى بعد إعادة تشغيل جهاز الكمبيوتر الخاص بك."
-
-#: js/app/modules/controller/aisle.js:757
-msgid ""
-"There was an error loading that page.\n"
-"Try another one or try again after restarting your computer."
-msgstr "وقع خطأٌ ما أثناء تحميل تلك الصفحة.\nجرب صفحة أخرى أو حاول مرة أخرى فيما بعد بعد إعادة تشغيل الكمبيوتر."
-
-#. TRANSLATORS: This shows the page number; %d will be replaced with
-#. the page number of the article.
-#: js/app/modules/controller/aisle.js:796
-#, javascript-format
-msgid "Page %d"
-msgstr "صفحة %d"
 
 #: js/app/modules/layout/hamburgerBasement.js:42
 msgid "SEE ALL CATEGORIES"

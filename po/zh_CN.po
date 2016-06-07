@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-05-24 01:46+0000\n"
-"PO-Revision-Date: 2016-03-23 23:05+0000\n"
-"Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
+"POT-Creation-Date: 2016-05-31 01:44+0000\n"
+"PO-Revision-Date: 2016-05-31 01:44+0000\n"
+"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,39 +20,26 @@ msgstr ""
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: data/widgets/backCover.ui:21
-msgid "Did you like this issue?"
-msgstr "您喜欢这些出版物吗？"
-
-#: data/widgets/backCover.ui:34
-msgid ""
-"Don't miss next week's issue with more articles in your favorite magazine!"
-msgstr "您收藏的杂志中还有更多文章，下周精彩请勿错过！"
-
-#: data/widgets/legacyPolaroidCard.ui:99
+#: data/widgets/card/legacyPolaroid.ui:99
 msgid "PDF"
 msgstr "PDF"
 
-#: data/widgets/readerCard.ui:106
-msgid "Archive"
-msgstr "文档"
-
-#: data/widgets/sequenceCard.ui:21 js/app/modules/layout/articleStack.js:140
+#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:140
 msgid "Next Article"
 msgstr "下一篇"
 
-#: data/widgets/sequenceCard.ui:59 js/app/modules/layout/articleStack.js:123
+#: data/widgets/card/sequence.ui:59 js/app/modules/layout/articleStack.js:123
 msgid "Previous Article"
 msgstr "上一篇"
 
-#: data/widgets/sideMenuTemplate.ui:95
+#: data/widgets/contentGroup/suggestedCategories.ui:22
+msgid "Browse by topic"
+msgstr "根据主题浏览"
+
+#: data/widgets/layout/sideMenu.ui:95
 #: js/app/modules/layout/hamburgerBasement.js:50
 msgid "HOME"
 msgstr "主页"
-
-#: data/widgets/suggestedCategories.ui:22
-msgid "Browse by topic"
-msgstr "根据主题浏览"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -81,11 +68,11 @@ msgid ""
 "to do anything."
 msgstr "查看更多关于{wikihow-article-link}的细节，视频，图片和来源。内容由{wikihow-link}提供，在此您可以轻松掌握各种技巧。"
 
-#: js/app/articleHTMLRenderer.js:167 js/app/articleHTMLRenderer.js:258
+#: js/app/articleHTMLRenderer.js:156 js/app/articleHTMLRenderer.js:247
 msgid "Copy"
 msgstr "复制"
 
-#: js/app/articleHTMLRenderer.js:196
+#: js/app/articleHTMLRenderer.js:185
 msgid "Legal Notice and Intellectual Property Policy"
 msgstr ""
 
@@ -93,25 +80,25 @@ msgstr ""
 #. substituted in code. Please make sure to leave the curly
 #. braces around any words that have them, and do not translate
 #. words inside curly braces.
-#: js/app/articleHTMLRenderer.js:202
+#: js/app/articleHTMLRenderer.js:191
 msgid "Read more at {link}"
 msgstr ""
 
-#: js/app/articleHTMLRenderer.js:208
+#: js/app/articleHTMLRenderer.js:197
 msgid "DISCLAIMER PLACEHOLDER"
 msgstr ""
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:296
+#: js/app/articleHTMLRenderer.js:285
 msgid "Content taken from {blog-link}."
 msgstr "来源于{blog-link}的内容。"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:301
+#: js/app/articleHTMLRenderer.js:290
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "内容由{blog-link}提供。经授权许可使用。"
 
@@ -119,7 +106,7 @@ msgstr "内容由{blog-link}提供。经授权许可使用。"
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:309
+#: js/app/articleHTMLRenderer.js:298
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "内容由{blog-link}提供，已得到{license-link}许可认证。"
 
@@ -172,24 +159,6 @@ msgstr "“%s”的结果"
 msgid "OOPS!"
 msgstr "哎呀！"
 
-#: js/app/modules/banner/standalone.js:81
-#, javascript-format
-msgid "This article is part of the archive of the magazine %s."
-msgstr "该文章是在杂志%s档案中一部分。"
-
-#: js/app/modules/banner/standalone.js:84
-msgid "Open the magazine"
-msgstr "打开杂志"
-
-#: js/app/modules/card/reader.js:44
-#, javascript-format
-msgid "Page %s"
-msgstr "第%s页"
-
-#: js/app/modules/card/readerDocument.js:114
-msgid "This article is part of the archive."
-msgstr "这篇文章是档案文件的一部分。"
-
 #. TRANSLATORS: %s will be replaced with the name of the category
 #. that we are offering to show more of.
 #: js/app/modules/contentGroup/cardContainer.js:145
@@ -225,30 +194,6 @@ msgstr "您可能会对此感兴趣……"
 #: js/app/modules/contentGroup/supplementaryArticles.js:38
 msgid "Other news"
 msgstr ""
-
-#: js/app/modules/controller/aisle.js:749
-#: js/app/modules/controller/aisle.js:756
-msgid "Oops!"
-msgstr "哎呀！"
-
-#: js/app/modules/controller/aisle.js:750
-msgid ""
-"We could not find this magazine!\n"
-"Please try again after restarting your computer."
-msgstr "我们无法找到该杂志！请在重启电脑后重新尝试。"
-
-#: js/app/modules/controller/aisle.js:757
-msgid ""
-"There was an error loading that page.\n"
-"Try another one or try again after restarting your computer."
-msgstr "加载该页时出现一个错误。请尝试另一页或在重启电脑后重新尝试。"
-
-#. TRANSLATORS: This shows the page number; %d will be replaced with
-#. the page number of the article.
-#: js/app/modules/controller/aisle.js:796
-#, javascript-format
-msgid "Page %d"
-msgstr "第%d页"
 
 #: js/app/modules/layout/hamburgerBasement.js:42
 msgid "SEE ALL CATEGORIES"
