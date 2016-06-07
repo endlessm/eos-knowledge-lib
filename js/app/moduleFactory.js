@@ -95,6 +95,7 @@ const ModuleFactory = new Knowledge.Class({
         let styles = ('styles' in description) ? description['styles'] : null;
 
         let module_class = this.warehouse.type_to_class(description['type']);
+        let module_bindings = {};
         let module_props = {
             factory: this,
             factory_path: path,
@@ -108,7 +109,11 @@ const ModuleFactory = new Knowledge.Class({
                 let [success, value] = this._parse_json_property(module_class, property_name, properties[property_name]);
                 if (!success)
                     continue;
-                module_props[property_name] = value;
+                if (typeof value === 'object' && 'binding' in value) {
+                    module_bindings[property_name] = value['binding'];
+                } else {
+                    module_props[property_name] = value;
+                }
             }
         }
         Lang.copyProperties(extra_props, module_props);
@@ -120,6 +125,9 @@ const ModuleFactory = new Knowledge.Class({
 
         let module = new module_class(module_props);
 
+        for (let property_name in module_bindings) {
+            this._request_property_binding(module, property_name, module_bindings[property_name]);
+        }
         if (styles) {
             let context = module.get_style_context();
             styles.forEach(context.add_class, context);
@@ -224,14 +232,16 @@ const ModuleFactory = new Knowledge.Class({
             callback(null);
             return;
         }
-        if (this._id_to_module.has(id)) {
-            callback(this._id_to_module.get(id));
-            return;
-        }
-        if (!this._id_to_pending_callbacks.has(id)) {
-            this._id_to_pending_callbacks.set(id, []);
-        }
-        this._id_to_pending_callbacks.get(id).push(callback);
+        this._register_module_callback(id, callback);
+    },
+
+    _request_property_binding: function (module, property, binding) {
+        let flags = GObject.BindingFlags.SYNC_CREATE;
+        if ('invert' in binding && binding['invert'])
+            flags = flags | GObject.BindingFlags.INVERT_BOOLEAN;
+        this._register_module_callback(binding['source-id'], (source_module) => {
+            source_module.bind_property(binding['property'], module, property, flags);
+        });
     },
 
     _deliver_module_reference: function (module) {
@@ -242,6 +252,17 @@ const ModuleFactory = new Knowledge.Class({
             callback(module);
         });
         this._id_to_pending_callbacks.delete(id);
+    },
+
+    _register_module_callback: function (id, callback) {
+        if (this._id_to_module.has(id)) {
+            callback(this._id_to_module.get(id));
+            return;
+        }
+        if (!this._id_to_pending_callbacks.has(id)) {
+            this._id_to_pending_callbacks.set(id, []);
+        }
+        this._id_to_pending_callbacks.get(id).push(callback);
     },
 
     _get_id_for_reference: function (parent_module, reference_slot) {

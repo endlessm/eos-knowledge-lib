@@ -56,13 +56,23 @@ def sorted_ordered_dict(regdict):
     return collections.OrderedDict(sorted_items)
 
 
+def recursive_ordered_dict(regdict):
+    ordered_dict = sorted_ordered_dict(regdict)
+    for key in ordered_dict:
+        if type(ordered_dict[key]) == dict:
+            ordered_dict[key] = recursive_ordered_dict(ordered_dict[key])
+    return ordered_dict
+
+
 def order_module_keys(module):
     retval = collections.OrderedDict({'type': module['type']})
     if 'id' in module:
         retval['id'] = module['id']
     if 'styles' in module:
         retval['styles'] = sorted(module['styles'])
-    for key in ('properties', 'slots', 'references'):
+    if 'properties' in module:
+        retval['properties'] = recursive_ordered_dict(module['properties'])
+    for key in ('slots', 'references'):
         if key in module:
             retval[key] = sorted_ordered_dict(module[key])
     return retval
