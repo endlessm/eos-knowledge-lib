@@ -26,8 +26,8 @@ describe('Engine', function () {
         engine._mock_domain._shard_file = shard_file;
     }
 
-    describe('domain wrap behavior', function (done) {
-        it('calls get_domain_by_id correctly', function () {
+    describe('domain wrap behavior', function () {
+        it('calls get_domain_by_id correctly', function (done) {
             let domain = engine._mock_domain;
 
             spyOn(domain, 'get_object_by_id').and.callFake(function (id, cancellable, callback) {
