@@ -40,6 +40,14 @@ const HamburgerBasement = new Module.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             _("SEE ALL CATEGORIES")),
         /**
+         * Property: show-upper-button
+         * Whether to show the tab button on the upper page
+         */
+        'show-upper-button': GObject.ParamSpec.boolean('show-upper-button',
+            'Show upper tab button', 'Show upper tab button',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            false),
+        /**
          * Property: basement-button-label
          * Label on the tab button on the basement page
          */
@@ -92,13 +100,13 @@ const HamburgerBasement = new Module.Class({
                 if (this.get_visible_child() === this._basement_grid) {
                     top_panel.reveal_panel = true;
                 } else {
-                    bottom_panel.reveal_panel = this._bottom.has_more_content;
+                    bottom_panel.reveal_panel = this.show_upper_button;
                 }
             }
         });
 
-        this._bottom.connect('notify::has-more-content', () => {
-            bottom_panel.reveal_panel = this._bottom.has_more_content;
+        this.connect('notify::show-upper-button', () => {
+            bottom_panel.reveal_panel = this.show_upper_button;
         });
     },
 
