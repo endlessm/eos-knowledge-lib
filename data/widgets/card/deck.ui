@@ -56,7 +56,6 @@
     </child>
     <style>
       <class name="deck"/>
-      <class name="card"/>
     </style>
   </template>
 </interface>

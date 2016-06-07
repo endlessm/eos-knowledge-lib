@@ -8,7 +8,6 @@
     <property name="receives_default">False</property>
     <style>
       <class name="thumb-card"/>
-      <class name="card"/>
     </style>
   </template>
   <object class="GtkFrame" id="thumbnail-frame">

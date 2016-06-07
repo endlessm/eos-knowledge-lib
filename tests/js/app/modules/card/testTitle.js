@@ -20,8 +20,7 @@ describe('Card.Title', function () {
         });
     });
 
-    it('has card and title-card class', function () {
-        expect(card).toHaveCssClass('card');
+    it('has title-card class', function () {
         expect(card).toHaveCssClass('title-card');
     });
 

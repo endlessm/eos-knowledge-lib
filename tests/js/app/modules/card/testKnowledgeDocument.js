@@ -70,9 +70,6 @@ describe('Card.KnowledgeDocument', function () {
     });
 
     describe('Style class of document card', function () {
-        it('has article card class', function () {
-            expect(card).toHaveCssClass('card');
-        });
         it('has a descendant with title class', function () {
             expect(card).toHaveDescendantWithCssClass('title');
         });
