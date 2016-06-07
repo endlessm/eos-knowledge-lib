@@ -149,7 +149,7 @@ describe('Article HTML Renderer', function () {
         });
 
         it('shows a link back to the original source', function () {
-            expect(html).toMatch(model.original_uri);
+            expect(html).toMatch('href="' + model.original_uri);
         });
 
         it('shows the date published', function () {

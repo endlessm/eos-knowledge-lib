@@ -270,7 +270,7 @@ function _to_set_link (model) {
 }
 
 function _to_link(uri, text) {
-    return '<a class="eos-show-link" href="browser-' + uri + '">' + Mustache.escape(text) + '</a>';
+    return '<a class="eos-show-link" href="' + uri + '">' + Mustache.escape(text) + '</a>';
 }
 
 function _to_modal_link(text) {
