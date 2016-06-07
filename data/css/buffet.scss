@@ -2,9 +2,9 @@
 
 .Card .title,
 .CardSetPreview .title,
-.search-results .results-message-title,
-.suggested-categories .browse-content .title,
-.suggested-articles .browse-content .title  {
+.ContentGroupSearch .results-message-title,
+.ContentGroupSuggestedCategories .browse-content .title,
+.ContentGroupSuggestedArticles .browse-content .title  {
     color: #044a80;
 }
 
@@ -18,14 +18,14 @@
     padding: 20px;
 }
 
-.ContentGroupThematic .title-card,
-.CardSetPreview .title-card {
+.ContentGroupThematic .CardTitle,
+.CardSetPreview .CardTitle {
     margin-top: 25px;
 }
 
-.ContentGroupHighlights .title-card .title.label,
-.ContentGroupThematic .title-card .title.label,
-.CardSetPreview .title-card .title,
+.ContentGroupHighlights .CardTitle .title.label,
+.ContentGroupThematic .CardTitle .title.label,
+.CardSetPreview .CardTitle .title,
 .browse-content .title {
     font-weight: 200;
     font-size: 29.3px;
@@ -40,9 +40,9 @@
 }
 
 .ContentGroupSuggestedCategories .browse-content .after,
-.ContentGroupHighlights .title-card .after,
+.ContentGroupHighlights .CardTitle .after,
 .CardSetPreview .title .after,
-.ContentGroupThematic .title-card .after {
+.ContentGroupThematic .CardTitle .after {
     -gtk-icon-source: url('../images/title-arrow-dark.svg');
     min-height: 10px;
     min-width: 11px;
@@ -51,72 +51,72 @@
 }
 
 .ContentGroupSuggestedCategories .browse-content:hover .after,
-.ContentGroupHighlights .title-card:hover .after,
+.ContentGroupHighlights .CardTitle:hover .after,
 .CardSetPreview .title .after,
-.ContentGroupThematic .title-card:hover .after {
+.ContentGroupThematic .CardTitle:hover .after {
     -gtk-icon-source: url('../images/title-arrow-light.svg');
 }
 
-.ContentGroupSearch .suggested-categories,
-.ContentGroupSearch .suggested-articles {
+.ContentGroupSearch .ContentGroupSuggestedCategories,
+.ContentGroupSearch .ContentGroupSuggestedArticles {
     background-color: #f6f6f6;
 }
 
-.search-results separator {
+.ContentGroupSearch separator {
     background-color: #999999;
 }
 
-.search-results .results-message-subtitle,
+.ContentGroupSearch .results-message-subtitle,
 .browse-content .title {
     color: #999999;
 }
 
-.search-results .results-message-title,
-.search-results .results-message-subtitle {
+.ContentGroupSearch .results-message-title,
+.ContentGroupSearch .results-message-subtitle {
     padding: 20px 60px 0px 60px;
     padding-left: 60px;
     padding-right: 60px;
     font-size: 24px;
 }
 
-.search-results .results-message-subtitle {
+.ContentGroupSearch .results-message-subtitle {
     padding-bottom: 40px;
 }
 
-.thumb-card.arrow,
-.post-card.arrow,
-.list-card.arrow {
+.CardThumb.arrow,
+.CardPost.arrow,
+.CardList.arrow {
     -gtk-icon-source: url('../images/arrow-gray.svg');
     -gtk-icon-transform: rotate(45deg);
 }
 
-.thumb-card:hover,
-.thumb-card:active,
-.post-card:hover,
-.post-card:active,
-.deck:hover .thumbnail,
-.deck:active .thumbnail,
-.list-card:hover,
-.list-card:active {
+.CardThumb:hover,
+.CardThumb:active,
+.CardPost:hover,
+.CardPost:active,
+.CardDeck:hover .thumbnail,
+.CardDeck:active .thumbnail,
+.CardList:hover,
+.CardList:active {
     outline: 1px solid #49bde3;
     border-color: #49bde3;  /* used for the triangle in the corner */
     outline-offset: -1px;
     -gtk-outline-radius: 0;
 }
 
-.thumb-card:active,
-.post-card:active,
-.list-card:active {
+.CardThumb:active,
+.CardPost:active,
+.CardList:active {
     box-shadow: none;
 }
 
-.thumb-card.arrow:hover,
-.thumb-card.arrow:active,
-.post-card.arrow:hover,
-.post-card.arrow:active,
-.deck .thumbnail.arrow, /* both hover and non-hover */
-.list-card.arrow:hover,
-.list-card.arrow:active {
+.CardThumb.arrow:hover,
+.CardThumb.arrow:active,
+.CardPost.arrow:hover,
+.CardPost.arrow:active,
+.CardDeck .thumbnail.arrow, /* both hover and non-hover */
+.CardList.arrow:hover,
+.CardList.arrow:active {
     -gtk-icon-source: url('../images/arrow-white.svg');
     -gtk-icon-transform: rotate(45deg);
 }
@@ -135,7 +135,7 @@
     padding-bottom: 10px;
 }
 
-.LayoutSideMenu .panel {
+.LayoutSideMenu .SlidingPanel {
     -EknSlidingPanel-shadow-margin: 40;
 }
 
@@ -193,7 +193,7 @@
     margin: 10px 10px 0 0;
 }
 
-.LayoutSideMenu .title-card,
+.LayoutSideMenu .CardTitle,
 .LayoutSideMenu .home-button,
 .LayoutSideMenu .close-button {
     padding: 6px 0px;

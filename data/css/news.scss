@@ -10,7 +10,7 @@ $context-blue: #7297a7;
 .LayoutInfiniteScrolling,
 .LayoutDynamicBackground,
 .results-message-background,
-EosWindow scrollbar {
+.WindowApp scrollbar {
     background-color: #e9e5e0;
 }
 
@@ -38,7 +38,7 @@ EosWindow scrollbar {
     color: $context-blue;
 }
 
-.trigger .image {
+.trigger .ThemeableImage {
     -gtk-icon-source: url('../images/news-arrow-dark.svg');
     min-height: 14px;
     min-width: 14px;
@@ -46,7 +46,7 @@ EosWindow scrollbar {
     margin-bottom: 5px;
 }
 
-.trigger:hover .image {
+.trigger:hover .ThemeableImage {
     -gtk-icon-source: url('../images/news-arrow-light.svg');
 }
 
@@ -54,11 +54,11 @@ EosWindow scrollbar {
     margin: 50px 20px;
 }
 
-.CardSetPreview .title-card {
+.CardSetPreview .CardTitle {
     margin-top: 25px;
 }
 
-.CardSetPreview .title-card .title {
+.CardSetPreview .CardTitle .title {
     color: $title-blue;
     font-family: 'Merriweather';
     font-weight: bold;
@@ -66,7 +66,7 @@ EosWindow scrollbar {
     font-size: 40px;
 }
 
-.CardSetPreview .title-card:hover .title {
+.CardSetPreview .CardTitle:hover .title {
     color: $context-blue;
 }
 
@@ -81,7 +81,7 @@ EosWindow scrollbar {
     color: $context-blue;
 }
 
-.top-menu .BannerApp .image {
+.top-menu .BannerApp .ThemeableImage {
     -EknThemeableImage-sizing: "size-min";
     min-width: 146px;
     min-height: 30px;
@@ -97,23 +97,23 @@ EosWindow scrollbar {
     margin-top: 50px;
 }
 
-.ArrangementSideBySide .title-card label.title {
+.ArrangementSideBySide .CardTitle label.title {
     font-family: 'Fira Sans';
     color: rgba(255, 255, 255, 0.6);
     padding: 13px 0px 3px 0px;
     font-size: 18px;
 }
 
-.ArrangementSideBySide .title-card:hover label.title {
+.ArrangementSideBySide .CardTitle:hover label.title {
     border-bottom: 1px solid $context-blue;
     color: $context-blue;
 }
 
-.ArrangementSideBySide .title-card.highlighted label.title {
+.ArrangementSideBySide .CardTitle.highlighted label.title {
     color: white;
 }
 
-.ArrangementSideBySide .title-card.highlighted:hover label.title {
+.ArrangementSideBySide .CardTitle.highlighted:hover label.title {
     border-bottom: none;
 }
 
@@ -159,7 +159,7 @@ EosWindow scrollbar {
     background-color: transparent;
 }
 
-.search-results .results-message-title {
+.ContentGroupSearch .results-message-title {
     font-family: 'Fira Sans';
     color: $context-blue;
     font-size: 30px;
@@ -171,7 +171,7 @@ EosWindow scrollbar {
     padding-bottom: 30px;
 }
 
-.search-results .results-message-subtitle {
+.ContentGroupSearch .results-message-subtitle {
     font-family: Merriweather;
     font-style: italic;
     color: #666666;
@@ -180,32 +180,32 @@ EosWindow scrollbar {
     padding-left: 160px;
 }
 
-.text-card {
+.CardText {
     background-color: white;
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24);
     padding: 20px;
 }
 
-.text-card .title,
-.list-card .title,
-.thumb-card .title {
+.CardText .title,
+.CardList .title,
+.CardThumb .title {
     font-family: 'Fira Sans';
     font-weight: bold;
     color: $title-blue;
     font-size: 18px;
 }
 
-.text-card .card-synopsis,
-.list-card .card-synopsis {
+.CardText .card-synopsis,
+.CardList .card-synopsis {
     font-family: 'Merriweather';
     font-style: italic;
     color: #666666;
     font-size: 16px;
 }
 
-.text-card .card-context,
-.list-card .card-context,
-.thumb-card .card-context {
+.CardText .card-context,
+.CardList .card-context,
+.CardThumb .card-context {
     font-family: 'Merriweather';
     font-weight: bold;
     font-style: normal;
@@ -213,67 +213,67 @@ EosWindow scrollbar {
     font-size: 14px;
 }
 
-.text-card:hover .title,
-.list-card:hover .title {
+.CardText:hover .title,
+.CardList:hover .title {
     color: $context-blue;
 }
 
-.list-card.next:hover .title {
+.CardList.next:hover .title {
     color: $title-blue;
 }
 
-.list-card .title.highlighted {
+.CardList .title.highlighted {
     background-color: rgba(114, 151, 167, 0.3);
 }
 
-.text-card.width-c {
+.CardText.width-c {
     padding: 30px;
 }
-.text-card.width-c .title {
+.CardText.width-c .title {
     font-size: 23px;
 }
 
-.text-card.width-c.height-d,
-.text-card.width-d {
+.CardText.width-c.height-d,
+.CardText.width-d {
     padding: 30px;
 }
-.text-card.width-c.height-d .title,
-.text-card.width-d .title {
+.CardText.width-c.height-d .title,
+.CardText.width-d .title {
     font-size: 27px;
 }
 
-.text-card.width-d.height-d,
-.text-card.width-e,
-.text-card.width-f.height-c {
+.CardText.width-d.height-d,
+.CardText.width-e,
+.CardText.width-f.height-c {
     padding: 40px;
 }
-.text-card.width-d.height-d .title,
-.text-card.width-e .title,
-.text-card.width-f.height-c .title {
+.CardText.width-d.height-d .title,
+.CardText.width-e .title,
+.CardText.width-f.height-c .title {
     font-size: 37px;
 }
 
-.text-card.width-e.height-d,
-.text-card.width-e.height-e,
-.text-card.width-f,
-.text-card.width-g,
-.text-card.width-h {
+.CardText.width-e.height-d,
+.CardText.width-e.height-e,
+.CardText.width-f,
+.CardText.width-g,
+.CardText.width-h {
     padding: 50px;
 }
-.text-card.width-e.height-d .title,
-.text-card.width-e.height-e .title,
-.text-card.width-f .title,
-.text-card.width-g .title,
-.text-card.width-h .title {
+.CardText.width-e.height-d .title,
+.CardText.width-e.height-e .title,
+.CardText.width-f .title,
+.CardText.width-g .title,
+.CardText.width-h .title {
     font-size: 49px;
 }
 
-.text-card.highlighted {
+.CardText.highlighted {
     background-color: #18264a;
     box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.22);
 }
 
-.text-card.highlighted .title {
+.CardText.highlighted .title {
     color: white;
 }
 
@@ -294,17 +294,17 @@ EosWindow scrollbar {
     padding-top: 50px;
 }
 
-.post-card .title {
+.CardPost .title {
     font-family: 'Fira Sans';
     font-weight: bold;
 }
 
-.post-card .card-context {
+.CardPost .card-context {
     color: $context-blue;
     font-family: 'Merriweather';
     font-weight: bold;
 }
 
-.thumb-card {
+.CardThumb {
     box-shadow: 0px 5px 10px 0px transparentize(black, 1 - 0.22);
 }

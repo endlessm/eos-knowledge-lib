@@ -1,4 +1,4 @@
-.post-card {
+.CardPost {
     background-color: white;
     box-shadow: 0 0 5px transparentize(black, 1 - 0.25);
     border-color: transparent;  /* used for the triangle in the corner */
@@ -60,7 +60,7 @@
     }
 }
 
-.card.post-card .title {
+.card.CardPost .title {
     padding-bottom: 20px;
     color: white;
 }

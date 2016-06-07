@@ -3,7 +3,7 @@
     font-size: 20px;
     color: $accent-light-color;
 
-    .image {
+    .ThemeableImage {
         -gtk-icon-source: url('../images/news-arrow-dark.svg');
         min-height: 14px;
         min-width: 14px;
@@ -14,7 +14,7 @@
     &:hover {
         color: $accent-dark-color;
 
-        .image {
+        .ThemeableImage {
             -gtk-icon-source: url('../images/news-arrow-light.svg');
         }
     }

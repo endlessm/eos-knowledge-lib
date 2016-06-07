@@ -1,14 +1,14 @@
 @import 'common';
 
-EosWindow {
+.WindowApp {
     background-size: cover;
 }
 
-EosWindow scrollbar {
+.WindowApp scrollbar {
     padding: 3px;
 }
 
-EosWindow scrollbar slider {
+.WindowApp scrollbar slider {
     min-width: 8px;
     background-color: #9b9b9b;
     border-radius: 20px;
@@ -20,7 +20,7 @@ EosWindow scrollbar slider {
     margin: 4px 50px 20px 50px;
 }
 
-.BannerApp.brand-page .image {
+.BannerApp.brand-page .ThemeableImage {
     -EknThemeableImage-sizing: "size-down";
     min-width: 200px;
     min-height: 200px;
@@ -42,7 +42,7 @@ scrolledwindow,
 
 .ContentGroupSuggestedCategories .browse-content:hover .title,
 .CardSetPreview:hover .title,
-.title-card:hover .title {
+.CardTitle:hover .title {
     color: #49bde3;
 }
 
@@ -75,9 +75,9 @@ scrolledwindow,
     padding: 20px;
 }
 
-.thumb-card.width-d.height-b .content-frame,
-.thumb-card.width-e.height-b .content-frame,
-.thumb-card.width-e.height-c .content-frame {
+.CardThumb.width-d.height-b .content-frame,
+.CardThumb.width-e.height-b .content-frame,
+.CardThumb.width-e.height-c .content-frame {
     padding: 20px 30px 20px 30px;
 }
 
@@ -95,126 +95,126 @@ scrolledwindow,
     font-size: 18.7px;
 }
 
-.list-card {
+.CardList {
     margin: 10px 0;
 }
 
-.list-card.width-d .title,
-.list-card.width-d .card-synopsis {
+.CardList.width-d .title,
+.CardList.width-d .card-synopsis {
     font-size: 18.7px;
 }
 
-.list-card.width-e .title,
-.list-card.width-e .card-synopsis {
+.CardList.width-e .title,
+.CardList.width-e .card-synopsis {
     font-size: 18.7px;
 }
 
-.list-card.width-f .title,
-.list-card.width-f .card-synopsis {
+.CardList.width-f .title,
+.CardList.width-f .card-synopsis {
     font-size: 21.3px;
 }
 
-.list-card.width-g .title,
-.list-card.width-h .title {
+.CardList.width-g .title,
+.CardList.width-h .title {
     font-size: 29.3px;
 }
 
-.list-card.width-g .card-synopsis,
-.list-card.width-h .card-synopsis {
+.CardList.width-g .card-synopsis,
+.CardList.width-h .card-synopsis {
     font-size: 24px;
 }
 
-.list-card.width-e .content-frame,
-.list-card.width-f .content-frame {
+.CardList.width-e .content-frame,
+.CardList.width-f .content-frame {
     padding: 20px;
 }
 
-.thumb-card,
-.post-card,
-.list-card {
+.CardThumb,
+.CardPost,
+.CardList {
     background-color: white;
     box-shadow: 0 0 5px transparentize(black, 1 - 0.25);
     border-color: transparent;  /* used for the triangle in the corner */
 }
 
-.deck .thumbnail {
+.CardDeck .thumbnail {
     border: 0px solid transparent;  /* used for the triangle in the corner */
     margin: 13px;
 }
 
-.post-card .content-frame {
+.CardPost .content-frame {
     background-image: linear-gradient(to top, black 0%, transparentize(black, 1 - 0.69) 30%, transparentize(black, 1 - 0.5) 49%, transparentize(black, 1) 100%);
     min-height: 50px;  /* 90px, compensated for 20px padding */
 }
 
-.post-card.width-e .content-frame,
-.post-card.width-f .content-frame,
-.post-card.width-g .content-frame,
-.post-card.width-h .content-frame {
+.CardPost.width-e .content-frame,
+.CardPost.width-f .content-frame,
+.CardPost.width-g .content-frame,
+.CardPost.width-h .content-frame {
     min-height: 10px;  /* 90px, compensated for 40px padding */
 }
 
-.post-card.height-e .content-frame {
+.CardPost.height-e .content-frame {
     min-height: 250px;  /* 290px, compensated for 20px padding */
 }
 
-.post-card.height-e.width-e .content-frame,
-.post-card.height-e.width-f .content-frame,
-.post-card.height-e.width-g .content-frame,
-.post-card.height-e.width-h .content-frame {
+.CardPost.height-e.width-e .content-frame,
+.CardPost.height-e.width-f .content-frame,
+.CardPost.height-e.width-g .content-frame,
+.CardPost.height-e.width-h .content-frame {
     min-height: 210px;  /* 290px, compensated for 40px padding */
 }
 
-.post-card.height-d .content-frame {
+.CardPost.height-d .content-frame {
     min-height: 150px;  /* 190px, compensated for 20px padding */
 }
 
-.post-card.height-d.width-e .content-frame,
-.post-card.height-d.width-f .content-frame,
-.post-card.height-d.width-g .content-frame,
-.post-card.height-d.width-h .content-frame {
+.CardPost.height-d.width-e .content-frame,
+.CardPost.height-d.width-f .content-frame,
+.CardPost.height-d.width-g .content-frame,
+.CardPost.height-d.width-h .content-frame {
     min-height: 110px;  /* 190px, compensated for 40px padding */
 }
 
-.post-card.height-c .content-frame {
+.CardPost.height-c .content-frame {
     min-height: 100px;  /* 140px, compensated for 20px padding */
 }
 
-.post-card.height-c.width-e .content-frame,
-.post-card.height-c.width-f .content-frame,
-.post-card.height-c.width-g .content-frame,
-.post-card.height-c.width-h .content-frame {
+.CardPost.height-c.width-e .content-frame,
+.CardPost.height-c.width-f .content-frame,
+.CardPost.height-c.width-g .content-frame,
+.CardPost.height-c.width-h .content-frame {
     min-height: 60px;  /* 140px, compensated for 40px padding */
 }
 
-.Card.post-card .title {
+.Card.CardPost .title {
     padding-bottom: 20px;
     color: white;
 }
 
-.deck {
+.CardDeck {
     background-image: url('../images/deckbg.svg');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-position: center;
 }
 
-.deck:active {
+.CardDeck:active {
     background-size: 98% 98%;
 }
 
-.deck .content-frame {
+.CardDeck .content-frame {
     padding: 20px 0px 20px 0px;
     background-color: transparentize(white, 1 - 0.949);
     min-height: 80px;  /* 120px, compensated for 20px padding */
 }
 
-.deck.height-b .content-frame,
-.deck.height-a .content-frame {
+.CardDeck.height-b .content-frame,
+.CardDeck.height-a .content-frame {
     min-height: 40px;  /* 80px, compensated for 20px padding */
 }
 
-.deck .title {
+.CardDeck .title {
     font-weight: 300;
 }
 
@@ -229,7 +229,7 @@ scrolledwindow,
     color: #49bde3;
 }
 
-.search-results spinner {
+.ContentGroupSearch spinner {
     margin: 20px;
 }
 
@@ -238,25 +238,25 @@ scrolledwindow,
     color: black;
 }
 
-.DocumentCard .sequence-card {
+.DocumentCard .CardSequence {
     background-color: white;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
     padding: 15px 30px;
 }
 
-.DocumentCard .sequence-card .title {
+.DocumentCard .CardSequence .title {
     font-size: 21.3px;
     font-weight: normal;
     color: #044a80;
 }
 
-.DocumentCard .sequence-card .previous-label,
-.DocumentCard .sequence-card .next-label {
+.DocumentCard .CardSequence .previous-label,
+.DocumentCard .CardSequence .next-label {
     font-size: 14.7px;
     color: #49bde3;
 }
 
-.DocumentCard .panel {
+.DocumentCard .SlidingPanel {
     -EknSlidingPanel-fill-percentage: 0.73;
     -EknSlidingPanel-shadow-margin: 7;
 }
@@ -325,7 +325,7 @@ scrolledwindow,
 
 /* Changes for composite TVs */
 
-.composite .search-results row {
+.composite .ContentGroupSearch row {
     padding: 0 40px;
 }
 
@@ -333,22 +333,22 @@ scrolledwindow,
     font-style: normal;
 }
 
-.composite .thumb-card .card-context {
+.composite .CardThumb .card-context {
     color: gray;
 }
 
-.composite .list-card.width-d .title,
-.composite .list-card.width-d .card-synopsis,
-.composite .list-card.width-e .title,
-.composite .list-card.width-e .card-synopsis {
+.composite .CardList.width-d .title,
+.composite .CardList.width-d .card-synopsis,
+.composite .CardList.width-e .title,
+.composite .CardList.width-e .card-synopsis {
     font-size: 18.8px;  /* 16px spec * 88% because spec was at 110% scale not 125% */
 }
 
-.composite .ContentGroupHighlights .title-card .title.label,
-.composite .ContentGroupThematic .title-card .title.label,
+.composite .ContentGroupHighlights .CardTitle .title.label,
+.composite .ContentGroupThematic .CardTitle .title.label,
 .composite .CardSetPreview .title,
 .composite .browse-content .title,
-.composite .deck .title {
+.composite .CardDeck .title {
     font-weight: normal;
 }
 
