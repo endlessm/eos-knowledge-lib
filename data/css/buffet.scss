@@ -1,7 +1,7 @@
 @import 'buffet_core';
 
 .card .title,
-EknSetPreviewCard .title,
+.CardSetPreview .title,
 .search-results .results-message-title,
 .suggested-categories .browse-content .title,
 .suggested-articles .browse-content .title  {
@@ -13,36 +13,36 @@ EknSetPreviewCard .title,
     background-color: #d9f0f8;
 }
 
-EknHighlights,
-EknThematic {
+.ContentGroupHighlights,
+.ContentGroupThematic {
     padding: 20px;
 }
 
-EknThematic .title-card,
-EknSetPreviewCard .title-card {
+.ContentGroupThematic .title-card,
+.CardSetPreview .title-card {
     margin-top: 25px;
 }
 
-EknHighlights .title-card .title.label,
-EknThematic .title-card .title.label,
-EknSetPreviewCard .title-card .title,
+.ContentGroupHighlights .title-card .title.label,
+.ContentGroupThematic .title-card .title.label,
+.CardSetPreview .title-card .title,
 .browse-content .title {
     font-weight: 200;
     font-size: 29.3px;
 }
 
-EknHighlights separator,
-EknSetPreviewCard separator,
-EknThematic separator {
+.ContentGroupHighlights separator,
+.CardSetPreview separator,
+.ContentGroupThematic separator {
     background-color: #999999;
     min-height: 1px;
     margin: 4px 0px 10px 0px;
 }
 
-EknSuggestedCategories .browse-content .after,
-EknHighlights .title-card .after,
-EknSetPreviewCard .title .after,
-EknThematic .title-card .after {
+.ContentGroupSuggestedCategories .browse-content .after,
+.ContentGroupHighlights .title-card .after,
+.CardSetPreview .title .after,
+.ContentGroupThematic .title-card .after {
     -gtk-icon-source: url('../images/title-arrow-dark.svg');
     min-height: 10px;
     min-width: 11px;
@@ -50,15 +50,15 @@ EknThematic .title-card .after {
     margin-top: 6px;
 }
 
-EknSuggestedCategories .browse-content:hover .after,
-EknHighlights .title-card:hover .after,
-EknSetPreviewCard .title .after,
-EknThematic .title-card:hover .after {
+.ContentGroupSuggestedCategories .browse-content:hover .after,
+.ContentGroupHighlights .title-card:hover .after,
+.CardSetPreview .title .after,
+.ContentGroupThematic .title-card:hover .after {
     -gtk-icon-source: url('../images/title-arrow-light.svg');
 }
 
-EknSearch .suggested-categories,
-EknSearch .suggested-articles {
+.ContentGroupSearch .suggested-categories,
+.ContentGroupSearch .suggested-articles {
     background-color: #f6f6f6;
 }
 
@@ -121,85 +121,85 @@ EknSearch .suggested-articles {
     -gtk-icon-transform: rotate(45deg);
 }
 
-EknAppBanner {
+.BannerApp {
     font-family: Lato;
     color: #c4eefc;
 }
 
-EknSideMenuTemplate .context-bar {
+.LayoutSideMenu .context-bar {
     background-image: linear-gradient(to bottom, #f5f5f5 0%, #e9e9e9 100%);
     box-shadow: 0px 2px 5px 0px transparentize(black, 1 - 0.15);
 }
 
-EknSideMenuTemplate .context-bar-shadow-frame {
+.LayoutSideMenu .context-bar-shadow-frame {
     padding-bottom: 10px;
 }
 
-EknSideMenuTemplate .panel {
+.LayoutSideMenu .panel {
     -EknSlidingPanel-shadow-margin: 40;
 }
 
-EknSideMenuTemplate .menu {
+.LayoutSideMenu .menu {
     min-width: 199px;
     background-color: white;
     box-shadow: 0px 1px 20px 0px transparentize(black, 1 - 0.5);
 }
 
-EknSideMenuTemplate .menu .home-button,
-EknSideMenuTemplate .menu .card .title {
+.LayoutSideMenu .menu .home-button,
+.LayoutSideMenu .menu .card .title {
     font-size: 21.3px;
     font-family: 'Lato Thin';
     color: #044a80;
 }
 
-EknSideMenuTemplate .menu .card {
+.LayoutSideMenu .menu .card {
     margin-top: 5px;
 }
 
-EknSideMenuTemplate .menu .home-button:hover,
-EknSideMenuTemplate .menu .card:hover .title {
+.LayoutSideMenu .menu .home-button:hover,
+.LayoutSideMenu .menu .card:hover .title {
     color: #5bc2e5;
 }
 
-EknSideMenuTemplate .menu separator {
+.LayoutSideMenu .menu separator {
     min-height: 1px;
     background-color: #cccccc;
     margin: 5px 10px 0 10px;
 }
 
-EknSideMenuTemplate .menu .sidebar {
+.LayoutSideMenu .menu .sidebar {
     margin: 0 10px 5px 10px;
 }
 
-EknSideMenuTemplate .close-button,
-EknSideMenuTemplate .menu-button {
+.LayoutSideMenu .close-button,
+.LayoutSideMenu .menu-button {
     color: #666666;
 }
 
-EknSideMenuTemplate .menu-button {
+.LayoutSideMenu .menu-button {
     padding: 10px;
 }
 
-EknSideMenuTemplate .close-button:hover,
-EknSideMenuTemplate .menu-button:hover {
+.LayoutSideMenu .close-button:hover,
+.LayoutSideMenu .menu-button:hover {
     color: #49bde3;
 }
 
-EknSideMenuTemplate .home-button {
+.LayoutSideMenu .home-button {
     margin: 10px 0 0 10px;
 }
 
-EknSideMenuTemplate .close-button {
+.LayoutSideMenu .close-button {
     margin: 10px 10px 0 0;
 }
 
-EknSideMenuTemplate .title-card,
-EknSideMenuTemplate .home-button,
-EknSideMenuTemplate .close-button {
+.LayoutSideMenu .title-card,
+.LayoutSideMenu .home-button,
+.LayoutSideMenu .close-button {
     padding: 6px 0px;
 }
 
-EknContextBanner {
+.BannerContext {
     font-family: 'Lato Thin';
     font-size: 29.3px;
     color: #666666;
@@ -210,15 +210,15 @@ EknContextBanner {
     font-style: italic;
 }
 
-EknSuggestedArticles EknSquareGuysArrangement,
-EknSuggestedCategories EknSquareGuysArrangement {
+.ContentGroupSuggestedArticles .ArrangementSquareGuys,
+.ContentGroupSuggestedCategories .ArrangementSquareGuys {
     padding: 0 20px 20px 20px;
 }
 
 /* Changes for composite TVs */
 
-.composite EknSideMenuTemplate .menu .home-button,
-.composite EknSideMenuTemplate .menu .card .title,
-.composite EknContextBanner {
+.composite .LayoutSideMenu .menu .home-button,
+.composite .LayoutSideMenu .menu .card .title,
+.composite .BannerContext {
     font-family: Lato;
 }

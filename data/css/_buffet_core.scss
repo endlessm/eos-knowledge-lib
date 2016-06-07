@@ -14,13 +14,13 @@ EosWindow scrollbar slider {
     border-radius: 20px;
 }
 
-EknSuggestedCategories separator {
+.ContentGroupSuggestedCategories separator {
     background-color: #999999;
     min-height: 1px;
     margin: 4px 50px 20px 50px;
 }
 
-EknAppBanner.brand-page .image {
+.BannerApp.brand-page .image {
     -EknThemeableImage-sizing: "size-down";
     min-width: 200px;
     min-height: 200px;
@@ -31,17 +31,17 @@ EknAppBanner.brand-page .image {
 }
 
 scrolledwindow,
-EknInfiniteScrollingLayout,
-EknSearch {
+.LayoutInfiniteScrolling,
+.ContentGroupSearch {
     background-color: #e7ecee;
 }
 
-EknSearch .no-results {
+.ContentGroupSearch .no-results {
     background-color: white;
 }
 
-EknSuggestedCategories .browse-content:hover .title,
-EknSetPreviewCard:hover .title,
+.ContentGroupSuggestedCategories .browse-content:hover .title,
+.CardSetPreview:hover .title,
 .title-card:hover .title {
     color: #49bde3;
 }
@@ -282,23 +282,23 @@ EknSetPreviewCard:hover .title,
     font-weight: bold;
 }
 
-EknResponsiveMargins.tiny {
+.LayoutResponsiveMargins.tiny {
     margin: 0px;
 }
 
-EknResponsiveMargins.small {
+.LayoutResponsiveMargins.small {
     margin: 0px 40px;
 }
 
-EknResponsiveMargins.medium {
+.LayoutResponsiveMargins.medium {
     margin: 0px 62px;
 }
 
-EknResponsiveMargins.large {
+.LayoutResponsiveMargins.large {
     margin: 0px 83px;
 }
 
-EknResponsiveMargins.xlarge {
+.LayoutResponsiveMargins.xlarge {
     margin: 0px 120px;
 }
 
@@ -344,14 +344,14 @@ EknResponsiveMargins.xlarge {
     font-size: 18.8px;  /* 16px spec * 88% because spec was at 110% scale not 125% */
 }
 
-.composite EknHighlights .title-card .title.label,
-.composite EknThematic .title-card .title.label,
-.composite EknSetPreviewCard .title,
+.composite .ContentGroupHighlights .title-card .title.label,
+.composite .ContentGroupThematic .title-card .title.label,
+.composite .CardSetPreview .title,
 .composite .browse-content .title,
 .composite .deck .title {
     font-weight: normal;
 }
 
-.composite EknAppBanner {
+.composite .BannerApp {
     font-size: 22.3px;  /* 19px spec * 88% */
 }

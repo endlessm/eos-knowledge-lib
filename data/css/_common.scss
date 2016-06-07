@@ -4,11 +4,11 @@
 @import "compass";
 
 /* ===== AppBanner ===== */
-EknAppBanner {
+.BannerApp {
     font-size: 1.19em; /* 19px / 12px/em * 72/96 */
 }
 
-EknAppBanner .subtitle {
+.BannerApp .subtitle {
     letter-spacing: 0.74px;
     margin-top: 70px;
 }

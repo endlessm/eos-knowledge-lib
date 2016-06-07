@@ -10,7 +10,7 @@ EosWindow {
     background-color: #888888;
 }
 
-EknAppBanner .image {
+.BannerApp .image {
     -EknThemeableImage-sizing: "size-down";
     min-width: 200px;
     min-height: 200px;
@@ -452,7 +452,7 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     margin: 3px 5px;
 }
 
-.home-page-b EknBoxLayout {
+.home-page-b .LayoutBox {
     min-height: 240px;
 }
 
@@ -464,9 +464,9 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     margin: 20px;
 }
 
-.section-page-b EknItemGroup,
+.section-page-b .ContentGroupItem,
 .search-page-b .search-results,
-.article-page-b EknItemGroup,
+.article-page-b .ContentGroupItem,
 .article-page-b .search-results {
     background-color: transparentize(black, 1 - 0.75);
 }
@@ -642,13 +642,13 @@ EosWindow scrollbar trough {
     font-size: 18.8px;  /* 16px spec * 88% */
 }
 
-.composite .home-page-b EknBoxLayout {
+.composite .home-page-b .LayoutBox {
     min-height: 120px;
 }
 
-.composite .section-page-b EknItemGroup,
+.composite .section-page-b .ContentGroupItem,
 .composite .search-page-b .search-results,
-.composite .article-page-b EknItemGroup,
+.composite .article-page-b .ContentGroupItem,
 .composite .article-page-b .search-results {
     background-color: transparentize(black, 1 - 0.8);
 }

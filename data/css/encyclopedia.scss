@@ -39,7 +39,7 @@ EosWindow {
     border-bottom-color: rgba(255, 255, 255, 0.14);
 }
 
-.home-page EknAppBanner {
+.home-page .BannerApp {
     margin-bottom: 42px;
 }
 
@@ -91,23 +91,23 @@ EosWindow {
     margin: 20px;
 }
 
-.search-page EknAppBanner,
-.article-page EknAppBanner {
+.search-page .BannerApp,
+.article-page .BannerApp {
     margin: 10px 0;
 }
 
-.search-page EknAppBanner .image,
-.article-page EknAppBanner .image {
+.search-page .BannerApp .image,
+.article-page .BannerApp .image {
     -EknThemeableImage-sizing: "size-min";
     min-width: 202px;
     min-height: 72px;
 }
 
-.search-page EknPaperTemplate EknBoxLayout {
+.search-page .LayoutPaper .LayoutBox {
     padding: 0 45px;
 }
 
-.search-page EknSearchBanner {
+.search-page .BannerSearch {
     font-weight: 300;
     font-size: 2em; /* 24px / 12px/em */
     color: #7e7e7e;
@@ -212,7 +212,7 @@ scrollbar slider {
     background-color: transparentize(black, 1 - 0.8);
 }
 
-.composite .search-page EknSearchBanner {
+.composite .search-page .BannerSearch {
     font-weight: normal;
     font-size: 23.5px;  /* 20px spec * 88% */
     font-weight: bold;
