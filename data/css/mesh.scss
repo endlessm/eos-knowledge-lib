@@ -49,16 +49,16 @@ EosWindow {
     color: #54595a;
 }
 
-.card.invisible {
+.Card.invisible {
     opacity: 0.0;
 }
 
-.card.fade-in {
+.Card.fade-in {
     transition: opacity 1000ms ease-in-out;
     opacity: 1.0;
 }
 
-.card .thumbnail {
+.Card .thumbnail {
     background-position: center;
     background-size: 100% 100%;
     border-width: 0px;
@@ -512,18 +512,18 @@ EosWindow scrollbar trough {
     background-color: transparent;
 }
 
-.document-card WebKitWebView {
+.DocumentCard WebKitWebView {
     background-color: #ececec;
     background-image: url('../templates/images/noise.png');
 }
 
-.document-card .title {
+.DocumentCard .title {
     font-family: Montserrat;
     font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
     font-weight: bold;
 }
 
-.document-card .title.collapsed {
+.DocumentCard .title.collapsed {
     margin-bottom: 10px;
 }
 

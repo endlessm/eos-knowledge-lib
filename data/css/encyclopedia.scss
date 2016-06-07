@@ -149,22 +149,22 @@ EosWindow {
     padding-top: 2.0em;
 }
 
-.search-results .card {
+.search-results .Card {
     padding-bottom: 1.5em;
 }
 
-.search-results .card .title {
+.search-results .Card .title {
     font-weight: normal;
     font-size: 1.25em;  /* 15px / 12px/em */
     color: #277090;
     padding: 0 0 0 0;
 }
 
-.search-results .card:hover .title {
+.search-results .Card:hover .title {
     text-decoration: underline;
 }
 
-.search-results .card .before {
+.search-results .Card .before {
     -gtk-icon-source: -gtk-icontheme("media-record-symbolic");
     min-width: 6px;
     min-height: 6px;
@@ -229,6 +229,6 @@ scrollbar slider {
     font-size: 17.6px;  /* 15px spec * 88% */
 }
 
-.composite .search-results .card .title {
+.composite .search-results .Card .title {
     font-size: 18.8px;  /* 16px spec * 88% */
 }

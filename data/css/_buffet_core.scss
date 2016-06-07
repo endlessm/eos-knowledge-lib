@@ -47,31 +47,31 @@ scrolledwindow,
 }
 
 /* default size */
-.card {
+.Card {
     font-size: 18.7px;
 }
 
-.card.width-c .title,
-.card.width-d.height-c .title,
-.card.width-d.height-b .title {
+.Card.width-c .title,
+.Card.width-d.height-c .title,
+.Card.width-d.height-b .title {
     font-size: 21.3px;
 }
 
-.card.width-d.height-d .title,
-.card.width-e.height-b .title,
-.card.width-e.height-c .title {
+.Card.width-d.height-d .title,
+.Card.width-e.height-b .title,
+.Card.width-e.height-c .title {
     font-size: 30.7px;
 }
 
-.card.width-d .title,
-.card.width-e .title,
-.card.width-f .title,
-.card.width-g .title,
-.card.width-h .title {
+.Card.width-d .title,
+.Card.width-e .title,
+.Card.width-f .title,
+.Card.width-g .title,
+.Card.width-h .title {
     font-size: 49.3px;
 }
 
-.card .content-frame {
+.Card .content-frame {
     padding: 20px;
 }
 
@@ -81,17 +81,17 @@ scrolledwindow,
     padding: 20px 30px 20px 30px;
 }
 
-.card.width-e .content-frame,
-.card.width-f .content-frame,
-.card.width-g .content-frame,
-.card.width-h .content-frame {
+.Card.width-e .content-frame,
+.Card.width-f .content-frame,
+.Card.width-g .content-frame,
+.Card.width-h .content-frame {
     padding: 40px;
 }
 
-.card.width-e.height-e .card-context,
-.card.width-f .card-context,
-.card.width-g .card-context,
-.card.width-h .card-context {
+.Card.width-e.height-e .card-context,
+.Card.width-f .card-context,
+.Card.width-g .card-context,
+.Card.width-h .card-context {
     font-size: 18.7px;
 }
 
@@ -187,7 +187,7 @@ scrolledwindow,
     min-height: 60px;  /* 140px, compensated for 40px padding */
 }
 
-.card.post-card .title {
+.Card.post-card .title {
     padding-bottom: 20px;
     color: white;
 }
@@ -238,25 +238,25 @@ scrolledwindow,
     color: black;
 }
 
-.document-card .sequence-card {
+.DocumentCard .sequence-card {
     background-color: white;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
     padding: 15px 30px;
 }
 
-.document-card .sequence-card .title {
+.DocumentCard .sequence-card .title {
     font-size: 21.3px;
     font-weight: normal;
     color: #044a80;
 }
 
-.document-card .sequence-card .previous-label,
-.document-card .sequence-card .next-label {
+.DocumentCard .sequence-card .previous-label,
+.DocumentCard .sequence-card .next-label {
     font-size: 14.7px;
     color: #49bde3;
 }
 
-.document-card .panel {
+.DocumentCard .panel {
     -EknSlidingPanel-fill-percentage: 0.73;
     -EknSlidingPanel-shadow-margin: 7;
 }
@@ -265,7 +265,7 @@ scrolledwindow,
     font-weight: bold;
 }
 
-.document-card WebKitWebView {
+.DocumentCard WebKitWebView {
     background-color: white;
 }
 

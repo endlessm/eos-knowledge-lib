@@ -24,7 +24,7 @@ EosWindow scrollbar {
     padding: 0 200px;
 }
 
-.card .title {
+.Card .title {
     color: $title-blue;
 }
 
@@ -277,7 +277,7 @@ EosWindow scrollbar {
     color: white;
 }
 
-.card.arrow {
+.Card.arrow {
     -gtk-icon-source: none; /* kill the arrow that Gtk adds by default in Gtk.render_arrow() */
 }
 
@@ -285,8 +285,8 @@ EosWindow scrollbar {
     margin-top: 40px;
 }
 
-.BannerSet .card .title,
-.BannerSet .card:hover .title {
+.BannerSet .Card .title,
+.BannerSet .Card:hover .title {
     color: white;
     font-weight: bold;
     font-size: 54px;

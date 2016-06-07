@@ -1,6 +1,6 @@
 @import 'buffet_core';
 
-.card .title,
+.Card .title,
 .CardSetPreview .title,
 .search-results .results-message-title,
 .suggested-categories .browse-content .title,
@@ -8,8 +8,8 @@
     color: #044a80;
 }
 
-.card .title.highlighted,
-.card .card-synopsis.highlighted {
+.Card .title.highlighted,
+.Card .card-synopsis.highlighted {
     background-color: #d9f0f8;
 }
 
@@ -146,18 +146,18 @@
 }
 
 .LayoutSideMenu .menu .home-button,
-.LayoutSideMenu .menu .card .title {
+.LayoutSideMenu .menu .Card .title {
     font-size: 21.3px;
     font-family: 'Lato Thin';
     color: #044a80;
 }
 
-.LayoutSideMenu .menu .card {
+.LayoutSideMenu .menu .Card {
     margin-top: 5px;
 }
 
 .LayoutSideMenu .menu .home-button:hover,
-.LayoutSideMenu .menu .card:hover .title {
+.LayoutSideMenu .menu .Card:hover .title {
     color: #5bc2e5;
 }
 
@@ -218,7 +218,7 @@
 /* Changes for composite TVs */
 
 .composite .LayoutSideMenu .menu .home-button,
-.composite .LayoutSideMenu .menu .card .title,
+.composite .LayoutSideMenu .menu .Card .title,
 .composite .BannerContext {
     font-family: Lato;
 }
