@@ -72,8 +72,5 @@
         </child>
       </object>
     </child>
-    <style>
-      <class name="media-card"/>
-    </style>
   </template>
 </interface>

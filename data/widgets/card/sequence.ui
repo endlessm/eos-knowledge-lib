@@ -68,8 +68,5 @@
         </child>
       </object>
     </child>
-    <style>
-      <class name="sequence-card"/>
-    </style>
   </template>
 </interface>

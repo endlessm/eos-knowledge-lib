@@ -24,8 +24,6 @@ const SuggestedArticles = new Module.Class({
         props.title = _("You might be interested in...");
         this.parent(props);
 
-        this.get_style_context().add_class('suggested-articles');
-
         let dispatcher = Dispatcher.get_default();
         dispatcher.register((payload) => {
             switch(payload.action_type) {

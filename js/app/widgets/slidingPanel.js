@@ -112,7 +112,6 @@ const SlidingPanel = new Knowledge.Class({
         });
 
         this.parent(props);
-        this.get_style_context().add_class('panel');
 
         if (this.hide_when_invisible)
             this.no_show_all = true;

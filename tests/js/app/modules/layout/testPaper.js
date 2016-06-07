@@ -27,10 +27,6 @@ describe('Layout.Paper', function () {
         });
     });
 
-    it('has the paper-template CSS class', function () {
-        expect(paper_template).toHaveCssClass('paper-template');
-    });
-
     it('has a frame with the content CSS class', function () {
         expect(paper_template).toHaveDescendantWithCssClass('content');
     });

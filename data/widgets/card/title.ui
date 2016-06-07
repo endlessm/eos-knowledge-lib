@@ -34,8 +34,5 @@
         </child>
       </object>
     </child>
-    <style>
-      <class name="title-card"/>
-    </style>
   </template>
 </interface>

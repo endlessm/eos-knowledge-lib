@@ -6,9 +6,6 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="receives_default">False</property>
-    <style>
-      <class name="thumb-card"/>
-    </style>
   </template>
   <object class="GtkFrame" id="thumbnail-frame">
     <property name="can_focus">False</property>

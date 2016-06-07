@@ -73,7 +73,6 @@ const Sidebar = new Module.Class({
         this.add(this.content_frame);
         this.add(this.sidebar_frame);
 
-        this.get_style_context().add_class('sidebar-template');
         this.content_frame.get_style_context().add_class('content');
         this.sidebar_frame.get_style_context().add_class('sidebar');
 

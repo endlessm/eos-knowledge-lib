@@ -53,9 +53,6 @@ describe('Lightbox widget', function () {
     });
 
     describe('Style class of Lightbox', function () {
-        it('has lightbox class', function () {
-            expect(lightbox).toHaveCssClass('lightbox');
-        });
         // Since our lightbox container turns on lightbox shadow dynamically
         // in size allocate and draw, we can't test like this anymore
         xit('has a descendant with lightbox-shadow class', function () {

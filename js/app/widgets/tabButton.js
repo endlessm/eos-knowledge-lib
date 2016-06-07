@@ -28,8 +28,6 @@ const TabButton = new Knowledge.Class({
         props.image_position = Gtk.PositionType.RIGHT;
         props.halign = Gtk.Align.CENTER;
         this.parent(props);
-
-        this.get_style_context().add_class('tab-button');
     },
 
     set position (v) {

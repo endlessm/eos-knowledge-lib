@@ -45,7 +45,6 @@ const ThemeableImage = new Knowledge.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        this.get_style_context().add_class(Gtk.STYLE_CLASS_IMAGE);
         this.set_has_window(false);
         this._min_width = 0;
         this._min_height = 0;

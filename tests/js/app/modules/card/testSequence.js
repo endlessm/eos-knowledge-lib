@@ -20,13 +20,6 @@ describe('Card.Sequence', function () {
         });
     });
 
-    it('has sequence-card class', function () {
-        let card = new Sequence.Sequence({
-            model: model,
-        });
-        expect(card).toHaveCssClass('sequence-card');
-    });
-
     it('has a label with title class', function () {
         let card = new Sequence.Sequence({
             model: model,

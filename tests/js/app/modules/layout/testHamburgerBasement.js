@@ -44,14 +44,4 @@ describe('Layout.HamburgerBasement', function () {
     it('has a tab button', function () {
         expect(home_page).toHaveDescendantWithClass(Gtk.Button);
     });
-
-    describe('CSS style context', function () {
-        it('has home page A template class', function () {
-            expect(home_page).toHaveCssClass('hamburger-basement-template');
-        });
-
-        it('has tab button class', function () {
-            expect(home_page).toHaveDescendantWithCssClass('tab-button');
-        });
-    });
 });

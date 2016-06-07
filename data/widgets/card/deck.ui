@@ -54,8 +54,5 @@
         </child>
       </object>
     </child>
-    <style>
-      <class name="deck"/>
-    </style>
   </template>
 </interface>

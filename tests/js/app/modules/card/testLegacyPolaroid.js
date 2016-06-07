@@ -15,13 +15,6 @@ describe('Card.LegacyPolaroid', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
     });
 
-    it('has the correct style class', function () {
-        let card = new LegacyPolaroid.LegacyPolaroid({
-            model: new ContentObjectModel.ContentObjectModel(),
-        });
-        expect(card).toHaveCssClass('legacy-polaroid-card');
-    });
-
     it('has a fixed size', function () {
         let card1 = new LegacyPolaroid.LegacyPolaroid({
             model: new ContentObjectModel.ContentObjectModel({

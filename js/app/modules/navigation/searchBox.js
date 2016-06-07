@@ -32,7 +32,6 @@ const SearchBox = new Module.Class({
         this._autocomplete_models = {};
         this._cancellable = null;
         this._link_action_set = false;
-        this.get_style_context().add_class('search-box');
 
         let dispatcher = Dispatcher.get_default();
         dispatcher.register((payload) => {

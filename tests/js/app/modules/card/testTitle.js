@@ -20,10 +20,6 @@ describe('Card.Title', function () {
         });
     });
 
-    it('has title-card class', function () {
-        expect(card).toHaveCssClass('title-card');
-    });
-
     it('has a label with title class', function () {
         expect(card).toHaveDescendantWithCssClass('title');
     });

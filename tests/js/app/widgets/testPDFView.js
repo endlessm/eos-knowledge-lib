@@ -28,10 +28,4 @@ describe('PDF view', function () {
         view.load_stream(stream, 'application/pdf');
         expect(view).toHaveDescendantWithClass(EvinceView.View);
     });
-
-    describe('CSS style context', function () {
-        it('has a pdf view class', function () {
-            expect(view).toHaveCssClass('pdf-view');
-        });
-    });
 });

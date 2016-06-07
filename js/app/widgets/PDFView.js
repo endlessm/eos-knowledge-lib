@@ -25,8 +25,6 @@ const PDFView = new Knowledge.Class({
         props = props || {};
         props.halign = Gtk.Align.CENTER;
         this.parent(props);
-
-        this.get_style_context().add_class('pdf-view');
     },
 
     /**

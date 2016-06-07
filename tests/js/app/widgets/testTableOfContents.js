@@ -52,12 +52,6 @@ describe('Table of contents widget', function () {
     });
 
     describe('Style class of table of contents', function () {
-        it('has toc class', function () {
-            expect(toc).toHaveCssClass('toc');
-        });
-        it('has gtk view class', function () {
-            expect(toc).toHaveCssClass(Gtk.STYLE_CLASS_VIEW);
-        });
         it('has collapsed class when collapsed property true', function () {
             toc.collapsed = true;
             expect(toc).toHaveCssClass('collapsed');

@@ -61,8 +61,5 @@
         </child>
       </object>
     </child>
-    <style>
-      <class name="post-card"/>
-    </style>
   </template>
 </interface>
