@@ -18,12 +18,16 @@ let create_controller_with_app_json = function (application, app_json, extra_pro
     return factory.create_module_tree(extra_props);
 }
 
+function gresource_path_from_app_id (app_id) {
+    return 'resource:///' + app_id.replace(/\./g, '/');
+}
+
 let create_controller = function (application, resource_path) {
     let app_resource = Gio.Resource.load(resource_path);
     app_resource._register();
 
-    let appname = app_resource.enumerate_children('/com/endlessm', Gio.FileQueryInfoFlags.NONE, null)[0];
-    let resource_file = Gio.File.new_for_uri('resource:///com/endlessm/' + appname);
+    let gresource_path = gresource_path_from_app_id(application.application_id);
+    let resource_file = Gio.File.new_for_uri(gresource_path);
     let app_json_file = resource_file.get_child('app.json');
     let app_json = Utils.parse_object_from_file(app_json_file);
     let overrides_css_file = resource_file.get_child('overrides.css');
