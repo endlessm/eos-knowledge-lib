@@ -311,8 +311,10 @@ const SubscriptionDownloader = new Lang.Class({
         task._subscription_id = subscription_id;
 
         task.catch_errors(() => {
-            if (this._ongoing_downloads.has(subscription_id))
-                return task.return_value(false);
+            if (this._ongoing_downloads.has(subscription_id)) {
+                task.return_value(false);
+                return;
+            }
 
             this._ongoing_downloads.add(subscription_id);
 
@@ -334,6 +336,7 @@ const SubscriptionDownloader = new Lang.Class({
                 try {
                     this._file_downloader.download_file_finish(download_task);
                 } catch(e if e.matches(Gio.ResolverError, Gio.ResolverError.NOT_FOUND)) {
+                    task.return_value(true);
                     return;
                 }
 
@@ -342,10 +345,10 @@ const SubscriptionDownloader = new Lang.Class({
                     let have_new_manifest = this._download_new_shards_finish(download_task);
                     if (!have_new_manifest)
                         new_manifest_file.delete(cancellable);
+
+                    task.return_value(true);
                 }));
             }));
-
-            return task.return_value(true);
         });
 
         return task;
