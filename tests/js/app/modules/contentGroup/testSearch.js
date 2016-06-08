@@ -54,10 +54,6 @@ describe('ContentGroup.Search', function () {
         expect(cards.length).toEqual(0);
     });
 
-    it('has the correct CSS class', function () {
-        expect(search_module).toHaveCssClass('search-results');
-    });
-
     it('displays the spinner when a search is started', function () {
         search_module.visible_child_name = 'message';
         dispatcher.dispatch({

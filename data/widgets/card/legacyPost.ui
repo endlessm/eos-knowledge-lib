@@ -49,10 +49,6 @@
         </child>
       </object>
     </child>
-    <style>
-      <class name="legacy-post-card"/>
-      <class name="card"/>
-    </style>
   </template>
   <object class="GtkSizeGroup" id="size-group">
     <property name="mode">both</property>

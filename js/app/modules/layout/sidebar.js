@@ -1,6 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported Sidebar, get_css_for_module */
+/* exported Sidebar */
 
 const Endless = imports.gi.Endless;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
@@ -26,8 +26,7 @@ const Utils = imports.app.utils;
  *   content - a frame containing the content module
  */
 const Sidebar = new Module.Class({
-    Name: 'SidebarTemplate',
-    CssName: 'EknSidebarTemplate',
+    Name: 'Layout.Sidebar',
     Extends: Endless.CustomContainer,
 
     Properties: {
@@ -74,7 +73,6 @@ const Sidebar = new Module.Class({
         this.add(this.content_frame);
         this.add(this.sidebar_frame);
 
-        this.get_style_context().add_class('sidebar-template');
         this.content_frame.get_style_context().add_class('content');
         this.sidebar_frame.get_style_context().add_class('sidebar');
 

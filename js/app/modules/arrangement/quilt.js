@@ -69,7 +69,7 @@ const SECONDARY_HORIZONTAL_PROPORTION = {
 };
 
 const _QuiltLayout = new Knowledge.Class({
-    Name: 'QuiltLayout',
+    Name: 'Arrangement.QuiltLayout',
     Extends: Endless.CustomContainer,
 
     _init: function (props={}) {
@@ -182,7 +182,6 @@ const _QuiltLayout = new Knowledge.Class({
  */
 const Quilt = new Module.Class({
     Name: 'Arrangement.Quilt',
-    CssName: 'EknQuiltArrangement',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],
 

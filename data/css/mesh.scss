@@ -4,24 +4,24 @@ $template-b-text-color: #eeccf8;
 $template-b-text-color-hover: #d64970;
 $template-b-text-color-highlighted: #333333;
 
-EosWindow {
+.WindowApp {
     /* Changed color here so scrollbars are visible. Only affects smoke tests all
      * apps have image backgrounds.*/
     background-color: #888888;
 }
 
-EknAppBanner .image {
+.BannerApp .ThemeableImage {
     -EknThemeableImage-sizing: "size-down";
     min-width: 200px;
     min-height: 200px;
 }
 
-.article-search {
+.InArticleSearch {
     background-color: #dbdbdb;
     padding: 3px;
 }
 
-.article-search entry {
+.InArticleSearch entry {
     background: rgba(0,0,0,0.3);
     padding: 0.5em .3em 0.5em .3em;
     font-size: 13.3px;
@@ -35,54 +35,54 @@ EknAppBanner .image {
     border-color: rgba(0,0,0,0.25);
 }
 
-.article-search entry selection {
+.InArticleSearch entry selection {
     color: rgba(0,0,0,0.7);
     background-color: #fff;
 }
 
-.article-search .button {
+.InArticleSearch .button {
     padding: 5px;
     color: #7a7e7f;
 }
 
-.article-search .button:hover {
+.InArticleSearch .button:hover {
     color: #54595a;
 }
 
-.card.invisible {
+.Card.invisible {
     opacity: 0.0;
 }
 
-.card.fade-in {
+.Card.fade-in {
     transition: opacity 1000ms ease-in-out;
     opacity: 1.0;
 }
 
-.card .thumbnail {
+.Card .thumbnail {
     background-position: center;
     background-size: 100% 100%;
     border-width: 0px;
 }
 
-EosWindow {
+.WindowApp {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
-EosWindow.parallax {
+.WindowApp.parallax {
     transition: background-position 0.5s ease;
 }
 
-EosWindow.parallax.background-left {
+.WindowApp.parallax.background-left {
     background-position: 0% 50%;
 }
 
-EosWindow.parallax.background-center {
+.WindowApp.parallax.background-center {
     background-position: 50% 50%;
 }
 
-EosWindow.parallax.background-right {
+.WindowApp.parallax.background-right {
     background-position: 100% 50%;
 }
 
@@ -119,28 +119,28 @@ EosWindow.parallax.background-right {
     font-size: 1.75em; /* 28pt * 1/12 * 0.75 DPI correction factor */
 }
 
-.search-page-a .search-results .results-message-title,
-.search-page-a .search-results .results-message-subtitle,
-.search-page-a .search-results .error-message {
+.search-page-a .ContentGroupSearch .results-message-title,
+.search-page-a .ContentGroupSearch .results-message-subtitle,
+.search-page-a .ContentGroupSearch .error-message {
     padding-top: 2.0em;
 }
 
-.window-small .search-page-a .search-results .results-message-title,
-.window-small .search-page-a .search-results .results-message-subtitle,
-.window-small .search-page-a .search-results .error-message {
+.window-small .search-page-a .ContentGroupSearch .results-message-title,
+.window-small .search-page-a .ContentGroupSearch .results-message-subtitle,
+.window-small .search-page-a .ContentGroupSearch .error-message {
     padding-top: 1.5em;
 }
 
-.search-page-b .search-results .results-message-title,
-.search-page-b .search-results .results-message-subtitle,
-.search-page-b .search-results .error-message {
+.search-page-b .ContentGroupSearch .results-message-title,
+.search-page-b .ContentGroupSearch .results-message-subtitle,
+.search-page-b .ContentGroupSearch .error-message {
     font-size: 1.2em;
     padding: 10px 25px;
 }
 
-.window-small .search-page-b .search-results .results-message-title,
-.window-small .search-page-b .search-results .results-message-subtitle,
-.window-small .search-page-b .search-results .error-message {
+.window-small .search-page-b .ContentGroupSearch .results-message-title,
+.window-small .search-page-b .ContentGroupSearch .results-message-subtitle,
+.window-small .search-page-b .ContentGroupSearch .error-message {
     font-size: 0.8em;
     padding: 8px 15px;
 }
@@ -165,13 +165,13 @@ EosWindow.parallax.background-right {
     color: white;
 }
 
-.legacy-polaroid-card {
+.CardLegacyPolaroid {
     padding: 10px 10px 0px 10px;
     margin: 7px;
     background-color: white;
 }
 
-.legacy-polaroid-card .title {
+.CardLegacyPolaroid .title {
     padding: 4px 0px 4px 0px;
     color: #d16550;
     font-family: 'Montserrat', sans-serif;
@@ -179,21 +179,21 @@ EosWindow.parallax.background-right {
     font-weight: bold;
 }
 
-.legacy-polaroid-card .thumbnail {
+.CardLegacyPolaroid .thumbnail {
     min-height: 133px;
 }
 
-.section-page-a .legacy-polaroid-card .title,
-.search-page-a .legacy-polaroid-card .title {
+.section-page-a .CardLegacyPolaroid .title,
+.search-page-a .CardLegacyPolaroid .title {
     font-size: 0.9em;
     text-shadow: 0px 1px 0px white;
 }
 
-.home-page-a .legacy-polaroid-card .title {
+.home-page-a .CardLegacyPolaroid .title {
     padding: 9px 0px 9px 0px;
 }
 
-.sidebar-template .sidebar .title-card {
+.LayoutSidebar .sidebar .CardTitle {
     padding: 6px;
     border: 2px solid transparentize(white, 1);
     background-color: transparentize(white, 1);
@@ -202,7 +202,7 @@ EosWindow.parallax.background-right {
                 border 250ms ease-in-out;
 }
 
-.sidebar-template .sidebar .title-card .title {
+.LayoutSidebar .sidebar .CardTitle .title {
     padding: 0em 0em 0em 1.5em;
     font-family: Lato;
     font-size: 1.125em; /* 18pt * 1/12 * 0.75 DPI correction factor */
@@ -211,8 +211,8 @@ EosWindow.parallax.background-right {
     transition: color 250ms ease-in-out;
 }
 
-.sidebar-template .sidebar .title-card:hover,
-.sidebar-template .sidebar .title-card.highlighted:hover {
+.LayoutSidebar .sidebar .CardTitle:hover,
+.LayoutSidebar .sidebar .CardTitle.highlighted:hover {
     border: 2px solid white;
     background-color: transparentize(white, 1 - 0.9);
     background-image: linear-gradient(-179deg,
@@ -220,32 +220,32 @@ EosWindow.parallax.background-right {
                                       transparentize(black, 1 - 0.05) 100%);
 }
 
-.sidebar-template .sidebar .title-card:hover .title {
+.LayoutSidebar .sidebar .CardTitle:hover .title {
     color: $template-b-text-color-hover;
 }
 
-.sidebar-template .sidebar .title-card.highlighted {
+.LayoutSidebar .sidebar .CardTitle.highlighted {
     background: transparentize(white, 1 - 0.8);
     text-shadow: 0px 1px 0px white;
     font-weight: bold;
     transition-property: none;
 }
 
-.sidebar-template .sidebar .title-card.highlighted .title,
-.sidebar-template .sidebar .title-card.highlighted:hover .title {
+.LayoutSidebar .sidebar .CardTitle.highlighted .title,
+.LayoutSidebar .sidebar .CardTitle.highlighted:hover .title {
     color: $template-b-text-color-highlighted;
     transition-property: none;
 }
 
-.legacy-polaroid-card .card-synopsis {
+.CardLegacyPolaroid .card-synopsis {
     padding: 0px 0px 4px 0px;
     color: #666666;
     font-size: 0.8em;
     text-shadow: white 0px 1px 0px;
 }
 
-.legacy-polaroid-card .title.highlighted,
-.legacy-polaroid-card .card-synopsis.highlighted {
+.CardLegacyPolaroid .title.highlighted,
+.CardLegacyPolaroid .card-synopsis.highlighted {
     background-color: #d3d7cf;
 }
 
@@ -261,22 +261,22 @@ EosWindow.parallax.background-right {
 $legacy-post-card-border-color: transparentize(black, 1 - 0.7);
 $legacy-post-card-border-color-hover: white;
 
-.legacy-post-card {
+.CardLegacyPost {
     border-style: solid;
     border-width: 5px;
     border-color: $legacy-post-card-border-color;
     transition: border-color 250ms ease-in-out;
 }
 
-.legacy-post-card:hover {
+.CardLegacyPost:hover {
     border-color: $legacy-post-card-border-color-hover;
 }
 
-.legacy-post-card .thumbnail {
+.CardLegacyPost .thumbnail {
     background-size: cover;
 }
 
-.legacy-post-card .title {
+.CardLegacyPost .title {
     color: $template-b-text-color;
     font-size: 1.8em;
     padding: .9em 0em;
@@ -285,7 +285,7 @@ $legacy-post-card-border-color-hover: white;
                 background-color 250ms ease-in-out;
 }
 
-.legacy-post-card:hover .title {
+.CardLegacyPost:hover .title {
     color: $template-b-text-color-hover;
     background-color: $legacy-post-card-border-color-hover;
 }
@@ -343,11 +343,11 @@ $legacy-post-card-border-color-hover: white;
 }
 
 /* Style table of contents when collapsed without section titles */
-.toc.collapsed .toc-entry {
+.TableOfContents.collapsed .toc-entry {
     border-radius: 1.75em 0em 0em 1.75em;
 }
 
-.toc.collapsed .toc-entry-index {
+.TableOfContents.collapsed .toc-entry-index {
     padding-left: 0em;
     padding-right: 0em;
 }
@@ -360,7 +360,7 @@ $tab-button-gradient-active-dark: $tab-button-gradient-dark;
 $tab-button-gradient-hover-light: mix($tab-button-background, black, 95%);
 $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 
-.tab-button {
+.TabButton {
     color: white;
     padding-right: 1.8em;
     padding-left: 2.4em;
@@ -377,37 +377,37 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     box-shadow: inset 0px 1px 4px 0px transparentize(white, 1 - 0.19);
 }
 
-.tab-button:dir(ltr) image {
+.TabButton:dir(ltr) image {
     padding-left: 15px;
 }
 
-.tab-button:dir(rtl) image {
+.TabButton:dir(rtl) image {
     padding-right: 15px;
 }
 
-.tab-button:hover {
+.TabButton:hover {
     background: linear-gradient(to bottom,
                                 $tab-button-gradient-hover-light,
                                 $tab-button-gradient-hover-dark);
 }
 
-.tab-button:active {
+.TabButton:active {
     background: linear-gradient(to bottom,
                                 $tab-button-gradient-active-dark,
                                 $tab-button-gradient-active-light);
 }
 
-.tab-button.bottom {
+.TabButton.bottom {
     border-top-left-radius: 1.7em;
     border-top-right-radius: 1.7em;
 }
 
-.tab-button.top {
+.TabButton.top {
     border-bottom-left-radius: 1.7em;
     border-bottom-right-radius: 1.7em;
 }
 
-.home-page-a .search-box, .home-page-b .search-box {
+.home-page-a .NavigationSearchBox, .home-page-b .NavigationSearchBox {
     box-shadow: inset 0em 0.16em 0.16em transparentize(black, 1 - 0.14);
     background-image: linear-gradient(-179deg, transparentize(black, 1 - 0.17) 0%,
                                                transparentize(white, 1 - 0.13) 79%),
@@ -425,49 +425,49 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     border-color: transparentize(black, 1 - 0.19);
 }
 
-.home-page-a .search-box {
+.home-page-a .NavigationSearchBox {
     min-width: 400px;
 }
 
-.home-page-b .search-box {
+.home-page-b .NavigationSearchBox {
     min-width: 320px;
 }
 
-.home-page-a .search-box selection, .home-page-b .search-box selection {
+.home-page-a .NavigationSearchBox selection, .home-page-b .NavigationSearchBox selection {
     color: white;
     background-color: #2e3436;
 }
 
-.home-page-a .search-box:selected, .home-page-b .search-box:selected {
+.home-page-a .NavigationSearchBox:selected, .home-page-b .NavigationSearchBox:selected {
     background-color: lighter(#2e3436);
     color: #eeeeec;
 }
 
-.home-page-a .search-box:focus, .home-page-b .search-box:focus {
+.home-page-a .NavigationSearchBox:focus, .home-page-b .NavigationSearchBox:focus {
     box-shadow: inset 0px 0px 3px 2px #5097D1;
 }
 
-.home-page-a .search-box image, .home-page-b .search-box image {
+.home-page-a .NavigationSearchBox image, .home-page-b .NavigationSearchBox image {
     color: #919191;
     margin: 3px 5px;
 }
 
-.home-page-b EknBoxLayout {
+.home-page-b .LayoutBox {
     min-height: 240px;
 }
 
-.home-page-b .set-group {
+.home-page-b .ContentGroupSet {
     background-color: black;
 }
 
-.search-results spinner {
+.ContentGroupSearch spinner {
     margin: 20px;
 }
 
-.section-page-b EknItemGroup,
-.search-page-b .search-results,
-.article-page-b EknItemGroup,
-.article-page-b .search-results {
+.section-page-b .ContentGroupItem,
+.search-page-b .ContentGroupSearch,
+.article-page-b .ContentGroupItem,
+.article-page-b .ContentGroupSearch {
     background-color: transparentize(black, 1 - 0.75);
 }
 
@@ -490,20 +490,20 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     background-color: #888888;
 }
 
-.sidebar-template .content {
+.LayoutSidebar .content {
     background-image: linear-gradient(-180deg, rgba(0,0,0,0.0) 65%, rgba(0,0,0,0.30) 85%, rgba(0,0,0,0.70) 100%);
 }
 
 /* FIXME: for the time being, until we can properly customize the webkit
 scrollbars, style the GTK scrollbars to look slightly more like them */
-EosWindow scrollbar slider {
+.WindowApp scrollbar slider {
     min-width: 8px;
     min-height: 8px;
     background-color: #333333;
     border-radius: 20px;
 }
 
-EosWindow scrollbar trough {
+.WindowApp scrollbar trough {
     padding: 3px;
 }
 
@@ -512,18 +512,18 @@ EosWindow scrollbar trough {
     background-color: transparent;
 }
 
-.document-card WebKitWebView {
+.DocumentCard WebKitWebView {
     background-color: #ececec;
     background-image: url('../templates/images/noise.png');
 }
 
-.document-card .title {
+.DocumentCard .title {
     font-family: Montserrat;
     font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
     font-weight: bold;
 }
 
-.document-card .title.collapsed {
+.DocumentCard .title.collapsed {
     margin-bottom: 10px;
 }
 
@@ -540,7 +540,7 @@ EosWindow scrollbar trough {
     -EknGrowButton-grow-pixels: 15;
 }
 
-.nav-back-button .image, .nav-forward-button .image {
+.nav-back-button .ThemeableImage, .nav-forward-button .ThemeableImage {
     color: white;
     box-shadow: 0px 1px transparentize(black, 1 - 0.8); /* FIXME: box-shadow outset doesn't currently work in GTK */
 }
@@ -557,27 +557,27 @@ EosWindow scrollbar trough {
     padding: 15px;
 }
 
-.nav-back-button .image {
+.nav-back-button .ThemeableImage {
     -gtk-icon-source: -gtk-icontheme("go-previous-symbolic");
     min-width: 22px;
     min-height: 22px;
 }
 
-.nav-forward-button .image {
+.nav-forward-button .ThemeableImage {
     -gtk-icon-source: -gtk-icontheme("go-next-symbolic");
     min-width: 22px;
     min-height: 22px;
 }
 
-.nav-back-button:dir(rtl) .image {
+.nav-back-button:dir(rtl) .ThemeableImage {
     -gtk-icon-source: -gtk-icontheme("go-previous-symbolic-rtl");
 }
 
-.nav-forward-button:dir(rtl) .image {
+.nav-forward-button:dir(rtl) .ThemeableImage {
     -gtk-icon-source: -gtk-icontheme("go-next-symbolic-rtl");
 }
 
-.pdf-view {
+.PDFView {
     background-image: url('../images/pdf-background.png');
 }
 
@@ -601,7 +601,7 @@ EosWindow scrollbar trough {
     font-family: Roboto;
 }
 
-.composite .sidebar-template .sidebar .title-card .title {
+.composite .LayoutSidebar .sidebar .CardTitle .title {
     font-family: Roboto;
 }
 
@@ -609,46 +609,46 @@ EosWindow scrollbar trough {
     font-size: 21.1px;  /* 18px spec * 88% because spec was at 110% scale not 125% */
 }
 
-.composite .search-page-a .search-results .results-message-title,
-.composite .search-page-a .search-results .results-message-subtitle,
-.composite .search-page-a .search-results .error-message {
+.composite .search-page-a .ContentGroupSearch .results-message-title,
+.composite .search-page-a .ContentGroupSearch .results-message-subtitle,
+.composite .search-page-a .ContentGroupSearch .error-message {
     font-size: 18.8px;  /* 16px spec * 88% */
 }
 
-.composite .search-page-b .search-results .results-message-title,
-.composite .search-page-b .search-results .results-message-subtitle,
-.composite .search-page-b .search-results .error-message {
+.composite .search-page-b .ContentGroupSearch .results-message-title,
+.composite .search-page-b .ContentGroupSearch .results-message-subtitle,
+.composite .search-page-b .ContentGroupSearch .error-message {
     font-size: 14.1px;  /* 12px spec * 88% */
 }
 
-.composite .legacy-polaroid-card .title {
+.composite .CardLegacyPolaroid .title {
     font-weight: 600;
     font-size: 16.4px;  /* Original spec may have been wrong */
 }
 
-.composite .section-page-a .legacy-polaroid-card .title,
-.composite .search-page-a .legacy-polaroid-card .title {
+.composite .section-page-a .CardLegacyPolaroid .title,
+.composite .search-page-a .CardLegacyPolaroid .title {
     font-size: 16.4px;  /* 14px spec * 88% */
 }
 
-.composite .legacy-polaroid-card .card-synopsis {
+.composite .CardLegacyPolaroid .card-synopsis {
     color: black;
     font-size: 16.4px;  /* 14px spec * 88% */
     text-shadow: none;
 }
 
-.composite .home-page-a .search-box,
-.composite .home-page-b .search-box {
+.composite .home-page-a .NavigationSearchBox,
+.composite .home-page-b .NavigationSearchBox {
     font-size: 18.8px;  /* 16px spec * 88% */
 }
 
-.composite .home-page-b EknBoxLayout {
+.composite .home-page-b .LayoutBox {
     min-height: 120px;
 }
 
-.composite .section-page-b EknItemGroup,
-.composite .search-page-b .search-results,
-.composite .article-page-b EknItemGroup,
-.composite .article-page-b .search-results {
+.composite .section-page-b .ContentGroupItem,
+.composite .search-page-b .ContentGroupSearch,
+.composite .article-page-b .ContentGroupItem,
+.composite .article-page-b .ContentGroupSearch {
     background-color: transparentize(black, 1 - 0.8);
 }

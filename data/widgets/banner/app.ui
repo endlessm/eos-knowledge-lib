@@ -26,8 +26,5 @@
     <child>
       <placeholder/>
     </child>
-    <style>
-      <class name="app-banner"/>
-    </style>
   </template>
 </interface>

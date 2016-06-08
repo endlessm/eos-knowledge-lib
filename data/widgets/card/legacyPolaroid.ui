@@ -109,9 +109,5 @@
         </child>
       </object>
     </child>
-    <style>
-      <class name="legacy-polaroid-card"/>
-      <class name="card"/>
-    </style>
   </template>
 </interface>

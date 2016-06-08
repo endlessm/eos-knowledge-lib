@@ -1,8 +1,8 @@
-EknHighlights {
+.ContentGroupHighlights {
     margin: 50px 20px;
 
     /* FIXME: remove or update this after modularity issues are fixed */
-    .composite & .title-card .title.label {
+    .composite & .CardTitle .title.label {
         font-weight: normal;
     }
 }

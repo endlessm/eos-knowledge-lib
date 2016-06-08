@@ -28,7 +28,6 @@ const HIGHLIGHT_DECORATION_DIMENSION = 5;
  */
 const Title = new Module.Class({
     Name: 'Card.Title',
-    CssName: 'EknTitleCard',
     Extends: Gtk.Button,
     Implements: [Card.Card, NavigationCard.NavigationCard],
 
@@ -96,9 +95,3 @@ const Title = new Module.Class({
         return Gdk.EVENT_PROPAGATE;
     },
 });
-
-function get_css_for_module (css_data) {
-    let str = '@define-color template-b-text-color ' + css_data['title-color'] + ';\n';
-    str += '@define-color template-b-text-color-hover ' + css_data['hover-color'] + ';\n';
-    return str;
-}

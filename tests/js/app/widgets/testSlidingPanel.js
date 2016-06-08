@@ -28,14 +28,6 @@ describe('Sliding panel', function () {
         expect(panel.visible_child).toHaveDescendant(panel_widget);
     });
 
-    it('has a panel style class', function () {
-        let panel = new SlidingPanel.SlidingPanel({
-            panel_widget: panel_widget,
-            reveal_panel: true,
-        });
-        expect(panel).toHaveCssClass('panel');
-    });
-
     it('adds style classes appropriate to the hide direciton of the panel', function () {
         let test_direction_and_class = (direction, klass) => {
             let panel = new SlidingPanel.SlidingPanel({

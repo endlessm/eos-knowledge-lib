@@ -65,9 +65,5 @@
         </child>
       </object>
     </child>
-    <style>
-      <class name="text-card"/>
-      <class name="card"/>
-    </style>
   </template>
 </interface>

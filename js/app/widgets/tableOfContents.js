@@ -177,8 +177,6 @@ const TableOfContents = new Knowledge.Class({
 
         this.add(this._up_arrow_align);
         this.add(this._down_arrow_align);
-        this.get_style_context().add_class('toc');
-        this.get_style_context().add_class(Gtk.STYLE_CLASS_VIEW);
     },
 
     set section_list (v) {

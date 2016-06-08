@@ -10,7 +10,6 @@ const Module = imports.app.interfaces.module;
 
 const ScrollingList = new Module.Class({
     Name: 'Arrangement.ScrollingList',
-    CssName: 'EknScrollingListArrangement',
     Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
     Implements: [Arrangement.Arrangement],
 

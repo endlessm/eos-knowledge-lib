@@ -84,9 +84,5 @@
         </style>
       </object>
     </child>
-    <style>
-      <class name="card"/>
-      <class name="document-card"/>
-    </style>
   </template>
 </interface>

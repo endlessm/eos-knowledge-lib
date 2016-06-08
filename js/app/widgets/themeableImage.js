@@ -45,7 +45,6 @@ const ThemeableImage = new Knowledge.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        this.get_style_context().add_class(Gtk.STYLE_CLASS_IMAGE);
         this.set_has_window(false);
         this._min_width = 0;
         this._min_height = 0;
@@ -110,7 +109,7 @@ const ThemeableImage = new Knowledge.Class({
         let extra = [this._get_margin(), this._get_border(), this._get_padding()].reduce((total, border) => {
             return total + border.left + border.right;
         }, 0);
-        return [min_width, nat_width];
+        return [min_width + extra, nat_width + extra];
     },
 
     vfunc_get_preferred_height: function () {
@@ -130,7 +129,7 @@ const ThemeableImage = new Knowledge.Class({
         let extra = [this._get_margin(), this._get_border(), this._get_padding()].reduce((total, border) => {
             return total + border.top + border.bottom;
         }, 0);
-        return [min_height, nat_height];
+        return [min_height + extra, nat_height + extra];
     },
 
     vfunc_size_allocate: function (allocation) {

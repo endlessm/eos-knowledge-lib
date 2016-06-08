@@ -124,7 +124,6 @@ const Lightbox = new Knowledge.Class({
         this._lightbox_container.connect('navigation-next-clicked',
             () => { this.emit('navigation-next-clicked'); });
 
-        this.get_style_context().add_class('lightbox');
         this.bind_property('transition-duration',
                            this._revealer, 'transition-duration',
                            GObject.BindingFlags.SYNC_CREATE);

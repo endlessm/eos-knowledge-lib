@@ -18,7 +18,7 @@ const _HorizontalSpacing = {
 };
 
 const _SideBySideLayout = new Knowledge.Class({
-    Name: 'SideBySideLayout',
+    Name: 'Arrangement.SideBySideLayout',
     Extends: Endless.CustomContainer,
 
     _init: function (props={}) {
@@ -123,7 +123,6 @@ const _SideBySideLayout = new Knowledge.Class({
  */
 const SideBySide = new Module.Class({
     Name: 'Arrangement.SideBySide',
-    CssName: 'EknSideBySideArrangement',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],
 

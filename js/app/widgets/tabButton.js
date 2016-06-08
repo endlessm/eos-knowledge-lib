@@ -28,8 +28,6 @@ const TabButton = new Knowledge.Class({
         props.image_position = Gtk.PositionType.RIGHT;
         props.halign = Gtk.Align.CENTER;
         this.parent(props);
-
-        this.get_style_context().add_class('tab-button');
     },
 
     set position (v) {
@@ -46,7 +44,3 @@ const TabButton = new Knowledge.Class({
         }
     },
 });
-
-function get_css_for_module (css_data) {
-    return '@define-color tab-button-background ' + css_data['module-background-color'] + ';\n';
-}

@@ -14,7 +14,6 @@ const Utils = imports.app.utils;
  */
 const LegacyPost = new Module.Class({
     Name: 'Card.LegacyPost',
-    CssName: 'EknLegacyPostCard',
     Extends: Gtk.Button,
     Implements: [Card.Card],
 

@@ -358,21 +358,26 @@ const Card = new Lang.Interface({
      * string in the label as well.
      */
     set_label_with_highlight: function (label, str) {
+        let title = GLib.markup_escape_text(str, -1);
+        label.visible = !!title;
+        if (this.highlight_string.length == 0) {
+            label.label = title;
+            return;
+        }
         // parenthesize the targeted string so we can reference it later on in
         // the replace step using '$1'. This is so we can preserve case
         // sensitivity when doing the replacement.
         let regex = new RegExp('(' + this.highlight_string + ')', 'gi');
-        let title = GLib.markup_escape_text(str, -1);
-        if (this.highlight_string) {
-            let context = label.get_style_context();
+        let update_highlight = function (context) {
             context.save();
             context.add_class('highlighted');
             let span = Utils.style_context_to_markup_span(label.get_style_context(), Gtk.StateFlags.NORMAL);
-            title = title.replace(regex, span + '$1</span>');
             context.restore();
+            label.label = title.replace(regex, span + '$1</span>');
         }
-        label.label = title;
-        label.visible = !!title;
+        let context = label.get_style_context();
+        update_highlight(context);
+        label.get_style_context().connect('changed', update_highlight);
     },
 
     /**

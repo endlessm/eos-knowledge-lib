@@ -14,13 +14,6 @@ describe('Card.Thumb', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
     });
 
-    it('has the correct style class', function () {
-        let card = new Thumb.Thumb({
-            model: new ContentObjectModel.ContentObjectModel(),
-        });
-        expect(card).toHaveCssClass('thumb-card');
-    });
-
     it('has labels that understand Pango markup', function () {
         let card = new Thumb.Thumb({
             model: new ContentObjectModel.ContentObjectModel({

@@ -78,9 +78,5 @@
         </child>
       </object>
     </child>
-    <style>
-      <class name="list-card"/>
-      <class name="card"/>
-    </style>
   </template>
 </interface>

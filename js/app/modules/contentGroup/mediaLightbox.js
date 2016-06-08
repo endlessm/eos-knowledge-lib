@@ -14,7 +14,6 @@ const Module = imports.app.interfaces.module;
  */
 const MediaLightbox = new Module.Class({
     Name: 'ContentGroup.MediaLightbox',
-    CssName: 'EknMediaLightbox',
     Extends: Lightbox.Lightbox,
 
     Slots: {

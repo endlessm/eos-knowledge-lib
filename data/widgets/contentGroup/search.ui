@@ -99,8 +99,5 @@
         <property name="name">message</property>
       </packing>
     </child>
-    <style>
-      <class name="search-results"/>
-    </style>
   </template>
 </interface>

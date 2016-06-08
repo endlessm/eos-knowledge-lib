@@ -27,7 +27,6 @@ const Module = imports.app.interfaces.module;
  */
 const Set = new Module.Class({
     Name: 'ContentGroup.Set',
-    CssName: 'EknSetGroup',
     Extends: Gtk.Frame,
     Implements: [Expandable.Expandable],
 
@@ -63,7 +62,6 @@ const Set = new Module.Class({
         this._arrangement.connect('notify::all-visible', () => {
             GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, this._check_more_content.bind(this));
         });
-        this.get_style_context().add_class('set-group');
 
         let dispatcher = Dispatcher.get_default();
         if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {

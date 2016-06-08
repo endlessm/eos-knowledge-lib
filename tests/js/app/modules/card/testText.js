@@ -33,10 +33,6 @@ describe('Card.Text', function () {
         });
     });
 
-    it('has the correct style class', function () {
-        expect(card).toHaveCssClass('text-card');
-    });
-
     it('has label style classes', function () {
         expect(card).toHaveDescendantWithCssClass('title');
         expect(card).toHaveDescendantWithCssClass('card-synopsis');

@@ -45,7 +45,6 @@ const SPINNER_PAGE_NAME = 'spinner';
  */
 const Search = new Module.Class({
     Name: 'ContentGroup.Search',
-    CssName: 'EknSearch',
     Extends: Gtk.Stack,
 
     Properties: {

@@ -20,12 +20,6 @@ describe('Card.LegacyPost', function () {
         });
     });
 
-    describe('Style class of card', function () {
-        it('has card class', function () {
-            expect(card).toHaveCssClass('legacy-post-card');
-        });
-    });
-
     it('has labels that understand Pango markup', function () {
         let card = new LegacyPost.LegacyPost({
             model: new ContentObjectModel.ContentObjectModel({

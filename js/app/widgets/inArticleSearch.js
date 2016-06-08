@@ -18,7 +18,6 @@ const InArticleSearch = new Knowledge.Class({
         this.parent({
             no_show_all: true,
         });
-        this.get_style_context().add_class('article-search');
 
         this._web_view = web_view;
 

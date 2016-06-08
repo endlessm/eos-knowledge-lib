@@ -4,11 +4,11 @@
 @import "compass";
 
 /* ===== AppBanner ===== */
-EknAppBanner {
+.BannerApp {
     font-size: 1.19em; /* 19px / 12px/em * 72/96 */
 }
 
-EknAppBanner .subtitle {
+.BannerApp .subtitle {
     letter-spacing: 0.74px;
     margin-top: 70px;
 }
@@ -42,12 +42,12 @@ EknAppBanner .subtitle {
 }
 
 /* ===== MediaCard ===== */
-.media-card {
+.CardMedia {
     padding: 10px;
     background-color: white;
 }
 
-.media-card separator {
+.CardMedia separator {
     background-color: #d6d6d6;
     min-height: 1px;
 }

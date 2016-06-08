@@ -36,10 +36,6 @@ describe('Sidebar template', function () {
         expect(template).toHaveDescendant(content);
     });
 
-    it('has the sidebar-template CSS class', function () {
-        expect(template).toHaveCssClass('sidebar-template');
-    });
-
     it('has the content-frame class on its content frame', function () {
         expect(template).toHaveDescendantWithCssClass('content');
     });

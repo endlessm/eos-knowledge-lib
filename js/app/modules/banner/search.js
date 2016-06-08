@@ -27,7 +27,6 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  */
 const Search = new Module.Class({
     Name: 'Banner.Search',
-    CssName: 'EknSearchBanner',
     Extends: Gtk.Label,
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/banner/search.ui',

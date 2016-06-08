@@ -32,7 +32,7 @@ const SUPPORT_CARD_HEIGHT = Card.MinSize.B;
 const SUPPORT_CARD_COUNT = 3;
 
 const _QuarterLayout = new Knowledge.Class({
-    Name: 'QuarterLayout',
+    Name: 'Arrangement.QuarterLayout',
     Extends: Endless.CustomContainer,
 
     _init: function (props={}) {
@@ -154,7 +154,6 @@ const _QuarterLayout = new Knowledge.Class({
  */
 const Quarter = new Module.Class({
     Name: 'Arrangement.Quarter',
-    CssName: 'EknQuarterArrangement',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],
 

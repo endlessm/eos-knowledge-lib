@@ -1,14 +1,14 @@
-EknThematic {
+.ContentGroupThematic {
     grid {
         margin-bottom: 20px;
     }
 
-    .title-card .title {
+    .CardTitle .title {
         font-size: 40px;
         font-weight: bold;
     }
 
-    .composite & .title-card .title.label {
+    .composite & .CardTitle .title.label {
         font-weight: normal;
     }
 }

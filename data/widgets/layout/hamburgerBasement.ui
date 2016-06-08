@@ -36,8 +36,5 @@
         <property name="expand">True</property>
       </object>
     </child>
-    <style>
-      <class name="hamburger-basement-template"/>
-    </style>
   </template>
 </interface>

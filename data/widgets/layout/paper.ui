@@ -16,8 +16,5 @@
         </style>
       </object>
     </child>
-    <style>
-      <class name="paper-template"/>
-    </style>
   </template>
 </interface>

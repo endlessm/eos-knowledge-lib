@@ -22,7 +22,6 @@ describe('Card.Post', function () {
     });
 
     it('has the correct style classes', function () {
-        expect(card).toHaveCssClass('post-card');
         expect(card).toHaveDescendantWithCssClass('content-frame');
         expect(card).toHaveDescendantWithCssClass('title');
         expect(card).toHaveDescendantWithCssClass('thumbnail');

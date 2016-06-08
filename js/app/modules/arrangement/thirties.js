@@ -22,7 +22,7 @@ const CARD_WIDTH_BIG = Card.MinSize.H;
 const COL_COUNT = 3;
 
 const _ThirtiesLayout = new Knowledge.Class({
-    Name: 'ThirtiesLayout',
+    Name: 'Arrangement.ThirtiesLayout',
     Extends: Endless.CustomContainer,
 
     _init: function (props={}) {
@@ -112,7 +112,6 @@ const _ThirtiesLayout = new Knowledge.Class({
  */
 const Thirties = new Module.Class({
     Name: 'Arrangement.Thirties',
-    CssName: 'EknThirtiesArrangement',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],
 

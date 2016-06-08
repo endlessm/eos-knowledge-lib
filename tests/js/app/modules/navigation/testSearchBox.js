@@ -21,10 +21,6 @@ describe('Navigation.SearchBox', function () {
         box = new SearchBox.SearchBox();
     });
 
-    it('has the correct style class', function () {
-        expect(box).toHaveCssClass('search-box');
-    });
-
     it('sets search text when set-search-text is dispatched', function () {
         dispatcher.dispatch({
             action_type: Actions.SET_SEARCH_TEXT,

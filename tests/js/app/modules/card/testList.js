@@ -15,13 +15,6 @@ describe('Card.List', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
     });
 
-    it('has the correct style class', function () {
-        let card = new List.List({
-            model: new ContentObjectModel.ContentObjectModel(),
-        });
-        expect(card).toHaveCssClass('list-card');
-    });
-
     it('has labels that understand Pango markup', function () {
         let card = new List.List({
             model: new ContentObjectModel.ContentObjectModel({

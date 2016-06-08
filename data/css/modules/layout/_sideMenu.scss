@@ -1,4 +1,4 @@
-EknSideMenuTemplate {
+.LayoutSideMenu {
     .context-bar {
         background-image: linear-gradient(to bottom, $primary-dark-color 0%, $primary-dark-color 100%);
         box-shadow: 0px 2px 5px 0px transparentize(black, 1 - 0.15);
@@ -8,7 +8,7 @@ EknSideMenuTemplate {
         padding-bottom: 10px;
     }
 
-    .panel {
+    .SlidingPanel {
         -EknSlidingPanel-shadow-margin: 40;
     }
 
@@ -68,7 +68,7 @@ EknSideMenuTemplate {
         margin: 10px 10px 0 0;
     }
 
-    .title-card,
+    .CardTitle,
     .home-button,
     .close-button {
         padding: 6px 0px;

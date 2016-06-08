@@ -16,7 +16,6 @@ const Module = imports.app.interfaces.module;
  */
 const InfiniteScrolling = new Module.Class({
     Name: 'Layout.InfiniteScrolling',
-    CssName: 'EknInfiniteScrollingLayout',
     Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
 
     Slots: {

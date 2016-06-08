@@ -1,17 +1,17 @@
 @import 'common';
 
-EosWindow {
+.WindowEncyclopedia {
     font-size: 8pt;
 }
 
-EosWindow,
+.WindowEncyclopedia,
 .search-page,
 .article-page {
     background-size: cover;
     background-repeat: no-repeat;
 }
 
-EosWindow {
+.WindowEncyclopedia {
     background-position: center center;
 }
 
@@ -20,8 +20,8 @@ EosWindow {
     background-position: top center;
 }
 
-.search-box,
-.article-search entry {
+.NavigationSearchBox,
+.InArticleSearch entry {
     background: rgba(0,0,0,0.2);
     padding: 0.5em .3em 0.5em .3em;
     font-size: 13.3px;
@@ -39,41 +39,41 @@ EosWindow {
     border-bottom-color: rgba(255, 255, 255, 0.14);
 }
 
-.home-page EknAppBanner {
+.home-page .BannerApp {
     margin-bottom: 42px;
 }
 
-.home-page .search-box {
+.home-page .NavigationSearchBox {
     min-width: 450px;
 }
 
-.article-search {
+.InArticleSearch {
     background-color: #dbdbdb;
     padding: 3px;
 }
 
-.search-box image,
-.article-search entry image {
+.NavigationSearchBox image,
+.InArticleSearch entry image {
     margin: 0 3px;
 }
 
-.search-box selection,
-.article-search selection {
+.NavigationSearchBox selection,
+.InArticleSearch selection {
     color: rgba(0, 0, 0, 0.7);
     background-color: #fff;
 }
 
-.article-search entry {
+.InArticleSearch entry {
     background: rgba(0,0,0,0.3);
     border-color: rgba(0,0,0,0.25);
 }
 
-.article-search button {
+.InArticleSearch button {
     padding: 5px;
     color: #7a7e7f;
 }
 
-.article-search button:hover {
+.InArticleSearch button:hover {
     color: #54595a;
 }
 
@@ -83,31 +83,31 @@ EosWindow {
     background-color: transparentize(#212526, 1 - 0.90);
 }
 
-.search-results {
+.ContentGroupSearch {
     color: #464646;
 }
 
-.search-results spinner {
+.ContentGroupSearch spinner {
     margin: 20px;
 }
 
-.search-page EknAppBanner,
-.article-page EknAppBanner {
+.search-page .BannerApp,
+.article-page .BannerApp {
     margin: 10px 0;
 }
 
-.search-page EknAppBanner .image,
-.article-page EknAppBanner .image {
+.search-page .BannerApp .ThemeableImage,
+.article-page .BannerApp .ThemeableImage {
     -EknThemeableImage-sizing: "size-min";
     min-width: 202px;
     min-height: 72px;
 }
 
-.search-page EknPaperTemplate EknBoxLayout {
+.search-page .LayoutPaper .LayoutBox {
     padding: 0 45px;
 }
 
-.search-page EknSearchBanner {
+.search-page .BannerSearch {
     font-weight: 300;
     font-size: 2em; /* 24px / 12px/em */
     color: #7e7e7e;
@@ -131,40 +131,40 @@ EosWindow {
     font-weight: bold;
 }
 
-.search-page .search-results {
+.search-page .ContentGroupSearch {
     margin-top: 20px;
 }
 
-.search-page .search-results separator {
+.search-page .ContentGroupSearch separator {
     min-height: 1px;
     background-image: none;
     background-color: #888a85;
 }
 
-.search-results .results-message-title,
-.search-results .results-message-subtitle,
-.search-results .error-message {
+.ContentGroupSearch .results-message-title,
+.ContentGroupSearch .results-message-subtitle,
+.ContentGroupSearch .error-message {
     font-size: 1.25em;  /* 15px / 12px/em */
     font-weight: normal;
     padding-top: 2.0em;
 }
 
-.search-results .card {
+.ContentGroupSearch .Card {
     padding-bottom: 1.5em;
 }
 
-.search-results .card .title {
+.ContentGroupSearch .Card .title {
     font-weight: normal;
     font-size: 1.25em;  /* 15px / 12px/em */
     color: #277090;
     padding: 0 0 0 0;
 }
 
-.search-results .card:hover .title {
+.ContentGroupSearch .Card:hover .title {
     text-decoration: underline;
 }
 
-.search-results .card .before {
+.ContentGroupSearch .Card .before {
     -gtk-icon-source: -gtk-icontheme("media-record-symbolic");
     min-width: 6px;
     min-height: 6px;
@@ -172,7 +172,7 @@ EosWindow {
     padding-right: 0.6em;
 }
 
-.paper-template .content {
+.LayoutPaper .content {
     background-image: linear-gradient(to bottom, #ececec 0%, #ececec 100%),
                       url('../templates/images/noise.png');
 }
@@ -206,13 +206,13 @@ scrollbar slider {
     font-family: Roboto;
 }
 
-.composite .search-box,
-.composite .article-search entry {
+.composite .NavigationSearchBox,
+.composite .InArticleSearch entry {
     font-size: 21.1px;  /* 18 px spec * 88% because spec was at 110% scale not 125% */
     background-color: transparentize(black, 1 - 0.8);
 }
 
-.composite .search-page EknSearchBanner {
+.composite .search-page .BannerSearch {
     font-weight: normal;
     font-size: 23.5px;  /* 20px spec * 88% */
     font-weight: bold;
@@ -223,12 +223,12 @@ scrollbar slider {
     font-size: 18.8px;  /* 16px spec * 88% */
 }
 
-.composite .search-results .results-message-title,
-.composite .search-results .results-message-subtitle,
-.composite .search-results .error-message {
+.composite .ContentGroupSearch .results-message-title,
+.composite .ContentGroupSearch .results-message-subtitle,
+.composite .ContentGroupSearch .error-message {
     font-size: 17.6px;  /* 15px spec * 88% */
 }
 
-.composite .search-results .card .title {
+.composite .ContentGroupSearch .Card .title {
     font-size: 18.8px;  /* 16px spec * 88% */
 }
