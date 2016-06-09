@@ -141,7 +141,7 @@ const ModuleFactory = new Knowledge.Class({
     },
 
     /**
-     * Method: create_module_tree
+     * Method: create_root_module
      * Creates the root of the module tree
      *
      * Creates the root module of the module tree described in app.json.
@@ -150,7 +150,7 @@ const ModuleFactory = new Knowledge.Class({
      * Parameters:
      *   extra_props - Extra construct properties for the module.
      */
-    create_module_tree: function (extra_props={}) {
+    create_root_module: function (extra_props={}) {
         this._path_to_description = new Map();
         this._unique_count = 0;
 

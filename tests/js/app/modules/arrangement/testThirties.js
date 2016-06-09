@@ -29,7 +29,7 @@ describe('Arrangement.Thirties', function () {
     });
 
     it('does not fade in cards if it has a fixed size', function () {
-        arrangement = factory.create_module_tree({
+        arrangement = factory.create_root_module({
             max_rows: 1,
             fade_cards: true,
         });

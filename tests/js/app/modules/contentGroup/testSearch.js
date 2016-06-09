@@ -149,7 +149,7 @@ describe('ContentGroup.Search', function () {
                 },
             },
         });
-        search_module = factory.create_module_tree();
+        search_module = factory.create_root_module();
         arrangement = factory.get_last_created('arrangement');
 
         arrangement.emit('need-more-content');

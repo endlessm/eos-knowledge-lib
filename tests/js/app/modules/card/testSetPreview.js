@@ -49,7 +49,7 @@ describe('Card.SetPreview', function () {
                 'header-card': { type: Minimal.MinimalCard },
             }
         });
-        card = factory.create_module_tree();
+        card = factory.create_root_module();
     });
 
     it('has a label with title class', function () {
@@ -57,7 +57,7 @@ describe('Card.SetPreview', function () {
     });
 
     it('sets label', function () {
-        let card = factory.create_module_tree({
+        let card = factory.create_root_module({
             model: new ContentObjectModel.ContentObjectModel({
                 title: 'Hello world',
             }),

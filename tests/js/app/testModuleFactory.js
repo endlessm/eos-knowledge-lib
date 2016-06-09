@@ -249,7 +249,7 @@ describe('Module factory', function () {
             warehouse: warehouse,
         });
         spyOn(warehouse, 'type_to_class').and.callThrough();
-        root = module_factory.create_module_tree();
+        root = module_factory.create_root_module();
     });
 
     it ('returns correct module constructor', function () {

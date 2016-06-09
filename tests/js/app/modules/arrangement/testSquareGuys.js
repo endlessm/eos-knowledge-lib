@@ -59,21 +59,21 @@ describe('Arrangement.SquareGuys', function () {
 
     describe('get_max_cards', function () {
         it ('is 4 for one row', function () {
-            let arrangement = factory.create_module_tree({
+            let arrangement = factory.create_root_module({
                 max_rows: 1,
             });
             expect(arrangement.get_max_cards()).toBe(4);
         });
 
         it ('is 8 for two rows', function () {
-            let arrangement = factory.create_module_tree({
+            let arrangement = factory.create_root_module({
                 max_rows: 2,
             });
             expect(arrangement.get_max_cards()).toBe(8);
         });
 
         it ('is -1 if max rows unset', function () {
-            let arrangement = factory.create_module_tree();
+            let arrangement = factory.create_root_module();
             expect(arrangement.get_max_cards()).toBe(-1);
         });
     });

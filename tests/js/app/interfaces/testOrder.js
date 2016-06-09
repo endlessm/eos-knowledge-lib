@@ -33,7 +33,7 @@ describe('Order interface', function () {
                 },
             },
         });
-        order = factory.create_module_tree();
+        order = factory.create_root_module();
         models = UNSORTED.map(properties =>
             new ContentObjectModel.ContentObjectModel(properties));
     });
