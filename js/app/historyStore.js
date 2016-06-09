@@ -5,13 +5,13 @@ const Dispatcher = imports.app.dispatcher;
 const HistoryItem = imports.app.historyItem;
 
 /**
- * Class: HistoryPresenter
+ * Class: HistoryStore
  *
- * A presenter for the navigation history functionality.
+ * A store containing the history state of the application.
  *
  */
-const HistoryPresenter = new GObject.Class({
-    Name: 'HistoryPresenter',
+const HistoryStore = new GObject.Class({
+    Name: 'HistoryStore',
 
     Properties: {
         /**

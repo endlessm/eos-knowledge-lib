@@ -399,7 +399,7 @@ javascript_tests = \
 	tests/js/app/testDispatcher.js \
 	tests/js/app/testDominantColor.js \
 	tests/js/app/testHistoryItem.js \
-	tests/js/app/testHistoryPresenter.js \
+	tests/js/app/testHistoryStore.js \
 	tests/js/app/testKnowledge.js \
 	tests/js/app/testModuleFactory.js \
 	tests/js/app/testReadingHistoryModel.js \
