@@ -86,3 +86,52 @@ a 20 byte identifier.
 The motivation for these changes was to cut down on the use of Xapian for critical path
 data and lookup, since each use of Xapian requires an HTTP request to a separate
 server.
+
+## Version 3
+
+Domain version 3 is a radical departure from versions 1 and 2. The main content is
+delivered through a mechanism known as "subscriptions". The exact nature and workings of
+subscriptions is out of this document, but it allows content to be updated independently
+from the application.
+
+Each subscription contains a number of shards, as introduced in Domain Version 2, and a
+manifest to list each of the shards as well as various metadata about the
+subscription. However, V3 shards have one major difference -- the Xapian DB is embedded
+directly in the shard, allowing shard files to be completely self-contained pieces of
+searchable data.
+
+The plumbing that contains the "tie" between an application and its set of subscriptions
+is in a file called `subscriptions.json`, placed in the same directory as
+`EKN_VERSION`. For instance, for the Prensa Libre app, our first subscriptions-based
+application, the `subscriptions.json` file is located in
+`/share/ekn/data/prensa-libre-es_GT/subscriptions.json`.
+
+The file simply contains a list of subscriptions, like:
+
+```
+{
+    "subscriptions": [
+        {"id": "10521bb3a18b573f088f84e59c9bbb6c2e2a1a67"}
+    ]
+}
+```
+
+While the `subscriptions.json` file gives the appearance that an application can support
+more than one subscription, currently, eos-knowledge-lib only supports one subscription.
+
+The shards are downloaded and stored in the user's home directory, in the directory
+`~/.local/share/com.endlessm.subscriptions/`. Each subscription ID is given its own
+directory for the manifest and shards.
+
+While subscriptions can be downloaded from Endless's servers at any given time, each
+bundle can also come preloaded with a set of subscriptions, packed into the bundle at
+e.g. `/share/ekn/data/prensa-libre-es_GT/com.endlessm.subscriptions`. On first start of
+the application, if missing, the manifest and shards will be symlinked into the user's
+home directory.
+
+At runtime, the user's computer checks for updates to each subscription and downloads new
+shards in the background.
+
+To help inspect Domain V3 applications and subscriptions, eos-knowledge-lib ships with a
+tool called `eminem`. Please run `eminem` for more details on usage.
+
