@@ -106,6 +106,15 @@ defines:
                                   type: ContentGroup.DynamicTitle
                                   properties:
                                     halign: start
+                                trigger:
+                                  shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
+                                  slots:
+                                    contents:
+                                    - shortdef: 'ContentGroup.DynamicTitle(format-string: "see more from %s")'
+                                    - type: Decoration.ThemeableImage
+                                      properties:
+                                        valign: end
+                                        halign: end
                                 arrangement:
                                   shortdef: 'Arrangement.Thirties(max-rows: 1)'
                                   slots:

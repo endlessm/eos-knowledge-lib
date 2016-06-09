@@ -7,6 +7,7 @@ const Gtk = imports.gi.Gtk;
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
+const Utils = imports.app.utils;
 
 const BATCH_SIZE = 15;
 
@@ -21,6 +22,7 @@ const ContentGroup = new Module.Class({
         'arrangement': {},
         'selection': {},
         'title': {},
+        'trigger': {},
     },
 
     _init: function (props={}) {
@@ -29,12 +31,9 @@ const ContentGroup = new Module.Class({
 
         this._title = this.create_submodule('title');
         if (this._title) {
-            this._title.get_style_context().add_class(Utils.get_element_style_class(ContentGroup, 'title'));
-
             // You can't have a trigger without a title
             this._trigger = this.create_submodule('trigger');
             if (this._trigger) {
-                this._trigger.get_style_context().add_class(Utils.get_element_style_class(ContentGroup, 'trigger'));
                 // Title is clickable if and only if trigger exists
                 let [title_button, trigger_button] = [this._title, this._trigger].map((module) => {
                     let button = new Gtk.Button({
@@ -53,9 +52,13 @@ const ContentGroup = new Module.Class({
                     return button;
                 });
 
+                // Style class needs to go on the button itself, so that we get :hover states and the like.
+                title_button.get_style_context().add_class(Utils.get_element_style_class(ContentGroup, 'title'));
+                trigger_button.get_style_context().add_class(Utils.get_element_style_class(ContentGroup, 'trigger'));
                 this.attach(title_button, 0, 0, 1, 1);
                 this.attach(trigger_button, 1, 0, 1, 1);
             } else {
+                this._title.get_style_context().add_class(Utils.get_element_style_class(ContentGroup, 'title'));
                 this.attach(this._title, 0, 0, 1, 1);
             }
         }
@@ -88,13 +91,15 @@ const ContentGroup = new Module.Class({
             stack.visible_child_name = this._selection.loading ? SPINNER_PAGE_NAME : CONTENT_PAGE_NAME;
         });
 
-        this.attach(stack, 0, 1, 1, 1);
+        this.attach(stack, 0, 1, 2, 1);
     },
 
     make_ready: function (cb=function () {}) {
         this.load();
         if (this._title)
             this._title.make_ready();
+        if (this._trigger)
+            this._trigger.make_ready();
         this._load_callback = cb;
     },
 

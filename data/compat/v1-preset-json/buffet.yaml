@@ -100,6 +100,15 @@ defines:
                         card:
                           type: Card.ContentGroup
                           slots:
+                            trigger:
+                              shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
+                              slots:
+                                contents:
+                                - shortdef: 'ContentGroup.DynamicTitle(format-string: "See more from %s")'
+                                - type: Decoration.ThemeableImage
+                                  properties:
+                                    valign: end
+                                    halign: end
                             title:
                               type: ContentGroup.DynamicTitle
                               properties:

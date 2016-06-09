@@ -25,14 +25,27 @@
 
     /* Selects the nested ContentGroup inside the highlights content group */
     .ContentGroup {
-        .ContentGroup__title {
+        .ContentGroup__title, .ContentGroup__trigger {
             margin-bottom: 10px;
             color: #044a80;
             font-weight: 200;
+
+            &:hover {
+                color: #49bde3;
+            }
+        }
+
+        .ContentGroup__title {
             font-size: 29.3px;
         }
+
+        .ContentGroup__trigger {
+            font-size: 20px;
+        }
+
         margin: 20px 0px;
     }
+
     .ArrangementList {
         margin: 0px;
     }
@@ -104,6 +117,21 @@
         padding-right: 60px;
         padding-bottom: 40px;
         font-size: 24px;
+    }
+}
+
+.ContentGroup__trigger {
+
+    .DecorationThemeableImage {
+        -gtk-icon-source: url('../images/news-arrow-dark.svg');
+        min-height: 14px;
+        min-width: 14px;
+        margin-left: 5px;
+        margin-bottom: 5px;
+    }
+
+    &:hover .DecorationThemeableImage {
+        -gtk-icon-source: url('../images/news-arrow-light.svg');
     }
 }
 

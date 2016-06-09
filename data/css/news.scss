@@ -64,30 +64,35 @@ scrollbar.vertical slider {
     }
 }
 
-.trigger {
-    font-family: 'Fira Sans';
-    font-size: 20px;
-    color: $title-blue;
-
-    .ThemeableImage {
-        -gtk-icon-source: url('../images/news-arrow-dark.svg');
-        min-height: 14px;
-        min-width: 14px;
-        margin-left: 5px;
-        margin-bottom: 5px;
-    }
-
-    &:hover {
-        color: $context-blue;
-
-        .ThemeableImage {
-            -gtk-icon-source: url('../images/news-arrow-light.svg');
-        }
-    }
-}
 
 .highlights {
     margin-top: 50px;
+    .ContentGroup__trigger {
+        margin-bottom: 15px;
+        font-family: 'Fira Sans';
+        font-size: 20px;
+        color: $title-blue;
+        /* FIXME: We want a 'text-transform: lowercase;' here once GTK
+         * CSS supports such a property, or once we figure out Dynamic
+         * Titles in T11907
+         */
+
+        .ThemeableImage {
+            -gtk-icon-source: url('../images/news-arrow-dark.svg');
+            min-height: 14px;
+            min-width: 14px;
+            margin-left: 5px;
+            margin-bottom: 5px;
+        }
+
+        &:hover {
+            color: $context-blue;
+
+            .ThemeableImage {
+                -gtk-icon-source: url('../images/news-arrow-light.svg');
+            }
+        }
+    }
 
     .ContentGroup__title {
         margin: 25px 0px 15px 0px;
