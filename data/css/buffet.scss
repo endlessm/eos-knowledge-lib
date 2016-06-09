@@ -83,6 +83,18 @@
     margin-top: -10px;
 }
 
+.trigger {
+    -gtk-icon-source: url('../images/news-arrow-dark.svg');
+    min-height: 14px;
+    min-width: 14px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+
+    &:hover {
+        -gtk-icon-source: url('../images/news-arrow-light.svg');
+    }
+}
+
 .ContentGroupSearch .ContentGroupSuggestedCategories,
 .ContentGroupSearch .search-page-suggestions {
     background-color: #f6f6f6;

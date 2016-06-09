@@ -7,6 +7,7 @@ const Gtk = imports.gi.Gtk;
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
+const Utils = imports.app.utils;
 
 const BATCH_SIZE = 15;
 
@@ -21,6 +22,7 @@ const ContentGroup = new Module.Class({
         'arrangement': {},
         'selection': {},
         'title': {},
+        'trigger': {},
     },
 
     _init: function (props={}) {
@@ -28,8 +30,36 @@ const ContentGroup = new Module.Class({
         this._load_callback = null;
 
         this._title = this.create_submodule('title');
-        if (this._title)
-            this.attach(this._title, 0, 0, 1, 1);
+        if (this._title) {
+            // You can't have a trigger without a title
+            this._trigger = this.create_submodule('trigger');
+            if (this._trigger) {
+                // Title is clickable if and only if trigger exists
+                let [title_button, trigger_button] = [this._title, this._trigger].map((module) => {
+                    let button = new Gtk.Button({
+                        halign: module.halign,
+                    });
+
+                    button.add(module);
+                    Utils.set_hand_cursor_on_widget(button);
+                    button.connect('clicked', () => {
+                        Dispatcher.get_default().dispatch({
+                            action_type: Actions.SET_CLICKED,
+                            model: this._selection.model,
+                            context_label: this._selection.model.title,
+                        });
+                    });
+                    return button;
+                });
+
+                this.attach(title_button, 0, 0, 1, 1);
+                this.attach(trigger_button, 1, 0, 1, 1);
+            } else {
+                this.attach(this._title, 0, 0, 1, 1);
+            }
+        }
+
+
         this._arrangement = this.create_submodule('arrangement');
         this._arrangement.connect('card-clicked', (arrangement, model) => {
             Dispatcher.get_default().dispatch({
@@ -58,13 +88,15 @@ const ContentGroup = new Module.Class({
             stack.visible_child_name = this._selection.loading ? SPINNER_PAGE_NAME : CONTENT_PAGE_NAME;
         });
 
-        this.attach(stack, 0, 1, 1, 1);
+        this.attach(stack, 0, 1, Math.max(1, this.get_children().length), 1);
     },
 
     make_ready: function (cb=function () {}) {
         this.load();
         if (this._title)
             this._title.make_ready();
+        if (this._trigger)
+            this._trigger.make_ready();
         this._load_callback = cb;
     },
 
