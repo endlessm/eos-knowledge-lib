@@ -151,9 +151,9 @@ const Thirties = new Module.Class({
 
     // Arrangement implementation
     get_max_cards: function () {
-        if (this._max_rows === 0)
+        if (this.max_rows === 0)
             return -1;
-        return COL_COUNT * this._max_rows;
+        return COL_COUNT * this.max_rows;
     },
 
     // Arrangement override
