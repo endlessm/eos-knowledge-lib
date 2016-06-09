@@ -71,139 +71,17 @@ $template-b-text-color-highlighted: #333333;
 
 }
 
-.section-page-a {
-    padding: 0 100px;
-
-    flowbox {
-        margin-top: 20px;
-    }
-
+.section-page,
+.search-page {
     .title {
         font-family: Montserrat;
         font-weight: bold;
-
-        padding-top: 1.0em;
-        padding-bottom: 1.0em;
-
-        font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
-    }
-
-    separator {
-        min-height: 1px;
-        background-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .window-small & .title {
-        font-size: 1.75em; /* 28pt * 1/12 * 0.75 DPI correction factor */
-    }
-}
-
-.search-page-a {
-    padding: 0 100px;
-
-    .title {
-        font-family: Montserrat;
-        font-weight: bold;
-
-        padding-top: 1.0em;
-        padding-bottom: 1.0em;
-
-        font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
-    }
-
-    separator {
-        min-height: 1px;
-        background-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .window-small & .title {
-        font-size: 1.75em; /* 28pt * 1/12 * 0.75 DPI correction factor */
-    }
-}
-
-.section-page-b,
-.search-page-b {
-    .title {
-        font-family: Montserrat;
-        font-weight: bold;
-        font-size: 4.5em; /* 72pt * 1/12 * 0.75 DPI correction factor */
-        padding: 0.9em 0em 0.9em 1.2em;
-        color: white;
-    }
-
-    scrollbar {
-        trough {
-            padding: 0px 3px;
-            background-color: transparentize(black, 1 - 0.5);
-            background-image: linear-gradient(89deg,
-                                              transparentize(white, 1 - 0.1) 0%,
-                                              transparentize(black, 1 - 0.1) 100%);
-            box-shadow: inset 1px 0px 0px 0px transparentize(black, 1 - 0.15);
-        }
-
-        slider {
-            background-color: #888888;
-        }
-    }
-
-    .window-small & .title {
-        font-size: 3.5em; /* 56pt * 1/12 * 0.75 DPI correction factor */
-        padding: 0.9em 0em 0.9em 1.2em;
-        color: white;
     }
 }
 
 .ContentGroupSearch {
     spinner {
         margin: 20px;
-    }
-
-    .search-page-a & .results-message-title,
-    .search-page-a & .results-message-subtitle,
-    .search-page-a & .error-message {
-        padding-top: 2.0em;
-    }
-
-    .window-small .search-page-a & .results-message-title,
-    .window-small .search-page-a & .results-message-subtitle,
-    .window-small .search-page-a & .error-message {
-        padding-top: 1.5em;
-    }
-
-    .search-page-b & .results-message-title,
-    .search-page-b & .results-message-subtitle,
-    .search-page-b & .error-message {
-        font-size: 1.2em;
-        padding: 10px 25px;
-    }
-
-    .window-small .search-page-b & .results-message-title,
-    .window-small .search-page-b & .results-message-subtitle,
-    .window-small .search-page-b & .error-message {
-        font-size: 0.8em;
-        padding: 8px 15px;
-    }
-
-    .search-page-b &,
-    .article-page-b & {
-        background-color: transparentize(black, 1 - 0.75);
-    }
-
-    .composite .search-page-a & .results-message-title,
-    .composite .search-page-a & .results-message-subtitle,
-    .composite .search-page-a & .error-message {
-        font-size: 18.8px;  /* 16px spec * 88% */
-    }
-
-    .composite .search-page-b & .results-message-title,
-    .composite .search-page-b & .results-message-subtitle,
-    .composite .search-page-b & .error-message {
-        font-size: 14.1px;  /* 12px spec * 88% */
-    }
-
-    .composite .search-page-b &,
-    .composite .article-page-b & {
-        background-color: transparentize(black, 1 - 0.8);
     }
 }
 
@@ -222,16 +100,6 @@ $template-b-text-color-highlighted: #333333;
 
     .thumbnail {
         min-height: 133px;
-    }
-
-    .section-page-a & .title,
-    .search-page-a & .title {
-        font-size: 0.9em;
-        text-shadow: 0px 1px 0px white;
-    }
-
-    .home-page-a & .title {
-        padding: 9px 0px 9px 0px;
     }
 
     .card-synopsis {
@@ -260,11 +128,6 @@ $template-b-text-color-highlighted: #333333;
             font-size: 16.4px;  /* 14px spec * 88% */
             text-shadow: none;
         }
-    }
-
-    .composite .section-page-a & .title,
-    .composite .search-page-a & .title {
-        font-size: 16.4px;  /* 14px spec * 88% */
     }
 }
 
@@ -494,7 +357,7 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 }
 
 .NavigationSearchBox {
-    .home-page-a & {
+    .home-page & {
         box-shadow: inset 0em 0.16em 0.16em transparentize(black, 1 - 0.14);
         background-image: linear-gradient(-179deg, transparentize(black, 1 - 0.17) 0%,
                                                    transparentize(white, 1 - 0.13) 79%),
@@ -533,81 +396,9 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
         }
     }
 
-    .home-page-b & {
-        box-shadow: inset 0em 0.16em 0.16em transparentize(black, 1 - 0.14);
-        background-image: linear-gradient(-179deg, transparentize(black, 1 - 0.17) 0%,
-                                                   transparentize(white, 1 - 0.13) 79%),
-                          linear-gradient(to bottom, white, white);
-        background-clip: padding-box;
-        padding: 0.75em 0.55em 0.75em 0.55em;
-        color: #2e3436;
-        caret-color: #2e3436;
-        font-size: 1em;
-
-        border-style: solid;
-        border-radius: 10em;
-
-        border-width: .33em;
-        border-color: transparentize(black, 1 - 0.19);
-
-        min-width: 320px;
-
-        selection {
-            color: white;
-            background-color: #2e3436;
-        }
-
-        &:selected {
-            background-color: lighter(#2e3436);
-            color: #eeeeec;
-        }
-
-        &:focus {
-            box-shadow: inset 0px 0px 3px 2px #5097D1;
-        }
-
-        image {
-            color: #919191;
-            margin: 3px 5px;
-        }
-    }
-
-    .composite .home-page-a &,
-    .composite .home-page-b & {
+    .composite .home-page & {
         font-size: 18.8px;  /* 16px spec * 88% */
     }
-}
-
-.LayoutBox {
-    .home-page-b & {
-        min-height: 240px;
-    }
-
-    .composite .home-page-b & {
-        min-height: 120px;
-    }
-}
-
-.ContentGroupSet {
-    .home-page-b & {
-        background-color: black;
-    }
-}
-
-.ContentGroupItem {
-    .section-page-b &,
-    .article-page-b & {
-        background-color: transparentize(black, 1 - 0.75);
-    }
-
-    .composite .section-page-b &,
-    .composite .article-page-b & {
-        background-color: transparentize(black, 1 - 0.8);
-    }
-}
-
-.article-page-b .sidebar {
-    padding-left: 60px;
 }
 
 /* Hide scrollbars when animating, they look bad. */
@@ -630,10 +421,6 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
             margin-bottom: 10px;
         }
     }
-}
-
-.article-page-a .document-card-content-frame {
-    padding: 20px 0px;
 }
 
 .NavButtonOverlay {
@@ -703,6 +490,151 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     }
 }
 
+/* Specific to Preset A */
+
+.preset-a {
+    .home-page .CardLegacyPolaroid .title {
+        padding: 9px 0px 9px 0px;
+    }
+
+    .section-page,
+    .search-page {
+        padding: 0 100px;
+
+        .title {
+            padding-top: 1.0em;
+            padding-bottom: 1.0em;
+
+            font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
+        }
+
+        separator {
+            min-height: 1px;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .CardLegacyPolaroid .title {
+            font-size: 0.9em;
+            text-shadow: 0px 1px 0px white;
+        }
+    }
+
+    .section-page  flowbox {
+        margin-top: 20px;
+    }
+
+    .search-page .ContentGroupSearch {
+        .results-message-title,
+        .results-message-subtitle,
+        .error-message {
+            padding-top: 2.0em;
+        }
+    }
+
+    .article-page .document-card-content-frame {
+        padding: 20px 0px;
+    }
+}
+
+.window-small.preset-a {
+    .section-page,
+    .search-page {
+        .title {
+            font-size: 1.75em; /* 28pt * 1/12 * 0.75 DPI correction factor */
+        }
+    }
+
+    .ContentGroupSearch {
+        .results-message-title,
+        .results-message-subtitle,
+        .error-message {
+            padding-top: 1.5em;
+        }
+    }
+}
+
+/* Specific to Preset B */
+
+.preset-b {
+    .home-page {
+        .LayoutBox {
+            min-height: 240px;
+        }
+
+        .ContentGroupSet {
+            background-color: black;
+        }
+    }
+
+    .section-page,
+    .search-page {
+        .title {
+            font-size: 4.5em; /* 72pt * 1/12 * 0.75 DPI correction factor */
+            padding: 0.9em 0em 0.9em 1.2em;
+            color: white;
+        }
+
+        scrollbar {
+            trough {
+                padding: 0px 3px;
+                background-color: transparentize(black, 1 - 0.5);
+                background-image: linear-gradient(89deg,
+                                                  transparentize(white, 1 - 0.1) 0%,
+                                                  transparentize(black, 1 - 0.1) 100%);
+                box-shadow: inset 1px 0px 0px 0px transparentize(black, 1 - 0.15);
+            }
+
+            slider {
+                background-color: #888888;
+            }
+        }
+
+        .ContentGroupSearch {
+            background-color: transparentize(black, 1 - 0.75);
+        }
+    }
+
+    .search-page .ContentGroupSearch {
+        .results-message-title,
+        .results-message-subtitle,
+        .error-message {
+            font-size: 1.2em;
+            padding: 10px 25px;
+        }
+    }
+
+    .section-page,
+    .article-page {
+        .ContentGroupItem {
+            background-color: transparentize(black, 1 - 0.75);
+        }
+    }
+
+    .article-page .sidebar {
+        padding-left: 60px;
+    }
+}
+
+.window-small.preset-b {
+    .section-page,
+    .search-page {
+        .title {
+            font-size: 3.5em; /* 56pt * 1/12 * 0.75 DPI correction factor */
+            padding: 0.9em 0em 0.9em 1.2em;
+            color: white;
+        }
+    }
+
+    .search-page .ContentGroupSearch {
+        .results-message-title,
+        .results-message-subtitle,
+        .error-message {
+            font-size: 0.8em;
+            padding: 8px 15px;
+        }
+    }
+}
+
 /* Changes for composite TVs */
 
 .composite {
@@ -714,5 +646,48 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 
     headerbar entry {
         font-size: 21.1px;  /* 18px spec * 88% because spec was at 110% scale not 125% */
+    }
+
+    &.preset-a {
+        .section-page,
+        .search-page {
+            .title {
+                font-size: 16.4px;  /* 14px spec * 88% */
+            }
+        }
+
+        .search-page .ContentGroupSearch {
+            .results-message-title,
+            .results-message-subtitle,
+            .error-message {
+                font-size: 18.8px;  /* 16px spec * 88% */
+            }
+        }
+    }
+
+    &.preset-b {
+        .home-page .LayoutBox {
+            min-height: 120px;
+        }
+
+        .search-page,
+        .article-page {
+            background-color: transparentize(black, 1 - 0.8);
+        }
+
+        .search-page .ContentGroupSearch {
+            .results-message-title,
+            .results-message-subtitle,
+            .error-message {
+                font-size: 14.1px;  /* 12px spec * 88% */
+            }
+        }
+
+        .section-page,
+        .article-page {
+            .ContentGroupItem {
+                background-color: transparentize(black, 1 - 0.8);
+            }
+        }
     }
 }

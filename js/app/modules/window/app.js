@@ -129,45 +129,44 @@ const App = new Module.Class({
         context.add_provider(this._bg_size_provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        this._home_page = this.create_submodule('home-page');
-        this._section_page = this.create_submodule('section-page');
-        this._all_sets_page = this.create_submodule('all-sets-page');
-        this._search_page = this.create_submodule('search-page');
-        this._article_page = this.create_submodule('article-page');
-        this._brand_page = this.create_submodule('brand-page');
-        if (this._brand_page)
-            this._brand_page.get_style_context().add_class('brand-page');
-
-        if (this.template_type === 'B') {
-            this._home_page.get_style_context().add_class('home-page-b');
-            if (this._section_page)
-                this._section_page.get_style_context().add_class('section-page-b');
-            if (this._search_page)
-                this._search_page.get_style_context().add_class('search-page-b');
-            if (this._article_page)
-                this._article_page.get_style_context().add_class('article-page-b');
-        } else {
-            this._home_page.get_style_context().add_class('home-page-a');
-            if (this._section_page)
-                this._section_page.get_style_context().add_class('section-page-a');
-            if (this._search_page)
-                this._search_page.get_style_context().add_class('search-page-a');
-            if (this._article_page)
-                this._article_page.get_style_context().add_class('article-page-a');
-        }
+        if (this.template_type === 'A')
+            this.get_style_context().add_class('preset-a');
+        else if (this.template_type === 'B')
+            this.get_style_context().add_class('preset-b');
 
         this._stack = new Gtk.Stack({
             transition_duration: 0,
         });
-        if (this._brand_page)
+
+        this._brand_page = this.create_submodule('brand-page');
+        if (this._brand_page) {
+            this._brand_page.get_style_context().add_class('brand-page');
             this._stack.add(this._brand_page);
+        }
+
+        this._home_page = this.create_submodule('home-page');
+        this._home_page.get_style_context().add_class('home-page');
         this._stack.add(this._home_page);
-        if (this._section_page)
+
+        this._section_page = this.create_submodule('section-page');
+        if (this._section_page) {
+            this._section_page.get_style_context().add_class('section-page');
             this._stack.add(this._section_page);
-        if (this._search_page)
+        }
+
+        this._search_page = this.create_submodule('search-page');
+        if (this._search_page) {
+            this._search_page.get_style_context().add_class('search-page');
             this._stack.add(this._search_page);
-        if (this._article_page)
+        }
+
+        this._article_page = this.create_submodule('article-page');
+        if (this._article_page) {
+            this._article_page.get_style_context().add_class('article-page');
             this._stack.add(this._article_page);
+        }
+
+        this._all_sets_page = this.create_submodule('all-sets-page');
         if (this._all_sets_page)
             this._stack.add(this._all_sets_page);
 
