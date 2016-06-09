@@ -95,12 +95,9 @@ use:
 `$ python setup.py install --user`
 
 This will install our scripts in `~/.local/bin/` and the library in
-`~/.local/lib/python2.7/`. One script is called
-`get_general_db_json.py` -- this is a simple helper script used by
-developers to generate a `db.json` file from a
-[collection of pagecounts and featured articles data](https://github.com/endlessm/eos-knowledge-apps/tree/master/com.endlessm.encyclopedia-en/raw_data).
+`~/.local/lib/python2.7/`.
 
-The other is called `get_app_content.py` and is the main powerhouse
+The main script is called `get_app_content.py` and is the main powerhouse
 behind our build process. This is in charge of fetching articles and
 media, transforming and normalizing the content, sometimes calling out
 to our cloud Lambda service, creating a Xapian database, and arranging
