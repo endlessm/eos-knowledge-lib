@@ -152,6 +152,8 @@ const ModuleFactory = new Knowledge.Class({
      *   extra_props - Extra construct properties for the module.
      */
     create_root_module: function (extra_props={}) {
+        if (this._root)
+            throw new Error('Root module created twice');
         this._path_to_description = new Map();
         this._unique_count = 0;
 
