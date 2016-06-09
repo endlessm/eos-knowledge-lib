@@ -252,6 +252,14 @@ describe('Module factory', function () {
         root = module_factory.create_root_module();
     });
 
+    it ('creates the root module', function () {
+        expect(root).toBeDefined();
+    });
+
+    it ('get_root_module gives a reference to the root module', function () {
+        expect(module_factory.get_root_module()).toBe(root);
+    });
+
     it ('returns correct module constructor', function () {
         expect(warehouse.type_to_class).toHaveBeenCalledWith('TestModule');
     });
