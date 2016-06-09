@@ -5,7 +5,7 @@ defines:
     slots:
       contents:
       - 'Banner.App(expand: true)'
-      - 'Navigation.SearchBox(halign: center)'
+      - 'Navigation.SearchBox(halign: center, focus-on-map: true)'
 
   - &inner-page-layout
     shortdef: 'Layout.Box(vexpand: false, halign: fill, homogeneous: true)'

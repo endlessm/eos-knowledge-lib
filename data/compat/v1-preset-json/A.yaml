@@ -19,7 +19,7 @@ defines:
   slots:
     # FIXME remove fractions
     top: Banner.App
-    middle: 'Navigation.SearchBox(halign: center)'
+    middle: 'Navigation.SearchBox(halign: center, focus-on-map: true)'
     bottom:
       type: ContentGroup.Set
       id: sets-group

@@ -227,9 +227,6 @@ const Mesh = new Module.Class({
         Dispatcher.get_default().dispatch({
             action_type: Actions.SHOW_HOME_PAGE,
         });
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.FOCUS_SEARCH,
-        });
     },
 
     _on_key_press_event: function (widget, event) {

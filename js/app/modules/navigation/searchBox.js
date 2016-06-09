@@ -3,6 +3,7 @@
 const Endless = imports.gi.Endless;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
 
 const Actions = imports.app.actions;
 const Config = imports.app.config;
@@ -25,6 +26,15 @@ const SearchBox = new Module.Class({
     Name: 'Navigation.SearchBox',
     Extends: Endless.SearchBox,
 
+    Properties: {
+        /**
+         * Property: focus-on-map
+         * If true, this widget will grab focus when shown on screen.
+         */
+        'focus-on-map': GObject.ParamSpec.boolean('focus-on-map', 'focus-on-map', 'focus-on-map',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, false),
+    },
+
     _init: function (props={}) {
         if (props.visible === undefined)
             props.visible = true;
@@ -39,14 +49,13 @@ const SearchBox = new Module.Class({
                 case Actions.SET_SEARCH_TEXT:
                     this.set_text_programmatically(payload.text);
                     break;
-                case Actions.FOCUS_SEARCH:
-                    if (this.get_mapped()) {
-                        this.grab_focus();
-                    }
-                    break;
             }
         });
 
+        this.connect_after('map', () => {
+            if (this.focus_on_map)
+                this.grab_focus();
+        });
         this.connect('changed', () => {
             this._update_link_action();
         });
