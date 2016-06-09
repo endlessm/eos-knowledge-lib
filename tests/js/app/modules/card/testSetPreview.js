@@ -37,7 +37,9 @@ describe('Card.SetPreview', function () {
         factory = new MockFactory.MockFactory({
             type: SetPreview.SetPreview,
             properties: {
-                'model': new ContentObjectModel.ContentObjectModel(),
+                'model': new ContentObjectModel.ContentObjectModel({
+                    title: 'Hello world',
+                }),
             },
             slots: {
                 'arrangement': {
@@ -57,11 +59,6 @@ describe('Card.SetPreview', function () {
     });
 
     it('sets label', function () {
-        let card = factory.create_root_module({
-            model: new ContentObjectModel.ContentObjectModel({
-                title: 'Hello world',
-            }),
-        });
         expect(Gtk.test_find_label(card, 'Hello world')).toBeTruthy();
     });
 

@@ -15,21 +15,13 @@ Compliance.test_arrangement_compliance(Thirties.Thirties);
 // Compliance.test_arrangement_fade_in_compliance(Thirties.Thirties);
 
 describe('Arrangement.Thirties', function () {
-    let arrangement, factory;
-
-    beforeEach(function () {
-        [arrangement, factory] = MockFactory.setup_tree({
+    it('does not fade in cards if it has a fixed size', function () {
+        let [arrangement,] = MockFactory.setup_tree({
             type: Thirties.Thirties,
             slots: {
                 'card': { type: Minimal.MinimalCard },
-                'order': { type: Minimal.MinimalOrder },
-                'filter': { type: Minimal.TitleFilter },
             },
-        });
-    });
-
-    it('does not fade in cards if it has a fixed size', function () {
-        arrangement = factory.create_root_module({
+        }, {
             max_rows: 1,
             fade_cards: true,
         });
@@ -40,9 +32,18 @@ describe('Arrangement.Thirties', function () {
     });
 
     describe('sizing allocation', function () {
-        let win;
+        let win, arrangement, factory;
 
         beforeEach(function () {
+            [arrangement, factory] = MockFactory.setup_tree({
+                type: Thirties.Thirties,
+                slots: {
+                    'card': { type: Minimal.MinimalCard },
+                    'order': { type: Minimal.MinimalOrder },
+                    'filter': { type: Minimal.TitleFilter },
+                },
+            });
+
             Minimal.add_ordered_cards(arrangement, 10);
             Minimal.add_filtered_cards(arrangement, 1, 0);
             win = new Gtk.OffscreenWindow();
