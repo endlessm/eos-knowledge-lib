@@ -31,6 +31,11 @@ const Set = new Module.Class({
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
                 case Actions.SHOW_SET:
+                    let child = this.get_child();
+                    if (child) {
+                        this.remove(child);
+                        this.drop_submodule(child);
+                    }
                     let card = this.create_submodule('card', {
                         model: payload.model,
                     });
@@ -39,8 +44,6 @@ const Set = new Module.Class({
                         card.window.set_cursor(null);
                         return Gdk.EVENT_PROPAGATE;
                     });
-                    if (this.get_child())
-                        this.remove(this.get_child());
                     this.add(card);
                     break;
             }
