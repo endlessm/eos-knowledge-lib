@@ -1,12 +1,13 @@
 .ContentGroupSuggestedCategories {
+
     separator {
         background-color: $black-20-color;
         min-height: 1px;
-        margin: 4px 50px 20px 50px;
+        margin: 4px 50px 20px 20px;
     }
 
     .browse-content {
-        padding: 20px 50px 0px 50px;
+        padding: 20px 50px 0px 20px;
 
         .title {
             font-family: $title-font;
