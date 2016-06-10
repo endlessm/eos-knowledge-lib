@@ -114,6 +114,7 @@
     <file>js/app/modules/banner/context.js</file>
     <file>js/app/modules/banner/search.js</file>
     <file>js/app/modules/banner/set.js</file>
+    <file>js/app/modules/card/contentGroup.js</file>
     <file>js/app/modules/card/deck.js</file>
     <file>js/app/modules/card/knowledgeDocument.js</file>
     <file>js/app/modules/card/legacyPolaroid.js</file>
@@ -128,8 +129,8 @@
     <file>js/app/modules/card/title.js</file>
     <file>js/app/modules/contentGroup/cardContainer.js</file>
     <file>js/app/modules/contentGroup/contentGroup.js</file>
+    <file>js/app/modules/contentGroup/dynamicTitle.js</file>
     <file>js/app/modules/contentGroup/hierarchicalSet.js</file>
-    <file>js/app/modules/contentGroup/highlights.js</file>
     <file>js/app/modules/contentGroup/item.js</file>
     <file>js/app/modules/contentGroup/mediaLightbox.js</file>
     <file>js/app/modules/contentGroup/search.js</file>
@@ -162,6 +163,9 @@
     <file>js/app/modules/order/alphabetical.js</file>
     <file>js/app/modules/order/featured.js</file>
     <file>js/app/modules/order/publishedDate.js</file>
+    <file>js/app/modules/selection/allHighlights.js</file>
+    <file>js/app/modules/selection/allSets.js</file>
+    <file>js/app/modules/selection/articlesForSet.js</file>
     <file>js/app/modules/selection/selection.js</file>
     <file>js/app/modules/selection/suggestedArticles.js</file>
     <file>js/app/modules/selection/xapian.js</file>

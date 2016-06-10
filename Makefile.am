@@ -98,7 +98,6 @@ scss_partials = \
 	$(srcdir)/data/css/modules/contentGroup/_cardContainer.scss \
 	$(srcdir)/data/css/modules/contentGroup/_contentGroup.scss \
 	$(srcdir)/data/css/modules/contentGroup/_hierarchicalSet.scss \
-	$(srcdir)/data/css/modules/contentGroup/_highlights.scss \
 	$(srcdir)/data/css/modules/contentGroup/_mediaLightbox.scss \
 	$(srcdir)/data/css/modules/contentGroup/_search.scss \
 	$(srcdir)/data/css/modules/contentGroup/_suggestedCategories.scss \
@@ -356,7 +355,6 @@ javascript_tests = \
 	tests/js/app/modules/card/testTitle.js \
 	tests/js/app/modules/contentGroup/testContentGroup.js \
 	tests/js/app/modules/contentGroup/testHierarchicalSet.js \
-	tests/js/app/modules/contentGroup/testHighlights.js \
 	tests/js/app/modules/contentGroup/testItem.js \
 	tests/js/app/modules/contentGroup/testMediaLightbox.js \
 	tests/js/app/modules/contentGroup/testSearch.js \
@@ -386,6 +384,7 @@ javascript_tests = \
 	tests/js/app/modules/order/testAlphabetical.js \
 	tests/js/app/modules/order/testFeatured.js \
 	tests/js/app/modules/order/testPublishedDate.js \
+	tests/js/app/modules/selection/testAllHighlights.js \
 	tests/js/app/modules/selection/testSuggestedArticles.js \
 	tests/js/app/modules/window/testApp.js \
 	tests/js/app/modules/window/testEncyclopedia.js \

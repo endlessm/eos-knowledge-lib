@@ -86,12 +86,6 @@ const Set = new Module.Class({
                     if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
                         this._arrangement.new_content_added();
                     }
-                    if (first_batch) {
-                        Dispatcher.get_default().dispatch({
-                            action_type: Actions.MODULE_READY,
-                            module: this,
-                        });
-                    }
                     break;
                 case Actions.HIGHLIGHT_ITEM:
                     this._arrangement.highlight(payload.model);

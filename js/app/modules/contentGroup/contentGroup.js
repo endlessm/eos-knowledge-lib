@@ -25,6 +25,7 @@ const ContentGroup = new Module.Class({
 
     _init: function (props={}) {
         this.parent(props);
+        this._load_callback = null;
 
         this._title = this.create_submodule('title');
         if (this._title)
@@ -48,8 +49,9 @@ const ContentGroup = new Module.Class({
         stack.connect('notify::visible-child', () => {
             spinner.active = stack.visible_child_name === SPINNER_PAGE_NAME;
         });
-
-        this._selection = this.create_submodule('selection');
+        this._selection = this.create_submodule('selection', {
+            model: this.model || null,
+        });
         this._selection.connect('models-changed',
             this._on_models_changed.bind(this));
         this._selection.connect('notify::loading', () => {
@@ -61,7 +63,9 @@ const ContentGroup = new Module.Class({
 
     make_ready: function (cb=function () {}) {
         this.load();
-        this._title.make_ready(cb);
+        if (this._title)
+            this._title.make_ready();
+        this._load_callback = cb;
     },
 
     get_selection: function () {
@@ -74,6 +78,12 @@ const ContentGroup = new Module.Class({
         if (max_cards > -1)
             models.splice(max_cards);
         this._arrangement.set_models(models);
+
+        // If this is the first time models are loaded, invoke the callback
+        if (this._load_callback) {
+            this._load_callback();
+            this._load_callback = null;
+        }
     },
 
     load: function () {
