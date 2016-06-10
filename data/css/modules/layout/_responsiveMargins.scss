@@ -1,21 +1,21 @@
 .LayoutResponsiveMargins {
-    &.tiny {
+    &--tiny {
         margin: 0px;
     }
 
-    &.small {
+    &--small {
         margin: 0px 40px;
     }
 
-    &.medium {
+    &--medium {
         margin: 0px 62px;
     }
 
-    &.large {
+    &--large {
         margin: 0px 83px;
     }
 
-    &.xlarge {
+    &--xlarge {
         margin: 0px 120px;
     }
 }

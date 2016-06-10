@@ -35,19 +35,19 @@ describe('Layout.ResponsiveMargins', function () {
 
         let provider = new Gtk.CssProvider();
         provider.load_from_data('\
-        .tiny {\
+        .LayoutResponsiveMargins--tiny {\
           margin: 10px;\
         }\
-        .small {\
+        .LayoutResponsiveMargins--small {\
           margin: 20px;\
         }\
-        .medium {\
+        .LayoutResponsiveMargins--medium {\
           margin: 30px;\
         }\
-        .large {\
+        .LayoutResponsiveMargins--large {\
           margin: 40px;\
         }\
-        .xlarge {\
+        .LayoutResponsiveMargins--xlarge {\
           margin: 50px;\
         }');
         responsive_margins.get_style_context().add_provider(provider, 800);

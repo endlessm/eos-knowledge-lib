@@ -58,12 +58,12 @@ const ResponsiveMargins = new Module.Class({
 
     _update_custom_style: function () {
         let changed = false;
-        ['small', 'medium', 'large', 'xlarge'].forEach((klass) => {
+        ['small', 'medium', 'large', 'xlarge'].forEach((modifier) => {
             let threshold = EosKnowledgePrivate.style_context_get_custom_int(this.get_style_context(),
-                                                                             'margin-threshold-' + klass);
-            if (threshold === this._thresholds[klass])
+                                                                             'margin-threshold-' + modifier);
+            if (threshold === this._thresholds[modifier])
                 return;
-            this._thresholds[klass] = threshold;
+            this._thresholds[modifier] = threshold;
             changed = true;
         });
         if (changed)
@@ -74,11 +74,12 @@ const ResponsiveMargins = new Module.Class({
         let context = this.get_style_context();
         let flags = this.get_state_flags();
         let margins = {};
-        ['tiny', 'small', 'medium', 'large', 'xlarge'].forEach((klass) => {
+        ['tiny', 'small', 'medium', 'large', 'xlarge'].forEach((modifier) => {
             context.save();
             context.set_state(flags);
+            let klass = Utils.get_modifier_style_class(ResponsiveMargins.get_style_class(), modifier);
             context.add_class(klass);
-            margins[klass] = context.get_margin(context.get_state());
+            margins[modifier] = context.get_margin(context.get_state());
             context.restore();
         });
         return margins;
@@ -126,12 +127,12 @@ const ResponsiveMargins = new Module.Class({
         let base_min_width = min_size.width - margins.tiny.left - margins.tiny.right;
         let base_min_height = min_size.height - margins.tiny.top - margins.tiny.bottom;
         let margin = margins.tiny;
-        ['small', 'medium', 'large', 'xlarge'].forEach((klass) => {
-            let min_width_klass = margins[klass].left + margins[klass].right + base_min_width;
-            let min_height_klass = margins[klass].top + margins[klass].bottom + base_min_height;
-            if (alloc.width >= Math.max(min_width_klass, this._thresholds[klass]) &&
-                alloc.height >= min_height_klass)
-                margin = margins[klass];
+        ['small', 'medium', 'large', 'xlarge'].forEach((modifier) => {
+            let min_width = margins[modifier].left + margins[modifier].right + base_min_width;
+            let min_height = margins[modifier].top + margins[modifier].bottom + base_min_height;
+            if (alloc.width >= Math.max(min_width, this._thresholds[modifier]) &&
+                alloc.height >= min_height)
+                margin = margins[modifier];
         });
         alloc.x += margin.left;
         alloc.y += margin.top;
