@@ -8,7 +8,6 @@ js/app/modules/banner/search.js
 js/app/modules/contentGroup/cardContainer.js
 js/app/modules/contentGroup/highlights.js
 js/app/modules/contentGroup/search.js
-js/app/modules/contentGroup/suggestedArticles.js
 js/app/modules/contentGroup/supplementaryArticles.js
 js/app/modules/controller/buffet.js
 js/app/modules/layout/articleStack.js

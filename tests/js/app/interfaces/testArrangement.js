@@ -33,13 +33,13 @@ describe('Arrangement interface', function () {
     it("pays attention to the implementation's fade_card_in()", function () {
         spyOn(arrangement, 'fade_card_in');
         arrangement.fade_cards = true;
-        arrangement.add_model(new ContentObjectModel.ContentObjectModel());
+        arrangement.set_models([new ContentObjectModel.ContentObjectModel()]);
         expect(arrangement.fade_card_in).toHaveBeenCalled();
     });
 
     it('emits a signal when the card is clicked', function (done) {
         let model = new ContentObjectModel.ContentObjectModel();
-        arrangement.add_model(model);
+        arrangement.set_models([model]);
         arrangement.connect('card-clicked', (arrangement, clicked_model) => {
             expect(clicked_model).toBe(model);
             done();
@@ -50,9 +50,9 @@ describe('Arrangement interface', function () {
     it('packs its cards in the correct order', function () {
         spyOn(arrangement, 'pack_card');
         let models = Minimal.add_ordered_cards(arrangement, 5);
-        arrangement.pack_card.calls.allArgs().forEach((args, ix) => {
+        // reverse it because we asked for ascending to be false
+        arrangement.pack_card.calls.allArgs().reverse().forEach((args, ix) => {
             expect(args[0].model).toBe(models[ix]);
-            expect(args[1]).toBe(0);  // each card packed in front
         });
     });
 

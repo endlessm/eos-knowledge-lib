@@ -55,7 +55,18 @@ const Box = new Module.Class({
         this.column_homogeneous = this.homogeneous;
 
         // An array of submodules is expected
-        let contents = this.create_submodule('contents');
-        contents.forEach(this.add, this);
+        this._contents = this.create_submodule('contents');
+        this._contents.forEach(this.add, this);
+    },
+
+    make_ready: function (cb) {
+        let count = 0;
+        this._contents.forEach((content) => {
+            content.make_ready(() => {
+                count++;
+                if (count == this._contents.length)
+                    cb();
+            });
+        });
     },
 });

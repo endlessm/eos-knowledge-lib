@@ -18,13 +18,23 @@ defines:
   properties: *card-all-uppercase-properties
 
 - &article-suggestions
-  type: ContentGroup.SuggestedArticles
+  type: ContentGroup.ContentGroup
+  styles:
+    - search-page-suggestions
   slots:
+    title:
+      type: ContentGroup.StaticText
+      styles:
+        - content-group-title
+      properties:
+        label: 'You might be interested in...'
+        halign: start
     arrangement:
       # Note spacing different from all the other arrangements; on purpose?
       shortdef: 'Arrangement.SquareGuys(max-rows: 1, spacing: 10)'
       slots:
         card: *main-card
+    selection: Selection.SuggestedArticles
 
 - &category-suggestions
   type: ContentGroup.SuggestedCategories

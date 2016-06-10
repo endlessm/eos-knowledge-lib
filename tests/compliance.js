@@ -72,9 +72,9 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
             let models = [];
             for (let ix = 0; ix < ncards; ix++) {
                 let model = new ContentObjectModel.ContentObjectModel();
-                a.add_model(model);
                 models.push(model);
             }
+            a.set_models(a.get_models().concat(models));
             Utils.update_gui();
             let created_cards = factory.get_created('card');
             let cards = models.map(model => created_cards.filter(card => card.model === model)[0]);
@@ -85,7 +85,7 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
             let model = new ContentObjectModel.ContentObjectModel({
                 title: '0Filter me out',
             });
-            a.add_model(model);
+            a.set_models(a.get_models().concat([model]));
             return model;
         }
 
@@ -136,13 +136,15 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
             });
 
             let models = [];
-            for (let ix = 5; ix > 0; ix--) {
+            // If arrangement has max card limit, respect that, otherwise just test with 4 cards.
+            let count = arrangement.get_max_cards() > -1 ? arrangement.get_max_cards() : 4;
+            for (let ix = count; ix > 0; ix--) {
                 let model = new ContentObjectModel.ContentObjectModel({
                     title: ix.toString(),
                 });
-                arrangement.add_model(model);
                 models.push(model);
             }
+            arrangement.set_models(models);
 
             expect(arrangement.get_models()).toEqual(models.reverse());
         });
@@ -150,8 +152,7 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
         it('by returning the card corresponding to a model', function () {
             let model1 = new ContentObjectModel.ContentObjectModel();
             let model2 = new ContentObjectModel.ContentObjectModel();
-            arrangement.add_model(model1);
-            arrangement.add_model(model2);
+            arrangement.set_models([model1, model2]);
             expect(arrangement.get_card_for_model(model1).model).toBe(model1);
             expect(arrangement.get_card_for_model(model2).model).toBe(model2);
         });
@@ -178,7 +179,6 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
             add_cards(arrangement, 3);
             add_filtered_card(arrangement);
 
-            expect(arrangement.get_count()).toBe(4);
             expect(arrangement.get_card_count()).toBe(3);
         });
 
@@ -199,7 +199,7 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
         it('by not including filtered-out models in the filtered models list', function () {
             add_cards(arrangement, 3);
             let model = add_filtered_card(arrangement);
-            let models = arrangement.get_filtered_models();
+            let models = arrangement.get_models();
 
             expect(models.length).toBe(3);
             expect(models).not.toContain(model);
@@ -223,7 +223,7 @@ function test_arrangement_fade_in_compliance(ArrangementClass, extra_slots={}) {
         it('by fading in cards when requested to', function () {
             arrangement.fade_cards = true;
             let model = new ContentObjectModel.ContentObjectModel();
-            arrangement.add_model(model);
+            arrangement.set_models([model]);
             expect(arrangement.get_card_for_model(model).fade_in)
                 .toHaveBeenCalled();
         });
@@ -231,7 +231,7 @@ function test_arrangement_fade_in_compliance(ArrangementClass, extra_slots={}) {
         it('by not fading in cards when requested not to', function () {
             arrangement.fade_cards = false;
             let model = new ContentObjectModel.ContentObjectModel();
-            arrangement.add_model(model);
+            arrangement.set_models([model]);
             expect(arrangement.get_card_for_model(model).fade_in)
                 .not.toHaveBeenCalled();
         });
@@ -276,6 +276,89 @@ function test_card_container_fade_in_compliance(action, CardContainerClass, extr
             });
             Utils.update_gui();
             expect(arrangement.fade_cards).toBeTruthy();
+        });
+    });
+}
+
+function test_selection_compliance (SelectionClass, extra_slots={}) {
+    describe(SelectionClass.$gtype.name + ' implements Selection correctly', function () {
+        let factory, selection;
+
+        beforeEach(function () {
+            jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
+
+            [selection, factory] = MockFactory.setup_tree({
+                type: SelectionClass,
+                slots: _merge_slots_into(extra_slots, {
+                    'order': { type: Minimal.MinimalOrder },
+                    'filter': { type: Minimal.TitleFilter },
+                }),
+            });
+        });
+
+        function add_models (c, num) {
+            let models = [];
+            for (let ix = 0; ix < num; ix++) {
+                let model = new ContentObjectModel.ContentObjectModel();
+                models.push(model);
+                c.add_model(model);
+            }
+            return models;
+        }
+
+        function add_filtered_models (c, num) {
+            let models = [];
+            for (let ix = 0; ix < num; ix++) {
+                let model = new ContentObjectModel.ContentObjectModel({
+                    title: '0Filter me out',
+                });
+                models.push(model);
+                c.add_model(model);
+            }
+            return models;
+        }
+
+        it('by adding models to the map', function () {
+            let models = add_models(selection, 3);
+
+            expect(selection.get_models().length).toBe(3);
+        });
+
+        it('by not adding filtered out models to the map', function () {
+            let models = add_models(selection, 3);
+            let models = add_filtered_models(selection, 1);
+            expect(selection.get_models().length).toBe(3);
+        });
+
+        it('by keeping models in desired order', function () {
+            let models = [];
+            for (let ix = 5; ix > 0; ix--) {
+                let model = new ContentObjectModel.ContentObjectModel({
+                    title: ix.toString(),
+                });
+                selection.add_model(model);
+                models.push(model);
+            }
+            expect(selection.get_models().length).toBe(5);
+            expect(selection.get_models()).toEqual(models.reverse());
+        });
+
+        it('by clearing models when requested', function () {
+            let models = add_models(selection, 3);
+            selection.clear();
+            expect(selection.get_models().length).toBe(0);
+        });
+
+        it('by allowing client to connect to change signal', function () {
+            expect(() => {
+                selection.connect('models-changed', () => {});
+            }).not.toThrow();
+        });
+
+        it('by not leaving queue_load_more unimplemented', function () {
+            expect(() => {
+                selection.queue_load_more();
+            }).not.toThrow();
         });
     });
 }

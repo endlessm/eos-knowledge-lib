@@ -139,15 +139,19 @@ const HierarchicalSet = new Module.Class({
                 return;
 
             let is_loading_sets = true;
-            results.forEach((model) => {
-                if (model instanceof SetObjectModel.SetObjectModel) {
-                    this._add_set_card(model);
-                } else if (model instanceof ArticleObjectModel.ArticleObjectModel &&
-                    this._belongs_to_current_set_and_not_subset(model)) {
-                    this._arrangement.add_model(model);
-                    is_loading_sets = false;
-                }
+
+            let article_results = results.filter((model) => {
+                return (model instanceof ArticleObjectModel.ArticleObjectModel &&
+                    this._belongs_to_current_set_and_not_subset(model));
             });
+            if (article_results.length > 0) {
+                this._arrangement.set_models(article_results);
+                is_loading_sets = false;
+            }
+
+            results.filter((model) => model instanceof SetObjectModel.SetObjectModel)
+                   .forEach((model) => this._add_set_card(model));
+
             if (is_loading_sets)
                 this.show_more_content();
             this._send_feature_item();
@@ -195,7 +199,7 @@ const HierarchicalSet = new Module.Class({
 
         let model;
         if (this._arrangement.get_card_count()) {
-            model = this._arrangement.get_filtered_models()[0];
+            model = this._arrangement.get_models()[0];
         } else {
             model = this._current_model;
         }

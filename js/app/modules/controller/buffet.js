@@ -121,9 +121,6 @@ const Buffet = new Module.Class({
                 case Actions.NEED_MORE_SEARCH:
                     this._load_more_results();
                     break;
-                case Actions.NEED_MORE_SUGGESTED_ARTICLES:
-                    this._load_more_suggestions(payload.query);
-                    break;
                 case Actions.NEED_MORE_SUPPLEMENTARY_ARTICLES:
                     this._load_more_supplementary_articles(payload);
                     break;
@@ -213,42 +210,6 @@ const Buffet = new Module.Class({
                 same_set: payload.same_set,
                 set_tags: payload.set_tags,
                 need_unread: payload.need_unread,
-            });
-        });
-
-        this._update_highlight();
-    },
-
-    // this number ought to be the number of articles in database
-    // but we don't have a way of getting that so this is just a conservative guess
-    _TOTAL_ARTICLES: 50,
-    _load_more_suggestions: function (query) {
-        let hash = Utils.dumb_hash(query);
-        let random_query = new QueryObject.QueryObject({
-            offset: hash % this._TOTAL_ARTICLES,
-            limit: RESULTS_SIZE,
-            tags: ['EknArticleObject'],
-        });
-        Engine.get_default().get_objects_by_query(random_query, null, (engine, task) => {
-            let random_results, get_more_results_query;
-            try {
-                [random_results, get_more_results_query] = engine.get_objects_by_query_finish(task);
-            } catch (error) {
-                Dispatcher.get_default().dispatch({
-                    action_type: Actions.SEARCH_FAILED,
-                    query: item.query,
-                    error: error,
-                });
-                logError(error);
-                return;
-            }
-            // Reseed the pseudorandom function so that we get the same random sequence
-            GLib.random_set_seed(hash);
-            // Generate a pseudorandom sequence of numbers to use to shuffle the array
-            let rand_sequence = Array.apply(null, {length: RESULTS_SIZE}).map(GLib.random_double);
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.APPEND_SUGGESTED_ARTICLES,
-                models: Utils.shuffle(random_results, rand_sequence).slice(0, 4),
             });
         });
 

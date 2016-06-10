@@ -141,7 +141,7 @@ const Search = new Module.Class({
                 this._arrangement.fade_cards =
                     (this._arrangement.get_count() > 0);
                 this._arrangement.highlight_string(payload.query);
-                payload.models.forEach(this._arrangement.add_model, this._arrangement);
+                this._arrangement.set_models(payload.models);
 
                 if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
                     this._arrangement.new_content_added();
@@ -185,15 +185,6 @@ const Search = new Module.Class({
                   "  •  Check your spelling\n" +
                   "  •  Try other words that mean the same thing\n" +
                   "  •  Try using more general words");
-
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.CLEAR_SUGGESTED_ARTICLES,
-            });
-
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.NEED_MORE_SUGGESTED_ARTICLES,
-                query: query,
-            });
 
             this.visible_child_name = MESSAGE_PAGE_NAME;
             this.get_style_context().add_class('no-results');

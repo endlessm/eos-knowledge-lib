@@ -157,9 +157,14 @@ const Encyclopedia = new Module.Class({
         }
     },
 
+    make_ready: function (cb) {
+        this._home_page.make_ready(cb);
+    },
+
     show_page: function (page) {
         // Disable the home button when the current page is the home page
         this._home_button.sensitive = (page !== this._home_page);
+        page.make_ready(function () {});
 
         if (this.get_visible_page() === page) {
             this._present_if_needed();

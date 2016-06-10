@@ -127,7 +127,7 @@ $context-blue: #7297a7;
     background-color: #0f1b3c;
 }
 
-.ContentGroupSuggestedArticles {
+.search-page-suggestions {
     margin: 50px 0;
     padding-bottom: 20px;
 }
@@ -138,7 +138,7 @@ $context-blue: #7297a7;
 }
 
 .ContentGroupSupplementaryArticles > .title,
-.ContentGroupSuggestedArticles > .title {
+.search-page-suggestions .content-group-title {
     font-family: Merriweather;
     font-weight: bold;
     font-size: 40px;

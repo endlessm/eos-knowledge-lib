@@ -159,7 +159,7 @@ const Highlights = new Module.Class({
     },
 
     _pack_arrangement: function (arrangement, models) {
-        models.forEach(arrangement.add_model, arrangement);
+        arrangement.set_models(models);
         this._arrangement_loaded();
     },
 
@@ -189,7 +189,7 @@ const Highlights = new Module.Class({
     },
 
     _send_items_to_filter: function (arrangement) {
-        let models_showing = arrangement.get_filtered_models()
+        let models_showing = arrangement.get_models()
             .filter(model => arrangement.get_card_for_model(model) !== null);
         Dispatcher.get_default().dispatch({
             action_type: Actions.FILTER_ITEMS,
@@ -201,7 +201,7 @@ const Highlights = new Module.Class({
         if (this._is_feature_item_sent)
             return
 
-        let model = arrangement.get_filtered_models()[0];
+        let model = arrangement.get_models()[0];
         if (!model)
             return
 

@@ -78,7 +78,10 @@ const Set = new Module.Class({
                 case Actions.APPEND_SETS:
                     let first_batch = (this._arrangement.get_count() === 0);
                     this._arrangement.fade_cards = !first_batch;
-                    payload.models.forEach(this._add_card, this);
+
+                    this._has_extra_cards = payload.models > this.max_children;
+                    this._arrangement.set_models(payload.models.slice(0, this.max_children));
+                    this._check_more_content();
 
                     if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
                         this._arrangement.new_content_added();
@@ -98,13 +101,6 @@ const Set = new Module.Class({
                     break;
             }
         });
-    },
-
-    _add_card: function (model) {
-        this._has_extra_cards = this._arrangement.get_count() >= this.max_children;
-        if (!this._has_extra_cards)
-            this._arrangement.add_model(model);
-        this._check_more_content();
     },
 
     _check_more_content: function () {

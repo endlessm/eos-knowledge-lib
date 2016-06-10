@@ -33,6 +33,10 @@ const MockView = new Knowledge.Class({
             return;
         this.parent(signal, handler);
     },
+
+    make_ready: function (cb) {
+        cb();
+    },
 });
 
 describe('Controller.Mesh', function () {
@@ -82,6 +86,7 @@ describe('Controller.Mesh', function () {
             },
         });
         mesh.BRAND_PAGE_TIME_MS = 0;
+        mesh.make_ready();
         spyOn(mesh, '_record_search_metric');
     });
 

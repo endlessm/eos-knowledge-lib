@@ -9,8 +9,39 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const SetObjectModel = imports.search.setObjectModel;
 const Module = imports.app.interfaces.module;
 const ModuleFactory = imports.app.moduleFactory;
+const Selection = imports.app.modules.selection.selection;
 const SetMap = imports.app.setMap;
 const Utils = imports.app.utils;
+
+const PicardSelection = new Module.Class({
+    Name: 'PicardSelection',
+    Extends: Selection.Selection,
+
+    _init: function (props={}) {
+        this.parent(props);
+        this._models = [];
+    },
+
+    add: function (model) {
+        this._models.push(model);
+        this.emit('models-changed');
+    },
+
+    remove: function () {
+        this._models.pop();
+        this.emit('models-changed');
+    },
+
+    clear: function () {
+        this._models = [];
+        this.emit('models-changed');
+    },
+
+    get_models: function () {
+        return this._models;
+    },
+});
+
 
 const IMAGES_DIR = 'resource:///com/endlessm/knowledge/data/images/tools/';
 const CSS_DIR = 'resource:///com/endlessm/knowledge/data/css/';
@@ -66,20 +97,29 @@ function load_arrangement (arrangement_type, card_type) {
         app_json: {
             "version": 2,
             "root": {
-                "type": arrangement_type,
+                "type": 'ContentGroup.ContentGroup',
                 "slots": {
-                    "card": {
-                        "type": card_type,
+                    "arrangement": {
+                        "type": arrangement_type,
+                        "slots": {
+                            "card": {
+                                "type": card_type,
+                            },
+                        },
+                    },
+                    "selection": {
+                        "type": 'PicardSelection',
                     },
                 },
             },
         },
     });
     factory.warehouse.register_class('ColorBoxCard', ColorBox);
-    widgets.arrangement = factory.create_module_tree();
-    widgets.spacing.bind_property('value', widgets.arrangement, 'spacing',
-        GObject.BindingFlags.SYNC_CREATE);
-    widgets.scroll.add(widgets.arrangement);
+    factory.warehouse.register_class('PicardSelection', PicardSelection);
+    widgets.content_group = factory.create_module_tree();
+    widgets.selection = widgets.content_group.get_selection();
+
+    widgets.scroll.add(widgets.content_group);
     widgets.scroll.show_all();
 }
 
@@ -259,19 +299,18 @@ const ARTICLE_TITLE = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
 const ARTICLE_IMAGES = ['people.jpg', 'food.jpg', 'forest.jpg'];
 
 function clear_arrangement () {
-    widgets.arrangement.clear();
+    widgets.selection.clear();
     widgets.remove_box.sensitive = widgets.clear.sensitive = false;
 }
 
 function change_modules () {
-    let models = widgets.arrangement.get_models();
+    let models = widgets.selection.get_models();
     clear_arrangement();
     load_arrangement(widgets.arrangement_combo_box.get_active_text(),
         widgets.card_combo_box.get_active_text());
-    models.forEach((model) => {
-        widgets.arrangement.add_model(model);
-    });
+    models.forEach((model) => widgets.selection.add(model));
 
+    // since clearing the arrangement above set it to false
     if (models.length > 0)
         widgets.clear.sensitive = widgets.remove_box.sensitive = true;
 }
@@ -310,20 +349,20 @@ function connect_signals () {
             thumbnail_uri: IMAGES_DIR + ARTICLE_IMAGES[GLib.random_int_range(0, ARTICLE_IMAGES.length)],
             tags: ['Westeros', 'A Song of Ice and Fire', 'Dragons'],
         });
-        widgets.arrangement.add_model(model);
+        widgets.selection.add(model);
         widgets.remove_box.sensitive = true;
         widgets.clear.sensitive = true;
         widgets.add_box.get_style_context().remove_class('hint');
     });
     widgets.remove_box.connect('clicked', () => {
-        let models = widgets.arrangement.get_models();
+        let models = widgets.selection.get_models();
         if (models.length === 0)
             return;
         if (models.length === 1) {
             widgets.remove_box.sensitive = false;
             widgets.clear.sensitive = false;
         }
-        widgets.arrangement.remove_model(models[models.length - 1]);
+        widgets.selection.remove();
     });
 
     widgets.arrangement_combo_box.connect('changed', change_modules);

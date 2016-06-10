@@ -36,6 +36,8 @@ const MockFactory = new Knowledge.Class({
     Extends: ModuleFactory.ModuleFactory,
 
     _init: function (tree) {
+        if (typeof tree !== 'object')
+            throw new Error("You must provide a valid tree object to the Mock Factory");
         this.parent({
             app_json: {
                 version: 2,

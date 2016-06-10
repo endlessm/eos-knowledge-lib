@@ -359,10 +359,15 @@ const App = new Module.Class({
         }
     },
 
+    make_ready: function (cb) {
+        this._home_page.make_ready(cb);
+    },
+
     show_page: function (new_page) {
         // Disable the home button when the current page is the home or brand page
         this._home_button.sensitive = (new_page !== this._home_page && new_page !== this._brand_page);
 
+        new_page.make_ready();
         let old_page = this.get_visible_page();
         if (old_page === new_page) {
             // Even though we didn't change, this should still count as the
