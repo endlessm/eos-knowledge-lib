@@ -18,18 +18,18 @@
         box-shadow: 0px 1px 20px 0px transparentize(black, 1 - 0.5);
 
         .home-button,
-        .card .title {
+        .Card .title {
             font-size: 21.3px;
             font-family: $title-font;
             color: white;
         }
 
-        .card {
+        .Card {
             margin-top: 5px;
         }
 
         .home-button:hover,
-        .card:hover .title {
+        .Card:hover .title {
             color: $accent-light-color;
         }
 
