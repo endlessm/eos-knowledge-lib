@@ -35,4 +35,12 @@ const ArticlesForSet = new Module.Class({
             tags: this.model ? this.model.child_tags : [], // FIXME: Will go away when we have centralized state
         });
     },
+
+    show_more: function () {
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.SET_CLICKED,
+            model: this.model,
+            context_label: this.model.title,
+        });
+    },
 });
