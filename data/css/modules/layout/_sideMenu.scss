@@ -36,6 +36,11 @@
             background-color: black;
             margin-top: 5px;
         }
+
+        scrolledwindow,
+        scrollbar {
+            background-color: transparent;
+        }
     }
 
     &__closeButton,

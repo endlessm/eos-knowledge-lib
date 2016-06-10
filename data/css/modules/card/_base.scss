@@ -2,7 +2,11 @@
     font-size: 18.7px;
 
     .title {
-        color: $primary-light-color;
+        color: $primary-medium-color;
+    }
+
+    &.highlighted .title {
+        color: white;
     }
 
     .content-frame {

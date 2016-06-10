@@ -2,7 +2,7 @@
     background-color: $background-light-color;
 
     .no-results {
-        background-color: white;
+        background-color: $primary-dark-color;
     }
 
     /* This used to be margin on the list cards inside, but ListCard doesn't support
@@ -23,7 +23,7 @@
     .results-message-subtitle {
         font-family: $title-font;
         font-style: italic;
-        color: #666666;
+        color: $black-60-color;
         font-size: 22px;
         padding-bottom: 50px;
         padding-left: 160px;
@@ -39,12 +39,7 @@
 }
 
 .results-message-title {
-    color: white;
     padding-bottom: 30px;
-}
-
-.results-message.subtitle {
-    color: black;
 }
 
 .results-message-background {
