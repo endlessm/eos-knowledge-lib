@@ -14,6 +14,30 @@
     }
 }
 
+.highlights {
+    margin: 15px 20px;
+    padding: 15px 20px;
+
+    /* FIXME: remove or update this after modularity issues are fixed */
+    .composite & .title {
+        font-weight: normal;
+    }
+
+    /* Selects the nested ContentGroup inside the highlights content group */
+    .ContentGroup {
+        .ContentGroup__title {
+            margin-bottom: 10px;
+            color: #044a80;
+            font-weight: 200;
+            font-size: 29.3px;
+        }
+        margin: 20px 0px;
+    }
+    .ArrangementList {
+        margin: 0px;
+    }
+}
+
 .CardSetPreview {
     .title {
         color: #044a80;
@@ -120,41 +144,12 @@
         padding: 0 20px 20px 20px;
     }
 
-    .content-group-title {
+    .ContentGroup__title {
         font-family: 'Fira Sans';
         font-weight: bold;
         font-size: 40px;
         padding: 0px 0px 30px 20px;
         color: #5e7790;
-    }
-}
-
-.ContentGroupHighlights {
-    padding: 20px;
-
-    .CardTitle {
-        .title.label {
-            font-weight: 200;
-            font-size: 29.3px;
-        }
-
-        .after {
-            -gtk-icon-source: url('../images/title-arrow-dark.svg');
-            min-height: 10px;
-            min-width: 11px;
-            margin-left: 8px;
-            margin-top: 6px;
-        }
-
-        &:hover .after {
-            -gtk-icon-source: url('../images/title-arrow-light.svg');
-        }
-    }
-
-    separator {
-        background-color: #999999;
-        min-height: 1px;
-        margin: 4px 0px 10px 0px;
     }
 }
 

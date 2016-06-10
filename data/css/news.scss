@@ -86,8 +86,29 @@ scrollbar.vertical slider {
     }
 }
 
-.ContentGroupHighlights {
-    margin: 50px 20px;
+.highlights {
+    margin-top: 50px;
+
+    .ContentGroup__title {
+        margin: 25px 0px 15px 0px;
+        color: $title-blue;
+        font-family: 'Merriweather';
+        font-weight: bold;
+        font-size: 40px;
+
+        &:hover {
+            color: $context-blue;
+        }
+    }
+}
+
+/* The home page consists of two 'highlights' modules. We want to
+   set a bottom margin on the second of these two (that is, the last
+   one). Note, we can't just set margin-bottom on the .highlights
+   class because that would also apply to the upper highlights module
+   on the page, which is not desired. */
+.highlights:last-child {
+    margin-bottom: 50px;
 }
 
 .CardSetPreview {
@@ -183,7 +204,7 @@ scrollbar.vertical slider {
     margin: 50px 0;
     padding-bottom: 20px;
 
-    .content-group-title {
+    .ContentGroup__title {
         font-family: Merriweather;
         font-weight: bold;
         font-size: 40px;

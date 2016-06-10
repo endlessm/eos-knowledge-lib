@@ -4,6 +4,7 @@
 
 const GObject = imports.gi.GObject;
 
+const ContentObjectModel = imports.search.contentObjectModel;
 const Module = imports.app.interfaces.module;
 
 const Selection = new Module.Class({
@@ -18,9 +19,23 @@ const Selection = new Module.Class({
         'can-load-more': GObject.ParamSpec.boolean('can-load-more',
             'Can load more', 'Whether the selection has more items to load',
             GObject.ParamFlags.READABLE, true),
-        'title': GObject.ParamSpec.string('title',
-            'Title', 'Title of this selection',
-            GObject.ParamFlags.READABLE, ''),
+        'global': GObject.ParamSpec.boolean('global',
+            'Global', 'Whether the selection gets its model from global state or not',
+            GObject.ParamFlags.READABLE, true),
+        /**
+         * Property: model
+         *
+         * Type:
+         *   <ContentObjectModel>
+         *
+         * Content object model to back this selection. For some selections, it is provided
+         * on construction. If not, then it will get its model from global state.
+         *
+         */
+        'model': GObject.ParamSpec.object('model', 'Model',
+            'Content model to back this selection',
+            GObject.ParamFlags.READWRITE,
+            ContentObjectModel.ContentObjectModel),
     },
 
     Signals: {
@@ -34,14 +49,20 @@ const Selection = new Module.Class({
 
     _init: function (props={}) {
         this.parent(props);
+        // If no model is provided upon construction, we must be getting our model from global state.
+        this.global = !this.model;
         this._models_by_id = new Map();
         this._order = this.create_submodule('order');
         this._filter = this.create_submodule('filter');
-        this._title = '';
     },
 
-    get title () {
-        return this._title;
+    get model () {
+        return this._model;
+    },
+
+    set model (v) {
+        this._model = v;
+        this.notify('model');
     },
 
     queue_load_more: function (num_desired) {
