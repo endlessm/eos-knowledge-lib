@@ -103,8 +103,10 @@ const ArticleStack = new Module.Class({
         this.connect('notify::transition-running', () => {
             if (!this.transition_running) {
                 for (let child of this.get_children()) {
-                    if (child !== this.visible_child)
+                    if (child !== this.visible_child) {
+                        [child.previous_card, child.next_card, child].forEach((module) => this.remove_submodule(module));
                         this.remove(child);
+                    }
                 }
             }
         });

@@ -131,6 +131,28 @@ const Module = new Lang.Interface({
             ''),
     },
 
+    // Note we can't user a getter and setter here because GJS automatically
+    // calls all getters during init (why?) so the private property would
+    // get initialized for the Gjs_Interface object. This subsequently means
+    // that any object implementing the module interface would reference this
+    // shared array, as opposed to creating their own new one. However, we need
+    // each module to have its own submodules array.
+    get_submodules: function () {
+        if (!this._submodules_array)
+            this._submodules_array = [];
+        return this._submodules_array;
+    },
+
+    set_submodules: function (v) {
+        this._submodules_array = v;
+    },
+
+    remove_submodule: function (submodule) {
+        let index = this.get_submodules().indexOf(submodule);
+        if (index > -1)
+            this.get_submodules().splice(index, 1);
+    },
+
     /**
      * Method: create_submodule
      * Create a new instance of a submodule
@@ -144,8 +166,17 @@ const Module = new Lang.Interface({
      *   extra_props - dictionary of construct properties
      */
     create_submodule: function (slot, extra_props={}) {
-        return this.factory.create_module_for_slot(this, slot,
+        let submodule = this.factory.create_module_for_slot(this, slot,
             extra_props);
+
+        if (submodule) {
+            if (Array.isArray(submodule)) {
+                this.set_submodules(this.get_submodules().concat(submodule));
+            } else {
+                this.get_submodules().push(submodule);
+            }
+        }
+        return submodule;
     },
 
     /**
@@ -171,7 +202,17 @@ const Module = new Lang.Interface({
      * Parameters:
      *   callback - function to be called whenever the module is ready.
      */
-    make_ready: function (cb=function () {}) {
-        cb();
+    make_ready: function (cb = function () {}) {
+        let count = 0;
+        if (this.get_submodules().length === 0)
+            cb();
+
+        this.get_submodules().forEach((submodule) => {
+            submodule.make_ready(() => {
+                count++;
+                if (count == this.get_submodules().length)
+                    cb();
+            });
+        });
     },
 });

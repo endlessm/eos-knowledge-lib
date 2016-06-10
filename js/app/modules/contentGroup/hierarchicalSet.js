@@ -188,7 +188,10 @@ const HierarchicalSet = new Module.Class({
 
     _clear_items: function () {
         this._arrangement.clear();
-        this._set_cards.forEach(this.remove, this);
+        this._set_cards.forEach((card) => {
+            this.remove(card);
+            this.remove_submodule(card);
+        });
         this._set_cards = [];
         this._get_more = null;
     },
