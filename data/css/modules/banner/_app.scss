@@ -1,9 +1,10 @@
 .BannerApp {
+    font-family: $logo-font;
     font-size: 1.19em; /* 19px / 12px/em * 72/96 */
-    font-family: $title-font;
     color: white;
 
     .subtitle {
+        font-family: $support-font;
         color: $primary-light-color;
         letter-spacing: 0.74px;
         margin-top: 70px;

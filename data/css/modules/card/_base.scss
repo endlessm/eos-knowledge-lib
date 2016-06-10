@@ -53,12 +53,14 @@
 }
 
 .card-synopsis {
+    font-family: $body-font;
     color: $black-60-color;
     font-size: 18.7px;
     padding-top: 30px;
 }
 
 .card-context {
+    font-family: $context-font;
     font-size: 16px;
     color: $primary-light-color;
 
