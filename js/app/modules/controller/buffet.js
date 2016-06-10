@@ -72,27 +72,6 @@ const Buffet = new Module.Class({
 
         this._brand_page_timeout_id = 0;
 
-        // Load all sets, with which to populate the highlights and thematic
-        // pages
-        Engine.get_default().get_objects_by_query(new QueryObject.QueryObject({
-            limit: -1,
-            tags: ['EknSetObject'],
-        }), null, (engine, res) => {
-            let models;
-            try {
-                [models] = engine.get_objects_by_query_finish(res);
-            } catch (e) {
-                logError(e, 'Failed to load sets from database');
-                return;
-            }
-
-            SetMap.init_map_with_models(models);
-
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.APPEND_SETS,
-                models: models,
-            });
-        });
 
         Dispatcher.get_default().register((payload) => {
             switch (payload.action_type) {
@@ -121,10 +100,6 @@ const Buffet = new Module.Class({
                     break;
                 case Actions.NEED_MORE_SUPPLEMENTARY_ARTICLES:
                     this._load_more_supplementary_articles(payload);
-                    break;
-                case Actions.MODULE_READY:
-                    this._content_ready = true;
-                    this._show_home_if_ready();
                     break;
                 case Actions.ARTICLE_LINK_CLICKED:
                     this._load_ekn_id(payload.ekn_id);
@@ -166,6 +141,34 @@ const Buffet = new Module.Class({
 
         this.history_store.connect('history-item-changed',
             this._on_history_item_change.bind(this));
+    },
+
+    make_ready: function (cb) {
+        // Load all sets, with which to populate the highlights and thematic
+        // pages
+        Engine.get_default().get_objects_by_query(new QueryObject.QueryObject({
+            limit: -1,
+            tags: ['EknSetObject'],
+        }), null, (engine, res) => {
+            let models;
+            try {
+                [models] = engine.get_objects_by_query_finish(res);
+            } catch (e) {
+                logError(e, 'Failed to load sets from database');
+                return;
+            }
+
+            SetMap.init_map_with_models(models);
+
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.APPEND_SETS,
+                models: models,
+            });
+        });
+        this._window.make_ready(() => {
+            this._content_ready = true;
+            this._show_home_if_ready();
+        });
     },
 
     _load_more_supplementary_articles: function (payload) {

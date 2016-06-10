@@ -4,6 +4,7 @@
 .CardSetPreview .title,
 .ContentGroupSearch .results-message-title,
 .ContentGroupSuggestedCategories .browse-content .title,
+.highlights .content-group-title,
 .search-page-suggestions .browse-content .title  {
     color: #044a80;
 }
@@ -13,7 +14,27 @@
     background-color: #d9f0f8;
 }
 
-.ContentGroupHighlights,
+.highlights {
+    margin: 15px 20px;
+    padding: 15px 20px;
+
+    /* FIXME: remove or update this after modularity issues are fixed */
+    .composite & .title {
+        font-weight: normal;
+    }
+
+    /* Selects the nested ContentGroup inside the highlights content group */
+    .ContentGroup {
+        .content-group-title {
+            margin-bottom: 10px;
+        }
+        margin: 20px 0px;
+    }
+    .ArrangementList {
+        margin: 0px;
+    }
+}
+
 .ContentGroupThematic {
     padding: 20px;
 }
@@ -23,7 +44,7 @@
     margin-top: 25px;
 }
 
-.ContentGroupHighlights .CardTitle .title.label,
+.highlights .content-group-title,
 .ContentGroupThematic .CardTitle .title.label,
 .CardSetPreview .CardTitle .title,
 .browse-content .title {
@@ -31,7 +52,7 @@
     font-size: 29.3px;
 }
 
-.ContentGroupHighlights separator,
+.highlights separator,
 .CardSetPreview separator,
 .ContentGroupThematic separator {
     background-color: #999999;
@@ -40,7 +61,7 @@
 }
 
 .ContentGroupSuggestedCategories .browse-content .after,
-.ContentGroupHighlights .CardTitle .after,
+.highlights .content-group-title .after,
 .CardSetPreview .title .after,
 .ContentGroupThematic .CardTitle .after {
     -gtk-icon-source: url('../images/title-arrow-dark.svg');
@@ -51,7 +72,7 @@
 }
 
 .ContentGroupSuggestedCategories .browse-content:hover .after,
-.ContentGroupHighlights .CardTitle:hover .after,
+.highlights .content-group-title:hover .after,
 .CardSetPreview .title .after,
 .ContentGroupThematic .CardTitle:hover .after {
     -gtk-icon-source: url('../images/title-arrow-light.svg');
