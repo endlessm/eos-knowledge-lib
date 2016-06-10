@@ -131,6 +131,12 @@ const Module = new Lang.Interface({
             ''),
     },
 
+    _submodules: function () {
+        if (typeof this._submodule_array === 'undefined')
+            this._submodule_array = [];
+        return this._submodule_array;
+    },
+
     /**
      * Method: create_submodule
      * Create a new instance of a submodule
@@ -144,8 +150,17 @@ const Module = new Lang.Interface({
      *   extra_props - dictionary of construct properties
      */
     create_submodule: function (slot, extra_props={}) {
-        return this.factory.create_module_for_slot(this, slot,
+        let submodule = this.factory.create_module_for_slot(this, slot,
             extra_props);
+
+        if (submodule) {
+            if (submodule.constructor === Array) {
+                this._submodule_array = this._submodules().concat(submodule);
+            } else {
+                this._submodules().push(submodule);
+            }
+        }
+        return submodule;
     },
 
     /**
@@ -172,7 +187,16 @@ const Module = new Lang.Interface({
      *   callback - function to be called whenever the module is ready.
      */
     make_ready: function (cb) {
-        if (typeof cb !== 'undefined')
+        let count = 0;
+        if (this._submodules().length === 0 && typeof cb !== 'undefined')
             cb();
+
+        this._submodules().forEach((submodule) => {
+            submodule.make_ready(() => {
+                count++;
+                if (count == this._submodules().length && typeof cb !== 'undefined')
+                    cb();
+            });
+        });
     },
 });
