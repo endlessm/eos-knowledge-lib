@@ -93,4 +93,10 @@ const Selection = new Module.Class({
         this._models_by_id.clear();
         this.emit('models-changed');
     },
+
+    // This is called when a user hits the 'see more' trigger on a content group
+    // backed by this selection.
+    show_more: function () {
+        // NO-OP - implement in subclass
+    },
 });

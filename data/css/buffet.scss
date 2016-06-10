@@ -3,9 +3,9 @@
 .Card .title,
 .CardSetPreview .title,
 .ContentGroupSearch .results-message-title,
-.ContentGroupSuggestedCategories .browse-content .title,
+.suggested-categories .content-group-title,
 .highlights .content-group-title,
-.search-page-suggestions .browse-content .title  {
+.search-page-suggestions .content-group-title  {
     color: #044a80;
 }
 
@@ -47,7 +47,7 @@
 .highlights .content-group-title,
 .ContentGroupThematic .CardTitle .title.label,
 .CardSetPreview .CardTitle .title,
-.browse-content .title {
+.suggested-categories .content-group-title {
     font-weight: 200;
     font-size: 29.3px;
 }
@@ -60,7 +60,6 @@
     margin: 4px 0px 10px 0px;
 }
 
-.ContentGroupSuggestedCategories .browse-content .after,
 .highlights .content-group-title .after,
 .CardSetPreview .title .after,
 .ContentGroupThematic .CardTitle .after {
@@ -71,7 +70,6 @@
     margin-top: 6px;
 }
 
-.ContentGroupSuggestedCategories .browse-content:hover .after,
 .highlights .content-group-title:hover .after,
 .CardSetPreview .title .after,
 .ContentGroupThematic .CardTitle:hover .after {
@@ -81,6 +79,15 @@
 .CardSetPreview .CardThumb .content-frame,
 .ContentGroupSearch .ContentGroupSuggestedArticles .content-frame {
     margin-top: -10px;
+}
+
+.suggested-categories {
+    margin: 15px 0px;
+    padding: 15px 20px;
+
+    .composite & .content-group-title {
+        font-weight: normal;
+    }
 }
 
 .trigger {
@@ -95,7 +102,7 @@
     }
 }
 
-.ContentGroupSearch .ContentGroupSuggestedCategories,
+.ContentGroupSearch .suggested-categories,
 .ContentGroupSearch .search-page-suggestions {
     background-color: #f6f6f6;
 }
@@ -104,8 +111,7 @@
     background-color: #999999;
 }
 
-.ContentGroupSearch .results-message-subtitle,
-.browse-content .title {
+.ContentGroupSearch .results-message-subtitle {
     color: #999999;
 }
 
@@ -259,8 +265,7 @@
     font-style: italic;
 }
 
-.search-page-suggestions .ArrangementSquareGuys,
-.ContentGroupSuggestedCategories .ArrangementSquareGuys {
+.search-page-suggestions .ArrangementSquareGuys {
     padding: 0 20px 20px 20px;
 }
 

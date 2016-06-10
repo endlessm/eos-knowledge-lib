@@ -14,19 +14,13 @@
     border-radius: 20px;
 }
 
-.ContentGroupSuggestedCategories separator {
-    background-color: #999999;
-    min-height: 1px;
-    margin: 4px 50px 20px 50px;
-}
-
 .BannerApp.brand-page .ThemeableImage {
     -EknThemeableImage-sizing: "size-down";
     min-width: 200px;
     min-height: 200px;
 }
 
-.browse-content {
+.suggested-categories {
     padding: 20px 50px 0px 50px;
 }
 
@@ -40,7 +34,7 @@
     background-color: white;
 }
 
-.ContentGroupSuggestedCategories .browse-content:hover .title,
+.suggested-categories:hover .title,
 .CardSetPreview:hover .title,
 .CardTitle:hover .title {
     color: #49bde3;
@@ -367,7 +361,7 @@
 .composite .ContentGroupHighlights .CardTitle .title.label,
 .composite .ContentGroupThematic .CardTitle .title.label,
 .composite .CardSetPreview .title,
-.composite .browse-content .title,
+.composite .suggested-categories .title,
 .composite .CardDeck .title {
     font-weight: normal;
 }

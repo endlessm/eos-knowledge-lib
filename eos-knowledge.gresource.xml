@@ -65,7 +65,6 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/thumb.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/title.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/contentGroup/search.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/contentGroup/suggestedCategories.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/hamburgerBasement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/infiniteScrolling.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/paper.ui</file>
@@ -136,7 +135,6 @@
     <file>js/app/modules/contentGroup/search.js</file>
     <file>js/app/modules/contentGroup/set.js</file>
     <file>js/app/modules/contentGroup/staticText.js</file>
-    <file>js/app/modules/contentGroup/suggestedCategories.js</file>
     <file>js/app/modules/contentGroup/supplementaryArticles.js</file>
     <file>js/app/modules/contentGroup/thematic.js</file>
     <file>js/app/modules/controller/buffet.js</file>
