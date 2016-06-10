@@ -14,6 +14,16 @@ defines:
       styles:
         - b-style-class
         - a-style-class
+      properties:
+        visible:
+          binding:
+            invert: true
+            property: visible
+            source-id: home-scroll
+        halign:
+          binding:
+            source-id: home-scroll
+            property: halign
       slots:
         banner:
           type: Banner.App

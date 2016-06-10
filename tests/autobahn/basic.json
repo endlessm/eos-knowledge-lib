@@ -30,6 +30,21 @@
                   "a-style-class",
                   "b-style-class"
                 ],
+                "properties": {
+                  "halign": {
+                    "binding": {
+                      "property": "halign",
+                      "source-id": "home-scroll"
+                    }
+                  },
+                  "visible": {
+                    "binding": {
+                      "invert": true,
+                      "property": "visible",
+                      "source-id": "home-scroll"
+                    }
+                  }
+                },
                 "slots": {
                   "banner": {
                     "type": "Banner.App",

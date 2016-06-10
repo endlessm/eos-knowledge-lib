@@ -74,6 +74,43 @@ const MOCK_APP_JSON = {
                                     },
                                 },
                             },
+                            // Example of binding modules properties
+                            'optional-slot': {
+                                type: 'TestModule',
+                                slots: {
+                                    'slot-1': {
+                                        type: 'MinimalCard',
+                                        properties: {
+                                            'visible': {
+                                                'binding': {
+                                                    'source-id': 'entangled-card',
+                                                    'property': 'visible',
+                                                },
+                                            },
+                                        },
+                                    },
+                                    'slot-2': {
+                                        type: 'MinimalCard',
+                                        properties: {
+                                            'expand': {
+                                                'binding': {
+                                                    'source-id': 'entangled-card',
+                                                    'property': 'expand',
+                                                    'invert': true,
+                                                },
+                                            },
+                                        },
+                                    },
+                                    'optional-slot': {
+                                        type: 'MinimalCard',
+                                        id: 'entangled-card',
+                                        properties: {
+                                            'visible': false,
+                                            'expand': false,
+                                        },
+                                    },
+                                },
+                            },
                         },
                     },
                 },
@@ -402,6 +439,22 @@ describe('Module factory', function () {
             let module = module_factory.create_module_for_slot(parent, 'slot-2');
             module = module_factory.create_module_for_slot(module, 'slot-2');
             expect(logError).toHaveBeenCalled();
+        });
+
+        it('can bind between modules', function () {
+            let module1 = module_factory.create_module_for_slot(parent, 'optional-slot');
+            let module2 = module_factory.create_module_for_slot(module1, 'slot-1');
+            expect(module2.visible).toEqual(true);
+            module_factory.create_module_for_slot(module1, 'optional-slot');
+            expect(module2.visible).toEqual(false);
+        });
+
+        it('can bind inversely between modules', function () {
+            let module1 = module_factory.create_module_for_slot(parent, 'optional-slot');
+            let module2 = module_factory.create_module_for_slot(module1, 'slot-2');
+            expect(module2.expand).toEqual(false);
+            module_factory.create_module_for_slot(module1, 'optional-slot');
+            expect(module2.expand).toEqual(true);
         });
     });
 });

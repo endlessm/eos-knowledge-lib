@@ -11,12 +11,18 @@ defines:
 
 - &home-page
   type: Layout.HamburgerBasement
+  properties:
+    show-upper-button:
+      binding:
+        source-id: sets-group
+        property: has-more-content
   slots:
     # FIXME remove fractions
     top: Banner.App
     middle: 'Navigation.SearchBox(halign: center)'
     bottom:
       type: ContentGroup.Set
+      id: sets-group
       properties:
         expand: true
         halign: center
