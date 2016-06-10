@@ -90,6 +90,12 @@ const Deck = new Module.Class({
     _get_widget_margins: function (widget) {
         let context = widget.get_style_context();
         let flags = widget.get_state_flags();
-        return context.get_margin(flags);
+
+        context.save();
+        context.set_state(flags);
+        let margins = context.get_margin(context.get_state());
+        context.restore();
+
+        return margins;
     }
 });

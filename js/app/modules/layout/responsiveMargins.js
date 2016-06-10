@@ -72,11 +72,13 @@ const ResponsiveMargins = new Module.Class({
 
     _get_responsive_margins: function () {
         let context = this.get_style_context();
+        let flags = this.get_state_flags();
         let margins = {};
         ['tiny', 'small', 'medium', 'large', 'xlarge'].forEach((klass) => {
             context.save();
+            context.set_state(flags);
             context.add_class(klass);
-            margins[klass] = context.get_margin(this.get_state_flags());
+            margins[klass] = context.get_margin(context.get_state());
             context.restore();
         });
         return margins;

@@ -81,7 +81,11 @@ const List = new Module.Class({
 
         let context = this.get_style_context();
         let flags = this.get_state_flags();
-        let card_margins = context.get_margin(flags);
+
+        context.save();
+        context.set_state(flags);
+        let card_margins = context.get_margin(context.get_state());
+        context.restore();
 
         let image_alloc = new Gdk.Rectangle({
             x: alloc.x + margin + card_margins.left,

@@ -110,9 +110,15 @@ const SpaceContainer = new Knowledge.Class({
     _get_css_box_sizes: function () {
         let context = this.get_style_context();
         let flags = this.get_state_flags();
-        return [context.get_margin(flags),
-                context.get_border(flags),
-                context.get_padding(flags)];
+
+        context.save();
+        context.set_state(flags);
+        let margin = context.get_margin(flags);
+        let border = context.get_border(flags);
+        let padding = context.get_padding(flags);
+        context.restore();
+
+        return [margin, border, padding];
     },
 
     _get_css_box_size_for_dimension: function (dimension) {
