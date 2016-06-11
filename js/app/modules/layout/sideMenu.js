@@ -80,7 +80,6 @@ const SideMenu = new Module.Class({
             vexpand: true,
         });
         if (sidebar) {
-            sidebar.get_style_context().add_class('sidebar');
             this._menu_grid.attach(sidebar, 0, 2, 2, 1);
         }
 

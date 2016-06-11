@@ -160,6 +160,7 @@
     min-width: 199px;
     background-color: white;
     box-shadow: 0px 1px 20px 0px transparentize(black, 1 - 0.5);
+    padding: 10px 10px 5px 10px;
 }
 
 .LayoutSideMenu .menu .home-button,
@@ -181,11 +182,7 @@
 .LayoutSideMenu .menu separator {
     min-height: 1px;
     background-color: #cccccc;
-    margin: 5px 10px 0 10px;
-}
-
-.LayoutSideMenu .menu .sidebar {
-    margin: 0 10px 5px 10px;
+    margin-top: 5px;
 }
 
 .LayoutSideMenu .close-button,
@@ -200,14 +197,6 @@
 .LayoutSideMenu .close-button:hover,
 .LayoutSideMenu .menu-button:hover {
     color: #49bde3;
-}
-
-.LayoutSideMenu .home-button {
-    margin: 10px 0 0 10px;
-}
-
-.LayoutSideMenu .close-button {
-    margin: 10px 10px 0 0;
 }
 
 .LayoutSideMenu .CardTitle,
