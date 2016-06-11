@@ -21,7 +21,7 @@
 }
 
 .NavigationSearchBox,
-.InArticleSearch entry {
+.InArticleSearch__entry {
     background: rgba(0,0,0,0.2);
     padding: 0.5em .3em 0.5em .3em;
     font-size: 13.3px;
@@ -53,28 +53,27 @@
 }
 
 .NavigationSearchBox image,
-.InArticleSearch entry image {
+.InArticleSearch__entry image {
     margin: 0 3px;
 }
 
 .NavigationSearchBox selection,
-.InArticleSearch selection {
+.InArticleSearch__entry selection {
     color: rgba(0, 0, 0, 0.7);
     background-color: #fff;
 }
 
-.InArticleSearch entry {
+.InArticleSearch__entry {
     background: rgba(0,0,0,0.3);
     border-color: rgba(0,0,0,0.25);
 }
 
-.InArticleSearch button {
+.InArticleSearch__button {
     padding: 5px;
     color: #7a7e7f;
-}
-
-.InArticleSearch button:hover {
-    color: #54595a;
+    &:hover {
+        color: #54595a;
+    }
 }
 
 /* WebKit creates GTK tooltips internally, so style them here */
@@ -207,7 +206,7 @@ scrollbar slider {
 }
 
 .composite .NavigationSearchBox,
-.composite .InArticleSearch entry {
+.composite .InArticleSearch__entry {
     font-size: 21.1px;  /* 18 px spec * 88% because spec was at 110% scale not 125% */
     background-color: transparentize(black, 1 - 0.8);
 }

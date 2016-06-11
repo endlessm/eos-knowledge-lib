@@ -19,34 +19,34 @@ $template-b-text-color-highlighted: #333333;
 .InArticleSearch {
     background-color: #dbdbdb;
     padding: 3px;
-}
 
-.InArticleSearch entry {
-    background: rgba(0,0,0,0.3);
-    padding: 0.5em .3em 0.5em .3em;
-    font-size: 13.3px;
-    color: #fff;
-    caret-color: #fff;
+    &__entry {
+        background: rgba(0,0,0,0.3);
+        padding: 0.5em .3em 0.5em .3em;
+        font-size: 13.3px;
+        color: #fff;
+        caret-color: #fff;
 
-    border-style: solid;
-    border-radius: 50px;
+        border-style: solid;
+        border-radius: 50px;
 
-    border-width: 3px;
-    border-color: rgba(0,0,0,0.25);
-}
+        border-width: 3px;
+        border-color: rgba(0,0,0,0.25);
+    }
 
-.InArticleSearch entry selection {
-    color: rgba(0,0,0,0.7);
-    background-color: #fff;
-}
+    &__entry selection {
+        color: rgba(0,0,0,0.7);
+        background-color: #fff;
+    }
 
-.InArticleSearch button {
-    padding: 5px;
-    color: #7a7e7f;
-}
+    &__button {
+        padding: 5px;
+        color: #7a7e7f;
 
-.InArticleSearch button:hover {
-    color: #54595a;
+        &:hover {
+            color: #54595a;
+        }
+    }
 }
 
 .Card.invisible {

@@ -7,6 +7,7 @@ const WebKit2 = imports.gi.WebKit2;
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Knowledge = imports.app.knowledge;
+const Utils = imports.app.utils;
 
 const ARTICLE_SEARCH_MAX_RESULTS = 200;
 
@@ -29,24 +30,31 @@ const InArticleSearch = new Knowledge.Class({
                                    this.search_changed.bind(this));
         this._search_entry.connect('key-press-event',
                                    this.on_key_press_event.bind(this));
+        let entry_class = Utils.get_element_style_class(InArticleSearch.get_style_class(), 'entry');
+        this._search_entry.get_style_context().add_class(entry_class);
 
+
+        let button_class = Utils.get_element_style_class(InArticleSearch.get_style_class(), 'button');
         let next_button = new Gtk.Button({
             image: Gtk.Image.new_from_icon_name('go-down-symbolic',
                                                 Gtk.IconSize.MENU),
         });
         next_button.connect('clicked', this.search_next.bind(this));
+        next_button.get_style_context().add_class(button_class);
 
         let previous_button = new Gtk.Button({
             image: Gtk.Image.new_from_icon_name('go-up-symbolic',
                                                 Gtk.IconSize.MENU),
         });
         previous_button.connect('clicked', this.search_previous.bind(this));
+        previous_button.get_style_context().add_class(button_class);
 
         let close_button = new Gtk.Button({
             image: Gtk.Image.new_from_icon_name('window-close-symbolic',
                                                 Gtk.IconSize.MENU),
         });
         close_button.connect('clicked', this.close.bind(this));
+        close_button.get_style_context().add_class(button_class);
 
         let grid = new Gtk.Grid();
         grid.add(this._search_entry);
