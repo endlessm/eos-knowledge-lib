@@ -1,7 +1,7 @@
 /* exported dbus_object_path_for_webview, get_css_for_title_and_module,
 get_web_plugin_dbus_name, get_web_plugin_dbus_name_for_webview,
 has_descendant_with_type, render_border_with_arrow,
-split_out_conditional_knobs */
+split_out_conditional_knobs, vfunc_draw_background_default */
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Format = imports.format;
@@ -443,4 +443,21 @@ function get_modifier_style_class (block, modifier) {
     if (!block || !modifier)
         throw new Error('Trying to create modifier style class with missing block or modifier');
     return get_bem_style_class(block, modifier, '', '');
+}
+
+// Function that can be hooked up to the vfunc_draw property to make a GTK
+// widget render a background and border, even if it doesn't do so automatically
+// (e.g. a custom container.)
+// Note, you can only supply this function as a vfunc_draw implementation, and
+// cannot call it separately, because it relies on this.parent().
+function vfunc_draw_background_default (cr) {
+    let width = this.get_allocated_width();
+    let height = this.get_allocated_height();
+    let style = this.get_style_context();
+    Gtk.render_background(style, cr, 0, 0, width, height);
+    Gtk.render_frame(style, cr, 0, 0, width, height);
+    Gtk.render_focus(style, cr, 0, 0, width, height);
+    let retval = this.parent(cr);
+    cr.$dispose();
+    return retval;
 }

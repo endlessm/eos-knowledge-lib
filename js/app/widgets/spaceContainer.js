@@ -5,6 +5,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Knowledge = imports.app.knowledge;
+const Utils = imports.app.utils;
 
 /**
  * Class: SpaceContainer
@@ -356,17 +357,7 @@ const SpaceContainer = new Knowledge.Class({
         });
     },
 
-    vfunc_draw: function (cr) {
-        let width = this.get_allocated_width();
-        let height = this.get_allocated_height();
-        let context = this.get_style_context();
-        Gtk.render_background(context, cr, 0, 0, width, height);
-        Gtk.render_frame(context, cr, 0, 0, width, height);
-        Gtk.render_focus(context, cr, 0, 0, width, height);
-        let ret = this.parent(cr);
-        cr.$dispose();
-        return ret;
-    },
+    vfunc_draw: Utils.vfunc_draw_background_default,
 
     vfunc_remove: function (child) {
         this.parent(child);
