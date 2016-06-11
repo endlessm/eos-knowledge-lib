@@ -30,11 +30,11 @@ const InArticleSearch = new Knowledge.Class({
                                    this.search_changed.bind(this));
         this._search_entry.connect('key-press-event',
                                    this.on_key_press_event.bind(this));
-        let entry_class = Utils.get_element_style_class(InArticleSearch.get_style_class(), 'entry');
+        let entry_class = Utils.get_element_style_class(InArticleSearch, 'entry');
         this._search_entry.get_style_context().add_class(entry_class);
 
 
-        let button_class = Utils.get_element_style_class(InArticleSearch.get_style_class(), 'button');
+        let button_class = Utils.get_element_style_class(InArticleSearch, 'button');
         let next_button = new Gtk.Button({
             image: Gtk.Image.new_from_icon_name('go-down-symbolic',
                                                 Gtk.IconSize.MENU),

@@ -77,7 +77,7 @@ const ResponsiveMargins = new Module.Class({
         ['tiny', 'small', 'medium', 'large', 'xlarge'].forEach((modifier) => {
             context.save();
             context.set_state(flags);
-            let klass = Utils.get_modifier_style_class(ResponsiveMargins.get_style_class(), modifier);
+            let klass = Utils.get_modifier_style_class(ResponsiveMargins, modifier);
             context.add_class(klass);
             margins[modifier] = context.get_margin(context.get_state());
             context.restore();

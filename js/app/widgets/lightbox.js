@@ -261,7 +261,7 @@ const LightboxContainer = new Knowledge.Class({
             this.emit('close-clicked');
         }.bind(this));
 
-        let nav_button_class = Utils.get_element_style_class(Lightbox.get_style_class(), 'navigationButton');
+        let nav_button_class = Utils.get_element_style_class(Lightbox, 'navigationButton');
         /**
          * Navigate previous button
          */
@@ -350,7 +350,7 @@ const LightboxContainer = new Knowledge.Class({
         let context = this.get_style_context();
 
         context.save();
-        let shadow_class = Utils.get_element_style_class(Lightbox.get_style_class(), 'shadow');
+        let shadow_class = Utils.get_element_style_class(Lightbox, 'shadow');
         context.add_class(shadow_class);
         let width = this.get_allocated_width();
         let height = this.get_allocated_height();

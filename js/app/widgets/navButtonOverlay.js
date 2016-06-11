@@ -115,7 +115,7 @@ const NavButtonOverlay = new Knowledge.Class({
         this._back_button.connect('clicked', function () {
             this.emit('back-clicked');
         }.bind(this));
-        let back_class = Utils.get_element_style_class(NavButtonOverlay.get_style_class(), 'backButton');
+        let back_class = Utils.get_element_style_class(NavButtonOverlay, 'backButton');
         this._back_button.get_style_context().add_class(back_class);
 
         /*
@@ -129,16 +129,16 @@ const NavButtonOverlay = new Knowledge.Class({
         this._forward_button.connect('clicked', function () {
             this.emit('forward-clicked');
         }.bind(this));
-        let forward_class = Utils.get_element_style_class(NavButtonOverlay.get_style_class(), 'forwardButton');
+        let forward_class = Utils.get_element_style_class(NavButtonOverlay, 'forwardButton');
         this._forward_button.get_style_context().add_class(forward_class);
 
         this.parent(props);
 
         this._back_button.image = new ThemeableImage.ThemeableImage();
-        let back_image_class = Utils.get_element_style_class(NavButtonOverlay.get_style_class(), 'backButtonImage');
+        let back_image_class = Utils.get_element_style_class(NavButtonOverlay, 'backButtonImage');
         this._back_button.image.get_style_context().add_class(back_image_class);
         this._forward_button.image = new ThemeableImage.ThemeableImage();
-        let forward_image_class = Utils.get_element_style_class(NavButtonOverlay.get_style_class(), 'forwardButtonImage');
+        let forward_image_class = Utils.get_element_style_class(NavButtonOverlay, 'forwardButtonImage');
         this._forward_button.image.get_style_context().add_class(forward_image_class);
 
         Utils.set_hand_cursor_on_widget(this._back_button);

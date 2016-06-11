@@ -76,7 +76,7 @@ const SideMenu = new Module.Class({
             this._context_bar.set_center_widget(context);
 
         this._menu_panel = this.add_panel_widget(this._menu_grid, Gtk.PositionType.LEFT);
-        let klass = Utils.get_element_style_class(SideMenu.get_style_class(), 'panel');
+        let klass = Utils.get_element_style_class(SideMenu, 'panel');
         this._menu_panel.get_style_context().add_class(klass);
 
         let sidebar = this.create_submodule('sidebar', {

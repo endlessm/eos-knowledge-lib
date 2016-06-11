@@ -2,7 +2,14 @@
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 
+const GObject = imports.gi.GObject;
+const Knowledge = imports.app.knowledge;
 const Utils = imports.app.utils;
+
+const BazClass = new Knowledge.Class({
+    Name: 'Baz',
+    Extends: GObject.Object,
+});
 
 describe('Utilities:', function () {
     describe('Formatting authors', function () {
@@ -37,6 +44,10 @@ describe('Utilities:', function () {
     });
 
     describe('get_bem_style_class', function () {
+        it('gets style name from knowledge class', function () {
+            expect(Utils.get_bem_style_class(BazClass, 'big', '', '')).toEqual('Baz--big');
+        });
+
         it('correctly forms style class name', function () {
             expect(Utils.get_bem_style_class('Foo', 'big', 'bar', 'small')).toEqual('Foo--big__bar--small');
         });
@@ -59,6 +70,10 @@ describe('Utilities:', function () {
     });
 
     describe('get_element_style_class', function () {
+        it('gets style name from knowledge class', function () {
+            expect(Utils.get_element_style_class(BazClass, 'bar')).toEqual('Baz__bar');
+        });
+
         it('correctly forms style class name', function () {
             expect(Utils.get_element_style_class('Foo', 'bar')).toEqual('Foo__bar');
         });
@@ -70,6 +85,10 @@ describe('Utilities:', function () {
     });
 
     describe('get_modifier_style_class', function () {
+        it('gets style name from knowledge class', function () {
+            expect(Utils.get_modifier_style_class(BazClass, 'bar')).toEqual('Baz--bar');
+        });
+
         it('correctly forms style class name', function () {
             expect(Utils.get_modifier_style_class('Foo', 'bar')).toEqual('Foo--bar');
         });

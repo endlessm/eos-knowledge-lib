@@ -237,7 +237,7 @@ const TableOfContents = new Knowledge.Class({
         if (this._collapsed === v)
             return;
         this._collapsed = v;
-        let klass = Utils.get_modifier_style_class(TableOfContents.get_style_class(), 'collapsed');
+        let klass = Utils.get_modifier_style_class(TableOfContents, 'collapsed');
         if (this._collapsed) {
             this.get_style_context().add_class(klass);
         } else {
@@ -324,7 +324,7 @@ const TableOfContents = new Knowledge.Class({
             image: image,
             halign: Gtk.Align.CENTER
         });
-        let klass = Utils.get_element_style_class(TableOfContents.get_style_class(), 'arrow');
+        let klass = Utils.get_element_style_class(TableOfContents, 'arrow');
         arrow.get_style_context().add_class(klass);
         return arrow;
     },
@@ -413,7 +413,7 @@ const SectionButton = new Knowledge.Class({
 
     _init: function (section_title, section_index, params) {
         this.parent(params);
-        let entry_class = Utils.get_element_style_class(TableOfContents.get_style_class(), 'entry');
+        let entry_class = Utils.get_element_style_class(TableOfContents, 'entry');
         this.get_style_context().add_class(entry_class);
         section_title = section_title.toUpperCase();
         this.index = section_index;
@@ -426,7 +426,7 @@ const SectionButton = new Knowledge.Class({
             no_show_all: true
         });
 
-        let title_class = Utils.get_element_style_class(TableOfContents.get_style_class(), 'entryTitle');
+        let title_class = Utils.get_element_style_class(TableOfContents, 'entryTitle');
         this.title_label.get_style_context().add_class(title_class);
         this._title_bold = new Gtk.Label({
             label: "<b>" + GLib.markup_escape_text(section_title, -1) + "</b>",
@@ -445,7 +445,7 @@ const SectionButton = new Knowledge.Class({
         this.index_label = new Gtk.Label({
             label: (section_index + 1).toString()
         });
-        let index_class = Utils.get_element_style_class(TableOfContents.get_style_class(), 'entryIndex');
+        let index_class = Utils.get_element_style_class(TableOfContents, 'entryIndex');
         this.index_label.get_style_context().add_class(index_class);
 
         let box = new Gtk.Box({

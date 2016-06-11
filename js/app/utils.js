@@ -13,6 +13,7 @@ const Gtk = imports.gi.Gtk;
 
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
+const Knowledge = imports.app.knowledge;
 
 const DEFAULT_PAGE_TRANSITION_DURATION = 500;
 
@@ -399,7 +400,12 @@ function alignment_to_xalign (align) {
 
 // Gets a bem style class name.
 // e.g. Foo--big__bar--small
+// If a Knowledge.Class is passed in for block, will automatically use the
+// style class name.
 function get_bem_style_class (block, block_modifier, element, element_modifier) {
+    if (block && typeof block.get_style_class === 'function') {
+        block = block.get_style_class();
+    }
     if (!block)
         throw new Error('Trying to create bem style class with missing block');
     if (element_modifier && !element)
@@ -421,6 +427,8 @@ function get_bem_style_class (block, block_modifier, element, element_modifier) 
 
 // Gets a element style name prefixed with a block style name.
 // e.g. Foo__bar
+// If a Knowledge.Class is passed in for block, will automatically use the
+// classes style class name.
 function get_element_style_class (block, element) {
     if (!block || !element)
         throw new Error('Trying to create element style class with missing block or element');
@@ -429,6 +437,8 @@ function get_element_style_class (block, element) {
 
 // Gets a element style name prefixed with a block style name.
 // e.g. Foo--bar
+// If a Knowledge.Class is passed in for block, will automatically use the
+// classes style class name.
 function get_modifier_style_class (block, modifier) {
     if (!block || !modifier)
         throw new Error('Trying to create modifier style class with missing block or modifier');
