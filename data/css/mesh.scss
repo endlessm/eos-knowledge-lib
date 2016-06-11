@@ -290,66 +290,66 @@ $legacy-post-card-border-color-hover: white;
     background-color: $legacy-post-card-border-color-hover;
 }
 
-/* ===== Table of contents styling ===== */
-.toc-entry {
-    color: rgb(204, 204, 204);
-    font-weight: 900;  /* Black */
-    font-size: .7em;
-    background-color: transparent;
-    transition: background-color 150ms ease-in-out;
-    border-radius: 1.75em;
-    padding: .75em 0em .75em 0em;
-    margin-bottom: .4em;
-}
+.TableOfContents {
+    &__entry {
+        color: rgb(204, 204, 204);
+        font-weight: 900;  /* Black */
+        font-size: .7em;
+        background-color: transparent;
+        transition: background-color 150ms ease-in-out;
+        border-radius: 1.75em;
+        padding: .75em 0em .75em 0em;
+        margin-bottom: .4em;
 
-.toc-entry-title {
-    padding-left: 1.5em;
-}
+        &:hover,
+        &:selected {
+            color: white;
+        }
 
-.toc-entry-index {
-    padding: 0em 2em 0em 2em;
-}
+        &:selected {
+            background-color: transparentize(white, 1 - 0.247);
+        }
+    }
 
-.toc-entry:hover,
-.toc-entry:selected {
-    color: white;
-}
+    &__entryTitle {
+        padding-left: 1.5em;
+    }
 
-.toc-entry:selected {
-    background-color: transparentize(white, 1 - 0.247);
-}
+    &__entryIndex {
+        padding: 0em 2em 0em 2em;
+    }
 
-/* Table of contents up and down buttons */
-.toc-arrow {
-    color: rgb(204, 204, 204);
-    border-radius: 50%;
-    border-width: 1px;
-    border-style: solid;
-    border-color: transparentize(black, 1 - 0.3);
-    padding: 5px;
-    box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.3);
-}
+    &__arrow {
+        color: rgb(204, 204, 204);
+        border-radius: 50%;
+        border-width: 1px;
+        border-style: solid;
+        border-color: transparentize(black, 1 - 0.3);
+        padding: 5px;
+        box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.3);
 
-.toc-arrow:hover {
-    color: white;
-    border-color: transparentize(black, 1 - 0.4);
-    box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.4);
-}
+        &:hover {
+            color: white;
+            border-color: transparentize(black, 1 - 0.4);
+            box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.4);
+        }
 
-.toc-arrow:disabled {
-    color: transparentize(rgb(204, 204, 204), 1 - 0.3);
-    border-color: transparentize(black, 1 - 0.15);
-    box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.15);
-}
+        &:disabled {
+            color: transparentize(rgb(204, 204, 204), 1 - 0.3);
+            border-color: transparentize(black, 1 - 0.15);
+            box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.15);
+        }
+    }
 
-/* Style table of contents when collapsed without section titles */
-.TableOfContents.collapsed .toc-entry {
-    border-radius: 1.75em 0em 0em 1.75em;
-}
+    /* Style table of contents when collapsed without section titles */
+    &--collapsed &__entry {
+        border-radius: 1.75em 0em 0em 1.75em;
+    }
 
-.TableOfContents.collapsed .toc-entry-index {
-    padding-left: 0em;
-    padding-right: 0em;
+    &--collapsed &__entryIndex {
+        padding-left: 0em;
+        padding-right: 0em;
+    }
 }
 
 $tab-button-background: #F16E47;

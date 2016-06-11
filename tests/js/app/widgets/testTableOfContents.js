@@ -54,12 +54,12 @@ describe('Table of contents widget', function () {
     describe('Style class of table of contents', function () {
         it('has collapsed class when collapsed property true', function () {
             toc.collapsed = true;
-            expect(toc).toHaveCssClass('collapsed');
+            expect(toc).toHaveCssClass('TableOfContents--collapsed');
             toc.collapsed = false;
-            expect(toc).not.toHaveCssClass('collapsed');
+            expect(toc).not.toHaveCssClass('TableOfContents--collapsed');
         });
         it('has a descendant with toc entry class', function () {
-            expect(toc).toHaveDescendantWithCssClass('toc-entry');
+            expect(toc).toHaveDescendantWithCssClass('TableOfContents__entry');
         });
     });
 });
