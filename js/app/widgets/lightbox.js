@@ -261,6 +261,7 @@ const LightboxContainer = new Knowledge.Class({
             this.emit('close-clicked');
         }.bind(this));
 
+        let nav_button_class = Utils.get_element_style_class(Lightbox.get_style_class(), 'navigationButton');
         /**
          * Navigate previous button
          */
@@ -278,7 +279,7 @@ const LightboxContainer = new Knowledge.Class({
         this._previous_button.connect('clicked', function () {
             this.emit('navigation-previous-clicked');
         }.bind(this));
-        this._previous_button.get_style_context().add_class('lightbox-navigation-button');
+        this._previous_button.get_style_context().add_class(nav_button_class);
 
         /**
          * Navigate next button
@@ -297,7 +298,7 @@ const LightboxContainer = new Knowledge.Class({
         this._next_button.connect('clicked', function () {
             this.emit('navigation-next-clicked');
         }.bind(this));
-        this._next_button.get_style_context().add_class('lightbox-navigation-button');
+        this._next_button.get_style_context().add_class(nav_button_class);
 
         this.add(this._close_button);
         this.add(this._next_button);
@@ -349,7 +350,8 @@ const LightboxContainer = new Knowledge.Class({
         let context = this.get_style_context();
 
         context.save();
-        context.add_class('lightbox-shadow');
+        let shadow_class = Utils.get_element_style_class(Lightbox.get_style_class(), 'shadow');
+        context.add_class(shadow_class);
         let width = this.get_allocated_width();
         let height = this.get_allocated_height();
         Gtk.render_background(context, cr, 0, 0, width, height);
