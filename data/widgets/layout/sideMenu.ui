@@ -59,7 +59,7 @@
                   </object>
                 </child>
                 <style>
-                  <class name="menu-button"/>
+                  <class name="LayoutSideMenu__menuButton"/>
                 </style>
               </object>
               <packing>
@@ -67,12 +67,12 @@
               </packing>
             </child>
             <style>
-              <class name="context-bar"/>
+              <class name="LayoutSideMenu__contextBar"/>
             </style>
           </object>
         </child>
         <style>
-          <class name="context-bar-shadow-frame"/>
+          <class name="LayoutSideMenu__contextBarShadow"/>
         </style>
       </object>
       <packing>
@@ -99,7 +99,7 @@
         <property name="halign">start</property>
         <property name="valign">start</property>
         <style>
-          <class name="home-button"/>
+          <class name="LayoutSideMenu__homeButton"/>
         </style>
       </object>
       <packing>
@@ -121,7 +121,7 @@
           </object>
         </child>
         <style>
-          <class name="close-button"/>
+          <class name="LayoutSideMenu__closeButton"/>
         </style>
       </object>
       <packing>
@@ -142,7 +142,7 @@
       </packing>
     </child>
     <style>
-      <class name="menu"/>
+      <class name="LayoutSideMenu__menu"/>
     </style>
   </object>
 </interface>

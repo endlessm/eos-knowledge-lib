@@ -33,11 +33,11 @@ describe('Layout.SideMenu', function () {
     });
 
     it('has widgets with the proper CSS classes', function () {
-        expect(template).toHaveDescendantWithCssClass('close-button');
-        expect(template).toHaveDescendantWithCssClass('context-bar');
-        expect(template).toHaveDescendantWithCssClass('home-button');
-        expect(template).toHaveDescendantWithCssClass('menu');
-        expect(template).toHaveDescendantWithCssClass('menu-button');
+        expect(template).toHaveDescendantWithCssClass('LayoutSideMenu__closeButton');
+        expect(template).toHaveDescendantWithCssClass('LayoutSideMenu__menuButton');
+        expect(template).toHaveDescendantWithCssClass('LayoutSideMenu__homeButton');
+        expect(template).toHaveDescendantWithCssClass('LayoutSideMenu__contextBar');
+        expect(template).toHaveDescendantWithCssClass('LayoutSideMenu__menu');
     });
 
     it('packs all its children', function () {
