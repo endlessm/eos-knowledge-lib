@@ -87,15 +87,15 @@ describe('Window.App', function () {
             let search_page = factory.get_last_created('search-page');
             let article_page = factory.get_last_created('article-page');
             let all_sets_page = factory.get_last_created('all-sets-page');
-            view.show_page(home_page);
+            dispatcher.dispatch({ action_type: Actions.SHOW_HOME_PAGE });
             expect(view.get_visible_page()).toBe(home_page);
-            view.show_page(section_page);
+            dispatcher.dispatch({ action_type: Actions.SHOW_SECTION_PAGE });
             expect(view.get_visible_page()).toBe(section_page);
-            view.show_page(search_page);
+            dispatcher.dispatch({ action_type: Actions.SHOW_SEARCH_PAGE });
             expect(view.get_visible_page()).toBe(search_page);
-            view.show_page(article_page);
+            dispatcher.dispatch({ action_type: Actions.SHOW_ARTICLE_PAGE });
             expect(view.get_visible_page()).toBe(article_page);
-            view.show_page(all_sets_page);
+            dispatcher.dispatch({ action_type: Actions.SHOW_ALL_SETS_PAGE });
             expect(view.get_visible_page()).toBe(all_sets_page);
         });
 
@@ -160,12 +160,10 @@ describe('Window.App', function () {
         });
 
         it('disables the home button when in the home page', function () {
-            let home_page = factory.get_last_created('home-page');
-            let other_page = factory.get_last_created('section-page');
             expect(view._home_button).toBeDefined();
-            view.show_page(other_page);
+            dispatcher.dispatch({ action_type: Actions.SHOW_SECTION_PAGE });
             expect(view._home_button.sensitive).toBe(true);
-            view.show_page(home_page);
+            dispatcher.dispatch({ action_type: Actions.SHOW_HOME_PAGE });
             expect(view._home_button.sensitive).toBe(false);
         });
     });
@@ -242,12 +240,10 @@ describe('Window.App', function () {
         });
 
         it('disables the home button when in the brand page', function () {
-            let brand_page = factory.get_last_created('brand-page');
-            let other_page = factory.get_last_created('section-page');
             expect(view._home_button).toBeDefined();
-            view.show_page(other_page);
+            dispatcher.dispatch({ action_type: Actions.SHOW_SECTION_PAGE });
             expect(view._home_button.sensitive).toBe(true);
-            view.show_page(brand_page);
+            dispatcher.dispatch({ action_type: Actions.SHOW_BRAND_PAGE });
             expect(view._home_button.sensitive).toBe(false);
         });
     });

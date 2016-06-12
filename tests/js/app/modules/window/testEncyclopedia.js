@@ -50,12 +50,10 @@ describe('Window.Encyclopedia', function () {
     });
 
     it('disables the home button when in the home page', function () {
-        let home_page = factory.get_last_created('home-page');
-        let other_page = factory.get_last_created('search-page');
         expect(view._home_button).toBeDefined();
-        view.show_page(other_page);
+        dispatcher.dispatch({ action_type: Actions.SHOW_SEARCH_PAGE });
         expect(view._home_button.sensitive).toBe(true);
-        view.show_page(home_page);
+        dispatcher.dispatch({ action_type: Actions.SHOW_HOME_PAGE });
         expect(view._home_button.sensitive).toBe(false);
     });
 
