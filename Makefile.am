@@ -179,8 +179,6 @@ gresources += eos-knowledge.gresource
 eosknowledgeprivate_headers = \
 	lib/eosknowledgeprivate/eosknowledge.h \
 	lib/eosknowledgeprivate/ekn-enums.h \
-	lib/eosknowledgeprivate/ekn-history-item-model.h \
-	lib/eosknowledgeprivate/ekn-history-model.h \
 	lib/eosknowledgeprivate/ekn-macros.h \
 	lib/eosknowledgeprivate/ekn-types.h \
 	lib/eosknowledgeprivate/ekn-util.h \
@@ -189,8 +187,6 @@ eosknowledgeprivate_headers = \
 
 eosknowledgeprivate_sources = \
 	lib/eosknowledgeprivate/ekn-enums.c \
-	lib/eosknowledgeprivate/ekn-history-item-model.c \
-	lib/eosknowledgeprivate/ekn-history-model.c \
 	lib/eosknowledgeprivate/ekn-init.c lib/eosknowledgeprivate/ekn-init-private.h \
 	lib/eosknowledgeprivate/ekn-util.c \
 	$(NULL)
@@ -324,8 +320,6 @@ EXTRA_DIST += autobahn
 # # # TESTS # # #
 
 javascript_tests = \
-	tests/eosknowledgeprivate/testHistoryItemModel.js \
-	tests/eosknowledgeprivate/testHistoryModel.js \
 	tests/js/app/interfaces/testArrangement.js \
 	tests/js/app/interfaces/testCard.js \
 	tests/js/app/interfaces/testModule.js \
