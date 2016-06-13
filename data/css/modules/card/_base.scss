@@ -63,9 +63,4 @@
     font-family: $context-font;
     font-size: 16px;
     color: $primary-light-color;
-
-    /* FIXME: remove or update font-style after modularity issues are fixed */
-    .composite & {
-        font-style: normal;
-    }
 }

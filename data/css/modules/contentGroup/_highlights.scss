@@ -1,8 +1,3 @@
 .ContentGroupHighlights {
     margin: 50px 20px;
-
-    /* FIXME: remove or update this after modularity issues are fixed */
-    .composite & .CardTitle .title.label {
-        font-weight: normal;
-    }
 }
