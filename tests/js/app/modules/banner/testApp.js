@@ -45,7 +45,7 @@ describe('Banner.App', function () {
 
     it('has a subtitle with the subtitle CSS class', function () {
         let subtitle_widget = Gtk.test_find_label(app_banner, 'A Cute Pig');
-        expect(subtitle_widget).toHaveCssClass('subtitle');
+        expect(subtitle_widget).toHaveCssClass('BannerApp__subtitle');
     });
 
     it('justifies the subtitle appropriately to its alignment', function () {

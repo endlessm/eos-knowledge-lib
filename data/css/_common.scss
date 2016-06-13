@@ -6,11 +6,11 @@
 /* ===== AppBanner ===== */
 .BannerApp {
     font-size: 1.19em; /* 19px / 12px/em * 72/96 */
-}
 
-.BannerApp .subtitle {
-    letter-spacing: 0.74px;
-    margin-top: 70px;
+    &__subtitle {
+        letter-spacing: 0.74px;
+        margin-top: 70px;
+    }
 }
 
 /* ===== SearchBox ===== */
@@ -79,19 +79,64 @@
 }
 
 /* ===== LightBox ===== */
-.lightbox-navigation-button {
-    padding: 7px;
-    border-radius: 27px;
-    background-color: transparentize(#888a85, 1 - 0.5);
-    background-image: linear-gradient(-89deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.50) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 0, 0.24);
+.Lightbox {
+    &__navigationButton {
+        padding: 7px;
+        border-radius: 27px;
+        background-color: transparentize(#888a85, 1 - 0.5);
+        background-image: linear-gradient(-89deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.50) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 0, 0.24);
+
+        &:hover {
+            background-color: transparentize(#888a85, 1 - 0.8);
+        }
+    }
+
+    &__shadow {
+        background-color: transparentize(black, 1 - 0.9);
+    }
 }
 
-.lightbox-navigation-button:hover {
-    background-color: transparentize(#888a85, 1 - 0.8);
-}
+/* ===== InArticleSearch ===== */
+.InArticleSearch {
+    background-color: #dbdbdb;
+    padding: 3px;
 
-.lightbox-shadow {
-    background-color: transparentize(black, 1 - 0.9);
+    &__entry {
+        background: rgba(0,0,0,0.3);
+        padding: 0.5em .3em 0.5em .3em;
+        font-size: 13.3px;
+        color: #fff;
+        caret-color: #fff;
+
+        border-style: solid;
+        border-radius: 50px;
+
+        border-width: 3px;
+        border-color: rgba(0,0,0,0.25);
+
+        image {
+            margin: 0 3px;
+        }
+
+        selection {
+            color: rgba(0,0,0,0.7);
+            background-color: #fff;
+        }
+    }
+
+    &__button {
+        padding: 5px;
+        color: #7a7e7f;
+
+        &:hover {
+            color: #54595a;
+        }
+    }
+
+    .composite &__entry {
+        font-size: 21.1px;  /* 18 px spec * 88% because spec was at 110% scale not 125% */
+        background-color: transparentize(black, 1 - 0.8);
+    }
 }

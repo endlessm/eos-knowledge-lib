@@ -2,8 +2,8 @@
     margin-top: 40px;
 
     /* FIXME: remove or update :hover selector after issues with Title card are fixed */
-    .card .title,
-    .card:hover .title {
+    .Card .title,
+    .Card:hover .title {
         color: white;
         font-weight: bold;
         font-size: 54px;

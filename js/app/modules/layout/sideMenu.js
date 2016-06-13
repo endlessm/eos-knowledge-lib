@@ -10,6 +10,7 @@ const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
 const SlidingPanelOverlay = imports.app.widgets.slidingPanelOverlay;
+const Utils = imports.app.utils;
 
 const _MENU_HOT_ZONE_WIDTH_PX = 3;
 
@@ -75,12 +76,13 @@ const SideMenu = new Module.Class({
             this._context_bar.set_center_widget(context);
 
         this._menu_panel = this.add_panel_widget(this._menu_grid, Gtk.PositionType.LEFT);
+        let klass = Utils.get_element_style_class(SideMenu, 'panel');
+        this._menu_panel.get_style_context().add_class(klass);
 
         let sidebar = this.create_submodule('sidebar', {
             vexpand: true,
         });
         if (sidebar) {
-            sidebar.get_style_context().add_class('sidebar');
             this._menu_grid.attach(sidebar, 0, 2, 2, 1);
         }
 

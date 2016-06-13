@@ -13,6 +13,7 @@ const Gtk = imports.gi.Gtk;
 
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
+const Knowledge = imports.app.knowledge;
 
 const DEFAULT_PAGE_TRANSITION_DURATION = 500;
 
@@ -395,4 +396,51 @@ function alignment_to_xalign (align) {
                 0 : 1.0;
     }
     return 0.5;
+}
+
+// Gets a bem style class name.
+// e.g. Foo--big__bar--small
+// If a Knowledge.Class is passed in for block, will automatically use the
+// style class name.
+function get_bem_style_class (block, block_modifier, element, element_modifier) {
+    if (block && typeof block.get_style_class === 'function') {
+        block = block.get_style_class();
+    }
+    if (!block)
+        throw new Error('Trying to create bem style class with missing block');
+    if (element_modifier && !element)
+        throw new Error('Trying to modify element with no element name');
+    let join_modifier = function (name, modifier) {
+        if (!modifier)
+            return name;
+        return name + '--' + modifier;
+    };
+    let join_element = function (name, element) {
+        if (!element)
+            return name;
+        return name + '__' + element;
+    };
+    let klass = join_modifier(block, block_modifier);
+    klass = join_element(klass, join_modifier(element, element_modifier));
+    return klass;
+}
+
+// Gets a element style name prefixed with a block style name.
+// e.g. Foo__bar
+// If a Knowledge.Class is passed in for block, will automatically use the
+// classes style class name.
+function get_element_style_class (block, element) {
+    if (!block || !element)
+        throw new Error('Trying to create element style class with missing block or element');
+    return get_bem_style_class(block, '', element, '');
+}
+
+// Gets a element style name prefixed with a block style name.
+// e.g. Foo--bar
+// If a Knowledge.Class is passed in for block, will automatically use the
+// classes style class name.
+function get_modifier_style_class (block, modifier) {
+    if (!block || !modifier)
+        throw new Error('Trying to create modifier style class with missing block or modifier');
+    return get_bem_style_class(block, modifier, '', '');
 }

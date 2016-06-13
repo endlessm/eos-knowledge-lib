@@ -70,6 +70,7 @@ const Class = new Lang.Class({
         let metaclass = Lang.getMetaClass(props) || Lang.Class;
         let is_widget = metaclass === Gtk.Widget.prototype.__metaclass__;
         let old_init = props._init;
+        let style_class = props.Name.replace('.', '', 'g');
         props._init = function () {
             if (old_init)
                 old_init.apply(this, arguments);
@@ -78,7 +79,7 @@ const Class = new Lang.Class({
 
             // Automatically give widgets a style class based on their name
             if (is_widget)
-                this.get_style_context().add_class(props.Name.replace('.', '', 'g'));
+                this.get_style_context().add_class(style_class);
 
             if (this._interfaces_inited)
                 return;
@@ -98,6 +99,13 @@ const Class = new Lang.Class({
         };
 
         let newclass = metaclass.prototype._construct(props);
+        /**
+         * Method: get_style_class
+         * Gets the style class automatically applied to this module from its name.
+         */
+        newclass.get_style_class = function () {
+            return style_class;
+        };
 
         if (is_widget) {
             Object.keys(style_properties).forEach(prop =>

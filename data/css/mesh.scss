@@ -16,39 +16,6 @@ $template-b-text-color-highlighted: #333333;
     min-height: 200px;
 }
 
-.InArticleSearch {
-    background-color: #dbdbdb;
-    padding: 3px;
-}
-
-.InArticleSearch entry {
-    background: rgba(0,0,0,0.3);
-    padding: 0.5em .3em 0.5em .3em;
-    font-size: 13.3px;
-    color: #fff;
-    caret-color: #fff;
-
-    border-style: solid;
-    border-radius: 50px;
-
-    border-width: 3px;
-    border-color: rgba(0,0,0,0.25);
-}
-
-.InArticleSearch entry selection {
-    color: rgba(0,0,0,0.7);
-    background-color: #fff;
-}
-
-.InArticleSearch .button {
-    padding: 5px;
-    color: #7a7e7f;
-}
-
-.InArticleSearch .button:hover {
-    color: #54595a;
-}
-
 .Card.invisible {
     opacity: 0.0;
 }
@@ -290,66 +257,66 @@ $legacy-post-card-border-color-hover: white;
     background-color: $legacy-post-card-border-color-hover;
 }
 
-/* ===== Table of contents styling ===== */
-.toc-entry {
-    color: rgb(204, 204, 204);
-    font-weight: 900;  /* Black */
-    font-size: .7em;
-    background-color: transparent;
-    transition: background-color 150ms ease-in-out;
-    border-radius: 1.75em;
-    padding: .75em 0em .75em 0em;
-    margin-bottom: .4em;
-}
+.TableOfContents {
+    &__entry {
+        color: rgb(204, 204, 204);
+        font-weight: 900;  /* Black */
+        font-size: .7em;
+        background-color: transparent;
+        transition: background-color 150ms ease-in-out;
+        border-radius: 1.75em;
+        padding: .75em 0em .75em 0em;
+        margin-bottom: .4em;
 
-.toc-entry-title {
-    padding-left: 1.5em;
-}
+        &:hover,
+        &:selected {
+            color: white;
+        }
 
-.toc-entry-index {
-    padding: 0em 2em 0em 2em;
-}
+        &:selected {
+            background-color: transparentize(white, 1 - 0.247);
+        }
+    }
 
-.toc-entry:hover,
-.toc-entry:selected {
-    color: white;
-}
+    &__entryTitle {
+        padding-left: 1.5em;
+    }
 
-.toc-entry:selected {
-    background-color: transparentize(white, 1 - 0.247);
-}
+    &__entryIndex {
+        padding: 0em 2em 0em 2em;
+    }
 
-/* Table of contents up and down buttons */
-.toc-arrow {
-    color: rgb(204, 204, 204);
-    border-radius: 50%;
-    border-width: 1px;
-    border-style: solid;
-    border-color: transparentize(black, 1 - 0.3);
-    padding: 5px;
-    box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.3);
-}
+    &__arrow {
+        color: rgb(204, 204, 204);
+        border-radius: 50%;
+        border-width: 1px;
+        border-style: solid;
+        border-color: transparentize(black, 1 - 0.3);
+        padding: 5px;
+        box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.3);
 
-.toc-arrow:hover {
-    color: white;
-    border-color: transparentize(black, 1 - 0.4);
-    box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.4);
-}
+        &:hover {
+            color: white;
+            border-color: transparentize(black, 1 - 0.4);
+            box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.4);
+        }
 
-.toc-arrow:disabled {
-    color: transparentize(rgb(204, 204, 204), 1 - 0.3);
-    border-color: transparentize(black, 1 - 0.15);
-    box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.15);
-}
+        &:disabled {
+            color: transparentize(rgb(204, 204, 204), 1 - 0.3);
+            border-color: transparentize(black, 1 - 0.15);
+            box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.15);
+        }
+    }
 
-/* Style table of contents when collapsed without section titles */
-.TableOfContents.collapsed .toc-entry {
-    border-radius: 1.75em 0em 0em 1.75em;
-}
+    /* Style table of contents when collapsed without section titles */
+    &--collapsed &__entry {
+        border-radius: 1.75em 0em 0em 1.75em;
+    }
 
-.TableOfContents.collapsed .toc-entry-index {
-    padding-left: 0em;
-    padding-right: 0em;
+    &--collapsed &__entryIndex {
+        padding-left: 0em;
+        padding-right: 0em;
+    }
 }
 
 $tab-button-background: #F16E47;
@@ -531,50 +498,54 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
     padding: 20px 0px;
 }
 
-.nav-back-button, .nav-forward-button {
-    color: white;
-    background-color: transparentize(black, 1 - 0.2);
-    border: 1px solid transparentize(white, 1 - 0.4);
-    box-shadow: inset 0px 1px 1px 0px transparentize(black, 1 - 0.5),
-        inset 0px 1px 4px 0px transparentize(black, 1 - 0.4);
-    -EknGrowButton-grow-pixels: 15;
-}
+.NavButtonOverlay {
+    &__backButton,
+    &__forwardButton {
+        color: white;
+        background-color: transparentize(black, 1 - 0.2);
+        border: 1px solid transparentize(white, 1 - 0.4);
+        box-shadow: inset 0px 1px 1px 0px transparentize(black, 1 - 0.5),
+            inset 0px 1px 4px 0px transparentize(black, 1 - 0.4);
+        -EknGrowButton-grow-pixels: 15;
+    }
 
-.nav-back-button .ThemeableImage, .nav-forward-button .ThemeableImage {
-    color: white;
-    box-shadow: 0px 1px transparentize(black, 1 - 0.8); /* FIXME: box-shadow outset doesn't currently work in GTK */
-}
+    &__backButton,
+    &__forwardButton:dir(rtl) {
+        border-left: 0px;
+        border-radius: 0px 27px 27px 0px;
+        padding: 15px;
+    }
 
-.nav-back-button, .nav-forward-button:dir(rtl) {
-    border-left: 0px;
-    border-radius: 0px 27px 27px 0px;
-    padding: 15px;
-}
+    &__forwardButton,
+    &__backButton:dir(rtl) {
+        border-radius: 27px 0px 0px 27px;
+        border-right: 0px;
+        padding: 15px;
+    }
 
-.nav-forward-button, .nav-back-button:dir(rtl) {
-    border-radius: 27px 0px 0px 27px;
-    border-right: 0px;
-    padding: 15px;
-}
+    &__backButtonImage,
+    &__forwardButtonImage {
+        color: white;
+        box-shadow: 0px 1px transparentize(black, 1 - 0.8); /* FIXME: box-shadow outset doesn't currently work in GTK */
+        min-width: 22px;
+        min-height: 22px;
+    }
 
-.nav-back-button .ThemeableImage {
-    -gtk-icon-source: -gtk-icontheme("go-previous-symbolic");
-    min-width: 22px;
-    min-height: 22px;
-}
+    &__backButtonImage {
+        -gtk-icon-source: -gtk-icontheme("go-previous-symbolic");
+    }
 
-.nav-forward-button .ThemeableImage {
-    -gtk-icon-source: -gtk-icontheme("go-next-symbolic");
-    min-width: 22px;
-    min-height: 22px;
-}
+    &__forwardButtonImage {
+        -gtk-icon-source: -gtk-icontheme("go-next-symbolic");
+    }
 
-.nav-back-button:dir(rtl) .ThemeableImage {
-    -gtk-icon-source: -gtk-icontheme("go-previous-symbolic-rtl");
-}
+    &__backButtonImage:dir(rtl) {
+        -gtk-icon-source: -gtk-icontheme("go-previous-symbolic-rtl");
+    }
 
-.nav-forward-button:dir(rtl) .ThemeableImage {
-    -gtk-icon-source: -gtk-icontheme("go-next-symbolic-rtl");
+    &__forwardButtonImage:dir(rtl) {
+        -gtk-icon-source: -gtk-icontheme("go-next-symbolic-rtl");
+    }
 }
 
 .PDFView {

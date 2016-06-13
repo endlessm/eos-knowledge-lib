@@ -15,7 +15,7 @@
         <property name="use_markup">True</property>
         <property name="wrap">True</property>
         <style>
-          <class name="subtitle"/>
+          <class name="BannerApp__subtitle"/>
         </style>
       </object>
       <packing>
