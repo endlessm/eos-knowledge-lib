@@ -9,10 +9,10 @@ const Actions = imports.app.actions;
 const Launcher = imports.app.interfaces.launcher;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
+const PagerSimple = imports.app.modules.pager.simple;
 const SearchBox = imports.app.modules.navigation.searchBox;
-const Simple = imports.app.modules.pager.simple;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
-const AppWindow = imports.app.modules.window.app;
+const WindowSimple = imports.app.modules.window.simple;
 
 const TEST_CONTENT_BUILDDIR = Utils.get_test_content_builddir();
 const BACKGROUND_URI = 'resource:///com/endlessm/thrones/kings_landing.jpg';
@@ -21,7 +21,7 @@ const BACKGROUND_URI = 'resource:///com/endlessm/thrones/kings_landing.jpg';
 let resource = Gio.Resource.load(TEST_CONTENT_BUILDDIR + 'test-content.gresource');
 resource._register();
 
-describe('Window.App', function () {
+describe('Window.Simple', function () {
     let app, dispatcher;
 
     beforeAll(function (done) {
@@ -52,13 +52,13 @@ describe('Window.App', function () {
 
         beforeEach(function () {
             [view, factory] = MockFactory.setup_tree({
-                type: AppWindow.App,
+                type: WindowSimple.Simple,
                 properties: {
                     application: app,
                 },
                 slots: {
                     'pager': {
-                        type: Simple.Simple,
+                        type: PagerSimple.Simple,
                         slots: {
                             'home-page': { type: null },
                             'search-page': { type: SearchBox.SearchBox },
@@ -202,7 +202,7 @@ describe('Window.App', function () {
 
     it('still packs the pager even without a lightbox and navigation module', function () {
         let [view, factory] = MockFactory.setup_tree({
-            type: AppWindow.App,
+            type: WindowSimple.Simple,
             properties: {
                 'application': app,
             },

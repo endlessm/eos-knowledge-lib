@@ -109,7 +109,7 @@ scss_partials = \
 	$(srcdir)/data/css/modules/layout/_sideMenu.scss \
 	$(srcdir)/data/css/modules/layout/_topMenu.scss \
 	$(srcdir)/data/css/modules/navigation/_searchBox.scss \
-	$(srcdir)/data/css/modules/window/_app.scss \
+	$(srcdir)/data/css/modules/window/_simple.scss \
 	$(srcdir)/data/templates/css/_eos-modal.scss \
 	$(srcdir)/data/templates/css/_eos-no-link.scss \
 	$(NULL)
@@ -388,8 +388,7 @@ javascript_tests = \
 	tests/js/app/modules/selection/testAllSets.js \
 	tests/js/app/modules/selection/testArticlesForSet.js \
 	tests/js/app/modules/selection/testSuggestedArticles.js \
-	tests/js/app/modules/window/testApp.js \
-	tests/js/app/modules/window/testEncyclopedia.js \
+	tests/js/app/modules/window/testSimple.js \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testDispatcher.js \
 	tests/js/app/testDominantColor.js \

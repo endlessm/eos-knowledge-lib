@@ -69,7 +69,7 @@ root:
   shortdef: 'Controller.Mesh(theme: mesh)'
   slots:
     window:
-      type: Window.App
+      type: Window.Simple
       slots:
         search: Navigation.SearchBox
         navigation: Layout.Navigation

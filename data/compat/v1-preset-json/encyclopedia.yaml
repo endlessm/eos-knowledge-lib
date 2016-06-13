@@ -61,7 +61,7 @@ root:
   shortdef: 'Controller.Mesh(theme: encyclopedia)'
   slots:
     window:
-      type: Window.Encyclopedia
+      type: Window.Simple
       slots:
         lightbox:
           type: ContentGroup.MediaLightbox

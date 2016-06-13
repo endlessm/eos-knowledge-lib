@@ -170,8 +170,7 @@
     <file>js/app/modules/selection/selection.js</file>
     <file>js/app/modules/selection/suggestedArticles.js</file>
     <file>js/app/modules/selection/xapian.js</file>
-    <file>js/app/modules/window/app.js</file>
-    <file>js/app/modules/window/encyclopedia.js</file>
+    <file>js/app/modules/window/simple.js</file>
     <file>js/app/moltresApplication.js</file>
     <file>js/app/readingHistoryModel.js</file>
     <file>js/app/setMap.js</file>
