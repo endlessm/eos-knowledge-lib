@@ -70,7 +70,10 @@ function extract_css_from_v1_description(json) {
             }';
             break;
         case 'encyclopedia':
-            css += '.article-page, .search-page {\
+            css += '.home-page {\
+                background-image: url("' + primary + '");\
+            }\
+            .article-page, .search-page {\
                 background-image: url("' + secondary + '");\
             }';
     }
