@@ -64,9 +64,6 @@ root:
   slots:
     window:
       type: Window.App
-      properties:
-        background-image-uri: "resource:///com/endlessm/knowledge/data/images/tools/forest.jpg"
-        blur-background-image-uri: "resource:///com/endlessm/knowledge/data/images/tools/forest.jpg"
       slots:
         search: Navigation.SearchBox
         navigation: Layout.Navigation
@@ -74,7 +71,12 @@ root:
           type: ContentGroup.MediaLightbox
           slots:
             card: Card.Media
-        home-page: *home-page
-        section-page: *section-page
-        search-page: *search-page
-        article-page: *article-page
+        pager:
+          type: Pager.ParallaxBackground
+          properties:
+            background-image-uri: "resource:///com/endlessm/knowledge/data/images/tools/forest.jpg"
+          slots:
+            home-page: *home-page
+            section-page: *section-page
+            search-page: *search-page
+            article-page: *article-page

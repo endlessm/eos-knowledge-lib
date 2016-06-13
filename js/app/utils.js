@@ -341,8 +341,8 @@ function get_desktop_app_info () {
 // measures to stop the window from updating while powering a page transition.
 // We can really only afford to wake up each stack transition frame for a redraw
 // on low powered devices. That means no style recomputes, no widget creation,
-// no other css transitions (with the exception of the window background
-// parallax which is part of our page transition).
+// no other css transitions (with the exception of Pager.ParallaxBackground
+// which is part of our page transition).
 // These steps ensure that we will only need to redraw every frame. If we rework
 // how state propagates from our controllers to our modules, we may be able to
 // stop pausing the dispatcher. As gtk improvements land, we may be able to stop
@@ -351,7 +351,7 @@ let no_transition_provider;
 function squash_all_window_content_updates_heavy_handedly (window) {
     if (!no_transition_provider) {
         no_transition_provider = new Gtk.CssProvider();
-        no_transition_provider.load_from_data('EosWindow * { transition-property: none; }');
+        no_transition_provider.load_from_data('EosWindow :not(.PagerParallaxBackground) { transition-property: none; }');
     }
     Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
         no_transition_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 10);

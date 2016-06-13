@@ -2,8 +2,6 @@
 
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
-const GdkPixbuf = imports.gi.GdkPixbuf;
-const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
@@ -12,13 +10,6 @@ const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
 const SearchBox = imports.app.modules.navigation.searchBox;
 const Utils = imports.app.utils;
-
-/**
- * Defines how much the background slides when switching pages, and
- * therefore also how zoomed in the background image is from its
- * original size.
- */
-const PARALLAX_BACKGROUND_SCALE = 1.1;
 
 /**
  * Class: Window.App
@@ -30,50 +21,16 @@ const PARALLAX_BACKGROUND_SCALE = 1.1;
  * used to show content above either of these pages.
  *
  * Slots:
- *   all-sets-page - optional
- *   article-page
- *   brand-page - optional
- *   home-page
  *   lightbox
  *   navigation - optional
+ *   pager
  *   search
- *   search-page
- *   section-page
  */
 const App = new Module.Class({
     Name: 'Window.App',
     Extends: Endless.Window,
 
     Properties: {
-        /**
-         * Property: background-image-uri
-         *
-         * The background image uri for this window.
-         * Gets set on home page of the application.
-         */
-        'background-image-uri': GObject.ParamSpec.string('background-image-uri', 'Background image URI',
-            'The background image of this window.',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            ''),
-        /**
-         * Property: blur-background-image-uri
-         *
-         * The blurred background image uri for this window.
-         * Gets set on section and article pages of the application.
-         */
-        'blur-background-image-uri': GObject.ParamSpec.string('blur-background-image-uri', 'Blurred background image URI',
-            'The blurred background image of this window.',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            ''),
-        /**
-         * Property: template-type
-         *
-         * A string for the template type the window should render as
-         * currently support 'A' and 'B' templates.
-         */
-        'template-type':  GObject.ParamSpec.string('template-type', 'Template Type',
-            'Which template the window should display with',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, 'A'),
         /**
          * Property: animating
          *
@@ -84,27 +41,13 @@ const App = new Module.Class({
         'animating': GObject.ParamSpec.boolean('animating',
             'Animating', 'Animating',
             GObject.ParamFlags.READABLE, false),
-        /**
-         * Property: animations
-         *
-         * Enables the animations during page transitions for this window.
-         */
-        'animations': GObject.ParamSpec.boolean('animations',
-            'Animations',
-            'Enables the animations during page transitions for this window',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
     },
 
     Slots: {
-        'all-sets-page': {},  // optional
-        'article-page': {},
-        'brand-page': {},  // optional
-        'home-page': {},
         'lightbox': {},
         'navigation': {},  // optional
+        'pager': {},
         'search': {},
-        'search-page': {},
-        'section-page': {},
     },
 
     Signals: {
@@ -124,56 +67,11 @@ const App = new Module.Class({
     _init: function (props) {
         this.parent(props);
 
-        let context = this.get_style_context();
-        this._bg_size_provider = new Gtk.CssProvider();
-        context.add_provider(this._bg_size_provider,
-            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-
-        if (this.template_type === 'A')
-            this.get_style_context().add_class('preset-a');
-        else if (this.template_type === 'B')
-            this.get_style_context().add_class('preset-b');
-
-        this._stack = new Gtk.Stack({
-            transition_duration: 0,
-        });
-
-        this._brand_page = this.create_submodule('brand-page');
-        if (this._brand_page) {
-            this._brand_page.get_style_context().add_class('brand-page');
-            this._stack.add(this._brand_page);
-        }
-
-        this._home_page = this.create_submodule('home-page');
-        this._home_page.get_style_context().add_class('home-page');
-        this._stack.add(this._home_page);
-
-        this._section_page = this.create_submodule('section-page');
-        if (this._section_page) {
-            this._section_page.get_style_context().add_class('section-page');
-            this._stack.add(this._section_page);
-        }
-
-        this._search_page = this.create_submodule('search-page');
-        if (this._search_page) {
-            this._search_page.get_style_context().add_class('search-page');
-            this._stack.add(this._search_page);
-        }
-
-        this._article_page = this.create_submodule('article-page');
-        if (this._article_page) {
-            this._article_page.get_style_context().add_class('article-page');
-            this._stack.add(this._article_page);
-        }
-
-        this._all_sets_page = this.create_submodule('all-sets-page');
-        if (this._all_sets_page)
-            this._stack.add(this._all_sets_page);
-
         // We need to pack a bunch of modules inside each other, but some of
         // them are optional. "matryoshka" is the innermost widget that needs to
         // have something packed around it.
-        let matryoshka = this._stack;
+        this._pager = this.create_submodule('pager');
+        let matryoshka = this._pager;
 
         let navigation = this.create_submodule('navigation');
         if (navigation) {
@@ -212,45 +110,7 @@ const App = new Module.Class({
             center_topbar_widget: this._search_stack,
         });
 
-        let frame_css = '';
-        if (this.background_image_uri) {
-            frame_css += '\
-                .background-left { \
-                    background-image: url("' + this.background_image_uri + '");\
-                }\n';
-            try {
-                let stream = Gio.File.new_for_uri(this.background_image_uri).read(null);
-                let bg_pixbuf = GdkPixbuf.Pixbuf.new_from_stream(stream, null);
-                this._background_image_width = bg_pixbuf.width;
-                this._background_image_height = bg_pixbuf.height;
-            } catch (e) {
-                logError(e, 'Background image URI is not a valid format.');
-            }
-        }
-        if (this.blur_background_image_uri) {
-            frame_css += '\
-                .background-center, .background-right { \
-                    background-image: url("' + this.blur_background_image_uri + '");\
-                }';
-        }
-
-        if (frame_css !== '') {
-            let provider = new Gtk.CssProvider();
-            provider.load_from_data(frame_css);
-            context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-        }
-        if (!Utils.low_performance_mode())
-            this.get_style_context().add_class('parallax');
-
         let dispatcher = Dispatcher.get_default();
-        dispatcher.dispatch({
-            action_type: Actions.NAV_BACK_ENABLED_CHANGED,
-            enabled: false,
-        });
-        dispatcher.dispatch({
-            action_type: Actions.NAV_FORWARD_ENABLED_CHANGED,
-            enabled: false,
-        });
 
         this._home_button.connect('clicked', () => {
             dispatcher.dispatch({ action_type: Actions.HOME_CLICKED });
@@ -284,25 +144,20 @@ const App = new Module.Class({
                     this._present_timestamp = payload.timestamp;
                     break;
                 case Actions.SHOW_BRAND_PAGE:
-                    if (this._brand_page)
-                        this.show_page(this._brand_page);
-                    else
-                        this.show_page(this._home_page);
-                    break;
                 case Actions.SHOW_HOME_PAGE:
-                    this.show_page(this._home_page);
+                    this._home_button.sensitive = false;
+                    // Even if we didn't change, this should still count as the
+                    // first transition.
+                    this._update_top_bar_visibility();
+                    this._present_if_needed();
                     break;
                 case Actions.SHOW_SECTION_PAGE:
-                    this.show_page(this._section_page);
-                    break;
                 case Actions.SHOW_ALL_SETS_PAGE:
-                    this.show_page(this._all_sets_page);
-                    break;
                 case Actions.SHOW_SEARCH_PAGE:
-                    this.show_page(this._search_page);
-                    break;
                 case Actions.SHOW_ARTICLE_PAGE:
-                    this.show_page(this._article_page);
+                    this._home_button.sensitive = true;
+                    this._update_top_bar_visibility();
+                    this._present_if_needed();
                     break;
             }
         });
@@ -312,15 +167,15 @@ const App = new Module.Class({
 
         this.animating = false;
         let focused_widget = null;
-        this._stack.connect('notify::transition-running', function () {
-            this.animating = this._stack.transition_running;
+        this._pager.connect('notify::transition-running', function () {
+            this.animating = this._pager.transition_running;
             this.notify('animating');
-            if (this._stack.transition_running) {
-                context.add_class('animating');
+            if (this._pager.transition_running) {
+                this.get_style_context().add_class('animating');
                 focused_widget = this.get_focus();
                 Utils.squash_all_window_content_updates_heavy_handedly(this);
             } else {
-                context.remove_class('animating');
+                this.get_style_context().remove_class('animating');
                 Utils.unsquash_all_window_content_updates_heavy_handedly(this);
                 if (focused_widget && !this.get_focus()) {
                     focused_widget.grab_focus();
@@ -329,23 +184,14 @@ const App = new Module.Class({
             }
         }.bind(this));
 
-        this._stack.connect_after('notify::visible-child',
+        this._pager.connect_after('notify::visible-child',
             this._update_top_bar_visibility.bind(this));
 
         this.get_child().show_all();
-        this._set_background_position_style('background-left');
-    },
-
-    _set_background_position_style: function (klass) {
-        let context = this.get_style_context();
-        context.remove_class('background-left');
-        context.remove_class('background-center');
-        context.remove_class('background-right');
-        context.add_class(klass);
     },
 
     _update_top_bar_visibility: function () {
-        let new_page = this._stack.visible_child;
+        let new_page = this._pager.visible_child;
         if (Utils.has_descendant_with_type(new_page, SearchBox.SearchBox)) {
             this._search_stack.visible_child = this._invisible_frame;
         } else {
@@ -365,92 +211,7 @@ const App = new Module.Class({
     },
 
     make_ready: function (cb=function () {}) {
-        this._home_page.make_ready(cb);
-    },
-
-    show_page: function (new_page) {
-        // Disable the home button when the current page is the home or brand page
-        this._home_button.sensitive = (new_page !== this._home_page && new_page !== this._brand_page);
-
-        new_page.make_ready();
-        let old_page = this.get_visible_page();
-        if (old_page === new_page) {
-            // Even though we didn't change, this should still count as the
-            // first transition.
-            this._stack.transition_duration = Utils.DEFAULT_PAGE_TRANSITION_DURATION;
-            this._update_top_bar_visibility();
-            this._present_if_needed();
-            return;
-        }
-
-        let nav_back_visible = false;
-        if (this._is_page_on_left(new_page)) {
-            nav_back_visible = false;
-            this._set_background_position_style('background-left');
-        } else if (this._is_page_on_center(new_page)) {
-            nav_back_visible = true;
-            this._set_background_position_style('background-center');
-        } else {
-            nav_back_visible = true;
-            this._set_background_position_style('background-right');
-        }
-
-        this._set_page_transition_type(new_page, old_page);
-
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.NAV_BACK_ENABLED_CHANGED,
-            enabled: nav_back_visible,
-        });
-        this._stack.visible_child = new_page;
-
-        // The first transition on app startup has duration 0, subsequent ones
-        // are normal.
-        this._stack.transition_duration = Utils.DEFAULT_PAGE_TRANSITION_DURATION;
-        this._present_if_needed();
-    },
-
-    _is_page_on_center: function (page) {
-        return [this._section_page, this._search_page].indexOf(page) > -1;
-    },
-
-    _is_page_on_left: function (page) {
-        return [this._home_page, this._brand_page].indexOf(page) > -1;
-    },
-
-    _set_page_transition_type: function (new_page, old_page) {
-        if (!this.animations) {
-            return;
-        } else if (this._is_page_on_left(new_page)) {
-            if (this._is_page_on_left(old_page)) {
-                this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
-            } else {
-                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
-            }
-        } else if (this._is_page_on_center(new_page)) {
-            if (this._is_page_on_left(old_page)) {
-                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
-            } else if (this._is_page_on_center(old_page)) {
-                this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
-            } else if (this.template_type === 'B') {
-                this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
-            } else {
-                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
-            }
-        } else {
-            if (this.template_type === 'B') {
-                this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
-            } else {
-                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
-            }
-        }
-    },
-
-    /**
-     * Method: get_visible_page
-     * Returns the currently visible page
-     */
-    get_visible_page: function () {
-        return this._stack.visible_child;
+        this._pager.make_ready(cb);
     },
 
     set_busy: function (busy) {
@@ -476,26 +237,5 @@ const App = new Module.Class({
             context.remove_class('window-small');
             context.add_class('window-large');
         }
-
-        if (Utils.low_performance_mode())
-            return;
-
-        // FIXME: if GTK gains support for the 'vmax' CSS unit, then we can move
-        // this calculation to pure CSS and get rid of the extra CSS provider.
-        // https://developer.mozilla.org/en-US/docs/Web/CSS/length
-        if (this.background_image_uri &&
-            (!this._last_allocation ||
-            this._last_allocation.width !== alloc.width ||
-            this._last_allocation.height !== alloc.height)) {
-            let bg_mult_ratio = Math.max(alloc.width / this._background_image_width,
-                alloc.height / this._background_image_height) *
-                PARALLAX_BACKGROUND_SCALE;
-            let bg_width = Math.ceil(this._background_image_width * bg_mult_ratio);
-            let bg_height = Math.ceil(this._background_image_height * bg_mult_ratio);
-            let frame_css = '* { background-size: ' + bg_width + 'px ' +
-                bg_height + 'px; }';
-            this._bg_size_provider.load_from_data(frame_css);
-        }
-        this._last_allocation = alloc;
     }
 });

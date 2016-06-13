@@ -77,7 +77,10 @@ root:
           type: ContentGroup.MediaLightbox
           slots:
             card: Card.Media
-        home-page: *home-page
-        section-page: *section-page
-        search-page: *search-page
-        article-page: *article-page
+        pager:
+          type: Pager.ParallaxBackground
+          slots:
+            home-page: *home-page
+            section-page: *section-page
+            search-page: *search-page
+            article-page: *article-page

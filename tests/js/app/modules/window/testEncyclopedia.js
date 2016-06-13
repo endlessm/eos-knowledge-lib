@@ -37,10 +37,7 @@ describe('Window.Encyclopedia', function () {
                 'application': app,
             },
             slots: {
-                'home-page': { type: null },
-                'search-page': { type: null },
-                'article-page': { type: null },
-                'lightbox': { type: null },
+                'pager': { type: null },
             }
         });
     });

@@ -9,6 +9,7 @@ const GObject = imports.gi.GObject;
 
 const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
+const Compat = imports.app.compat.compat;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryItem = imports.app.historyItem;
@@ -54,9 +55,9 @@ const Mesh = new Module.Class({
 
         this._window = this.create_submodule('window', {
             application: this.application,
-            template_type: this.template_type,
             visible: false,
         });
+        Compat.add_preset_style_classes(this._window, this.template_type);
 
         this.load_theme();
 

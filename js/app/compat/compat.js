@@ -1,4 +1,9 @@
+/* exported add_preset_style_classes, extract_css_from_v1_description,
+load_v1_compatibility_preset, transform_v1_description */
+
+const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
+const Gtk = imports.gi.Gtk;
 
 const ModuleFactory = imports.app.moduleFactory;
 const Utils = imports.app.utils;
@@ -35,11 +40,43 @@ function transform_v1_description(json) {
 
     set_prop_for_type('Banner.App', 'image-uri', json['titleImageURI']);
     set_prop_for_type('Window.Encyclopedia', 'title', json['appTitle']);
-    set_prop_for_type('Window.Encyclopedia', 'home-background-uri', json['backgroundHomeURI']);
-    set_prop_for_type('Window.Encyclopedia', 'results-background-uri', json['backgroundSectionURI']);
     set_prop_for_type('Window.App', 'title', json['appTitle']);
-    set_prop_for_type('Window.App', 'background-image-uri', json['backgroundHomeURI']);
-    set_prop_for_type('Window.App', 'blur-background-image-uri', json['backgroundSectionURI']);
+    set_prop_for_type('Pager.ParallaxBackground', 'background-image-uri',
+        json['backgroundHomeURI']);
 
     return preset;
+}
+
+function add_preset_style_classes(win, template_type) {
+    if (template_type === 'A')
+        win.get_style_context().add_class('preset-a');
+    else if (template_type === 'B')
+        win.get_style_context().add_class('preset-b');
+}
+
+function extract_css_from_v1_description(json) {
+    let primary = json['backgroundHomeURI'];
+    let secondary = json['backgroundSectionURI'];
+
+    let css = '\nEosWindow { background-image: url("' + primary + '"); }\n';
+    switch (json['templateType']) {
+        case 'A':
+        case 'B':
+            css += '.PagerParallaxBackground--left {\
+                background-image: url("' + primary + '");\
+            }\
+            .PagerParallaxBackground--center, .PagerParallaxBackground--right {\
+                background-image: url("' + secondary + '");\
+            }';
+            break;
+        case 'encyclopedia':
+            css += '.article-page, .search-page {\
+                background-image: url("' + secondary + '");\
+            }';
+    }
+
+    let provider = new Gtk.CssProvider();
+    provider.load_from_data(css);
+    Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+        provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 }

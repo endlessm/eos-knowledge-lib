@@ -386,6 +386,8 @@ javascript_tests = \
 	tests/js/app/modules/order/testAlphabetical.js \
 	tests/js/app/modules/order/testFeatured.js \
 	tests/js/app/modules/order/testPublishedDate.js \
+	tests/js/app/modules/pager/testParallaxBackground.js \
+	tests/js/app/modules/pager/testSimple.js \
 	tests/js/app/modules/selection/testSuggestedArticles.js \
 	tests/js/app/modules/window/testApp.js \
 	tests/js/app/modules/window/testEncyclopedia.js \

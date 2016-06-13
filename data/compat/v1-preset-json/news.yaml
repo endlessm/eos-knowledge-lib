@@ -197,15 +197,18 @@ root:
   shortdef: 'Controller.Buffet(theme: news)'
   slots:
     window:
-      shortdef: 'Window.App(animations: false)'
+      type: Window.App
       slots:
         search: Navigation.SearchBox
         lightbox:
           type: ContentGroup.MediaLightbox
           slots:
             card: Card.Media
-        brand-page: 'Banner.App(show-subtitle: true)'
-        home-page: *home-page
-        section-page: *section-page
-        search-page: *search-page
-        article-page: *article-page
+        pager:
+          type: Pager.Simple
+          slots:
+            brand-page: 'Banner.App(show-subtitle: true)'
+            home-page: *home-page
+            section-page: *section-page
+            search-page: *search-page
+            article-page: *article-page
