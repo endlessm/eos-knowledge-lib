@@ -178,12 +178,17 @@ const Arrangement = new Lang.Interface({
         // Add cards for models that we don't have yet.
         this._models.forEach((model) => {
             ekn_id_set.add(model.ekn_id);
-            if (!this._cards_by_id.get(model.ekn_id))
+            let newly_created = false;
+            if (!this._cards_by_id.get(model.ekn_id)) {
                 this._cards_by_id.set(model.ekn_id, this._create_card(model));
+                newly_created = true;
+            }
 
             let card = this._cards_by_id.get(model.ekn_id);
             this.pack_card(card);
-            if (this.fade_cards)
+            // Fading in a card that already exists on the arrangement looks weird
+            // and is a performance hit.
+            if (this.fade_cards && newly_created)
                 this.fade_card_in(card);
             else
                 card.show_all();
