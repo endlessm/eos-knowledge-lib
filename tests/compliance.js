@@ -7,6 +7,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ContentObjectModel = imports.search.contentObjectModel;
+const SetObjectModel = imports.search.setObjectModel;
 const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
@@ -304,6 +305,8 @@ function test_selection_compliance (SelectionClass, setup=function () {}, extra_
                     'order': { type: Minimal.MinimalOrder },
                     'filter': { type: Minimal.TitleFilter },
                 }),
+            }, {
+                model: new SetObjectModel.SetObjectModel(),
             });
         });
 

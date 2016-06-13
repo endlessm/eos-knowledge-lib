@@ -59,7 +59,6 @@ $title-alt-font: 'Lato Thin' !default;
 @import 'modules/contentGroup/contentGroup';
 @import 'modules/contentGroup/mediaLightbox';
 @import 'modules/contentGroup/noResultsMessage';
-@import 'modules/contentGroup/thematic';
 
 @import 'modules/layout/infiniteScrolling';
 @import 'modules/layout/responsiveMargins';
@@ -104,7 +103,6 @@ $title-alt-font: 'Lato Thin' !default;
     /* Selects the nested ContentGroup inside the highlights content group */
     .ContentGroup {
         .ContentGroup__title, .ContentGroup__trigger {
-            margin-bottom: 10px;
             color: $accent-light-color;
             font-weight: 200;
 
@@ -179,14 +177,50 @@ $title-alt-font: 'Lato Thin' !default;
     }
 }
 
+.thematic-group {
+    padding: 20px;
+
+    .ContentGroup__title, .ContentGroup__trigger {
+        color: #044a80;
+        font-weight: 200;
+        &:hover {
+            color: #49bde3;
+        }
+    }
+
+    .ContentGroup__title {
+        font-size: 29.3px;
+    }
+
+    .ContentGroup__trigger {
+        font-size: 20px;
+    }
+
+    .separator {
+        background-color: #999999;
+        min-height: 1px;
+        margin: 4px 0px 10px 0px;
+    }
+
+    .composite & .ContentGroup__title {
+        font-weight: normal;
+    }
+    .ArrangementList {
+        margin: 0px;
+    }
+}
+
+.ContentGroup__title, .ContentGroup__trigger {
+    margin-bottom: 10px;
+}
+
 .ContentGroup__trigger {
 
     .DecorationThemeableImage {
         -gtk-icon-source: image-url('title-arrow-dark.svg');
         min-height: 10px;
         min-width: 11px;
-        margin-left: 5px;
-        margin-bottom: 5px;
+        margin: 0px 0px 3px 5px;
     }
 
     &:hover .DecorationThemeableImage {
