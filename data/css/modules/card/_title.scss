@@ -1,10 +1,5 @@
 .CardTitle {
     .title {
         font-family: $title-font;
-        color: $accent-light-color;
-    }
-
-    &:hover .title {
-        color: $accent-dark-color;
     }
 }
