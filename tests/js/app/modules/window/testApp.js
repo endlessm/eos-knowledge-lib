@@ -11,7 +11,6 @@ const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Launcher = imports.app.interfaces.launcher;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
-const MockWidgets = imports.tests.mockWidgets;
 const SearchBox = imports.app.modules.navigation.searchBox;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 const AppWindow = imports.app.modules.window.app;
@@ -67,7 +66,7 @@ describe('Window.App', function () {
                     'all-sets-page': { type: null },
                     'navigation': { type: null },
                     'lightbox': { type: null },
-                    'search': { type: MockWidgets.MockSearchBox },
+                    'search': { type: null },
                 },
             });
         });
@@ -186,7 +185,7 @@ describe('Window.App', function () {
                     'search-page': { type: SearchBox.SearchBox },
                     'article-page': { type: null },
                     'all-sets-page': { type: null },
-                    'search': { type: MockWidgets.MockSearchBox },
+                    'search': { type: null },
                 },
             });
         });
@@ -257,7 +256,7 @@ describe('Window.App', function () {
                 },
                 slots: {
                     'home-page': { type: null },
-                    'search': { type: MockWidgets.MockSearchBox },
+                    'search': { type: null },
                 },
             });
             view.destroy();

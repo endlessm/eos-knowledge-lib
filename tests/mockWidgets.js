@@ -1,7 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 /* exported MockEknWebview, MockHistoryButtons, MockRenderer,
-MockScrolledLayout, MockSearchBox, MockSizeWidget */
+MockScrolledLayout, MockSizeWidget */
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -24,20 +24,6 @@ const MockScrolledLayout = new Module.Class({
         this.create_submodule('content');
     },
     new_content_added: function () {},
-});
-
-const MockSearchBox = new Module.Class({
-    Name: 'MockSearchBox',
-    Extends: Gtk.Label,
-    Signals: {
-        'activate': {},
-        'text-changed': {},
-        'menu-item-selected': {},
-    },
-
-    set_menu_items: function () {},
-
-    set_text_programmatically: function () {},
 });
 
 const MockRenderer = new Knowledge.Class({
