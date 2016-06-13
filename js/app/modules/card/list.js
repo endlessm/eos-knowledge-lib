@@ -61,11 +61,17 @@ const List = new Module.Class({
     vfunc_size_allocate: function (alloc) {
         let text_width = alloc.width * this._TEXT_SIZE_RATIO;
         let image_width = alloc.height * this._IMAGE_WIDTH_RATIO;
-        let total_width = text_width + image_width;
-        let margin = alloc.width - total_width;
+        let total_width, margin;
+        if (alloc.width > text_width + image_width) {
+            total_width = text_width + image_width;
+            margin = (alloc.width - total_width) / 2;
+        } else {
+            total_width = alloc.width;
+            margin = 0;
+        }
 
         let card_alloc = new Gdk.Rectangle({
-            x: alloc.x + (margin / 2),
+            x: alloc.x + margin,
             y: alloc.y,
             width: total_width,
             height: alloc.height,
@@ -73,19 +79,27 @@ const List = new Module.Class({
 
         this.parent(card_alloc);
 
+        let context = this.get_style_context();
+        let flags = this.get_state_flags();
+
+        context.save();
+        context.set_state(flags);
+        let card_margins = context.get_margin(context.get_state());
+        context.restore();
+
         let image_alloc = new Gdk.Rectangle({
-            x: alloc.x + (margin / 2),
-            y: alloc.y,
-            width: image_width,
-            height: alloc.height,
+            x: alloc.x + margin + card_margins.left,
+            y: alloc.y + card_margins.top,
+            width: image_width - (card_margins.left + card_margins.right),
+            height: alloc.height - (card_margins.top + card_margins.bottom),
         });
         this._thumbnail_frame.size_allocate(image_alloc);
 
         let text_alloc = new Gdk.Rectangle({
-            x: alloc.x + (margin / 2) + image_width,
-            y: alloc.y,
-            width: text_width,
-            height: alloc.height,
+            x: alloc.x + margin + image_width + card_margins.left,
+            y: alloc.y + card_margins.top,
+            width: text_width - (card_margins.left + card_margins.right),
+            height: alloc.height - (card_margins.top + card_margins.bottom),
         });
         this._content_frame.size_allocate(text_alloc);
 

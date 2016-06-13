@@ -56,13 +56,12 @@ const Deck = new Module.Class({
         // FIXME: Would really be better to draw inside the frame directly
         // than try to suss out the position here. Really really, let's just
         // make this a border image in CSS
-        let context = this._thumbnail_frame.get_style_context();
-        let flags = this._thumbnail_frame.get_state_flags();
-        let margins = context.get_margin(flags);
+        let card_margins = this._get_widget_margins(this);
+        let thumbnail_frame_margins = this._get_widget_margins(this._thumbnail_frame);
         let sleeve_alloc = this._shadow_frame.get_allocation();
         let sleeve_offset = this._shadow_frame.get_window().get_position()[1] -
             this._overlay.get_allocation().y;
-        let shadow_top = sleeve_alloc.y + sleeve_alloc.height + sleeve_offset;
+        let shadow_top = sleeve_alloc.y + sleeve_alloc.height + sleeve_offset + card_margins.top;
 
         cr.save();
         Gdk.cairo_set_source_rgba(cr, new Gdk.RGBA({
@@ -71,14 +70,14 @@ const Deck = new Module.Class({
             blue: 0.6,
             alpha: 1.0,
         }));
-        cr.moveTo(0, shadow_top);
-        cr.lineTo(margins.left, shadow_top);
-        cr.lineTo(margins.left, shadow_top + margins.left);
+        cr.moveTo(card_margins.left, shadow_top);
+        cr.lineTo(card_margins.left + thumbnail_frame_margins.left, shadow_top);
+        cr.lineTo(card_margins.left + thumbnail_frame_margins.left, shadow_top + thumbnail_frame_margins.left);
         cr.fill();
-        cr.moveTo(sleeve_alloc.width, shadow_top);
-        cr.lineTo(sleeve_alloc.width - margins.right, shadow_top);
-        cr.lineTo(sleeve_alloc.width - margins.right,
-            shadow_top + margins.right);
+        cr.moveTo(card_margins.left + sleeve_alloc.width, shadow_top);
+        cr.lineTo(card_margins.left + sleeve_alloc.width - thumbnail_frame_margins.right, shadow_top);
+        cr.lineTo(card_margins.left + sleeve_alloc.width - thumbnail_frame_margins.right,
+            shadow_top + thumbnail_frame_margins.right);
         cr.fill();
         cr.restore();
 
@@ -87,4 +86,16 @@ const Deck = new Module.Class({
         cr.$dispose();  // workaround not freeing cairo context
         return Gdk.EVENT_PROPAGATE;
     },
+
+    _get_widget_margins: function (widget) {
+        let context = widget.get_style_context();
+        let flags = widget.get_state_flags();
+
+        context.save();
+        context.set_state(flags);
+        let margins = context.get_margin(context.get_state());
+        context.restore();
+
+        return margins;
+    }
 });

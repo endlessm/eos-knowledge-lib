@@ -289,7 +289,12 @@ function set_container_clip (container) {
 
 function render_border_with_arrow (widget, cr) {
     let context = widget.get_style_context();
-    let margins = context.get_margin(widget.get_state_flags());
+    let state = widget.get_state_flags();
+
+    context.save();
+    context.set_state(state);
+    let margins = context.get_margin(context.get_state());
+
     let width = widget.get_allocated_width() - margins.left - margins.right;
     let height = widget.get_allocated_height() - margins.top - margins.bottom;
 
@@ -302,6 +307,8 @@ function render_border_with_arrow (widget, cr) {
     // want to get the "outline" style rather than the "border" style, but
     // that is private to GTK and can only be accessed with render_focus().
     let color = context.get_border_color(context.get_state());
+    context.restore();
+
     cr.save();
     Gdk.cairo_set_source_rgba(cr, color);
     let corner_x = margins.left + width;

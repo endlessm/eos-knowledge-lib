@@ -4,8 +4,6 @@ defines:
 - &card-all-uppercase-properties
   title-capitalization: uppercase
   context-capitalization: uppercase
-- &arrangement-spacing-properties
-  spacing: 20
 
 # A few small repeated elements
 - &no-sets 'Filter.Sets(invert: true)'
@@ -31,7 +29,9 @@ defines:
         halign: start
     arrangement:
       # Note spacing different from all the other arrangements; on purpose?
-      shortdef: 'Arrangement.SquareGuys(max-rows: 1, spacing: 10)'
+      shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
+      styles:
+      - small-spaced-arrangement
       slots:
         card: *main-card
     selection: Selection.SuggestedArticles
@@ -42,7 +42,6 @@ defines:
     arrangement:
       type: Arrangement.SquareGuys
       properties:
-        <<: *arrangement-spacing-properties
         max-rows: 1
         valign: end
       slots:
@@ -82,7 +81,6 @@ defines:
                   slots:
                     highlight-arrangement:
                       type: Arrangement.Windshield
-                      properties: *arrangement-spacing-properties
                       slots:
                         card:
                           type: Card.Post
@@ -94,7 +92,6 @@ defines:
                         arrangement:
                           type: Arrangement.SquareGuys
                           properties:
-                            <<: *arrangement-spacing-properties
                             max-rows: 2
                           slots:
                             card: *main-card
@@ -122,7 +119,6 @@ defines:
                   slots:
                     arrangement:
                       type: Arrangement.Half
-                      properties: *arrangement-spacing-properties
                       slots:
                         card: *main-card
                     header-card: *header-card
@@ -163,7 +159,6 @@ defines:
               slots:
                 arrangement:
                   type: Arrangement.SquareGuys
-                  properties: *arrangement-spacing-properties
                   slots:
                     card: *set-card
 

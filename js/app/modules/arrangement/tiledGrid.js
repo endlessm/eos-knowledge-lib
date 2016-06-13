@@ -2,7 +2,6 @@
 
 /* exported TiledGrid */
 
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Arrangement = imports.app.interfaces.arrangement;
@@ -15,10 +14,6 @@ const TiledGrid = new Module.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        this.bind_property('spacing', this, 'column-spacing',
-            GObject.BindingFlags.SYNC_CREATE);
-        this.bind_property('spacing', this, 'row-spacing',
-            GObject.BindingFlags.SYNC_CREATE);
     },
 
     // Arrangement override

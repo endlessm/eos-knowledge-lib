@@ -26,7 +26,6 @@ const _HalfLayout = new Knowledge.Class({
     Extends: Endless.CustomContainer,
 
     _init: function (props={}) {
-        this.spacing = 0;
         this._small_card_mode = false;
         this._cards_per_row = MAX_CARDS_PER_ROW;
         this._featured_cards_count = FEATURED_CARDS_PER_ROW;
@@ -41,20 +40,20 @@ const _HalfLayout = new Knowledge.Class({
     },
 
     vfunc_get_preferred_width: function () {
-        return [MINIMUM_ARRANGEMENT_WIDTH + this.spacing, FOUR_CARDS_THRESHOLD * 2];
+        return [MINIMUM_ARRANGEMENT_WIDTH, FOUR_CARDS_THRESHOLD * 2];
     },
 
     vfunc_get_preferred_height: function () {
         this._featured_cards_count = this._get_featured_cards_count();
         // Calculate space for featured cards
         let featured_rows = Math.ceil(this._featured_cards_count / FEATURED_CARDS_PER_ROW);
-        let req_height = Arrangement.get_size_with_spacing(FEATURED_CARD_HEIGHT, featured_rows, this.spacing);
+        let req_height = FEATURED_CARD_HEIGHT * featured_rows;
 
         // Calculate space for support cards
         let children_count = this.get_children().length - this._featured_cards_count;
         let children_rows = Math.ceil(children_count / this._cards_per_row);
         let card_height = this._small_card_mode ? CARD_HEIGHT_MIN : CARD_HEIGHT_MAX;
-        req_height += card_height * children_rows + this.spacing * (children_rows - 1);
+        req_height += card_height * children_rows;
         return [req_height, req_height];
     },
 
@@ -62,17 +61,17 @@ const _HalfLayout = new Knowledge.Class({
         this.parent(alloc);
 
         this._featured_cards_count = this._get_featured_cards_count();
-        let three_column_mode = alloc.width + (MIN_CARDS_PER_ROW * this.spacing) < FOUR_CARDS_THRESHOLD;
+        let three_column_mode = alloc.width < FOUR_CARDS_THRESHOLD;
         this._small_card_mode = alloc.width < SMALL_CARDS_THRESHOLD;
         this._cards_per_row = (three_column_mode ? MIN_CARDS_PER_ROW : MAX_CARDS_PER_ROW);
 
-        let featured_card_width = Math.floor((alloc.width - this.spacing) / FEATURED_CARDS_PER_ROW);
-        let spare_pixels = alloc.width - (featured_card_width * FEATURED_CARDS_PER_ROW + this.spacing);
+        let featured_card_width = Math.floor(alloc.width / FEATURED_CARDS_PER_ROW);
+        let spare_pixels = alloc.width - (featured_card_width * FEATURED_CARDS_PER_ROW);
 
         let x = alloc.x;
         let y = alloc.y;
-        let delta_x = featured_card_width + this.spacing + spare_pixels;
-        let delta_y = FEATURED_CARD_HEIGHT + this.spacing;
+        let delta_x = featured_card_width + spare_pixels;
+        let delta_y = FEATURED_CARD_HEIGHT;
 
         let all_cards = this.get_parent().get_cards();
 
@@ -90,14 +89,13 @@ const _HalfLayout = new Knowledge.Class({
         });
 
         x = alloc.x;
-        let gutters_per_row = this._cards_per_row - 1;
-        let card_width = Math.floor((alloc.width - gutters_per_row * this.spacing) / this._cards_per_row);
+        let card_width = Math.floor(alloc.width / this._cards_per_row);
         let card_height = this._small_card_mode ? FEATURED_CARD_HEIGHT : CARD_HEIGHT_MAX;
-        delta_x = card_width + this.spacing;
+        delta_x = card_width;
 
         // Calculate spare pixels
         // The floor operation we do above may lead us to have 1..3 spare pixels
-        spare_pixels = alloc.width - (card_width * this._cards_per_row + this.spacing * gutters_per_row);
+        spare_pixels = alloc.width - (card_width * this._cards_per_row);
 
         // Child cards
         // Place rest of cards below the featured cards, in as many rows as needed
@@ -106,7 +104,7 @@ const _HalfLayout = new Knowledge.Class({
 
             if ((ix + 1) % this._cards_per_row === 0) {
                 x = alloc.x;
-                y += card_height + this.spacing;
+                y += card_height;
             } else {
                 x += delta_x + Arrangement.get_spare_pixels_for_card_index(spare_pixels, this._cards_per_row, ix);
             }
@@ -132,6 +130,7 @@ const _HalfLayout = new Knowledge.Class({
  */
 const Half = new Module.Class({
     Name: 'Arrangement.Half',
+    CssName: 'EknHalfArrangement',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],
 
@@ -153,17 +152,5 @@ const Half = new Module.Class({
     // Arrangement override
     unpack_card: function (card) {
         this._layout.remove(card);
-    },
-
-    get spacing() {
-        return this._layout.spacing;
-    },
-
-    set spacing(value) {
-        if (this._layout.spacing === value)
-            return;
-        this._layout.spacing = value;
-        this.notify('spacing');
-        this._layout.queue_resize();
     },
 });

@@ -22,7 +22,6 @@ const _WindshieldLayout = new Knowledge.Class({
 
     _init: function (props={}) {
         this._small_mode = false;
-        this.spacing = 0;
 
         this.parent(props);
     },
@@ -40,14 +39,13 @@ const _WindshieldLayout = new Knowledge.Class({
     },
 
     vfunc_get_preferred_width: function () {
-        return [Arrangement.get_size_with_spacing(CARD_SIZE_SMALL, SECOND_ROW_CARD_COUNT, this.spacing),
-            Arrangement.get_size_with_spacing(CARD_SIZE_MAX, SECOND_ROW_CARD_COUNT, this.spacing)];
+        return [CARD_SIZE_SMALL * SECOND_ROW_CARD_COUNT, CARD_SIZE_MAX * SECOND_ROW_CARD_COUNT];
     },
 
     vfunc_get_preferred_height_for_width: function (width) {
-        this._small_mode = (width < Arrangement.get_size_with_spacing(CARD_SIZE_BIG, SECOND_ROW_CARD_COUNT, this.spacing));
+        this._small_mode = (width < CARD_SIZE_BIG * SECOND_ROW_CARD_COUNT);
         let card_size = CARD_SIZE_SMALL * (this._small_mode ? SECOND_ROW_CARD_COUNT - 1 : SECOND_ROW_CARD_COUNT);
-        let height = card_size + this.spacing;
+        let height = card_size;
         return [height, height];
     },
 
@@ -60,20 +58,17 @@ const _WindshieldLayout = new Knowledge.Class({
 
         let all_cards = this.get_parent().get_cards();
 
-        this._small_mode = (alloc.width < Arrangement.get_size_with_spacing(CARD_SIZE_BIG, SECOND_ROW_CARD_COUNT, this.spacing));
-
-        let available_width = alloc.width - ((SECOND_ROW_CARD_COUNT - 1) * this.spacing);
-        let available_height = alloc.height - this.spacing;
+        this._small_mode = (alloc.width < CARD_SIZE_BIG * SECOND_ROW_CARD_COUNT);
 
         let featured_height_factor = this._small_mode ? 0.5 : 2 / 3;
-        let featured_height = Math.floor(available_height * featured_height_factor);
-        let child_width = Math.floor(available_width / SECOND_ROW_CARD_COUNT);
-        let child_height = Math.floor(available_height * (1 - featured_height_factor));
-        let delta_x = child_width + this.spacing;
+        let featured_height = Math.floor(alloc.height * featured_height_factor);
+        let child_width = Math.floor(alloc.width / SECOND_ROW_CARD_COUNT);
+        let child_height = Math.floor(alloc.height * (1 - featured_height_factor));
+        let delta_x = child_width;
 
         // Calculate spare pixels
         // The floor operation we do above may lead us to have 1,2 spare pixels
-        let spare_pixels = alloc.width - (Arrangement.get_size_with_spacing(child_width, SECOND_ROW_CARD_COUNT, this.spacing));
+        let spare_pixels = alloc.width - (child_width * SECOND_ROW_CARD_COUNT);
 
         // Featured card:
         // Place the featured card at the at top of the arrangement
@@ -85,7 +80,7 @@ const _WindshieldLayout = new Knowledge.Class({
         Arrangement.place_card(featured_card, alloc.x, alloc.y, alloc.width, featured_height);
 
         let x = alloc.x;
-        let y = alloc.y + featured_height + this.spacing;
+        let y = alloc.y + featured_height;
 
         // Support cards:
         // Place three support cards in a row below the featured cards
@@ -144,17 +139,5 @@ const Windshield = new Module.Class({
     // Arrangement override
     unpack_card: function (card) {
         this._layout.remove(card);
-    },
-
-    get spacing() {
-        return this._layout.spacing;
-    },
-
-    set spacing(value) {
-        if (this._layout.spacing === value)
-            return;
-        this._layout.spacing = value;
-        this.notify('spacing');
-        this._layout.queue_resize();
     },
 });

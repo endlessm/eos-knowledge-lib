@@ -77,15 +77,34 @@ const ThemeableImage = new Knowledge.Class({
      },
 
     _get_margin: function () {
-        return this.get_style_context().get_margin(this.get_state_flags());
+        let context = this._get_fresh_state_context();
+        let margin = context.get_margin(context.get_state());
+        context.restore();
+        return margin;
     },
 
     _get_border: function () {
-        return this.get_style_context().get_border(this.get_state_flags());
+        let context = this._get_fresh_state_context();
+        let border = context.get_border(context.get_state());
+        context.restore();
+        return border;
     },
 
     _get_padding: function () {
-        return this.get_style_context().get_padding(this.get_state_flags());
+        let context = this._get_fresh_state_context();
+        let padding = context.get_padding(context.get_state());
+        context.restore();
+        return padding;
+    },
+
+    _get_fresh_state_context: function () {
+        let context = this.get_style_context();
+        let flags = this.get_state_flags();
+
+        context.save();
+        context.set_state(flags);
+
+        return context;
     },
 
     vfunc_get_request_mode: function () {

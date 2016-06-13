@@ -127,6 +127,12 @@ $context-blue: #7297a7;
     background-color: #0f1b3c;
 }
 
+/* Adjust context frame in supplementary article and suggested article cards */
+.supplementary-articles .CardThumb frame:nth-child(2),
+.ContentGroupSuggestedArticles .content-frame {
+    margin-top: -10px;
+}
+
 .search-page-suggestions {
     margin: 50px 0;
     padding-bottom: 20px;
