@@ -15,6 +15,7 @@ const Xapian = new Module.Class({
         this._loading = false;
         this._can_load_more = true;
         this._get_more = null;
+        this._query_index = 0;
 
         this.parent(props);
     },
@@ -27,8 +28,9 @@ const Xapian = new Module.Class({
         return this._can_load_more;
     },
 
-    construct_query_object: function (limit) {
+    construct_query_object: function (limit, query_index) {
         void limit;
+        void query_index;
         throw new Error('You should be implementing construct_query_object in your subclass');
     },
 
@@ -59,6 +61,11 @@ const Xapian = new Module.Class({
                 logError(e, 'Failed to load content from engine');
                 results = [];
                 more = null;
+            }
+
+            if (!more) {
+                this._query_index++;
+                more = this.construct_query_object(num_desired, this._query_index);
             }
 
             this._get_more = more;

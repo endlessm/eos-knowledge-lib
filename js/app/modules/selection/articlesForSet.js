@@ -27,7 +27,9 @@ const ArticlesForSet = new Module.Class({
         });
     },
 
-    construct_query_object: function (limit) {
+    construct_query_object: function (limit, query_index) {
+        if (query_index > 0)
+            return null;
         // FIXME: Once T12114 lands, we should modify this query to ensure
         // that this is getting only Articles, not Sets
         return new QueryObject.QueryObject({

@@ -12,7 +12,9 @@ const AllSets = new Module.Class({
     Name: 'AllSetsSelection',
     Extends: Xapian.Xapian,
 
-    construct_query_object: function (limit) {
+    construct_query_object: function (limit, query_index) {
+        if (query_index > 0)
+            return null;
         return new QueryObject.QueryObject({
             limit: limit,
             tags: ['EknSetObject'],

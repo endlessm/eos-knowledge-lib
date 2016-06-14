@@ -173,15 +173,22 @@ defines:
                             scroll-server: theme-scroll
                     - type: Layout.ResponsiveMargins
                       styles:
-                        - supplementary-articles
+                        - dark-background
                       slots:
                         content:
-                          type: ContentGroup.SupplementaryArticles
+                          type: ContentGroup.ContentGroup
+                          styles:
+                            - supplementary-articles
                           properties:
-                            <<: *suggestions-properties
-                            same-set: false
+                            valign: end
                           slots:
                             arrangement: *suggestions-arrangement
+                            title:
+                              shortdef: 'ContentGroup.StaticText(label: "other news", halign: start)'
+                              styles:
+                                - content-group-title
+                            selection:
+                              type: Selection.SupplementaryArticles
 
 - &search-page
   <<: *menu

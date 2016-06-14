@@ -100,7 +100,6 @@ scss_partials = \
 	$(srcdir)/data/css/modules/contentGroup/_hierarchicalSet.scss \
 	$(srcdir)/data/css/modules/contentGroup/_mediaLightbox.scss \
 	$(srcdir)/data/css/modules/contentGroup/_search.scss \
-	$(srcdir)/data/css/modules/contentGroup/_supplementaryArticles.scss \
 	$(srcdir)/data/css/modules/contentGroup/_thematic.scss \
 	$(srcdir)/data/css/modules/layout/_dynamicBackground.scss \
 	$(srcdir)/data/css/modules/layout/_infiniteScrolling.scss \
@@ -358,7 +357,6 @@ javascript_tests = \
 	tests/js/app/modules/contentGroup/testMediaLightbox.js \
 	tests/js/app/modules/contentGroup/testSearch.js \
 	tests/js/app/modules/contentGroup/testSet.js \
-	tests/js/app/modules/contentGroup/testSupplementaryArticles.js \
 	tests/js/app/modules/contentGroup/testThematic.js \
 	tests/js/app/modules/controller/testBuffet.js \
 	tests/js/app/modules/controller/testMesh.js \
@@ -388,6 +386,7 @@ javascript_tests = \
 	tests/js/app/modules/selection/testAllSets.js \
 	tests/js/app/modules/selection/testArticlesForSet.js \
 	tests/js/app/modules/selection/testSuggestedArticles.js \
+	tests/js/app/modules/selection/testSupplementaryArticles.js \
 	tests/js/app/modules/window/testSimple.js \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testDispatcher.js \
