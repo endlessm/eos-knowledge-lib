@@ -96,6 +96,7 @@ scss_partials = \
 	$(srcdir)/data/css/modules/card/_thumb.scss \
 	$(srcdir)/data/css/modules/card/_title.scss \
 	$(srcdir)/data/css/modules/contentGroup/_cardContainer.scss \
+	$(srcdir)/data/css/modules/contentGroup/_contentGroup.scss \
 	$(srcdir)/data/css/modules/contentGroup/_hierarchicalSet.scss \
 	$(srcdir)/data/css/modules/contentGroup/_highlights.scss \
 	$(srcdir)/data/css/modules/contentGroup/_mediaLightbox.scss \
