@@ -144,24 +144,6 @@ defines:
         article-suggestions: *article-suggestions
         category-suggestions: *category-suggestions
 
-- &all-sets-page
-  <<: *page-with-menu
-  slots:
-    <<: *page-with-menu-slots
-    content:
-      type: Layout.InfiniteScrolling
-      slots:
-        content:
-          type: Layout.ResponsiveMargins
-          slots:
-            content:
-              type: ContentGroup.Set
-              slots:
-                arrangement:
-                  type: Arrangement.SquareGuys
-                  slots:
-                    card: *set-card
-
 - &article-page
   <<: *page-with-menu
   slots:
