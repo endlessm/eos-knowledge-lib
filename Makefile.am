@@ -73,7 +73,14 @@ scss_partials = \
 	$(srcdir)/data/css/_colors.scss \
 	$(srcdir)/data/css/_common.scss \
 	$(srcdir)/data/css/_typography.scss \
+	$(srcdir)/data/css/modules/arrangement/_half.scss \
+	$(srcdir)/data/css/modules/arrangement/_list.scss \
+	$(srcdir)/data/css/modules/arrangement/_piano.scss \
+	$(srcdir)/data/css/modules/arrangement/_scrollingList.scss \
 	$(srcdir)/data/css/modules/arrangement/_sideBySide.scss \
+	$(srcdir)/data/css/modules/arrangement/_squareGuys.scss \
+	$(srcdir)/data/css/modules/arrangement/_thirties.scss \
+	$(srcdir)/data/css/modules/arrangement/_windshield.scss \
 	$(srcdir)/data/css/modules/banner/_app.scss \
 	$(srcdir)/data/css/modules/banner/_context.scss \
 	$(srcdir)/data/css/modules/banner/_search.scss \

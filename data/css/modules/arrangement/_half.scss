@@ -1,0 +1,9 @@
+$half-arrangement-spacing: 10px;
+
+.ArrangementHalf {
+    margin: $half-arrangement-spacing * -1;
+
+    .Card {
+        margin: $half-arrangement-spacing;
+    }
+}

@@ -4,7 +4,14 @@
 @import 'colors';
 @import 'typography';
 
+@import 'modules/arrangement/half';
+@import 'modules/arrangement/list';
+@import 'modules/arrangement/piano';
+@import 'modules/arrangement/scrollingList';
 @import 'modules/arrangement/sideBySide';
+@import 'modules/arrangement/squareGuys';
+@import 'modules/arrangement/thirties';
+@import 'modules/arrangement/windshield';
 
 @import 'modules/banner/app';
 @import 'modules/banner/context';

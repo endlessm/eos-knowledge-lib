@@ -1,0 +1,9 @@
+$piano-arrangement-spacing: 10px;
+
+.ArrangementPiano {
+    margin: $piano-arrangement-spacing * -1;
+
+    .Card {
+        margin: $piano-arrangement-spacing;
+    }
+}
