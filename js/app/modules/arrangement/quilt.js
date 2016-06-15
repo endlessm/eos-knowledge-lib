@@ -68,12 +68,15 @@ const SECONDARY_HORIZONTAL_PROPORTION = {
     LARGE: 3 / 12,
 };
 
+const CARD_COUNT_LG = 4;
+const CARD_COUNT_SM = 2;
+
 const _QuiltLayout = new Knowledge.Class({
     Name: 'Arrangement.QuiltLayout',
     Extends: Endless.CustomContainer,
 
     _init: function (props={}) {
-        this.total_cards_to_show = 4;
+        this.total_cards_to_show = CARD_COUNT_LG;
 
         this.parent(props);
     },
@@ -91,7 +94,7 @@ const _QuiltLayout = new Knowledge.Class({
     },
 
     vfunc_get_preferred_width: function () {
-        return [_PrimaryCard.Width.TINY + _SecondaryCard.Width.TINY, 4 * Card.MinSize.H];
+        return [_PrimaryCard.Width.TINY + _SecondaryCard.Width.TINY, CARD_COUNT_LG * Card.MinSize.H];
     },
 
     vfunc_get_preferred_height_for_width: function (width) {
@@ -135,15 +138,15 @@ const _QuiltLayout = new Knowledge.Class({
         Arrangement.place_card(all_cards[1], x, y, secondary_width, _SecondaryCard.Height[horizontal_mode]);
         x += secondary_width;
 
-        let invisible_cards_offset = 4;
+        let invisible_cards_offset = CARD_COUNT_LG;
         // Place support cards, if needed
         if (horizontal_mode === _HorizontalMode.LARGE) {
-            all_cards.slice(2, 4).forEach((card) => {
+            all_cards.slice(2, CARD_COUNT_LG).forEach((card) => {
                 Arrangement.place_card(card, x, y, support_width, _SupportCards.HEIGHT);
                 y += _SupportCards.HEIGHT;
             });
         } else {
-            invisible_cards_offset = 2;
+            invisible_cards_offset = CARD_COUNT_SM;
         }
 
         all_cards.slice(invisible_cards_offset).forEach((card) => {
@@ -155,14 +158,14 @@ const _QuiltLayout = new Knowledge.Class({
 
     _determine_horizontal_mode: function (width) {
         let horizontal_mode;
-        let total_cards_to_show = 2;
+        let total_cards_to_show = CARD_COUNT_SM;
         if (width < _HorizontalThreshold.TINY) {
             horizontal_mode = _HorizontalMode.TINY;
         } else if (width < _HorizontalThreshold.SMALL) {
             horizontal_mode = _HorizontalMode.SMALL;
         } else {
             horizontal_mode = _HorizontalMode.LARGE;
-            total_cards_to_show = 4;
+            total_cards_to_show = CARD_COUNT_LG;
         }
         return [horizontal_mode, total_cards_to_show];
     },
