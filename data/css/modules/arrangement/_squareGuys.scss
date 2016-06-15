@@ -1,0 +1,9 @@
+$square-arrangement-spacing: 10px;
+
+.ArrangementSquareGuys {
+    margin: $square-arrangement-spacing * -1;
+
+    .Card {
+        margin: $square-arrangement-spacing;
+    }
+}

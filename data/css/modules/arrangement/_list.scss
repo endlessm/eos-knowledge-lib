@@ -1,0 +1,9 @@
+$list-arrangement-spacing: 10px;
+
+.ArrangementList {
+    margin: $list-arrangement-spacing * -1;
+
+    .Card {
+        margin: $list-arrangement-spacing;
+    }
+}

@@ -3,9 +3,16 @@
         margin-bottom: 20px;
     }
 
-    .CardTitle .title {
-        font-size: 40px;
-        font-weight: bold;
+    .CardTitle {
+        .title {
+            color: $accent-light-color;
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        &:hover .title {
+            color: $accent-dark-color;
+        }
     }
 
     .composite & .CardTitle .title.label {

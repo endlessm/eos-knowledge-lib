@@ -1,0 +1,9 @@
+$windshield-arrangement-spacing: 10px;
+
+.ArrangementWindshield {
+    margin: $windshield-arrangement-spacing * -1;
+
+    .Card {
+        margin: $windshield-arrangement-spacing;
+    }
+}

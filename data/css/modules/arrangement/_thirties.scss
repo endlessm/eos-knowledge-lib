@@ -1,0 +1,9 @@
+$thirties-arrangement-spacing: 10px;
+
+.ArrangementThirties {
+    margin: $thirties-arrangement-spacing * -1;
+
+    .Card {
+        margin: $thirties-arrangement-spacing;
+    }
+}

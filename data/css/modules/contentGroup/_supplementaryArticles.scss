@@ -3,14 +3,14 @@
     padding: 0 20px 20px 0px;
 
     & > .title {
-        font-family: $title-font;
+        font-family: $display-font;
         font-weight: bold;
         font-size: 40px;
-        color: $accent-light-color;
+        color: $black-60-color;
         padding-bottom: 30px;
     }
 }
 
 .supplementary-articles {
-    background-color: $background-dark-color;
+    background-color: $background-light-color;
 }

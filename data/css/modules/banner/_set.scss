@@ -1,13 +1,11 @@
 .BannerSet {
     margin-top: 40px;
 
-    /* FIXME: remove or update :hover selector after issues with Title card are fixed */
-    .Card .title,
-    .Card:hover .title {
-        color: white;
+    .Card .title {
+        color: $primary-dark-color;
         font-weight: bold;
         font-size: 54px;
-        font-family: $title-font;
+        font-family: $display-font;
         padding-top: 50px;
     }
 }

@@ -2,7 +2,11 @@
     font-size: 18.7px;
 
     .title {
-        color: $primary-light-color;
+        color: $primary-medium-color;
+    }
+
+    &.highlighted .title {
+        color: white;
     }
 
     .content-frame {
@@ -49,17 +53,14 @@
 }
 
 .card-synopsis {
+    font-family: $body-font;
     color: $black-60-color;
     font-size: 18.7px;
     padding-top: 30px;
 }
 
 .card-context {
+    font-family: $context-font;
     font-size: 16px;
     color: $primary-light-color;
-
-    /* FIXME: remove or update font-style after modularity issues are fixed */
-    .composite & {
-        font-style: normal;
-    }
 }
