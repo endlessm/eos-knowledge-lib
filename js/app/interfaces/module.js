@@ -131,10 +131,16 @@ const Module = new Lang.Interface({
             ''),
     },
 
-    _submodules: function () {
-        if (typeof this._submodule_array === 'undefined')
-            this._submodule_array = [];
-        return this._submodule_array;
+    get submodules () {
+        if (!this._submodules_array) {
+            print("CREATING NEW ARRAY FOR " + this)
+            this._submodules_array = [];
+        }
+        return this._submodules_array;
+    },
+
+    set submodules (v) {
+        this._submodules_array = v;
     },
 
     /**
@@ -153,11 +159,12 @@ const Module = new Lang.Interface({
         let submodule = this.factory.create_module_for_slot(this, slot,
             extra_props);
 
+        // print(this)
         if (submodule) {
-            if (submodule.constructor === Array) {
-                this._submodule_array = this._submodules().concat(submodule);
+            if (Array.isArray(submodule)) {
+                this.submodules = this.submodules.concat(submodule);
             } else {
-                this._submodules().push(submodule);
+                this.submodules.push(submodule);
             }
         }
         return submodule;
@@ -186,15 +193,20 @@ const Module = new Lang.Interface({
      * Parameters:
      *   callback - function to be called whenever the module is ready.
      */
-    make_ready: function (cb) {
+    make_ready: function (cb = function () {}) {
         let count = 0;
-        if (this._submodules().length === 0 && typeof cb !== 'undefined')
+        if (this.submodules.length === 0)
             cb();
 
-        this._submodules().forEach((submodule) => {
+        let submodules = this.submodules;
+        // print(this + " is making ready its children ")
+        // submodules.forEach((m) => {print(m)});
+        // print("\n\n")
+        submodules.forEach((submodule) => {
+            print(submodule)
             submodule.make_ready(() => {
                 count++;
-                if (count == this._submodules().length && typeof cb !== 'undefined')
+                if (count == this.submodules.length)
                     cb();
             });
         });

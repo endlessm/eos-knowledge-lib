@@ -35,9 +35,7 @@ const SetPreview = new Module.Class({
     Implements: [Card.Card],
 
     Slots: {
-        'header-card': {
-            multi: true,
-        },
+        'header-card': {},
     },
 
     _init: function (props={}) {

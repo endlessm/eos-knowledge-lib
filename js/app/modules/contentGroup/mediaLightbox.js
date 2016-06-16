@@ -88,6 +88,8 @@ const MediaLightbox = new Module.Class({
         if (this._current_index === -1)
             return;
 
+        if (this.lightbox_widget)
+            this.submodules.pop();
         let card = this.create_submodule('card', {
             model: media_object
         });

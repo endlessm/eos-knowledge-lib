@@ -131,7 +131,7 @@ const Arrangement = new Lang.Interface({
             card_props.highlight_string = this._highlight_string;
         let card = this.create_submodule('card', card_props);
         this._cards_by_id.set(model.ekn_id, card);
-        card.make_ready();
+        // card.make_ready();
 
         // It's either this or have Card require Gtk.Button, but that would be
         // very bad for DocumentCards.
@@ -197,7 +197,11 @@ const Arrangement = new Lang.Interface({
 
         // Delete cards for models we don't need anymore
         [...this._cards_by_id.keys()].filter((key) => !ekn_id_set.has(key))
-                                     .forEach((key) => this._cards_by_id.delete(key));
+                                     .forEach((ekn_id) => {
+                                        let card = this._cards_by_id.get(ekn_id);
+                                        // this.submodules.splice(this.submodules.indexOf(card), 1);
+                                        this._cards_by_id.delete(key);
+                                    });
     },
 
     /**
