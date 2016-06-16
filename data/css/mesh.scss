@@ -404,36 +404,36 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
                                 $tab-button-gradient-light,
                                 $tab-button-gradient-dark);
     box-shadow: inset 0px 1px 4px 0px transparentize(white, 1 - 0.19);
-}
 
-.TabButton:dir(ltr) image {
-    padding-left: 15px;
-}
+    &:dir(ltr) image {
+        padding-left: 15px;
+    }
 
-.TabButton:dir(rtl) image {
-    padding-right: 15px;
-}
+    &:dir(rtl) image {
+        padding-right: 15px;
+    }
 
-.TabButton:hover {
-    background: linear-gradient(to bottom,
-                                $tab-button-gradient-hover-light,
-                                $tab-button-gradient-hover-dark);
-}
+    &:hover {
+        background: linear-gradient(to bottom,
+                                    $tab-button-gradient-hover-light,
+                                    $tab-button-gradient-hover-dark);
+    }
 
-.TabButton:active {
-    background: linear-gradient(to bottom,
-                                $tab-button-gradient-active-dark,
-                                $tab-button-gradient-active-light);
-}
+    &:active {
+        background: linear-gradient(to bottom,
+                                    $tab-button-gradient-active-dark,
+                                    $tab-button-gradient-active-light);
+    }
 
-.TabButton.bottom {
-    border-top-left-radius: 1.7em;
-    border-top-right-radius: 1.7em;
-}
+    &.bottom {
+        border-top-left-radius: 1.7em;
+        border-top-right-radius: 1.7em;
+    }
 
-.TabButton.top {
-    border-bottom-left-radius: 1.7em;
-    border-bottom-right-radius: 1.7em;
+    &.top {
+        border-bottom-left-radius: 1.7em;
+        border-bottom-right-radius: 1.7em;
+    }
 }
 
 .home-page-a .NavigationSearchBox, .home-page-b .NavigationSearchBox {
