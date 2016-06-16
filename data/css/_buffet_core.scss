@@ -54,10 +54,18 @@
 
 .ContentGroupSearch {
     background-color: #e7ecee;
-}
 
-.ContentGroupSearch .no-results {
-    background-color: white;
+    .no-results {
+        background-color: white;
+    }
+
+    spinner {
+        margin: 20px;
+    }
+
+    .composite & row {
+        padding: 0 40px;
+    }
 }
 
 .CardSetPreview:hover .title,
@@ -248,10 +256,6 @@
     color: #49bde3;
 }
 
-.ContentGroupSearch spinner {
-    margin: 20px;
-}
-
 .results-message-title,
 .results-message.subtitle {
     color: black;
@@ -363,10 +367,6 @@
 }
 
 /* Changes for composite TVs */
-
-.composite .ContentGroupSearch row {
-    padding: 0 40px;
-}
 
 .composite .card-context {
     font-style: normal;
