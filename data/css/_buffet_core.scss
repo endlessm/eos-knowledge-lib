@@ -143,40 +143,49 @@
 
 .CardList {
     margin: 10px 0;
+    background-color: white;
+    box-shadow: 0 0 5px transparentize(black, 1 - 0.25);
+    border-color: transparent;  /* used for the triangle in the corner */
+
+    &.width-d .title,
+    &.width-d .card-synopsis {
+        font-size: 18.7px;
+    }
+
+    &.width-e .title,
+    &.width-e .card-synopsis {
+        font-size: 18.7px;
+    }
+
+    &.width-f .title,
+    &.width-f .card-synopsis {
+        font-size: 21.3px;
+    }
+
+    &.width-g .title,
+    &.width-h .title {
+        font-size: 29.3px;
+    }
+
+    &.width-g .card-synopsis,
+    &.width-h .card-synopsis {
+        font-size: 24px;
+    }
+
+    &.width-e .content-frame,
+    &.width-f .content-frame {
+        padding: 20px;
+    }
+
+    .composite &.width-d .title,
+    .composite &.width-d .card-synopsis,
+    .composite &.width-e .title,
+    .composite &.width-e .card-synopsis {
+        font-size: 18.8px;  /* 16px spec * 88% because spec was at 110% scale not 125% */
+    }
 }
 
-.CardList.width-d .title,
-.CardList.width-d .card-synopsis {
-    font-size: 18.7px;
-}
-
-.CardList.width-e .title,
-.CardList.width-e .card-synopsis {
-    font-size: 18.7px;
-}
-
-.CardList.width-f .title,
-.CardList.width-f .card-synopsis {
-    font-size: 21.3px;
-}
-
-.CardList.width-g .title,
-.CardList.width-h .title {
-    font-size: 29.3px;
-}
-
-.CardList.width-g .card-synopsis,
-.CardList.width-h .card-synopsis {
-    font-size: 24px;
-}
-
-.CardList.width-e .content-frame,
-.CardList.width-f .content-frame {
-    padding: 20px;
-}
-
-.CardPost,
-.CardList {
+.CardPost {
     background-color: white;
     box-shadow: 0 0 5px transparentize(black, 1 - 0.25);
     border-color: transparent;  /* used for the triangle in the corner */
@@ -388,13 +397,6 @@
 
 .composite .card-context {
     font-style: normal;
-}
-
-.composite .CardList.width-d .title,
-.composite .CardList.width-d .card-synopsis,
-.composite .CardList.width-e .title,
-.composite .CardList.width-e .card-synopsis {
-    font-size: 18.8px;  /* 16px spec * 88% because spec was at 110% scale not 125% */
 }
 
 .composite .ContentGroupHighlights .CardTitle .title.label,
