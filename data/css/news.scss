@@ -15,19 +15,43 @@ scrollbar.vertical slider {
     background-color: #e9e5e0;
 }
 
-.results-message-background,
-.WindowApp scrollbar {
+.ContentGroupSearch {
+    background-color: transparent;
+
+    /* This used to be margin on the list cards inside, but ListCard doesn't support
+     * margin properly at the moment. */
+    .scrolling-list-grid {
+        padding: 0 200px;
+    }
+
+    .results-message-title {
+        font-family: 'Fira Sans';
+        color: $context-blue;
+        font-size: 30px;
+        padding: 50px 80px 30px 160px;
+    }
+
+    .results-message-subtitle {
+        font-family: Merriweather;
+        font-style: italic;
+        color: #666666;
+        font-size: 22px;
+        padding-bottom: 50px;
+        padding-left: 160px;
+    }
+}
+
+.results-message-title {
+    color: white;
+    padding-bottom: 30px;
+}
+
+.results-message-background {
     background-color: #e9e5e0;
 }
 
-.ContentGroupSearch {
-    background-color: transparent;
-}
-
-/* This used to be margin on the list cards inside, but ListCard doesn't support
- * margin properly at the moment. */
-.ContentGroupSearch .scrolling-list-grid {
-    padding: 0 200px;
+.WindowApp scrollbar {
+    background-color: #e9e5e0;
 }
 
 .Card .title {
@@ -169,27 +193,6 @@ scrollbar.vertical slider {
 
 .search-page-a separator {
     background-color: transparent;
-}
-
-.ContentGroupSearch .results-message-title {
-    font-family: 'Fira Sans';
-    color: $context-blue;
-    font-size: 30px;
-    padding: 50px 80px 30px 160px;
-}
-
-.results-message-title {
-    color: white;
-    padding-bottom: 30px;
-}
-
-.ContentGroupSearch .results-message-subtitle {
-    font-family: Merriweather;
-    font-style: italic;
-    color: #666666;
-    font-size: 22px;
-    padding-bottom: 50px;
-    padding-left: 160px;
 }
 
 .CardText {
