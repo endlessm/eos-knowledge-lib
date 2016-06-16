@@ -54,6 +54,11 @@ function object_path_from_app_id (app_id) {
     return '/' + app_id.replace(/\./g, '/').replace(/-/g, '_');
 }
 
+function app_is_flatpak () {
+    let path = GLib.build_filenamev([GLib.get_user_runtime_dir(), 'flatpak-info']);
+    return GLib.file_test(path, GLib.FileTest.EXISTS);
+}
+
 // String operations
 let parenthesize = (clause) => '(' + clause + ')';
 let capitalize = (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
