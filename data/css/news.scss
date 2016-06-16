@@ -360,15 +360,15 @@ scrollbar.vertical slider {
 
 .BannerSet {
     margin-top: 40px;
-}
 
-.BannerSet .Card .title,
-.BannerSet .Card:hover .title {
-    color: white;
-    font-weight: bold;
-    font-size: 54px;
-    font-family: Merriweather;
-    padding-top: 50px;
+    .Card .title,
+    .Card:hover .title {
+        color: white;
+        font-weight: bold;
+        font-size: 54px;
+        font-family: Merriweather;
+        padding-top: 50px;
+    }
 }
 
 .CardPost .title {
