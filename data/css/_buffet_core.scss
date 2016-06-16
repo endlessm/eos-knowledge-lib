@@ -28,14 +28,20 @@
     }
 }
 
-.BannerApp.brand-page .ThemeableImage {
-    -EknThemeableImage-sizing: "size-down";
-    min-width: 200px;
-    min-height: 200px;
-}
-
 .browse-content {
     padding: 20px 50px 0px 50px;
+}
+
+.BannerApp {
+    &.brand-page .ThemeableImage {
+        -EknThemeableImage-sizing: "size-down";
+        min-width: 200px;
+        min-height: 200px;
+    }
+
+    .composite & {
+        font-size: 22.3px;  /* 19px spec * 88% */
+    }
 }
 
 .LayoutScrolling,
@@ -377,8 +383,4 @@
 .composite .browse-content .title,
 .composite .CardDeck .title {
     font-weight: normal;
-}
-
-.composite .BannerApp {
-    font-size: 22.3px;  /* 19px spec * 88% */
 }
