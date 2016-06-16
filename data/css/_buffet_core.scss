@@ -125,10 +125,20 @@
     }
 }
 
-.CardThumb.width-d.height-b .content-frame,
-.CardThumb.width-e.height-b .content-frame,
-.CardThumb.width-e.height-c .content-frame {
-    padding: 20px 30px 20px 30px;
+.CardThumb {
+    background-color: white;
+    box-shadow: 0 0 5px transparentize(black, 1 - 0.25);
+    border-color: transparent;  /* used for the triangle in the corner */
+
+    &.width-d.height-b .content-frame,
+    &.width-e.height-b .content-frame,
+    &.width-e.height-c .content-frame {
+        padding: 20px 30px 20px 30px;
+    }
+
+    .composite & .card-context {
+        color: gray;
+    }
 }
 
 .CardList {
@@ -165,7 +175,6 @@
     padding: 20px;
 }
 
-.CardThumb,
 .CardPost,
 .CardList {
     background-color: white;
@@ -379,10 +388,6 @@
 
 .composite .card-context {
     font-style: normal;
-}
-
-.composite .CardThumb .card-context {
-    color: gray;
 }
 
 .composite .CardList.width-d .title,
