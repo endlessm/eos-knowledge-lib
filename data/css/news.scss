@@ -333,19 +333,23 @@ scrollbar.vertical slider {
     }
 }
 
-.CardThumb .title {
-    font-family: 'Fira Sans';
-    font-weight: bold;
-    color: $title-blue;
-    font-size: 18px;
-}
+.CardThumb {
+    box-shadow: 0px 5px 10px 0px transparentize(black, 1 - 0.22);
 
-.CardThumb .card-context {
-    font-family: 'Merriweather';
-    font-weight: bold;
-    font-style: normal;
-    color: $context-blue;
-    font-size: 14px;
+    .title {
+        font-family: 'Fira Sans';
+        font-weight: bold;
+        color: $title-blue;
+        font-size: 18px;
+    }
+
+    .card-context {
+        font-family: 'Merriweather';
+        font-weight: bold;
+        font-style: normal;
+        color: $context-blue;
+        font-size: 14px;
+    }
 }
 
 .Card.arrow {
@@ -374,8 +378,4 @@ scrollbar.vertical slider {
     color: $context-blue;
     font-family: 'Merriweather';
     font-weight: bold;
-}
-
-.CardThumb {
-    box-shadow: 0px 5px 10px 0px transparentize(black, 1 - 0.22);
 }
