@@ -53,19 +53,22 @@ $template-b-text-color-highlighted: #333333;
     }
 }
 
-.Card.invisible {
-    opacity: 0.0;
-}
+.Card {
+    &.invisible {
+        opacity: 0.0;
+    }
 
-.Card.fade-in {
-    transition: opacity 1000ms ease-in-out;
-    opacity: 1.0;
-}
+    &.fade-in {
+        transition: opacity 1000ms ease-in-out;
+        opacity: 1.0;
+    }
 
-.Card .thumbnail {
-    background-position: center;
-    background-size: 100% 100%;
-    border-width: 0px;
+    .thumbnail {
+        background-position: center;
+        background-size: 100% 100%;
+        border-width: 0px;
+    }
+
 }
 
 .section-page-a flowbox {
