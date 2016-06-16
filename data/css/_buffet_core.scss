@@ -68,7 +68,16 @@
     }
 }
 
-.CardSetPreview:hover .title,
+.CardSetPreview {
+    &:hover .title {
+        color: #49bde3;
+    }
+
+    .composite & .title {
+        font-weight: normal;
+    }
+}
+
 .CardTitle:hover .title {
     color: #49bde3;
 }
@@ -385,7 +394,6 @@
 
 .composite .ContentGroupHighlights .CardTitle .title.label,
 .composite .ContentGroupThematic .CardTitle .title.label,
-.composite .CardSetPreview .title,
 .composite .browse-content .title,
 .composite .CardDeck .title {
     font-weight: normal;
