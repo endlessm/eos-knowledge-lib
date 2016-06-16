@@ -14,10 +14,18 @@
     }
 }
 
-.ContentGroupSuggestedCategories separator {
-    background-color: #999999;
-    min-height: 1px;
-    margin: 4px 50px 20px 50px;
+.ContentGroupSuggestedCategories {
+    separator {
+        background-color: #999999;
+        min-height: 1px;
+        margin: 4px 50px 20px 50px;
+    }
+
+    .browse-content:hover {
+        .title {
+            color: #49bde3;
+        }
+    }
 }
 
 .BannerApp.brand-page .ThemeableImage {
@@ -40,7 +48,6 @@
     background-color: white;
 }
 
-.ContentGroupSuggestedCategories .browse-content:hover .title,
 .CardSetPreview:hover .title,
 .CardTitle:hover .title {
     color: #49bde3;
