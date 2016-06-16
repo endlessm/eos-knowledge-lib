@@ -338,24 +338,26 @@
     font-weight: bold;
 }
 
-.LayoutResponsiveMargins--tiny {
-    margin: 0px;
-}
+.LayoutResponsiveMargins {
+    &--tiny {
+        margin: 0px;
+    }
 
-.LayoutResponsiveMargins--small {
-    margin: 0px 40px;
-}
+    &--small {
+        margin: 0px 40px;
+    }
 
-.LayoutResponsiveMargins--medium {
-    margin: 0px 62px;
-}
+    &--medium {
+        margin: 0px 62px;
+    }
 
-.LayoutResponsiveMargins--large {
-    margin: 0px 83px;
-}
+    &--large {
+        margin: 0px 83px;
+    }
 
-.LayoutResponsiveMargins--xlarge {
-    margin: 0px 120px;
+    &--xlarge {
+        margin: 0px 120px;
+    }
 }
 
 .ArrangementHalf,
