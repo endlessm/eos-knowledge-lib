@@ -129,24 +129,30 @@ scrollbar.vertical slider {
     margin-top: 50px;
 }
 
-.ArrangementSideBySide .CardTitle label.title {
-    font-family: 'Fira Sans';
-    color: rgba(255, 255, 255, 0.6);
-    padding: 13px 0px 3px 0px;
-    font-size: 18px;
-}
+.ArrangementSideBySide {
+    .CardTitle {
+        label.title {
+            font-family: 'Fira Sans';
+            color: rgba(255, 255, 255, 0.6);
+            padding: 13px 0px 3px 0px;
+            font-size: 18px;
+        }
 
-.ArrangementSideBySide .CardTitle:hover label.title {
-    border-bottom: 1px solid $context-blue;
-    color: $context-blue;
-}
+        &:hover label.title {
+            border-bottom: 1px solid $context-blue;
+            color: $context-blue;
+        }
 
-.ArrangementSideBySide .CardTitle.highlighted label.title {
-    color: white;
-}
+        &.highlighted {
+            label.title {
+                color: white;
+            }
 
-.ArrangementSideBySide .CardTitle.highlighted:hover label.title {
-    border-bottom: none;
+            &:hover label.title {
+                border-bottom: none;
+            }
+        }
+    }
 }
 
 .ContentGroupHierarchicalSet {
