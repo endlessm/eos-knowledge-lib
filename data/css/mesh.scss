@@ -211,48 +211,71 @@ $template-b-text-color-highlighted: #333333;
     }
 }
 
-.LayoutSidebar .sidebar .CardTitle {
-    padding: 6px;
-    border: 2px solid transparentize(white, 1);
-    background-color: transparentize(white, 1);
-    transition: background-color 250ms ease-in-out,
-                background-image 250ms ease-in-out,
-                border 250ms ease-in-out;
-}
+.LayoutSidebar {
+    .sidebar {
+        .CardTitle {
+            padding: 6px;
+            border: 2px solid transparentize(white, 1);
+            background-color: transparentize(white, 1);
+            transition: background-color 250ms ease-in-out,
+                        background-image 250ms ease-in-out,
+                        border 250ms ease-in-out;
 
-.LayoutSidebar .sidebar .CardTitle .title {
-    padding: 0em 0em 0em 1.5em;
-    font-family: Lato;
-    font-size: 1.125em; /* 18pt * 1/12 * 0.75 DPI correction factor */
-    font-weight: normal;
-    color: $template-b-text-color;
-    transition: color 250ms ease-in-out;
-}
+            .title {
+                padding: 0em 0em 0em 1.5em;
+                font-family: Lato;
+                font-size: 1.125em; /* 18pt * 1/12 * 0.75 DPI correction factor */
+                font-weight: normal;
+                color: $template-b-text-color;
+                transition: color 250ms ease-in-out;
+            }
 
-.LayoutSidebar .sidebar .CardTitle:hover,
-.LayoutSidebar .sidebar .CardTitle.highlighted:hover {
-    border: 2px solid white;
-    background-color: transparentize(white, 1 - 0.9);
-    background-image: linear-gradient(-179deg,
-                                      transparentize(white, 1 - 0.05) 0%,
-                                      transparentize(black, 1 - 0.05) 100%);
-}
+            &:hover {
+                border: 2px solid white;
+                background-color: transparentize(white, 1 - 0.9);
+                background-image: linear-gradient(-179deg,
+                                                  transparentize(white, 1 - 0.05) 0%,
+                                                  transparentize(black, 1 - 0.05) 100%);
 
-.LayoutSidebar .sidebar .CardTitle:hover .title {
-    color: $template-b-text-color-hover;
-}
+                .title {
+                    color: $template-b-text-color-hover;
+                }
+            }
 
-.LayoutSidebar .sidebar .CardTitle.highlighted {
-    background: transparentize(white, 1 - 0.8);
-    text-shadow: 0px 1px 0px white;
-    font-weight: bold;
-    transition-property: none;
-}
+            &.highlighted {
+                background: transparentize(white, 1 - 0.8);
+                text-shadow: 0px 1px 0px white;
+                font-weight: bold;
+                transition-property: none;
 
-.LayoutSidebar .sidebar .CardTitle.highlighted .title,
-.LayoutSidebar .sidebar .CardTitle.highlighted:hover .title {
-    color: $template-b-text-color-highlighted;
-    transition-property: none;
+                .title {
+                    color: $template-b-text-color-highlighted;
+                    transition-property: none;
+                }
+
+                &:hover {
+                    border: 2px solid white;
+                    background-color: transparentize(white, 1 - 0.9);
+                    background-image: linear-gradient(-179deg,
+                                                      transparentize(white, 1 - 0.05) 0%,
+                                                      transparentize(black, 1 - 0.05) 100%);
+
+                    .title {
+                        color: $template-b-text-color-highlighted;
+                        transition-property: none;
+                    }
+                }
+            }
+        }
+    }
+
+    & .content {
+        background-image: linear-gradient(-180deg, rgba(0,0,0,0.0) 65%, rgba(0,0,0,0.30) 85%, rgba(0,0,0,0.70) 100%);
+    }
+
+    .composite & .sidebar .CardTitle .title {
+        font-family: Roboto;
+    }
 }
 
 .pdf-card-icon {
@@ -496,10 +519,6 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     background-color: #888888;
 }
 
-.LayoutSidebar .content {
-    background-image: linear-gradient(-180deg, rgba(0,0,0,0.0) 65%, rgba(0,0,0,0.30) 85%, rgba(0,0,0,0.70) 100%);
-}
-
 /* Hide scrollbars when animating, they look bad. */
 .animating scrollbar slider {
     background-color: transparent;
@@ -595,10 +614,6 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 
 .composite,
 .composite .title {
-    font-family: Roboto;
-}
-
-.composite .LayoutSidebar .sidebar .CardTitle .title {
     font-family: Roboto;
 }
 
