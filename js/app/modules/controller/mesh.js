@@ -60,9 +60,7 @@ const Mesh = new Module.Class({
 
         this.load_theme();
 
-        this.history_store = new HistoryStore.HistoryStore({
-            history_model: new EosKnowledgePrivate.HistoryModel(),
-        });
+        this.history_store = new HistoryStore.HistoryStore();
 
         this._current_set_id = null;
         this._current_search_query = '';
@@ -157,7 +155,7 @@ const Mesh = new Module.Class({
         });
     },
 
-    _on_history_item_change: function (presenter, item, is_going_back) {
+    _on_history_item_change: function (presenter, item, last_item, is_going_back) {
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
             action_type: Actions.HIDE_MEDIA,
@@ -189,7 +187,7 @@ const Mesh = new Module.Class({
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_ARTICLE,
                     model: item.model,
-                    animation_type: this._get_article_animation_type(item, is_going_back),
+                    animation_type: this._get_article_animation_type(item, last_item, is_going_back),
                 });
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_ARTICLE_PAGE,
@@ -217,7 +215,7 @@ const Mesh = new Module.Class({
     },
 
     _show_home_if_ready: function () {
-        let item = this.history_store.history_model.current_item;
+        let item = this.history_store.get_current_item();
         if (!item || item.page_type !== this.HOME_PAGE)
             return;
         if (!this._home_content_loaded)
@@ -246,8 +244,7 @@ const Mesh = new Module.Class({
         }
     },
 
-    _get_article_animation_type: function (item, is_going_back) {
-        let last_item = this.history_store.history_model.get_item(is_going_back ? 1 : -1);
+    _get_article_animation_type: function (item, last_item, is_going_back) {
         if (!last_item || last_item.page_type !== this.ARTICLE_PAGE)
             return EosKnowledgePrivate.LoadingAnimationType.NONE;
         if (is_going_back)
@@ -269,7 +266,7 @@ const Mesh = new Module.Class({
     },
 
     _on_back: function () {
-        let item = this.history_store.history_model.current_item;
+        let item = this.history_store.get_current_item();
         let types = item.page_type === this.ARTICLE_PAGE ?
             [this.HOME_PAGE, this.SECTION_PAGE, this.SEARCH_PAGE] : [this.HOME_PAGE];
         let item = this.history_store.search_backwards(-1,
@@ -460,7 +457,7 @@ const Mesh = new Module.Class({
     },
 
     _update_highlight: function () {
-        let item = this.history_store.history_model.current_item;
+        let item = this.history_store.get_current_item();
         if (item.page_type === this.ARTICLE_PAGE) {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.HIGHLIGHT_ITEM,

@@ -13,24 +13,6 @@ const HistoryItem = imports.app.historyItem;
 const HistoryStore = new GObject.Class({
     Name: 'HistoryStore',
 
-    Properties: {
-        /**
-         * Property: history-model
-         * Handle to EOS knowledge History Model
-         *
-         * Pass an instance of <HistoryModel> to this property.
-         * This is a property for purposes of dependency injection during
-         * testing.
-         *
-         * Flags:
-         *   Construct only
-         */
-        'history-model': GObject.ParamSpec.object('history-model', 'History Model',
-            'Handle to EOS knowledge History Model',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
-    },
-
     Signals: {
         /**
          * Event: history-item-changed
@@ -42,57 +24,73 @@ const HistoryStore = new GObject.Class({
          *   backwards - true if we are currently navigating backwards
          */
         'history-item-changed': {
-            param_types: [HistoryItem.HistoryItem, GObject.TYPE_BOOLEAN],
+            param_types: [GObject.TYPE_OBJECT, GObject.TYPE_OBJECT, GObject.TYPE_BOOLEAN],
         },
     },
 
     _init: function (props={}) {
         this.parent(props);
 
+        this._items = [];
+        this._index = -1;
+
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
                 case Actions.HISTORY_BACK_CLICKED:
-                    this.history_model.go_back();
-                    this.emit('history-item-changed', this.history_model.current_item, true);
+                    this._go_back();
                     break;
                 case Actions.HISTORY_FORWARD_CLICKED:
-                    this.history_model.go_forward();
-                    this.emit('history-item-changed', this.history_model.current_item, false);
+                    this._go_forward();
                     break;
             }
         });
 
-        this.history_model.connect('notify::can-go-back',
-                                   () => this._dispatch_history_enabled());
-        this.history_model.connect('notify::can-go-forward',
-                                   () => this._dispatch_history_enabled());
         this._dispatch_history_enabled();
-        this._last_item = null;
+    },
+
+    _go_back: function () {
+        if (!this._items || this._index <= 0)
+            return;
+        let last_item = this.get_current_item();
+        this._index = this._index - 1;
+        this.emit('history-item-changed', this.get_current_item(), last_item, true);
+        this._dispatch_history_enabled();
+    },
+
+    _go_forward: function () {
+        if (!this._items || this._index >= this._items.length - 1)
+            return;
+        let last_item = this.get_current_item();
+        this._index = this._index + 1;
+        this.emit('history-item-changed', this.get_current_item(), last_item, false);
+        this._dispatch_history_enabled();
     },
 
     _dispatch_history_enabled: function () {
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
             action_type: Actions.HISTORY_BACK_ENABLED_CHANGED,
-            enabled: this.history_model.can_go_back,
+            enabled: this._index > 0,
         });
         dispatcher.dispatch({
             action_type: Actions.HISTORY_FORWARD_ENABLED_CHANGED,
-            enabled: this.history_model.can_go_forward,
+            enabled: this._index < this._items.length - 1,
         });
     },
 
+    get_current_item: function () {
+        return this._items[this._index] || null;
+    },
+
     item_count: function () {
-        if (!this.history_model.current_item)
-            return 0;
-        // Current page plus our two list lengths
-        return this.history_model.get_back_list().length + 1 + this.history_model.get_forward_list().length;
+        return this._items.length;
     },
 
     set_current_item: function (item) {
-        if (this.history_model.current_item === null || !this.history_model.current_item.equals(item)) {
-            this.history_model.current_item = item;
-            this.emit('history-item-changed', this.history_model.current_item, false);
+        if (!this.get_current_item() || !this.get_current_item().equals(item)) {
+            this._items = this._items.slice(0, this._index + 1);
+            this._items.push(item);
+            this._go_forward();
         }
     },
 
@@ -110,8 +108,8 @@ const HistoryStore = new GObject.Class({
     search_backwards: function (index, match_fn) {
         let item;
         do {
-            item = this.history_model.get_item(index--);
-        } while (item !== null && !match_fn(item));
-        return item;
+            item = this._items[index--];
+        } while (item && !match_fn(item));
+        return item || null;
     },
 });

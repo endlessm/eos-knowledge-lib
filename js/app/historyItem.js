@@ -1,4 +1,3 @@
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 
 const ContentObjectModel = imports.search.contentObjectModel;
@@ -16,7 +15,7 @@ const Knowledge = imports.app.knowledge;
 const HistoryItem = new Knowledge.Class({
     Name: 'HistoryItem',
     Extends: GObject.Object,
-    Implements: [ EosKnowledgePrivate.HistoryItemModel ],
+
     Properties: {
         /**
          * Property: page-type
@@ -78,14 +77,6 @@ const HistoryItem = new Knowledge.Class({
         delete props.context;
 
         this.parent(props);
-    },
-
-    get title() {
-        return this._title;
-    },
-
-    set title(value) {
-        this._title = value;
     },
 
     equals: function (item) {

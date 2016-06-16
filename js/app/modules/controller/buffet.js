@@ -68,9 +68,7 @@ const Buffet = new Module.Class({
 
         this.load_theme();
 
-        this.history_store = new HistoryStore.HistoryStore({
-            history_model: new EosKnowledgePrivate.HistoryModel(),
-        });
+        this.history_store = new HistoryStore.HistoryStore();
 
         this._brand_page_timeout_id = 0;
 
@@ -156,7 +154,7 @@ const Buffet = new Module.Class({
                     break;
                 case Actions.PREVIOUS_DOCUMENT_CLICKED:
                 case Actions.NEXT_DOCUMENT_CLICKED:
-                    let item = this.history_store.history_model.current_item;
+                    let item = this.history_store.get_current_item();
                     this.history_store.set_current_item_from_props({
                         page_type: Pages.ARTICLE,
                         model: payload.model,
@@ -229,7 +227,7 @@ const Buffet = new Module.Class({
     },
 
     _update_highlight: function () {
-        let item = this.history_store.history_model.current_item;
+        let item = this.history_store.get_current_item();
         if (item.page_type === Pages.SET) {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.HIGHLIGHT_ITEM,
@@ -321,7 +319,7 @@ const Buffet = new Module.Class({
         this._update_highlight();
     },
 
-    _on_history_item_change: function (presenter, item, is_going_back) {
+    _on_history_item_change: function (presenter, item, last_item, is_going_back) {
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
             action_type: Actions.HIDE_MEDIA,
@@ -376,7 +374,6 @@ const Buffet = new Module.Class({
                 break;
             case Pages.ARTICLE:
                 let animation_type = EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
-                let last_item = this.history_store.history_model.get_item(is_going_back ? 1 : -1);
                 if (!last_item || last_item.page_type !== Pages.ARTICLE) {
                     animation_type = EosKnowledgePrivate.LoadingAnimationType.NONE;
                 } else if (is_going_back) {
@@ -427,7 +424,7 @@ const Buffet = new Module.Class({
     },
 
     _show_home_if_ready: function () {
-        let item = this.history_store.history_model.current_item;
+        let item = this.history_store.get_current_item();
         if (!item || item.page_type !== Pages.HOME)
             return;
         if (!this._content_ready)
