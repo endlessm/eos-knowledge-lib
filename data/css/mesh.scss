@@ -45,10 +45,12 @@ $template-b-text-color-highlighted: #333333;
     }
 }
 
-.BannerApp .ThemeableImage {
-    -EknThemeableImage-sizing: "size-down";
-    min-width: 200px;
-    min-height: 200px;
+.BannerApp {
+    .ThemeableImage {
+        -EknThemeableImage-sizing: "size-down";
+        min-width: 200px;
+        min-height: 200px;
+    }
 }
 
 .Card.invisible {
