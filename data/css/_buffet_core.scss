@@ -236,40 +236,44 @@
     }
 }
 
-.Card.CardPost .title {
-    padding-bottom: 20px;
-    color: white;
-}
-
-.CardDeck .thumbnail {
-    border: 0px solid transparent;  /* used for the triangle in the corner */
-    margin: 13px;
-}
-
 .CardDeck {
     background-image: url('../images/deckbg.svg');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-position: center;
+
+    .thumbnail {
+        border: 0px solid transparent;  /* used for the triangle in the corner */
+        margin: 13px;
+    }
+
+    &:active {
+        background-size: 98% 98%;
+    }
+
+    .content-frame {
+        padding: 20px 0px 20px 0px;
+        background-color: transparentize(white, 1 - 0.949);
+        min-height: 80px;  /* 120px, compensated for 20px padding */
+    }
+
+    &.height-b .content-frame,
+    &.height-a .content-frame {
+        min-height: 40px;  /* 80px, compensated for 20px padding */
+    }
+
+    .title {
+        font-weight: 300;
+    }
+
+    .composite & .title {
+        font-weight: normal;
+    }
 }
 
-.CardDeck:active {
-    background-size: 98% 98%;
-}
-
-.CardDeck .content-frame {
-    padding: 20px 0px 20px 0px;
-    background-color: transparentize(white, 1 - 0.949);
-    min-height: 80px;  /* 120px, compensated for 20px padding */
-}
-
-.CardDeck.height-b .content-frame,
-.CardDeck.height-a .content-frame {
-    min-height: 40px;  /* 80px, compensated for 20px padding */
-}
-
-.CardDeck .title {
-    font-weight: 300;
+.Card.CardPost .title {
+    padding-bottom: 20px;
+    color: white;
 }
 
 .card-synopsis {
@@ -401,7 +405,6 @@
 
 .composite .ContentGroupHighlights .CardTitle .title.label,
 .composite .ContentGroupThematic .CardTitle .title.label,
-.composite .browse-content .title,
-.composite .CardDeck .title {
+.composite .browse-content .title {
     font-weight: normal;
 }
