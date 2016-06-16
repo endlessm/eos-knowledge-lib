@@ -371,13 +371,15 @@ scrollbar.vertical slider {
     }
 }
 
-.CardPost .title {
-    font-family: 'Fira Sans';
-    font-weight: bold;
-}
+.CardPost {
+    .title {
+        font-family: 'Fira Sans';
+        font-weight: bold;
+    }
 
-.CardPost .card-context {
-    color: $context-blue;
-    font-family: 'Merriweather';
-    font-weight: bold;
+    .card-context {
+        color: $context-blue;
+        font-family: 'Merriweather';
+        font-weight: bold;
+    }
 }
