@@ -76,5 +76,5 @@ const MockFactory = new Knowledge.Class({
  */
 function setup_tree(tree, extra_props={}) {
     let factory = new MockFactory(tree);
-    return [factory.create_module_tree(extra_props), factory];
+    return [factory.create_root_module(extra_props), factory];
 }

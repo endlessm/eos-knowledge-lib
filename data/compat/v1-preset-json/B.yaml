@@ -33,6 +33,7 @@ defines:
             shadow-type: none
             halign: center
             valign: center
+            focus-on-map: true
     - shortdef: 'ContentGroup.Set(expand: true)'
       slots:
         arrangement:

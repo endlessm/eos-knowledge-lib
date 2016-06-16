@@ -62,6 +62,7 @@ const ModuleFactory = new Knowledge.Class({
         }
         // After this point, the app.json must be the current version!
 
+        this._root = null;
         this._ids = new Set();
         this._id_to_module = new Map();
         this._id_to_pending_callbacks = new Map();
@@ -141,7 +142,7 @@ const ModuleFactory = new Knowledge.Class({
     },
 
     /**
-     * Method: create_module_tree
+     * Method: create_root_module
      * Creates the root of the module tree
      *
      * Creates the root module of the module tree described in app.json.
@@ -150,12 +151,23 @@ const ModuleFactory = new Knowledge.Class({
      * Parameters:
      *   extra_props - Extra construct properties for the module.
      */
-    create_module_tree: function (extra_props={}) {
+    create_root_module: function (extra_props={}) {
+        if (this._root)
+            throw new Error('Root module created twice');
         this._path_to_description = new Map();
         this._unique_count = 0;
 
-        return this._create_module(ROOT_NAME, this.app_json[ROOT_NAME],
+        this._root = this._create_module(ROOT_NAME, this.app_json[ROOT_NAME],
             extra_props);
+        return this._root;
+    },
+
+    /**
+     * Method: get_root_module
+     * Returns the root of the module tree, or null if has not been created.
+     */
+    get_root_module: function () {
+        return this._root;
     },
 
     /**

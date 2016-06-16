@@ -12,7 +12,7 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryItem = imports.app.historyItem;
-const HistoryPresenter = imports.app.historyPresenter;
+const HistoryStore = imports.app.historyStore;
 const Controller = imports.app.interfaces.controller;
 const Launcher = imports.app.interfaces.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
@@ -60,9 +60,7 @@ const Mesh = new Module.Class({
 
         this.load_theme();
 
-        this._history_presenter = new HistoryPresenter.HistoryPresenter({
-            history_model: new EosKnowledgePrivate.HistoryModel(),
-        });
+        this.history_store = new HistoryStore.HistoryStore();
 
         this._current_set_id = null;
         this._current_search_query = '';
@@ -84,19 +82,19 @@ const Mesh = new Module.Class({
                     this._on_back();
                     break;
                 case Actions.HOME_CLICKED:
-                    this._history_presenter.set_current_item_from_props({
+                    this.history_store.set_current_item_from_props({
                         page_type: this.HOME_PAGE,
                     });
                     break;
                 case Actions.SET_CLICKED:
-                    this._history_presenter.set_current_item_from_props({
+                    this.history_store.set_current_item_from_props({
                         page_type: this.SECTION_PAGE,
                         model: payload.model,
                     });
                     break;
                 case Actions.ITEM_CLICKED:
                 case Actions.SEARCH_CLICKED:
-                    this._history_presenter.set_current_item_from_props({
+                    this.history_store.set_current_item_from_props({
                         page_type: this.ARTICLE_PAGE,
                         model: payload.model,
                     });
@@ -108,7 +106,7 @@ const Mesh = new Module.Class({
                     this._load_more_search_results();
                     break;
                 case Actions.AUTOCOMPLETE_CLICKED:
-                    this._history_presenter.set_current_item_from_props({
+                    this.history_store.set_current_item_from_props({
                         page_type: this.ARTICLE_PAGE,
                         model: payload.model,
                         query: payload.query,
@@ -123,7 +121,7 @@ const Mesh = new Module.Class({
         }
 
         this._window.connect('key-press-event', this._on_key_press_event.bind(this));
-        this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
+        this.history_store.connect('history-item-changed', this._on_history_item_change.bind(this));
     },
 
     make_ready: function (cb) {
@@ -157,7 +155,7 @@ const Mesh = new Module.Class({
         });
     },
 
-    _on_history_item_change: function (presenter, item, is_going_back) {
+    _on_history_item_change: function (presenter, item, last_item, is_going_back) {
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
             action_type: Actions.HIDE_MEDIA,
@@ -189,14 +187,14 @@ const Mesh = new Module.Class({
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_ARTICLE,
                     model: item.model,
-                    animation_type: this._get_article_animation_type(item, is_going_back),
+                    animation_type: this._get_article_animation_type(item, last_item, is_going_back),
                 });
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_ARTICLE_PAGE,
                 });
                 break;
             case this.HOME_PAGE:
-                if (this._history_presenter.item_count() === 1) {
+                if (this.history_store.item_count() === 1) {
                     Dispatcher.get_default().dispatch({
                         action_type: Actions.SHOW_BRAND_PAGE,
                     });
@@ -217,7 +215,7 @@ const Mesh = new Module.Class({
     },
 
     _show_home_if_ready: function () {
-        let item = this._history_presenter.history_model.current_item;
+        let item = this.history_store.get_current_item();
         if (!item || item.page_type !== this.HOME_PAGE)
             return;
         if (!this._home_content_loaded)
@@ -226,9 +224,6 @@ const Mesh = new Module.Class({
             return;
         Dispatcher.get_default().dispatch({
             action_type: Actions.SHOW_HOME_PAGE,
-        });
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.FOCUS_SEARCH,
         });
     },
 
@@ -249,8 +244,7 @@ const Mesh = new Module.Class({
         }
     },
 
-    _get_article_animation_type: function (item, is_going_back) {
-        let last_item = this._history_presenter.history_model.get_item(is_going_back ? 1 : -1);
+    _get_article_animation_type: function (item, last_item, is_going_back) {
         if (!last_item || last_item.page_type !== this.ARTICLE_PAGE)
             return EosKnowledgePrivate.LoadingAnimationType.NONE;
         if (is_going_back)
@@ -259,7 +253,7 @@ const Mesh = new Module.Class({
     },
 
     _on_home_button_clicked: function (button) {
-        this._history_presenter.set_current_item_from_props({
+        this.history_store.set_current_item_from_props({
             page_type: this.HOME_PAGE,
         });
     },
@@ -272,18 +266,18 @@ const Mesh = new Module.Class({
     },
 
     _on_back: function () {
-        let item = this._history_presenter.history_model.current_item;
+        let item = this.history_store.get_current_item();
         let types = item.page_type === this.ARTICLE_PAGE ?
             [this.HOME_PAGE, this.SECTION_PAGE, this.SEARCH_PAGE] : [this.HOME_PAGE];
-        let item = this._history_presenter.search_backwards(-1,
+        let item = this.history_store.search_backwards(-1,
             (item) => types.indexOf(item.page_type) >= 0);
         if (!item)
             item = { page_type: this.HOME_PAGE };
-        this._history_presenter.set_current_item(HistoryItem.HistoryItem.new_from_object(item));
+        this.history_store.set_current_item(HistoryItem.HistoryItem.new_from_object(item));
     },
 
     _update_article_list: function () {
-        this._history_presenter.search_backwards(0, (item) => {
+        this.history_store.search_backwards(0, (item) => {
             if (item.query) {
                 this._update_search_results(item);
                 return true;
@@ -463,7 +457,7 @@ const Mesh = new Module.Class({
     },
 
     _update_highlight: function () {
-        let item = this._history_presenter.history_model.current_item;
+        let item = this.history_store.get_current_item();
         if (item.page_type === this.ARTICLE_PAGE) {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.HIGHLIGHT_ITEM,
@@ -478,7 +472,7 @@ const Mesh = new Module.Class({
             return;
 
         this._record_search_metric(query);
-        this._history_presenter.set_current_item_from_props({
+        this.history_store.set_current_item_from_props({
             page_type: this.SEARCH_PAGE,
             query: sanitized_query,
         });
@@ -501,7 +495,7 @@ const Mesh = new Module.Class({
     // Launcher implementation
     desktop_launch: function (timestamp) {
         this._dispatch_present(timestamp);
-        this._history_presenter.set_current_item_from_props({
+        this.history_store.set_current_item_from_props({
             page_type: this.HOME_PAGE,
         });
     },
@@ -523,7 +517,7 @@ const Mesh = new Module.Class({
         Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
             try {
                 let model = engine.get_object_by_id_finish(task);
-                this._history_presenter.set_current_item_from_props({
+                this.history_store.set_current_item_from_props({
                     page_type: this.ARTICLE_PAGE,
                     model: model,
                     query: query,
@@ -550,7 +544,7 @@ const Mesh = new Module.Class({
 
     _load_model: function (model) {
         if (model instanceof ArticleObjectModel.ArticleObjectModel) {
-            this._history_presenter.set_current_item_from_props({
+            this.history_store.set_current_item_from_props({
                 page_type: this.ARTICLE_PAGE,
                 model: model,
             });

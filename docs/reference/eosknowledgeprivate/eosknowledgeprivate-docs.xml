@@ -14,12 +14,6 @@
     <xi:include href="xml/enums.xml"/>
   </chapter>
 
-  <chapter>
-    <title>Model API Reference</title>
-    <xi:include href="xml/history-model.xml"/>
-    <xi:include href="xml/history-item-model.xml"/>
-  </chapter>
-
   <chapter id="object-tree">
     <title>Object Hierarchy</title>
      <xi:include href="xml/tree_index.sgml"/>

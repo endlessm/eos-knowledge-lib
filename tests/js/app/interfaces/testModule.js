@@ -17,7 +17,7 @@ describe('Module interface', function () {
         let factory = new MockFactory.MockFactory({
             type: Minimal.MinimalModule,
         });
-        module = factory.create_module_tree();
+        module = factory.create_root_module();
     });
 
     it('reports having no slots if none defined in Slots', function () {

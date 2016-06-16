@@ -116,7 +116,7 @@ function load_arrangement (arrangement_type, card_type) {
     });
     factory.warehouse.register_class('ColorBoxCard', ColorBox);
     factory.warehouse.register_class('PicardSelection', PicardSelection);
-    widgets.content_group = factory.create_module_tree();
+    widgets.content_group = factory.create_root_module();
     widgets.selection = widgets.content_group.get_selection();
 
     widgets.scroll.add(widgets.content_group);

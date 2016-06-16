@@ -13,11 +13,11 @@ describe('History Item', function () {
                 query: 'bar',
             });
             expect(item1.equals(item2)).toBeTruthy();
-            let item1 = new HistoryItem.HistoryItem({
+            item1 = new HistoryItem.HistoryItem({
                 page_type: 'foo',
                 query: 'bar',
             });
-            let item2 = new HistoryItem.HistoryItem({
+            item2 = new HistoryItem.HistoryItem({
                 page_type: 'foo',
                 query: 'not bar',
             });

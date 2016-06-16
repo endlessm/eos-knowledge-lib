@@ -23,7 +23,7 @@ describe('Order.Alphabetical', function () {
 
     describe('ascending', function () {
         beforeEach(function () {
-            order = factory.create_module_tree();
+            order = factory.create_root_module();
         });
 
         it('is the default', function () {
@@ -38,7 +38,7 @@ describe('Order.Alphabetical', function () {
 
     describe('descending', function () {
         beforeEach(function () {
-            order = factory.create_module_tree({
+            order = factory.create_root_module({
                 ascending: false,
             });
         });

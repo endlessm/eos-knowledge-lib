@@ -29,15 +29,13 @@ describe('Navigation.SearchBox', function () {
         expect(box.text).toBe('foo');
     });
 
-    it('has focus when focus-search is dispatched', function () {
+    it('grabs focus when mapped if focus-on-map is set', function () {
+        box.focus_on_map = true;
         // Search box needs to be mapped and realized before grabbing focus can
         // take effect, so we stick it in a Gtk.Window first.
         let win = new Gtk.OffscreenWindow();
         win.add(box);
         win.show_all();
-        dispatcher.dispatch({
-            action_type: Actions.FOCUS_SEARCH,
-        });
         expect(box.is_focus).toBe(true);
     });
 

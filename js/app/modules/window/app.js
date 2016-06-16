@@ -312,15 +312,21 @@ const App = new Module.Class({
         button_box.show_all();
 
         this.animating = false;
+        let focused_widget = null;
         this._stack.connect('notify::transition-running', function () {
             this.animating = this._stack.transition_running;
             this.notify('animating');
             if (this._stack.transition_running) {
                 context.add_class('animating');
+                focused_widget = this.get_focus();
                 Utils.squash_all_window_content_updates_heavy_handedly(this);
             } else {
                 context.remove_class('animating');
                 Utils.unsquash_all_window_content_updates_heavy_handedly(this);
+                if (focused_widget && !this.get_focus()) {
+                    focused_widget.grab_focus();
+                    focused_widget = null;
+                }
             }
         }.bind(this));
 

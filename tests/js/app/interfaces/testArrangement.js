@@ -23,7 +23,7 @@ describe('Arrangement interface', function () {
                 'filter': { type: Minimal.TitleFilter },
             },
         });
-        arrangement = factory.create_module_tree();
+        arrangement = factory.create_root_module();
     });
 
     it('returns -1 for default card limit', function () {
