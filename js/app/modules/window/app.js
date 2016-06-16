@@ -365,7 +365,7 @@ const App = new Module.Class({
         }
     },
 
-    make_ready: function (cb) {
+    make_ready: function (cb=function () {}) {
         this._home_page.make_ready(cb);
     },
 

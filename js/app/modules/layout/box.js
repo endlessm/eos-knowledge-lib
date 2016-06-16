@@ -59,7 +59,7 @@ const Box = new Module.Class({
         this._contents.forEach(this.add, this);
     },
 
-    make_ready: function (cb) {
+    make_ready: function (cb=function () {}) {
         let count = 0;
         this._contents.forEach((content) => {
             content.make_ready(() => {

@@ -171,8 +171,7 @@ const Module = new Lang.Interface({
      * Parameters:
      *   callback - function to be called whenever the module is ready.
      */
-    make_ready: function (cb) {
-        if (typeof cb !== 'undefined')
-            cb();
+    make_ready: function (cb=function () {}) {
+        cb();
     },
 });

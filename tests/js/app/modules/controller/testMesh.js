@@ -34,7 +34,7 @@ const MockView = new Knowledge.Class({
         this.parent(signal, handler);
     },
 
-    make_ready: function (cb) {
+    make_ready: function (cb=function () {}) {
         cb();
     },
 });

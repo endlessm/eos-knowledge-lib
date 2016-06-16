@@ -59,7 +59,7 @@ const ContentGroup = new Module.Class({
         this.attach(stack, 0, 1, 1, 1);
     },
 
-    make_ready: function (cb) {
+    make_ready: function (cb=function () {}) {
         this.load();
         this._title.make_ready(cb);
     },

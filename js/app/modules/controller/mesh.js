@@ -124,7 +124,7 @@ const Mesh = new Module.Class({
         this.history_store.connect('history-item-changed', this._on_history_item_change.bind(this));
     },
 
-    make_ready: function (cb) {
+    make_ready: function (cb=function () {}) {
         let query_obj = new QueryObject.QueryObject({
             limit: -1,
             tags: [ Engine.HOME_PAGE_TAG, 'EknSetObject' ],
