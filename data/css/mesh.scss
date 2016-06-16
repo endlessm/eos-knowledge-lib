@@ -154,28 +154,61 @@ $template-b-text-color-highlighted: #333333;
     padding: 10px 10px 0px 10px;
     margin: 7px;
     background-color: white;
-}
 
-.CardLegacyPolaroid .title {
-    padding: 4px 0px 4px 0px;
-    color: #d16550;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.9em;
-    font-weight: bold;
-}
+    .title {
+        padding: 4px 0px 4px 0px;
+        color: #d16550;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.9em;
+        font-weight: bold;
+    }
 
-.CardLegacyPolaroid .thumbnail {
-    min-height: 133px;
-}
+    .thumbnail {
+        min-height: 133px;
+    }
 
-.section-page-a .CardLegacyPolaroid .title,
-.search-page-a .CardLegacyPolaroid .title {
-    font-size: 0.9em;
-    text-shadow: 0px 1px 0px white;
-}
+    .section-page-a & .title,
+    .search-page-a & .title {
+        font-size: 0.9em;
+        text-shadow: 0px 1px 0px white;
+    }
 
-.home-page-a .CardLegacyPolaroid .title {
-    padding: 9px 0px 9px 0px;
+    .home-page-a & .title {
+        padding: 9px 0px 9px 0px;
+    }
+
+    .card-synopsis {
+        padding: 0px 0px 4px 0px;
+        color: #666666;
+        font-size: 0.8em;
+        text-shadow: white 0px 1px 0px;
+
+        &.highlighted {
+            background-color: #d3d7cf;
+        }
+    }
+
+    .title.highlighted {
+        background-color: #d3d7cf;
+    }
+
+    .composite & {
+        .title {
+            font-weight: 600;
+            font-size: 16.4px;  /* Original spec may have been wrong */
+        }
+
+        .card-synopsis {
+            color: black;
+            font-size: 16.4px;  /* 14px spec * 88% */
+            text-shadow: none;
+        }
+    }
+
+    .composite .section-page-a & .title,
+    .composite .search-page-a & .title {
+        font-size: 16.4px;  /* 14px spec * 88% */
+    }
 }
 
 .LayoutSidebar .sidebar .CardTitle {
@@ -220,18 +253,6 @@ $template-b-text-color-highlighted: #333333;
 .LayoutSidebar .sidebar .CardTitle.highlighted:hover .title {
     color: $template-b-text-color-highlighted;
     transition-property: none;
-}
-
-.CardLegacyPolaroid .card-synopsis {
-    padding: 0px 0px 4px 0px;
-    color: #666666;
-    font-size: 0.8em;
-    text-shadow: white 0px 1px 0px;
-}
-
-.CardLegacyPolaroid .title.highlighted,
-.CardLegacyPolaroid .card-synopsis.highlighted {
-    background-color: #d3d7cf;
 }
 
 .pdf-card-icon {
@@ -595,22 +616,6 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 .composite .search-page-b .ContentGroupSearch .results-message-subtitle,
 .composite .search-page-b .ContentGroupSearch .error-message {
     font-size: 14.1px;  /* 12px spec * 88% */
-}
-
-.composite .CardLegacyPolaroid .title {
-    font-weight: 600;
-    font-size: 16.4px;  /* Original spec may have been wrong */
-}
-
-.composite .section-page-a .CardLegacyPolaroid .title,
-.composite .search-page-a .CardLegacyPolaroid .title {
-    font-size: 16.4px;  /* 14px spec * 88% */
-}
-
-.composite .CardLegacyPolaroid .card-synopsis {
-    color: black;
-    font-size: 16.4px;  /* 14px spec * 88% */
-    text-shadow: none;
 }
 
 .composite .home-page-a .NavigationSearchBox,
