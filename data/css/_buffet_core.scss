@@ -85,50 +85,50 @@
 /* default size */
 .Card {
     font-size: 18.7px;
-}
 
-.Card.width-c .title,
-.Card.width-d.height-c .title,
-.Card.width-d.height-b .title {
-    font-size: 21.3px;
-}
+    &.width-c .title,
+    &.width-d.height-c .title,
+    &.width-d.height-b .title {
+        font-size: 21.3px;
+    }
 
-.Card.width-d.height-d .title,
-.Card.width-e.height-b .title,
-.Card.width-e.height-c .title {
-    font-size: 30.7px;
-}
+    &.width-d.height-d .title,
+    &.width-e.height-b .title,
+    &.width-e.height-c .title {
+        font-size: 30.7px;
+    }
 
-.Card.width-d .title,
-.Card.width-e .title,
-.Card.width-f .title,
-.Card.width-g .title,
-.Card.width-h .title {
-    font-size: 49.3px;
-}
+    &.width-d .title,
+    &.width-e .title,
+    &.width-f .title,
+    &.width-g .title,
+    &.width-h .title {
+        font-size: 49.3px;
+    }
 
-.Card .content-frame {
-    padding: 20px;
+    .content-frame {
+        padding: 20px;
+    }
+
+    &.width-e .content-frame,
+    &.width-f .content-frame,
+    &.width-g .content-frame,
+    &.width-h .content-frame {
+        padding: 40px;
+    }
+
+    &.width-e.height-e .card-context,
+    &.width-f .card-context,
+    &.width-g .card-context,
+    &.width-h .card-context {
+        font-size: 18.7px;
+    }
 }
 
 .CardThumb.width-d.height-b .content-frame,
 .CardThumb.width-e.height-b .content-frame,
 .CardThumb.width-e.height-c .content-frame {
     padding: 20px 30px 20px 30px;
-}
-
-.Card.width-e .content-frame,
-.Card.width-f .content-frame,
-.Card.width-g .content-frame,
-.Card.width-h .content-frame {
-    padding: 40px;
-}
-
-.Card.width-e.height-e .card-context,
-.Card.width-f .card-context,
-.Card.width-g .card-context,
-.Card.width-h .card-context {
-    font-size: 18.7px;
 }
 
 .CardList {
