@@ -62,22 +62,22 @@ scrollbar.vertical slider {
     font-family: 'Fira Sans';
     font-size: 20px;
     color: $title-blue;
-}
 
-.trigger:hover {
-    color: $context-blue;
-}
+    .ThemeableImage {
+        -gtk-icon-source: url('../images/news-arrow-dark.svg');
+        min-height: 14px;
+        min-width: 14px;
+        margin-left: 5px;
+        margin-bottom: 5px;
+    }
 
-.trigger .ThemeableImage {
-    -gtk-icon-source: url('../images/news-arrow-dark.svg');
-    min-height: 14px;
-    min-width: 14px;
-    margin-left: 5px;
-    margin-bottom: 5px;
-}
+    &:hover {
+        color: $context-blue;
 
-.trigger:hover .ThemeableImage {
-    -gtk-icon-source: url('../images/news-arrow-light.svg');
+        .ThemeableImage {
+            -gtk-icon-source: url('../images/news-arrow-light.svg');
+        }
+    }
 }
 
 .ContentGroupHighlights {
