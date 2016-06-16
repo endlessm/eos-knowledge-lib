@@ -2,16 +2,16 @@
 
 .WindowApp {
     background-size: cover;
-}
 
-.WindowApp scrollbar {
-    padding: 3px;
-}
+    scrollbar {
+        padding: 3px;
 
-.WindowApp scrollbar slider {
-    min-width: 8px;
-    background-color: #9b9b9b;
-    border-radius: 20px;
+        slider {
+            min-width: 8px;
+            background-color: #9b9b9b;
+            border-radius: 20px;
+        }
+    }
 }
 
 .ContentGroupSuggestedCategories separator {
