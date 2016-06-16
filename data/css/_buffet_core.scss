@@ -189,61 +189,61 @@
     background-color: white;
     box-shadow: 0 0 5px transparentize(black, 1 - 0.25);
     border-color: transparent;  /* used for the triangle in the corner */
-}
 
-.CardDeck .thumbnail {
-    border: 0px solid transparent;  /* used for the triangle in the corner */
-    margin: 13px;
-}
+    .content-frame {
+        background-image: linear-gradient(to top, black 0%, transparentize(black, 1 - 0.69) 30%, transparentize(black, 1 - 0.5) 49%, transparentize(black, 1) 100%);
+        min-height: 50px;  /* 90px, compensated for 20px padding */
+    }
 
-.CardPost .content-frame {
-    background-image: linear-gradient(to top, black 0%, transparentize(black, 1 - 0.69) 30%, transparentize(black, 1 - 0.5) 49%, transparentize(black, 1) 100%);
-    min-height: 50px;  /* 90px, compensated for 20px padding */
-}
+    &.width-e .content-frame,
+    &.width-f .content-frame,
+    &.width-g .content-frame,
+    &.width-h .content-frame {
+        min-height: 10px;  /* 90px, compensated for 40px padding */
+    }
 
-.CardPost.width-e .content-frame,
-.CardPost.width-f .content-frame,
-.CardPost.width-g .content-frame,
-.CardPost.width-h .content-frame {
-    min-height: 10px;  /* 90px, compensated for 40px padding */
-}
+    &.height-e .content-frame {
+        min-height: 250px;  /* 290px, compensated for 20px padding */
+    }
 
-.CardPost.height-e .content-frame {
-    min-height: 250px;  /* 290px, compensated for 20px padding */
-}
+    &.height-e.width-e .content-frame,
+    &.height-e.width-f .content-frame,
+    &.height-e.width-g .content-frame,
+    &.height-e.width-h .content-frame {
+        min-height: 210px;  /* 290px, compensated for 40px padding */
+    }
 
-.CardPost.height-e.width-e .content-frame,
-.CardPost.height-e.width-f .content-frame,
-.CardPost.height-e.width-g .content-frame,
-.CardPost.height-e.width-h .content-frame {
-    min-height: 210px;  /* 290px, compensated for 40px padding */
-}
+    &.height-d .content-frame {
+        min-height: 150px;  /* 190px, compensated for 20px padding */
+    }
 
-.CardPost.height-d .content-frame {
-    min-height: 150px;  /* 190px, compensated for 20px padding */
-}
+    &.height-d.width-e .content-frame,
+    &.height-d.width-f .content-frame,
+    &.height-d.width-g .content-frame,
+    &.height-d.width-h .content-frame {
+        min-height: 110px;  /* 190px, compensated for 40px padding */
+    }
 
-.CardPost.height-d.width-e .content-frame,
-.CardPost.height-d.width-f .content-frame,
-.CardPost.height-d.width-g .content-frame,
-.CardPost.height-d.width-h .content-frame {
-    min-height: 110px;  /* 190px, compensated for 40px padding */
-}
+    &.height-c .content-frame {
+        min-height: 100px;  /* 140px, compensated for 20px padding */
+    }
 
-.CardPost.height-c .content-frame {
-    min-height: 100px;  /* 140px, compensated for 20px padding */
-}
-
-.CardPost.height-c.width-e .content-frame,
-.CardPost.height-c.width-f .content-frame,
-.CardPost.height-c.width-g .content-frame,
-.CardPost.height-c.width-h .content-frame {
-    min-height: 60px;  /* 140px, compensated for 40px padding */
+    &.height-c.width-e .content-frame,
+    &.height-c.width-f .content-frame,
+    &.height-c.width-g .content-frame,
+    &.height-c.width-h .content-frame {
+        min-height: 60px;  /* 140px, compensated for 40px padding */
+    }
 }
 
 .Card.CardPost .title {
     padding-bottom: 20px;
     color: white;
+}
+
+.CardDeck .thumbnail {
+    border: 0px solid transparent;  /* used for the triangle in the corner */
+    margin: 13px;
 }
 
 .CardDeck {
