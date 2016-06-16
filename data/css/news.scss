@@ -214,9 +214,89 @@ scrollbar.vertical slider {
     background-color: white;
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24);
     padding: 20px;
+
+    .title {
+        font-family: 'Fira Sans';
+        font-weight: bold;
+        color: $title-blue;
+        font-size: 18px;
+    }
+
+    .card-synopsis {
+        font-family: 'Merriweather';
+        font-style: italic;
+        color: #666666;
+        font-size: 16px;
+    }
+
+    .card-context {
+        font-family: 'Merriweather';
+        font-weight: bold;
+        font-style: normal;
+        color: $context-blue;
+        font-size: 14px;
+    }
+
+    &:hover .title {
+        color: $context-blue;
+    }
+
+    &.width-c {
+        padding: 30px;
+    }
+
+    &.width-c .title {
+        font-size: 23px;
+    }
+
+    &.width-c.height-d,
+    &.width-d {
+        padding: 30px;
+    }
+
+    &.width-c.height-d .title,
+    &.width-d .title {
+        font-size: 27px;
+    }
+
+    &.height-d,
+    &.width-e,
+    &.width-f.height-c {
+        padding: 40px;
+    }
+
+    &.width-d.height-d .title,
+    &.width-e .title,
+    &.width-f.height-c .title {
+        font-size: 37px;
+    }
+
+    &.width-e.height-d,
+    &.width-e.height-e,
+    &.width-f,
+    &.width-g,
+    &.width-h {
+        padding: 50px;
+    }
+
+    &.width-e.height-d .title,
+    &.width-e.height-e .title,
+    &.width-f .title,
+    &.width-g .title,
+    &.width-h .title {
+        font-size: 49px;
+    }
+
+    &.highlighted {
+        background-color: #18264a;
+        box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.22);
+
+        .title {
+            color: white;
+        }
+    }
 }
 
-.CardText .title,
 .CardList .title,
 .CardThumb .title {
     font-family: 'Fira Sans';
@@ -225,7 +305,6 @@ scrollbar.vertical slider {
     font-size: 18px;
 }
 
-.CardText .card-synopsis,
 .CardList .card-synopsis {
     font-family: 'Merriweather';
     font-style: italic;
@@ -233,7 +312,6 @@ scrollbar.vertical slider {
     font-size: 16px;
 }
 
-.CardText .card-context,
 .CardList .card-context,
 .CardThumb .card-context {
     font-family: 'Merriweather';
@@ -243,7 +321,6 @@ scrollbar.vertical slider {
     font-size: 14px;
 }
 
-.CardText:hover .title,
 .CardList:hover .title {
     color: $context-blue;
 }
@@ -254,57 +331,6 @@ scrollbar.vertical slider {
 
 .CardList .title.highlighted {
     background-color: rgba(114, 151, 167, 0.3);
-}
-
-.CardText.width-c {
-    padding: 30px;
-}
-.CardText.width-c .title {
-    font-size: 23px;
-}
-
-.CardText.width-c.height-d,
-.CardText.width-d {
-    padding: 30px;
-}
-.CardText.width-c.height-d .title,
-.CardText.width-d .title {
-    font-size: 27px;
-}
-
-.CardText.width-d.height-d,
-.CardText.width-e,
-.CardText.width-f.height-c {
-    padding: 40px;
-}
-.CardText.width-d.height-d .title,
-.CardText.width-e .title,
-.CardText.width-f.height-c .title {
-    font-size: 37px;
-}
-
-.CardText.width-e.height-d,
-.CardText.width-e.height-e,
-.CardText.width-f,
-.CardText.width-g,
-.CardText.width-h {
-    padding: 50px;
-}
-.CardText.width-e.height-d .title,
-.CardText.width-e.height-e .title,
-.CardText.width-f .title,
-.CardText.width-g .title,
-.CardText.width-h .title {
-    font-size: 49px;
-}
-
-.CardText.highlighted {
-    background-color: #18264a;
-    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.22);
-}
-
-.CardText.highlighted .title {
-    color: white;
 }
 
 .Card.arrow {
