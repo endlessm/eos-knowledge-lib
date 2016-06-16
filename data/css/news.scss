@@ -84,26 +84,28 @@ scrollbar.vertical slider {
     margin: 50px 20px;
 }
 
-.CardSetPreview .CardTitle {
-    margin-top: 25px;
-}
+.CardSetPreview {
+    .CardTitle {
+        margin-top: 25px;
 
-.CardSetPreview .CardTitle .title {
-    color: $title-blue;
-    font-family: 'Merriweather';
-    font-weight: bold;
-    padding-top: 50px;
-    font-size: 40px;
-}
+        .title {
+            color: $title-blue;
+            font-family: 'Merriweather';
+            font-weight: bold;
+            padding-top: 50px;
+            font-size: 40px;
+        }
 
-.CardSetPreview .CardTitle:hover .title {
-    color: $context-blue;
-}
+        &:hover .title {
+            color: $context-blue;
+        }
+    }
 
-.CardSetPreview separator {
-    background-color: transparent;
-    min-height: 0;
-    margin: 0px 0px 30px;
+    separator {
+        background-color: transparent;
+        min-height: 0;
+        margin: 0px 0px 30px;
+    }
 }
 
 .BannerApp {
