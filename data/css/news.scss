@@ -54,8 +54,14 @@ scrollbar.vertical slider {
     background-color: #e9e5e0;
 }
 
-.Card .title {
-    color: $title-blue;
+.Card {
+    .title {
+        color: $title-blue;
+    }
+
+    &.arrow {
+        -gtk-icon-source: none; /* kill the arrow that Gtk adds by default in Gtk.render_arrow() */
+    }
 }
 
 .trigger {
@@ -350,10 +356,6 @@ scrollbar.vertical slider {
         color: $context-blue;
         font-size: 14px;
     }
-}
-
-.Card.arrow {
-    -gtk-icon-source: none; /* kill the arrow that Gtk adds by default in Gtk.render_arrow() */
 }
 
 .BannerSet {
