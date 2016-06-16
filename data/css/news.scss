@@ -187,14 +187,14 @@ scrollbar.vertical slider {
 .ContentGroupSupplementaryArticles {
     margin: 50px 0 50px 20px;
     padding: 0 20px 20px 0px;
-}
 
-.ContentGroupSupplementaryArticles > .title {
-    font-family: Merriweather;
-    font-weight: bold;
-    font-size: 40px;
-    color: white;
-    padding-bottom: 30px;
+    & > .title {
+        font-family: Merriweather;
+        font-weight: bold;
+        font-size: 40px;
+        color: white;
+        padding-bottom: 30px;
+    }
 }
 
 .BannerSearch {
