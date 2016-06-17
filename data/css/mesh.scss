@@ -705,11 +705,14 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 
 /* Changes for composite TVs */
 
-.composite,
-.composite .title {
+.composite {
     font-family: Roboto;
-}
 
-.composite headerbar entry {
-    font-size: 21.1px;  /* 18px spec * 88% because spec was at 110% scale not 125% */
+    .title {
+        font-family: Roboto;
+    }
+
+    headerbar entry {
+        font-size: 21.1px;  /* 18px spec * 88% because spec was at 110% scale not 125% */
+    }
 }
