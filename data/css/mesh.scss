@@ -104,30 +104,58 @@ $template-b-text-color-highlighted: #333333;
     font-size: 1.75em; /* 28pt * 1/12 * 0.75 DPI correction factor */
 }
 
-.search-page-a .ContentGroupSearch .results-message-title,
-.search-page-a .ContentGroupSearch .results-message-subtitle,
-.search-page-a .ContentGroupSearch .error-message {
-    padding-top: 2.0em;
-}
+.ContentGroupSearch {
+    spinner {
+        margin: 20px;
+    }
 
-.window-small .search-page-a .ContentGroupSearch .results-message-title,
-.window-small .search-page-a .ContentGroupSearch .results-message-subtitle,
-.window-small .search-page-a .ContentGroupSearch .error-message {
-    padding-top: 1.5em;
-}
+    .search-page-a & .results-message-title,
+    .search-page-a & .results-message-subtitle,
+    .search-page-a & .error-message {
+        padding-top: 2.0em;
+    }
 
-.search-page-b .ContentGroupSearch .results-message-title,
-.search-page-b .ContentGroupSearch .results-message-subtitle,
-.search-page-b .ContentGroupSearch .error-message {
-    font-size: 1.2em;
-    padding: 10px 25px;
-}
+    .window-small .search-page-a & .results-message-title,
+    .window-small .search-page-a & .results-message-subtitle,
+    .window-small .search-page-a & .error-message {
+        padding-top: 1.5em;
+    }
 
-.window-small .search-page-b .ContentGroupSearch .results-message-title,
-.window-small .search-page-b .ContentGroupSearch .results-message-subtitle,
-.window-small .search-page-b .ContentGroupSearch .error-message {
-    font-size: 0.8em;
-    padding: 8px 15px;
+    .search-page-b & .results-message-title,
+    .search-page-b & .results-message-subtitle,
+    .search-page-b & .error-message {
+        font-size: 1.2em;
+        padding: 10px 25px;
+    }
+
+    .window-small .search-page-b & .results-message-title,
+    .window-small .search-page-b & .results-message-subtitle,
+    .window-small .search-page-b & .error-message {
+        font-size: 0.8em;
+        padding: 8px 15px;
+    }
+
+    .search-page-b &,
+    .article-page-b & {
+        background-color: transparentize(black, 1 - 0.75);
+    }
+
+    .composite .search-page-a & .results-message-title,
+    .composite .search-page-a & .results-message-subtitle,
+    .composite .search-page-a & .error-message {
+        font-size: 18.8px;  /* 16px spec * 88% */
+    }
+
+    .composite .search-page-b & .results-message-title,
+    .composite .search-page-b & .results-message-subtitle,
+    .composite .search-page-b & .error-message {
+        font-size: 14.1px;  /* 12px spec * 88% */
+    }
+
+    .composite .search-page-b &,
+    .composite .article-page-b & {
+        background-color: transparentize(black, 1 - 0.8);
+    }
 }
 
 .section-page-a separator,
@@ -489,10 +517,6 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     background-color: black;
 }
 
-.ContentGroupSearch spinner {
-    margin: 20px;
-}
-
 .ContentGroupItem {
     .section-page-b &,
     .article-page-b & {
@@ -503,11 +527,6 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     .composite .article-page-b & {
         background-color: transparentize(black, 1 - 0.8);
     }
-}
-
-.search-page-b .ContentGroupSearch,
-.article-page-b .ContentGroupSearch {
-    background-color: transparentize(black, 1 - 0.75);
 }
 
 .article-page-b .sidebar {
@@ -631,18 +650,6 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     font-size: 21.1px;  /* 18px spec * 88% because spec was at 110% scale not 125% */
 }
 
-.composite .search-page-a .ContentGroupSearch .results-message-title,
-.composite .search-page-a .ContentGroupSearch .results-message-subtitle,
-.composite .search-page-a .ContentGroupSearch .error-message {
-    font-size: 18.8px;  /* 16px spec * 88% */
-}
-
-.composite .search-page-b .ContentGroupSearch .results-message-title,
-.composite .search-page-b .ContentGroupSearch .results-message-subtitle,
-.composite .search-page-b .ContentGroupSearch .error-message {
-    font-size: 14.1px;  /* 12px spec * 88% */
-}
-
 .composite .home-page-a .NavigationSearchBox,
 .composite .home-page-b .NavigationSearchBox {
     font-size: 18.8px;  /* 16px spec * 88% */
@@ -650,9 +657,4 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 
 .composite .home-page-b .LayoutBox {
     min-height: 120px;
-}
-
-.composite .search-page-b .ContentGroupSearch,
-.composite .article-page-b .ContentGroupSearch {
-    background-color: transparentize(black, 1 - 0.8);
 }
