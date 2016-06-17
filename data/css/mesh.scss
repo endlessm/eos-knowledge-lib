@@ -71,16 +71,37 @@ $template-b-text-color-highlighted: #333333;
 
 }
 
-.section-page-a flowbox {
-    margin-top: 20px;
+.section-page-a {
+    padding: 0 100px;
+
+    flowbox {
+        margin-top: 20px;
+    }
+
+    .title {
+        font-family: Montserrat;
+        font-weight: bold;
+
+        padding-top: 1.0em;
+        padding-bottom: 1.0em;
+
+        font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
+    }
+
+    separator {
+        min-height: 1px;
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .window-small & .title {
+        font-size: 1.75em; /* 28pt * 1/12 * 0.75 DPI correction factor */
+    }
 }
 
-.section-page-a,
 .search-page-a {
     padding: 0 100px;
 }
 
-.section-page-a .title,
 .section-page-b .title,
 .search-page-a .title,
 .search-page-b .title {
@@ -88,18 +109,15 @@ $template-b-text-color-highlighted: #333333;
     font-weight: bold;
 }
 
-.section-page-a .title,
 .search-page-a .title {
     padding-top: 1.0em;
     padding-bottom: 1.0em;
 }
 
-.section-page-a .title,
 .search-page-a .title {
     font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
 }
 
-.window-small .section-page-a .title,
 .window-small .search-page-a .title {
     font-size: 1.75em; /* 28pt * 1/12 * 0.75 DPI correction factor */
 }
@@ -158,7 +176,6 @@ $template-b-text-color-highlighted: #333333;
     }
 }
 
-.section-page-a separator,
 .search-page-a separator {
     min-height: 1px;
     background-color: rgba(255, 255, 255, 0.3);
