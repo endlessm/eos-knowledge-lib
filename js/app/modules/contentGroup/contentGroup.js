@@ -6,10 +6,11 @@ const Gtk = imports.gi.Gtk;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
+const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
-const BATCH_SIZE = 15;
+const BATCH_SIZE = 10;
 
 const CONTENT_PAGE_NAME = 'content';
 const SPINNER_PAGE_NAME = 'spinner';
@@ -63,6 +64,12 @@ const ContentGroup = new Module.Class({
             });
         });
 
+        if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
+            this._arrangement.connect('need-more-content', () => {
+                this._selection.queue_load_more(BATCH_SIZE)
+            });
+        }
+
         let stack = new Gtk.Stack({
             visible: true,
         });
@@ -113,9 +120,14 @@ const ContentGroup = new Module.Class({
             this._load_callback();
             this._load_callback = null;
         }
+
+        if (models.length > 0 && this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
+            this._arrangement.new_content_added();
+        }
     },
 
     load: function () {
+        this._selection.clear();
         let cards_to_load = BATCH_SIZE;
         let max_cards = this._arrangement.get_max_cards();
         if (max_cards > -1)

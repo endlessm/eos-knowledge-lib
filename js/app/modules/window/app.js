@@ -373,7 +373,6 @@ const App = new Module.Class({
         // Disable the home button when the current page is the home or brand page
         this._home_button.sensitive = (new_page !== this._home_page && new_page !== this._brand_page);
 
-        new_page.make_ready();
         let old_page = this.get_visible_page();
         if (old_page === new_page) {
             // Even though we didn't change, this should still count as the
@@ -383,6 +382,7 @@ const App = new Module.Class({
             this._present_if_needed();
             return;
         }
+        new_page.make_ready();
 
         let nav_back_visible = false;
         if (this._is_page_on_left(new_page)) {

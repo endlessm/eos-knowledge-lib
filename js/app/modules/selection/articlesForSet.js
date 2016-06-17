@@ -20,7 +20,6 @@ const ArticlesForSet = new Module.Class({
                 case Actions.SHOW_SET:
                     if (this.global) {
                         this.model = payload.model;
-                        this.queue_load_more();
                     }
                     break;
             }
@@ -32,6 +31,7 @@ const ArticlesForSet = new Module.Class({
         return new QueryObject.QueryObject({
             limit: limit,
             tags: this.model ? this.model.child_tags : [], // FIXME: Will go away when we have centralized state
+            sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
         });
     },
 

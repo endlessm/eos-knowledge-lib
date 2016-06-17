@@ -43,12 +43,18 @@ defines:
   shortdef: 'Layout.Box(orientation: vertical)'
   slots:
     contents:
-    - shortdef: 'Banner.Set(halign: center)'
+    - shortdef: ContentGroup.ContentGroup
       slots:
-        card: Card.Title
-    - Decoration.Separator
-    - type: ContentGroup.Item
-      slots: *main-arrangement-slot
+        <<: *main-arrangement-slot
+        selection:
+          type: Selection.ArticlesForSet
+        title:
+          type: ContentGroup.DynamicTitle
+          properties:
+            format-string: '%s'
+            halign: center
+          styles:
+            - content-group-title
 
 - &search-page
   shortdef: 'Layout.Box(orientation: vertical)'

@@ -76,4 +76,9 @@ const Xapian = new Module.Class({
                 this.queue_load_more(num_desired - results_added.length);
         });
     },
+
+    clear: function () {
+        this._get_more = null;
+        this.parent();
+    },
 });

@@ -62,7 +62,7 @@ $template-b-text-color-highlighted: #333333;
     padding: 0 100px;
 }
 
-.section-page-a .title,
+.section-page-a .content-group-title,
 .section-page-b .title,
 .search-page-a .title,
 .search-page-b .title {
@@ -70,18 +70,18 @@ $template-b-text-color-highlighted: #333333;
     font-weight: bold;
 }
 
-.section-page-a .title,
+.section-page-a .content-group-title,
 .search-page-a .title {
     padding-top: 1.0em;
     padding-bottom: 1.0em;
 }
 
-.section-page-a .title,
+.section-page-a .content-group-title,
 .search-page-a .title {
     font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
 }
 
-.window-small .section-page-a .title,
+.window-small .section-page-a .content-group-title,
 .window-small .search-page-a .title {
     font-size: 1.75em; /* 28pt * 1/12 * 0.75 DPI correction factor */
 }
@@ -431,9 +431,9 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     margin: 20px;
 }
 
-.section-page-b .ContentGroupItem,
+.section-page-b .ContentGroup,
 .search-page-b .ContentGroupSearch,
-.article-page-b .ContentGroupItem,
+.article-page-b .ContentGroup,
 .article-page-b .ContentGroupSearch {
     background-color: transparentize(black, 1 - 0.75);
 }
@@ -617,9 +617,9 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
     min-height: 120px;
 }
 
-.composite .section-page-b .ContentGroupItem,
+.composite .section-page-b .ContentGroup,
 .composite .search-page-b .ContentGroupSearch,
-.composite .article-page-b .ContentGroupItem,
+.composite .article-page-b .ContentGroup,
 .composite .article-page-b .ContentGroupSearch {
     background-color: transparentize(black, 1 - 0.8);
 }

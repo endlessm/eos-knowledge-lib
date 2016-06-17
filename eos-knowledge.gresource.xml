@@ -130,7 +130,6 @@
     <file>js/app/modules/contentGroup/contentGroup.js</file>
     <file>js/app/modules/contentGroup/dynamicTitle.js</file>
     <file>js/app/modules/contentGroup/hierarchicalSet.js</file>
-    <file>js/app/modules/contentGroup/item.js</file>
     <file>js/app/modules/contentGroup/mediaLightbox.js</file>
     <file>js/app/modules/contentGroup/search.js</file>
     <file>js/app/modules/contentGroup/set.js</file>
