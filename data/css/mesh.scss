@@ -121,7 +121,37 @@ $template-b-text-color-highlighted: #333333;
     }
 }
 
-.section-page-b .title,
+.section-page-b {
+    .title {
+        font-family: Montserrat;
+        font-weight: bold;
+        font-size: 4.5em; /* 72pt * 1/12 * 0.75 DPI correction factor */
+        padding: 0.9em 0em 0.9em 1.2em;
+        color: white;
+    }
+
+    scrollbar {
+        trough {
+            padding: 0px 3px;
+            background-color: transparentize(black, 1 - 0.5);
+            background-image: linear-gradient(89deg,
+                                              transparentize(white, 1 - 0.1) 0%,
+                                              transparentize(black, 1 - 0.1) 100%);
+            box-shadow: inset 1px 0px 0px 0px transparentize(black, 1 - 0.15);
+        }
+
+        slider {
+            background-color: #888888;
+        }
+    }
+
+    .window-small & .title {
+        font-size: 3.5em; /* 56pt * 1/12 * 0.75 DPI correction factor */
+        padding: 0.9em 0em 0.9em 1.2em;
+        color: white;
+    }
+}
+
 .search-page-b .title {
     font-family: Montserrat;
     font-weight: bold;
@@ -181,14 +211,12 @@ $template-b-text-color-highlighted: #333333;
     }
 }
 
-.section-page-b .title,
 .search-page-b .title {
     font-size: 4.5em; /* 72pt * 1/12 * 0.75 DPI correction factor */
     padding: 0.9em 0em 0.9em 1.2em;
     color: white;
 }
 
-.window-small .section-page-b .title,
 .window-small .search-page-b .title {
     font-size: 3.5em; /* 56pt * 1/12 * 0.75 DPI correction factor */
     padding: 0.9em 0em 0.9em 1.2em;
@@ -598,7 +626,6 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     padding-left: 60px;
 }
 
-.section-page-b scrollbar trough,
 .search-page-b scrollbar trough {
     padding: 0px 3px;
     background-color: transparentize(black, 1 - 0.5);
@@ -608,7 +635,6 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     box-shadow: inset 1px 0px 0px 0px transparentize(black, 1 - 0.15);
 }
 
-.section-page-b scrollbar slider,
 .search-page-b scrollbar slider {
     background-color: #888888;
 }
