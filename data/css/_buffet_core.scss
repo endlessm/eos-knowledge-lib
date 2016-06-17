@@ -2,46 +2,82 @@
 
 .WindowApp {
     background-size: cover;
+
+    scrollbar {
+        padding: 3px;
+
+        slider {
+            min-width: 8px;
+            background-color: #9b9b9b;
+            border-radius: 20px;
+        }
+    }
 }
 
-.WindowApp scrollbar {
-    padding: 3px;
-}
+.ContentGroupSuggestedCategories {
+    separator {
+        background-color: #999999;
+        min-height: 1px;
+        margin: 4px 50px 20px 50px;
+    }
 
-.WindowApp scrollbar slider {
-    min-width: 8px;
-    background-color: #9b9b9b;
-    border-radius: 20px;
-}
-
-.ContentGroupSuggestedCategories separator {
-    background-color: #999999;
-    min-height: 1px;
-    margin: 4px 50px 20px 50px;
-}
-
-.BannerApp.brand-page .ThemeableImage {
-    -EknThemeableImage-sizing: "size-down";
-    min-width: 200px;
-    min-height: 200px;
+    .browse-content:hover {
+        .title {
+            color: #49bde3;
+        }
+    }
 }
 
 .browse-content {
     padding: 20px 50px 0px 50px;
 }
 
-.LayoutScrolling,
-.LayoutInfiniteScrolling,
-.ContentGroupSearch {
+.BannerApp {
+    &.brand-page .ThemeableImage {
+        -EknThemeableImage-sizing: "size-down";
+        min-width: 200px;
+        min-height: 200px;
+    }
+
+    .composite & {
+        font-size: 22.3px;  /* 19px spec * 88% */
+    }
+}
+
+.LayoutScrolling {
     background-color: #e7ecee;
 }
 
-.ContentGroupSearch .no-results {
-    background-color: white;
+.LayoutInfiniteScrolling {
+    background-color: #e7ecee;
 }
 
-.ContentGroupSuggestedCategories .browse-content:hover .title,
-.CardSetPreview:hover .title,
+.ContentGroupSearch {
+    background-color: #e7ecee;
+
+    .no-results {
+        background-color: white;
+    }
+
+    spinner {
+        margin: 20px;
+    }
+
+    .composite & row {
+        padding: 0 40px;
+    }
+}
+
+.CardSetPreview {
+    &:hover .title {
+        color: #49bde3;
+    }
+
+    .composite & .title {
+        font-weight: normal;
+    }
+}
+
 .CardTitle:hover .title {
     color: #49bde3;
 }
@@ -49,147 +85,155 @@
 /* default size */
 .Card {
     font-size: 18.7px;
+
+    &.width-c .title,
+    &.width-d.height-c .title,
+    &.width-d.height-b .title {
+        font-size: 21.3px;
+    }
+
+    &.width-d.height-d .title,
+    &.width-e.height-b .title,
+    &.width-e.height-c .title {
+        font-size: 30.7px;
+    }
+
+    &.width-d .title,
+    &.width-e .title,
+    &.width-f .title,
+    &.width-g .title,
+    &.width-h .title {
+        font-size: 49.3px;
+    }
+
+    .content-frame {
+        padding: 20px;
+    }
+
+    &.width-e .content-frame,
+    &.width-f .content-frame,
+    &.width-g .content-frame,
+    &.width-h .content-frame {
+        padding: 40px;
+    }
+
+    &.width-e.height-e .card-context,
+    &.width-f .card-context,
+    &.width-g .card-context,
+    &.width-h .card-context {
+        font-size: 18.7px;
+    }
 }
 
-.Card.width-c .title,
-.Card.width-d.height-c .title,
-.Card.width-d.height-b .title {
-    font-size: 21.3px;
-}
+.CardThumb {
+    background-color: white;
+    box-shadow: 0 0 5px transparentize(black, 1 - 0.25);
+    border-color: transparent;  /* used for the triangle in the corner */
 
-.Card.width-d.height-d .title,
-.Card.width-e.height-b .title,
-.Card.width-e.height-c .title {
-    font-size: 30.7px;
-}
+    &.width-d.height-b .content-frame,
+    &.width-e.height-b .content-frame,
+    &.width-e.height-c .content-frame {
+        padding: 20px 30px 20px 30px;
+    }
 
-.Card.width-d .title,
-.Card.width-e .title,
-.Card.width-f .title,
-.Card.width-g .title,
-.Card.width-h .title {
-    font-size: 49.3px;
-}
-
-.Card .content-frame {
-    padding: 20px;
-}
-
-.CardThumb.width-d.height-b .content-frame,
-.CardThumb.width-e.height-b .content-frame,
-.CardThumb.width-e.height-c .content-frame {
-    padding: 20px 30px 20px 30px;
-}
-
-.Card.width-e .content-frame,
-.Card.width-f .content-frame,
-.Card.width-g .content-frame,
-.Card.width-h .content-frame {
-    padding: 40px;
-}
-
-.Card.width-e.height-e .card-context,
-.Card.width-f .card-context,
-.Card.width-g .card-context,
-.Card.width-h .card-context {
-    font-size: 18.7px;
+    .composite & .card-context {
+        color: gray;
+    }
 }
 
 .CardList {
     margin: 10px 0;
-}
-
-.CardList.width-d .title,
-.CardList.width-d .card-synopsis {
-    font-size: 18.7px;
-}
-
-.CardList.width-e .title,
-.CardList.width-e .card-synopsis {
-    font-size: 18.7px;
-}
-
-.CardList.width-f .title,
-.CardList.width-f .card-synopsis {
-    font-size: 21.3px;
-}
-
-.CardList.width-g .title,
-.CardList.width-h .title {
-    font-size: 29.3px;
-}
-
-.CardList.width-g .card-synopsis,
-.CardList.width-h .card-synopsis {
-    font-size: 24px;
-}
-
-.CardList.width-e .content-frame,
-.CardList.width-f .content-frame {
-    padding: 20px;
-}
-
-.CardThumb,
-.CardPost,
-.CardList {
     background-color: white;
     box-shadow: 0 0 5px transparentize(black, 1 - 0.25);
     border-color: transparent;  /* used for the triangle in the corner */
+
+    &.width-d .title,
+    &.width-d .card-synopsis {
+        font-size: 18.7px;
+    }
+
+    &.width-e .title,
+    &.width-e .card-synopsis {
+        font-size: 18.7px;
+    }
+
+    &.width-f .title,
+    &.width-f .card-synopsis {
+        font-size: 21.3px;
+    }
+
+    &.width-g .title,
+    &.width-h .title {
+        font-size: 29.3px;
+    }
+
+    &.width-g .card-synopsis,
+    &.width-h .card-synopsis {
+        font-size: 24px;
+    }
+
+    &.width-e .content-frame,
+    &.width-f .content-frame {
+        padding: 20px;
+    }
+
+    .composite &.width-d .title,
+    .composite &.width-d .card-synopsis,
+    .composite &.width-e .title,
+    .composite &.width-e .card-synopsis {
+        font-size: 18.8px;  /* 16px spec * 88% because spec was at 110% scale not 125% */
+    }
 }
 
-.CardDeck .thumbnail {
-    border: 0px solid transparent;  /* used for the triangle in the corner */
-    margin: 13px;
-}
+.CardPost {
+    background-color: white;
+    box-shadow: 0 0 5px transparentize(black, 1 - 0.25);
+    border-color: transparent;  /* used for the triangle in the corner */
 
-.CardPost .content-frame {
-    background-image: linear-gradient(to top, black 0%, transparentize(black, 1 - 0.69) 30%, transparentize(black, 1 - 0.5) 49%, transparentize(black, 1) 100%);
-    min-height: 50px;  /* 90px, compensated for 20px padding */
-}
+    .content-frame {
+        background-image: linear-gradient(to top, black 0%, transparentize(black, 1 - 0.69) 30%, transparentize(black, 1 - 0.5) 49%, transparentize(black, 1) 100%);
+        min-height: 50px;  /* 90px, compensated for 20px padding */
+    }
 
-.CardPost.width-e .content-frame,
-.CardPost.width-f .content-frame,
-.CardPost.width-g .content-frame,
-.CardPost.width-h .content-frame {
-    min-height: 10px;  /* 90px, compensated for 40px padding */
-}
+    &.width-e .content-frame,
+    &.width-f .content-frame,
+    &.width-g .content-frame,
+    &.width-h .content-frame {
+        min-height: 10px;  /* 90px, compensated for 40px padding */
+    }
 
-.CardPost.height-e .content-frame {
-    min-height: 250px;  /* 290px, compensated for 20px padding */
-}
+    &.height-e .content-frame {
+        min-height: 250px;  /* 290px, compensated for 20px padding */
+    }
 
-.CardPost.height-e.width-e .content-frame,
-.CardPost.height-e.width-f .content-frame,
-.CardPost.height-e.width-g .content-frame,
-.CardPost.height-e.width-h .content-frame {
-    min-height: 210px;  /* 290px, compensated for 40px padding */
-}
+    &.height-e.width-e .content-frame,
+    &.height-e.width-f .content-frame,
+    &.height-e.width-g .content-frame,
+    &.height-e.width-h .content-frame {
+        min-height: 210px;  /* 290px, compensated for 40px padding */
+    }
 
-.CardPost.height-d .content-frame {
-    min-height: 150px;  /* 190px, compensated for 20px padding */
-}
+    &.height-d .content-frame {
+        min-height: 150px;  /* 190px, compensated for 20px padding */
+    }
 
-.CardPost.height-d.width-e .content-frame,
-.CardPost.height-d.width-f .content-frame,
-.CardPost.height-d.width-g .content-frame,
-.CardPost.height-d.width-h .content-frame {
-    min-height: 110px;  /* 190px, compensated for 40px padding */
-}
+    &.height-d.width-e .content-frame,
+    &.height-d.width-f .content-frame,
+    &.height-d.width-g .content-frame,
+    &.height-d.width-h .content-frame {
+        min-height: 110px;  /* 190px, compensated for 40px padding */
+    }
 
-.CardPost.height-c .content-frame {
-    min-height: 100px;  /* 140px, compensated for 20px padding */
-}
+    &.height-c .content-frame {
+        min-height: 100px;  /* 140px, compensated for 20px padding */
+    }
 
-.CardPost.height-c.width-e .content-frame,
-.CardPost.height-c.width-f .content-frame,
-.CardPost.height-c.width-g .content-frame,
-.CardPost.height-c.width-h .content-frame {
-    min-height: 60px;  /* 140px, compensated for 40px padding */
-}
-
-.Card.CardPost .title {
-    padding-bottom: 20px;
-    color: white;
+    &.height-c.width-e .content-frame,
+    &.height-c.width-f .content-frame,
+    &.height-c.width-g .content-frame,
+    &.height-c.width-h .content-frame {
+        min-height: 60px;  /* 140px, compensated for 40px padding */
+    }
 }
 
 .CardDeck {
@@ -197,25 +241,39 @@
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-position: center;
+
+    .thumbnail {
+        border: 0px solid transparent;  /* used for the triangle in the corner */
+        margin: 13px;
+    }
+
+    &:active {
+        background-size: 98% 98%;
+    }
+
+    .content-frame {
+        padding: 20px 0px 20px 0px;
+        background-color: transparentize(white, 1 - 0.949);
+        min-height: 80px;  /* 120px, compensated for 20px padding */
+    }
+
+    &.height-b .content-frame,
+    &.height-a .content-frame {
+        min-height: 40px;  /* 80px, compensated for 20px padding */
+    }
+
+    .title {
+        font-weight: 300;
+    }
+
+    .composite & .title {
+        font-weight: normal;
+    }
 }
 
-.CardDeck:active {
-    background-size: 98% 98%;
-}
-
-.CardDeck .content-frame {
-    padding: 20px 0px 20px 0px;
-    background-color: transparentize(white, 1 - 0.949);
-    min-height: 80px;  /* 120px, compensated for 20px padding */
-}
-
-.CardDeck.height-b .content-frame,
-.CardDeck.height-a .content-frame {
-    min-height: 40px;  /* 80px, compensated for 20px padding */
-}
-
-.CardDeck .title {
-    font-weight: 300;
+.Card.CardPost .title {
+    padding-bottom: 20px;
+    color: white;
 }
 
 .card-synopsis {
@@ -229,77 +287,77 @@
     color: #49bde3;
 }
 
-.ContentGroupSearch spinner {
-    margin: 20px;
-}
-
 .results-message-title,
 .results-message.subtitle {
     color: black;
 }
 
-.DocumentCard .CardSequence {
-    background-color: white;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
-    padding: 15px 30px;
-}
+.DocumentCard {
+    .CardSequence {
+        background-color: white;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
+        padding: 15px 30px;
 
-.DocumentCard .CardSequence .title {
-    font-size: 21.3px;
-    font-weight: normal;
-    color: #044a80;
-}
+        .title {
+            font-size: 21.3px;
+            font-weight: normal;
+            color: #044a80;
+        }
 
-.DocumentCard .CardSequence .previous-label,
-.DocumentCard .CardSequence .next-label {
-    font-size: 14.7px;
-    color: #49bde3;
-}
+        .previous-label,
+        .next-label {
+            font-size: 14.7px;
+            color: #49bde3;
+        }
+    }
 
-.DocumentCard .SlidingPanel {
-    -EknSlidingPanel-fill-percentage: 0.73;
-    -EknSlidingPanel-shadow-margin: 7;
-}
+    .SlidingPanel {
+        -EknSlidingPanel-fill-percentage: 0.73;
+        -EknSlidingPanel-shadow-margin: 7;
+    }
 
-.home-button {
-    font-weight: bold;
-}
-
-.DocumentCard WebKitWebView {
-    background-color: white;
+    WebKitWebView {
+        background-color: white;
+    }
 }
 
 .webview-tooltip {
     background-color: transparentize(black, 1 - 0.4);
     border-radius: 8px 8px 8px 8px;
     padding: 10px 14px;
+
+    GtkLabel {
+        color: white;
+        font-family: Lato;
+        font-size: 1.0em; /* 16px / 12px/em * 72/96 */
+        font-weight: bold;
+    }
 }
 
-.webview-tooltip GtkLabel {
-    color: white;
-    font-family: Lato;
-    font-size: 1.0em; /* 16px / 12px/em * 72/96 */
+.home-button {
     font-weight: bold;
 }
 
-.LayoutResponsiveMargins--tiny {
-    margin: 0px;
-}
+.LayoutResponsiveMargins {
+    &--tiny {
+        margin: 0px;
+    }
 
-.LayoutResponsiveMargins--small {
-    margin: 0px 40px;
-}
+    &--small {
+        margin: 0px 40px;
+    }
 
-.LayoutResponsiveMargins--medium {
-    margin: 0px 62px;
-}
+    &--medium {
+        margin: 0px 62px;
+    }
 
-.LayoutResponsiveMargins--large {
-    margin: 0px 83px;
-}
+    &--large {
+        margin: 0px 83px;
+    }
 
-.LayoutResponsiveMargins--xlarge {
-    margin: 0px 120px;
+    &--xlarge {
+        margin: 0px 120px;
+    }
 }
 
 .ArrangementHalf,
@@ -322,56 +380,41 @@
   margin: 10px;
 }
 
-.endless-search-box frame {
-   background-color: #d5e1ed;
-}
+.endless-search-box {
+    frame {
+       background-color: #d5e1ed;
+    }
 
-.endless-search-box .view .cell {
-    border-color: #d5e1ed;
-}
+    .view {
+        .cell {
+            border-color: #d5e1ed;
 
-.endless-search-box .view .cell:selected {
-    background-color: #f5f5f5;
-}
+            &:selected {
+                background-color: #f5f5f5;
+            }
+        }
 
-.endless-search-box .view:nth-child(2) .cell {
-    border-color: #d5e1ed;
-    background-color: #d5e1ed;
-}
+        &:nth-child(2) {
+            .cell {
+                border-color: #d5e1ed;
+                background-color: #d5e1ed;
 
-.endless-search-box .view:nth-child(2) .cell:selected {
-    background-color: #f5f5f5;
+                &:selected {
+                    background-color: #f5f5f5;
+                }
+            }
+        }
+    }
 }
 
 /* Changes for composite TVs */
-
-.composite .ContentGroupSearch row {
-    padding: 0 40px;
-}
 
 .composite .card-context {
     font-style: normal;
 }
 
-.composite .CardThumb .card-context {
-    color: gray;
-}
-
-.composite .CardList.width-d .title,
-.composite .CardList.width-d .card-synopsis,
-.composite .CardList.width-e .title,
-.composite .CardList.width-e .card-synopsis {
-    font-size: 18.8px;  /* 16px spec * 88% because spec was at 110% scale not 125% */
-}
-
 .composite .ContentGroupHighlights .CardTitle .title.label,
 .composite .ContentGroupThematic .CardTitle .title.label,
-.composite .CardSetPreview .title,
-.composite .browse-content .title,
-.composite .CardDeck .title {
+.composite .browse-content .title {
     font-weight: normal;
-}
-
-.composite .BannerApp {
-    font-size: 22.3px;  /* 19px spec * 88% */
 }

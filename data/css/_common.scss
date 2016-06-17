@@ -14,48 +14,56 @@
 }
 
 /* ===== SearchBox ===== */
-.endless-search-box .view {
-    padding: 10px;
-}
+.endless-search-box {
+    .view {
+        padding: 10px;
 
-.endless-search-box .view .cell {
-    border-color: #f5f5f5;
-    border-width: 3px;
-    border-radius: 2px;
-    border-style: solid;
-    background-color: white;
-}
+        .cell {
+            border-color: #f5f5f5;
+            border-width: 3px;
+            border-radius: 2px;
+            border-style: solid;
+            background-color: white;
 
-.endless-search-box .view .cell:selected {
-    background-color: #d5e1ed;
-}
+            &:selected {
+                background-color: #d5e1ed;
+            }
+        }
 
-.endless-search-box .view:nth-child(2) .cell {
-    color: #044a80;
-    border-color: #f5f5f5;
-    background-color: #f5f5f5;
-}
+        &:nth-child(2) {
+            .cell {
+                color: #044a80;
+                border-color: #f5f5f5;
+                background-color: #f5f5f5;
 
-.endless-search-box .view:nth-child(2) .cell:selected {
-    color: #044a80;
-    background-color: #d5e1ed;
+                &:selected {
+                    color: #044a80;
+                    background-color: #d5e1ed;
+                }
+            }
+        }
+    }
 }
 
 /* ===== MediaCard ===== */
 .CardMedia {
     padding: 10px;
     background-color: white;
-}
 
-.CardMedia separator {
-    background-color: #d6d6d6;
-    min-height: 1px;
+    separator {
+        background-color: #d6d6d6;
+        min-height: 1px;
+    }
 }
 
 .media-card-caption {
     font-size: .81em;  /* 13pt * 1/12 * 0.75 DPI correction factor */
     font-family: Lato;
     color: #666666;
+
+    .composite & {
+        font-size: 14.1px;  /* 12px spec * 88% because spec was at 110% scale not 125% */
+    }
 }
 
 .media-card-attribution-text {
@@ -64,18 +72,14 @@
     font-family: Lato;
     color: #b2b2b2;
     transition: color 250ms ease-in-out;
-}
 
-.media-card-attribution-text:hover {
-    color: #ff6900;
-}
+    &:hover {
+        color: #ff6900;
+    }
 
-.composite .media-card-caption {
-    font-size: 14.1px;  /* 12px spec * 88% because spec was at 110% scale not 125% */
-}
-
-.composite .media-card-attribution-text {
-    font-size: 10.5px;  /* 9px spec * 88% */
+    .composite & {
+        font-size: 10.5px;  /* 9px spec * 88% */
+    }
 }
 
 /* ===== LightBox ===== */
