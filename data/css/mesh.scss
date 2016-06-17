@@ -121,7 +121,8 @@ $template-b-text-color-highlighted: #333333;
     }
 }
 
-.section-page-b {
+.section-page-b,
+.search-page-b {
     .title {
         font-family: Montserrat;
         font-weight: bold;
@@ -150,11 +151,6 @@ $template-b-text-color-highlighted: #333333;
         padding: 0.9em 0em 0.9em 1.2em;
         color: white;
     }
-}
-
-.search-page-b .title {
-    font-family: Montserrat;
-    font-weight: bold;
 }
 
 .ContentGroupSearch {
@@ -209,18 +205,6 @@ $template-b-text-color-highlighted: #333333;
     .composite .article-page-b & {
         background-color: transparentize(black, 1 - 0.8);
     }
-}
-
-.search-page-b .title {
-    font-size: 4.5em; /* 72pt * 1/12 * 0.75 DPI correction factor */
-    padding: 0.9em 0em 0.9em 1.2em;
-    color: white;
-}
-
-.window-small .search-page-b .title {
-    font-size: 3.5em; /* 56pt * 1/12 * 0.75 DPI correction factor */
-    padding: 0.9em 0em 0.9em 1.2em;
-    color: white;
 }
 
 .CardLegacyPolaroid {
@@ -624,19 +608,6 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 
 .article-page-b .sidebar {
     padding-left: 60px;
-}
-
-.search-page-b scrollbar trough {
-    padding: 0px 3px;
-    background-color: transparentize(black, 1 - 0.5);
-    background-image: linear-gradient(89deg,
-                                      transparentize(white, 1 - 0.1) 0%,
-                                      transparentize(black, 1 - 0.1) 100%);
-    box-shadow: inset 1px 0px 0px 0px transparentize(black, 1 - 0.15);
-}
-
-.search-page-b scrollbar slider {
-    background-color: #888888;
 }
 
 /* Hide scrollbars when animating, they look bad. */
