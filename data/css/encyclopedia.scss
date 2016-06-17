@@ -150,9 +150,11 @@
     padding-right: 0.6em;
 }
 
-.LayoutPaper .content {
-    background-image: linear-gradient(to bottom, #ececec 0%, #ececec 100%),
-                      url('../templates/images/noise.png');
+.LayoutPaper {
+    &__content {
+        background-image: linear-gradient(to bottom, #ececec 0%, #ececec 100%),
+                          url('../templates/images/noise.png');
+    }
 }
 
 scrollbar {

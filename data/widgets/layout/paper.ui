@@ -12,7 +12,7 @@
         <property name="hexpand">True</property>
         <property name="halign">fill</property>
         <style>
-          <class name="content"/>
+          <class name="LayoutPaper__content"/>
         </style>
       </object>
     </child>
