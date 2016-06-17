@@ -141,7 +141,7 @@ const Search = new Module.Class({
                 this._arrangement.fade_cards =
                     (this._arrangement.get_count() > 0);
                 this._arrangement.highlight_string(payload.query);
-                this._arrangement.set_models(payload.models);
+                this._arrangement.set_models(this._arrangement.get_models().concat(payload.models));
 
                 if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
                     this._arrangement.new_content_added();
