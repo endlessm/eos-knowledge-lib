@@ -87,7 +87,30 @@
     }
 }
 
-.ContentGroupSuggestedCategories .browse-content .title,
+.ContentGroupSuggestedCategories {
+    .browse-content {
+        .title {
+            color: #044a80;
+        }
+
+        .after {
+            -gtk-icon-source: url('../images/title-arrow-dark.svg');
+            min-height: 10px;
+            min-width: 11px;
+            margin-left: 8px;
+            margin-top: 6px;
+        }
+
+        &:hover .after {
+            -gtk-icon-source: url('../images/title-arrow-light.svg');
+        }
+    }
+
+    .ArrangementSquareGuys {
+        padding: 0 20px 20px 20px;
+    }
+}
+
 .search-page-suggestions .browse-content .title  {
     color: #044a80;
 }
@@ -115,7 +138,6 @@
     margin: 4px 0px 10px 0px;
 }
 
-.ContentGroupSuggestedCategories .browse-content .after,
 .ContentGroupHighlights .CardTitle .after,
 .ContentGroupThematic .CardTitle .after {
     -gtk-icon-source: url('../images/title-arrow-dark.svg');
@@ -125,7 +147,6 @@
     margin-top: 6px;
 }
 
-.ContentGroupSuggestedCategories .browse-content:hover .after,
 .ContentGroupHighlights .CardTitle:hover .after,
 .ContentGroupThematic .CardTitle:hover .after {
     -gtk-icon-source: url('../images/title-arrow-light.svg');
@@ -273,8 +294,7 @@
     font-style: italic;
 }
 
-.search-page-suggestions .ArrangementSquareGuys,
-.ContentGroupSuggestedCategories .ArrangementSquareGuys {
+.search-page-suggestions .ArrangementSquareGuys {
     padding: 0 20px 20px 20px;
 }
 
