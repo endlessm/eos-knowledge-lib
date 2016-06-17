@@ -601,19 +601,21 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     background-color: transparent;
 }
 
-.DocumentCard WebKitWebView {
-    background-color: #ececec;
-    background-image: url('../templates/images/noise.png');
-}
+.DocumentCard {
+    WebKitWebView {
+        background-color: #ececec;
+        background-image: url('../templates/images/noise.png');
+    }
 
-.DocumentCard .title {
-    font-family: Montserrat;
-    font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
-    font-weight: bold;
-}
+    .title {
+        font-family: Montserrat;
+        font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
+        font-weight: bold;
 
-.DocumentCard .title.collapsed {
-    margin-bottom: 10px;
+        &.collapsed {
+            margin-bottom: 10px;
+        }
+    }
 }
 
 .article-page-a .document-card-content-frame {
