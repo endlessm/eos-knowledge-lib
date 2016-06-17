@@ -138,9 +138,9 @@ const Search = new Module.Class({
                 break;
             case Actions.APPEND_SEARCH:
                 this._query = payload.query;
-                this._arrangement.fade_cards =
-                    (this._arrangement.get_count() > 0);
-                this._arrangement.highlight_string(payload.query);
+                this._arrangement.fade_cards = (this._arrangement.get_count() > 0);
+                if (payload.query)
+                    this._arrangement.highlight_string(payload.query);
                 this._arrangement.set_models(this._arrangement.get_models().concat(payload.models));
 
                 if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
