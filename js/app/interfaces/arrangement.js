@@ -309,7 +309,7 @@ const Arrangement = new Lang.Interface({
      *   str - a string, or **null** to remove highlights
      */
     highlight_string: function (str) {
-        if (this._highlight_string === str)
+        if (!str || this._highlight_string === str)
             return;
         this._highlight_string = str;
 
