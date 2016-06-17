@@ -14,7 +14,43 @@
     }
 }
 
-.CardSetPreview .title,
+.CardSetPreview {
+    .title {
+        color: #044a80;
+
+        .after {
+            -gtk-icon-source: url('../images/title-arrow-dark.svg');
+            min-height: 10px;
+            min-width: 11px;
+            margin-left: 8px;
+            margin-top: 6px;
+        }
+
+        &:hover .after {
+            -gtk-icon-source: url('../images/title-arrow-light.svg');
+        }
+    }
+
+    .CardTitle {
+        margin-top: 25px;
+
+        .title {
+            font-weight: 200;
+            font-size: 29.3px;
+        }
+    }
+
+    .CardThumb .content-frame {
+        margin-top: -10px;
+    }
+
+    separator {
+        background-color: #999999;
+        min-height: 1px;
+        margin: 4px 0px 10px 0px;
+    }
+}
+
 .ContentGroupSearch .results-message-title,
 .ContentGroupSuggestedCategories .browse-content .title,
 .search-page-suggestions .browse-content .title  {
@@ -26,21 +62,18 @@
     padding: 20px;
 }
 
-.ContentGroupThematic .CardTitle,
-.CardSetPreview .CardTitle {
+.ContentGroupThematic .CardTitle {
     margin-top: 25px;
 }
 
 .ContentGroupHighlights .CardTitle .title.label,
 .ContentGroupThematic .CardTitle .title.label,
-.CardSetPreview .CardTitle .title,
 .browse-content .title {
     font-weight: 200;
     font-size: 29.3px;
 }
 
 .ContentGroupHighlights separator,
-.CardSetPreview separator,
 .ContentGroupThematic separator {
     background-color: #999999;
     min-height: 1px;
@@ -49,7 +82,6 @@
 
 .ContentGroupSuggestedCategories .browse-content .after,
 .ContentGroupHighlights .CardTitle .after,
-.CardSetPreview .title .after,
 .ContentGroupThematic .CardTitle .after {
     -gtk-icon-source: url('../images/title-arrow-dark.svg');
     min-height: 10px;
@@ -60,12 +92,10 @@
 
 .ContentGroupSuggestedCategories .browse-content:hover .after,
 .ContentGroupHighlights .CardTitle:hover .after,
-.CardSetPreview .title .after,
 .ContentGroupThematic .CardTitle:hover .after {
     -gtk-icon-source: url('../images/title-arrow-light.svg');
 }
 
-.CardSetPreview .CardThumb .content-frame,
 .ContentGroupSearch .ContentGroupSuggestedArticles .content-frame {
     margin-top: -10px;
 }
