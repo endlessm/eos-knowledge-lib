@@ -160,34 +160,38 @@
 
 .ContentGroupThematic {
     padding: 20px;
+
+    .CardTitle {
+        margin-top: 25px;
+
+        .title.label {
+            font-weight: 200;
+            font-size: 29.3px;
+        }
+
+        .after {
+            -gtk-icon-source: url('../images/title-arrow-dark.svg');
+            min-height: 10px;
+            min-width: 11px;
+            margin-left: 8px;
+            margin-top: 6px;
+        }
+
+        &:hover .after {
+            -gtk-icon-source: url('../images/title-arrow-light.svg');
+        }
+    }
+
+    separator {
+        background-color: #999999;
+        min-height: 1px;
+        margin: 4px 0px 10px 0px;
+    }
 }
 
-.ContentGroupThematic .CardTitle {
-    margin-top: 25px;
-}
-
-.ContentGroupThematic .CardTitle .title.label,
 .browse-content .title {
     font-weight: 200;
     font-size: 29.3px;
-}
-
-.ContentGroupThematic separator {
-    background-color: #999999;
-    min-height: 1px;
-    margin: 4px 0px 10px 0px;
-}
-
-.ContentGroupThematic .CardTitle .after {
-    -gtk-icon-source: url('../images/title-arrow-dark.svg');
-    min-height: 10px;
-    min-width: 11px;
-    margin-left: 8px;
-    margin-top: 6px;
-}
-
-.ContentGroupThematic .CardTitle:hover .after {
-    -gtk-icon-source: url('../images/title-arrow-light.svg');
 }
 
 .browse-content .title {
