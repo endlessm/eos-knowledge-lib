@@ -493,9 +493,19 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     margin: 20px;
 }
 
-.section-page-b .ContentGroupItem,
+.ContentGroupItem {
+    .section-page-b &,
+    .article-page-b & {
+        background-color: transparentize(black, 1 - 0.75);
+    }
+
+    .composite .section-page-b &,
+    .composite .article-page-b & {
+        background-color: transparentize(black, 1 - 0.8);
+    }
+}
+
 .search-page-b .ContentGroupSearch,
-.article-page-b .ContentGroupItem,
 .article-page-b .ContentGroupSearch {
     background-color: transparentize(black, 1 - 0.75);
 }
@@ -642,9 +652,7 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     min-height: 120px;
 }
 
-.composite .section-page-b .ContentGroupItem,
 .composite .search-page-b .ContentGroupSearch,
-.composite .article-page-b .ContentGroupItem,
 .composite .article-page-b .ContentGroupSearch {
     background-color: transparentize(black, 1 - 0.8);
 }
