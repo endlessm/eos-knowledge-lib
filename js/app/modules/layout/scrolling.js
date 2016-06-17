@@ -31,7 +31,7 @@ const Scrolling = new Module.Class({
             switch (payload.action_type) {
                 case Actions.SHOW_HOME_PAGE:
                 case Actions.SHOW_ALL_SETS_PAGE:
-                case Actions.SHOW_SECTION_PAGE:
+                case Actions.SHOW_SET_PAGE:
                 case Actions.SHOW_SEARCH_PAGE:
                 case Actions.SHOW_ARTICLE_PAGE:
                     this._return_to_top();

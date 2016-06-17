@@ -47,7 +47,7 @@ describe('Layout.InfiniteScrolling', function () {
         }
         test_show_page(Actions.SHOW_HOME_PAGE, 'home');
         test_show_page(Actions.SHOW_ALL_SETS_PAGE, 'sets');
-        test_show_page(Actions.SHOW_SECTION_PAGE, 'section');
+        test_show_page(Actions.SHOW_SET_PAGE, 'set');
         test_show_page(Actions.SHOW_SEARCH_PAGE, 'search');
         test_show_page(Actions.SHOW_ARTICLE_PAGE, 'article');
     });

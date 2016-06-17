@@ -137,7 +137,7 @@ describe('Window.Simple', function () {
 
         it('disables the home button when in the home page', function () {
             expect(view._home_button).toBeDefined();
-            dispatcher.dispatch({ action_type: Actions.SHOW_SECTION_PAGE });
+            dispatcher.dispatch({ action_type: Actions.SHOW_SET_PAGE });
             expect(view._home_button.sensitive).toBe(true);
             dispatcher.dispatch({ action_type: Actions.SHOW_HOME_PAGE });
             expect(view._home_button.sensitive).toBe(false);
@@ -145,7 +145,7 @@ describe('Window.Simple', function () {
 
         it('disables the home button when in the brand page', function () {
             expect(view._home_button).toBeDefined();
-            dispatcher.dispatch({ action_type: Actions.SHOW_SECTION_PAGE });
+            dispatcher.dispatch({ action_type: Actions.SHOW_SET_PAGE });
             expect(view._home_button.sensitive).toBe(true);
             dispatcher.dispatch({ action_type: Actions.SHOW_BRAND_PAGE });
             expect(view._home_button.sensitive).toBe(false);

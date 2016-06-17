@@ -18,7 +18,7 @@ describe('Pager.ParallaxBackground', function () {
             type: ParallaxBackground.ParallaxBackground,
             slots: {
                 'home-page': { type: null },
-                'section-page': { type: null },
+                'set-page': { type: null },
                 'search-page': { type: null },
                 'article-page': { type: null },
             },
@@ -30,7 +30,7 @@ describe('Pager.ParallaxBackground', function () {
         expect(pager).toHaveCssClass('PagerParallaxBackground--left');
         dispatcher.dispatch({ action_type: Actions.SHOW_SEARCH_PAGE });
         expect(pager).toHaveCssClass('PagerParallaxBackground--center');
-        dispatcher.dispatch({ action_type: Actions.SHOW_SECTION_PAGE });
+        dispatcher.dispatch({ action_type: Actions.SHOW_SET_PAGE });
         expect(pager).toHaveCssClass('PagerParallaxBackground--center');
         dispatcher.dispatch({ action_type: Actions.SHOW_ARTICLE_PAGE });
         expect(pager).toHaveCssClass('PagerParallaxBackground--right');

@@ -21,7 +21,7 @@ describe('Pager.Simple', function () {
                 type: Simple.Simple,
                 slots: {
                     'home-page': { type: null },
-                    'section-page': { type: null },
+                    'set-page': { type: null },
                     'search-page': { type: null },
                     'article-page': { type: null },
                     'all-sets-page': { type: null },
@@ -31,14 +31,14 @@ describe('Pager.Simple', function () {
 
         it('updates the visible page when dispatcher says so', function () {
             let home_page = factory.get_last_created('home-page');
-            let section_page = factory.get_last_created('section-page');
+            let set_page = factory.get_last_created('set-page');
             let search_page = factory.get_last_created('search-page');
             let article_page = factory.get_last_created('article-page');
             let all_sets_page = factory.get_last_created('all-sets-page');
             dispatcher.dispatch({ action_type: Actions.SHOW_HOME_PAGE });
             expect(pager.visible_child).toBe(home_page);
-            dispatcher.dispatch({ action_type: Actions.SHOW_SECTION_PAGE });
-            expect(pager.visible_child).toBe(section_page);
+            dispatcher.dispatch({ action_type: Actions.SHOW_SET_PAGE });
+            expect(pager.visible_child).toBe(set_page);
             dispatcher.dispatch({ action_type: Actions.SHOW_SEARCH_PAGE });
             expect(pager.visible_child).toBe(search_page);
             dispatcher.dispatch({ action_type: Actions.SHOW_ARTICLE_PAGE });
@@ -62,7 +62,7 @@ describe('Pager.Simple', function () {
         it('dispatches the correct actions for the navigation back button', function () {
             let payload = dispatcher.last_payload_with_type(Actions.NAV_BACK_ENABLED_CHANGED);
             expect(payload.enabled).toBeFalsy();
-            dispatcher.dispatch({ action_type: Actions.SHOW_SECTION_PAGE });
+            dispatcher.dispatch({ action_type: Actions.SHOW_SET_PAGE });
             payload = dispatcher.last_payload_with_type(Actions.NAV_BACK_ENABLED_CHANGED);
             expect(payload.enabled).toBeTruthy();
         });
@@ -82,7 +82,7 @@ describe('Pager.Simple', function () {
                 slots: {
                     'brand-page': { type: null },
                     'home-page': { type: null },
-                    'section-page': { type: null },
+                    'set-page': { type: null },
                     'search-page': { type: null },
                     'article-page': { type: null },
                     'all-sets-page': { type: null },
@@ -106,8 +106,8 @@ describe('Pager.Simple', function () {
             expect(brand_page).toHaveCssClass('brand-page');
             let home_page = factory.get_last_created('home-page');
             expect(home_page).toHaveCssClass('home-page');
-            let section_page = factory.get_last_created('section-page');
-            expect(section_page).toHaveCssClass('section-page');
+            let set_page = factory.get_last_created('set-page');
+            expect(set_page).toHaveCssClass('set-page');
             let search_page = factory.get_last_created('search-page');
             expect(search_page).toHaveCssClass('search-page');
             let article_page = factory.get_last_created('article-page');

@@ -148,7 +148,7 @@ const Simple = new Module.Class({
                     this._update_top_bar_visibility();
                     this._present_if_needed();
                     break;
-                case Actions.SHOW_SECTION_PAGE:
+                case Actions.SHOW_SET_PAGE:
                 case Actions.SHOW_ALL_SETS_PAGE:
                 case Actions.SHOW_SEARCH_PAGE:
                 case Actions.SHOW_ARTICLE_PAGE:

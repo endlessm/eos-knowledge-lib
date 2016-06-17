@@ -39,7 +39,7 @@ const Simple = new Module.Class({
         'brand-page': {},  // optional
         'home-page': {},
         'search-page': {},  // optional
-        'section-page': {},  // optional
+        'set-page': {},  // optional
     },
 
     _init: function (props={}) {
@@ -58,10 +58,10 @@ const Simple = new Module.Class({
         this._home_page.get_style_context().add_class('home-page');
         this.add(this._home_page);
 
-        this._section_page = this.create_submodule('section-page');
-        if (this._section_page) {
-            this._section_page.get_style_context().add_class('section-page');
-            this.add(this._section_page);
+        this._set_page = this.create_submodule('set-page');
+        if (this._set_page) {
+            this._set_page.get_style_context().add_class('set-page');
+            this.add(this._set_page);
         }
 
         this._search_page = this.create_submodule('search-page');
@@ -112,9 +112,9 @@ const Simple = new Module.Class({
                 case Actions.SHOW_HOME_PAGE:
                     this._show_page(this._home_page);
                     break;
-                case Actions.SHOW_SECTION_PAGE:
-                    if (this._section_page)
-                        this._show_page(this._section_page);
+                case Actions.SHOW_SET_PAGE:
+                    if (this._set_page)
+                        this._show_page(this._set_page);
                     break;
                 case Actions.SHOW_ALL_SETS_PAGE:
                     if (this._all_sets_page)
@@ -168,7 +168,7 @@ const Simple = new Module.Class({
     },
 
     _is_page_on_center: function (page) {
-        return [this._section_page, this._search_page].indexOf(page) > -1;
+        return [this._set_page, this._search_page].indexOf(page) > -1;
     },
 
     _is_page_on_left: function (page) {

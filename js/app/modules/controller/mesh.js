@@ -17,6 +17,7 @@ const Controller = imports.app.interfaces.controller;
 const Launcher = imports.app.interfaces.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Module = imports.app.interfaces.module;
+const Pages = imports.app.pages;
 const QueryObject = imports.search.queryObject;
 const TabButton = imports.app.widgets.tabButton;
 const TitleCard = imports.app.modules.card.title;
@@ -36,11 +37,6 @@ const Mesh = new Module.Class({
     Name: 'Controller.Mesh',
     Extends: GObject.Object,
     Implements: [Launcher.Launcher, Controller.Controller],
-
-    ARTICLE_PAGE: 'article',
-    HOME_PAGE: 'home',
-    SEARCH_PAGE: 'search',
-    SECTION_PAGE: 'section',
 
     // Overridable in tests. Brand page should be visible for 2 seconds. The
     // transition is currently hardcoded to a slow fade over 500 ms.
@@ -82,19 +78,19 @@ const Mesh = new Module.Class({
                     break;
                 case Actions.HOME_CLICKED:
                     this.history_store.set_current_item_from_props({
-                        page_type: this.HOME_PAGE,
+                        page_type: Pages.HOME,
                     });
                     break;
                 case Actions.SET_CLICKED:
                     this.history_store.set_current_item_from_props({
-                        page_type: this.SECTION_PAGE,
+                        page_type: Pages.SET,
                         model: payload.model,
                     });
                     break;
                 case Actions.ITEM_CLICKED:
                 case Actions.SEARCH_CLICKED:
                     this.history_store.set_current_item_from_props({
-                        page_type: this.ARTICLE_PAGE,
+                        page_type: Pages.ARTICLE,
                         model: payload.model,
                     });
                     break;
@@ -106,7 +102,7 @@ const Mesh = new Module.Class({
                     break;
                 case Actions.AUTOCOMPLETE_CLICKED:
                     this.history_store.set_current_item_from_props({
-                        page_type: this.ARTICLE_PAGE,
+                        page_type: Pages.ARTICLE,
                         model: payload.model,
                         query: payload.query,
                     });
@@ -166,21 +162,21 @@ const Mesh = new Module.Class({
 
         let search_text = '';
         switch (item.page_type) {
-            case this.SEARCH_PAGE:
+            case Pages.SEARCH:
                 search_text = item.query;
                 this._update_search_results(item);
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_SEARCH_PAGE,
                 });
                 break;
-            case this.SECTION_PAGE:
+            case Pages.SET:
                 this._update_set_results(item, () => {
                     dispatcher.dispatch({
-                        action_type: Actions.SHOW_SECTION_PAGE,
+                        action_type: Actions.SHOW_SET_PAGE,
                     });
                 });
                 break;
-            case this.ARTICLE_PAGE:
+            case Pages.ARTICLE:
                 if (this.template_type === 'B')
                     this._update_article_list();
                 dispatcher.dispatch({
@@ -192,7 +188,7 @@ const Mesh = new Module.Class({
                     action_type: Actions.SHOW_ARTICLE_PAGE,
                 });
                 break;
-            case this.HOME_PAGE:
+            case Pages.HOME:
                 if (this.history_store.item_count() === 1) {
                     Dispatcher.get_default().dispatch({
                         action_type: Actions.SHOW_BRAND_PAGE,
@@ -215,7 +211,7 @@ const Mesh = new Module.Class({
 
     _show_home_if_ready: function () {
         let item = this.history_store.get_current_item();
-        if (!item || item.page_type !== this.HOME_PAGE)
+        if (!item || item.page_type !== Pages.HOME)
             return;
         if (!this._home_content_loaded)
             return;
@@ -244,7 +240,7 @@ const Mesh = new Module.Class({
     },
 
     _get_article_animation_type: function (item, last_item, is_going_back) {
-        if (!last_item || last_item.page_type !== this.ARTICLE_PAGE)
+        if (!last_item || last_item.page_type !== Pages.ARTICLE)
             return EosKnowledgePrivate.LoadingAnimationType.NONE;
         if (is_going_back)
             return EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
@@ -253,7 +249,7 @@ const Mesh = new Module.Class({
 
     _on_home_button_clicked: function (button) {
         this.history_store.set_current_item_from_props({
-            page_type: this.HOME_PAGE,
+            page_type: Pages.HOME,
         });
     },
 
@@ -266,12 +262,12 @@ const Mesh = new Module.Class({
 
     _on_back: function () {
         let item = this.history_store.get_current_item();
-        let types = item.page_type === this.ARTICLE_PAGE ?
-            [this.HOME_PAGE, this.SECTION_PAGE, this.SEARCH_PAGE] : [this.HOME_PAGE];
+        let types = item.page_type === Pages.ARTICLE ?
+            [Pages.HOME, Pages.SET, Pages.SEARCH] : [Pages.HOME];
         let item = this.history_store.search_backwards(-1,
             (item) => types.indexOf(item.page_type) >= 0);
         if (!item)
-            item = { page_type: this.HOME_PAGE };
+            item = { page_type: Pages.HOME };
         this.history_store.set_current_item(HistoryItem.HistoryItem.new_from_object(item));
     },
 
@@ -281,7 +277,7 @@ const Mesh = new Module.Class({
                 this._update_search_results(item);
                 return true;
             }
-            if (item.page_type === this.SECTION_PAGE) {
+            if (item.page_type === Pages.SET) {
                 this._update_set_results(item);
                 return true;
             }
@@ -457,7 +453,7 @@ const Mesh = new Module.Class({
 
     _update_highlight: function () {
         let item = this.history_store.get_current_item();
-        if (item.page_type === this.ARTICLE_PAGE) {
+        if (item.page_type === Pages.ARTICLE) {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.HIGHLIGHT_ITEM,
                 model: item.model,
@@ -472,7 +468,7 @@ const Mesh = new Module.Class({
 
         Utils.record_search_metric(query);
         this.history_store.set_current_item_from_props({
-            page_type: this.SEARCH_PAGE,
+            page_type: Pages.SEARCH,
             query: sanitized_query,
         });
     },
@@ -488,7 +484,7 @@ const Mesh = new Module.Class({
     desktop_launch: function (timestamp) {
         this._dispatch_present(timestamp);
         this.history_store.set_current_item_from_props({
-            page_type: this.HOME_PAGE,
+            page_type: Pages.HOME,
         });
     },
 
@@ -510,7 +506,7 @@ const Mesh = new Module.Class({
             try {
                 let model = engine.get_object_by_id_finish(task);
                 this.history_store.set_current_item_from_props({
-                    page_type: this.ARTICLE_PAGE,
+                    page_type: Pages.ARTICLE,
                     model: model,
                     query: query,
                 });
@@ -537,7 +533,7 @@ const Mesh = new Module.Class({
     _load_model: function (model) {
         if (model instanceof ArticleObjectModel.ArticleObjectModel) {
             this.history_store.set_current_item_from_props({
-                page_type: this.ARTICLE_PAGE,
+                page_type: Pages.ARTICLE,
                 model: model,
             });
         } else if (model instanceof MediaObjectModel.MediaObjectModel) {

@@ -19,7 +19,7 @@ const _topImage = 'resource:///com/endlessm/knowledge/data/images/background.png
 
 const _maxWidth = {
     home:    {small: 1024, medium: 1100},
-    section: {small: 999, medium: 1499},
+    set:     {small: 999, medium: 1499},
     article: {small: 999, medium: 1499},
     search:  {small: 999, medium: 1499},
 };
@@ -27,7 +27,7 @@ const _maxWidth = {
 // FIXME: tweak articles heights when the background is visible
 const _topImageHeight = {
     home:    {small: 510, medium: 510, big: 730},
-    section: {small: 200, medium: 215, big: 215},
+    set:     {small: 200, medium: 215, big: 215},
     article: {small: 140, medium: 180, big: 200},
     search:  {small: 354, medium: 279, big: 279},
 };
@@ -67,11 +67,11 @@ const DynamicBackground = new Module.Class({
          * Mode for setting the height breakpoints of the beige overlay
          *
          * A string specifying the mode that sets the height breakpoints of
-         * the beige overlay. Each mode corresponds to a page, either 'section',
+         * the beige overlay. Each mode corresponds to a page, either 'set',
          * 'article', 'home' or 'search'.
          */
         'page-mode': GObject.ParamSpec.string('page-mode', 'Page Mode',
-            'Mode for setting beige overlay height breakpoints. Either \'section\', \'article\', \'search\' or \'home\'',
+            'Mode for setting beige overlay height breakpoints. Either \'set\', \'article\', \'search\' or \'home\'',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             'article'),
     },

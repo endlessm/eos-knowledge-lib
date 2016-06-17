@@ -17,6 +17,7 @@ const Controller = imports.app.interfaces.controller;
 const Launcher = imports.app.interfaces.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Module = imports.app.interfaces.module;
+const Pages = imports.app.pages;
 const ReadingHistoryModel = imports.app.readingHistoryModel;
 const SetMap = imports.app.setMap;
 const SetObjectModel = imports.search.setObjectModel;
@@ -25,13 +26,6 @@ const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
-const Pages = {
-    HOME: 'home',
-    SET: 'set',
-    SEARCH: 'search',
-    ARTICLE: 'article',
-    ALL_SETS: 'all-sets',
-};
 const RESULTS_SIZE = 15;
 
 /**
@@ -336,7 +330,7 @@ const Buffet = new Module.Class({
                     model: item.model,
                 });
                 dispatcher.dispatch({
-                    action_type: Actions.SHOW_SECTION_PAGE,
+                    action_type: Actions.SHOW_SET_PAGE,
                 });
                 dispatcher.dispatch({
                     action_type: Actions.CLEAR_SUPPLEMENTARY_ARTICLES,

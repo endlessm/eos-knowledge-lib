@@ -133,7 +133,7 @@ describe('Controller.Buffet', function () {
         });
 
         it('changes to the set page', function () {
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE))
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SET_PAGE))
                 .toBeDefined();
         });
 
@@ -159,7 +159,7 @@ describe('Controller.Buffet', function () {
             dispatcher.dispatch({
                 action_type: Actions.HISTORY_FORWARD_CLICKED,
             });
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE))
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SET_PAGE))
                 .toBeDefined();
         });
 

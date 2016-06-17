@@ -59,6 +59,6 @@ const HIDE_MEDIA = 'hide-media';
 const SHOW_BRAND_PAGE = 'show-brand-page';
 const SHOW_HOME_PAGE = 'show-home-page';
 const SHOW_ALL_SETS_PAGE = 'show-all-sets-page';
-const SHOW_SECTION_PAGE = 'show-section-page';
+const SHOW_SET_PAGE = 'show-set-page';
 const SHOW_SEARCH_PAGE = 'show-search-page';
 const SHOW_ARTICLE_PAGE = 'show-article-page';

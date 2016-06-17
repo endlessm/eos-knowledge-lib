@@ -223,10 +223,10 @@ describe('Controller.Mesh', function () {
                 action_type: Actions.SET_CLICKED,
                 model: set_model,
             });
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).not.toBeDefined();
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SET_PAGE)).not.toBeDefined();
             let callback = engine.get_objects_by_query.calls.mostRecent().args[2];
             callback(engine);
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).toBeDefined();
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SET_PAGE)).toBeDefined();
         });
 
         it('shows the set', function () {
@@ -443,7 +443,7 @@ describe('Controller.Mesh', function () {
         it('leads back to the section page', function () {
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
             Utils.update_gui();
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).toBeDefined();
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SET_PAGE)).toBeDefined();
         });
 
         it('leads forward to the section page', function () {
@@ -451,7 +451,7 @@ describe('Controller.Mesh', function () {
             Utils.update_gui();
             dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
             Utils.update_gui();
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).toBeDefined();
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SET_PAGE)).toBeDefined();
         });
     });
 });
