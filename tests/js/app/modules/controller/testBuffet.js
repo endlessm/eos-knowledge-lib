@@ -13,12 +13,14 @@ const AppUtils = imports.app.utils;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const Buffet = imports.app.modules.controller.buffet;
 const ContentObjectModel = imports.search.contentObjectModel;
+const HistoryStore = imports.app.historyStore;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Module = imports.app.interfaces.module;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
+const Pages = imports.app.pages;
 const SetObjectModel = imports.search.setObjectModel;
 
 const MockView = new Module.Class({
@@ -33,7 +35,8 @@ const MockView = new Module.Class({
 });
 
 describe('Controller.Buffet', function () {
-    let buffet, dispatcher, engine, factory, set_models, article_model, media_model, reading_history;
+    let buffet, dispatcher, engine, factory, set_models, article_model, store;
+    let media_model, reading_history;
 
     beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
@@ -59,6 +62,8 @@ describe('Controller.Buffet', function () {
                 'window': { type: MockView },
             },
         });
+        buffet.BRAND_PAGE_TIME_MS = 0;
+        store = HistoryStore.get_default();
         spyOn(AppUtils, 'record_search_metric');
     });
 
@@ -120,14 +125,12 @@ describe('Controller.Buffet', function () {
                 jasmine.any(Object), jasmine.any(Function));
     });
 
-    describe('when a set is clicked', function () {
+    describe('on state change to set page', function () {
         beforeEach(function () {
-            buffet.BRAND_PAGE_TIME_MS = 0;
             buffet.desktop_launch(0);
             buffet.make_ready();
-            Utils.update_gui();
-            dispatcher.dispatch({
-                action_type: Actions.SET_CLICKED,
+            store.set_current_item_from_props({
+                page_type: Pages.SET,
                 model: set_models[0],
             });
         });
@@ -142,27 +145,6 @@ describe('Controller.Buffet', function () {
                 .toBe(set_models[0]);
         });
 
-        it('goes back to the home page in the history', function () {
-            dispatcher.reset();
-            dispatcher.dispatch({
-                action_type: Actions.HISTORY_BACK_CLICKED,
-            });
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE))
-                .toBeDefined();
-        });
-
-        it('goes forward to the set page in the history again', function () {
-            dispatcher.dispatch({
-                action_type: Actions.HISTORY_BACK_CLICKED,
-            });
-            dispatcher.reset();
-            dispatcher.dispatch({
-                action_type: Actions.HISTORY_FORWARD_CLICKED,
-            });
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_SET_PAGE))
-                .toBeDefined();
-        });
-
         it('dispatch a set of unread articles', function () {
             let payload = dispatcher.last_payload_with_type(Actions.APPEND_SUPPLEMENTARY_ARTICLES);
             expect(payload).toBeDefined();
@@ -172,89 +154,66 @@ describe('Controller.Buffet', function () {
                     tags_match_all: jasmine.arrayContaining(['EknArticleObject']),
                 }));
         });
-
-        it('goes back to the home page when the home button is clicked', function () {
-            dispatcher.dispatch({
-                action_type: Actions.HOME_CLICKED,
-            });
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
-        });
     });
 
-    let test_article_click_action = (action, descriptor) => {
-        describe('when a ' + descriptor + ' is clicked', function () {
-            let prev_model, next_model;
-            beforeEach(function () {
-                prev_model = new ArticleObjectModel.ArticleObjectModel({
-                    ekn_id: 'ekn://test/prev',
-                });
-                next_model = new ArticleObjectModel.ArticleObjectModel({
-                    ekn_id: 'ekn://test/next',
-                });
+    it('goes back to the home page when state changes to home page', function () {
+        buffet.make_ready();
+        store.set_current_item_from_props({
+            page_type: Pages.ARTICLE,
+            model: article_model,
+        });
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).not.toBeDefined();
+        store.set_current_item_from_props({
+            page_type: Pages.HOME,
+        });
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
+    });
 
-                dispatcher.dispatch({
-                    action_type: action,
-                    model: article_model,
-                    context: [prev_model, article_model, next_model],
-                    context_label: 'Some Context',
-                });
+    describe('on state change to article page', function () {
+        let prev_model, next_model;
+
+        beforeEach(function () {
+            prev_model = new ArticleObjectModel.ArticleObjectModel({
+                ekn_id: 'ekn://test/prev',
             });
-
-            it('records reading history', function() {
-                expect(reading_history.mark_article_read).toHaveBeenCalledWith(article_model.ekn_id);
+            next_model = new ArticleObjectModel.ArticleObjectModel({
+                ekn_id: 'ekn://test/next',
             });
-
-            it('changes to the article page', function () {
-                let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_PAGE);
-                expect(payload).toBeDefined();
-            });
-
-            it('dispatches show article with the article model', function () {
-                let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
-                expect(payload.model).toBe(article_model);
-            });
-
-            it('dispatches show article with previous and next models', function () {
-                let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
-                expect(payload.previous_model).toBe(prev_model);
-                expect(payload.next_model).toBe(next_model);
-            });
-
-            it('dispatches show article with a context label', function () {
-                let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_PAGE);
-                expect(payload.context_label).toBe('Some Context');
-            });
-
-            it('handles previous card click', function () {
-                dispatcher.dispatch({
-                    action_type: Actions.PREVIOUS_DOCUMENT_CLICKED,
-                    model: prev_model,
-                });
-                let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
-                expect(payload.model).toBe(prev_model);
-            });
-
-            it('handles previous card click', function () {
-                dispatcher.dispatch({
-                    action_type: Actions.NEXT_DOCUMENT_CLICKED,
-                    model: next_model,
-                });
-                let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
-                expect(payload.model).toBe(next_model);
+            engine.get_object_by_id_finish.and.returnValue(article_model);
+            store.set_current_item_from_props({
+                page_type: Pages.ARTICLE,
+                model: article_model,
+                context: [prev_model, article_model, next_model],
+                context_label: 'Some Context',
             });
         });
-    };
-    test_article_click_action(Actions.ITEM_CLICKED, 'item');
-    test_article_click_action(Actions.SEARCH_CLICKED, 'search item');
-    test_article_click_action(Actions.AUTOCOMPLETE_CLICKED, 'autocomplete entry');
 
-    describe('when an article is clicked', function () {
+        it('records reading history', function() {
+            expect(reading_history.mark_article_read).toHaveBeenCalledWith(article_model.ekn_id);
+        });
+
+        it('changes to the article page', function () {
+            let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_PAGE);
+            expect(payload).toBeDefined();
+        });
+
+        it('dispatches show article with the article model', function () {
+            let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
+            expect(payload.model).toBe(article_model);
+        });
+
+        it('dispatches show article with previous and next models', function () {
+            let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
+            expect(payload.previous_model).toBe(prev_model);
+            expect(payload.next_model).toBe(next_model);
+        });
+
+        it('dispatches show article with a context label', function () {
+            let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_PAGE);
+            expect(payload.context_label).toBe('Some Context');
+        });
+
         it('dispatches unread articles from both within and outside current category', function () {
-            engine.get_object_by_id_finish.and.returnValue(article_model);
-            dispatcher.dispatch({
-                action_type: Actions.ITEM_CLICKED,
-                model: article_model,
-            });
             let payloads = dispatcher.payloads_with_type(Actions.APPEND_SUPPLEMENTARY_ARTICLES);
             expect(payloads.length).toBe(2);
 
@@ -271,64 +230,14 @@ describe('Controller.Buffet', function () {
         });
     });
 
-    describe('when a set link is clicked', function () {
-        it('changes to the set page if link is a set', function () {
-            let set_model = new SetObjectModel.SetObjectModel({
-                ekn_id: 'ekn://test/set',
-            });
-
-            engine.get_object_by_id_finish.and.returnValue(set_model);
-            dispatcher.dispatch({
-                action_type: Actions.SEARCH_CLICKED,
-                model: set_model,
-            });
-            let payload = dispatcher.last_payload_with_type(Actions.SHOW_SET);
-            expect(payload.model).toBe(set_model);
+    it('changes to the all sets page on state change', function () {
+        store.set_current_item_from_props({
+            page_type: Pages.ALL_SETS,
         });
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_ALL_SETS_PAGE)).toBeDefined();
     });
 
-    describe('when a link is clicked', function () {
-        it('changes to the article page if link is an article', function () {
-            engine.get_object_by_id_finish.and.returnValue(article_model);
-            dispatcher.dispatch({
-                action_type: Actions.ARTICLE_LINK_CLICKED,
-                ekn_id: 'ekn://foo/bar',
-            });
-            let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
-            expect(payload.model).toBe(article_model);
-        });
-
-        it('changes to the set page if link is a set', function () {
-            engine.get_object_by_id_finish.and.returnValue(set_models[0]);
-            dispatcher.dispatch({
-                action_type: Actions.ARTICLE_LINK_CLICKED,
-                ekn_id: 'ekn://foo/bar',
-            });
-            let payload = dispatcher.last_payload_with_type(Actions.SHOW_SET);
-            expect(payload.model).toBe(set_models[0]);
-        });
-
-        it('shows media if the link is a media object', function () {
-            engine.get_object_by_id_finish.and.returnValue(media_model);
-            dispatcher.dispatch({
-                action_type: Actions.ARTICLE_LINK_CLICKED,
-                ekn_id: 'ekn://foo/bar',
-            });
-            let payload = dispatcher.last_payload_with_type(Actions.SHOW_MEDIA);
-            expect(payload.model).toBe(media_model);
-        });
-    });
-
-    describe('when browse categories title is clicked', function () {
-        it('changes to the all categories page', function () {
-            dispatcher.dispatch({
-                action_type: Actions.ALL_SETS_CLICKED,
-            });
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_ALL_SETS_PAGE)).toBeDefined();
-        });
-    });
-
-    describe('when a search query is entered', function () {
+    describe('on state change to search page', function () {
         beforeEach(function () {
             // Simulate batches of results
             engine.get_objects_by_query.calls.reset();
@@ -342,8 +251,8 @@ describe('Controller.Buffet', function () {
                         new ContentObjectModel.ContentObjectModel()), null];
                 return [[], null];
             });
-            dispatcher.dispatch({
-                action_type: Actions.SEARCH_TEXT_ENTERED,
+            store.set_current_item_from_props({
+                page_type: Pages.SEARCH,
                 query: 'user query',
             });
         });
@@ -371,10 +280,6 @@ describe('Controller.Buffet', function () {
             append_payloads = dispatcher.payloads_with_type(Actions.APPEND_SEARCH);
             expect(append_payloads.length).toBe(2);
             expect(append_payloads[1].models.length).toBe(2);
-        });
-
-        it('records a search metric', function () {
-            expect(AppUtils.record_search_metric).toHaveBeenCalledWith('user query');
         });
     });
 });

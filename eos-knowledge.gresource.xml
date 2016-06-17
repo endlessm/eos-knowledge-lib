@@ -75,6 +75,7 @@
     <file>js/app/actions.js</file>
     <file>js/app/application.js</file>
     <file>js/app/articleHTMLRenderer.js</file>
+    <file>js/app/buffetHistoryStore.js</file>
     <file>js/app/compat/compat.js</file>
     <file>js/app/config.js</file>
     <file>js/app/controllerLoader.js</file>

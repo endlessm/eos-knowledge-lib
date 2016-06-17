@@ -2,9 +2,15 @@
 
 const GObject = imports.gi.GObject;
 
+const ArticleObjectModel = imports.search.articleObjectModel;
 const Actions = imports.app.actions;
+const Engine = imports.search.engine;
 const Dispatcher = imports.app.dispatcher;
 const HistoryItem = imports.app.historyItem;
+const MediaObjectModel = imports.search.mediaObjectModel;
+const Pages = imports.app.pages;
+const SetObjectModel = imports.search.setObjectModel;
+const Utils = imports.app.utils;
 
 /**
  * Class: HistoryStore
@@ -114,6 +120,53 @@ const HistoryStore = new GObject.Class({
             item = this._items[index--];
         } while (item && !match_fn(item));
         return item || null;
+    },
+
+    // Common helper functions for history stores...
+    do_search: function (query) {
+        let sanitized_query = Utils.sanitize_query(query);
+        if (sanitized_query.length === 0)
+            return;
+
+        Utils.record_search_metric(query);
+        this.set_current_item_from_props({
+            page_type: Pages.SEARCH,
+            query: sanitized_query,
+        });
+    },
+
+    // This is by no means how all history stores need to handle showing
+    // articles, sets and media. But because all our current stores handle these
+    // the same after a link click, factoring out this common function. When we
+    // diverge in future interactions we should revisit this decomposition.
+    show_ekn_id: function (ekn_id) {
+        Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
+            let model;
+            try {
+                model = engine.get_object_by_id_finish(task);
+            } catch (error) {
+                logError(error);
+                return;
+            }
+
+            if (model instanceof ArticleObjectModel.ArticleObjectModel) {
+                this.set_current_item_from_props({
+                    page_type: Pages.ARTICLE,
+                    model: model,
+                });
+            } else if (model instanceof SetObjectModel.SetObjectModel) {
+                this.set_current_item_from_props({
+                    page_type: Pages.SET,
+                    model: model,
+                    context_label: model.title,
+                });
+            } else if (model instanceof MediaObjectModel.MediaObjectModel) {
+                Dispatcher.get_default().dispatch({
+                    action_type: Actions.SHOW_MEDIA,
+                    model: model,
+                });
+            }
+        });
     },
 });
 
