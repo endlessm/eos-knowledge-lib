@@ -549,8 +549,14 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     }
 }
 
-.home-page-b .LayoutBox {
-    min-height: 240px;
+.LayoutBox {
+    .home-page-b & {
+        min-height: 240px;
+    }
+
+    .composite .home-page-b & {
+        min-height: 120px;
+    }
 }
 
 .home-page-b .ContentGroupSet {
@@ -688,8 +694,4 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 
 .composite headerbar entry {
     font-size: 21.1px;  /* 18px spec * 88% because spec was at 110% scale not 125% */
-}
-
-.composite .home-page-b .LayoutBox {
-    min-height: 120px;
 }
