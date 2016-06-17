@@ -19,7 +19,7 @@
             <property name="can_focus">False</property>
             <property name="valign">start</property>
             <style>
-                <class name="scrolling-list-grid"/>
+                <class name="ArrangementScrollingList__grid"/>
             </style>
           </object>
         </child>
