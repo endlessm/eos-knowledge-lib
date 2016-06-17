@@ -559,8 +559,10 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     }
 }
 
-.home-page-b .ContentGroupSet {
-    background-color: black;
+.ContentGroupSet {
+    .home-page-b & {
+        background-color: black;
+    }
 }
 
 .ContentGroupItem {
