@@ -207,6 +207,7 @@
     }
 }
 
+.CardPost,
 .CardThumb {
     &.arrow {
         -gtk-icon-source: url('../images/arrow-gray.svg');
@@ -232,14 +233,11 @@
     }
 }
 
-.CardPost.arrow,
 .CardList.arrow {
     -gtk-icon-source: url('../images/arrow-gray.svg');
     -gtk-icon-transform: rotate(45deg);
 }
 
-.CardPost:hover,
-.CardPost:active,
 .CardDeck:hover .thumbnail,
 .CardDeck:active .thumbnail,
 .CardList:hover,
@@ -250,13 +248,10 @@
     -gtk-outline-radius: 0;
 }
 
-.CardPost:active,
 .CardList:active {
     box-shadow: none;
 }
 
-.CardPost.arrow:hover,
-.CardPost.arrow:active,
 .CardDeck .thumbnail.arrow, /* both hover and non-hover */
 .CardList.arrow:hover,
 .CardList.arrow:active {
