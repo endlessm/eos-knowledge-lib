@@ -119,20 +119,22 @@ scrollbar.vertical slider {
     color: $context-blue;
 }
 
-.top-menu .BannerApp .ThemeableImage {
-    -EknThemeableImage-sizing: "size-min";
-    min-width: 146px;
-    min-height: 30px;
-}
+.LayoutTopMenu {
+    &__menu {
+        background-color: #050c20;
+        box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.2);
+        padding: 0px 20px;
 
-.PanelFrame .top-menu {
-    background-color: #050c20;
-    box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.2);
-    padding: 0px 20px;
-}
+        .BannerApp .ThemeableImage {
+            -EknThemeableImage-sizing: "size-min";
+            min-width: 146px;
+            min-height: 30px;
+        }
+    }
 
-.top-menu-template-content {
-    margin-top: 50px;
+    &__content {
+        margin-top: 50px;
+    }
 }
 
 .ArrangementSideBySide {
