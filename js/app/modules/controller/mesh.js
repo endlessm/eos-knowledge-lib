@@ -7,15 +7,13 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 
 const Actions = imports.app.actions;
-const ArticleObjectModel = imports.search.articleObjectModel;
 const Compat = imports.app.compat.compat;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
-const HistoryItem = imports.app.historyItem;
-const HistoryStore = imports.app.historyStore;
 const Controller = imports.app.interfaces.controller;
+const HistoryStore = imports.app.historyStore;
 const Launcher = imports.app.interfaces.launcher;
-const MediaObjectModel = imports.search.mediaObjectModel;
+const MeshHistoryStore = imports.app.meshHistoryStore;
 const Module = imports.app.interfaces.module;
 const Pages = imports.app.pages;
 const QueryObject = imports.search.queryObject;
@@ -47,7 +45,7 @@ const Mesh = new Module.Class({
 
         this.parent(props);
 
-        let history = new HistoryStore.HistoryStore();
+        let history = new MeshHistoryStore.MeshHistoryStore();
         HistoryStore.set_default(history);
 
         this._window = this.create_submodule('window', {
@@ -68,45 +66,11 @@ const Mesh = new Module.Class({
         let dispatcher = Dispatcher.get_default();
         dispatcher.register((payload) => {
             switch(payload.action_type) {
-                case Actions.SEARCH_TEXT_ENTERED:
-                    this._do_search(payload.query);
-                    break;
-                case Actions.ARTICLE_LINK_CLICKED:
-                    this._load_uri(payload.ekn_id);
-                    break;
-                case Actions.NAV_BACK_CLICKED:
-                    this._on_back();
-                    break;
-                case Actions.HOME_CLICKED:
-                    history.set_current_item_from_props({
-                        page_type: Pages.HOME,
-                    });
-                    break;
-                case Actions.SET_CLICKED:
-                    history.set_current_item_from_props({
-                        page_type: Pages.SET,
-                        model: payload.model,
-                    });
-                    break;
-                case Actions.ITEM_CLICKED:
-                case Actions.SEARCH_CLICKED:
-                    history.set_current_item_from_props({
-                        page_type: Pages.ARTICLE,
-                        model: payload.model,
-                    });
-                    break;
                 case Actions.NEED_MORE_ITEMS:
                     this._load_more_set_results();
                     break;
                 case Actions.NEED_MORE_SEARCH:
                     this._load_more_search_results();
-                    break;
-                case Actions.AUTOCOMPLETE_CLICKED:
-                    history.set_current_item_from_props({
-                        page_type: Pages.ARTICLE,
-                        model: payload.model,
-                        query: payload.query,
-                    });
                     break;
             }
         });
@@ -249,29 +213,11 @@ const Mesh = new Module.Class({
         return EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
     },
 
-    _on_home_button_clicked: function (button) {
-        HistoryStore.get_default().set_current_item_from_props({
-            page_type: Pages.HOME,
-        });
-    },
-
     _on_search_focus: function (view, focused) {
         // If the user focused the search box, ensure that the lightbox is hidden
         Dispatcher.get_default().dispatch({
             action_type: Actions.HIDE_MEDIA,
         });
-    },
-
-    _on_back: function () {
-        let history = HistoryStore.get_default();
-        let item = history.get_current_item();
-        let types = item.page_type === Pages.ARTICLE ?
-            [Pages.HOME, Pages.SET, Pages.SEARCH] : [Pages.HOME];
-        item = history.search_backwards(-1,
-            (item) => types.indexOf(item.page_type) >= 0);
-        if (!item)
-            item = { page_type: Pages.HOME };
-        history.set_current_item(HistoryItem.HistoryItem.new_from_object(item));
     },
 
     _update_article_list: function () {
@@ -464,18 +410,6 @@ const Mesh = new Module.Class({
         }
     },
 
-    _do_search: function (query) {
-        let sanitized_query = Utils.sanitize_query(query);
-        if (sanitized_query.length === 0)
-            return;
-
-        Utils.record_search_metric(query);
-        HistoryStore.get_default().set_current_item_from_props({
-            page_type: Pages.SEARCH,
-            query: sanitized_query,
-        });
-    },
-
     _dispatch_present: function (timestamp) {
         Dispatcher.get_default().dispatch({
             action_type: Actions.PRESENT_WINDOW,
@@ -494,7 +428,15 @@ const Mesh = new Module.Class({
     // Launcher implementation
     search: function (timestamp, query) {
         this._dispatch_present(timestamp);
-        this._do_search(query);
+        let sanitized_query = Utils.sanitize_query(query);
+        if (sanitized_query.length === 0)
+            return;
+
+        Utils.record_search_metric(query);
+        HistoryStore.get_default().set_current_item_from_props({
+            page_type: Pages.SEARCH,
+            query: sanitized_query,
+        });
     },
 
     // Launcher implementation
@@ -517,33 +459,5 @@ const Mesh = new Module.Class({
                 logError(error);
             }
         });
-    },
-
-    _load_uri: function (ekn_id) {
-        Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
-            let model;
-            try {
-                model = engine.get_object_by_id_finish(task);
-            } catch (error) {
-                logError(error);
-                return;
-            }
-
-            this._load_model(model);
-        });
-    },
-
-    _load_model: function (model) {
-        if (model instanceof ArticleObjectModel.ArticleObjectModel) {
-            HistoryStore.get_default().set_current_item_from_props({
-                page_type: Pages.ARTICLE,
-                model: model,
-            });
-        } else if (model instanceof MediaObjectModel.MediaObjectModel) {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.SHOW_MEDIA,
-                model: model,
-            });
-        }
     },
 });
