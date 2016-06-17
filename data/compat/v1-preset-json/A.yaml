@@ -6,6 +6,8 @@ defines:
 - &main-arrangement-slot
   arrangement:
     type: Arrangement.Grid
+    properties:
+      fade-cards: true
     slots:
       card: *card
 

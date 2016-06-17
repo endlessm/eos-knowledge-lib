@@ -313,7 +313,7 @@ const App = new Module.Class({
 
         this.animating = false;
         let focused_widget = null;
-        this._stack.connect('notify::transition-running', function () {
+        this._stack.connect('notify::transition-running', () => {
             this.animating = this._stack.transition_running;
             this.notify('animating');
             if (this._stack.transition_running) {
@@ -328,7 +328,7 @@ const App = new Module.Class({
                     focused_widget = null;
                 }
             }
-        }.bind(this));
+        });
 
         this._stack.connect_after('notify::visible-child',
             this._update_top_bar_visibility.bind(this));

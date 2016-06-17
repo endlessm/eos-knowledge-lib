@@ -81,7 +81,8 @@ const ContentGroup = new Module.Class({
         this._selection.connect('models-changed',
             this._on_models_changed.bind(this));
         this._selection.connect('notify::loading', () => {
-            stack.visible_child_name = this._selection.loading ? SPINNER_PAGE_NAME : CONTENT_PAGE_NAME;
+            if (this._arrangement.get_card_count() === 0)
+                stack.visible_child_name = this._selection.loading ? SPINNER_PAGE_NAME : CONTENT_PAGE_NAME;
         });
 
         this.attach(stack, 0, 1, Math.max(1, this.get_children().length), 1);
