@@ -694,13 +694,13 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     background-color: transparentize(black, 1 - 0.4);
     border-radius: 8px 8px 8px 8px;
     padding: 10px 14px;
-}
 
-.webview-tooltip label {
-    color: white;
-    font-family: Lato;
-    font-size: 1.0em; /* 16px / 12px/em * 72/96 */
-    font-weight: bold;
+    label {
+        color: white;
+        font-family: Lato;
+        font-size: 1.0em; /* 16px / 12px/em * 72/96 */
+        font-weight: bold;
+    }
 }
 
 /* Changes for composite TVs */
