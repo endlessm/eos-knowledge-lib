@@ -331,6 +331,11 @@
     &__closeButton {
         padding: 6px 0px;
     }
+
+    .composite &__homeButton,
+    .composite &__menu .Card .title {
+        font-family: Lato;
+    }
 }
 
 .BannerContext {
@@ -346,8 +351,6 @@
 
 /* Changes for composite TVs */
 
-.composite .LayoutSideMenu__homeButton,
-.composite .LayoutSideMenu__menu .Card .title,
 .composite .BannerContext {
     font-family: Lato;
 }
