@@ -111,8 +111,26 @@
     }
 }
 
-.search-page-suggestions .browse-content .title  {
-    color: #044a80;
+.search-page-suggestions {
+    margin: 50px 0;
+    padding-bottom: 20px;
+    background-color: #ddddd5;
+
+    .browse-content .title  {
+        color: #044a80;
+    }
+
+    .ArrangementSquareGuys {
+        padding: 0 20px 20px 20px;
+    }
+
+    .content-group-title {
+        font-family: 'Fira Sans';
+        font-weight: bold;
+        font-size: 40px;
+        padding: 0px 0px 30px 20px;
+        color: #5e7790;
+    }
 }
 
 .ContentGroupHighlights,
@@ -292,24 +310,6 @@
 
 .card-context {
     font-style: italic;
-}
-
-.search-page-suggestions .ArrangementSquareGuys {
-    padding: 0 20px 20px 20px;
-}
-
-.search-page-suggestions {
-    margin: 50px 0;
-    padding-bottom: 20px;
-
-    .content-group-title {
-        font-family: 'Fira Sans';
-        font-weight: bold;
-        font-size: 40px;
-        padding: 0px 0px 30px 20px;
-        color: #5e7790;
-    }
-    background-color: #ddddd5;
 }
 
 /* Changes for composite TVs */
