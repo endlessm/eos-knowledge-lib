@@ -234,18 +234,20 @@
     }
 }
 
-.CardDeck:hover .thumbnail,
-.CardDeck:active .thumbnail {
-    outline: 1px solid #49bde3;
-    border-color: #49bde3;  /* used for the triangle in the corner */
-    outline-offset: -1px;
-    -gtk-outline-radius: 0;
-}
+.CardDeck {
+    &:hover .thumbnail,
+    &:active .thumbnail {
+        outline: 1px solid #49bde3;
+        border-color: #49bde3;  /* used for the triangle in the corner */
+        outline-offset: -1px;
+        -gtk-outline-radius: 0;
+    }
 
-/* both hover and non-hover */
-.CardDeck .thumbnail.arrow {
-    -gtk-icon-source: url('../images/arrow-white.svg');
-    -gtk-icon-transform: rotate(45deg);
+    /* both hover and non-hover */
+    .thumbnail.arrow {
+        -gtk-icon-source: url('../images/arrow-white.svg');
+        -gtk-icon-transform: rotate(45deg);
+    }
 }
 
 .BannerApp {
