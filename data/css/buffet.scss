@@ -213,15 +213,37 @@
     }
 }
 
-.CardThumb.arrow,
+.CardThumb {
+    &.arrow {
+        -gtk-icon-source: url('../images/arrow-gray.svg');
+        -gtk-icon-transform: rotate(45deg);
+
+        &:hover,
+        &:active {
+            -gtk-icon-source: url('../images/arrow-white.svg');
+            -gtk-icon-transform: rotate(45deg);
+        }
+    }
+
+    &:hover,
+    &:active {
+        outline: 1px solid #49bde3;
+        border-color: #49bde3;  /* used for the triangle in the corner */
+        outline-offset: -1px;
+        -gtk-outline-radius: 0;
+    }
+
+    &:active {
+        box-shadow: none;
+    }
+}
+
 .CardPost.arrow,
 .CardList.arrow {
     -gtk-icon-source: url('../images/arrow-gray.svg');
     -gtk-icon-transform: rotate(45deg);
 }
 
-.CardThumb:hover,
-.CardThumb:active,
 .CardPost:hover,
 .CardPost:active,
 .CardDeck:hover .thumbnail,
@@ -234,14 +256,11 @@
     -gtk-outline-radius: 0;
 }
 
-.CardThumb:active,
 .CardPost:active,
 .CardList:active {
     box-shadow: none;
 }
 
-.CardThumb.arrow:hover,
-.CardThumb.arrow:active,
 .CardPost.arrow:hover,
 .CardPost.arrow:active,
 .CardDeck .thumbnail.arrow, /* both hover and non-hover */
