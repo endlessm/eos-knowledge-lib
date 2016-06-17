@@ -52,7 +52,41 @@
     }
 }
 
-.ContentGroupSearch .results-message-title,
+.ContentGroupSearch {
+    .results-message-title {
+        color: #044a80;
+    }
+
+    .ContentGroupSuggestedArticles .content-frame {
+        margin-top: -10px;
+    }
+
+    .ContentGroupSuggestedCategories,
+    .search-page-suggestions {
+        background-color: #f6f6f6;
+    }
+
+    separator {
+        background-color: #999999;
+    }
+
+    .results-message-subtitle {
+        color: #999999;
+    }
+
+    .results-message-title,
+    .results-message-subtitle {
+        padding: 20px 60px 0px 60px;
+        padding-left: 60px;
+        padding-right: 60px;
+        font-size: 24px;
+    }
+
+    .results-message-subtitle {
+        padding-bottom: 40px;
+    }
+}
+
 .ContentGroupSuggestedCategories .browse-content .title,
 .search-page-suggestions .browse-content .title  {
     color: #044a80;
@@ -97,34 +131,8 @@
     -gtk-icon-source: url('../images/title-arrow-light.svg');
 }
 
-.ContentGroupSearch .ContentGroupSuggestedArticles .content-frame {
-    margin-top: -10px;
-}
-
-.ContentGroupSearch .ContentGroupSuggestedCategories,
-.ContentGroupSearch .search-page-suggestions {
-    background-color: #f6f6f6;
-}
-
-.ContentGroupSearch separator {
-    background-color: #999999;
-}
-
-.ContentGroupSearch .results-message-subtitle,
 .browse-content .title {
     color: #999999;
-}
-
-.ContentGroupSearch .results-message-title,
-.ContentGroupSearch .results-message-subtitle {
-    padding: 20px 60px 0px 60px;
-    padding-left: 60px;
-    padding-right: 60px;
-    font-size: 24px;
-}
-
-.ContentGroupSearch .results-message-subtitle {
-    padding-bottom: 40px;
 }
 
 .search-page-a .ArrangementScrollingList {
