@@ -213,6 +213,7 @@
     }
 }
 
+.CardList,
 .CardPost,
 .CardThumb {
     &.arrow {
@@ -239,28 +240,16 @@
     }
 }
 
-.CardList.arrow {
-    -gtk-icon-source: url('../images/arrow-gray.svg');
-    -gtk-icon-transform: rotate(45deg);
-}
-
 .CardDeck:hover .thumbnail,
-.CardDeck:active .thumbnail,
-.CardList:hover,
-.CardList:active {
+.CardDeck:active .thumbnail {
     outline: 1px solid #49bde3;
     border-color: #49bde3;  /* used for the triangle in the corner */
     outline-offset: -1px;
     -gtk-outline-radius: 0;
 }
 
-.CardList:active {
-    box-shadow: none;
-}
-
-.CardDeck .thumbnail.arrow, /* both hover and non-hover */
-.CardList.arrow:hover,
-.CardList.arrow:active {
+/* both hover and non-hover */
+.CardDeck .thumbnail.arrow {
     -gtk-icon-source: url('../images/arrow-white.svg');
     -gtk-icon-transform: rotate(45deg);
 }
