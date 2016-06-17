@@ -1,16 +1,24 @@
 @import 'buffet_core';
 
-.Card .title,
+.Card {
+    .title {
+        color: #044a80;
+
+        &.highlighted {
+            background-color: #d9f0f8;
+        }
+    }
+
+    .card-synopsis.highlighted {
+        background-color: #d9f0f8;
+    }
+}
+
 .CardSetPreview .title,
 .ContentGroupSearch .results-message-title,
 .ContentGroupSuggestedCategories .browse-content .title,
 .search-page-suggestions .browse-content .title  {
     color: #044a80;
-}
-
-.Card .title.highlighted,
-.Card .card-synopsis.highlighted {
-    background-color: #d9f0f8;
 }
 
 .ContentGroupHighlights,
