@@ -16,7 +16,7 @@ const Utils = imports.search.utils;
 const KnowledgeSearchIface = '\
 <node> \
   <interface name="com.endlessm.KnowledgeSearch"> \
-    <method name="LoadPage"> \
+    <method name="LoadItem"> \
       <arg type="s" name="EknID" direction="in" /> \
       <arg type="s" name="Query" direction="in" /> \
       <arg type="u" name="Timestamp" direction="in" /> \
@@ -89,7 +89,7 @@ const Application = new Knowledge.Class({
         Engine.get_default().update_and_preload_default_domain();
     },
 
-    LoadPage: function (ekn_id, query, timestamp) {
+    LoadItem: function (ekn_id, query, timestamp) {
         this.ensure_controller();
         this._controller.activate_search_result(timestamp, ekn_id, query);
     },

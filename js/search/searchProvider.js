@@ -46,7 +46,7 @@ const SearchProviderErrors = {
 const KnowledgeSearchIface = '\
 <node> \
   <interface name="com.endlessm.KnowledgeSearch"> \
-    <method name="LoadPage"> \
+    <method name="LoadItem"> \
       <arg type="s" name="EknID" direction="in" /> \
       <arg type="s" name="Query" direction="in" /> \
       <arg type="u" name="Timestamp" direction="in" /> \
@@ -213,7 +213,7 @@ const AppSearchProvider = Lang.Class({
     ActivateResult: function (id, terms, timestamp) {
         let query = terms.join(' ');
         this._ensure_app_proxy();
-        this._app_proxy.LoadPageRemote(id, query, timestamp);
+        this._app_proxy.LoadItemRemote(id, query, timestamp);
     },
 
     LaunchSearch: function (terms, timestamp) {
