@@ -2,6 +2,7 @@
 
 /* exported MeshHistoryStore */
 
+const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 
 const Actions = imports.app.actions;
@@ -24,8 +25,10 @@ const MeshHistoryStore = new GObject.Class({
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
                 case Actions.HOME_CLICKED:
+                case Actions.LAUNCHED_FROM_DESKTOP:
                     this.set_current_item_from_props({
                         page_type: Pages.HOME,
+                        timestamp: payload.timestamp || Gdk.CURRENT_TIME,
                     });
                     break;
                 case Actions.SET_CLICKED:
@@ -58,10 +61,15 @@ const MeshHistoryStore = new GObject.Class({
                     });
                     break;
                 case Actions.SEARCH_TEXT_ENTERED:
-                    this.do_search(payload.query);
+                case Actions.DBUS_LOAD_QUERY_CALLED:
+                    this.do_search(payload.query, payload.timestamp);
                     break;
                 case Actions.ARTICLE_LINK_CLICKED:
                     this.show_ekn_id(payload.ekn_id);
+                    break;
+                case Actions.DBUS_LOAD_ITEM_CALLED:
+                    this.load_dbus_item(payload.ekn_id, payload.query,
+                        payload.timestamp);
                     break;
             }
         });

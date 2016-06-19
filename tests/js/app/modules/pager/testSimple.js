@@ -73,6 +73,12 @@ describe('Pager.Simple', function () {
         it('does not have the animating style class when not animating', function () {
             expect(pager).not.toHaveCssClass('PagerSimple--animating');
         });
+
+        it('pre-shows the article page when desktop search result opened', function () {
+            dispatcher.dispatch({ action_type: Actions.DBUS_LOAD_ITEM_CALLED });
+            let article_page = factory.get_last_created('article-page');
+            expect(pager.visible_child).toBe(article_page);
+        });
     });
 
     describe('with a brand page', function () {

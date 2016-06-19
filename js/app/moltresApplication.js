@@ -5,7 +5,9 @@ const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 
+const Actions = imports.app.actions;
 const ControllerLoader = imports.app.controllerLoader;
+const Dispatcher = imports.app.dispatcher;
 const Knowledge = imports.app.knowledge;
 const MoltresEngine = imports.search.moltresEngine;
 const Utils = imports.app.utils;
@@ -47,6 +49,9 @@ const MoltresApplication = new Knowledge.Class({
                 css: css,
             });
         }
-        this._controller.desktop_launch(Gdk.CURRENT_TIME);
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.LAUNCHED_FROM_DESKTOP,
+            timestamp: Gdk.CURRENT_TIME,
+        });
     },
 });

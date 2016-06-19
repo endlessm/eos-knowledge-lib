@@ -1,5 +1,6 @@
 /* exported HistoryStore, get_default, set_default */
 
+const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 
 const ArticleObjectModel = imports.search.articleObjectModel;
@@ -123,7 +124,7 @@ const HistoryStore = new GObject.Class({
     },
 
     // Common helper functions for history stores...
-    do_search: function (query) {
+    do_search: function (query, timestamp) {
         let sanitized_query = Utils.sanitize_query(query);
         if (sanitized_query.length === 0)
             return;
@@ -132,6 +133,7 @@ const HistoryStore = new GObject.Class({
         this.set_current_item_from_props({
             page_type: Pages.SEARCH,
             query: sanitized_query,
+            timestamp: timestamp || Gdk.CURRENT_TIME,
         });
     },
 
@@ -165,6 +167,22 @@ const HistoryStore = new GObject.Class({
                     action_type: Actions.SHOW_MEDIA,
                     model: model,
                 });
+            }
+        });
+    },
+
+    load_dbus_item: function (ekn_id, query, timestamp) {
+        Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
+            try {
+                let model = engine.get_object_by_id_finish(task);
+                this.set_current_item_from_props({
+                    page_type: Pages.ARTICLE,
+                    model: model,
+                    query: query,
+                    timestamp: timestamp || Gdk.CURRENT_TIME,
+                });
+            } catch (error) {
+                logError(error);
             }
         });
     },

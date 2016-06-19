@@ -67,26 +67,10 @@ describe('Controller.Buffet', function () {
         spyOn(AppUtils, 'record_search_metric');
     });
 
-    it('dispatches present window on launch from desktop', function () {
-        buffet.desktop_launch(0);
-        expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW)).toBeDefined();
-    });
-
-    it('dispatches present window on launch from search', function () {
-        buffet.search(0, 'query');
-        expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW)).toBeDefined();
-    });
-
-    it('dispatches present window on launch from search result', function () {
-        engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
-        buffet.activate_search_result(0, 'ekn://foo/bar', 'query');
-        expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW)).toBeDefined();
-    });
-
     it('shows the brand page until timeout has expired and content is ready', function () {
-        buffet.BRAND_PAGE_TIME_MS = 0;
-        buffet.desktop_launch(0);
-        Utils.update_gui();
+        store.set_current_item_from_props({
+            page_type: Pages.HOME,
+        });
         expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_PAGE)).toBeDefined();
         expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).not.toBeDefined();
         buffet.make_ready();
@@ -95,23 +79,23 @@ describe('Controller.Buffet', function () {
     });
 
     it('shows the brand page only once', function () {
-        buffet.BRAND_PAGE_TIME_MS = 0;
-        buffet.desktop_launch(0);
-        dispatcher.dispatch({
-            action_type: Actions.MODULE_READY,
+        store.set_current_item_from_props({
+            page_type: Pages.HOME,
+            timestamp: 0,
         });
-        buffet.desktop_launch(0);
-        Utils.update_gui();
+        store.set_current_item_from_props({
+            page_type: Pages.HOME,
+            timestamp: 1,
+        });
         let payloads = dispatcher.payloads_with_type(Actions.SHOW_BRAND_PAGE);
         expect(payloads.length).toBe(1);
     });
 
-    it('does not show the brand page on other launch methods', function () {
-        buffet.BRAND_PAGE_TIME_MS = 0;
-        engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
-        buffet.search(0, 'query');
-        buffet.activate_search_result(0, 'ekn://foo/bar', 'query');
-        Utils.update_gui();
+    it('does not show the brand page when launching into other pages', function () {
+        store.set_current_item_from_props({
+            page_type: Pages.ARTICLE,
+            model: new ArticleObjectModel.ArticleObjectModel(),
+        });
         expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_PAGE)).not.toBeDefined();
     });
 
@@ -127,7 +111,9 @@ describe('Controller.Buffet', function () {
 
     describe('on state change to set page', function () {
         beforeEach(function () {
-            buffet.desktop_launch(0);
+            dispatcher.dispatch({
+                action_type: Actions.LAUNCHED_FROM_DESKTOP,
+            });
             buffet.make_ready();
             store.set_current_item_from_props({
                 page_type: Pages.SET,

@@ -101,8 +101,9 @@ describe('Controller.Mesh', function () {
     });
 
     it('dispatches category models for home page', () => {
-        mesh.desktop_launch(0);
-        Utils.update_gui();
+        store.set_current_item_from_props({
+            page_type: Pages.HOME,
+        });
         let payloads = dispatcher.dispatched_payloads.filter((payload) => {
             return payload.action_type === Actions.APPEND_SETS;
         });
@@ -111,25 +112,10 @@ describe('Controller.Mesh', function () {
             .toEqual(payloads[0].models.map((model) => model.title));
     });
 
-    it('dispatches present window on launch from desktop', function () {
-        mesh.desktop_launch(0);
-        Utils.update_gui();
-        expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW)).toBeDefined();
-    });
-
-    it('dispatches present window on launch from search', function () {
-        mesh.search(0, 'query');
-        expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW)).toBeDefined();
-    });
-
-    it('dispatches present window on launch from search result', function () {
-        engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
-        mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
-        expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW)).toBeDefined();
-    });
-
     it('shows the brand page until timeout has expired and sets are loaded', function () {
-        mesh.desktop_launch(0);
+        store.set_current_item_from_props({
+            page_type: Pages.HOME,
+        });
         expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_PAGE)).toBeDefined();
         expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).not.toBeDefined();
         Utils.update_gui();
@@ -137,18 +123,23 @@ describe('Controller.Mesh', function () {
     });
 
     it('shows the brand page only once', function () {
-        mesh.desktop_launch(0);
-        mesh.desktop_launch(0);
-        Utils.update_gui();
+        store.set_current_item_from_props({
+            page_type: Pages.HOME,
+            timestamp: 0,
+        });
+        store.set_current_item_from_props({
+            page_type: Pages.HOME,
+            timestamp: 1,
+        });
         let payloads = dispatcher.payloads_with_type(Actions.SHOW_BRAND_PAGE);
         expect(payloads.length).toBe(1);
     });
 
     it('does not show the brand page on other launch methods', function () {
-        engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
-        mesh.search(0, 'query');
-        mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
-        Utils.update_gui();
+        store.set_current_item_from_props({
+            page_type: Pages.ARTICLE,
+            model: new ContentObjectModel.ContentObjectModel(),
+        });
         expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_PAGE)).not.toBeDefined();
     });
 

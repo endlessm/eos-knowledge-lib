@@ -2,6 +2,7 @@
 
 /* exported BuffetHistoryStore */
 
+const Gdk = imports.gi.Gdk;
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 
@@ -28,8 +29,10 @@ const BuffetHistoryStore = new GObject.Class({
         Dispatcher.get_default().register(payload => {
             switch (payload.action_type) {
                 case Actions.HOME_CLICKED:
+                case Actions.LAUNCHED_FROM_DESKTOP:
                     this.set_current_item_from_props({
                         page_type: Pages.HOME,
+                        timestamp: payload.timestamp || Gdk.CURRENT_TIME,
                     });
                     break;
                 case Actions.ALL_SETS_CLICKED:
@@ -71,7 +74,8 @@ const BuffetHistoryStore = new GObject.Class({
                     this.show_ekn_id(payload.ekn_id);
                     break;
                 case Actions.SEARCH_TEXT_ENTERED:
-                    this.do_search(payload.query);
+                case Actions.DBUS_LOAD_QUERY_CALLED:
+                    this.do_search(payload.query, payload.timestamp);
                     break;
                 case Actions.PREVIOUS_DOCUMENT_CLICKED:
                 case Actions.NEXT_DOCUMENT_CLICKED:
@@ -81,6 +85,10 @@ const BuffetHistoryStore = new GObject.Class({
                         model: payload.model,
                         context: item.context,
                     });
+                    break;
+                case Actions.DBUS_LOAD_ITEM_CALLED:
+                    this.load_dbus_item(payload.ekn_id, payload.query,
+                        payload.timestamp);
                     break;
             }
         });

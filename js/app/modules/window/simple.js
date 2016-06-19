@@ -136,7 +136,9 @@ const Simple = new Module.Class({
                 case Actions.SET_READY:
                     this.set_busy(false);
                     break;
-                case Actions.PRESENT_WINDOW:
+                case Actions.LAUNCHED_FROM_DESKTOP:
+                case Actions.DBUS_LOAD_QUERY_CALLED:
+                case Actions.DBUS_LOAD_ITEM_CALLED:
                     this._pending_present = true;
                     this._present_timestamp = payload.timestamp;
                     break;

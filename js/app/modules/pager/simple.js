@@ -124,6 +124,9 @@ const Simple = new Module.Class({
                     if (this._search_page)
                         this._show_page(this._search_page);
                     break;
+                case Actions.DBUS_LOAD_ITEM_CALLED:
+                    // Show an empty article page, bypassing the navigation
+                    // history, while waiting for the item to load
                 case Actions.SHOW_ARTICLE_PAGE:
                     if (this._article_page)
                         this._show_page(this._article_page);

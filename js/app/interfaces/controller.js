@@ -5,7 +5,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const Launcher = imports.app.interfaces.launcher;
 const Module = imports.app.interfaces.module;
 
 const CSS_RESOURCE_PATH = '/com/endlessm/knowledge/data/css/';
@@ -23,7 +22,7 @@ const CSS_RESOURCE_PATH = '/com/endlessm/knowledge/data/css/';
 const Controller = new Lang.Interface({
     Name: 'Controller',
     GTypeName: 'EknController',
-    Requires: [ Module.Module, Launcher.Launcher ],
+    Requires: [ Module.Module ],
 
     Properties: {
         /**

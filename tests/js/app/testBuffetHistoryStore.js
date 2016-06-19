@@ -26,6 +26,13 @@ describe('BuffetHistoryStore', function () {
         expect(store.get_current_item().page_type).toBe(Pages.HOME);
     });
 
+    it('goes to the home page when launched from desktop', function () {
+        dispatcher.dispatch({
+            action_type: Actions.LAUNCHED_FROM_DESKTOP,
+        });
+        expect(store.get_current_item().page_type).toBe(Pages.HOME);
+    });
+
     it('shows the all-sets page when all-sets clicked', function () {
         dispatcher.dispatch({
             action_type: Actions.ALL_SETS_CLICKED,
@@ -104,22 +111,26 @@ describe('BuffetHistoryStore', function () {
         });
     });
 
-    describe('when search text entered', function () {
-        beforeEach(function () {
-            dispatcher.dispatch({
-                action_type: Actions.SEARCH_TEXT_ENTERED,
-                query: 'foo',
+    function test_search_action (action, descriptor) {
+        describe('when ' + descriptor, function () {
+            beforeEach(function () {
+                dispatcher.dispatch({
+                    action_type: action,
+                    query: 'foo',
+                });
+            });
+
+            it('goes to the search page', function () {
+                expect(store.get_current_item().page_type).toBe(Pages.SEARCH);
+            });
+
+            it('records a metric', function () {
+                expect(AppUtils.record_search_metric).toHaveBeenCalled();
             });
         });
-
-        it('goes to the search page', function () {
-            expect(store.get_current_item().page_type).toBe(Pages.SEARCH);
-        });
-
-        it('records a metric', function () {
-            expect(AppUtils.record_search_metric).toHaveBeenCalled();
-        });
-    });
+    }
+    test_search_action(Actions.SEARCH_TEXT_ENTERED, 'search text entered');
+    test_search_action(Actions.DBUS_LOAD_QUERY_CALLED, 'desktop search opened');
 
     describe('when link in article clicked', function () {
         it('goes to article page', function () {
@@ -212,4 +223,30 @@ describe('BuffetHistoryStore', function () {
     test_article_click_action(Actions.ITEM_CLICKED, 'item');
     test_article_click_action(Actions.SEARCH_CLICKED, 'search item');
     test_article_click_action(Actions.AUTOCOMPLETE_CLICKED, 'autocomplete entry');
+
+    describe('when desktop search result opened', function () {
+        let model;
+
+        beforeEach(function () {
+            model = new ArticleObjectModel.ArticleObjectModel({
+                ekn_id: 'ekn:///foo',
+            });
+            engine.get_object_by_id_finish.and.returnValue(model);
+            dispatcher.dispatch({
+                action_type: Actions.DBUS_LOAD_ITEM_CALLED,
+                query: 'foo',
+                ekn_id: 'ekn:///foo',
+            });
+        });
+
+        it('loads an item', function () {
+            expect(engine.get_object_by_id).toHaveBeenCalled();
+            expect(engine.get_object_by_id.calls.mostRecent().args[0])
+                .toBe('ekn:///foo');
+        });
+
+        it('goes to the article page', function () {
+            expect(store.get_current_item().page_type).toBe(Pages.ARTICLE);
+        });
+    });
 });

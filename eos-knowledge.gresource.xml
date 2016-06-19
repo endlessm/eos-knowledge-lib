@@ -89,7 +89,6 @@
     <file>js/app/interfaces/documentCard.js</file>
     <file>js/app/interfaces/expandable.js</file>
     <file>js/app/interfaces/filter.js</file>
-    <file>js/app/interfaces/launcher.js</file>
     <file>js/app/interfaces/module.js</file>
     <file>js/app/interfaces/navigationCard.js</file>
     <file>js/app/interfaces/order.js</file>

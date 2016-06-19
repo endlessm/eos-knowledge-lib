@@ -12,13 +12,11 @@ const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Controller = imports.app.interfaces.controller;
 const HistoryStore = imports.app.historyStore;
-const Launcher = imports.app.interfaces.launcher;
 const Module = imports.app.interfaces.module;
 const Pages = imports.app.pages;
 const ReadingHistoryModel = imports.app.readingHistoryModel;
 const SetMap = imports.app.setMap;
 const QueryObject = imports.search.queryObject;
-const Utils = imports.app.utils;
 
 const RESULTS_SIZE = 15;
 
@@ -32,12 +30,12 @@ const RESULTS_SIZE = 15;
  * The user can pass along the buffet table, choosing what looks nice.
  *
  * Implements:
- *    <Module>, <Launcher>, <Controller>
+ *    <Module>, <Controller>
  */
 const Buffet = new Module.Class({
     Name: 'Controller.Buffet',
     Extends: GObject.Object,
-    Implements: [Launcher.Launcher, Controller.Controller],
+    Implements: [Controller.Controller],
 
     BRAND_PAGE_TIME_MS: 1500,
 
@@ -358,56 +356,5 @@ const Buffet = new Module.Class({
         });
 
         this._update_highlight();
-    },
-
-    _dispatch_present: function (timestamp) {
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.PRESENT_WINDOW,
-            timestamp: timestamp,
-        });
-    },
-
-    // Launcher implementation
-    desktop_launch: function (timestamp) {
-        this._dispatch_present(timestamp);
-        HistoryStore.get_default().set_current_item_from_props({
-            page_type: Pages.HOME,
-        });
-    },
-
-    // Launcher override
-    search: function (timestamp, query) {
-        this._dispatch_present(timestamp);
-        let sanitized_query = Utils.sanitize_query(query);
-        if (sanitized_query.length === 0)
-            return;
-
-        Utils.record_search_metric(query);
-        HistoryStore.get_default().set_current_item_from_props({
-            page_type: Pages.SEARCH,
-            query: sanitized_query,
-        });
-    },
-
-    // Launcher override
-    activate_search_result: function (timestamp, ekn_id, query) {
-        this._dispatch_present(timestamp);
-        // Show an empty article page while waiting
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.SHOW_ARTICLE_PAGE,
-        });
-
-        Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
-            try {
-                let model = engine.get_object_by_id_finish(task);
-                HistoryStore.get_default().set_current_item_from_props({
-                    page_type: Pages.ARTICLE,
-                    model: model,
-                    query: query,
-                });
-            } catch (error) {
-                logError(error);
-            }
-        });
     },
 });

@@ -12,14 +12,12 @@ const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Controller = imports.app.interfaces.controller;
 const HistoryStore = imports.app.historyStore;
-const Launcher = imports.app.interfaces.launcher;
 const MeshHistoryStore = imports.app.meshHistoryStore;
 const Module = imports.app.interfaces.module;
 const Pages = imports.app.pages;
 const QueryObject = imports.search.queryObject;
 const TabButton = imports.app.widgets.tabButton;
 const TitleCard = imports.app.modules.card.title;
-const Utils = imports.app.utils;
 
 const RESULTS_SIZE = 10;
 
@@ -34,7 +32,7 @@ const RESULTS_SIZE = 10;
 const Mesh = new Module.Class({
     Name: 'Controller.Mesh',
     Extends: GObject.Object,
-    Implements: [Launcher.Launcher, Controller.Controller],
+    Implements: [Controller.Controller],
 
     // Overridable in tests. Brand page should be visible for 2 seconds. The
     // transition is currently hardcoded to a slow fade over 500 ms.
@@ -408,56 +406,5 @@ const Mesh = new Module.Class({
                 model: item.model,
             });
         }
-    },
-
-    _dispatch_present: function (timestamp) {
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.PRESENT_WINDOW,
-            timestamp: timestamp,
-        });
-    },
-
-    // Launcher implementation
-    desktop_launch: function (timestamp) {
-        this._dispatch_present(timestamp);
-        HistoryStore.get_default().set_current_item_from_props({
-            page_type: Pages.HOME,
-        });
-    },
-
-    // Launcher implementation
-    search: function (timestamp, query) {
-        this._dispatch_present(timestamp);
-        let sanitized_query = Utils.sanitize_query(query);
-        if (sanitized_query.length === 0)
-            return;
-
-        Utils.record_search_metric(query);
-        HistoryStore.get_default().set_current_item_from_props({
-            page_type: Pages.SEARCH,
-            query: sanitized_query,
-        });
-    },
-
-    // Launcher implementation
-    activate_search_result: function (timestamp, ekn_id, query) {
-        this._dispatch_present(timestamp);
-        // Show an empty article page while waiting
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.SHOW_ARTICLE_PAGE,
-        });
-
-        Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
-            try {
-                let model = engine.get_object_by_id_finish(task);
-                HistoryStore.get_default().set_current_item_from_props({
-                    page_type: Pages.ARTICLE,
-                    model: model,
-                    query: query,
-                });
-            } catch (error) {
-                logError(error);
-            }
-        });
     },
 });
