@@ -104,11 +104,12 @@ const HistoryStore = new GObject.Class({
      * Method: search_backwards
      *
      * Helper to search backwards in the history for an item. Takes a starting
-     * index and a match function, which should return true of a match, false
+     * offset and a match function, which should return true of a match, false
      * otherwise. Returns the matching item or null.
      */
-    search_backwards: function (index, match_fn) {
+    search_backwards: function (offset, match_fn) {
         let item;
+        let index = this._index + offset;
         do {
             item = this._items[index--];
         } while (item && !match_fn(item));
