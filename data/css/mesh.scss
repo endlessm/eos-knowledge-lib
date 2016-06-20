@@ -31,8 +31,9 @@ $display-font-composite: 'Roboto' !default;
 @import 'modules/card/legacyPost';
 @import 'modules/card/media';
 
+@import 'modules/contentGroup/contentGroup';
 @import 'modules/contentGroup/mediaLightbox';
-@import 'modules/contentGroup/search';
+@import 'modules/contentGroup/noResultsMessage';
 
 @import 'modules/documentCard/base';
 
@@ -80,7 +81,7 @@ $display-font-composite: 'Roboto' !default;
     }
 }
 
-.ContentGroupSearch {
+.search-results {
     background-color: transparentize(black, 1 - 0.25);
 
     .ArrangementScrollingList__grid {

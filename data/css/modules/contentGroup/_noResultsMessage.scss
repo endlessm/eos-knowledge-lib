@@ -1,0 +1,16 @@
+.ContentGroupNoResultsMessage {
+    font-family: $body-font;
+
+    &__title {
+        color: $primary-light-color;
+        font-size: 30px;
+        padding-bottom: 30px;
+    }
+
+    &__subtitle {
+        font-style: italic;
+        color: $black-60-color;
+        font-size: 22px;
+        padding-bottom: 50px;
+    }
+}

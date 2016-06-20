@@ -103,7 +103,7 @@ scss_theme_content_partials = \
 	$(srcdir)/data/css/modules/contentGroup/_cardContainer.scss \
 	$(srcdir)/data/css/modules/contentGroup/_contentGroup.scss \
 	$(srcdir)/data/css/modules/contentGroup/_mediaLightbox.scss \
-	$(srcdir)/data/css/modules/contentGroup/_search.scss \
+	$(srcdir)/data/css/modules/contentGroup/_noResultsMessage.scss \
 	$(srcdir)/data/css/modules/contentGroup/_thematic.scss \
 	$(NULL)
 scss_theme_document_partials = \
@@ -445,7 +445,6 @@ javascript_tests = \
 	tests/js/app/modules/card/testTitle.js \
 	tests/js/app/modules/contentGroup/testContentGroup.js \
 	tests/js/app/modules/contentGroup/testMediaLightbox.js \
-	tests/js/app/modules/contentGroup/testSearch.js \
 	tests/js/app/modules/contentGroup/testThematic.js \
 	tests/js/app/modules/controller/testBuffet.js \
 	tests/js/app/modules/controller/testMesh.js \
@@ -474,6 +473,7 @@ javascript_tests = \
 	tests/js/app/modules/selection/testAllHighlights.js \
 	tests/js/app/modules/selection/testAllSets.js \
 	tests/js/app/modules/selection/testArticlesForSet.js \
+	tests/js/app/modules/selection/testSearch.js \
 	tests/js/app/modules/selection/testSuggestedArticles.js \
 	tests/js/app/modules/selection/testSupplementaryArticles.js \
 	tests/js/app/modules/window/testSimple.js \

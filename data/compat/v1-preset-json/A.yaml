@@ -62,11 +62,13 @@ defines:
     contents:
     - 'Banner.Search(halign: center)'
     - Decoration.Separator
-    - type: ContentGroup.Search
-      properties:
-        message-justify: left
-        message-halign: center
-      slots: *main-arrangement-slot
+    - type: ContentGroup.ContentGroup
+      slots:
+        <<: *main-arrangement-slot
+        selection: Selection.Search
+        no-results: ContentGroup.NoResultsMessage
+      styles:
+      - search-results
 
 - &article-page
   type: Layout.ArticleStack

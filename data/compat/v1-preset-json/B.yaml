@@ -19,8 +19,13 @@ defines:
       type: Selection.ArticlesForSet
 
 - &search-results
-  shortdef: 'ContentGroup.Search(message-valign: center)'
-  slots: *sidebar-list-slots
+  shortdef: ContentGroup.ContentGroup
+  slots:
+    <<: *sidebar-list-slots
+    selection: Selection.Search
+    no-results: 'ContentGroup.NoResultsMessage(valign: center)'
+  styles:
+  - search-results
 
 - &home-page
   shortdef: 'Layout.Box(orientation: vertical, row-spacing: 30)'

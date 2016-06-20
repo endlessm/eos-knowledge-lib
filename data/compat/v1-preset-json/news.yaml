@@ -232,32 +232,43 @@ defines:
           slots:
             contents:
             - shortdef: 'Banner.Search(halign: center, xalign: 0.5, justify: center)'
-            - type: ContentGroup.Search
-              properties:
-                message-halign: start
-                message-justify: left
+            - type: ContentGroup.ContentGroup
+              styles:
+                - search-results
               slots:
+                selection:
+                  type: Selection.Search
                 arrangement:
                   type: Arrangement.ScrollingList
                   slots:
                     card: Card.List
-                article-suggestions:
-                  type: Layout.ResponsiveMargins
+                no-results:
+                  shortdef: Layout.Scrolling
                   slots:
                     content:
-                      type: ContentGroup.ContentGroup
-                      styles:
-                        - search-page-suggestions
-                      properties:
-                        valign: end
+                      shortdef: 'Layout.Box(orientation: vertical, valign: start)'
                       slots:
-                        title:
-                          type: ContentGroup.StaticText
+                        contents:
+                        - type: ContentGroup.NoResultsMessage
                           properties:
-                            label: 'you might be interested in...'
                             halign: start
-                        arrangement: *suggestions-arrangement
-                        selection: Selection.SuggestedArticles
+                            justify: left
+                        - type: Layout.ResponsiveMargins
+                          slots:
+                            content:
+                              type: ContentGroup.ContentGroup
+                              styles:
+                                - search-page-suggestions
+                              properties:
+                                valign: end
+                              slots:
+                                title:
+                                  type: ContentGroup.StaticText
+                                  properties:
+                                    label: 'you might be interested in...'
+                                    halign: start
+                                arrangement: *suggestions-arrangement
+                                selection: Selection.SuggestedArticles
 
 - &article-page
   <<: *menu

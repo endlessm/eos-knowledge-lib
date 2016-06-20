@@ -38,12 +38,16 @@ defines:
               contents:
               - 'Banner.Search(halign: start)'
               - Decoration.Separator
-              - shortdef: 'ContentGroup.Search(message-halign: start)'
+              - shortdef: ContentGroup.ContentGroup
                 slots:
                   arrangement:
                     shortdef: 'Arrangement.ScrollingList(hexpand: true)'
                     slots:
                       card: Card.Title
+                  selection: Selection.Search
+                  no-results: 'ContentGroup.NoResultsMessage(halign: start)'
+                styles:
+                - search-results
 
   - &article-page
     shortdef: 'Layout.Box(orientation: vertical, vexpand: false)'

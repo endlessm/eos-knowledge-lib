@@ -58,7 +58,7 @@ $title-alt-font: 'Lato Thin' !default;
 
 @import 'modules/contentGroup/contentGroup';
 @import 'modules/contentGroup/mediaLightbox';
-@import 'modules/contentGroup/search';
+@import 'modules/contentGroup/noResultsMessage';
 @import 'modules/contentGroup/thematic';
 
 @import 'modules/layout/infiniteScrolling';
@@ -140,14 +140,14 @@ $title-alt-font: 'Lato Thin' !default;
     }
 }
 
-.ContentGroupSearch {
+.search-results {
     background-color: $background-light-color;
 
     .ArrangementScrollingList__grid {
         padding: 0 0px;
     }
 
-    .ContentGroupSuggestedArticles .content-frame {
+    .search-page-suggestions .content-frame {
         margin-top: -10px;
     }
 

@@ -131,18 +131,27 @@ defines:
   slots:
     <<: *page-with-menu-slots
     content:
-      type: ContentGroup.Search
+      type: ContentGroup.ContentGroup
+      styles:
+      - search-results
       properties:
         halign: fill
-        message-halign: center
-        message-justify: left
       slots:
         arrangement:
           type: Arrangement.ScrollingList
           slots:
             card: Card.List
-        article-suggestions: *article-suggestions
-        category-suggestions: *category-suggestions
+        selection: Selection.Search
+        no-results:
+          shortdef: Layout.Scrolling
+          slots:
+            content:
+              shortdef: 'Layout.Box(orientation: vertical)'
+              slots:
+                contents:
+                - ContentGroup.NoResultsMessage
+                - *article-suggestions
+                - *category-suggestions
 
 - &all-sets-page
   <<: *page-with-menu
