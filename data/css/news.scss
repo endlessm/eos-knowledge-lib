@@ -342,25 +342,6 @@ $context-blue: #7297a7;
     }
 }
 
-.CardThumb {
-    box-shadow: 0px 5px 10px 0px transparentize(black, 1 - 0.22);
-
-    .title {
-        font-family: 'Fira Sans';
-        font-weight: bold;
-        color: $title-blue;
-        font-size: 18px;
-    }
-
-    .card-context {
-        font-family: 'Merriweather';
-        font-weight: bold;
-        font-style: normal;
-        color: $context-blue;
-        font-size: 14px;
-    }
-}
-
 .BannerSet {
     margin-top: 40px;
 
