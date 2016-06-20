@@ -29,7 +29,7 @@ describe('Layout.TopMenu', function () {
     });
 
     it('has widgets with the proper CSS classes', function () {
-        expect(template).toHaveDescendantWithCssClass('top-menu');
+        expect(template).toHaveDescendantWithCssClass('LayoutTopMenu__menu');
     });
 
     it('packs all its children', function () {
