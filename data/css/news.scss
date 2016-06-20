@@ -16,6 +16,7 @@ $background-light-color: #e9e5e0;
 
 $body-font: Merriweather;
 $title-font: 'Fira Sans';
+$display-font: Merriweather;
 $support-font: 'Fira Sans';
 
 /* === Modules === */
@@ -121,28 +122,8 @@ $context-blue: #7297a7;
     margin-bottom: 50px;
 }
 
-.CardSetPreview {
-    .CardTitle {
-        margin-top: 25px;
-
-        .title {
-            color: $title-blue;
-            font-family: 'Merriweather';
-            font-weight: bold;
-            padding-top: 50px;
-            font-size: 40px;
-        }
-
-        &:hover .title {
-            color: $context-blue;
-        }
-    }
-
-    separator {
-        background-color: transparent;
-        min-height: 0;
-        margin: 0px 0px 30px;
-    }
+.CardSetPreview separator {
+    background-color: transparent;
 }
 
 .LayoutTopMenu {
