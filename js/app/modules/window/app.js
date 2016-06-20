@@ -171,11 +171,9 @@ const App = new Module.Class({
             this.animating = this._pager.transition_running;
             this.notify('animating');
             if (this._pager.transition_running) {
-                this.get_style_context().add_class('animating');
                 focused_widget = this.get_focus();
                 Utils.squash_all_window_content_updates_heavy_handedly(this);
             } else {
-                this.get_style_context().remove_class('animating');
                 Utils.unsquash_all_window_content_updates_heavy_handedly(this);
                 if (focused_widget && !this.get_focus()) {
                     focused_widget.grab_focus();

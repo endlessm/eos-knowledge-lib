@@ -14,6 +14,9 @@ const Utils = imports.app.utils;
 /**
  * Class: Pager.Simple
  * Handle transitions between pages in an app
+ *
+ * CSS classes:
+ *   PagerSimple--animating - while a page transition is running
  */
 const Simple = new Module.Class({
     Name: 'Pager.Simple',
@@ -78,6 +81,15 @@ const Simple = new Module.Class({
             this._all_sets_page.get_style_context().add_class('all-sets-page');
             this.add(this._all_sets_page);
         }
+
+        let _animating_class = Utils.get_modifier_style_class(Simple,
+            'animating');
+        this.connect('notify::transition-running', () => {
+            if (this.transition_running)
+                this.get_style_context().add_class(_animating_class);
+            else
+                this.get_style_context().remove_class(_animating_class);
+        });
 
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({

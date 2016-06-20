@@ -66,6 +66,13 @@ describe('Pager.Simple', function () {
             payload = dispatcher.last_payload_with_type(Actions.NAV_BACK_ENABLED_CHANGED);
             expect(payload.enabled).toBeTruthy();
         });
+
+        // Need a way to reliably test this without relying on timing
+        it('has the animating style class when animating');
+
+        it('does not have the animating style class when not animating', function () {
+            expect(pager).not.toHaveCssClass('PagerSimple--animating');
+        });
     });
 
     describe('with a brand page', function () {

@@ -412,7 +412,7 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 }
 
 /* Hide scrollbars when animating, they look bad. */
-.animating scrollbar slider {
+.PagerSimple--animating scrollbar slider {
     background-color: transparent;
 }
 
