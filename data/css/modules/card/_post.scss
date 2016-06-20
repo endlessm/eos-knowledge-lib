@@ -19,6 +19,17 @@
         min-height: 50px;  /* 90px, compensated for 20px padding */
     }
 
+    &.width-e .content-frame,
+    &.width-f .content-frame,
+    &.width-g .content-frame,
+    &.width-h .content-frame {
+        min-height: 10px;  /* 90px, compensated for 40px padding */
+    }
+
+    &.height-e .content-frame {
+        min-height: 250px;  /* 290px, compensated for 20px padding */
+    }
+
     &.height-e.width-e .content-frame,
     &.height-e.width-f .content-frame,
     &.height-e.width-g .content-frame,
@@ -46,17 +57,6 @@
     &.height-c.width-g .content-frame,
     &.height-c.width-h .content-frame {
         min-height: 60px;  /* 140px, compensated for 40px padding */
-    }
-
-    &.width-e .content-frame,
-    &.width-f .content-frame,
-    &.width-g .content-frame,
-    &.width-h .content-frame {
-        min-height: 10px;  /* 90px, compensated for 40px padding */
-    }
-
-    &.height-e .content-frame {
-        min-height: 250px;  /* 290px, compensated for 20px padding */
     }
 }
 
