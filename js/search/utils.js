@@ -53,7 +53,7 @@ function domain_from_app_id (app_id) {
 }
 
 function object_path_from_app_id (app_id) {
-    return '/' + app_id.replace(/\./g, '/').replace(/-/g, '_');
+    return '/' + app_id.replace(/\./g, '/');
 }
 
 function get_flatpak_path () {
