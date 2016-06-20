@@ -20,7 +20,7 @@ scrollbar.vertical slider {
 
     /* This used to be margin on the list cards inside, but ListCard doesn't support
      * margin properly at the moment. */
-    .scrolling-list-grid {
+    .ArrangementScrollingList__grid {
         padding: 0 200px;
     }
 
@@ -119,20 +119,22 @@ scrollbar.vertical slider {
     color: $context-blue;
 }
 
-.top-menu .BannerApp .ThemeableImage {
-    -EknThemeableImage-sizing: "size-min";
-    min-width: 146px;
-    min-height: 30px;
-}
+.LayoutTopMenu {
+    &__menu {
+        background-color: #050c20;
+        box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.2);
+        padding: 0px 20px;
 
-.PanelFrame .top-menu {
-    background-color: #050c20;
-    box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.2);
-    padding: 0px 20px;
-}
+        .BannerApp .ThemeableImage {
+            -EknThemeableImage-sizing: "size-min";
+            min-width: 146px;
+            min-height: 30px;
+        }
+    }
 
-.top-menu-template-content {
-    margin-top: 50px;
+    &__content {
+        margin-top: 50px;
+    }
 }
 
 .ArrangementSideBySide {

@@ -57,7 +57,7 @@ const TopMenu = new Module.Class({
             halign: Gtk.Align.FILL,
             visible: true,
         });
-        top_menu_container.get_style_context().add_class('top-menu');
+        top_menu_container.get_style_context().add_class('LayoutTopMenu__menu');
         top_menu_container.add(top_menu);
 
         this._menu_panel = this.add_panel_widget(top_menu_container, Gtk.PositionType.TOP);
@@ -73,9 +73,9 @@ const TopMenu = new Module.Class({
             if (scrolled_widget instanceof Gtk.Viewport)
                 scrolled_widget = scrolled_widget.get_child();
             if (scrolled_widget)
-                scrolled_widget.get_style_context().add_class('top-menu-template-content');
+                scrolled_widget.get_style_context().add_class('LayoutTopMenu__content');
         } else {
-            content.get_style_context().add_class('top-menu-template-content');
+            content.get_style_context().add_class('LayoutTopMenu__content');
         }
     },
 
