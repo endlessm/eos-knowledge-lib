@@ -13,6 +13,7 @@ $primary-medium-color: #0f1b3c;
 $accent-light-color: #0f1b3c;
 $accent-dark-color: #7297a7;
 $background-light-color: #e9e5e0;
+$background-dark-color: #0f1b3c;
 
 $body-font: Merriweather;
 $title-font: 'Fira Sans';
@@ -167,7 +168,7 @@ $context-blue: #7297a7;
 /* Selects the background around the suggested articles modules; cumbersome! */
 .vertical .LayoutResponsiveMargins.supplementary-articles,
 .no-results .vertical .LayoutResponsiveMargins {
-    background-color: #0f1b3c;
+    background-color: $background-dark-color;
 }
 
 /* Adjust context frame in supplementary article and suggested article cards */
