@@ -46,10 +46,6 @@ function components_from_ekn_id (ekn_id) {
     return components;
 }
 
-function domain_from_app_id (app_id) {
-    return app_id.split('.').pop();
-}
-
 function object_path_from_app_id (app_id) {
     return '/' + app_id.replace(/\./g, '/').replace(/-/g, '_');
 }
