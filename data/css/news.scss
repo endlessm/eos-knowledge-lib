@@ -306,42 +306,6 @@ $context-blue: #7297a7;
     }
 }
 
-.CardList {
-    .title {
-        font-family: 'Fira Sans';
-        font-weight: bold;
-        color: $title-blue;
-        font-size: 18px;
-
-        &.highlighted {
-            background-color: rgba(114, 151, 167, 0.3);
-        }
-    }
-
-    .card-synopsis {
-        font-family: 'Merriweather';
-        font-style: italic;
-        color: #666666;
-        font-size: 16px;
-    }
-
-    .card-context {
-        font-family: 'Merriweather';
-        font-weight: bold;
-        font-style: normal;
-        color: $context-blue;
-        font-size: 14px;
-    }
-
-    &:hover .title {
-        color: $context-blue;
-    }
-
-    &.next:hover .title {
-        color: $title-blue;
-    }
-}
-
 .BannerSet {
     margin-top: 40px;
 
