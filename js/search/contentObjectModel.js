@@ -17,8 +17,7 @@ const ContentObjectModel = new Lang.Class({
          * Unique ID of the model
          *
          * This is an internal ID assigned by EKN.
-         * If none is provided, the model will generate its own id with domain
-         * "none".
+         * If none is provided, the model will generate its own id.
          */
         'ekn-id': GObject.ParamSpec.string('ekn-id', 'Object\'s ID', 'The ID of a document or media object',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
@@ -161,8 +160,7 @@ const ContentObjectModel = new Lang.Class({
         // EKN ID" in tests. It is illegal to create a model in production code
         // with no EKN ID.
         if (['ekn-id', 'ekn_id', 'eknId'].every(prop => !(prop in props))) {
-            props.ekn_id = 'ekn://none/' +
-                GLib.compute_checksum_for_string(GLib.ChecksumType.SHA1, this.toString(), -1);
+            props.ekn_id = 'ekn:///' + GLib.compute_checksum_for_string(GLib.ChecksumType.SHA1, this.toString(), -1);
         }
 
         this.parent(props);
