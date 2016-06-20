@@ -580,7 +580,7 @@ function get_domain_impl (app_id, xapian_bridge) {
 
     let impl = impls[ekn_version];
     if (!impl)
-        throw new Error(Format.vprintf('Invalid ekn version for domain %s: %s', [domain, ekn_version]));
+        throw new Error(Format.vprintf('Invalid ekn version for app ID %s: %s', [app_id, ekn_version]));
 
     return new impl(app_id, xapian_bridge);
 }

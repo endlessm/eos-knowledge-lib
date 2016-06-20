@@ -175,9 +175,6 @@ function regenerate (path) {
 function inspect_app_id (app_id) {
     let cancellable = null;
 
-    let domain = Utils.domain_from_app_id(app_id);
-    print(Format.vprintf("domain: %s", [domain]));
-
     let data_dir = Datadir.get_data_dir(app_id);
     print(Format.vprintf("data dir: %s", [data_dir.get_path()]));
 
@@ -222,8 +219,6 @@ function main () {
         unfreeze(argv[0], argv[1]);
     else if (action === 'regenerate' && argv.length === 1)
         regenerate(argv[0]);
-    else if (action === 'inspect-domain' && argv.length === 1)
-        inspect_domain(argv[0]);
     else if (action === 'inspect-app-id' && argv.length === 1)
         inspect_app_id(argv[0]);
     else

@@ -59,6 +59,13 @@ const KnowledgeSearchIface = '\
 </node>';
 const KnowledgeSearchIfaceInfo = Gio.DBusInterfaceInfo.new_for_xml(KnowledgeSearchIface);
 
+// https://www.freedesktop.org/software/systemd/man/sd_bus_path_encode.html
+function systemd_bus_path_decode(string) {
+    return string.replace(/_([a-zA-Z0-9]{2})/g, function(m, a) {
+        return String.fromCharCode(parseInt(a, 16));
+    });
+}
+
 /**
  * Class: SearchProvider
  *
@@ -237,10 +244,16 @@ const GlobalSearchProvider = new Lang.Class({
         if (this._appSearchProviders[subnode])
             return this._appSearchProviders[subnode].skeleton;
 
-        // We translate dashes to underscores in our app-id to form a valid
-        // object path. We now need to reverse that.
+        let ids_to_try = [];
+
+        // For modern apps, we use the systemd escaping scheme to pass the full app ID through.
+        ids_to_try.push(systemd_bus_path_decode(subnode));
+
+        // For legacy apps, where we only pass the domain through, we translate dashes to underscores
+        // in our app-id to form a valid object path. We now need to reverse that.
         let parts = subnode.split('_');
-        let ids_to_try = ['com.endlessm.' + parts.join('-')];
+        ids_to_try.push('com.endlessm.' + parts.join('-'));
+
         // Gross, but some app-ids actually have an underscore at the end for a
         // locale country code. We need to check for that.
         if (parts.length > 2) {

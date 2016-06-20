@@ -41,7 +41,7 @@ describe ('Content Object Model', function () {
 
     it('successfully creates a new object with no info at all', function () {
         contentObject = new ContentObjectModel.ContentObjectModel();
-        expect(contentObject.ekn_id.startsWith('ekn://none/')).toBeTruthy();
+        expect(contentObject.ekn_id.startsWith('ekn:///')).toBeTruthy();
     });
 
     describe ('properties', function () {
