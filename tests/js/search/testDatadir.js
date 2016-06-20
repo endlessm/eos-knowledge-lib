@@ -15,7 +15,7 @@ describe('Data dir finder', function () {
         // are only queried, not modified.
         [datadir1, datadir2].forEach((file) => {
             try {
-                file.get_child('ekn').get_child('data').get_child('scuba-diving-fr')
+                file.get_child('ekn').get_child('data').get_child('com.endlessm.scuba-diving-fr')
                     .make_directory_with_parents(null);
             } catch (e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS)) {}
         });
@@ -30,7 +30,7 @@ describe('Data dir finder', function () {
     it('returns a path to a Xapian database dir', function () {
         let found_dir = Datadir.get_data_dir('com.endlessm.scuba-diving-fr');
         expect(found_dir).not.toBeNull();
-        expect(found_dir.get_path()).toMatch(/ekn\/data\/scuba-diving-fr$/);
+        expect(found_dir.get_path()).toMatch(/ekn\/data\/com.endlessm.scuba-diving-fr$/);
     });
 
     it('returns the first path that exists', function () {
