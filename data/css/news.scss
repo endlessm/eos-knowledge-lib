@@ -17,6 +17,7 @@ $background-light-color: #e9e5e0;
 $body-font: Merriweather;
 $title-font: 'Fira Sans';
 $display-font: Merriweather;
+$context-font: Merriweather;
 $support-font: 'Fira Sans';
 
 /* === Modules === */
@@ -59,17 +60,6 @@ $context-blue: #7297a7;
 .LayoutDynamicBackground {
     background-color: #e9e5e0;
 }
-
-.Card {
-    .title {
-        color: $title-blue;
-    }
-
-    &.arrow {
-        -gtk-icon-source: none; /* kill the arrow that Gtk adds by default in Gtk.render_arrow() */
-    }
-}
-
 
 .highlights {
     margin-top: 50px;
