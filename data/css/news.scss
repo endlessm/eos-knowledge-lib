@@ -14,6 +14,7 @@ $accent-light-color: #0f1b3c;
 $accent-dark-color: #7297a7;
 $background-light-color: #e9e5e0;
 
+$body-font: Merriweather;
 $title-font: 'Fira Sans';
 $support-font: 'Fira Sans';
 
@@ -55,41 +56,6 @@ $title-blue: #0f1b3c;
 $context-blue: #7297a7;
 
 .LayoutDynamicBackground {
-    background-color: #e9e5e0;
-}
-
-.ContentGroupSearch {
-    background-color: transparent;
-
-    /* This used to be margin on the list cards inside, but ListCard doesn't support
-     * margin properly at the moment. */
-    .ArrangementScrollingList__grid {
-        padding: 0 200px;
-    }
-
-    .results-message-title {
-        font-family: 'Fira Sans';
-        color: $context-blue;
-        font-size: 30px;
-        padding: 50px 80px 30px 160px;
-    }
-
-    .results-message-subtitle {
-        font-family: Merriweather;
-        font-style: italic;
-        color: #666666;
-        font-size: 22px;
-        padding-bottom: 50px;
-        padding-left: 160px;
-    }
-}
-
-.results-message-title {
-    color: white;
-    padding-bottom: 30px;
-}
-
-.results-message-background {
     background-color: #e9e5e0;
 }
 
@@ -263,6 +229,10 @@ $context-blue: #7297a7;
         color: white;
         padding-bottom: 30px;
     }
+}
+
+.results-message-title {
+    color: white;
 }
 
 .BannerSearch {
