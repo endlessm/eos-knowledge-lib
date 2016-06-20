@@ -9,6 +9,7 @@ const Lang = imports.lang;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
+const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 const Utils = imports.tests.utils;
@@ -286,6 +287,11 @@ function test_selection_compliance (SelectionClass, extra_slots={}) {
 
         beforeEach(function () {
             jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
+
+            // Not all Selections might use the Xapian engine, but I can't think
+            // of a better place to put this
+            let engine = MockEngine.mock_default();
+            engine.get_objects_by_query_finish.and.returnValue([[], null]);
 
             [selection, factory] = MockFactory.setup_tree({
                 type: SelectionClass,
