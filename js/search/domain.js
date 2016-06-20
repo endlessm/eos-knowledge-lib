@@ -28,6 +28,7 @@ const Domain = new Lang.Class({
 
     _init: function (app_id, xapian_bridge) {
         this._app_id = app_id;
+        this._is_flatpak = Utils.app_is_flatpak();
         this._xapian_bridge = xapian_bridge;
 
         this._content_dir = null;
@@ -292,7 +293,13 @@ const DomainV2 = new Lang.Class({
 
     get_domain_query_params: function () {
         let params = {};
-        params.path = GLib.build_filenamev([this._get_content_path(), this._DB_DIR]);
+        let path = GLib.build_filenamev([this._get_content_path(), this._DB_DIR]);
+        if (this._is_flatpak) {
+            params.flatpak_app_id = this._app_id;
+            params.flatpak_path = path;
+        } else {
+            params.path = path;
+        }
         return params;
     },
 
@@ -498,7 +505,13 @@ const DomainV3 = new Lang.Class({
 
     get_domain_query_params: function () {
         let params = {};
-        params.manifest_path = this._get_manifest_file().get_path();
+        let manifest_path = this._get_manifest_file().get_path();
+        if (this._is_flatpak) {
+            params.flatpak_app_id = this._app_id;
+            params.flatpak_manifest_path = manifest_path;
+        } else {
+            params.manifest_path = manifest_path;
+        }
         return params;
     },
 
