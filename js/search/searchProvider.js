@@ -244,30 +244,9 @@ const GlobalSearchProvider = new Lang.Class({
         if (this._appSearchProviders[subnode])
             return this._appSearchProviders[subnode].skeleton;
 
-        let ids_to_try = [];
-
-        // For modern apps, we use the systemd escaping scheme to pass the full app ID through.
-        ids_to_try.push(systemd_bus_path_decode(subnode));
-
-        // For legacy apps, where we only pass the domain through, we translate dashes to underscores
-        // in our app-id to form a valid object path. We now need to reverse that.
-        let parts = subnode.split('_');
-        ids_to_try.push('com.endlessm.' + parts.join('-'));
-
-        // Gross, but some app-ids actually have an underscore at the end for a
-        // locale country code. We need to check for that.
-        if (parts.length > 2) {
-            let last = parts.pop();
-            ids_to_try.push('com.endlessm.' + parts.join('-') + '_' + last);
-        }
-
-        for (let app_id of ids_to_try) {
-            if (Gio.DesktopAppInfo.new(app_id + '.desktop') === null)
-                continue;
-            let provider = new AppSearchProvider({ application_id: app_id });
-            this._appSearchProviders[subnode] = provider;
-            return provider.skeleton;
-        }
-        return null;
+        let app_id = systemd_bus_path_decode(subnode);
+        let provider = new AppSearchProvider({ application_id: app_id });
+        this._appSearchProviders[subnode] = provider;
+        return provider.skeleton;
     },
 });
