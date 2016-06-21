@@ -48,6 +48,7 @@ $support-font: 'Fira Sans';
 @import 'modules/contentGroup/hierarchicalSet';
 @import 'modules/contentGroup/mediaLightbox';
 @import 'modules/contentGroup/search';
+@import 'modules/contentGroup/supplementaryArticles';
 
 @import 'modules/layout/dynamicBackground';
 @import 'modules/layout/infiniteScrolling';
@@ -110,17 +111,8 @@ $context-blue: #7297a7;
     color: white;
 }
 
-.ContentGroupSupplementaryArticles {
-    margin: 50px 0 50px 20px;
-    padding: 0 20px 20px 0px;
-
-    & > .title {
-        font-family: Merriweather;
-        font-weight: bold;
-        font-size: 40px;
-        color: white;
-        padding-bottom: 30px;
-    }
+.ContentGroupSupplementaryArticles > .title {
+    color: white;
 }
 
 .results-message-title {
