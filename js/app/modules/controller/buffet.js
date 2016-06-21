@@ -68,8 +68,7 @@ const Buffet = new Module.Class({
             }
         });
 
-        history.connect('history-item-changed',
-            this._on_history_item_change.bind(this));
+        history.connect('changed', this._on_history_change.bind(this));
     },
 
     make_ready: function (cb) {
@@ -238,8 +237,9 @@ const Buffet = new Module.Class({
         this._update_highlight();
     },
 
-    _on_history_item_change: function (presenter, item, last_item, is_going_back) {
+    _on_history_change: function () {
         let history = HistoryStore.get_default();
+        let item = history.get_current_item();
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
             action_type: Actions.HIDE_MEDIA,
@@ -270,7 +270,7 @@ const Buffet = new Module.Class({
                 });
                 break;
             case Pages.HOME:
-                if (history.item_count() === 1) {
+                if (history.get_items().length === 1) {
                     Dispatcher.get_default().dispatch({
                         action_type: Actions.SHOW_BRAND_PAGE,
                     });
@@ -293,16 +293,10 @@ const Buffet = new Module.Class({
                 search_text = item.query;
                 break;
             case Pages.ARTICLE:
-                let animation_type = EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
-                if (!last_item || last_item.page_type !== Pages.ARTICLE) {
-                    animation_type = EosKnowledgePrivate.LoadingAnimationType.NONE;
-                } else if (is_going_back) {
-                    animation_type = EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
-                }
                 let payload = {
                     action_type: Actions.SHOW_ARTICLE,
                     model: item.model,
-                    animation_type: animation_type,
+                    animation_type: this._get_article_animation_type(),
                 };
                 if (item.context) {
                     let index = item.context.indexOf(item.model);
@@ -356,5 +350,19 @@ const Buffet = new Module.Class({
         });
 
         this._update_highlight();
+    },
+
+    _get_article_animation_type: function () {
+        // FIXME: move to article stack
+        let history = HistoryStore.get_default();
+        let direction = history.get_direction();
+        let last_index = history.get_current_index();
+        last_index += (direction === HistoryStore.Direction.BACKWARDS ? 1 : -1);
+        let last_item = history.get_items()[last_index];
+        if (!last_item || last_item.page_type !== Pages.ARTICLE)
+            return EosKnowledgePrivate.LoadingAnimationType.NONE;
+        if (direction === HistoryStore.Direction.BACKWARDS)
+            return EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
+        return EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
     },
 });

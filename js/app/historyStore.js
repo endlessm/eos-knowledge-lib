@@ -13,6 +13,11 @@ const Pages = imports.app.pages;
 const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.app.utils;
 
+const Direction = {
+    BACKWARDS: 'backwards',
+    FORWARDS: 'forwards',
+};
+
 /**
  * Class: HistoryStore
  *
@@ -24,17 +29,11 @@ const HistoryStore = new GObject.Class({
 
     Signals: {
         /**
-         * Event: history-item-changed
+         * Event: changed
          *
          * Emitted when the history item changes.
-         *
-         * Parameters:
-         *   item - the history item
-         *   backwards - true if we are currently navigating backwards
          */
-        'history-item-changed': {
-            param_types: [GObject.TYPE_OBJECT, GObject.TYPE_OBJECT, GObject.TYPE_BOOLEAN],
-        },
+        'changed': {},
     },
 
     _init: function (props={}) {
@@ -42,6 +41,7 @@ const HistoryStore = new GObject.Class({
 
         this._items = [];
         this._index = -1;
+        this._direction = Direction.FORWARDS;
 
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
@@ -60,18 +60,18 @@ const HistoryStore = new GObject.Class({
     _go_back: function () {
         if (!this._items || this._index <= 0)
             return;
-        let last_item = this.get_current_item();
         this._index = this._index - 1;
-        this.emit('history-item-changed', this.get_current_item(), last_item, true);
+        this._direction = Direction.BACKWARDS;
+        this.emit('changed');
         this._dispatch_history_enabled();
     },
 
     _go_forward: function () {
         if (!this._items || this._index >= this._items.length - 1)
             return;
-        let last_item = this.get_current_item();
         this._index = this._index + 1;
-        this.emit('history-item-changed', this.get_current_item(), last_item, false);
+        this._direction = Direction.FORWARDS;
+        this.emit('changed');
         this._dispatch_history_enabled();
     },
 
@@ -87,24 +87,20 @@ const HistoryStore = new GObject.Class({
         });
     },
 
+    get_items: function () {
+        return this._items;
+    },
+
+    get_current_index: function () {
+        return this._index;
+    },
+
+    get_direction: function () {
+        return this._direction;
+    },
+
     get_current_item: function () {
-        return this._items[this._index] || null;
-    },
-
-    item_count: function () {
-        return this._items.length;
-    },
-
-    set_current_item: function (item) {
-        if (!this.get_current_item() || !this.get_current_item().equals(item)) {
-            this._items = this._items.slice(0, this._index + 1);
-            this._items.push(item);
-            this._go_forward();
-        }
-    },
-
-    set_current_item_from_props: function (props) {
-        this.set_current_item(new HistoryItem.HistoryItem(props));
+        return this.get_items()[this.get_current_index()] || null;
     },
 
     /**
@@ -123,7 +119,20 @@ const HistoryStore = new GObject.Class({
         return item || null;
     },
 
-    // Common helper functions for history stores...
+    // Common helper functions for history stores, not for use from other
+    // modules...
+    set_current_item: function (item) {
+        if (!this.get_current_item() || !this.get_current_item().equals(item)) {
+            this._items = this._items.slice(0, this._index + 1);
+            this._items.push(item);
+            this._go_forward();
+        }
+    },
+
+    set_current_item_from_props: function (props) {
+        this.set_current_item(new HistoryItem.HistoryItem(props));
+    },
+
     do_search: function (query, timestamp) {
         let sanitized_query = Utils.sanitize_query(query);
         if (sanitized_query.length === 0)

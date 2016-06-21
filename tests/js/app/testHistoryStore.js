@@ -29,7 +29,7 @@ describe('History Store', function () {
             page_type: 'search',
             query: 'blah',
         });
-        expect(history_store.item_count()).toBe(1);
+        expect(history_store.get_items().length).toBe(1);
     });
 
     it('can go back', function () {

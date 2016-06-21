@@ -79,7 +79,7 @@ const Mesh = new Module.Class({
         }
 
         this._window.connect('key-press-event', this._on_key_press_event.bind(this));
-        history.connect('history-item-changed', this._on_history_item_change.bind(this));
+        history.connect('changed', this._on_history_change.bind(this));
     },
 
     make_ready: function (cb=function () {}) {
@@ -113,8 +113,9 @@ const Mesh = new Module.Class({
         });
     },
 
-    _on_history_item_change: function (presenter, item, last_item, is_going_back) {
+    _on_history_change: function () {
         let history = HistoryStore.get_default();
+        let item = history.get_current_item();
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
             action_type: Actions.HIDE_MEDIA,
@@ -146,14 +147,14 @@ const Mesh = new Module.Class({
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_ARTICLE,
                     model: item.model,
-                    animation_type: this._get_article_animation_type(item, last_item, is_going_back),
+                    animation_type: this._get_article_animation_type(),
                 });
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_ARTICLE_PAGE,
                 });
                 break;
             case Pages.HOME:
-                if (history.item_count() === 1) {
+                if (history.get_items().length === 1) {
                     Dispatcher.get_default().dispatch({
                         action_type: Actions.SHOW_BRAND_PAGE,
                     });
@@ -203,10 +204,16 @@ const Mesh = new Module.Class({
         }
     },
 
-    _get_article_animation_type: function (item, last_item, is_going_back) {
+    _get_article_animation_type: function () {
+        // FIXME: move to article stack
+        let history = HistoryStore.get_default();
+        let direction = history.get_direction();
+        let last_index = history.get_current_index();
+        last_index += (direction === HistoryStore.Direction.BACKWARDS ? 1 : -1);
+        let last_item = history.get_items()[last_index];
         if (!last_item || last_item.page_type !== Pages.ARTICLE)
             return EosKnowledgePrivate.LoadingAnimationType.NONE;
-        if (is_going_back)
+        if (direction === HistoryStore.Direction.BACKWARDS)
             return EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
         return EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
     },
