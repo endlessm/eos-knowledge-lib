@@ -50,6 +50,7 @@ $support-font: 'Fira Sans';
 @import 'modules/layout/infiniteScrolling';
 @import 'modules/layout/responsiveMargins';
 @import 'modules/layout/scrolling';
+@import 'modules/layout/topMenu';
 
 @import 'modules/navigation/searchBox';
 
@@ -73,22 +74,8 @@ $context-blue: #7297a7;
     background-color: transparent;
 }
 
-.LayoutTopMenu {
-    &__menu {
-        background-color: #050c20;
-        box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.2);
-        padding: 0px 20px;
-
-        .BannerApp .ThemeableImage {
-            -EknThemeableImage-sizing: "size-min";
-            min-width: 146px;
-            min-height: 30px;
-        }
-    }
-
-    &__content {
-        margin-top: 50px;
-    }
+.LayoutTopMenu__menu {
+    background-color: #050c20;
 }
 
 .ArrangementSideBySide {
