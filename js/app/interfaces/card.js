@@ -332,20 +332,8 @@ const Card = new Lang.Interface({
         let stream;
         // FIXME: to actually support ekn uris here, we'd need a gvfs
         // extension or something like that
-        if (scheme === 'ekn') {
-            Engine.get_default().get_object_by_id(this.model.thumbnail_uri, null, (engine, task) => {
-                let media_object;
-                try {
-                    media_object = engine.get_object_by_id_finish(task);
-                } catch (error) {
-                    logError(error);
-                    return;
-                }
-                coveredFrame.set_content(media_object.get_content_stream());
-            });
-        } else {
-            coveredFrame.set_content(Gio.File.new_for_uri(this.model.thumbnail_uri).read(null));
-        }
+        log(this.model.thumbnail_uri);
+        coveredFrame.set_content(Gio.File.new_for_uri(this.model.thumbnail_uri).read(null));
         frame.visible = true;
     },
 

@@ -1,6 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const GLib = imports.gi.GLib;
+const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
@@ -74,6 +75,8 @@ const Engine = Lang.Class({
         this._xapian_bridge = new XapianBridge.XapianBridge({ language: this.language });
 
         this._domain_cache = {};
+
+        this._uri_handler = new EknURIHandler(this);
     },
 
     load_record_by_id: function (id, cancellable, callback) {
@@ -235,6 +238,100 @@ const Engine = Lang.Class({
 
     test_link: function (link) {
         return this._get_domain(this.default_app_id).test_link(link);
+    },
+});
+
+const EknGFile = new Lang.Class({
+    Name: 'EknGFile',
+    Extends: GObject.Object,
+    Implements: [Gio.File],
+
+    _init: function (engine, uri, blob) {
+        this._engine = engine;
+        this._uri = uri;
+        this._blob = blob;
+        this.parent({});
+    },
+
+    vfunc_dup: function () {
+        return new EknGFile(engine, blob);
+    },
+
+    vfunc_hash: function () {
+        return GLib.str_hash(this._uri);
+    },
+
+    vfunc_equal: function (other) {
+        return this._uri === other._uri;
+    },
+
+    vfunc_is_native: function () {
+        return false;
+    },
+
+    vfunc_has_uri_scheme: function (scheme) {
+        return scheme === 'resource';
+    },
+
+    vfunc_get_uri_scheme: function () {
+        return 'resource';
+    },
+
+    vfunc_get_basename: function () {
+        return this._uri.split('/').pop();
+    },
+
+    vfunc_get_path: function () {
+        return null;
+    },
+
+    vfunc_get_uri: function () {
+        return this._uri;
+    },
+
+    vfunc_get_parse_name: function () {
+        return this._uri;
+    },
+
+    vfunc_get_parent: function () {
+        return null;
+    },
+
+    vfunc_read_fn: function (cancellable) {
+        return this._blob.get_stream();
+    },
+});
+
+const EknURIHandler = new Lang.Class({
+    Name: 'EknURIHandler',
+
+    _init: function (engine) {
+        this._vfs = Gio.Vfs.get_default();
+        this._engine = engine;
+
+        this._vfs.register_uri_scheme("ekn", this._lookup_ekn_uri.bind(this));
+    },
+
+    _lookup_ekn_uri: function (vfs, uri) {
+        let [hash, blob_name] = Utils.components_from_ekn_id(uri);
+
+        let domain_obj = this._engine._get_domain(this._engine.default_app_id);
+
+        let record = domain_obj.load_record_from_hash_sync(hash);
+        if (!record)
+            return null;
+
+        let blob;
+        if (blob_name !== undefined) {
+            blob = record.lookup_blob(blob_name);
+        } else {
+            blob = record.data;
+        }
+
+        if (!blob)
+            return null;
+
+        return new EknGFile(this._engine, uri, blob);
     },
 });
 
