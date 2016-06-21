@@ -168,6 +168,36 @@ describe('Window.App', function () {
             let search = factory.get_last_created('search');
             expect(search.get_child_visible()).toBeFalsy();
         });
+
+        it('enables and disables the history back button', function () {
+            dispatcher.dispatch({
+                action_type: Actions.HISTORY_BACK_ENABLED_CHANGED,
+                enabled: true,
+            });
+            Utils.update_gui();
+            expect(view._history_buttons.back_button.sensitive).toBeTruthy();
+            dispatcher.dispatch({
+                action_type: Actions.HISTORY_BACK_ENABLED_CHANGED,
+                enabled: false,
+            });
+            Utils.update_gui();
+            expect(view._history_buttons.back_button.sensitive).toBeFalsy();
+        });
+
+        it('enables and disables the history forward button', function () {
+            dispatcher.dispatch({
+                action_type: Actions.HISTORY_FORWARD_ENABLED_CHANGED,
+                enabled: true,
+            });
+            Utils.update_gui();
+            expect(view._history_buttons.forward_button.sensitive).toBeTruthy();
+            dispatcher.dispatch({
+                action_type: Actions.HISTORY_FORWARD_ENABLED_CHANGED,
+                enabled: false,
+            });
+            Utils.update_gui();
+            expect(view._history_buttons.forward_button.sensitive).toBeFalsy();
+        });
     });
 
     it('still packs the pager even without a lightbox and navigation module', function () {
