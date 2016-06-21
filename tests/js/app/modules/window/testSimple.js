@@ -134,15 +134,15 @@ describe('Window.Simple', function () {
                     });
                     expect(view.present).not.toHaveBeenCalled();
                     expect(view.present_with_time).not.toHaveBeenCalled();
-                    dispatcher.dispatch({
-                        action_type: Actions.SHOW_HOME_PAGE,
+                    history.set_current_item_from_props({
+                        page_type: Pages.HOME,
                     });
                     expect(view.present.calls.any() || view.present_with_time.calls.any()).toBeTruthy();
                 });
 
                 it('does not present itself until the action is dispatched', function () {
-                    dispatcher.dispatch({
-                        action_type: Actions.SHOW_HOME_PAGE,
+                    history.set_current_item_from_props({
+                        page_type: Pages.HOME,
                     });
                     expect(view.present).not.toHaveBeenCalled();
                     expect(view.present_with_time).not.toHaveBeenCalled();
@@ -162,34 +162,20 @@ describe('Window.Simple', function () {
 
         it('disables the home button when in the home page', function () {
             expect(view._home_button).toBeDefined();
-            dispatcher.dispatch({ action_type: Actions.SHOW_SET_PAGE });
+            history.set_current_item_from_props({ page_type: Pages.SET });
             expect(view._home_button.sensitive).toBe(true);
-            dispatcher.dispatch({ action_type: Actions.SHOW_HOME_PAGE });
-            expect(view._home_button.sensitive).toBe(false);
-        });
-
-        it('disables the home button when in the brand page', function () {
-            expect(view._home_button).toBeDefined();
-            dispatcher.dispatch({ action_type: Actions.SHOW_SET_PAGE });
-            expect(view._home_button.sensitive).toBe(true);
-            dispatcher.dispatch({ action_type: Actions.SHOW_BRAND_PAGE });
+            history.set_current_item_from_props({ page_type: Pages.HOME });
             expect(view._home_button.sensitive).toBe(false);
         });
 
         it('shows the top bar search box on a page that has no search box', function () {
-            dispatcher.dispatch({
-                action_type: Actions.SHOW_HOME_PAGE,
-            });
-            Utils.update_gui();
+            history.set_current_item_from_props({ page_type: Pages.HOME });
             let search = factory.get_last_created('search');
             expect(search.get_child_visible()).toBeTruthy();
         });
 
         it('hides the top bar search on a page that has a search box', function () {
-            dispatcher.dispatch({
-                action_type: Actions.SHOW_SEARCH_PAGE,
-            });
-            Utils.update_gui();
+            history.set_current_item_from_props({ page_type: Pages.SEARCH });
             let search = factory.get_last_created('search');
             expect(search.get_child_visible()).toBeFalsy();
         });

@@ -12,6 +12,7 @@ const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
+const Pages = imports.app.pages;
 const SearchBox = imports.app.modules.navigation.searchBox;
 const Utils = imports.app.utils;
 
@@ -132,22 +133,6 @@ const Simple = new Module.Class({
                 case Actions.DBUS_LOAD_ITEM_CALLED:
                     this._needs_present(payload.timestamp);
                     break;
-                case Actions.SHOW_BRAND_PAGE:
-                case Actions.SHOW_HOME_PAGE:
-                    this._home_button.sensitive = false;
-                    // Even if we didn't change, this should still count as the
-                    // first transition.
-                    this._update_top_bar_visibility();
-                    this._present_if_needed();
-                    break;
-                case Actions.SHOW_SET_PAGE:
-                case Actions.SHOW_ALL_SETS_PAGE:
-                case Actions.SHOW_SEARCH_PAGE:
-                case Actions.SHOW_ARTICLE_PAGE:
-                    this._home_button.sensitive = true;
-                    this._update_top_bar_visibility();
-                    this._present_if_needed();
-                    break;
             }
         });
 
@@ -171,24 +156,22 @@ const Simple = new Module.Class({
             }
         }.bind(this));
 
-        this._pager.connect_after('notify::visible-child',
-            this._update_top_bar_visibility.bind(this));
-
         this.get_child().show_all();
     },
 
     _on_history_change: function (history) {
+        this._home_button.sensitive = history.get_current_item().page_type !== Pages.HOME;
         this._history_buttons.back_button.sensitive = history.can_go_back();
         this._history_buttons.forward_button.sensitive = history.can_go_forward();
-    },
 
-    _update_top_bar_visibility: function () {
         let new_page = this._pager.visible_child;
         if (Utils.has_descendant_with_type(new_page, SearchBox.SearchBox)) {
             this._search_stack.visible_child = this._invisible_frame;
         } else {
             this._search_stack.visible_child = this._search_box;
         }
+
+        this._present_if_needed();
     },
 
     _needs_present: function (timestamp) {
@@ -216,7 +199,10 @@ const Simple = new Module.Class({
     },
 
     make_ready: function (cb=function () {}) {
-        this._pager.make_ready(cb);
+        this._pager.make_ready(() => {
+            this._present_if_needed();
+            cb();
+        });
     },
 
     set_busy: function (busy) {

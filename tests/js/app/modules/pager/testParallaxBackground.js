@@ -1,18 +1,18 @@
 const Gtk = imports.gi.Gtk;
 Gtk.init(null);
 
-const Actions = imports.app.actions;
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const MockDispatcher = imports.tests.mockDispatcher;
+const HistoryStore = imports.app.historyStore;
 const MockFactory = imports.tests.mockFactory;
 const ParallaxBackground = imports.app.modules.pager.parallaxBackground;
 
 describe('Pager.ParallaxBackground', function () {
-    let pager, dispatcher;
+    let pager, store;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
-        dispatcher = MockDispatcher.mock_default();
+        store = new HistoryStore.HistoryStore();
+        HistoryStore.set_default(store);
 
         [pager] = MockFactory.setup_tree({
             type: ParallaxBackground.ParallaxBackground,
@@ -26,13 +26,13 @@ describe('Pager.ParallaxBackground', function () {
     });
 
     it('sets the correct CSS classes on page transitions', function () {
-        dispatcher.dispatch({ action_type: Actions.SHOW_HOME_PAGE });
+        store.set_current_item_from_props({ page_type: 'home' });
         expect(pager).toHaveCssClass('PagerParallaxBackground--left');
-        dispatcher.dispatch({ action_type: Actions.SHOW_SEARCH_PAGE });
+        store.set_current_item_from_props({ page_type: 'search' });
         expect(pager).toHaveCssClass('PagerParallaxBackground--center');
-        dispatcher.dispatch({ action_type: Actions.SHOW_SET_PAGE });
+        store.set_current_item_from_props({ page_type: 'set' });
         expect(pager).toHaveCssClass('PagerParallaxBackground--center');
-        dispatcher.dispatch({ action_type: Actions.SHOW_ARTICLE_PAGE });
+        store.set_current_item_from_props({ page_type: 'article' });
         expect(pager).toHaveCssClass('PagerParallaxBackground--right');
     });
 });
