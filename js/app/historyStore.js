@@ -46,44 +46,12 @@ const HistoryStore = new GObject.Class({
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
                 case Actions.HISTORY_BACK_CLICKED:
-                    this._go_back();
+                    this.go_back();
                     break;
                 case Actions.HISTORY_FORWARD_CLICKED:
-                    this._go_forward();
+                    this.go_forward();
                     break;
             }
-        });
-
-        this._dispatch_history_enabled();
-    },
-
-    _go_back: function () {
-        if (!this._items || this._index <= 0)
-            return;
-        this._index = this._index - 1;
-        this._direction = Direction.BACKWARDS;
-        this.emit('changed');
-        this._dispatch_history_enabled();
-    },
-
-    _go_forward: function () {
-        if (!this._items || this._index >= this._items.length - 1)
-            return;
-        this._index = this._index + 1;
-        this._direction = Direction.FORWARDS;
-        this.emit('changed');
-        this._dispatch_history_enabled();
-    },
-
-    _dispatch_history_enabled: function () {
-        let dispatcher = Dispatcher.get_default();
-        dispatcher.dispatch({
-            action_type: Actions.HISTORY_BACK_ENABLED_CHANGED,
-            enabled: this._index > 0,
-        });
-        dispatcher.dispatch({
-            action_type: Actions.HISTORY_FORWARD_ENABLED_CHANGED,
-            enabled: this._index < this._items.length - 1,
         });
     },
 
@@ -101,6 +69,14 @@ const HistoryStore = new GObject.Class({
 
     get_current_item: function () {
         return this.get_items()[this.get_current_index()] || null;
+    },
+
+    can_go_back: function () {
+        return this._index > 0;
+    },
+
+    can_go_forward: function () {
+        return this._index < this._items.length - 1;
     },
 
     /**
@@ -121,11 +97,27 @@ const HistoryStore = new GObject.Class({
 
     // Common helper functions for history stores, not for use from other
     // modules...
+    go_back: function () {
+        if (!this.can_go_back())
+            return;
+        this._index--;
+        this._direction = Direction.BACKWARDS;
+        this.emit('changed');
+    },
+
+    go_forward: function () {
+        if (!this.can_go_forward())
+            return;
+        this._index++;
+        this._direction = Direction.FORWARDS;
+        this.emit('changed');
+    },
+
     set_current_item: function (item) {
         if (!this.get_current_item() || !this.get_current_item().equals(item)) {
             this._items = this._items.slice(0, this._index + 1);
             this._items.push(item);
-            this._go_forward();
+            this.go_forward();
         }
     },
 

@@ -6,9 +6,11 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const Actions = imports.app.actions;
+const HistoryStore = imports.app.historyStore;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
 const PagerSimple = imports.app.modules.pager.simple;
+const Pages = imports.app.pages;
 const SearchBox = imports.app.modules.navigation.searchBox;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 const WindowSimple = imports.app.modules.window.simple;
@@ -47,9 +49,11 @@ describe('Window.Simple', function () {
     });
 
     describe('in normal operation', function () {
-        let view, factory;
+        let view, factory, history;
 
         beforeEach(function () {
+            history = new HistoryStore.HistoryStore();
+            HistoryStore.set_default(history);
             [view, factory] = MockFactory.setup_tree({
                 type: WindowSimple.Simple,
                 properties: {
@@ -173,33 +177,30 @@ describe('Window.Simple', function () {
         });
 
         it('enables and disables the history back button', function () {
-            dispatcher.dispatch({
-                action_type: Actions.HISTORY_BACK_ENABLED_CHANGED,
-                enabled: true,
-            });
-            Utils.update_gui();
-            expect(view._history_buttons.back_button.sensitive).toBeTruthy();
-            dispatcher.dispatch({
-                action_type: Actions.HISTORY_BACK_ENABLED_CHANGED,
-                enabled: false,
+            history.set_current_item_from_props({
+                page_type: Pages.HOME,
             });
             Utils.update_gui();
             expect(view._history_buttons.back_button.sensitive).toBeFalsy();
+            history.set_current_item_from_props({
+                page_type: Pages.ARTICLE,
+            });
+            Utils.update_gui();
+            expect(view._history_buttons.back_button.sensitive).toBeTruthy();
         });
 
         it('enables and disables the history forward button', function () {
-            dispatcher.dispatch({
-                action_type: Actions.HISTORY_FORWARD_ENABLED_CHANGED,
-                enabled: true,
-            });
-            Utils.update_gui();
-            expect(view._history_buttons.forward_button.sensitive).toBeTruthy();
-            dispatcher.dispatch({
-                action_type: Actions.HISTORY_FORWARD_ENABLED_CHANGED,
-                enabled: false,
+            history.set_current_item_from_props({
+                page_type: Pages.HOME,
             });
             Utils.update_gui();
             expect(view._history_buttons.forward_button.sensitive).toBeFalsy();
+            history.set_current_item_from_props({
+                page_type: Pages.ARTICLE,
+            });
+            history.go_back();
+            Utils.update_gui();
+            expect(view._history_buttons.forward_button.sensitive).toBeTruthy();
         });
     });
 

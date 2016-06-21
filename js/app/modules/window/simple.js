@@ -9,6 +9,7 @@ const Gtk = imports.gi.Gtk;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
+const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const SearchBox = imports.app.modules.navigation.searchBox;
 const Utils = imports.app.utils;
@@ -119,6 +120,7 @@ const Simple = new Module.Class({
             dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
         });
 
+        HistoryStore.get_default().connect('changed', this._on_history_change.bind(this));
         dispatcher.register((payload) => {
             switch(payload.action_type) {
                 case Actions.HISTORY_BACK_ENABLED_CHANGED:
@@ -185,6 +187,11 @@ const Simple = new Module.Class({
             this._update_top_bar_visibility.bind(this));
 
         this.get_child().show_all();
+    },
+
+    _on_history_change: function (history) {
+        this._history_buttons.back_button.sensitive = history.can_go_back();
+        this._history_buttons.forward_button.sensitive = history.can_go_forward();
     },
 
     _update_top_bar_visibility: function () {
