@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-06-07 01:57+0000\n"
-"PO-Revision-Date: 2016-05-31 01:44+0000\n"
+"POT-Creation-Date: 2016-06-14 01:47+0000\n"
+"PO-Revision-Date: 2016-06-14 01:47+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -22,11 +22,11 @@ msgstr ""
 msgid "PDF"
 msgstr "صيغة PDF"
 
-#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:140
+#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:139
 msgid "Next Article"
 msgstr "المقالة التالية"
 
-#: data/widgets/card/sequence.ui:59 js/app/modules/layout/articleStack.js:123
+#: data/widgets/card/sequence.ui:59 js/app/modules/layout/articleStack.js:122
 msgid "Previous Article"
 msgstr "المقالة السابقة"
 
@@ -35,7 +35,7 @@ msgid "Browse by topic"
 msgstr "الاستعراض حسب الموضوعات"
 
 #: data/widgets/layout/sideMenu.ui:95
-#: js/app/modules/layout/hamburgerBasement.js:50
+#: js/app/modules/layout/hamburgerBasement.js:57
 msgid "HOME"
 msgstr "الصفحة الرئيسية"
 
@@ -66,7 +66,7 @@ msgid ""
 "to do anything."
 msgstr "اطلع على {wikihow-article-link} لمزيد من التفاصيل والفيديوهات والصور والإستنادات. بإذن \n {wikihow-link}، حيث يُمكن لاي شخص أن يتعلم بسهولة كيف يفعل أي شيء."
 
-#: js/app/articleHTMLRenderer.js:156 js/app/articleHTMLRenderer.js:247
+#: js/app/articleHTMLRenderer.js:156 js/app/articleHTMLRenderer.js:256
 msgid "Copy"
 msgstr "نسخة"
 
@@ -89,14 +89,14 @@ msgstr ""
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:285
+#: js/app/articleHTMLRenderer.js:294
 msgid "Content taken from {blog-link}."
 msgstr "المُحتوى مأخوذ من {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:290
+#: js/app/articleHTMLRenderer.js:299
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "المحتوى مهدى من {blog-link}. تم استخدامه بإذن كريم من صاحبه."
 
@@ -104,29 +104,29 @@ msgstr "المحتوى مهدى من {blog-link}. تم استخدامه بإذن
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:298
+#: js/app/articleHTMLRenderer.js:307
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "المحتوى مهدى من {blog-link}، ومرخص بموجب {license-link}."
 
-#: js/app/modules/banner/context.js:40 js/app/modules/banner/context.js:48
-#: js/app/modules/contentGroup/highlights.js:135
+#: js/app/modules/banner/context.js:39 js/app/modules/banner/context.js:47
+#: js/app/modules/contentGroup/highlights.js:134
 msgid "Highlights"
 msgstr "الموضوعات البارزة"
 
-#: js/app/modules/banner/context.js:51
+#: js/app/modules/banner/context.js:50
 msgid "All Categories"
 msgstr "جميع التصنيفات"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep the %s token in your translation.
-#: js/app/modules/banner/context.js:69
+#: js/app/modules/banner/context.js:68
 #, javascript-format
 msgid "Search results for “%s”"
 msgstr "نتائج البحث الخاصة بـ “%s”"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep %s token in your translation.
-#: js/app/modules/banner/context.js:73 js/app/modules/controller/buffet.js:148
+#: js/app/modules/banner/context.js:72 js/app/modules/controller/buffet.js:145
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "النتائج التي عثرنا عليها لـ “%s”"
@@ -137,7 +137,7 @@ msgstr "النتائج التي عثرنا عليها لـ “%s”"
 #. surrounded by Unicode left and right double quotes (U+201C
 #. and U+201D). Make sure to include %s in your translation and
 #. use whatever quote marks are appropriate for your language.
-#: js/app/modules/banner/search.js:49
+#: js/app/modules/banner/search.js:48
 #, javascript-format
 msgid "Searching for “%s”"
 msgstr "البحث عن “%s”"
@@ -148,31 +148,31 @@ msgstr "البحث عن “%s”"
 #. surrounded by Unicode left and right double quotes (U+201C
 #. and U+201D). Make sure to include %s in your translation and
 #. use whatever quote marks are appropriate for your language.
-#: js/app/modules/banner/search.js:61
+#: js/app/modules/banner/search.js:60
 #, javascript-format
 msgid "Results for “%s”"
 msgstr "النتائج عن “%s”"
 
-#: js/app/modules/banner/search.js:67
+#: js/app/modules/banner/search.js:66
 msgid "OOPS!"
 msgstr "عفواً!"
 
 #. TRANSLATORS: %s will be replaced with the name of the category
 #. that we are offering to show more of.
-#: js/app/modules/contentGroup/cardContainer.js:145
+#: js/app/modules/contentGroup/cardContainer.js:144
 #, javascript-format
 msgid "See more %s"
 msgstr "مشاهدة المزيد %s"
 
-#: js/app/modules/contentGroup/search.js:182
+#: js/app/modules/contentGroup/search.js:181
 msgid "Sorry! :-("
 msgstr "عذراً! :-("
 
-#: js/app/modules/contentGroup/search.js:183
+#: js/app/modules/contentGroup/search.js:182
 msgid "There are no results that match your search.\n"
 msgstr "لا من نتائج تطابق بحثك.\n"
 
-#: js/app/modules/contentGroup/search.js:185
+#: js/app/modules/contentGroup/search.js:184
 msgid ""
 "We recommend that you:\n"
 "\n"
@@ -181,23 +181,19 @@ msgid ""
 "  •  Try using more general words"
 msgstr "ننصحك بالقيام بما يلي:\n\n  •  مراجعة صحة التهجئة في كتابتك\n  •  تجربة كلمات أخرى لها نفس المعنى\n  •  محاولة استخدام كلمات أكثر شمولاً"
 
-#: js/app/modules/contentGroup/search.js:212
+#: js/app/modules/contentGroup/search.js:202
 msgid "There was an error during your search."
 msgstr "وقع خطأ أثناء عملية البحث."
 
-#: js/app/modules/contentGroup/suggestedArticles.js:25
-msgid "You might be interested in..."
-msgstr "ربما تكون مهتماً بـ..."
-
-#: js/app/modules/contentGroup/supplementaryArticles.js:38
+#: js/app/modules/contentGroup/supplementaryArticles.js:37
 msgid "Other news"
 msgstr "الأخبار الأخرى"
 
-#: js/app/modules/layout/hamburgerBasement.js:42
+#: js/app/modules/layout/hamburgerBasement.js:41
 msgid "SEE ALL CATEGORIES"
 msgstr "مشاهدة جميع الفئات"
 
-#: js/app/modules/navigation/searchBox.js:152
+#: js/app/modules/navigation/searchBox.js:150
 msgid "See more results"
 msgstr "قُم بمشاهدة المزيد من النتائج"
 
@@ -206,10 +202,10 @@ msgstr "قُم بمشاهدة المزيد من النتائج"
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:86
+#: js/app/utils.js:87
 msgid "by {author}"
 msgstr "بواسطة (المؤلف)"
 
-#: js/app/utils.js:86
+#: js/app/utils.js:87
 msgid "and"
 msgstr "و"
