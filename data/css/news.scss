@@ -33,6 +33,7 @@ $support-font: 'Fira Sans';
 @import 'modules/arrangement/windshield';
 
 @import 'modules/banner/app';
+@import 'modules/banner/search';
 
 @import 'modules/card/base';
 @import 'modules/card/knowledgeDocument';
@@ -117,15 +118,6 @@ $context-blue: #7297a7;
 
 .results-message-title {
     color: white;
-}
-
-.BannerSearch {
-    padding: 50px 80px 0;
-    font-family: Merriweather;
-    font-weight: bold;
-    color: #050c20;
-    font-size: 54px;
-    background-color: transparent;
 }
 
 .search-page separator {
