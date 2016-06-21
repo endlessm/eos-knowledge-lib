@@ -10,3 +10,45 @@
         padding-bottom: 30px;
     }
 }
+
+.highlights {
+    margin-top: 50px;
+    .ContentGroup__trigger {
+        margin-bottom: 15px;
+        font-family: $support-font;
+        font-size: 20px;
+        color: $accent-light-color;
+        /* FIXME: We want a 'text-transform: lowercase;' here once GTK
+         * CSS supports such a property, or once we figure out Dynamic
+         * Titles in T11907
+         */
+
+        .ThemeableImage {
+            -gtk-icon-source: url('../images/news-arrow-dark.svg');
+            min-height: 14px;
+            min-width: 14px;
+            margin-left: 5px;
+            margin-bottom: 5px;
+        }
+
+        &:hover {
+            color: $accent-dark-color;
+
+            .ThemeableImage {
+                -gtk-icon-source: url('../images/news-arrow-light.svg');
+            }
+        }
+    }
+
+    .ContentGroup__title {
+        margin: 25px 0px 15px 0px;
+        color: $accent-light-color;
+        font-family: $display-font;
+        font-weight: bold;
+        font-size: 40px;
+
+        &:hover {
+            color: $accent-dark-color;
+        }
+    }
+}
