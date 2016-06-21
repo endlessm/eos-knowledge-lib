@@ -27,6 +27,7 @@ $support-font: 'Fira Sans';
 @import 'modules/arrangement/list';
 @import 'modules/arrangement/piano';
 @import 'modules/arrangement/scrollingList';
+@import 'modules/arrangement/sideBySide';
 @import 'modules/arrangement/squareGuys';
 @import 'modules/arrangement/thirties';
 @import 'modules/arrangement/windshield';
@@ -80,26 +81,13 @@ $context-blue: #7297a7;
 
 .ArrangementSideBySide {
     .CardTitle {
-        label.title {
-            font-family: 'Fira Sans';
-            color: rgba(255, 255, 255, 0.6);
-            padding: 13px 0px 3px 0px;
-            font-size: 18px;
-        }
-
         &:hover label.title {
-            border-bottom: 1px solid $context-blue;
-            color: $context-blue;
+            border-bottom: 1px solid $accent-dark-color;
+            color: $accent-dark-color;
         }
 
         &.highlighted {
-            label.title {
-                color: white;
-            }
-
-            &:hover label.title {
-                border-bottom: none;
-            }
+            background-color: transparent;
         }
     }
 }
