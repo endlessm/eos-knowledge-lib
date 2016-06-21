@@ -44,6 +44,7 @@ $support-font: 'Fira Sans';
 @import 'modules/card/title';
 
 @import 'modules/contentGroup/cardContainer';
+@import 'modules/contentGroup/contentGroup';
 @import 'modules/contentGroup/hierarchicalSet';
 @import 'modules/contentGroup/mediaLightbox';
 @import 'modules/contentGroup/search';
@@ -105,17 +106,8 @@ $context-blue: #7297a7;
     margin-top: -10px;
 }
 
-.search-page-suggestions {
-    margin: 50px 0;
-    padding-bottom: 20px;
-
-    .ContentGroup__title {
-        font-family: Merriweather;
-        font-weight: bold;
-        font-size: 40px;
-        color: white;
-        padding-bottom: 30px;
-    }
+.search-page-suggestions .ContentGroup__title {
+    color: white;
 }
 
 .ContentGroupSupplementaryArticles {
