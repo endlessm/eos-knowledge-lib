@@ -44,6 +44,7 @@ $support-font: 'Fira Sans';
 @import 'modules/card/title';
 
 @import 'modules/contentGroup/cardContainer';
+@import 'modules/contentGroup/hierarchicalSet';
 @import 'modules/contentGroup/mediaLightbox';
 @import 'modules/contentGroup/search';
 
@@ -90,10 +91,6 @@ $context-blue: #7297a7;
             background-color: transparent;
         }
     }
-}
-
-.ContentGroupHierarchicalSet {
-    margin: 20px;
 }
 
 /* Selects the background around the suggested articles modules; cumbersome! */
