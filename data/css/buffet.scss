@@ -1,91 +1,198 @@
 @import 'buffet_core';
 
-.Card .title,
-.CardSetPreview .title,
-.ContentGroupSearch .results-message-title,
-.ContentGroupSuggestedCategories .browse-content .title,
-.search-page-suggestions .browse-content .title  {
-    color: #044a80;
+.Card {
+    .title {
+        color: #044a80;
+
+        &.highlighted {
+            background-color: #d9f0f8;
+        }
+    }
+
+    .card-synopsis.highlighted {
+        background-color: #d9f0f8;
+    }
 }
 
-.Card .title.highlighted,
-.Card .card-synopsis.highlighted {
-    background-color: #d9f0f8;
+.CardSetPreview {
+    .title {
+        color: #044a80;
+
+        .after {
+            -gtk-icon-source: url('../images/title-arrow-dark.svg');
+            min-height: 10px;
+            min-width: 11px;
+            margin-left: 8px;
+            margin-top: 6px;
+        }
+
+        &:hover .after {
+            -gtk-icon-source: url('../images/title-arrow-light.svg');
+        }
+    }
+
+    .CardTitle {
+        margin-top: 25px;
+
+        .title {
+            font-weight: 200;
+            font-size: 29.3px;
+        }
+    }
+
+    .CardThumb .content-frame {
+        margin-top: -10px;
+    }
+
+    separator {
+        background-color: #999999;
+        min-height: 1px;
+        margin: 4px 0px 10px 0px;
+    }
 }
 
-.ContentGroupHighlights,
+.ContentGroupSearch {
+    .ContentGroupSuggestedArticles .content-frame {
+        margin-top: -10px;
+    }
+
+    .ContentGroupSuggestedCategories,
+    .search-page-suggestions {
+        background-color: #f6f6f6;
+    }
+
+    separator {
+        background-color: #999999;
+    }
+
+    .results-message-title {
+        color: #044a80;
+        padding: 20px 60px 0px 60px;
+        padding-left: 60px;
+        padding-right: 60px;
+        font-size: 24px;
+    }
+
+    .results-message-subtitle {
+        color: #999999;
+        padding: 20px 60px 0px 60px;
+        padding-left: 60px;
+        padding-right: 60px;
+        padding-bottom: 40px;
+        font-size: 24px;
+    }
+}
+
+.ContentGroupSuggestedCategories {
+    .browse-content {
+        .title {
+            color: #044a80;
+        }
+
+        .after {
+            -gtk-icon-source: url('../images/title-arrow-dark.svg');
+            min-height: 10px;
+            min-width: 11px;
+            margin-left: 8px;
+            margin-top: 6px;
+        }
+
+        &:hover .after {
+            -gtk-icon-source: url('../images/title-arrow-light.svg');
+        }
+    }
+
+    .ArrangementSquareGuys {
+        padding: 0 20px 20px 20px;
+    }
+}
+
+.search-page-suggestions {
+    margin: 50px 0;
+    padding-bottom: 20px;
+    background-color: #ddddd5;
+
+    .browse-content .title  {
+        color: #044a80;
+    }
+
+    .ArrangementSquareGuys {
+        padding: 0 20px 20px 20px;
+    }
+
+    .content-group-title {
+        font-family: 'Fira Sans';
+        font-weight: bold;
+        font-size: 40px;
+        padding: 0px 0px 30px 20px;
+        color: #5e7790;
+    }
+}
+
+.ContentGroupHighlights {
+    padding: 20px;
+
+    .CardTitle {
+        .title.label {
+            font-weight: 200;
+            font-size: 29.3px;
+        }
+
+        .after {
+            -gtk-icon-source: url('../images/title-arrow-dark.svg');
+            min-height: 10px;
+            min-width: 11px;
+            margin-left: 8px;
+            margin-top: 6px;
+        }
+
+        &:hover .after {
+            -gtk-icon-source: url('../images/title-arrow-light.svg');
+        }
+    }
+
+    separator {
+        background-color: #999999;
+        min-height: 1px;
+        margin: 4px 0px 10px 0px;
+    }
+}
+
 .ContentGroupThematic {
     padding: 20px;
+
+    .CardTitle {
+        margin-top: 25px;
+
+        .title.label {
+            font-weight: 200;
+            font-size: 29.3px;
+        }
+
+        .after {
+            -gtk-icon-source: url('../images/title-arrow-dark.svg');
+            min-height: 10px;
+            min-width: 11px;
+            margin-left: 8px;
+            margin-top: 6px;
+        }
+
+        &:hover .after {
+            -gtk-icon-source: url('../images/title-arrow-light.svg');
+        }
+    }
+
+    separator {
+        background-color: #999999;
+        min-height: 1px;
+        margin: 4px 0px 10px 0px;
+    }
 }
 
-.ContentGroupThematic .CardTitle,
-.CardSetPreview .CardTitle {
-    margin-top: 25px;
-}
-
-.ContentGroupHighlights .CardTitle .title.label,
-.ContentGroupThematic .CardTitle .title.label,
-.CardSetPreview .CardTitle .title,
 .browse-content .title {
     font-weight: 200;
     font-size: 29.3px;
-}
-
-.ContentGroupHighlights separator,
-.CardSetPreview separator,
-.ContentGroupThematic separator {
-    background-color: #999999;
-    min-height: 1px;
-    margin: 4px 0px 10px 0px;
-}
-
-.ContentGroupSuggestedCategories .browse-content .after,
-.ContentGroupHighlights .CardTitle .after,
-.CardSetPreview .title .after,
-.ContentGroupThematic .CardTitle .after {
-    -gtk-icon-source: url('../images/title-arrow-dark.svg');
-    min-height: 10px;
-    min-width: 11px;
-    margin-left: 8px;
-    margin-top: 6px;
-}
-
-.ContentGroupSuggestedCategories .browse-content:hover .after,
-.ContentGroupHighlights .CardTitle:hover .after,
-.CardSetPreview .title .after,
-.ContentGroupThematic .CardTitle:hover .after {
-    -gtk-icon-source: url('../images/title-arrow-light.svg');
-}
-
-.CardSetPreview .CardThumb .content-frame,
-.ContentGroupSearch .ContentGroupSuggestedArticles .content-frame {
-    margin-top: -10px;
-}
-
-.ContentGroupSearch .ContentGroupSuggestedCategories,
-.ContentGroupSearch .search-page-suggestions {
-    background-color: #f6f6f6;
-}
-
-.ContentGroupSearch separator {
-    background-color: #999999;
-}
-
-.ContentGroupSearch .results-message-subtitle,
-.browse-content .title {
     color: #999999;
-}
-
-.ContentGroupSearch .results-message-title,
-.ContentGroupSearch .results-message-subtitle {
-    padding: 20px 60px 0px 60px;
-    padding-left: 60px;
-    padding-right: 60px;
-    font-size: 24px;
-}
-
-.ContentGroupSearch .results-message-subtitle {
-    padding-bottom: 40px;
 }
 
 .search-page-a .ArrangementScrollingList {
@@ -94,48 +201,53 @@
 
 .small-spaced-arrangement {
     margin: -5px;
+
+    .Card {
+        margin: 5px;
+    }
 }
 
-.small-spaced-arrangement .Card {
-    margin: 5px;
+.CardList,
+.CardPost,
+.CardThumb {
+    &.arrow {
+        -gtk-icon-source: url('../images/arrow-gray.svg');
+        -gtk-icon-transform: rotate(45deg);
+
+        &:hover,
+        &:active {
+            -gtk-icon-source: url('../images/arrow-white.svg');
+            -gtk-icon-transform: rotate(45deg);
+        }
+    }
+
+    &:hover,
+    &:active {
+        outline: 1px solid #49bde3;
+        border-color: #49bde3;  /* used for the triangle in the corner */
+        outline-offset: -1px;
+        -gtk-outline-radius: 0;
+    }
+
+    &:active {
+        box-shadow: none;
+    }
 }
 
-.CardThumb.arrow,
-.CardPost.arrow,
-.CardList.arrow {
-    -gtk-icon-source: url('../images/arrow-gray.svg');
-    -gtk-icon-transform: rotate(45deg);
-}
+.CardDeck {
+    &:hover .thumbnail,
+    &:active .thumbnail {
+        outline: 1px solid #49bde3;
+        border-color: #49bde3;  /* used for the triangle in the corner */
+        outline-offset: -1px;
+        -gtk-outline-radius: 0;
+    }
 
-.CardThumb:hover,
-.CardThumb:active,
-.CardPost:hover,
-.CardPost:active,
-.CardDeck:hover .thumbnail,
-.CardDeck:active .thumbnail,
-.CardList:hover,
-.CardList:active {
-    outline: 1px solid #49bde3;
-    border-color: #49bde3;  /* used for the triangle in the corner */
-    outline-offset: -1px;
-    -gtk-outline-radius: 0;
-}
-
-.CardThumb:active,
-.CardPost:active,
-.CardList:active {
-    box-shadow: none;
-}
-
-.CardThumb.arrow:hover,
-.CardThumb.arrow:active,
-.CardPost.arrow:hover,
-.CardPost.arrow:active,
-.CardDeck .thumbnail.arrow, /* both hover and non-hover */
-.CardList.arrow:hover,
-.CardList.arrow:active {
-    -gtk-icon-source: url('../images/arrow-white.svg');
-    -gtk-icon-transform: rotate(45deg);
+    /* both hover and non-hover */
+    .thumbnail.arrow {
+        -gtk-icon-source: url('../images/arrow-white.svg');
+        -gtk-icon-transform: rotate(45deg);
+    }
 }
 
 .BannerApp {
@@ -226,29 +338,12 @@
     font-style: italic;
 }
 
-.search-page-suggestions .ArrangementSquareGuys,
-.ContentGroupSuggestedCategories .ArrangementSquareGuys {
-    padding: 0 20px 20px 20px;
-}
-
-.search-page-suggestions {
-    margin: 50px 0;
-    padding-bottom: 20px;
-
-    .content-group-title {
-        font-family: 'Fira Sans';
-        font-weight: bold;
-        font-size: 40px;
-        padding: 0px 0px 30px 20px;
-        color: #5e7790;
-    }
-    background-color: #ddddd5;
-}
-
 /* Changes for composite TVs */
 
-.composite .LayoutSideMenu__homeButton,
-.composite .LayoutSideMenu__menu .Card .title,
-.composite .BannerContext {
-    font-family: Lato;
+.composite {
+    .LayoutSideMenu__homeButton,
+    .LayoutSideMenu__menu .Card .title,
+    .BannerContext {
+        font-family: Lato;
+    }
 }
