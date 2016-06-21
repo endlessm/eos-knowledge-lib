@@ -1,3 +1,6 @@
+
+const Ekns = imports.gi.EosKnowledgeSearchPrivate;
+const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
@@ -23,6 +26,11 @@ const MockEngine = new Lang.Class({
         spyOn(this, 'get_object_by_id_finish');
         spyOn(this, 'get_objects_by_query').and.callThrough();
         spyOn(this, 'get_objects_by_query_finish');
+        spyOn(this, '_lookup_ekn_uri');
+
+        let vfs = Gio.Vfs.get_default();
+        vfs.unregister_uri_scheme('ekn');
+        vfs.register_uri_scheme('ekn', this._lookup_ekn_uri.bind(this), this._lookup_ekn_uri.bind(this));
     },
 
     get_ekn_id: function () {},
@@ -42,6 +50,24 @@ const MockEngine = new Lang.Class({
     },
 
     get_objects_by_query_finish: function () {},
+
+    _lookup_ekn_uri: function (uri) {
+    },
+});
+
+const MockEknGFile = new Lang.Class({
+    Name: 'MockEknGFile',
+    Extends: GObject.Object,
+    Implements: [Gio.File],
+
+    _init: function (stream) {
+        this._stream = stream;
+        this.parent({});
+    },
+
+    vfunc_read_fn: function (cancellable) {
+        return new Ekns.FileInputStreamWrapper({ stream: stream });
+    },
 });
 
 // Creates a new MockEngine and sets it up as the engine singleton. Use

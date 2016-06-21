@@ -1,6 +1,8 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+const Ekns = imports.gi.EosKnowledgeSearchPrivate;
 const GLib = imports.gi.GLib;
+const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
@@ -74,24 +76,8 @@ const Engine = Lang.Class({
         this._xapian_bridge = new XapianBridge.XapianBridge({ language: this.language });
 
         this._domain_cache = {};
-    },
 
-    load_record_by_id: function (id, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        task.catch_errors(() => {
-            let [hash] = Utils.components_from_ekn_id(id);
-            let domain_obj = this._get_domain(this.default_app_id);
-
-            domain_obj.load_record_from_hash(hash, cancellable, task.catch_callback_errors((domain_obj, domain_task) => {
-                let model = domain_obj.load_record_from_hash_finish(domain_task);
-                task.return_value(model);
-            }));
-        });
-        return task;
-    },
-
-    load_record_by_id_finish: function (task) {
-        return task.finish();
+        this._uri_handler = new EknURIHandler(this);
     },
 
     /**
@@ -249,6 +235,109 @@ const Engine = Lang.Class({
 
     test_link: function (link) {
         return this.get_default_domain().test_link(link);
+    },
+});
+
+const EknGFile = new Lang.Class({
+    Name: 'EknGFile',
+    Extends: GObject.Object,
+    Implements: [Gio.File],
+
+    _init: function (uri, blob) {
+        this._uri = uri;
+        this._blob = blob;
+        this.parent();
+    },
+
+    vfunc_dup: function () {
+        return new EknGFile(this._uri, this._blob);
+    },
+
+    vfunc_hash: function () {
+        return GLib.str_hash(this._uri);
+    },
+
+    vfunc_equal: function (other) {
+        return this._uri === other._uri;
+    },
+
+    vfunc_is_native: function () {
+        return false;
+    },
+
+    vfunc_has_uri_scheme: function (scheme) {
+        return scheme === 'ekn';
+    },
+
+    vfunc_get_uri_scheme: function () {
+        return 'ekn';
+    },
+
+    vfunc_get_basename: function () {
+        return this._uri.split('/').pop();
+    },
+
+    vfunc_get_path: function () {
+        return null;
+    },
+
+    vfunc_get_uri: function () {
+        return this._uri;
+    },
+
+    vfunc_get_parse_name: function () {
+        return this._uri;
+    },
+
+    vfunc_get_parent: function () {
+        return null;
+    },
+
+    vfunc_read_fn: function (cancellable) {
+        return new Ekns.FileInputStreamWrapper({ stream: this._blob.get_stream() });
+    },
+
+    vfunc_query_info: function (attributes, flags, cancellable) {
+        let blob = this._blob;
+        let info = new Gio.FileInfo();
+        let matcher = new Gio.FileAttributeMatcher(attributes);
+        if (matcher.matches(Gio.FILE_ATTRIBUTE_STANDARD_SIZE))
+            info.set_size(blob.uncompressed_size);
+        if (matcher.matches(Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE))
+            info.set_content_type(blob.content_type);
+        return info;
+    },
+});
+
+const EknURIHandler = new Lang.Class({
+    Name: 'EknURIHandler',
+
+    _init: function (engine) {
+        this._vfs = Gio.Vfs.get_default();
+        this._engine = engine;
+
+        this._vfs.register_uri_scheme('ekn', this._lookup_ekn_uri.bind(this), this._lookup_ekn_uri.bind(this));
+    },
+
+    _lookup_ekn_uri: function (vfs, uri) {
+        let [hash, blob_name] = Utils.components_from_ekn_id(uri);
+
+        let domain_obj = this._engine.get_default_domain();
+
+        let record = domain_obj.load_record_from_hash_sync(hash);
+        if (!record)
+            return null;
+
+        let blob;
+        if (blob_name !== undefined)
+            blob = record.lookup_blob(blob_name);
+        else
+            blob = record.data;
+
+        if (!blob)
+            return null;
+
+        return new EknGFile(uri, blob);
     },
 });
 

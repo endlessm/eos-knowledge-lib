@@ -308,12 +308,16 @@ const DomainV2 = new Lang.Class({
         return params;
     },
 
+    load_record_from_hash_sync: function (hash) {
+        return this._shard_file.find_record_by_hex_name(hash);
+    },
+
     load_record_from_hash: function (hash, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         this.load(cancellable, task.catch_callback_errors((source, load_task) => {
             this.load_finish(load_task);
 
-            let record = this._shard_file.find_record_by_hex_name(hash);
+            let record = this.load_record_from_hash_sync(hash);
             task.return_value(record);
         }));
         return task;
@@ -519,23 +523,26 @@ const DomainV3 = new Lang.Class({
         return params;
     },
 
+    load_record_from_hash_sync: function (hash) {
+        for (let i = 0; i < this._shards.length; i++) {
+            let shard_file = this._shards[i];
+            let record = shard_file.find_record_by_hex_name(hash);
+            if (record)
+                return record;
+        }
+
+        return null;
+    },
+
     load_record_from_hash: function (hash, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         this.load(cancellable, task.catch_callback_errors((source, load_task) => {
             this.load_finish(load_task);
 
-            let find_record = (hash) => {
-                for (let i = 0; i < this._shards.length; i++) {
-                    let shard_file = this._shards[i];
-                    let record = shard_file.find_record_by_hex_name(hash);
-                    if (record)
-                        return record;
-                }
-
+            let record = this.load_record_from_hash_sync(hash);
+            if (record === null)
                 throw new Error('Could not find shard record for ' + hash);
-            };
 
-            let record = find_record(hash);
             task.return_value(record);
         }));
         return task;
