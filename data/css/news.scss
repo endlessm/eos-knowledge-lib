@@ -34,6 +34,7 @@ $support-font: 'Fira Sans';
 
 @import 'modules/banner/app';
 @import 'modules/banner/search';
+@import 'modules/banner/set';
 
 @import 'modules/card/base';
 @import 'modules/card/knowledgeDocument';
@@ -121,15 +122,6 @@ $support-font: 'Fira Sans';
     background-color: transparent;
 }
 
-.BannerSet {
-    margin-top: 40px;
-
-    .Card .title,
-    .Card:hover .title {
-        color: white;
-        font-weight: bold;
-        font-size: 54px;
-        font-family: Merriweather;
-        padding-top: 50px;
-    }
+.BannerSet .Card .title {
+    color: white;
 }
