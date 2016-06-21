@@ -45,6 +45,7 @@ $support-font: 'Fira Sans';
 @import 'modules/contentGroup/mediaLightbox';
 @import 'modules/contentGroup/search';
 
+@import 'modules/layout/dynamicBackground';
 @import 'modules/layout/infiniteScrolling';
 @import 'modules/layout/responsiveMargins';
 @import 'modules/layout/scrolling';
@@ -57,10 +58,6 @@ $support-font: 'Fira Sans';
 
 $title-blue: #0f1b3c;
 $context-blue: #7297a7;
-
-.LayoutDynamicBackground {
-    background-color: #e9e5e0;
-}
 
 .highlights {
     margin-top: 50px;
