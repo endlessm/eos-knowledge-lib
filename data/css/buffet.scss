@@ -340,8 +340,10 @@
 
 /* Changes for composite TVs */
 
-.composite .LayoutSideMenu__homeButton,
-.composite .LayoutSideMenu__menu .Card .title,
-.composite .BannerContext {
-    font-family: Lato;
+.composite {
+    .LayoutSideMenu__homeButton,
+    .LayoutSideMenu__menu .Card .title,
+    .BannerContext {
+        font-family: Lato;
+    }
 }
