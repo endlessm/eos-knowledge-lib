@@ -30,7 +30,7 @@ describe('Data dir finder', function () {
     it('returns a path to a Xapian database dir', function () {
         let found_dir = Datadir.get_data_dir('com.endlessm.scuba-diving-fr');
         expect(found_dir).not.toBeNull();
-        expect(found_dir.get_path()).toMatch(/ekn\/data\/com.endlessm.scuba-diving-fr$/);
+        expect(found_dir.get_path()).toMatch(/ekn\/data\/com\.endlessm\.scuba-diving-fr$/);
     });
 
     it('returns the first path that exists', function () {
