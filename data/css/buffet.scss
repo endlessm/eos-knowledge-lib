@@ -19,6 +19,11 @@ $card-highlighted-color: #d9f0f8;
 $group-background-color: #f6f6f6;
 $separator-color: #999999;
 $banner-color: #c4eefc;
+$banner-label-color: #666666;
+$menu-hover-color: #5bc2e5;
+$menu-separator-color: #cccccc;
+$menu-top-color: #f5f5f5;
+$menu-bottom-color: #e9e9e9;
 
 $title-font: Lato;
 $body-font: Lato;
@@ -26,6 +31,8 @@ $context-font: Lato;
 $display-font: Lato;
 $support-font: Lato;
 $logo-font: Lato;
+
+$title-alt-font: 'Lato Thin';
 
 /* === Modules === */
 
@@ -57,6 +64,7 @@ $logo-font: Lato;
 @import 'modules/layout/infiniteScrolling';
 @import 'modules/layout/responsiveMargins';
 @import 'modules/layout/scrolling';
+@import 'modules/layout/sideMenu';
 
 @import 'modules/navigation/searchBox';
 
@@ -281,73 +289,45 @@ $logo-font: Lato;
 
 .LayoutSideMenu {
     &__contextBar {
-        background-image: linear-gradient(to bottom,  #f5f5f5 0%, #e9e9e9 100%);
-        box-shadow: 0px 2px 5px 0px transparentize(black, 1 - 0.15);
-    }
-
-    &__contextBarShadow {
-        padding-bottom: 10px;
-    }
-
-    &__panel {
-        -EknSlidingPanel-shadow-margin: 40;
+        background-image: linear-gradient(to bottom,  $menu-top-color 0%, $menu-bottom-color 100%);
     }
 
     &__menu {
-        min-width: 199px;
         background-color: white;
-        box-shadow: 0px 1px 20px 0px transparentize(black, 1 - 0.5);
-        padding: 10px 10px 5px 10px;
 
         .Card {
-            margin-top: 5px;
             .title {
-                font-size: 21.3px;
-                font-family: 'Lato Thin';
-                color: #044a80;
+                font-family: $title-alt-font;
+                color: $accent-light-color;
             }
 
             &:hover .title {
-                color: #5bc2e5;
+                color: $menu-hover-color;
             }
         }
 
         separator {
-            min-height: 1px;
-            background-color: #cccccc;
-            margin-top: 5px;
+            background-color: $menu-separator-color;
         }
     }
 
     &__closeButton,
     &__homeButton {
-        color: #666666;
+        color: $banner-label-color;
         &:hover {
-            color: #49bde3;
+            color: $accent-dark-color;
         }
     }
 
     &__menuButton {
-        color: #044a80;
+        color: $accent-light-color;
         &:hover {
-            color: #5bc2e5;
+            color: $menu-hover-color;
         }
-    }
-
-    &__menuButton {
-        padding: 10px;
     }
 
     &__homeButton {
-        font-size: 21.3px;
-        font-family: 'Lato Thin';
-        font-weight: bold;
-    }
-
-    .CardTitle,
-    &__homeButton,
-    &__closeButton {
-        padding: 6px 0px;
+        font-family: $title-alt-font;
     }
 }
 
