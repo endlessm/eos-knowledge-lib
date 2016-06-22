@@ -13,6 +13,7 @@ $primary-medium-color: #044a80;
 $accent-light-color: #044a80;
 $accent-dark-color: #49bde3;
 $background-light-color: #e7ecee;
+$background-dark-color: #ddddd5;
 
 $card-highlighted-color: #d9f0f8;
 $group-background-color: #f6f6f6;
@@ -186,24 +187,17 @@ $display-font: Lato;
 }
 
 .search-page-suggestions {
-    margin: 50px 0;
-    padding-bottom: 20px;
-    background-color: #ddddd5;
-
-    .browse-content .title  {
-        color: #044a80;
-    }
+    background-color: $background-dark-color;
 
     .ArrangementSquareGuys {
         padding: 0 20px 20px 20px;
     }
 
     .ContentGroup__title {
-        font-family: 'Fira Sans';
-        font-weight: bold;
-        font-size: 40px;
+        color: $accent-light-color;
+        font-weight: 200;
+        font-size: 29.3px;
         padding: 0px 0px 30px 20px;
-        color: #5e7790;
     }
 }
 
