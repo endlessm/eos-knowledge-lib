@@ -18,12 +18,14 @@ $background-dark-color: #ddddd5;
 $card-highlighted-color: #d9f0f8;
 $group-background-color: #f6f6f6;
 $separator-color: #999999;
+$banner-color: #c4eefc;
 
 $title-font: Lato;
 $body-font: Lato;
 $context-font: Lato;
 $display-font: Lato;
 $support-font: Lato;
+$logo-font: Lato;
 
 /* === Modules === */
 
@@ -274,8 +276,7 @@ $support-font: Lato;
 }
 
 .BannerApp {
-    font-family: Lato;
-    color: #c4eefc;
+    color: $banner-color;
 }
 
 .LayoutSideMenu {
