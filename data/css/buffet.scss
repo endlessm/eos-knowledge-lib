@@ -1,4 +1,46 @@
-@import 'buffet_core';
+@import "project-setup";
+@import "compass";
+
+/* === Colors and Fonts === */
+
+@import 'colors';
+@import 'typography';
+
+/* === Modules === */
+
+@import 'modules/arrangement/half';
+@import 'modules/arrangement/list';
+@import 'modules/arrangement/piano';
+@import 'modules/arrangement/scrollingList';
+@import 'modules/arrangement/squareGuys';
+@import 'modules/arrangement/thirties';
+@import 'modules/arrangement/windshield';
+
+@import 'modules/banner/app';
+
+@import 'modules/card/base';
+@import 'modules/card/deck';
+@import 'modules/card/knowledgeDocument';
+@import 'modules/card/list';
+@import 'modules/card/media';
+@import 'modules/card/post';
+@import 'modules/card/setPreview';
+@import 'modules/card/thumb';
+@import 'modules/card/title';
+
+@import 'modules/contentGroup/mediaLightbox';
+@import 'modules/contentGroup/search';
+@import 'modules/contentGroup/thematic';
+
+@import 'modules/layout/infiniteScrolling';
+@import 'modules/layout/responsiveMargins';
+@import 'modules/layout/scrolling';
+
+@import 'modules/navigation/searchBox';
+
+@import 'modules/window/simple';
+
+/* === Modules (Overrides) === */
 
 .Card {
     .title {
