@@ -21,21 +21,24 @@ defines:
     top: Banner.App
     middle: 'Navigation.SearchBox(halign: center, focus-on-map: true)'
     bottom:
-      type: ContentGroup.Set
+      type: ContentGroup.ContentGroup
       id: sets-group
       properties:
         expand: true
         halign: center
         valign: center
-        max-children: 6
       slots:
         arrangement:
           shortdef: 'Arrangement.Overflow(orientation: horizontal)'
           slots:
             card: *card
+        selection:
+          type: Selection.AllSets
     basement:
-      shortdef: 'ContentGroup.Set(expand: true)'
-      slots: *main-arrangement-slot
+      shortdef: 'ContentGroup.ContentGroup(expand: true)'
+      slots:
+        <<: *main-arrangement-slot
+        selection: Selection.AllSets
 
 - &set-page
   shortdef: 'Layout.Box(orientation: vertical)'
