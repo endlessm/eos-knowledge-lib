@@ -207,6 +207,7 @@ const Engine = Lang.Class({
      * Members of the info object:
      *   more_results - <QueryObject> which can be used to get more results for
      *     the same query.
+     *   upper_bound - an upper bound on the total number of results.
      *
      * Parameters:
      *   task - The task returned by <get_objects_by_query>

@@ -70,7 +70,7 @@ const Xapian = new Module.Class({
             }
 
             this._get_more = more;
-            let can_load_more = !!more;
+            let can_load_more = !!more && (info.upper_bound > results.length);
             if (can_load_more !== this._can_load_more) {
                 this._can_load_more = can_load_more;
                 this.notify('can-load-more');

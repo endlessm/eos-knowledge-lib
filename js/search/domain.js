@@ -176,6 +176,10 @@ const Domain = new Lang.Class({
                 }
 
                 let info = {};
+                Object.defineProperty(info, 'upper_bound', {
+                    value: json_ld['upperBound'] || 0,
+                });
+
                 AsyncTask.all(this, (add_task) => {
                     json_ld.results.forEach((result) => {
                         add_task((cancellable, callback) => this.resolve_xapian_result(result, cancellable, callback),
