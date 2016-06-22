@@ -1,21 +1,37 @@
 .ContentGroupThematic {
-    grid {
-        margin-bottom: 20px;
-    }
+    padding: 20px;
 
     .CardTitle {
+        margin-top: 25px;
+
         .title {
             color: $accent-light-color;
-            font-size: 40px;
-            font-weight: bold;
+            font-weight: 200;
+            font-size: 29.3px;
         }
 
-        &:hover .title {
-            color: $accent-dark-color;
+        .after {
+            -gtk-icon-source: url('../images/title-arrow-dark.svg');
+            min-height: 10px;
+            min-width: 11px;
+            margin-left: 8px;
+            margin-top: 6px;
+        }
+
+        &:hover {
+            .title {
+                color: $accent-dark-color;
+            }
+
+            .after {
+                -gtk-icon-source: url('../images/title-arrow-light.svg');
+            }
         }
     }
 
-    .composite & .CardTitle .title.label {
-        font-weight: normal;
+    separator {
+        background-color: #999999;
+        min-height: 1px;
+        margin: 4px 0px 10px 0px;
     }
 }
