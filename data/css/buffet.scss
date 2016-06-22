@@ -232,6 +232,11 @@ $display-font: Lato;
 .CardList,
 .CardPost,
 .CardThumb {
+    .title,
+    .card-context {
+        font-weight: normal;
+    }
+
     &.arrow {
         -gtk-icon-source: url('../images/arrow-gray.svg');
         -gtk-icon-transform: rotate(45deg);
@@ -245,8 +250,8 @@ $display-font: Lato;
 
     &:hover,
     &:active {
-        outline: 1px solid #49bde3;
-        border-color: #49bde3;  /* used for the triangle in the corner */
+        outline: 1px solid $primary-light-color;
+        border-color: $primary-light-color;  /* used for the triangle in the corner */
         outline-offset: -1px;
         -gtk-outline-radius: 0;
     }
