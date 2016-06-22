@@ -15,6 +15,7 @@ $accent-dark-color: #49bde3;
 $background-light-color: #f5f5f5;
 
 $card-highlighted-color: #d9f0f8;
+$separator-color: #999999;
 
 $title-font: Lato;
 $body-font: Lato;
@@ -43,6 +44,7 @@ $display-font: Lato;
 @import 'modules/card/thumb';
 @import 'modules/card/title';
 
+@import 'modules/contentGroup/contentGroup';
 @import 'modules/contentGroup/mediaLightbox';
 @import 'modules/contentGroup/search';
 @import 'modules/contentGroup/thematic';
@@ -112,43 +114,6 @@ $display-font: Lato;
     }
 }
 
-.CardSetPreview {
-    .title {
-        color: #044a80;
-
-        .after {
-            -gtk-icon-source: url('../images/title-arrow-dark.svg');
-            min-height: 10px;
-            min-width: 11px;
-            margin-left: 8px;
-            margin-top: 6px;
-        }
-
-        &:hover .after {
-            -gtk-icon-source: url('../images/title-arrow-light.svg');
-        }
-    }
-
-    .CardTitle {
-        margin-top: 25px;
-
-        .title {
-            font-weight: 200;
-            font-size: 29.3px;
-        }
-    }
-
-    .CardThumb .content-frame {
-        margin-top: -10px;
-    }
-
-    separator {
-        background-color: #999999;
-        min-height: 1px;
-        margin: 4px 0px 10px 0px;
-    }
-}
-
 .ContentGroupSearch {
     .ContentGroupSuggestedArticles .content-frame {
         margin-top: -10px;
@@ -184,15 +149,15 @@ $display-font: Lato;
 .ContentGroup__trigger {
 
     .DecorationThemeableImage {
-        -gtk-icon-source: url('../images/news-arrow-dark.svg');
-        min-height: 14px;
-        min-width: 14px;
+        -gtk-icon-source: url('../images/title-arrow-dark.svg');
+        min-height: 10px;
+        min-width: 11px;
         margin-left: 5px;
         margin-bottom: 5px;
     }
 
     &:hover .DecorationThemeableImage {
-        -gtk-icon-source: url('../images/news-arrow-light.svg');
+        -gtk-icon-source: url('../images/title-arrow-light.svg');
     }
 }
 
