@@ -127,4 +127,6 @@ const SideMenu = new Module.Class({
             action_type: Actions.HOME_CLICKED,
         });
     },
+
+    vfunc_draw: Utils.vfunc_draw_background_default,
 });

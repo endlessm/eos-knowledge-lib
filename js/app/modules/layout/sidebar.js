@@ -145,4 +145,6 @@ const Sidebar = new Module.Class({
         }));
         Utils.set_container_clip(this);
     },
+
+    vfunc_draw: Utils.vfunc_draw_background_default,
 });

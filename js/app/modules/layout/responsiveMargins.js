@@ -3,7 +3,6 @@
 /* exported ResponsiveMargins */
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
-const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -142,15 +141,5 @@ const ResponsiveMargins = new Module.Class({
         Utils.set_container_clip(this);
     },
 
-    vfunc_draw: function (cr) {
-        let width = this.get_allocated_width();
-        let height = this.get_allocated_height();
-        let style = this.get_style_context();
-        Gtk.render_background(style, cr, 0, 0, width, height);
-        Gtk.render_frame(style, cr, 0, 0, width, height);
-        Gtk.render_focus(style, cr, 0, 0, width, height);
-        this.parent(cr);
-        cr.$dispose();
-        return Gdk.EVENT_PROPAGATE;
-    },
+    vfunc_draw: Utils.vfunc_draw_background_default,
 });

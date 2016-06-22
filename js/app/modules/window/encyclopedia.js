@@ -1,5 +1,4 @@
 const Endless = imports.gi.Endless;
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Actions = imports.app.actions;
@@ -11,49 +10,21 @@ const Utils = imports.app.utils;
  * Class: Encyclopedia
  *
  * Slots:
- *   article-page
- *   home-page
  *   lightbox
- *   search-page
+ *   pager
  */
 const Encyclopedia = new Module.Class({
     Name: 'Window.Encyclopedia',
     Extends: Endless.Window,
 
-    Properties: {
-        /**
-         * Property: home-background-uri
-         * URI of the home page background
-         */
-        'home-background-uri': GObject.ParamSpec.string('home-background-uri',
-            'Home Background URI', 'Home Background URI',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
-        /**
-         * Property: results-background-uri
-         * URI of the results page background
-         */
-        'results-background-uri': GObject.ParamSpec.string('results-background-uri',
-            'Results Background URI', 'Results Background URI',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
-    },
-
     Slots: {
-        'article-page': {},
-        'home-page': {},
         'lightbox': {},
-        'search-page': {},
+        'pager': {},
     },
 
     _init: function (props={}) {
         delete props.template_type;
         this.parent(props);
-
-        this._home_page = this.create_submodule('home-page');
-        this._home_page.get_style_context().add_class('home-page');
-        this._search_page = this.create_submodule('search-page');
-        this._search_page.get_style_context().add_class('search-page');
-        this._article_page = this.create_submodule('article-page');
-        this._article_page.get_style_context().add_class('article-page');
 
         this._home_button = new Endless.TopbarHomeButton({
             sensitive: false,
@@ -84,30 +55,16 @@ const Encyclopedia = new Module.Class({
                     this._history_buttons.forward_button.sensitive = payload.enabled;
                     break;
                 case Actions.SHOW_HOME_PAGE:
-                    this.show_page(this._home_page);
+                    this._home_button.sensitive = false;
+                    this._present_if_needed();
                     break;
                 case Actions.SHOW_SEARCH_PAGE:
-                    this.show_page(this._search_page);
-                    break;
                 case Actions.SHOW_ARTICLE_PAGE:
-                    this.show_page(this._article_page);
+                    this._home_button.sensitive = true;
+                    this._present_if_needed();
                     break;
             }
         });
-
-        if (this.home_background_uri) {
-            let page_css = '* { background-image: url("' + this.home_background_uri + '"); }';
-            let provider = new Gtk.CssProvider();
-            provider.load_from_data(page_css);
-            this.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-        }
-        if (this.results_background_uri) {
-            let page_css = '* { background-image: url("' + this.results_background_uri + '"); }';
-            let provider = new Gtk.CssProvider();
-            provider.load_from_data(page_css);
-            this._search_page.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-            this._article_page.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-        }
 
         let button_box = new Gtk.Box({
             orientation: Gtk.Orientation.HORIZONTAL
@@ -116,34 +73,31 @@ const Encyclopedia = new Module.Class({
         button_box.add(this._history_buttons);
         button_box.show_all();
 
-        this.page_manager.add(this._home_page, {
+        this._pager = this.create_submodule('pager');
+
+        // We need to pack a bunch of modules inside each other, but some of
+        // them are optional. "matryoshka" is the innermost widget that needs to
+        // have something packed around it.
+        let matryoshka = this._pager;
+        let lightbox = this.create_submodule('lightbox');
+        if (lightbox) {
+            lightbox.add(matryoshka);
+            matryoshka = lightbox;
+        }
+
+        this.page_manager.add(matryoshka, {
             left_topbar_widget: button_box,
         });
 
-        this.page_manager.add(this._search_page, {
-            left_topbar_widget: button_box,
-        });
-
-        this._lightbox = this.create_submodule('lightbox');
-        this._lightbox.add(this._article_page);
-
-        this.page_manager.add(this._lightbox, {
-            left_topbar_widget: button_box,
-        });
         this.get_child().show_all();
 
-        this.page_manager.transition_duration = Utils.DEFAULT_PAGE_TRANSITION_DURATION;
-        this.page_manager.connect('notify::transition-running', () => {
-            if (this.page_manager.transition_running) {
+        this._pager.connect('notify::transition-running', () => {
+            if (this._pager.transition_running) {
                 Utils.squash_all_window_content_updates_heavy_handedly(this);
             } else {
                 Utils.unsquash_all_window_content_updates_heavy_handedly(this);
             }
         });
-    },
-
-    get_visible_page: function () {
-        return this.page_manager.visible_child;
     },
 
     _present_if_needed: function () {
@@ -158,28 +112,6 @@ const Encyclopedia = new Module.Class({
     },
 
     make_ready: function (cb=function () {}) {
-        this._home_page.make_ready(cb);
-    },
-
-    show_page: function (page) {
-        // Disable the home button when the current page is the home page
-        this._home_button.sensitive = (page !== this._home_page);
-        page.make_ready(function () {});
-
-        if (this.get_visible_page() === page) {
-            this._present_if_needed();
-            return;
-        }
-        if (page === this._article_page)
-            page = this._lightbox;
-        if (this.get_visible_page() === this._home_page) {
-            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_UP;
-        } else if (page === this._home_page) {
-            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_DOWN;
-        } else {
-            this.page_manager.transition_type = Gtk.StackTransitionType.NONE;
-        }
-        this.page_manager.visible_child = page;
-        this._present_if_needed();
+        this._pager.make_ready(cb);
     },
 });

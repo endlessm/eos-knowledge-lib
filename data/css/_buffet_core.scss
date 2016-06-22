@@ -14,6 +14,18 @@
     }
 }
 
+.PagerSimple {
+    -EknPager_Simple-transitions-style: 'none';
+}
+
+.home-page,
+.search-page,
+.article-page,
+.section-page,
+.all-sets-page {
+    background-color: #e7ecee;
+}
+
 .ContentGroupSuggestedCategories {
     separator {
         background-color: #999999;

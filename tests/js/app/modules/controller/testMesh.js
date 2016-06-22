@@ -37,6 +37,12 @@ const MockView = new Knowledge.Class({
     make_ready: function (cb=function () {}) {
         cb();
     },
+
+    get_style_context: function () {
+        return {
+            add_class: function () {},
+        };
+    },
 });
 
 describe('Controller.Mesh', function () {

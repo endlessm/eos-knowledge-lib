@@ -184,20 +184,23 @@ root:
   shortdef: 'Controller.Buffet(theme: buffet)'
   slots:
     window:
-      shortdef: 'Window.App(animations: false)'
+      type: Window.App
       slots:
         search: Navigation.SearchBox
         lightbox:
           type: ContentGroup.MediaLightbox
           slots:
             card: Card.Media
-        brand-page:
-          type: Banner.App
-          properties:
-            show-subtitle: true
-            subtitle-capitalization: uppercase
-        home-page: *home-page
-        section-page: *section-page
-        search-page: *search-page
-        all-sets-page: *all-sets-page
-        article-page: *article-page
+        pager:
+          type: Pager.Simple
+          slots:
+            brand-page:
+              type: Banner.App
+              properties:
+                show-subtitle: true
+                subtitle-capitalization: uppercase
+            home-page: *home-page
+            section-page: *section-page
+            search-page: *search-page
+            all-sets-page: *all-sets-page
+            article-page: *article-page

@@ -1,7 +1,7 @@
 /* exported dbus_object_path_for_webview, get_css_for_title_and_module,
 get_web_plugin_dbus_name, get_web_plugin_dbus_name_for_webview,
 has_descendant_with_type, render_border_with_arrow,
-split_out_conditional_knobs */
+split_out_conditional_knobs, vfunc_draw_background_default */
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Format = imports.format;
@@ -341,8 +341,8 @@ function get_desktop_app_info () {
 // measures to stop the window from updating while powering a page transition.
 // We can really only afford to wake up each stack transition frame for a redraw
 // on low powered devices. That means no style recomputes, no widget creation,
-// no other css transitions (with the exception of the window background
-// parallax which is part of our page transition).
+// no other css transitions (with the exception of Pager.ParallaxBackground
+// which is part of our page transition).
 // These steps ensure that we will only need to redraw every frame. If we rework
 // how state propagates from our controllers to our modules, we may be able to
 // stop pausing the dispatcher. As gtk improvements land, we may be able to stop
@@ -351,7 +351,7 @@ let no_transition_provider;
 function squash_all_window_content_updates_heavy_handedly (window) {
     if (!no_transition_provider) {
         no_transition_provider = new Gtk.CssProvider();
-        no_transition_provider.load_from_data('EosWindow * { transition-property: none; }');
+        no_transition_provider.load_from_data('EosWindow :not(.PagerParallaxBackground) { transition-property: none; }');
     }
     Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
         no_transition_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 10);
@@ -443,4 +443,21 @@ function get_modifier_style_class (block, modifier) {
     if (!block || !modifier)
         throw new Error('Trying to create modifier style class with missing block or modifier');
     return get_bem_style_class(block, modifier, '', '');
+}
+
+// Function that can be hooked up to the vfunc_draw property to make a GTK
+// widget render a background and border, even if it doesn't do so automatically
+// (e.g. a custom container.)
+// Note, you can only supply this function as a vfunc_draw implementation, and
+// cannot call it separately, because it relies on this.parent().
+function vfunc_draw_background_default (cr) {
+    let width = this.get_allocated_width();
+    let height = this.get_allocated_height();
+    let style = this.get_style_context();
+    Gtk.render_background(style, cr, 0, 0, width, height);
+    Gtk.render_frame(style, cr, 0, 0, width, height);
+    Gtk.render_focus(style, cr, 0, 0, width, height);
+    let retval = this.parent(cr);
+    cr.$dispose();
+    return retval;
 }

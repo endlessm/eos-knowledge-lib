@@ -64,6 +64,9 @@ root:
           type: ContentGroup.MediaLightbox
           slots:
             card: Card.Media
-        home-page: *home-page
-        search-page: *search-page
-        article-page: *article-page
+        pager:
+          type: Pager.Simple
+          slots:
+            home-page: *home-page
+            search-page: *search-page
+            article-page: *article-page

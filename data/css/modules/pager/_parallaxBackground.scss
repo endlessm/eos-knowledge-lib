@@ -1,0 +1,27 @@
+/* Copyright 2016 Endless Mobile, Inc. */
+
+.PagerParallaxBackground {
+    &--parallax {
+        transition: background-position 0.5s ease, background-image 0.5s ease;
+
+        &.PagerParallaxBackground--landscape {
+            background-size: 110% auto;
+        }
+
+        &.PagerParallaxBackground--portrait {
+            background-size: auto 110%;
+        }
+
+        &.PagerParallaxBackground--left {
+            background-position: 0% 50%;
+        }
+
+        &.PagerParallaxBackground--center {
+            background-position: 50% 50%;
+        }
+
+        &.PagerParallaxBackground--right {
+            background-position: 100% 50%;
+        }
+    }
+}
