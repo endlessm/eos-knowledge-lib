@@ -6,6 +6,19 @@
 @import 'colors';
 @import 'typography';
 
+/* === Colors and Fonts (Overrides) === */
+
+$primary-light-color: #49bde3;
+$primary-medium-color: #044a80;
+$accent-light-color: #044a80;
+$accent-dark-color: #49bde3;
+$background-light-color: #f5f5f5;
+
+$title-font: Lato;
+$body-font: Lato;
+$context-font: Lato;
+$display-font: Lato;
+
 /* === Modules === */
 
 @import 'modules/arrangement/half';
