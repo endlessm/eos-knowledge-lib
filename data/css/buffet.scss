@@ -44,6 +44,7 @@ $title-thin-font: 'Lato Thin';
 @import 'modules/arrangement/windshield';
 
 @import 'modules/banner/app';
+@import 'modules/banner/context';
 
 @import 'modules/card/base';
 @import 'modules/card/deck';
@@ -320,10 +321,8 @@ $title-thin-font: 'Lato Thin';
 }
 
 .BannerContext {
-    font-family: 'Lato Thin';
-    font-size: 29.3px;
-    color: #666666;
-    text-shadow: 0px 1px transparentize(white, 1 - 0.004);
+    font-family: $title-thin-font;
+    color: $banner-label-color;
 }
 
 .card-context {
