@@ -120,7 +120,11 @@ def translate(loader, node):
     except ValueError:
         entry = pot.find(node.value)
         entry.occurrences.append(occurrence)
-    return node.value
+
+    if po is None:
+        return node.value
+    entry = po.find(node.value)
+    return entry.msgstr if entry.translated() else node.value
 
 pot = polib.POFile(check_for_duplicates=True)
 pot.metadata = {
@@ -129,6 +133,7 @@ pot.metadata = {
     'Content-Type': 'text/plain; charset=utf-8',
     'Content-Transfer-Encoding': '8bit',
 }
+po = None
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Preprocess app.json.')
@@ -140,9 +145,15 @@ if __name__ == '__main__':
                         help='File to write (default: stdout)')
     parser.add_argument('-c', '--catalog', action='store_true',
                         help='Write a .pot message catalog instead of JSON')
+    parser.add_argument('-t', '--translations',
+                        type=argparse.FileType('r', encoding='utf-8'),
+                        help='.po file to use for translations (default: none)')
     args = parser.parse_args()
 
     yaml.add_constructor('!translate', translate)
+
+    if args.translations:
+        po = polib.pofile(args.translations.read())
 
     try:
         dumped_json = preprocess(args.input)

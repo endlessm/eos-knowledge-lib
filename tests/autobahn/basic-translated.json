@@ -1,0 +1,136 @@
+{
+  "version": 2,
+  "root": {
+    "type": "Controller.Mesh",
+    "slots": {
+      "window": {
+        "type": "Window.App",
+        "properties": {
+          "title": "Mijn Toffe Appje"
+        },
+        "slots": {
+          "article-page": {
+            "type": "Layout.ArticleStack",
+            "properties": {
+              "allow-navigation": "next"
+            },
+            "slots": {
+              "card": {
+                "type": "Card.FakeVideoDocument"
+              },
+              "nav-card": {
+                "type": "Card.Title"
+              }
+            }
+          },
+          "home-page": {
+            "type": "Layout.Scrolling",
+            "id": "home-scroll",
+            "slots": {
+              "content": {
+                "type": "Layout.Banner",
+                "styles": [
+                  "a-style-class",
+                  "b-style-class"
+                ],
+                "properties": {
+                  "halign": {
+                    "binding": {
+                      "property": "halign",
+                      "source-id": "home-scroll"
+                    }
+                  },
+                  "visible": {
+                    "binding": {
+                      "invert": true,
+                      "property": "visible",
+                      "source-id": "home-scroll"
+                    }
+                  }
+                },
+                "slots": {
+                  "banner": {
+                    "type": "Banner.App",
+                    "properties": {
+                      "halign": "fill",
+                      "image-uri": "resource:///com/endlessm/video-test-en/assets/titleImage.svg",
+                      "max-fraction": 0.5,
+                      "title": "NEPVIDEO\u2019S",
+                      "valign": "start"
+                    }
+                  },
+                  "content": {
+                    "type": "ContentGroup.Item",
+                    "properties": {
+                      "hexpand": true
+                    },
+                    "slots": {
+                      "arrangement": {
+                        "type": "Arrangement.List",
+                        "slots": {
+                          "card": {
+                            "type": "Card.List"
+                          }
+                        },
+                        "references": {
+                          "scroll-server": "home-scroll"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "navigation": {
+            "type": "Layout.Navigation"
+          },
+          "search": {
+            "type": "Navigation.SearchBox",
+            "properties": {
+              "default-text": "Mijn Toffe Appje"
+            }
+          },
+          "search-page": {
+            "type": "Layout.Scrolling",
+            "id": "search-scroll",
+            "slots": {
+              "content": {
+                "type": "Layout.Banner",
+                "slots": {
+                  "banner": {
+                    "type": "Banner.Search",
+                    "properties": {
+                      "halign": "fill",
+                      "random-string": "Zoektermen"
+                    }
+                  },
+                  "content": {
+                    "type": "ContentGroup.Search",
+                    "properties": {
+                      "message-halign": "center",
+                      "message-justify": "left"
+                    },
+                    "slots": {
+                      "arrangement": {
+                        "type": "Arrangement.List",
+                        "slots": {
+                          "card": {
+                            "type": "Card.List"
+                          }
+                        },
+                        "references": {
+                          "scroll-server": "search-scroll"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
