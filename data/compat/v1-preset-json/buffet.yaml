@@ -22,8 +22,6 @@ defines:
   slots:
     title:
       type: ContentGroup.StaticText
-      styles:
-        - content-group-title
       properties:
         label: 'You might be interested in...'
         halign: start
@@ -77,27 +75,54 @@ defines:
               shortdef: 'Layout.Box(orientation: vertical)'
               slots:
                 contents:
-                - shortdef: 'ContentGroup.Highlights(halign: center, support-sets: 2)'
+                - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
+                  styles:
+                    - highlights
                   slots:
-                    highlight-arrangement:
+                    arrangement:
                       type: Arrangement.Windshield
                       slots:
                         card:
                           type: Card.Post
                           properties: *card-all-uppercase-properties
-                        filter: *no-sets
-                    support-card:
-                      shortdef: 'Card.SetPreview(show-trigger: false)'
+                    selection:
+                      type: Selection.AllHighlights
+                - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
+                  styles:
+                    - highlights
+                  slots:
+                    arrangement:
+                      type: Arrangement.List
+                      properties:
+                        orientation: vertical
+                        max-rows: 2
                       slots:
-                        arrangement:
-                          type: Arrangement.SquareGuys
-                          properties:
-                            max-rows: 2
+                        card:
+                          type: Card.ContentGroup
                           slots:
-                            card: *main-card
-                            filter: *no-sets
-                        header-card: *header-card
-                    sets-filter: 'Filter.Featured(invert: true)'
+                            trigger:
+                              shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
+                              slots:
+                                contents:
+                                - shortdef: 'ContentGroup.DynamicTitle(format-string: "See more from %s")'
+                                - type: Decoration.ThemeableImage
+                                  properties:
+                                    valign: end
+                                    halign: end
+                            title:
+                              type: ContentGroup.DynamicTitle
+                              properties:
+                                halign: start
+                            arrangement:
+                              type: Arrangement.SquareGuys
+                              properties:
+                                max-rows: 2
+                              slots:
+                                card: *main-card
+                            selection:
+                              type: Selection.ArticlesForSet
+                    selection:
+                      type: Selection.AllSets
                 - *category-suggestions
 
 - &section-page

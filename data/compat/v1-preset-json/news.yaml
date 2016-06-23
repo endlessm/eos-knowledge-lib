@@ -73,19 +73,60 @@ defines:
               type: Layout.ResponsiveMargins
               slots:
                 content:
-                  type: ContentGroup.Highlights
-                  properties:
-                    halign: center
-                    support-sets: 4
+                  shortdef: 'Layout.Box(orientation: vertical)'
                   slots:
-                    highlight-arrangement:
-                      type: Arrangement.Piano
+                    contents:
+                    - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
+                      styles:
+                        - highlights
                       slots:
-                        card: *main-card
-                        filter: *no-sets
-                        order: 'Order.PublishedDate(ascending: false)'
-                    support-card: *set-preview
-                    sets-filter: Filter.Featured
+                        arrangement:
+                          type: Arrangement.Piano
+                          slots:
+                            card: *main-card
+                        selection:
+                          type: Selection.AllHighlights
+                          slots:
+                            filter: *no-sets
+                            order: 'Order.PublishedDate(ascending: false)'
+                    - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
+                      styles:
+                        - highlights
+                      slots:
+                        arrangement:
+                          type: Arrangement.List
+                          properties:
+                            orientation: vertical
+                            max-rows: 2
+                          slots:
+                            card:
+                              type: Card.ContentGroup
+                              slots:
+                                title:
+                                  type: ContentGroup.DynamicTitle
+                                  properties:
+                                    halign: start
+                                trigger:
+                                  shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
+                                  slots:
+                                    contents:
+                                    - shortdef: 'ContentGroup.DynamicTitle(format-string: "see more from %s")'
+                                    - type: Decoration.ThemeableImage
+                                      properties:
+                                        valign: end
+                                        halign: end
+                                arrangement:
+                                  shortdef: 'Arrangement.Thirties(max-rows: 1)'
+                                  slots:
+                                    card: *main-card
+                                selection:
+                                  type: Selection.ArticlesForSet
+                                  slots:
+                                    order: 'Order.PublishedDate(ascending: false)'
+                        selection:
+                          type: Selection.AllSets
+                          slots:
+                            filter: Filter.Featured
 
 - &section-page
   <<: *menu
@@ -172,8 +213,6 @@ defines:
                       slots:
                         title:
                           type: ContentGroup.StaticText
-                          styles:
-                            - content-group-title
                           properties:
                             label: 'you might be interested in...'
                             halign: start

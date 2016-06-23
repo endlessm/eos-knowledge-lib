@@ -83,9 +83,7 @@ describe('Controller.Buffet', function () {
         Utils.update_gui();
         expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_PAGE)).toBeDefined();
         expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).not.toBeDefined();
-        dispatcher.dispatch({
-            action_type: Actions.MODULE_READY,
-        });
+        buffet.make_ready();
         Utils.update_gui();
         expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
     });
@@ -112,6 +110,7 @@ describe('Controller.Buffet', function () {
     });
 
     it('dispatches set models to populate the app with', function () {
+        buffet.make_ready();
         let payloads = dispatcher.payloads_with_type(Actions.APPEND_SETS);
         expect(payloads.length).toBe(1);
         expect(set_models).toEqual(payloads[0].models);
@@ -124,9 +123,7 @@ describe('Controller.Buffet', function () {
         beforeEach(function () {
             buffet.BRAND_PAGE_TIME_MS = 0;
             buffet.desktop_launch(0);
-            dispatcher.dispatch({
-                action_type: Actions.MODULE_READY,
-            });
+            buffet.make_ready();
             Utils.update_gui();
             dispatcher.dispatch({
                 action_type: Actions.SET_CLICKED,

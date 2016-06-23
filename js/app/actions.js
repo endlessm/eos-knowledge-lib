@@ -30,7 +30,6 @@ const PRESENT_WINDOW = 'present-window';
 const APPEND_SETS = 'append-sets';
 const APPEND_ITEMS = 'append-items';
 const APPEND_SEARCH = 'append-search';
-const MODULE_READY = 'module-ready';
 const NEED_MORE_SETS = 'need-more-sets';
 const NEED_MORE_ITEMS = 'need-more-items';
 const NEED_MORE_SEARCH = 'need-more-search';

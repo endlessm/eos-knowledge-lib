@@ -223,6 +223,7 @@ const Thematic = new Module.Class({
         this._non_featured_arrangements = [];
         this._arrangement_update_functions = [];
         this._sets = [];
+        this.clear_submodules();
     },
 
     _clear_items: function () {
