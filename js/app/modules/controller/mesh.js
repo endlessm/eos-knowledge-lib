@@ -47,6 +47,9 @@ const Mesh = new Module.Class({
 
         this.parent(props);
 
+        let history = new HistoryStore.HistoryStore();
+        HistoryStore.set_default(history);
+
         this._window = this.create_submodule('window', {
             application: this.application,
             visible: false,
@@ -54,8 +57,6 @@ const Mesh = new Module.Class({
         Compat.add_preset_style_classes(this._window, this.template_type);
 
         this.load_theme();
-
-        this.history_store = new HistoryStore.HistoryStore();
 
         this._current_set_id = null;
         this._current_search_query = '';
@@ -77,19 +78,19 @@ const Mesh = new Module.Class({
                     this._on_back();
                     break;
                 case Actions.HOME_CLICKED:
-                    this.history_store.set_current_item_from_props({
+                    history.set_current_item_from_props({
                         page_type: Pages.HOME,
                     });
                     break;
                 case Actions.SET_CLICKED:
-                    this.history_store.set_current_item_from_props({
+                    history.set_current_item_from_props({
                         page_type: Pages.SET,
                         model: payload.model,
                     });
                     break;
                 case Actions.ITEM_CLICKED:
                 case Actions.SEARCH_CLICKED:
-                    this.history_store.set_current_item_from_props({
+                    history.set_current_item_from_props({
                         page_type: Pages.ARTICLE,
                         model: payload.model,
                     });
@@ -101,7 +102,7 @@ const Mesh = new Module.Class({
                     this._load_more_search_results();
                     break;
                 case Actions.AUTOCOMPLETE_CLICKED:
-                    this.history_store.set_current_item_from_props({
+                    history.set_current_item_from_props({
                         page_type: Pages.ARTICLE,
                         model: payload.model,
                         query: payload.query,
@@ -116,7 +117,7 @@ const Mesh = new Module.Class({
         }
 
         this._window.connect('key-press-event', this._on_key_press_event.bind(this));
-        this.history_store.connect('history-item-changed', this._on_history_item_change.bind(this));
+        history.connect('history-item-changed', this._on_history_item_change.bind(this));
     },
 
     make_ready: function (cb=function () {}) {
@@ -151,6 +152,7 @@ const Mesh = new Module.Class({
     },
 
     _on_history_item_change: function (presenter, item, last_item, is_going_back) {
+        let history = HistoryStore.get_default();
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
             action_type: Actions.HIDE_MEDIA,
@@ -189,7 +191,7 @@ const Mesh = new Module.Class({
                 });
                 break;
             case Pages.HOME:
-                if (this.history_store.item_count() === 1) {
+                if (history.item_count() === 1) {
                     Dispatcher.get_default().dispatch({
                         action_type: Actions.SHOW_BRAND_PAGE,
                     });
@@ -210,7 +212,7 @@ const Mesh = new Module.Class({
     },
 
     _show_home_if_ready: function () {
-        let item = this.history_store.get_current_item();
+        let item = HistoryStore.get_default().get_current_item();
         if (!item || item.page_type !== Pages.HOME)
             return;
         if (!this._home_content_loaded)
@@ -248,7 +250,7 @@ const Mesh = new Module.Class({
     },
 
     _on_home_button_clicked: function (button) {
-        this.history_store.set_current_item_from_props({
+        HistoryStore.get_default().set_current_item_from_props({
             page_type: Pages.HOME,
         });
     },
@@ -261,18 +263,19 @@ const Mesh = new Module.Class({
     },
 
     _on_back: function () {
-        let item = this.history_store.get_current_item();
+        let history = HistoryStore.get_default();
+        let item = history.get_current_item();
         let types = item.page_type === Pages.ARTICLE ?
             [Pages.HOME, Pages.SET, Pages.SEARCH] : [Pages.HOME];
-        let item = this.history_store.search_backwards(-1,
+        item = history.search_backwards(-1,
             (item) => types.indexOf(item.page_type) >= 0);
         if (!item)
             item = { page_type: Pages.HOME };
-        this.history_store.set_current_item(HistoryItem.HistoryItem.new_from_object(item));
+        history.set_current_item(HistoryItem.HistoryItem.new_from_object(item));
     },
 
     _update_article_list: function () {
-        this.history_store.search_backwards(0, (item) => {
+        HistoryStore.get_default().search_backwards(0, (item) => {
             if (item.query) {
                 this._update_search_results(item);
                 return true;
@@ -452,7 +455,7 @@ const Mesh = new Module.Class({
     },
 
     _update_highlight: function () {
-        let item = this.history_store.get_current_item();
+        let item = HistoryStore.get_default().get_current_item();
         if (item.page_type === Pages.ARTICLE) {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.HIGHLIGHT_ITEM,
@@ -467,7 +470,7 @@ const Mesh = new Module.Class({
             return;
 
         Utils.record_search_metric(query);
-        this.history_store.set_current_item_from_props({
+        HistoryStore.get_default().set_current_item_from_props({
             page_type: Pages.SEARCH,
             query: sanitized_query,
         });
@@ -483,7 +486,7 @@ const Mesh = new Module.Class({
     // Launcher implementation
     desktop_launch: function (timestamp) {
         this._dispatch_present(timestamp);
-        this.history_store.set_current_item_from_props({
+        HistoryStore.get_default().set_current_item_from_props({
             page_type: Pages.HOME,
         });
     },
@@ -505,7 +508,7 @@ const Mesh = new Module.Class({
         Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
             try {
                 let model = engine.get_object_by_id_finish(task);
-                this.history_store.set_current_item_from_props({
+                HistoryStore.get_default().set_current_item_from_props({
                     page_type: Pages.ARTICLE,
                     model: model,
                     query: query,
@@ -532,7 +535,7 @@ const Mesh = new Module.Class({
 
     _load_model: function (model) {
         if (model instanceof ArticleObjectModel.ArticleObjectModel) {
-            this.history_store.set_current_item_from_props({
+            HistoryStore.get_default().set_current_item_from_props({
                 page_type: Pages.ARTICLE,
                 model: model,
             });

@@ -42,13 +42,6 @@ const Controller = new Lang.Interface({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
         /**
-         * Property: history-store
-         *
-         * The store containing the history state of the application.
-         */
-        'history-store': GObject.ParamSpec.object('history-store', 'history-store', 'history-store',
-            GObject.ParamFlags.READABLE, GObject.Object),
-        /**
          * Property: template-type
          * The template type for the Knowledge app.
          *

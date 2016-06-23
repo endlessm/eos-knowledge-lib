@@ -1,3 +1,5 @@
+/* exported HistoryStore, get_default, set_default */
+
 const GObject = imports.gi.GObject;
 
 const Actions = imports.app.actions;
@@ -113,3 +115,17 @@ const HistoryStore = new GObject.Class({
         return item || null;
     },
 });
+
+let [get_default, set_default] = (function () {
+    let history_store = null;
+    return [
+        function () {
+            if (history_store === null)
+                history_store = new HistoryStore();
+            return history_store;
+        },
+        function (store) {
+            history_store = store;
+        },
+    ];
+})();
