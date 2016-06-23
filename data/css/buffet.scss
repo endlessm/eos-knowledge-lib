@@ -93,7 +93,7 @@
         margin-top: -10px;
     }
 
-    .ContentGroupSuggestedCategories,
+    .suggested-categories,
     .search-page-suggestions {
         background-color: #f6f6f6;
     }
@@ -135,27 +135,19 @@
     }
 }
 
-.ContentGroupSuggestedCategories {
-    .browse-content {
-        .title {
-            color: #044a80;
-        }
+.suggested-categories {
+    margin: 15px 0px;
+    padding: 15px 20px;
 
-        .after {
-            -gtk-icon-source: url('../images/title-arrow-dark.svg');
-            min-height: 10px;
-            min-width: 11px;
-            margin-left: 8px;
-            margin-top: 6px;
-        }
-
-        &:hover .after {
-            -gtk-icon-source: url('../images/title-arrow-light.svg');
-        }
+    .ContentGroup__title, .ContentGroup__trigger {
+        color: #044a80;
+        font-weight: 200;
+        font-size: 29.3px;
     }
 
-    .ArrangementSquareGuys {
-        padding: 0 20px 20px 20px;
+    .composite & .ContentGroup__title,
+    .composite & .ContentGroup__trigger {
+        font-weight: normal;
     }
 }
 

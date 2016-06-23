@@ -35,8 +35,24 @@ defines:
     selection: Selection.SuggestedArticles
 
 - &category-suggestions
-  type: ContentGroup.SuggestedCategories
+  type: ContentGroup.ContentGroup
+  styles:
+    - suggested-categories
   slots:
+    title:
+      type: ContentGroup.StaticText
+      properties:
+        label: "Browse by topic"
+        halign: start
+    trigger:
+      shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
+      slots:
+        contents:
+        - shortdef: 'ContentGroup.StaticText(label: "See more categories")'
+        - type: Decoration.ThemeableImage
+          properties:
+            valign: end
+            halign: end
     arrangement:
       type: Arrangement.SquareGuys
       properties:
@@ -44,6 +60,7 @@ defines:
         valign: end
       slots:
         card: *set-card
+    selection: Selection.AllSets
 
 - &page-with-menu
   type: Layout.SideMenu
@@ -51,7 +68,7 @@ defines:
     context: Banner.Context
     sidebar:
       # Main menu
-      shortdef: 'ContentGroup.SuggestedCategories(show-title: false)'
+      type: ContentGroup.ContentGroup
       slots:
         arrangement:
           type: Arrangement.ScrollingList
@@ -59,6 +76,9 @@ defines:
             card:
               type: Card.Title
               properties: *card-all-uppercase-properties
+        selection:
+          type: Selection.AllSets
+          slots:
             filter: Filter.Featured
 
 - &home-page

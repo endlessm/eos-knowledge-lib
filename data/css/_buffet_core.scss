@@ -26,24 +26,6 @@
     background-color: #e7ecee;
 }
 
-.ContentGroupSuggestedCategories {
-    separator {
-        background-color: #999999;
-        min-height: 1px;
-        margin: 4px 50px 20px 50px;
-    }
-
-    .browse-content:hover {
-        .title {
-            color: #49bde3;
-        }
-    }
-}
-
-.browse-content {
-    padding: 20px 50px 0px 50px;
-}
-
 .BannerApp {
     &.brand-page .ThemeableImage {
         -EknThemeableImage-sizing: "size-down";
@@ -426,7 +408,6 @@
 }
 
 .composite .ContentGroupHighlights .CardTitle .title.label,
-.composite .ContentGroupThematic .CardTitle .title.label,
-.composite .browse-content .title {
+.composite .ContentGroupThematic .CardTitle .title.label {
     font-weight: normal;
 }

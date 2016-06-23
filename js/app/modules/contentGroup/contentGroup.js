@@ -42,13 +42,7 @@ const ContentGroup = new Module.Class({
 
                     button.add(module);
                     Utils.set_hand_cursor_on_widget(button);
-                    button.connect('clicked', () => {
-                        Dispatcher.get_default().dispatch({
-                            action_type: Actions.SET_CLICKED,
-                            model: this._selection.model,
-                            context_label: this._selection.model.title,
-                        });
-                    });
+                    button.connect('clicked', () => this._selection.show_more());
                     return button;
                 });
 
@@ -72,7 +66,9 @@ const ContentGroup = new Module.Class({
             });
         });
 
-        let stack = new Gtk.Stack();
+        let stack = new Gtk.Stack({
+            visible: true,
+        });
         let spinner = new Gtk.Spinner();
         stack.add_named(spinner, SPINNER_PAGE_NAME);
         stack.add_named(this._arrangement, CONTENT_PAGE_NAME);

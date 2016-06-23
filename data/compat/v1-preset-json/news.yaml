@@ -27,7 +27,7 @@ defines:
           slots:
             banner: 'Banner.App(show-subtitle: false)'
             menu:
-              shortdef: 'ContentGroup.SuggestedCategories(show-title: false)'
+              shortdef: ContentGroup.ContentGroup
               slots:
                 arrangement:
                   shortdef: 'Arrangement.SideBySide(halign: center)'
@@ -38,6 +38,9 @@ defines:
                         title-capitalization: lowercase
                         halign: center
                         decorate-on-highlight: true
+                selection:
+                  type: Selection.AllSets
+                  slots:
                     filter: Filter.Featured
 
 - &suggestions-arrangement

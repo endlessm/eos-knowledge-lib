@@ -100,7 +100,6 @@ scss_partials = \
 	$(srcdir)/data/css/modules/contentGroup/_hierarchicalSet.scss \
 	$(srcdir)/data/css/modules/contentGroup/_mediaLightbox.scss \
 	$(srcdir)/data/css/modules/contentGroup/_search.scss \
-	$(srcdir)/data/css/modules/contentGroup/_suggestedCategories.scss \
 	$(srcdir)/data/css/modules/contentGroup/_supplementaryArticles.scss \
 	$(srcdir)/data/css/modules/contentGroup/_thematic.scss \
 	$(srcdir)/data/css/modules/layout/_dynamicBackground.scss \
@@ -359,7 +358,6 @@ javascript_tests = \
 	tests/js/app/modules/contentGroup/testMediaLightbox.js \
 	tests/js/app/modules/contentGroup/testSearch.js \
 	tests/js/app/modules/contentGroup/testSet.js \
-	tests/js/app/modules/contentGroup/testSuggestedCategories.js \
 	tests/js/app/modules/contentGroup/testSupplementaryArticles.js \
 	tests/js/app/modules/contentGroup/testThematic.js \
 	tests/js/app/modules/controller/testBuffet.js \
