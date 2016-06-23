@@ -1,11 +1,14 @@
 ---
 defines:
   - &home-page
-    shortdef: 'Layout.Box(orientation: vertical, halign: center, valign: center)'
+    shortdef: 'Layout.Box(expand: true)'
     slots:
       contents:
-      - 'Banner.App(expand: true)'
-      - 'Navigation.SearchBox(halign: center, focus-on-map: true)'
+      - shortdef: 'Layout.Box(orientation: vertical, halign: center, valign: center)'
+        slots:
+          contents:
+          - 'Banner.App(expand: true)'
+          - 'Navigation.SearchBox(halign: center, focus-on-map: true)'
 
   - &inner-page-layout
     shortdef: 'Layout.Box(vexpand: false, halign: fill, homogeneous: true)'
