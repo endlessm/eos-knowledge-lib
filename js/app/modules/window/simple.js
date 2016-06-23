@@ -1,5 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+/* exported Simple */
+
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
@@ -12,22 +14,17 @@ const SearchBox = imports.app.modules.navigation.searchBox;
 const Utils = imports.app.utils;
 
 /**
- * Class: Window.App
- *
- * This represents the toplevel window widget for template A, containing all
- * template A pages.
- *
- * Adds a lightbox above the section and article page, which can be
- * used to show content above either of these pages.
+ * Class: Window.Simple
+ * Window with default functionality
  *
  * Slots:
- *   lightbox
+ *   lightbox - optional
  *   navigation - optional
  *   pager
- *   search
+ *   search - optional
  */
-const App = new Module.Class({
-    Name: 'Window.App',
+const Simple = new Module.Class({
+    Name: 'Window.Simple',
     Extends: Endless.Window,
 
     Properties: {

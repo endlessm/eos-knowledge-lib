@@ -1,18 +1,15 @@
 @import 'common';
 
-.WindowEncyclopedia {
+.WindowSimple {
     font-size: 8pt;
+    background-position: center center;
 }
 
-.WindowEncyclopedia,
+.WindowSimple,
 .search-page,
 .article-page {
     background-size: cover;
     background-repeat: no-repeat;
-}
-
-.WindowEncyclopedia {
-    background-position: center center;
 }
 
 .PagerSimple {

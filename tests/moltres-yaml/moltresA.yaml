@@ -63,7 +63,7 @@ root:
   type: Controller.Mesh
   slots:
     window:
-      type: Window.App
+      type: Window.Simple
       slots:
         search: Navigation.SearchBox
         navigation: Layout.Navigation

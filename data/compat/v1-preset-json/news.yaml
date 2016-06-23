@@ -239,7 +239,7 @@ root:
   shortdef: 'Controller.Buffet(theme: news)'
   slots:
     window:
-      type: Window.App
+      type: Window.Simple
       slots:
         search: Navigation.SearchBox
         lightbox:

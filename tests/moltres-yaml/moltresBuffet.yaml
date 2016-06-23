@@ -185,7 +185,7 @@ root:
   shortdef: 'Controller.Buffet(theme: buffet)'
   slots:
     window:
-      type: Window.App
+      type: Window.Simple
       slots:
         search: Navigation.SearchBox
         lightbox:
