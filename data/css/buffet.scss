@@ -73,6 +73,10 @@ $title-alt-font: 'Lato Thin';
 
 /* === Modules (Overrides) === */
 
+.PagerSimple {
+    -EknPager_Simple-transitions-style: 'none';
+}
+
 .Card {
     &.highlighted .title {
         color: $primary-medium-color;
