@@ -4,7 +4,6 @@
 
 import argparse
 import collections
-import io
 import json
 import os
 import re
@@ -105,21 +104,18 @@ def preprocess(infile):
 
 
 def remove_output(f):
-    if f is default_out:
+    if f is sys.stdout:
         return
     f.close()
     os.unlink(f.name)
-
-# Ensure stdout is UTF-8
-default_out = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Preprocess app.json.')
     parser.add_argument('input', nargs='?', default=sys.stdin,
                         type=argparse.FileType('r'),
                         help='Input file (default: stdin)')
-    parser.add_argument('-o', '--output', default=default_out,
-                        type=argparse.FileType('w', encoding='utf-8'),
+    parser.add_argument('-o', '--output', default=sys.stdout,
+                        type=argparse.FileType('w'),
                         help='File to write (default: stdout)')
     args = parser.parse_args()
 
