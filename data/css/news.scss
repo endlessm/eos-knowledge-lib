@@ -64,6 +64,10 @@ $support-font: 'Fira Sans';
 
 /* === Modules (Overrides) === */
 
+.PagerSimple {
+    -EknPager_Simple-transitions-style: 'none';
+}
+
 /* The home page consists of two 'highlights' modules. We want to
    set a bottom margin on the second of these two (that is, the last
    one). Note, we can't just set margin-bottom on the .highlights
