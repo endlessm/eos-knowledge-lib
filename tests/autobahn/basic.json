@@ -5,6 +5,9 @@
     "slots": {
       "window": {
         "type": "Window.App",
+        "properties": {
+          "title": "My Awesome App"
+        },
         "slots": {
           "article-page": {
             "type": "Layout.ArticleStack",
@@ -52,6 +55,7 @@
                       "halign": "fill",
                       "image-uri": "resource:///com/endlessm/video-test-en/assets/titleImage.svg",
                       "max-fraction": 0.5,
+                      "title": "FAKE VIDEOS",
                       "valign": "start"
                     }
                   },
@@ -82,7 +86,10 @@
             "type": "Layout.Navigation"
           },
           "search": {
-            "type": "Navigation.SearchBox"
+            "type": "Navigation.SearchBox",
+            "properties": {
+              "default-text": "My Awesome App"
+            }
           },
           "search-page": {
             "type": "Layout.Scrolling",
@@ -94,7 +101,8 @@
                   "banner": {
                     "type": "Banner.Search",
                     "properties": {
-                      "halign": "fill"
+                      "halign": "fill",
+                      "random-string": "Searches"
                     }
                   },
                   "content": {

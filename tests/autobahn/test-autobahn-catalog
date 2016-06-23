@@ -1,0 +1,6 @@
+#!/bin/bash
+
+input="$G_TEST_SRCDIR/autobahn/basic.yaml"
+expected=${input/.yaml/.pot}
+cd "$G_TEST_SRCDIR/.."
+./autobahn "$input" --catalog | diff -u "$expected" -I "POT-Creation-Date" -

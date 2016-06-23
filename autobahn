@@ -4,8 +4,11 @@
 
 import argparse
 import collections
+import datetime
 import json
 import os
+import os.path
+import polib
 import re
 import sys
 import yaml
@@ -109,6 +112,24 @@ def remove_output(f):
     f.close()
     os.unlink(f.name)
 
+
+def translate(loader, node):
+    occurrence = os.path.relpath(node.start_mark.name), node.start_mark.line
+    try:
+        pot.append(polib.POEntry(msgid=node.value, occurrences=[occurrence]))
+    except ValueError:
+        entry = pot.find(node.value)
+        entry.occurrences.append(occurrence)
+    return node.value
+
+pot = polib.POFile(check_for_duplicates=True)
+pot.metadata = {
+    'POT-Creation-Date': datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M+0000'),
+    'MIME-Version': '1.0',
+    'Content-Type': 'text/plain; charset=utf-8',
+    'Content-Transfer-Encoding': '8bit',
+}
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Preprocess app.json.')
     parser.add_argument('input', nargs='?', default=sys.stdin,
@@ -117,10 +138,18 @@ if __name__ == '__main__':
     parser.add_argument('-o', '--output', default=sys.stdout,
                         type=argparse.FileType('w'),
                         help='File to write (default: stdout)')
+    parser.add_argument('-c', '--catalog', action='store_true',
+                        help='Write a .pot message catalog instead of JSON')
     args = parser.parse_args()
 
+    yaml.add_constructor('!translate', translate)
+
     try:
-        args.output.write(preprocess(args.input))
+        dumped_json = preprocess(args.input)
+        if args.catalog:
+            args.output.write(str(pot))
+        else:
+            args.output.write(dumped_json)
     except yaml.error.MarkedYAMLError as exc:
         remove_output(args.output)
         sys.stderr.write('Invalid YAML: ' + str(exc) + '\n')

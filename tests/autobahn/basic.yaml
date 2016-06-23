@@ -28,6 +28,7 @@ defines:
         banner:
           type: Banner.App
           properties:
+            title: !translate FAKE VIDEOS
             halign: fill
             valign: start
             max-fraction: 0.5
@@ -47,7 +48,7 @@ defines:
     content:
       type: Layout.Banner
       slots:
-        banner: 'Banner.Search(halign: fill)'
+        banner: 'Banner.Search(halign: fill, random-string: !translate Searches)'
         content:
           shortdef: 'ContentGroup.Search(message-justify: left, message-halign: center)'
           slots:
@@ -64,8 +65,13 @@ defines:
 
 - &window
   type: Window.App
+  properties:
+    title: !translate My Awesome App
   slots:
-    search: Navigation.SearchBox
+    search:
+      type: Navigation.SearchBox
+      properties:
+        default-text: !translate My Awesome App
     navigation: Layout.Navigation
     home-page: *home-page
     search-page: *search-page

@@ -428,6 +428,7 @@ javascript_tests = \
 yaml_tests = \
 	tests/autobahn/basic.yaml \
 	tests/autobahn/fullApp.yaml \
+	tests/autobahn/test-autobahn-catalog \
 	$(NULL)
 test_content = \
 	tests/test-content/pig1.jpg \
@@ -437,6 +438,7 @@ EXTRA_DIST += \
 	$(javascript_tests) \
 	$(yaml_tests) \
 	$(patsubst %.yaml,%.json,$(yaml_tests)) \
+	tests/autobahn/basic.pot \
 	$(test_content) \
 	tests/CssClassMatcher.js \
 	tests/InstanceOfMatcher.js \
