@@ -1,8 +1,16 @@
 .ContentGroupSearch {
-    background-color: $background-light-color;
+    background-color: transparent;
 
     .no-results {
-        background-color: $primary-dark-color;
+        background-color: $black-80-color;
+    }
+
+    spinner {
+        margin: 20px;
+    }
+
+    .composite & row {
+        padding: 0 40px;
     }
 
     /* This used to be margin on the list cards inside, but ListCard doesn't support
@@ -10,9 +18,7 @@
     .ArrangementScrollingList__grid {
         padding: 0 200px;
     }
-}
 
-.ContentGroupSearch {
     .results-message-title {
         font-family: $body-font;
         color: $primary-light-color;
@@ -27,14 +33,6 @@
         font-size: 22px;
         padding-bottom: 50px;
         padding-left: 160px;
-    }
-
-    spinner {
-        margin: 20px;
-    }
-
-    .composite & row {
-        padding: 0 40px;
     }
 }
 
