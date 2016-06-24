@@ -1,0 +1,77 @@
+.preset-a {
+    .home-page .CardLegacyPolaroid .title {
+        padding: 9px 0px 9px 0px;
+    }
+
+    .section-page,
+    .search-page {
+        padding: 0 100px;
+
+        .title {
+            padding-top: 1.0em;
+            padding-bottom: 1.0em;
+
+            font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
+        }
+
+        separator {
+            min-height: 1px;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .CardLegacyPolaroid .title {
+            font-size: 0.9em;
+            text-shadow: 0px 1px 0px white;
+        }
+    }
+
+    .section-page  flowbox {
+        margin-top: 20px;
+    }
+
+    .search-page .ContentGroupSearch {
+        .results-message-title,
+        .results-message-subtitle,
+        .error-message {
+            padding-top: 2.0em;
+        }
+    }
+
+    .article-page .document-card-content-frame {
+        padding: 20px 0px;
+    }
+}
+
+.window-small.preset-a {
+    .section-page,
+    .search-page {
+        .title {
+            font-size: 1.75em; /* 28pt * 1/12 * 0.75 DPI correction factor */
+        }
+    }
+
+    .ContentGroupSearch {
+        .results-message-title,
+        .results-message-subtitle,
+        .error-message {
+            padding-top: 1.5em;
+        }
+    }
+}
+
+.composite.preset-a {
+    .section-page,
+    .search-page {
+        .title {
+            font-size: 16.4px;  /* 14px spec * 88% */
+        }
+    }
+
+    .search-page .ContentGroupSearch {
+        .results-message-title,
+        .results-message-subtitle,
+        .error-message {
+            font-size: 18.8px;  /* 16px spec * 88% */
+        }
+    }
+}

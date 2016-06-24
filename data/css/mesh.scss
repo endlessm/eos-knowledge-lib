@@ -4,6 +4,9 @@ $template-b-text-color: #eeccf8;
 $template-b-text-color-hover: #d64970;
 $template-b-text-color-highlighted: #333333;
 
+@import 'preset_a';
+@import 'preset_b';
+
 .WindowSimple {
     /* Changed color here so scrollbars are visible. Only affects smoke tests all
      * apps have image backgrounds.*/
@@ -500,163 +503,6 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     }
 }
 
-/* Specific to Preset A */
-
-.preset-a {
-    .home-page .CardLegacyPolaroid .title {
-        padding: 9px 0px 9px 0px;
-    }
-
-    .section-page,
-    .search-page {
-        .ContentGroup__title {
-            font-family: Montserrat;
-            font-weight: bold;
-            font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
-            padding-top: 1.0em;
-            padding-bottom: 1.0em;
-        }
-
-        padding: 0 100px;
-
-        .title {
-            padding-top: 1.0em;
-            padding-bottom: 1.0em;
-
-            font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
-        }
-
-        separator {
-            min-height: 1px;
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .CardLegacyPolaroid .title {
-            font-size: 0.9em;
-            text-shadow: 0px 1px 0px white;
-        }
-    }
-
-    .section-page  flowbox {
-        margin-top: 20px;
-    }
-
-    .search-page .ContentGroupSearch {
-        .results-message-title,
-        .results-message-subtitle,
-        .error-message {
-            padding-top: 2.0em;
-        }
-    }
-
-    .article-page .document-card-content-frame {
-        padding: 20px 0px;
-    }
-}
-
-.window-small.preset-a {
-    .section-page,
-    .search-page {
-        .title, .ContentGroup__title {
-            font-size: 1.75em; /* 28pt * 1/12 * 0.75 DPI correction factor */
-        }
-    }
-
-    .ContentGroupSearch {
-        .results-message-title,
-        .results-message-subtitle,
-        .error-message {
-            padding-top: 1.5em;
-        }
-    }
-}
-
-/* Specific to Preset B */
-
-.preset-b {
-    .home-page {
-        .LayoutBox {
-            min-height: 240px;
-        }
-
-        .ContentGroupSet {
-            background-color: black;
-        }
-    }
-
-    .section-page,
-    .search-page {
-        .title {
-            font-size: 4.5em; /* 72pt * 1/12 * 0.75 DPI correction factor */
-            padding: 0.9em 0em 0.9em 1.2em;
-            color: white;
-        }
-
-        scrollbar {
-            trough {
-                padding: 0px 3px;
-                background-color: transparentize(black, 1 - 0.5);
-                background-image: linear-gradient(89deg,
-                                                  transparentize(white, 1 - 0.1) 0%,
-                                                  transparentize(black, 1 - 0.1) 100%);
-                box-shadow: inset 1px 0px 0px 0px transparentize(black, 1 - 0.15);
-            }
-
-            slider {
-                background-color: #888888;
-            }
-        }
-
-        .ContentGroupSearch, .ContentGroup {
-            background-color: transparentize(black, 1 - 0.75);
-        }
-    }
-
-    .search-page .ContentGroupSearch {
-        .results-message-title,
-        .results-message-subtitle,
-        .error-message {
-            font-size: 1.2em;
-            padding: 10px 25px;
-        }
-    }
-
-    .section-page,
-    .article-page {
-        .ContentGroup {
-            background-color: transparentize(black, 1 - 0.75);
-        }
-    }
-
-    .article-page .sidebar {
-        padding-left: 60px;
-    }
-
-    .PagerParallaxBackground {
-        -EknPager_Simple-transitions-style: 'slide-center';
-    }
-}
-
-.window-small.preset-b {
-    .section-page,
-    .search-page {
-        .title {
-            font-size: 3.5em; /* 56pt * 1/12 * 0.75 DPI correction factor */
-            padding: 0.9em 0em 0.9em 1.2em;
-            color: white;
-        }
-    }
-
-    .search-page .ContentGroupSearch {
-        .results-message-title,
-        .results-message-subtitle,
-        .error-message {
-            font-size: 0.8em;
-            padding: 8px 15px;
-        }
-    }
-}
-
 /* Changes for composite TVs */
 
 .composite {
@@ -668,48 +514,5 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 
     headerbar entry {
         font-size: 21.1px;  /* 18px spec * 88% because spec was at 110% scale not 125% */
-    }
-
-    &.preset-a {
-        .section-page,
-        .search-page {
-            .title {
-                font-size: 16.4px;  /* 14px spec * 88% */
-            }
-        }
-
-        .search-page .ContentGroupSearch {
-            .results-message-title,
-            .results-message-subtitle,
-            .error-message {
-                font-size: 18.8px;  /* 16px spec * 88% */
-            }
-        }
-    }
-
-    &.preset-b {
-        .home-page .LayoutBox {
-            min-height: 120px;
-        }
-
-        .search-page,
-        .article-page {
-            background-color: transparentize(black, 1 - 0.8);
-        }
-
-        .search-page .ContentGroupSearch {
-            .results-message-title,
-            .results-message-subtitle,
-            .error-message {
-                font-size: 14.1px;  /* 12px spec * 88% */
-            }
-        }
-
-        .section-page,
-        .article-page {
-            .ContentGroup {
-                background-color: transparentize(black, 1 - 0.8);
-            }
-        }
     }
 }
