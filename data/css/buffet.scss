@@ -174,10 +174,20 @@ $display-font: Lato;
     margin: 15px 0px;
     padding: 15px 20px;
 
-    .ContentGroup__title, .ContentGroup__trigger {
-        color: #044a80;
+    /* FIXME clean-up ContentGroup theming after refactors */
+    .ContentGroup__title,
+    .ContentGroup__trigger {
+        color: $accent-light-color;
         font-weight: 200;
         font-size: 29.3px;
+
+        &:hover {
+            color: $accent-dark-color;
+        }
+    }
+
+    .ContentGroup__trigger {
+        font-size: 20px;
     }
 
     .composite & .ContentGroup__title,
