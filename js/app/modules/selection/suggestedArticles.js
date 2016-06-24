@@ -41,7 +41,7 @@ const SuggestedArticles = new Module.Class({
         let random_query = new QueryObject.QueryObject({
             offset: hash % this._TOTAL_ARTICLES,
             limit: limit,
-            tags: ['EknArticleObject'],
+            tags_match_any: ['EknArticleObject'],
         });
 
         return random_query;

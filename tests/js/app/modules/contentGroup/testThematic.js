@@ -101,7 +101,7 @@ describe('ContentGroup.Thematic', function () {
                         tags: [tag, 'd', 'e'],
                     }));
                 engine.get_objects_by_query.and.callFake((query, cancel, callback) => {
-                    let task = query.tags.slice();
+                    let task = query.tags_match_all.slice();
                     callback(engine, task);
                     return task;
                 });

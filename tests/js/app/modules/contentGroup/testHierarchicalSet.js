@@ -128,7 +128,7 @@ describe('ContentGroup.HierarchicalSet', function () {
         it('makes a request for objects of this set', function () {
             expect(engine.get_objects_by_query)
             .toHaveBeenCalledWith(jasmine.objectContaining({
-                tags: ['a', 'b', 'c'],
+                tags_match_all: ['a', 'b', 'c'],
                 limit: jasmine.any(Number),
             }), jasmine.any(Object), jasmine.any(Function));
         });

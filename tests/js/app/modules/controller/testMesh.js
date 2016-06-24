@@ -430,7 +430,7 @@ describe('Controller.Mesh', function () {
 
         it('puts the right articles in a set', function () {
             let query_object = engine.get_objects_by_query.calls.mostRecent().args[0];
-            expect(query_object.tags).toEqual(['some-tag']);
+            expect(query_object.tags_match_any).toEqual(['some-tag']);
         });
 
         it('leads back to the home page', function () {

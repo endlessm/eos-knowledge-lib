@@ -33,7 +33,8 @@ const ArticlesForSet = new Module.Class({
         // that this is getting only Articles, not Sets
         return new QueryObject.QueryObject({
             limit: limit,
-            tags: this.model ? this.model.child_tags : [], // FIXME: Will go away when we have centralized state
+            // FIXME: Will go away when we have centralized state
+            tags_match_any: this.model ? this.model.child_tags : [],
             sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
         });
     },

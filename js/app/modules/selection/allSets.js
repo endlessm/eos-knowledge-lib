@@ -17,7 +17,7 @@ const AllSets = new Module.Class({
             return null;
         return new QueryObject.QueryObject({
             limit: limit,
-            tags: ['EknSetObject'],
+            tags_match_any: ['EknSetObject'],
         });
     },
 

@@ -17,7 +17,7 @@ const AllHighlights = new Module.Class({
             return null;
         return new QueryObject.QueryObject({
             limit: limit,
-            tags: ['EknArticleObject'], // FIXME: Should be getting featured articles only
+            tags_match_any: ['EknArticleObject'], // FIXME: Should be getting featured articles only
         });
     },
 });

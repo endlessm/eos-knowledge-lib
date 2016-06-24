@@ -7,10 +7,10 @@ describe('QueryObject', function () {
         let tags = ['Venkman', 'Stantz'];
         let query_obj = new QueryObject.QueryObject({
             ids: ids,
-            tags: tags,
+            tags_match_any: tags,
         });
         expect(ids).toEqual(query_obj.ids);
-        expect(tags).toEqual(query_obj.tags);
+        expect(tags).toEqual(query_obj.tags_match_any);
     });
 
     it('makes a deep copy of arrays passed into it', function () {
@@ -19,12 +19,12 @@ describe('QueryObject', function () {
         let tags = ['Venkman', 'Stantz'];
         let query_obj = new QueryObject.QueryObject({
             ids: ids,
-            tags: tags,
+            tags_match_any: tags,
         });
         ids = ids.concat(['ekn://busters-es/0123456789abcdef']);
         delete tags[1];
         expect(query_obj.ids).not.toEqual(ids);
-        expect(query_obj.tags).not.toEqual(tags);
+        expect(query_obj.tags_match_any).not.toEqual(tags);
     });
 
     describe('new_from_object constructor', function () {
@@ -32,11 +32,11 @@ describe('QueryObject', function () {
             let tags = ['Venkman', 'Stantz'];
             let query = 'keymaster';
             let query_obj = new QueryObject.QueryObject({
-                tags: tags,
+                tags_match_any: tags,
                 query: query,
             });
             let query_obj_copy = QueryObject.QueryObject.new_from_object(query_obj);
-            expect(query_obj_copy.tags).toEqual(tags);
+            expect(query_obj_copy.tags_match_any).toEqual(tags);
             expect(query_obj_copy.query).toEqual(query);
         });
 
@@ -44,14 +44,14 @@ describe('QueryObject', function () {
             let tags = ['Venkman', 'Stantz'];
             let query = 'keymaster';
             let query_obj = new QueryObject.QueryObject({
-                tags: tags,
+                tags_match_any: tags,
                 query: query,
             });
             let new_query = 'gatekeeper';
             let new_query_object = QueryObject.QueryObject.new_from_object(query_obj, {
                 query: new_query
             });
-            expect(new_query_object.tags).toEqual(tags);
+            expect(new_query_object.tags_match_any).toEqual(tags);
             expect(new_query_object.query).toEqual(new_query);
         });
     });
@@ -212,7 +212,7 @@ describe('QueryObject', function () {
 
         it('contains tags from query object', function () {
             let query_obj = new QueryObject.QueryObject({
-                tags: ['cats', 'dogs', 'turtles'],
+                tags_match_any: ['cats', 'dogs', 'turtles'],
             });
             let result = query_obj.get_query_parser_string(query_obj);
             expect(result).toMatch('tag:"cats" OR tag:"dogs" OR tag:"turtles"');
@@ -220,8 +220,7 @@ describe('QueryObject', function () {
 
         it('joins tags with AND for tag-match all', function () {
             let query_obj = new QueryObject.QueryObject({
-                tags: ['cats', 'dogs', 'turtles'],
-                tag_match: QueryObject.QueryObjectTagMatch.ALL,
+                tags_match_all: ['cats', 'dogs', 'turtles'],
             });
             let result = query_obj.get_query_parser_string(query_obj);
             expect(result).toMatch('tag:"cats" AND tag:"dogs" AND tag:"turtles"');
@@ -229,7 +228,7 @@ describe('QueryObject', function () {
 
         it('should surround multiword tags in quotes', function () {
             let query_obj = new QueryObject.QueryObject({
-                tags: ['cat zombies'],
+                tags_match_any: ['cat zombies'],
             });
             let result = query_obj.get_query_parser_string(query_obj);
             expect(result).toMatch('tag:"cat zombies"');
