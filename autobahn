@@ -114,7 +114,9 @@ def remove_output(f):
 
 
 def translate(loader, node):
-    occurrence = os.path.relpath(node.start_mark.name), node.start_mark.line
+    source = node.start_mark.name
+    filename = source if source != '<unicode string>' else infile_name
+    occurrence = os.path.relpath(filename), node.start_mark.line
     try:
         pot.append(polib.POEntry(msgid=node.value, occurrences=[occurrence]))
     except ValueError:
@@ -126,6 +128,7 @@ def translate(loader, node):
     entry = po.find(node.value)
     return entry.msgstr if entry.translated() else node.value
 
+# Shared state
 pot = polib.POFile(check_for_duplicates=True)
 pot.metadata = {
     'POT-Creation-Date': datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M+0000'),
@@ -134,6 +137,7 @@ pot.metadata = {
     'Content-Transfer-Encoding': '8bit',
 }
 po = None
+infile_name = None
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Preprocess app.json.')
@@ -149,6 +153,8 @@ if __name__ == '__main__':
                         type=argparse.FileType('r', encoding='utf-8'),
                         help='.po file to use for translations (default: none)')
     args = parser.parse_args()
+
+    infile_name = args.input.name
 
     yaml.add_constructor('!translate', translate)
 

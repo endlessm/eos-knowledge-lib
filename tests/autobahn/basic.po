@@ -10,6 +10,6 @@ msgstr "Mijn Toffe Appje"
 msgid "FAKE VIDEOS"
 msgstr "NEPVIDEO’S"
 
-#: <unicode string>
+#: tests/autobahn/basic.yaml
 msgid "Searches"
 msgstr "Zoektermen"

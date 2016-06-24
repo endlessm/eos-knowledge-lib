@@ -14,7 +14,7 @@ msgstr ""
 msgid "FAKE VIDEOS"
 msgstr ""
 
-#: <unicode string>
+#: tests/autobahn/basic.yaml
 msgid "Searches"
 msgstr ""
 
