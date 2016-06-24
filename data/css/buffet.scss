@@ -90,11 +90,11 @@ $display-font: Lato;
     .ContentGroup {
         .ContentGroup__title, .ContentGroup__trigger {
             margin-bottom: 10px;
-            color: #044a80;
+            color: $accent-light-color;
             font-weight: 200;
 
             &:hover {
-                color: #49bde3;
+                color: $accent-dark-color;
             }
         }
 
