@@ -3,7 +3,6 @@
 /* exported Buffet */
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
-const EosMetrics = imports.gi.EosMetrics;
 const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -34,7 +33,6 @@ const Pages = {
     ALL_SETS: 'all-sets',
 };
 const RESULTS_SIZE = 15;
-const SEARCH_METRIC_EVENT_ID = 'a628c936-5d87-434a-a57a-015a0f223838';
 
 /**
  * Class: Buffet
@@ -220,7 +218,7 @@ const Buffet = new Module.Class({
         if (sanitized_query.length === 0)
             return;
 
-        this.record_search_metric(query);
+        Utils.record_search_metric(query);
         this.history_store.set_current_item_from_props({
             page_type: Pages.SEARCH,
             query: sanitized_query,
@@ -514,12 +512,5 @@ const Buffet = new Module.Class({
                 logError(error);
             }
         });
-    },
-
-    // Should be mocked out during tests so that we don't actually send metrics
-    record_search_metric: function (query) {
-        let recorder = EosMetrics.EventRecorder.get_default();
-        recorder.record_event(SEARCH_METRIC_EVENT_ID, new GLib.Variant('(ss)',
-            [query, this.application.application_id]));
     },
 });

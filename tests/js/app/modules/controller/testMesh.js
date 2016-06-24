@@ -8,6 +8,7 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const Actions = imports.app.actions;
+const AppUtils = imports.app.utils;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Mesh = imports.app.modules.controller.mesh;
 const Knowledge = imports.app.knowledge;
@@ -93,7 +94,7 @@ describe('Controller.Mesh', function () {
         });
         mesh.BRAND_PAGE_TIME_MS = 0;
         mesh.make_ready();
-        spyOn(mesh, '_record_search_metric');
+        spyOn(AppUtils, 'record_search_metric');
     });
 
     it('dispatches category models for home page', () => {
@@ -319,7 +320,7 @@ describe('Controller.Mesh', function () {
                 action_type: Actions.SEARCH_TEXT_ENTERED,
                 query: query,
             });
-            expect(mesh._record_search_metric).toHaveBeenCalled();
+            expect(AppUtils.record_search_metric).toHaveBeenCalled();
         });
 
         it('loads the results from engine', function () {

@@ -9,6 +9,7 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const Actions = imports.app.actions;
+const AppUtils = imports.app.utils;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const Buffet = imports.app.modules.controller.buffet;
 const ContentObjectModel = imports.search.contentObjectModel;
@@ -58,7 +59,7 @@ describe('Controller.Buffet', function () {
                 'window': { type: MockView },
             },
         });
-        spyOn(buffet, 'record_search_metric');
+        spyOn(AppUtils, 'record_search_metric');
     });
 
     it('dispatches present window on launch from desktop', function () {
@@ -373,7 +374,7 @@ describe('Controller.Buffet', function () {
         });
 
         it('records a search metric', function () {
-            expect(buffet.record_search_metric).toHaveBeenCalledWith('user query');
+            expect(AppUtils.record_search_metric).toHaveBeenCalledWith('user query');
         });
     });
 });

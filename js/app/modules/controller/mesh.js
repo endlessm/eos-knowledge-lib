@@ -1,7 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
-const EosMetrics = imports.gi.EosMetrics;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -43,7 +42,6 @@ const Mesh = new Module.Class({
     SEARCH_PAGE: 'search',
     SECTION_PAGE: 'section',
 
-    SEARCH_METRIC: 'a628c936-5d87-434a-a57a-015a0f223838',
     // Overridable in tests. Brand page should be visible for 2 seconds. The
     // transition is currently hardcoded to a slow fade over 500 ms.
     BRAND_PAGE_TIME_MS: 1500,
@@ -472,18 +470,11 @@ const Mesh = new Module.Class({
         if (sanitized_query.length === 0)
             return;
 
-        this._record_search_metric(query);
+        Utils.record_search_metric(query);
         this.history_store.set_current_item_from_props({
             page_type: this.SEARCH_PAGE,
             query: sanitized_query,
         });
-    },
-
-    // Should be mocked out during tests so that we don't actually send metrics
-    _record_search_metric: function (query) {
-        let recorder = EosMetrics.EventRecorder.get_default();
-        recorder.record_event(this.SEARCH_METRIC, new GLib.Variant('(ss)',
-            [query, this.application.application_id]));
     },
 
     _dispatch_present: function (timestamp) {
