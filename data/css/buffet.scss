@@ -339,6 +339,6 @@ $title-thin-font: 'Lato Thin';
     .LayoutSideMenu__homeButton,
     .LayoutSideMenu__menu .Card .title,
     .BannerContext {
-        font-family: Lato;
+        font-family: $title-font;
     }
 }
