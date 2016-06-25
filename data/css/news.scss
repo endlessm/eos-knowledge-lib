@@ -74,6 +74,10 @@ $support-font: 'Fira Sans' !default;
     margin-bottom: 50px;
 }
 
+.hierarchical-set {
+    margin-bottom: 20px;
+}
+
 .CardSetPreview separator {
     background-color: transparent;
 }
@@ -136,6 +140,9 @@ $support-font: 'Fira Sans' !default;
     background-color: transparent;
 }
 
-.BannerSet .Card .title {
-    color: white;
+.BannerSet {
+    margin-bottom: 15px;
+    .Card .title {
+        color: white;
+    }
 }

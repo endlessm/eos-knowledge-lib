@@ -122,12 +122,14 @@ const ContentGroup = new Module.Class({
     },
 
     make_ready: function (cb=function () {}) {
+        this._arrangement.clear();
+        this._selection.clear();
+        this._load_callback = cb;
         this.load();
         if (this._title)
             this._title.make_ready();
         if (this._trigger)
             this._trigger.make_ready();
-        this._load_callback = cb;
     },
 
     get_selection: function () {

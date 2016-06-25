@@ -282,11 +282,12 @@ function test_card_container_fade_in_compliance(action, CardContainerClass, extr
     });
 }
 
-function test_selection_compliance (SelectionClass, extra_slots={}) {
+function test_selection_compliance (SelectionClass, setup=function () {}, extra_slots={}) {
     describe(SelectionClass.$gtype.name + ' implements Selection correctly', function () {
         let factory, selection, reading_history;
 
         beforeEach(function () {
+            setup();
             reading_history = MockReadingHistoryModel.mock_default();
             jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
