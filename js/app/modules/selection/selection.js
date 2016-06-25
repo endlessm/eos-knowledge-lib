@@ -54,6 +54,15 @@ const Selection = new Module.Class({
         this._models_by_id = new Map();
         this._order = this.create_submodule('order');
         this._filter = this.create_submodule('filter');
+        if (this._filter) {
+            this._filter.connect('filter-changed', () => {
+                let models = [...this._models_by_id.values()];
+                models.filter((m) => !this._filter.include(m)).forEach((model) => {
+                    this._models_by_id.delete(model.ekn_id);
+                });
+                this.emit('models-changed');
+            });
+        }
     },
 
     get model () {
