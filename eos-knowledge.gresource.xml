@@ -129,7 +129,6 @@
     <file>js/app/modules/contentGroup/cardContainer.js</file>
     <file>js/app/modules/contentGroup/contentGroup.js</file>
     <file>js/app/modules/contentGroup/dynamicTitle.js</file>
-    <file>js/app/modules/contentGroup/hierarchicalSet.js</file>
     <file>js/app/modules/contentGroup/mediaLightbox.js</file>
     <file>js/app/modules/contentGroup/search.js</file>
     <file>js/app/modules/contentGroup/staticText.js</file>
