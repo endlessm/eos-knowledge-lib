@@ -41,7 +41,6 @@ $support-font: 'Fira Sans' !default;
 @import 'modules/card/list';
 @import 'modules/card/media';
 @import 'modules/card/post';
-@import 'modules/card/setPreview';
 @import 'modules/card/thumb';
 @import 'modules/card/title';
 
@@ -76,10 +75,6 @@ $support-font: 'Fira Sans' !default;
 
 .hierarchical-set {
     margin-bottom: 20px;
-}
-
-.CardSetPreview separator {
-    background-color: transparent;
 }
 
 .LayoutTopMenu__menu {

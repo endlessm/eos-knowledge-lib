@@ -95,7 +95,6 @@ scss_theme_card_partials = \
 	$(srcdir)/data/css/modules/card/_list.scss \
 	$(srcdir)/data/css/modules/card/_media.scss \
 	$(srcdir)/data/css/modules/card/_post.scss \
-	$(srcdir)/data/css/modules/card/_setPreview.scss \
 	$(srcdir)/data/css/modules/card/_text.scss \
 	$(srcdir)/data/css/modules/card/_thumb.scss \
 	$(srcdir)/data/css/modules/card/_title.scss \
@@ -442,7 +441,6 @@ javascript_tests = \
 	tests/js/app/modules/card/testMedia.js \
 	tests/js/app/modules/card/testPost.js \
 	tests/js/app/modules/card/testSequence.js \
-	tests/js/app/modules/card/testSetPreview.js \
 	tests/js/app/modules/card/testText.js \
 	tests/js/app/modules/card/testThumb.js \
 	tests/js/app/modules/card/testTitle.js \

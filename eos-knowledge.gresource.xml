@@ -123,7 +123,6 @@
     <file>js/app/modules/card/media.js</file>
     <file>js/app/modules/card/post.js</file>
     <file>js/app/modules/card/sequence.js</file>
-    <file>js/app/modules/card/setPreview.js</file>
     <file>js/app/modules/card/text.js</file>
     <file>js/app/modules/card/thumb.js</file>
     <file>js/app/modules/card/title.js</file>
