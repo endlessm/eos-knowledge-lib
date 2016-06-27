@@ -50,7 +50,6 @@ $support-font: 'Fira Sans';
 @import 'modules/contentGroup/hierarchicalSet';
 @import 'modules/contentGroup/mediaLightbox';
 @import 'modules/contentGroup/search';
-@import 'modules/contentGroup/supplementaryArticles';
 
 @import 'modules/layout/dynamicBackground';
 @import 'modules/layout/infiniteScrolling';
@@ -85,6 +84,23 @@ $support-font: 'Fira Sans';
     background-color: #050c20;
 }
 
+.supplementary-articles {
+    margin: 50px 0 50px 20px;
+    padding: 0 20px 20px 0px;
+
+    .ContentGroup__title {
+        font-family: 'Merriweather';
+        font-weight: bold;
+        font-size: 40px;
+        padding-bottom: 30px;
+        color: white;
+    }
+}
+
+.dark-background {
+    background-color: #0f1b3c;
+}
+
 .ArrangementSideBySide {
     .CardTitle {
         &:hover label.title {
@@ -111,10 +127,6 @@ $support-font: 'Fira Sans';
 }
 
 .search-page-suggestions .ContentGroup__title {
-    color: white;
-}
-
-.ContentGroupSupplementaryArticles > .title {
     color: white;
 }
 

@@ -31,7 +31,9 @@ const SuggestedArticles = new Module.Class({
     },
 
     _TOTAL_ARTICLES: 50,
-    construct_query_object: function (limit) {
+    construct_query_object: function (limit, query_index) {
+        if (query_index > 0)
+            return null;
         let hash = Utils.dumb_hash(this._query);
         // FIXME: We still need a better way to issue a query for
         // 'random' articles. This just gets a random offset and then

@@ -15,6 +15,7 @@ const Xapian = new Module.Class({
         this._loading = false;
         this._can_load_more = true;
         this._get_more = null;
+        this._query_index = 0;
 
         this.parent(props);
     },
@@ -27,8 +28,9 @@ const Xapian = new Module.Class({
         return this._can_load_more;
     },
 
-    construct_query_object: function (limit) {
+    construct_query_object: function (limit, query_index) {
         void limit;
+        void query_index;
         throw new Error('You should be implementing construct_query_object in your subclass');
     },
 
@@ -61,6 +63,11 @@ const Xapian = new Module.Class({
                 more = null;
             }
 
+            if (!more) {
+                this._query_index++;
+                more = this.construct_query_object(num_desired, this._query_index);
+            }
+
             this._get_more = more;
             let can_load_more = !!more;
             if (can_load_more !== this._can_load_more) {
@@ -75,5 +82,10 @@ const Xapian = new Module.Class({
             if (results_added.length < num_desired && this._can_load_more)
                 this.queue_load_more(num_desired - results_added.length);
         });
+    },
+
+    clear: function () {
+        this._get_more = null;
+        this.parent();
     },
 });

@@ -77,6 +77,11 @@ const ParallaxBackground = new Module.Class({
         this._on_visible_child_changed();
     },
 
+    // Module override. The interface method will take precedent otherwise.
+    make_ready: function (cb=function () {}) {
+        this.parent(cb);
+    },
+
     _on_visible_child_changed: function () {
         let context = this.get_style_context();
         context.remove_class(this._style_classes['left']);

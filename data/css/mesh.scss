@@ -509,6 +509,14 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 
     .section-page,
     .search-page {
+        .ContentGroup__title {
+            font-family: Montserrat;
+            font-weight: bold;
+            font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
+            padding-top: 1.0em;
+            padding-bottom: 1.0em;
+        }
+
         padding: 0 100px;
 
         .title {
@@ -549,7 +557,7 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 .window-small.preset-a {
     .section-page,
     .search-page {
-        .title {
+        .title, .ContentGroup__title {
             font-size: 1.75em; /* 28pt * 1/12 * 0.75 DPI correction factor */
         }
     }
@@ -599,7 +607,7 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
             }
         }
 
-        .ContentGroupSearch {
+        .ContentGroupSearch, .ContentGroup {
             background-color: transparentize(black, 1 - 0.75);
         }
     }
@@ -615,7 +623,7 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 
     .section-page,
     .article-page {
-        .ContentGroupItem {
+        .ContentGroup {
             background-color: transparentize(black, 1 - 0.75);
         }
     }
@@ -699,7 +707,7 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 
         .section-page,
         .article-page {
-            .ContentGroupItem {
+            .ContentGroup {
                 background-color: transparentize(black, 1 - 0.8);
             }
         }

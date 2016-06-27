@@ -130,12 +130,10 @@
     <file>js/app/modules/contentGroup/contentGroup.js</file>
     <file>js/app/modules/contentGroup/dynamicTitle.js</file>
     <file>js/app/modules/contentGroup/hierarchicalSet.js</file>
-    <file>js/app/modules/contentGroup/item.js</file>
     <file>js/app/modules/contentGroup/mediaLightbox.js</file>
     <file>js/app/modules/contentGroup/search.js</file>
     <file>js/app/modules/contentGroup/set.js</file>
     <file>js/app/modules/contentGroup/staticText.js</file>
-    <file>js/app/modules/contentGroup/supplementaryArticles.js</file>
     <file>js/app/modules/contentGroup/thematic.js</file>
     <file>js/app/modules/controller/buffet.js</file>
     <file>js/app/modules/controller/mesh.js</file>
@@ -169,6 +167,7 @@
     <file>js/app/modules/selection/articlesForSet.js</file>
     <file>js/app/modules/selection/selection.js</file>
     <file>js/app/modules/selection/suggestedArticles.js</file>
+    <file>js/app/modules/selection/supplementaryArticles.js</file>
     <file>js/app/modules/selection/xapian.js</file>
     <file>js/app/modules/window/simple.js</file>
     <file>js/app/moltresApplication.js</file>

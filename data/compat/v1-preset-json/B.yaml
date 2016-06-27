@@ -10,8 +10,13 @@ defines:
       card: Card.Title
 
 - &section-items
-  type: ContentGroup.Item
-  slots: *sidebar-list-slots
+  type: ContentGroup.ContentGroup
+  styles:
+    - items
+  slots:
+    <<: *sidebar-list-slots
+    selection:
+      type: Selection.ArticlesForSet
 
 - &search-results
   shortdef: 'ContentGroup.Search(message-valign: center)'

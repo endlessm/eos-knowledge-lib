@@ -11,6 +11,7 @@ const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
+const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 const Utils = imports.tests.utils;
 
@@ -283,9 +284,10 @@ function test_card_container_fade_in_compliance(action, CardContainerClass, extr
 
 function test_selection_compliance (SelectionClass, extra_slots={}) {
     describe(SelectionClass.$gtype.name + ' implements Selection correctly', function () {
-        let factory, selection;
+        let factory, selection, reading_history;
 
         beforeEach(function () {
+            reading_history = MockReadingHistoryModel.mock_default();
             jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
             // Not all Selections might use the Xapian engine, but I can't think
@@ -363,7 +365,7 @@ function test_selection_compliance (SelectionClass, extra_slots={}) {
 
         it('by not leaving queue_load_more unimplemented', function () {
             expect(() => {
-                selection.queue_load_more();
+                selection.queue_load_more(10);
             }).not.toThrow();
         });
     });
