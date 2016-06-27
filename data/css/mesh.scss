@@ -29,6 +29,8 @@ $title-font-composite: 'Roboto';
 $display-font: 'Lato';
 $display-font-composite: 'Roboto';
 
+@import 'modules/banner/app';
+
 @import 'modules/window/simple';
 
 @import 'preset_a';
@@ -82,14 +84,6 @@ $display-font-composite: 'Roboto';
         &.PagerParallaxBackground--right {
             background-position: 100% 50%;
         }
-    }
-}
-
-.BannerApp {
-    .ThemeableImage {
-        -EknThemeableImage-sizing: "size-down";
-        min-width: 200px;
-        min-height: 200px;
     }
 }
 
