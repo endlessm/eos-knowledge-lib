@@ -33,6 +33,8 @@ $display-font-composite: 'Roboto';
 
 @import 'modules/card/base';
 
+@import 'modules/contentGroup/search';
+
 @import 'modules/window/simple';
 
 @import 'preset_a';
@@ -98,9 +100,15 @@ $display-font-composite: 'Roboto';
 }
 
 .ContentGroupSearch {
-    spinner {
-        margin: 20px;
+    background-color: transparentize(black, 1 - 0.25);
+
+    .ArrangementScrollingList__grid {
+        padding: 0;
     }
+}
+
+.results-message-background {
+    background-color: transparent;
 }
 
 .CardLegacyPolaroid {

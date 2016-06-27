@@ -34,21 +34,22 @@
 
         .ContentGroupSearch {
             background-color: transparentize(black, 1 - 0.75);
-        }
-    }
 
-    .search-page .ContentGroupSearch {
-        .results-message-title,
-        .results-message-subtitle,
-        .error-message {
-            font-size: 1.2em;
-            padding: 10px 25px;
+            .results-message-title,
+            .results-message-subtitle,
+            .error-message {
+                color:white;
+                font-size: 1.2em;
+                font-style: normal;
+                padding: 10px 25px;
+            }
         }
     }
 
     .section-page,
     .article-page {
-        .ContentGroupItem {
+        .ContentGroupItem,
+        .ContentGroupSearch {
             background-color: transparentize(black, 1 - 0.75);
         }
     }
