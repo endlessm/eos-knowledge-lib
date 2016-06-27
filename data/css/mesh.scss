@@ -29,6 +29,8 @@ $title-font-composite: 'Roboto';
 $display-font: 'Lato';
 $display-font-composite: 'Roboto';
 
+@import 'modules/window/simple';
+
 @import 'preset_a';
 @import 'preset_b';
 
@@ -37,18 +39,18 @@ $display-font-composite: 'Roboto';
      * apps have image backgrounds.*/
     background-color: #888888;
 
-    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 
     /* FIXME: for the time being, until we can properly customize the webkit
     scrollbars, style the GTK scrollbars to look slightly more like them */
     scrollbar {
+        background-color: transparent;
+        padding: 0px;
+
         slider {
-            min-width: 8px;
             min-height: 8px;
             background-color: #333333;
-            border-radius: 20px;
         }
 
         trough {
