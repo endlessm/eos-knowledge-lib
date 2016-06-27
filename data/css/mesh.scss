@@ -31,6 +31,8 @@ $display-font-composite: 'Roboto';
 
 @import 'modules/banner/app';
 
+@import 'modules/card/base';
+
 @import 'modules/window/simple';
 
 @import 'preset_a';
@@ -85,24 +87,6 @@ $display-font-composite: 'Roboto';
             background-position: 100% 50%;
         }
     }
-}
-
-.Card {
-    &.invisible {
-        opacity: 0.0;
-    }
-
-    &.fade-in {
-        transition: opacity 1000ms ease-in-out;
-        opacity: 1.0;
-    }
-
-    .thumbnail {
-        background-position: center;
-        background-size: 100% 100%;
-        border-width: 0px;
-    }
-
 }
 
 .section-page,
