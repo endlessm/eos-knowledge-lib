@@ -32,6 +32,7 @@ $display-font-composite: 'Roboto';
 @import 'modules/banner/app';
 
 @import 'modules/card/base';
+@import 'modules/card/legacyPolaroid';
 
 @import 'modules/contentGroup/search';
 
@@ -109,52 +110,6 @@ $display-font-composite: 'Roboto';
 
 .results-message-background {
     background-color: transparent;
-}
-
-.CardLegacyPolaroid {
-    padding: 10px 10px 0px 10px;
-    margin: 7px;
-    background-color: white;
-
-    .title {
-        padding: 4px 0px 4px 0px;
-        color: $accent-dark-color;
-        font-family: $title-font, sans-serif;
-        font-size: 0.9em;
-        font-weight: bold;
-    }
-
-    .thumbnail {
-        min-height: 133px;
-    }
-
-    .card-synopsis {
-        padding: 0px 0px 4px 0px;
-        color: #666666;
-        font-size: 0.8em;
-        text-shadow: white 0px 1px 0px;
-
-        &.highlighted {
-            background-color: $background-dark-color;
-        }
-    }
-
-    .title.highlighted {
-        background-color: $background-dark-color;
-    }
-
-    .composite & {
-        .title {
-            font-weight: 600;
-            font-size: 16.4px;  /* Original spec may have been wrong */
-        }
-
-        .card-synopsis {
-            color: black;
-            font-size: 16.4px;  /* 14px spec * 88% */
-            text-shadow: none;
-        }
-    }
 }
 
 .LayoutSidebar {

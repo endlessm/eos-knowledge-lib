@@ -89,6 +89,7 @@ scss_partials = \
 	$(srcdir)/data/css/modules/card/_base.scss \
 	$(srcdir)/data/css/modules/card/_deck.scss \
 	$(srcdir)/data/css/modules/card/_knowledgeDocument.scss \
+	$(srcdir)/data/css/modules/card/_legacyPolaroid.scss \
 	$(srcdir)/data/css/modules/card/_list.scss \
 	$(srcdir)/data/css/modules/card/_media.scss \
 	$(srcdir)/data/css/modules/card/_post.scss \
