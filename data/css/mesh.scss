@@ -1,8 +1,33 @@
 @import 'common';
 
-$template-b-text-color: #eeccf8;
-$template-b-text-color-hover: #d64970;
-$template-b-text-color-highlighted: #333333;
+@import 'colors';
+@import 'typography';
+
+$primary-light-color: #eeccf8;
+$primary-medium-color: #d64970;
+$primary-dark-color: #2e3436;
+
+$background-light-color: #ececec;
+$background-dark-color: #d3d7cf;
+
+$accent-dark-color: #d16550;
+
+$legacy-post-card-border-color: transparentize(black, 1 - 0.70);
+$legacy-post-card-border-color-hover: white;
+
+$tab-button-background: #f16e47;
+$tab-button-gradient-light: $tab-button-background;
+$tab-button-gradient-dark: mix($tab-button-background, black, 65%);
+$tab-button-gradient-active-light: $tab-button-gradient-light;
+$tab-button-gradient-active-dark: $tab-button-gradient-dark;
+$tab-button-gradient-hover-light: mix($tab-button-background, black, 95%);
+$tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
+
+$body-font: 'Lato';
+$title-font: 'Montserrat';
+$title-font-composite: 'Roboto';
+$display-font: 'Lato';
+$display-font-composite: 'Roboto';
 
 @import 'preset_a';
 @import 'preset_b';
@@ -87,7 +112,7 @@ $template-b-text-color-highlighted: #333333;
 .section-page,
 .search-page {
     .title {
-        font-family: Montserrat;
+        font-family: $title-font;
         font-weight: bold;
     }
 }
@@ -105,8 +130,8 @@ $template-b-text-color-highlighted: #333333;
 
     .title {
         padding: 4px 0px 4px 0px;
-        color: #d16550;
-        font-family: 'Montserrat', sans-serif;
+        color: $accent-dark-color;
+        font-family: $title-font, sans-serif;
         font-size: 0.9em;
         font-weight: bold;
     }
@@ -122,12 +147,12 @@ $template-b-text-color-highlighted: #333333;
         text-shadow: white 0px 1px 0px;
 
         &.highlighted {
-            background-color: #d3d7cf;
+            background-color: $background-dark-color;
         }
     }
 
     .title.highlighted {
-        background-color: #d3d7cf;
+        background-color: $background-dark-color;
     }
 
     .composite & {
@@ -156,10 +181,10 @@ $template-b-text-color-highlighted: #333333;
 
             .title {
                 padding: 0em 0em 0em 1.5em;
-                font-family: Lato;
+                font-family: $display-font;
                 font-size: 1.125em; /* 18pt * 1/12 * 0.75 DPI correction factor */
                 font-weight: normal;
-                color: $template-b-text-color;
+                color: $primary-light-color;
                 transition: color 250ms ease-in-out;
             }
 
@@ -171,7 +196,7 @@ $template-b-text-color-highlighted: #333333;
                                                   transparentize(black, 1 - 0.05) 100%);
 
                 .title {
-                    color: $template-b-text-color-hover;
+                    color: $primary-medium-color;
                 }
             }
 
@@ -182,7 +207,7 @@ $template-b-text-color-highlighted: #333333;
                 transition-property: none;
 
                 .title {
-                    color: $template-b-text-color-highlighted;
+                    color: $primary-dark-color;
                     transition-property: none;
                 }
 
@@ -194,7 +219,7 @@ $template-b-text-color-highlighted: #333333;
                                                       transparentize(black, 1 - 0.05) 100%);
 
                     .title {
-                        color: $template-b-text-color-highlighted;
+                        color: $primary-dark-color;
                         transition-property: none;
                     }
                 }
@@ -207,7 +232,7 @@ $template-b-text-color-highlighted: #333333;
     }
 
     .composite & .sidebar .CardTitle .title {
-        font-family: Roboto;
+        font-family: $title-font-composite;
     }
 }
 
@@ -220,9 +245,6 @@ $template-b-text-color-highlighted: #333333;
     color: #666666
 }
 
-$legacy-post-card-border-color: transparentize(black, 1 - 0.7);
-$legacy-post-card-border-color-hover: white;
-
 .CardLegacyPost {
     border-style: solid;
     border-width: 5px;
@@ -233,7 +255,7 @@ $legacy-post-card-border-color-hover: white;
         border-color: $legacy-post-card-border-color-hover;
 
         .title {
-            color: $template-b-text-color-hover;
+            color: $primary-medium-color;
             background-color: $legacy-post-card-border-color-hover;
         }
     }
@@ -243,7 +265,7 @@ $legacy-post-card-border-color-hover: white;
     }
 
     .title {
-        color: $template-b-text-color;
+        color: $primary-light-color;
         font-size: 1.8em;
         padding: .9em 0em;
         background-color: $legacy-post-card-border-color;
@@ -314,14 +336,6 @@ $legacy-post-card-border-color-hover: white;
     }
 }
 
-$tab-button-background: #F16E47;
-$tab-button-gradient-light: $tab-button-background;
-$tab-button-gradient-dark: mix($tab-button-background, black, 65%);
-$tab-button-gradient-active-light: $tab-button-gradient-light;
-$tab-button-gradient-active-dark: $tab-button-gradient-dark;
-$tab-button-gradient-hover-light: mix($tab-button-background, black, 95%);
-$tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
-
 .TabButton {
     color: white;
     padding-right: 1.8em;
@@ -377,8 +391,8 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
                           linear-gradient(to bottom, white, white);
         background-clip: padding-box;
         padding: 0.75em 0.55em 0.75em 0.55em;
-        color: #2e3436;
-        caret-color: #2e3436;
+        color: $primary-dark-color;
+        caret-color: $primary-dark-color;
         font-size: 1em;
 
         border-style: solid;
@@ -391,11 +405,11 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 
         selection {
             color: white;
-            background-color: #2e3436;
+            background-color: $primary-dark-color;
         }
 
         &:selected {
-            background-color: lighter(#2e3436);
+            background-color: lighter($primary-dark-color);
             color: #eeeeec;
         }
 
@@ -426,7 +440,7 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     }
 
     .title {
-        font-family: Montserrat;
+        font-family: $title-font;
         font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
         font-weight: bold;
 
@@ -497,7 +511,7 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 
     label {
         color: white;
-        font-family: Lato;
+        font-family: $display-font;
         font-size: 1.0em; /* 16px / 12px/em * 72/96 */
         font-weight: bold;
     }
@@ -506,10 +520,10 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 /* Changes for composite TVs */
 
 .composite {
-    font-family: Roboto;
+    font-family: $display-font-composite;
 
     .title {
-        font-family: Roboto;
+        font-family: $title-font-composite;
     }
 
     headerbar entry {
