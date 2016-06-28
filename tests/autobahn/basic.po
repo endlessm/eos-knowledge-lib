@@ -1,0 +1,15 @@
+# 
+msgid ""
+msgstr ""
+
+#: tests/autobahn/basic.yaml:68 tests/autobahn/basic.yaml:73
+msgid "My Awesome App"
+msgstr "Mijn Toffe Appje"
+
+#: tests/autobahn/basic.yaml:30
+msgid "FAKE VIDEOS"
+msgstr "NEPVIDEO’S"
+
+#: tests/autobahn/basic.yaml
+msgid "Searches"
+msgstr "Zoektermen"

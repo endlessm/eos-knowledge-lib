@@ -4,9 +4,11 @@
 
 import argparse
 import collections
-import io
+import datetime
 import json
 import os
+import os.path
+import polib
 import re
 import sys
 import yaml
@@ -105,26 +107,66 @@ def preprocess(infile):
 
 
 def remove_output(f):
-    if f is default_out:
+    if f is sys.stdout:
         return
     f.close()
     os.unlink(f.name)
 
-# Ensure stdout is UTF-8
-default_out = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
+def translate(loader, node):
+    source = node.start_mark.name
+    filename = source if source != '<unicode string>' else infile_name
+    occurrence = os.path.relpath(filename), node.start_mark.line
+    try:
+        pot.append(polib.POEntry(msgid=node.value, occurrences=[occurrence]))
+    except ValueError:
+        entry = pot.find(node.value)
+        entry.occurrences.append(occurrence)
+
+    if po is None:
+        return node.value
+    entry = po.find(node.value)
+    return entry.msgstr if entry.translated() else node.value
+
+# Shared state
+pot = polib.POFile(check_for_duplicates=True)
+pot.metadata = {
+    'POT-Creation-Date': datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M+0000'),
+    'MIME-Version': '1.0',
+    'Content-Type': 'text/plain; charset=utf-8',
+    'Content-Transfer-Encoding': '8bit',
+}
+po = None
+infile_name = None
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Preprocess app.json.')
     parser.add_argument('input', nargs='?', default=sys.stdin,
                         type=argparse.FileType('r'),
                         help='Input file (default: stdin)')
-    parser.add_argument('-o', '--output', default=default_out,
-                        type=argparse.FileType('w', encoding='utf-8'),
+    parser.add_argument('-o', '--output', default=sys.stdout,
+                        type=argparse.FileType('w'),
                         help='File to write (default: stdout)')
+    parser.add_argument('-c', '--catalog', action='store_true',
+                        help='Write a .pot message catalog instead of JSON')
+    parser.add_argument('-t', '--translations',
+                        type=argparse.FileType('r', encoding='utf-8'),
+                        help='.po file to use for translations (default: none)')
     args = parser.parse_args()
 
+    infile_name = args.input.name
+
+    yaml.add_constructor('!translate', translate)
+
+    if args.translations:
+        po = polib.pofile(args.translations.read())
+
     try:
-        args.output.write(preprocess(args.input))
+        dumped_json = preprocess(args.input)
+        if args.catalog:
+            args.output.write(str(pot))
+        else:
+            args.output.write(dumped_json)
     except yaml.error.MarkedYAMLError as exc:
         remove_output(args.output)
         sys.stderr.write('Invalid YAML: ' + str(exc) + '\n')
