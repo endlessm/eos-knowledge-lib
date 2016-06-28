@@ -472,7 +472,6 @@ const DomainV3 = new Lang.Class({
             if (table_record) {
                 return table_record.data.load_as_dictionary();
             } else {
-                printerr("Couldn't find link table for shard!");
                 return null;
             }
         });
