@@ -1,0 +1,16 @@
+.DocumentCard {
+    WebKitWebView {
+        background-color: $background-light-color;
+        background-image: url('../templates/images/noise.png');
+    }
+
+    .title {
+        font-family: $title-font;
+        font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
+        font-weight: bold;
+
+        &.collapsed {
+            margin-bottom: 10px;
+        }
+    }
+}

@@ -31,6 +31,8 @@ $display-font-composite: 'Roboto';
 
 @import 'modules/contentGroup/search';
 
+@import 'modules/documentCard/base';
+
 @import 'modules/layout/hamburgerBasement';
 @import 'modules/layout/navigation';
 @import 'modules/layout/sidebar';
@@ -168,23 +170,6 @@ $display-font-composite: 'Roboto';
 /* Hide scrollbars when animating, they look bad. */
 .PagerSimple--animating scrollbar slider {
     background-color: transparent;
-}
-
-.DocumentCard {
-    WebKitWebView {
-        background-color: #ececec;
-        background-image: url('../templates/images/noise.png');
-    }
-
-    .title {
-        font-family: $title-font;
-        font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
-        font-weight: bold;
-
-        &.collapsed {
-            margin-bottom: 10px;
-        }
-    }
 }
 
 .webview-tooltip label {
