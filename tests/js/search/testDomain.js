@@ -95,12 +95,6 @@ function create_mock_domain_for_version (versionNo) {
 
     // Don't hit the disk.
     domain._content_dir = Gio.File.new_for_path('/foo');
-    spyOn(domain, 'load').and.callFake(function (cancellable, callback) {
-        callback(null);
-    });
-    spyOn(domain, 'load_finish').and.callFake(function () {
-        return null;
-    });
 
     return domain;
 }

@@ -71,17 +71,13 @@ const Domain = new Lang.Class({
     },
 
     /**
-     * Function: load
+     * Function: load_sync
      *
      * Private method, intended to be overridden by subclasses.
      *
-     * Loads the domain from disk.
+     * Loads the domain from disk synchronously.
      */
-    load: function (cancellable, callback) {
-        throw new Error('Should be overridden in subclasses');
-    },
-
-    load_finish: function (task) {
+    load_sync: function (cancellable) {
         throw new Error('Should be overridden in subclasses');
     },
 
@@ -127,15 +123,17 @@ const Domain = new Lang.Class({
      */
     get_fixed_query: function (query_obj, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        this.load(cancellable, task.catch_callback_errors((source, load_task) => {
-            this.load_finish(load_task);
+
+        task.catch_errors(() => {
+            this.load_sync();
 
             let domain_params = this.get_domain_query_params();
             this._xapian_bridge.get_fixed_query(query_obj, domain_params, cancellable, task.catch_callback_errors((bridge, bridge_task) => {
                 let result = this._xapian_bridge.get_fixed_query_finish(bridge_task);
                 task.return_value(result);
             }));
-        }));
+        });
+
         return task;
     },
 
@@ -163,8 +161,8 @@ const Domain = new Lang.Class({
 
     get_objects_by_query: function (query_obj, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        this.load(cancellable, task.catch_callback_errors((source, load_task) => {
-            this.load_finish(load_task);
+        task.catch_errors(() => {
+            this.load_sync();
 
             let domain_params = this.get_domain_query_params();
             this._xapian_bridge.query(query_obj, domain_params, cancellable, task.catch_callback_errors((bridge, query_task) => {
@@ -190,7 +188,7 @@ const Domain = new Lang.Class({
                     task.return_value([results, info]);
                 }));
             }));
-        }));
+        });
         return task;
     },
 
@@ -227,6 +225,25 @@ const Domain = new Lang.Class({
      */
     check_for_updates: function () {
         // By default, do nothing.
+    },
+
+    load_record_from_hash: function (hash, cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+
+        task.catch_errors(() => {
+            this.load_sync();
+
+            let record = this.load_record_from_hash_sync(hash);
+            if (record === null)
+                throw new Error('Could not find shard record for ' + hash);
+
+            task.return_value(record);
+        });
+        return task;
+    },
+
+    load_record_from_hash_finish: function (task) {
+        return task.finish();
     },
 });
 
@@ -268,21 +285,11 @@ const DomainV2 = new Lang.Class({
             this._link_table = table_record.data.load_as_dictionary();
     },
 
-    load: function (cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        let shard_file = this._get_shard_file();
-        // Don't allow async_init() to be cancelled; otherwise, cancellation
+    load_sync: function() {
+        // Don't allow init() to be cancelled; otherwise, cancellation
         // will spoil the object for future use.
-        shard_file.init_async(0, null, task.catch_callback_errors((shard_file, result) => {
-            shard_file.init_finish(result);
-            this._setup_link_table();
-            task.return_value(true);
-        }));
-        return task;
-    },
-
-    load_finish: function (task) {
-        return task.finish();
+        let shard_file = this._get_shard_file();
+        shard_file.init(null);
     },
 
     test_link: function (link) {
@@ -307,21 +314,6 @@ const DomainV2 = new Lang.Class({
 
     load_record_from_hash_sync: function (hash) {
         return this._shard_file.find_record_by_hex_name(hash);
-    },
-
-    load_record_from_hash: function (hash, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        this.load(cancellable, task.catch_callback_errors((source, load_task) => {
-            this.load_finish(load_task);
-
-            let record = this.load_record_from_hash_sync(hash);
-            task.return_value(record);
-        }));
-        return task;
-    },
-
-    load_record_from_hash_finish: function (task) {
-        return task.finish();
     },
 });
 
@@ -481,31 +473,16 @@ const DomainV3 = new Lang.Class({
         this._link_tables = tables.filter((t) => t);
     },
 
-    load: function (cancellable, callback) {
-        this._load_shards(cancellable);
+    load_sync: function () {
+        this._load_shards(null);
 
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        AsyncTask.all(this, (add_task) => {
-            this._shards.forEach((shard) => {
-                // Don't allow init_async() to be cancelled; otherwise,
-                // cancellation will spoil the object for future use.
-                add_task((cancellable, callback) => shard.init_async(0, null, callback),
-                         (result) => shard.init_finish(result));
-            });
-        }, cancellable, task.catch_callback_errors((source, resolve_task) => {
-            AsyncTask.all_finish(resolve_task);
-
-            // Fetch the link table dictionaries from each shard for link
-            // lookups
-            this._setup_link_tables();
-
-            task.return_value(true);
-        }));
-        return task;
-    },
-
-    load_finish: function (task) {
-        return AsyncTask.all_finish(task);
+        this._shards.forEach((shard) => {
+            // Don't allow init() to be cancelled; otherwise,
+            // cancellation will spoil the object for future use.
+            shard.init(null);
+        });
+        // Fetch the link table dictionaries from each shard for link lookups
+        this._setup_link_tables();
     },
 
     get_domain_query_params: function () {
@@ -529,24 +506,6 @@ const DomainV3 = new Lang.Class({
         }
 
         return null;
-    },
-
-    load_record_from_hash: function (hash, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        this.load(cancellable, task.catch_callback_errors((source, load_task) => {
-            this.load_finish(load_task);
-
-            let record = this.load_record_from_hash_sync(hash);
-            if (record === null)
-                throw new Error('Could not find shard record for ' + hash);
-
-            task.return_value(record);
-        }));
-        return task;
-    },
-
-    load_record_from_hash_finish: function (task) {
-        return task.finish();
     },
 
     check_for_updates: function () {

@@ -230,7 +230,7 @@ const Engine = Lang.Class({
         if (!GLib.getenv('EKN_DISABLE_UPDATES'))
             domain.check_for_updates();
 
-        domain.load(null, () => {});
+        domain.load_sync();
     },
 
     test_link: function (link) {
