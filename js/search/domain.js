@@ -200,15 +200,12 @@ const Domain = new Lang.Class({
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
             let [hash] = Utils.components_from_ekn_id(id);
-            this.load_record_from_hash(hash, cancellable, task.catch_callback_errors((source, load_task) => {
-                let record = this.load_record_from_hash_finish(load_task);
-
-                let metadata_stream = record.metadata.get_stream();
-                Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
-                    let data = Utils.read_stream_finish(stream_task);
-                    let json_ld = JSON.parse(data);
-                    task.return_value(this._get_model_from_json_ld(json_ld));
-                }));
+            let record = this.load_record_from_hash_sync(hash);
+            let metadata_stream = record.metadata.get_stream();
+            Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
+                let data = Utils.read_stream_finish(stream_task);
+                let json_ld = JSON.parse(data);
+                task.return_value(this._get_model_from_json_ld(json_ld));
             }));
         });
         return task;
@@ -225,25 +222,6 @@ const Domain = new Lang.Class({
      */
     check_for_updates: function () {
         // By default, do nothing.
-    },
-
-    load_record_from_hash: function (hash, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-
-        task.catch_errors(() => {
-            this.load_sync();
-
-            let record = this.load_record_from_hash_sync(hash);
-            if (record === null)
-                throw new Error('Could not find shard record for ' + hash);
-
-            task.return_value(record);
-        });
-        return task;
-    },
-
-    load_record_from_hash_finish: function (task) {
-        return task.finish();
     },
 });
 
@@ -313,6 +291,7 @@ const DomainV2 = new Lang.Class({
     },
 
     load_record_from_hash_sync: function (hash) {
+        this.load_sync();
         return this._shard_file.find_record_by_hex_name(hash);
     },
 });
@@ -498,6 +477,8 @@ const DomainV3 = new Lang.Class({
     },
 
     load_record_from_hash_sync: function (hash) {
+        this.load_sync();
+
         for (let i = 0; i < this._shards.length; i++) {
             let shard_file = this._shards[i];
             let record = shard_file.find_record_by_hex_name(hash);
