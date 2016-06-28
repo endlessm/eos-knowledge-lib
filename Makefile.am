@@ -115,6 +115,7 @@ scss_partials = \
 	$(srcdir)/data/css/modules/layout/_sideMenu.scss \
 	$(srcdir)/data/css/modules/layout/_topMenu.scss \
 	$(srcdir)/data/css/modules/navigation/_searchBox.scss \
+	$(srcdir)/data/css/modules/pager/_parallaxBackground.scss \
 	$(srcdir)/data/css/modules/window/_simple.scss \
 	$(srcdir)/data/templates/css/_eos-modal.scss \
 	$(srcdir)/data/templates/css/_eos-no-link.scss \
