@@ -1,27 +1,27 @@
 @import "project-setup";
 @import "compass";
 
+$primary-light-color: #eeccf8 !default;
+$primary-medium-color: #d64970 !default;
+$primary-dark-color: #2e3436 !default;
+
+$background-light-color: #ececec !default;
+$background-dark-color: #d3d7cf !default;
+
+$accent-light-color: #f16e47 !default;
+$accent-dark-color: #d16550 !default;
+
+$legacy-post-card-border-color: transparentize(black, 1 - 0.70) !default;
+$legacy-post-card-border-color-hover: white !default;
+
+$body-font: 'Lato' !default;
+$title-font: 'Montserrat' !default;
+$title-font-composite: 'Roboto' !default;
+$display-font: 'Lato' !default;
+$display-font-composite: 'Roboto' !default;
+
 @import 'colors';
 @import 'typography';
-
-$primary-light-color: #eeccf8;
-$primary-medium-color: #d64970;
-$primary-dark-color: #2e3436;
-
-$background-light-color: #ececec;
-$background-dark-color: #d3d7cf;
-
-$accent-light-color: #f16e47;
-$accent-dark-color: #d16550;
-
-$legacy-post-card-border-color: transparentize(black, 1 - 0.70);
-$legacy-post-card-border-color-hover: white;
-
-$body-font: 'Lato';
-$title-font: 'Montserrat';
-$title-font-composite: 'Roboto';
-$display-font: 'Lato';
-$display-font-composite: 'Roboto';
 
 @import 'modules/banner/app';
 
