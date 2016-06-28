@@ -32,6 +32,7 @@ $display-font-composite: 'Roboto';
 @import 'modules/banner/app';
 
 @import 'modules/card/base';
+@import 'modules/card/knowledgeDocument';
 @import 'modules/card/legacyPolaroid';
 @import 'modules/card/legacyPost';
 
@@ -122,68 +123,6 @@ $display-font-composite: 'Roboto';
 .pdf-card-label {
     font-size: 0.9em;
     color: #666666
-}
-
-.TableOfContents {
-    &__entry {
-        color: rgb(204, 204, 204);
-        font-weight: 900;  /* Black */
-        font-size: .7em;
-        background-color: transparent;
-        transition: background-color 150ms ease-in-out;
-        border-radius: 1.75em;
-        padding: .75em 0em .75em 0em;
-        margin-bottom: .4em;
-
-        &:hover,
-        &:selected {
-            color: white;
-        }
-
-        &:selected {
-            background-color: transparentize(white, 1 - 0.247);
-        }
-    }
-
-    &__entryTitle {
-        padding-left: 1.5em;
-    }
-
-    &__entryIndex {
-        padding: 0em 2em 0em 2em;
-    }
-
-    &__arrow {
-        color: rgb(204, 204, 204);
-        border-radius: 50%;
-        border-width: 1px;
-        border-style: solid;
-        border-color: transparentize(black, 1 - 0.3);
-        padding: 5px;
-        box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.3);
-
-        &:hover {
-            color: white;
-            border-color: transparentize(black, 1 - 0.4);
-            box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.4);
-        }
-
-        &:disabled {
-            color: transparentize(rgb(204, 204, 204), 1 - 0.3);
-            border-color: transparentize(black, 1 - 0.15);
-            box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.15);
-        }
-    }
-
-    /* Style table of contents when collapsed without section titles */
-    &--collapsed &__entry {
-        border-radius: 1.75em 0em 0em 1.75em;
-    }
-
-    &--collapsed &__entryIndex {
-        padding-left: 0em;
-        padding-right: 0em;
-    }
 }
 
 .TabButton {
@@ -350,21 +289,8 @@ $display-font-composite: 'Roboto';
     }
 }
 
-.PDFView {
-    background-image: url('../images/pdf-background.png');
-}
-
-.webview-tooltip {
-    background-color: transparentize(black, 1 - 0.4);
-    border-radius: 8px 8px 8px 8px;
-    padding: 10px 14px;
-
-    label {
-        color: white;
-        font-family: $display-font;
-        font-size: 1.0em; /* 16px / 12px/em * 72/96 */
-        font-weight: bold;
-    }
+.webview-tooltip label {
+    font-family: $display-font;
 }
 
 /* Changes for composite TVs */
