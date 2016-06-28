@@ -111,7 +111,7 @@ const Engine = Lang.Class({
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
             let [hash] = Utils.components_from_ekn_id(id);
-            let domain_obj = this._get_domain(this.default_app_id);
+            let domain_obj = this.get_default_domain();
 
             domain_obj.get_object_by_id(id, cancellable, task.catch_callback_errors((domain_obj, domain_task) => {
                 let model = domain_obj.get_object_by_id_finish(domain_task);
@@ -229,13 +229,17 @@ const Engine = Lang.Class({
         return this._domain_cache[app_id];
     },
 
+    get_default_domain: function () {
+        return this._get_domain(this.default_app_id);
+    },
+
     /**
      * Method: update_and_preload_default_domain
      *
      * Synchronously checks for updates to apply to the current domain.
      */
     update_and_preload_default_domain: function () {
-        let domain = this._get_domain(this.default_app_id);
+        let domain = this.get_default_domain();
 
         if (!GLib.getenv('EKN_DISABLE_UPDATES'))
             domain.check_for_updates();
@@ -244,7 +248,7 @@ const Engine = Lang.Class({
     },
 
     test_link: function (link) {
-        return this._get_domain(this.default_app_id).test_link(link);
+        return this.get_default_domain().test_link(link);
     },
 });
 
