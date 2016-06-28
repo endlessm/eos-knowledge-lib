@@ -105,6 +105,7 @@ scss_partials = \
 	$(srcdir)/data/css/modules/contentGroup/_search.scss \
 	$(srcdir)/data/css/modules/contentGroup/_thematic.scss \
 	$(srcdir)/data/css/modules/layout/_dynamicBackground.scss \
+	$(srcdir)/data/css/modules/layout/_hamburgerBasement.scss \
 	$(srcdir)/data/css/modules/layout/_infiniteScrolling.scss \
 	$(srcdir)/data/css/modules/layout/_responsiveMargins.scss \
 	$(srcdir)/data/css/modules/layout/_scrolling.scss \
