@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-06-14 01:47+0000\n"
+"POT-Creation-Date: 2016-06-21 01:48+0000\n"
 "PO-Revision-Date: 2016-06-14 01:47+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/es/)\n"
@@ -131,7 +131,7 @@ msgstr "Resultados de la búsqueda “%s”"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep %s token in your translation.
-#: js/app/modules/banner/context.js:72 js/app/modules/controller/buffet.js:145
+#: js/app/modules/banner/context.js:72 js/app/modules/controller/buffet.js:143
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "Se encontraron resultados para “%s”"
@@ -198,7 +198,7 @@ msgstr "Otras noticias"
 msgid "SEE ALL CATEGORIES"
 msgstr "VER TODAS LAS CATEGORÍAS"
 
-#: js/app/modules/navigation/searchBox.js:150
+#: js/app/modules/navigation/searchBox.js:159
 msgid "See more results"
 msgstr "Ver más resultados"
 
