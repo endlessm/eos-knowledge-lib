@@ -107,6 +107,7 @@ scss_partials = \
 	$(srcdir)/data/css/modules/layout/_infiniteScrolling.scss \
 	$(srcdir)/data/css/modules/layout/_responsiveMargins.scss \
 	$(srcdir)/data/css/modules/layout/_scrolling.scss \
+	$(srcdir)/data/css/modules/layout/_sidebar.scss \
 	$(srcdir)/data/css/modules/layout/_sideMenu.scss \
 	$(srcdir)/data/css/modules/layout/_topMenu.scss \
 	$(srcdir)/data/css/modules/navigation/_searchBox.scss \
