@@ -55,7 +55,6 @@ const ArticleHTMLRenderer = new Knowledge.Class({
     _init: function (props={}) {
         this.parent(props);
         this._custom_css_files = [];
-        this._custom_javascript_files = [];
     },
 
     _strip_tags: function (html) {
@@ -64,10 +63,6 @@ const ArticleHTMLRenderer = new Knowledge.Class({
 
     set_custom_css_files: function (custom_css_files) {
         this._custom_css_files = custom_css_files;
-    },
-
-    set_custom_javascript_files: function (custom_javascript_files) {
-        this._custom_javascript_files = custom_javascript_files;
     },
 
     _get_legacy_disclaimer: function (model) {
@@ -127,7 +122,6 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         let javascript_files = [
             'content-fixes.js',
             'hide-broken-images.js',
-            'crosslink.js',
         ];
 
         if (this.enable_scroll_manager)
@@ -239,7 +233,32 @@ const ArticleHTMLRenderer = new Knowledge.Class({
     },
 
     _get_wrapper_js_files: function () {
-        return ['jquery-min.js', 'clipboard-manager.js'].concat(this._custom_javascript_files);
+        return [
+            'jquery-min.js',
+            'clipboard-manager.js',
+            'crosslink.js',
+            'chunk.js',
+        ];
+    },
+
+    _get_crosslink_data: function (model) {
+        let engine = Engine.get_default();
+        let links = model.outgoing_links.map((link) => engine.test_link(link));
+        return JSON.stringify(links);
+    },
+
+    _get_chunk_data: function (model) {
+        function get_parent_featured_sets () {
+            return model.tags
+                .filter(tag => !tag.startsWith('Ekn'))
+                .map(tag => SetMap.get_set_for_tag(tag))
+                .filter(set => typeof set !== 'undefined')
+                .filter(set => set.featured);
+        }
+
+        return JSON.stringify({
+            'ParentFeaturedSets': get_parent_featured_sets(),
+        });
     },
 
     _render_wrapper: function (content, model) {
@@ -252,9 +271,10 @@ const ArticleHTMLRenderer = new Knowledge.Class({
             'id': model.ekn_id,
             'css-files': css_files,
             'javascript-files': js_files,
-            'link-array': this._find_active_links(model),
             'copy-button-text': _("Copy"),
             'content': content,
+            'crosslink-data': this._get_crosslink_data(model),
+            'chunk-data': this._get_chunk_data(model),
         });
     },
 
@@ -265,12 +285,6 @@ const ArticleHTMLRenderer = new Knowledge.Class({
     render: function (model) {
         let content = this._render_content(model);
         return this._render_wrapper(content, model);
-    },
-
-    _find_active_links: function (model) {
-        let engine = Engine.get_default();
-        let links = model.outgoing_links.map((link) => engine.test_link(link));
-        return JSON.stringify(links);
     },
 });
 

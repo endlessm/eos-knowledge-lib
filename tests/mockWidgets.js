@@ -40,7 +40,6 @@ const MockRenderer = new Knowledge.Class({
             false),
     },
     set_custom_css_files: function () {},
-    set_custom_javascript_files: function () {},
     render: function () {
         return '<html><body></body></html>';
     },

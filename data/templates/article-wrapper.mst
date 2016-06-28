@@ -5,15 +5,17 @@
         {{#css-files}}
         <link rel="stylesheet" type="text/css" href="resource:///com/endlessm/knowledge/data/templates/css/{{{.}}}"/>
         {{/css-files}}
-        <script>
-            window.LINKS = {{{link-array}}}{{{/link-array}}};
-        </script>
     </head>
     <body>
         <div id="copy-button">{{copy-button-text}}</div>
+        {{{content}}}
+
         {{#javascript-files}}
         <script type="text/javascript" src="resource:///com/endlessm/knowledge/data/templates/js/{{{.}}}"></script>
         {{/javascript-files}}
-        {{{content}}}
+        <script type="text/javascript">
+            window.crosslink_init({{{crosslink-data}}});
+            window.chunk_init({{{chunk-data}}});
+        </script>
     </body>
 </html>
