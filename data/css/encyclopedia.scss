@@ -1,5 +1,11 @@
 @import 'common';
 
+@import 'colors';
+@import 'typography';
+
+$display-font: 'Lato';
+$display-font-composite: 'Roboto';
+
 .WindowSimple {
     font-size: 8pt;
     background-position: center center;
@@ -202,7 +208,7 @@ scrollbar {
 
     label {
         color: white;
-        font-family: Lato;
+        font-family: $display-font;
         font-size: 1.3em; /* 16px / 12px/em */
         font-weight: bold;
     }
@@ -211,7 +217,7 @@ scrollbar {
 /* Changes for composite TVs */
 
 .composite {
-    font-family: Roboto;
+    font-family: $display-font-composite;
 
     .webview-tooltip label {
         font-weight: bold;
