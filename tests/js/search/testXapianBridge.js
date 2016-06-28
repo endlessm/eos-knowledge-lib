@@ -50,23 +50,6 @@ describe('XapianBridge', function () {
         });
     });
 
-    describe('_parse_json_ld_message', function () {
-        it('replaces old-style EKN ids', function () {
-            let json_without_api = JSON.stringify({
-                '@id': 'http://localhost:3003/foo/bar',
-            });
-            let json_with_api = JSON.stringify({
-                '@id': 'http://localhost:3003/api/foo/bar',
-            });
-
-            expect(bridge._parse_json_ld_message(json_with_api)['@id'])
-            .toEqual('ekn://foo/bar');
-
-            expect(bridge._parse_json_ld_message(json_without_api)['@id'])
-            .toEqual('ekn://foo/bar');
-        });
-    });
-
     describe('_serialize_query', function () {
         it('correctly serializes query args', function () {
             let query_args = {
