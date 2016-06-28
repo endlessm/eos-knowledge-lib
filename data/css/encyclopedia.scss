@@ -3,22 +3,19 @@
 .WindowSimple {
     font-size: 8pt;
     background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
-.WindowSimple,
 .search-page,
 .article-page {
+    background-position: top center;
     background-size: cover;
     background-repeat: no-repeat;
 }
 
 .PagerSimple {
     -EknPager_Simple-transitions-style: 'splash';
-}
-
-.search-page,
-.article-page {
-    background-position: top center;
 }
 
 .NavigationSearchBox {
@@ -35,25 +32,43 @@
     border-top-color: rgba(0, 0, 0, 0.49);
     border-left-color: rgba(0, 0, 0, 0.49);
     border-right-color: rgba(0, 0, 0, 0.49);
-
     border-bottom-color: rgba(255, 255, 255, 0.14);
+
+    .home-page & {
+        min-width: 450px;
+    }
+
+    image {
+        margin: 0 3px;
+    }
+
+    selection {
+        color: rgba(0, 0, 0, 0.7);
+        background-color: #fff;
+    }
+
+    .composite & {
+        font-size: 21.1px;  /* 18 px spec * 88% because spec was at 110% scale not 125% */
+        background-color: transparentize(black, 1 - 0.8);
+    }
 }
 
-.home-page .BannerApp {
-    margin-bottom: 42px;
-}
+.BannerApp {
+    .home-page & {
+        margin-bottom: 42px;
+    }
 
-.home-page .NavigationSearchBox {
-    min-width: 450px;
-}
+    .search-page &,
+    .article-page & {
+        margin: 10px 0;
+    }
 
-.NavigationSearchBox image {
-    margin: 0 3px;
-}
-
-.NavigationSearchBox selection {
-    color: rgba(0, 0, 0, 0.7);
-    background-color: #fff;
+    .search-page & .ThemeableImage,
+    .article-page & .ThemeableImage {
+        -EknThemeableImage-sizing: "size-min";
+        min-width: 202px;
+        min-height: 72px;
+    }
 }
 
 /* WebKit creates GTK tooltips internally, so style them here */
@@ -64,91 +79,63 @@
 
 .ContentGroupSearch {
     color: #464646;
-}
 
-.ContentGroupSearch spinner {
-    margin: 20px;
-}
+    spinner {
+        margin: 20px;
+    }
 
-.search-page .BannerApp,
-.article-page .BannerApp {
-    margin: 10px 0;
-}
+    .search-page & {
+        margin-top: 20px;
+    }
 
-.search-page .BannerApp .ThemeableImage,
-.article-page .BannerApp .ThemeableImage {
-    -EknThemeableImage-sizing: "size-min";
-    min-width: 202px;
-    min-height: 72px;
-}
+    .search-page & separator {
+        min-height: 1px;
+        background-image: none;
+        background-color: #888a85;
+    }
 
-.search-page .LayoutPaper .LayoutBox {
-    padding: 0 45px;
-}
+    .results-message-title,
+    .results-message-subtitle,
+    .error-message {
+        font-size: 1.25em;  /* 15px / 12px/em */
+        font-weight: normal;
+        padding-top: 2.0em;
+    }
 
-.search-page .BannerSearch {
-    font-weight: 300;
-    font-size: 2em; /* 24px / 12px/em */
-    color: #7e7e7e;
-    padding-top: 40px;
-    padding-bottom: 20px;
-}
+    .Card {
+        padding-bottom: 1.5em;
 
-.search-page separator {
-    min-height: 15px;
-    background-image: url('../images/separator.png');
-    background-size: 100%;
-    background-repeat: no-repeat;
-}
+        .title {
+            font-weight: normal;
+            font-size: 1.25em;  /* 15px / 12px/em */
+            color: #277090;
+            padding: 0 0 0 0;
+        }
 
-.search-page .title.query {
-    font-weight: normal;
-    color: black;
-}
+        .before {
+            -gtk-icon-source: -gtk-icontheme("media-record-symbolic");
+            min-width: 6px;
+            min-height: 6px;
+            color: rgba(145, 145, 145, 0.5);
+            padding-right: 0.6em;
+        }
 
-.search-page .title.error-message {
-    font-weight: bold;
-}
+        &:hover .title {
+            text-decoration: underline;
+        }
+    }
 
-.search-page .ContentGroupSearch {
-    margin-top: 20px;
-}
+    .composite & {
+        .results-message-title,
+        .results-message-subtitle,
+        .error-message {
+            font-size: 17.6px;  /* 15px spec * 88% */
+        }
 
-.search-page .ContentGroupSearch separator {
-    min-height: 1px;
-    background-image: none;
-    background-color: #888a85;
-}
-
-.ContentGroupSearch .results-message-title,
-.ContentGroupSearch .results-message-subtitle,
-.ContentGroupSearch .error-message {
-    font-size: 1.25em;  /* 15px / 12px/em */
-    font-weight: normal;
-    padding-top: 2.0em;
-}
-
-.ContentGroupSearch .Card {
-    padding-bottom: 1.5em;
-}
-
-.ContentGroupSearch .Card .title {
-    font-weight: normal;
-    font-size: 1.25em;  /* 15px / 12px/em */
-    color: #277090;
-    padding: 0 0 0 0;
-}
-
-.ContentGroupSearch .Card:hover .title {
-    text-decoration: underline;
-}
-
-.ContentGroupSearch .Card .before {
-    -gtk-icon-source: -gtk-icontheme("media-record-symbolic");
-    min-width: 6px;
-    min-height: 6px;
-    color: rgba(145, 145, 145, 0.5);
-    padding-right: 0.6em;
+        .Card .title {
+            font-size: 18.8px;  /* 16px spec * 88% */
+        }
+    }
 }
 
 .LayoutPaper {
@@ -156,59 +143,78 @@
         background-image: linear-gradient(to bottom, #ececec 0%, #ececec 100%),
                           url('../templates/images/noise.png');
     }
+
+    .search-page & .LayoutBox {
+        padding: 0 45px;
+    }
+}
+
+.BannerSearch {
+    .search-page & {
+        font-weight: 300;
+        font-size: 2em; /* 24px / 12px/em */
+        color: #7e7e7e;
+        padding-top: 40px;
+        padding-bottom: 20px;
+    }
+
+    .composite .search-page & {
+        font-weight: normal;
+        font-size: 23.5px;  /* 20px spec * 88% */
+        font-weight: bold;
+    }
+}
+
+.search-page {
+    separator {
+        min-height: 15px;
+        background-image: url('../images/separator.png');
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
+
+    .title {
+        &.query {
+            font-weight: normal;
+            color: black;
+        }
+
+        &.error-message {
+            font-weight: bold;
+        }
+    }
 }
 
 scrollbar {
     padding: 0px 3px;
-}
 
-scrollbar slider {
-    background-color: #9b9b9b;
-    border-radius: 20px;
-    min-width: 8px;
+    slider {
+        background-color: #9b9b9b;
+        border-radius: 20px;
+        min-width: 8px;
+    }
 }
 
 .webview-tooltip {
     background-color: transparentize(black, 1 - 0.4);
     border-radius: 8px 8px 8px 8px;
     padding: 10px 14px;
-}
 
-.webview-tooltip label {
-    color: white;
-    font-family: Lato;
-    font-size: 1.3em; /* 16px / 12px/em */
-    font-weight: bold;
+    label {
+        color: white;
+        font-family: Lato;
+        font-size: 1.3em; /* 16px / 12px/em */
+        font-weight: bold;
+    }
 }
 
 /* Changes for composite TVs */
 
 .composite {
     font-family: Roboto;
-}
 
-.composite .NavigationSearchBox {
-    font-size: 21.1px;  /* 18 px spec * 88% because spec was at 110% scale not 125% */
-    background-color: transparentize(black, 1 - 0.8);
-}
-
-.composite .search-page .BannerSearch {
-    font-weight: normal;
-    font-size: 23.5px;  /* 20px spec * 88% */
-    font-weight: bold;
-}
-
-.composite .webview-tooltip label {
-    font-weight: bold;
-    font-size: 18.8px;  /* 16px spec * 88% */
-}
-
-.composite .ContentGroupSearch .results-message-title,
-.composite .ContentGroupSearch .results-message-subtitle,
-.composite .ContentGroupSearch .error-message {
-    font-size: 17.6px;  /* 15px spec * 88% */
-}
-
-.composite .ContentGroupSearch .Card .title {
-    font-size: 18.8px;  /* 16px spec * 88% */
+    .webview-tooltip label {
+        font-weight: bold;
+        font-size: 18.8px;  /* 16px spec * 88% */
+    }
 }
