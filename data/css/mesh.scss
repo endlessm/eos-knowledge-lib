@@ -33,6 +33,7 @@ $display-font-composite: 'Roboto';
 
 @import 'modules/card/base';
 @import 'modules/card/legacyPolaroid';
+@import 'modules/card/legacyPost';
 
 @import 'modules/contentGroup/search';
 
@@ -121,35 +122,6 @@ $display-font-composite: 'Roboto';
 .pdf-card-label {
     font-size: 0.9em;
     color: #666666
-}
-
-.CardLegacyPost {
-    border-style: solid;
-    border-width: 5px;
-    border-color: $legacy-post-card-border-color;
-    transition: border-color 250ms ease-in-out;
-
-    &:hover {
-        border-color: $legacy-post-card-border-color-hover;
-
-        .title {
-            color: $primary-medium-color;
-            background-color: $legacy-post-card-border-color-hover;
-        }
-    }
-
-    .thumbnail {
-        background-size: cover;
-    }
-
-    .title {
-        color: $primary-light-color;
-        font-size: 1.8em;
-        padding: .9em 0em;
-        background-color: $legacy-post-card-border-color;
-        transition: color 250ms ease-in-out,
-                    background-color 250ms ease-in-out;
-    }
 }
 
 .TableOfContents {
