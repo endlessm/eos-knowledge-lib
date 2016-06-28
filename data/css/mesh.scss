@@ -32,6 +32,7 @@ $display-font-composite: 'Roboto';
 @import 'modules/contentGroup/search';
 
 @import 'modules/layout/hamburgerBasement';
+@import 'modules/layout/navigation';
 @import 'modules/layout/sidebar';
 
 @import 'modules/window/simple';
@@ -183,56 +184,6 @@ $display-font-composite: 'Roboto';
         &.collapsed {
             margin-bottom: 10px;
         }
-    }
-}
-
-.NavButtonOverlay {
-    &__backButton,
-    &__forwardButton {
-        color: white;
-        background-color: transparentize(black, 1 - 0.2);
-        border: 1px solid transparentize(white, 1 - 0.4);
-        box-shadow: inset 0px 1px 1px 0px transparentize(black, 1 - 0.5),
-            inset 0px 1px 4px 0px transparentize(black, 1 - 0.4);
-        -EknGrowButton-grow-pixels: 15;
-    }
-
-    &__backButton,
-    &__forwardButton:dir(rtl) {
-        border-left: 0px;
-        border-radius: 0px 27px 27px 0px;
-        padding: 15px;
-    }
-
-    &__forwardButton,
-    &__backButton:dir(rtl) {
-        border-radius: 27px 0px 0px 27px;
-        border-right: 0px;
-        padding: 15px;
-    }
-
-    &__backButtonImage,
-    &__forwardButtonImage {
-        color: white;
-        box-shadow: 0px 1px transparentize(black, 1 - 0.8); /* FIXME: box-shadow outset doesn't currently work in GTK */
-        min-width: 22px;
-        min-height: 22px;
-    }
-
-    &__backButtonImage {
-        -gtk-icon-source: -gtk-icontheme("go-previous-symbolic");
-    }
-
-    &__forwardButtonImage {
-        -gtk-icon-source: -gtk-icontheme("go-next-symbolic");
-    }
-
-    &__backButtonImage:dir(rtl) {
-        -gtk-icon-source: -gtk-icontheme("go-previous-symbolic-rtl");
-    }
-
-    &__forwardButtonImage:dir(rtl) {
-        -gtk-icon-source: -gtk-icontheme("go-next-symbolic-rtl");
     }
 }
 
