@@ -1,16 +1,97 @@
-@import 'buffet_core';
+@import "project-setup";
+@import "compass";
+
+/* === Colors and Fonts === */
+
+@import 'colors';
+@import 'typography';
+
+/* === Colors and Fonts (Overrides) === */
+
+$primary-light-color: #49bde3;
+$primary-medium-color: #044a80;
+$accent-light-color: #044a80;
+$accent-dark-color: #49bde3;
+$background-light-color: #e7ecee;
+$background-dark-color: #ddddd5;
+
+$card-highlighted-color: #d9f0f8;
+$group-background-color: #f6f6f6;
+$separator-color: #999999;
+$banner-color: #c4eefc;
+$banner-label-color: #666666;
+$menu-hover-color: #5bc2e5;
+$menu-separator-color: #cccccc;
+$menu-top-color: #f5f5f5;
+$menu-bottom-color: #e9e9e9;
+
+$title-font: Lato;
+$body-font: Lato;
+$context-font: Lato;
+$display-font: Lato;
+$support-font: Lato;
+$logo-font: Lato;
+
+$title-alt-font: 'Lato Thin';
+
+/* === Modules === */
+
+@import 'modules/arrangement/half';
+@import 'modules/arrangement/list';
+@import 'modules/arrangement/piano';
+@import 'modules/arrangement/scrollingList';
+@import 'modules/arrangement/squareGuys';
+@import 'modules/arrangement/thirties';
+@import 'modules/arrangement/windshield';
+
+@import 'modules/banner/app';
+@import 'modules/banner/context';
+
+@import 'modules/card/base';
+@import 'modules/card/deck';
+@import 'modules/card/knowledgeDocument';
+@import 'modules/card/list';
+@import 'modules/card/media';
+@import 'modules/card/post';
+@import 'modules/card/setPreview';
+@import 'modules/card/thumb';
+@import 'modules/card/title';
+
+@import 'modules/contentGroup/contentGroup';
+@import 'modules/contentGroup/mediaLightbox';
+@import 'modules/contentGroup/search';
+@import 'modules/contentGroup/thematic';
+
+@import 'modules/layout/infiniteScrolling';
+@import 'modules/layout/responsiveMargins';
+@import 'modules/layout/scrolling';
+@import 'modules/layout/sideMenu';
+
+@import 'modules/navigation/searchBox';
+
+@import 'modules/window/simple';
+
+/* === Modules (Overrides) === */
+
+.PagerSimple {
+    -EknPager_Simple-transitions-style: 'none';
+}
 
 .Card {
-    .title {
-        color: #044a80;
+    &.highlighted .title {
+        color: $primary-medium-color;
+    }
 
-        &.highlighted {
-            background-color: #d9f0f8;
-        }
+    .card-synopsis {
+        color: black;
+    }
+
+    .title.highlighted {
+        background-color: $card-highlighted-color;
     }
 
     .card-synopsis.highlighted {
-        background-color: #d9f0f8;
+        background-color: $card-highlighted-color;
     }
 }
 
@@ -27,20 +108,31 @@
     .ContentGroup {
         .ContentGroup__title, .ContentGroup__trigger {
             margin-bottom: 10px;
-            color: #044a80;
+            color: $accent-light-color;
             font-weight: 200;
 
             &:hover {
-                color: #49bde3;
+                color: $accent-dark-color;
             }
         }
 
+        /* FIXME can't use em because of .Card base size */
         .ContentGroup__title {
             font-size: 29.3px;
         }
 
         .ContentGroup__trigger {
-            font-size: 20px;
+            .DecorationThemeableImage {
+                -gtk-icon-source: url('../images/title-arrow-dark.svg');
+                min-height: 10px;
+                min-width: 11px;
+                margin-left: 5px;
+                margin-bottom: 5px;
+            }
+
+            &:hover .DecorationThemeableImage {
+                -gtk-icon-source: url('../images/title-arrow-light.svg');
+            }
         }
 
         margin: 20px 0px;
@@ -51,87 +143,57 @@
     }
 }
 
-.CardSetPreview {
-    .title {
-        color: #044a80;
-
-        .after {
-            -gtk-icon-source: url('../images/title-arrow-dark.svg');
-            min-height: 10px;
-            min-width: 11px;
-            margin-left: 8px;
-            margin-top: 6px;
-        }
-
-        &:hover .after {
-            -gtk-icon-source: url('../images/title-arrow-light.svg');
-        }
-    }
-
-    .CardTitle {
-        margin-top: 25px;
-
-        .title {
-            font-weight: 200;
-            font-size: 29.3px;
-        }
-    }
-
-    .CardThumb .content-frame {
-        margin-top: -10px;
-    }
-
-    separator {
-        background-color: #999999;
-        min-height: 1px;
-        margin: 4px 0px 10px 0px;
-    }
-}
-
 .ContentGroupSearch {
+    background-color: $background-light-color;
+
+    .ArrangementScrollingList__grid {
+        padding: 0 0px;
+    }
+
     .ContentGroupSuggestedArticles .content-frame {
         margin-top: -10px;
     }
 
     .suggested-categories,
     .search-page-suggestions {
-        background-color: #f6f6f6;
+        background-color: $group-background-color;
     }
 
     separator {
-        background-color: #999999;
+        background-color: $separator-color;
     }
 
     .results-message-title {
-        color: #044a80;
+        color: $primary-medium-color;
         padding: 20px 60px 0px 60px;
         padding-left: 60px;
         padding-right: 60px;
-        font-size: 24px;
+        font-size: 1.5em; /* 24px * 1/12 * 72/96 */
     }
 
     .results-message-subtitle {
-        color: #999999;
+        color: $separator-color;
+        font-style: normal;
         padding: 20px 60px 0px 60px;
         padding-left: 60px;
         padding-right: 60px;
         padding-bottom: 40px;
-        font-size: 24px;
+        font-size: 1.5em; /* 24px * 1/12 * 72/96 */
     }
 }
 
 .ContentGroup__trigger {
 
     .DecorationThemeableImage {
-        -gtk-icon-source: url('../images/news-arrow-dark.svg');
-        min-height: 14px;
-        min-width: 14px;
+        -gtk-icon-source: url('../images/title-arrow-dark.svg');
+        min-height: 10px;
+        min-width: 11px;
         margin-left: 5px;
         margin-bottom: 5px;
     }
 
     &:hover .DecorationThemeableImage {
-        -gtk-icon-source: url('../images/news-arrow-light.svg');
+        -gtk-icon-source: url('../images/title-arrow-light.svg');
     }
 }
 
@@ -139,10 +201,20 @@
     margin: 15px 0px;
     padding: 15px 20px;
 
-    .ContentGroup__title, .ContentGroup__trigger {
-        color: #044a80;
+    /* FIXME clean-up ContentGroup theming after refactors */
+    .ContentGroup__title,
+    .ContentGroup__trigger {
+        color: $accent-light-color;
         font-weight: 200;
-        font-size: 29.3px;
+        font-size: 1.83em; /* 29.3px * 1/12 * 72/96 */
+
+        &:hover {
+            color: $accent-dark-color;
+        }
+    }
+
+    .ContentGroup__trigger {
+        font-size: 1.25em; /* 20px * 1/12 * 72/96 */
     }
 
     .composite & .ContentGroup__title,
@@ -152,55 +224,17 @@
 }
 
 .search-page-suggestions {
-    margin: 50px 0;
-    padding-bottom: 20px;
-    background-color: #ddddd5;
-
-    .browse-content .title  {
-        color: #044a80;
-    }
+    background-color: $background-dark-color;
 
     .ArrangementSquareGuys {
         padding: 0 20px 20px 20px;
     }
 
     .ContentGroup__title {
-        font-family: 'Fira Sans';
-        font-weight: bold;
-        font-size: 40px;
+        color: $accent-light-color;
+        font-weight: 200;
+        font-size: 1.83em; /* 29.3px * 1/12 * 72/96 */
         padding: 0px 0px 30px 20px;
-        color: #5e7790;
-    }
-}
-
-.ContentGroupThematic {
-    padding: 20px;
-
-    .CardTitle {
-        margin-top: 25px;
-
-        .title.label {
-            font-weight: 200;
-            font-size: 29.3px;
-        }
-
-        .after {
-            -gtk-icon-source: url('../images/title-arrow-dark.svg');
-            min-height: 10px;
-            min-width: 11px;
-            margin-left: 8px;
-            margin-top: 6px;
-        }
-
-        &:hover .after {
-            -gtk-icon-source: url('../images/title-arrow-light.svg');
-        }
-    }
-
-    separator {
-        background-color: #999999;
-        min-height: 1px;
-        margin: 4px 0px 10px 0px;
     }
 }
 
@@ -225,6 +259,11 @@
 .CardList,
 .CardPost,
 .CardThumb {
+    .title,
+    .card-context {
+        font-weight: normal;
+    }
+
     &.arrow {
         -gtk-icon-source: url('../images/arrow-gray.svg');
         -gtk-icon-transform: rotate(45deg);
@@ -238,8 +277,8 @@
 
     &:hover,
     &:active {
-        outline: 1px solid #49bde3;
-        border-color: #49bde3;  /* used for the triangle in the corner */
+        outline: 1px solid $primary-light-color;
+        border-color: $primary-light-color;  /* used for the triangle in the corner */
         outline-offset: -1px;
         -gtk-outline-radius: 0;
     }
@@ -249,104 +288,57 @@
     }
 }
 
-.CardDeck {
-    &:hover .thumbnail,
-    &:active .thumbnail {
-        outline: 1px solid #49bde3;
-        border-color: #49bde3;  /* used for the triangle in the corner */
-        outline-offset: -1px;
-        -gtk-outline-radius: 0;
-    }
-
-    /* both hover and non-hover */
-    .thumbnail.arrow {
-        -gtk-icon-source: url('../images/arrow-white.svg');
-        -gtk-icon-transform: rotate(45deg);
-    }
-}
-
 .BannerApp {
-    font-family: Lato;
-    color: #c4eefc;
+    color: $banner-color;
 }
 
 .LayoutSideMenu {
     &__contextBar {
-        background-image: linear-gradient(to bottom,  #f5f5f5 0%, #e9e9e9 100%);
-        box-shadow: 0px 2px 5px 0px transparentize(black, 1 - 0.15);
-    }
-
-    &__contextBarShadow {
-        padding-bottom: 10px;
-    }
-
-    &__panel {
-        -EknSlidingPanel-shadow-margin: 40;
+        background-image: linear-gradient(to bottom,  $menu-top-color 0%, $menu-bottom-color 100%);
     }
 
     &__menu {
-        min-width: 199px;
         background-color: white;
-        box-shadow: 0px 1px 20px 0px transparentize(black, 1 - 0.5);
-        padding: 10px 10px 5px 10px;
 
         .Card {
-            margin-top: 5px;
             .title {
-                font-size: 21.3px;
-                font-family: 'Lato Thin';
-                color: #044a80;
+                font-family: $title-alt-font;
+                color: $accent-light-color;
             }
 
             &:hover .title {
-                color: #5bc2e5;
+                color: $menu-hover-color;
             }
         }
 
         separator {
-            min-height: 1px;
-            background-color: #cccccc;
-            margin-top: 5px;
+            background-color: $menu-separator-color;
         }
     }
 
     &__closeButton,
     &__homeButton {
-        color: #666666;
+        color: $banner-label-color;
         &:hover {
-            color: #49bde3;
+            color: $accent-dark-color;
         }
     }
 
     &__menuButton {
-        color: #044a80;
+        color: $accent-light-color;
         &:hover {
-            color: #5bc2e5;
+            color: $menu-hover-color;
         }
-    }
-
-    &__menuButton {
-        padding: 10px;
     }
 
     &__homeButton {
-        font-size: 21.3px;
-        font-family: 'Lato Thin';
-        font-weight: bold;
-    }
-
-    .CardTitle,
-    &__homeButton,
-    &__closeButton {
-        padding: 6px 0px;
+        font-family: $title-alt-font;
     }
 }
 
 .BannerContext {
-    font-family: 'Lato Thin';
-    font-size: 29.3px;
-    color: #666666;
-    text-shadow: 0px 1px transparentize(white, 1 - 0.004);
+    font-family: $title-alt-font;
+    color: $banner-label-color;
 }
 
 .card-context {
@@ -359,6 +351,6 @@
     .LayoutSideMenu__homeButton,
     .LayoutSideMenu__menu .Card .title,
     .BannerContext {
-        font-family: Lato;
+        font-family: $title-font;
     }
 }

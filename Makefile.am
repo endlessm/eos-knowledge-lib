@@ -69,7 +69,6 @@ scss_toplevels = \
 	$(srcdir)/data/templates/css/clipboard.scss \
 	$(NULL)
 scss_partials = \
-	$(srcdir)/data/css/_buffet_core.scss \
 	$(srcdir)/data/css/_colors.scss \
 	$(srcdir)/data/css/_common.scss \
 	$(srcdir)/data/css/_typography.scss \

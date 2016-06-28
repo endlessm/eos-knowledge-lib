@@ -11,7 +11,7 @@
 .media-card-caption {
     font-size: .81em;  /* 13pt * 1/12 * 0.75 DPI correction factor */
     font-family: $title-font;
-    color: $primary-medium-color;
+    color: #666666;
 
     .composite & {
         font-size: 14.1px;  /* 12px spec * 88% because spec was at 110% scale not 125% */
@@ -26,7 +26,7 @@
     transition: color 250ms ease-in-out;
 
     &:hover {
-        color: #ff6900;
+        color: $accent-dark-color;
     }
 
     .composite & {
