@@ -48,7 +48,7 @@ const Domain = new Lang.Class({
 
     // Returns a marshaled ObjectModel based on json_ld's @type value, or throws
     // error if there is no corresponding model
-    _get_model_from_json_ld: function (props, json_ld) {
+    _get_model_from_json_ld: function (json_ld) {
         let ekn_model_by_ekv_type = {
             'ekn://_vocab/ContentObject':
                 ContentObjectModel.ContentObjectModel,
@@ -67,7 +67,7 @@ const Domain = new Lang.Class({
             throw new Error('No EKN model found for json_ld type ' + json_ld_type);
 
         let Model = ekn_model_by_ekv_type[json_ld_type];
-        return new Model(props, json_ld);
+        return new Model({}, json_ld);
     },
 
     /**
@@ -209,10 +209,7 @@ const Domain = new Lang.Class({
                 Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
                     let data = Utils.read_stream_finish(stream_task);
                     let json_ld = JSON.parse(data);
-                    let props = {
-                        get_content_stream: () => record.data.get_stream(),
-                    };
-                    task.return_value(this._get_model_from_json_ld(props, json_ld));
+                    task.return_value(this._get_model_from_json_ld(json_ld));
                 }));
             }));
         });

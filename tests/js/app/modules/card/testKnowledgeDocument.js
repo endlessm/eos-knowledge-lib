@@ -87,13 +87,13 @@ describe('Card.KnowledgeDocument', function () {
             pdf_model = new ArticleObjectModel.ArticleObjectModel({
                 ekn_id: 'ekn:///foo/bar',
                 content_type: 'application/pdf',
-                get_content_stream: () => {
-                    let file = Gio.File.new_for_path(TEST_CONTENT_DIR + 'pdf-sample1.pdf');
-                    return file.read(null);
-                },
                 title: 'Pdf title',
                 table_of_contents: toc,
             });
+            pdf_model.get_content_stream = () => {
+                let file = Gio.File.new_for_path(TEST_CONTENT_DIR + 'pdf-sample1.pdf');
+                return file.read(null);
+            };
 
             card = new KnowledgeDocument.KnowledgeDocument({
                 model: pdf_model,

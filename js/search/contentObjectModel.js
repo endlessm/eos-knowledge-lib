@@ -1,4 +1,5 @@
 // Copyright 2014 Endless Mobile, Inc.
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
@@ -141,20 +142,9 @@ const ContentObjectModel = new Lang.Class({
                 value: props.resources ? props.resources.slice(0) : [],
                 writable: false,
             },
-            /**
-             * Property: get_content_stream
-             * A function returning a GInputStream of the objects content.
-             */
-            'get_content_stream': {
-                value: props.get_content_stream ? props.get_content_stream : () => {
-                    throw new Error('No content stream set on this model');
-                },
-                writable: false,
-            },
         });
         delete props.tags;
         delete props.resources;
-        delete props.get_content_stream;
 
         // Note: This is only for ensuring the invariant of "each model has an
         // EKN ID" in tests. It is illegal to create a model in production code
@@ -211,5 +201,12 @@ const ContentObjectModel = new Lang.Class({
 
         if (json_ld.hasOwnProperty('featured'))
             props.featured = json_ld.featured;
+    },
+
+    get_content_stream: function () {
+        let cancellable = null;
+        let file = Gio.File.new_for_uri(this.ekn_id);
+        let stream = file.read(cancellable);
+        return stream;
     },
 });
