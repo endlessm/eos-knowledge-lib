@@ -59,13 +59,11 @@ $support-font: 'Fira Sans';
 
 @import 'modules/navigation/searchBox';
 
+@import 'modules/pager/simple';
+
 @import 'modules/window/simple';
 
 /* === Modules (Overrides) === */
-
-.PagerSimple {
-    -EknPager_Simple-transitions-style: 'none';
-}
 
 /* The home page consists of two 'highlights' modules. We want to
    set a bottom margin on the second of these two (that is, the last

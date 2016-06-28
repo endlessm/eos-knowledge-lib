@@ -69,13 +69,11 @@ $title-alt-font: 'Lato Thin';
 
 @import 'modules/navigation/searchBox';
 
+@import 'modules/pager/simple';
+
 @import 'modules/window/simple';
 
 /* === Modules (Overrides) === */
-
-.PagerSimple {
-    -EknPager_Simple-transitions-style: 'none';
-}
 
 .Card {
     &.highlighted .title {
