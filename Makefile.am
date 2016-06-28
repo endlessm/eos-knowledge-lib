@@ -229,6 +229,8 @@ libeosknowledgesearchprivate_la_SOURCES = \
         lib/eosknowledgesearchprivate/ekns-subtree-dispatcher.h \
         lib/eosknowledgesearchprivate/ekns-file-input-stream-wrapper.c \
         lib/eosknowledgesearchprivate/ekns-file-input-stream-wrapper.h \
+        lib/eosknowledgesearchprivate/ekns-utils.c \
+        lib/eosknowledgesearchprivate/ekns-utils.h \
         $(NULL)
 
 libeosknowledgesearchprivate_la_CPPFLAGS = @EOS_KNOWLEDGE_PRIVATE_CFLAGS@
