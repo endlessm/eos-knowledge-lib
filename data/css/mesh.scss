@@ -1,4 +1,5 @@
-@import 'common';
+@import "project-setup";
+@import "compass";
 
 @import 'colors';
 @import 'typography';
@@ -28,7 +29,9 @@ $display-font-composite: 'Roboto';
 @import 'modules/card/knowledgeDocument';
 @import 'modules/card/legacyPolaroid';
 @import 'modules/card/legacyPost';
+@import 'modules/card/media';
 
+@import 'modules/contentGroup/mediaLightbox';
 @import 'modules/contentGroup/search';
 
 @import 'modules/documentCard/base';
@@ -95,7 +98,15 @@ $display-font-composite: 'Roboto';
 
 .pdf-card-label {
     font-size: 0.9em;
-    color: #666666
+    color: #666666;
+}
+
+.media-card-caption {
+    color: #666666;
+}
+
+.media-card-attribution-text {
+    color: #b2b2b2;
 }
 
 .NavigationSearchBox {
