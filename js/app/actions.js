@@ -45,8 +45,6 @@ const SEARCH_FAILED = 'search-failed';
 // FIXME: These actions will be replaced by the HistoryStore API
 const HIGHLIGHT_ITEM = 'highlight-item';
 const CLEAR_HIGHLIGHTED_ITEM = 'clear-highlighted-item';
-const NAV_BACK_ENABLED_CHANGED = 'nav-back-enabled-changed';
-const NAV_FORWARD_ENABLED_CHANGED = 'nav-forward-enabled-changed';
 const PAGE_READY = 'page-ready';
 const SET_SEARCH_TEXT = 'set-search-text';
 const SHOW_SET = 'show-set';
