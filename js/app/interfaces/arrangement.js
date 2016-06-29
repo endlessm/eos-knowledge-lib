@@ -269,8 +269,10 @@ const Arrangement = new Lang.Interface({
      * Remove all cards from the arrangement
      */
     clear: function () {
-        for (let card of this._cards_by_id.values())
+        for (let card of this._cards_by_id.values()) {
             this.unpack_card(card);
+            this.drop_submodule(card);
+        }
         this._cards_by_id.clear();
         this._models = [];
     },

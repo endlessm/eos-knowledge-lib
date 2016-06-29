@@ -31,9 +31,8 @@ const SupplementaryArticles = new Module.Class({
     construct_query_object: function (limit, query_index) {
         let query_object = new QueryObject.QueryObject({
             limit: limit,
-            tags: ['EknArticleObject'],
+            tags_match_all: ['EknArticleObject'],
             excluded_tags: this.model ? this.model.child_tags : [],
-            tag_match: QueryObject.QueryObjectTagMatch.ALL,
             sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
         });
         switch (query_index) {

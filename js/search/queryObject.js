@@ -67,14 +67,6 @@ const QueryObjectSort = Utils.define_enum(['RELEVANCE', 'SEQUENCE_NUMBER']);
 const QueryObjectOrder = Utils.define_enum(['ASCENDING', 'DESCENDING']);
 
 /**
- * Enum: QueryObjectTagMatch
- *
- * ANY - Match articles whose tags contain any of the tags in the query.
- * ALL - Match articles whose tags contain all of the tags in the query.
- */
-const QueryObjectTagMatch = Utils.define_enum(['ANY', 'ALL']);
-
-/**
  * Class: QueryObject
  *
  * The QueryObject class allows you to describe a query to a knowledge app
@@ -191,29 +183,27 @@ const QueryObject = Lang.Class({
             'What order to put results in',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, Object.keys(QueryObjectOrder).length - 1, QueryObjectOrder.ASCENDING),
-        /**
-         * Property: tag-match
-         *
-         * How to match tags in the query, see <QueryObjectTagMatch>.
-         *
-         * Defaults to <QueryObjectTagMatch.ANY>.
-         */
-        'tag-match': GObject.ParamSpec.uint('tag-match', 'Tag Match',
-            'How to match tags in the query',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, Object.keys(QueryObjectTagMatch).length - 1, QueryObjectTagMatch.ANY),
     },
 
     _init: function (props={}) {
         // FIXME: When we have support for list GObject properties in gjs.
         Object.defineProperties(this, {
             /**
-             * Property: tags
+             * Property: tags_match_all
              *
              * A list of tags to restrict the search to.
              */
-            'tags': {
-                value: props.tags ? props.tags.slice(0) : [],
+            'tags_match_all': {
+                value: props.tags_match_all ? props.tags_match_all.slice(0) : [],
+                writable: false,
+            },
+            /**
+             * Property: tags_match_any
+             *
+             * A list of tags to restrict the search to.
+             */
+            'tags_match_any': {
+                value: props.tags_match_any ? props.tags_match_any.slice(0) : [],
                 writable: false,
             },
             /**
@@ -245,7 +235,8 @@ const QueryObject = Lang.Class({
                 writable: false,
             },
         });
-        delete props.tags;
+        delete props.tags_match_all;
+        delete props.tags_match_any;
         delete props.ids;
         delete props.excluded_ids;
         delete props.excluded_tags;
@@ -351,14 +342,13 @@ const QueryObject = Lang.Class({
         return clauses.map(Utils.parenthesize).join(_XAPIAN_OP_OR);
     },
 
-    _tags_clause: function () {
+    _tags_clause: function (tags, join_op) {
         // Tag lists should be joined as a series of individual tag queries
         // joined by ORs, so an article that has any of the tags will match
         // e.g. [foo,bar,baz] => 'K:foo OR K:bar OR K:baz'
-        let prefixed_tags = this.tags.map(Utils.quote).map((tag) => {
+        let prefixed_tags = tags.map(Utils.quote).map((tag) => {
             return _XAPIAN_PREFIX_TAG + tag;
         });
-        let join_op = this.tag_match === QueryObjectTagMatch.ANY ? _XAPIAN_OP_OR : _XAPIAN_OP_AND;
         return prefixed_tags.join(join_op);
     },
 
@@ -386,7 +376,8 @@ const QueryObject = Lang.Class({
     get_query_parser_string: function () {
         let clauses = [];
         clauses.push(this._query_clause());
-        clauses.push(this._tags_clause());
+        clauses.push(this._tags_clause(this.tags_match_any, _XAPIAN_OP_OR));
+        clauses.push(this._tags_clause(this.tags_match_all, _XAPIAN_OP_AND));
         clauses.push(this._ids_clause());
         return clauses.filter((c) => c).map(Utils.parenthesize).join(_XAPIAN_OP_AND);
     },

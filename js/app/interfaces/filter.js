@@ -42,6 +42,12 @@ const Filter = new Lang.Interface({
             false),
     },
 
+    // Emitted when the filter gains new information that influences its filtering process.
+    // The selection owning this filter should refilter its models at this point.
+    Signals: {
+        'filter-changed': {},
+    },
+
     /**
      * Method: include
      * Determine whether an arrangement should show a model as a card

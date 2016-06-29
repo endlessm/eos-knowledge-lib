@@ -115,7 +115,7 @@ describe('Controller.Buffet', function () {
         expect(payloads.length).toBe(1);
         expect(set_models).toEqual(payloads[0].models);
         expect(engine.get_objects_by_query)
-            .toHaveBeenCalledWith(jasmine.objectContaining({ tags: ['EknSetObject'] }),
+            .toHaveBeenCalledWith(jasmine.objectContaining({ tags_match_any: ['EknSetObject'] }),
                 jasmine.any(Object), jasmine.any(Function));
     });
 
@@ -168,7 +168,7 @@ describe('Controller.Buffet', function () {
             expect(payload.same_set).toBeFalsy();
             expect(engine.get_objects_by_query.calls.mostRecent().args[0])
                 .toEqual(jasmine.objectContaining({
-                    tags: jasmine.arrayContaining(['EknArticleObject']),
+                    tags_match_all: jasmine.arrayContaining(['EknArticleObject']),
                 }));
         });
 

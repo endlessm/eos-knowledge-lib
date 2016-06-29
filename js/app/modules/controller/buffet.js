@@ -147,7 +147,7 @@ const Buffet = new Module.Class({
         // pages
         Engine.get_default().get_objects_by_query(new QueryObject.QueryObject({
             limit: -1,
-            tags: ['EknSetObject'],
+            tags_match_any: ['EknSetObject'],
         }), null, (engine, res) => {
             let models;
             try {
@@ -172,7 +172,6 @@ const Buffet = new Module.Class({
 
     _load_more_supplementary_articles: function (payload) {
         let query_props = {
-            tag_match: QueryObject.QueryObjectTagMatch.ALL,
             sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
         };
 
@@ -188,10 +187,10 @@ const Buffet = new Module.Class({
         // the current article's tags.
         if (payload.same_set) {
             current_set_tags.push('EknArticleObject');
-            query_props.tags = current_set_tags;
+            query_props.tags_match_all = current_set_tags;
         } else {
-            query_props.tags = ['EknArticleObject'];
             query_props.excluded_tags = current_set_tags;
+            query_props.tags_match_all = ['EknArticleObject'];
         }
 
         let query = new QueryObject.QueryObject(query_props);
@@ -250,7 +249,7 @@ const Buffet = new Module.Class({
         let query_obj = new QueryObject.QueryObject({
             query: history_item.query,
             limit: RESULTS_SIZE,
-            tags: ['EknArticleObject'],
+            tags_match_any: ['EknArticleObject'],
         });
         Engine.get_default().get_objects_by_query(query_obj, null, (engine, task) => {
             let results, get_more;

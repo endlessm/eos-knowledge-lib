@@ -128,7 +128,7 @@ const Mesh = new Module.Class({
     make_ready: function (cb=function () {}) {
         let query_obj = new QueryObject.QueryObject({
             limit: -1,
-            tags: [ Engine.HOME_PAGE_TAG, 'EknSetObject' ],
+            tags_match_any: [ Engine.HOME_PAGE_TAG, 'EknSetObject' ],
             sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
         });
         Engine.get_default().get_objects_by_query(query_obj, null, (engine, inner_task) => {
@@ -296,7 +296,7 @@ const Mesh = new Module.Class({
         let query_obj = new QueryObject.QueryObject({
             query: item.query,
             limit: RESULTS_SIZE,
-            tags: ['EknArticleObject'],
+            tags_match_any: ['EknArticleObject'],
         });
         let dispatcher = Dispatcher.get_default();
         if (this._current_search_query === item.query) {
@@ -378,7 +378,7 @@ const Mesh = new Module.Class({
 
     _update_set_results: function (item, callback=() => {}) {
         let query_obj = new QueryObject.QueryObject({
-            tags: item.model.child_tags,
+            tags_match_any: item.model.child_tags,
             limit: RESULTS_SIZE,
             sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
         });

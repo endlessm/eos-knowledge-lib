@@ -98,7 +98,7 @@ const SearchBox = new Module.Class({
         let query_obj = new QueryObject.QueryObject({
             query: query,
             limit: RESULTS_SIZE,
-            tags: ['EknArticleObject'],
+            tags_match_any: ['EknArticleObject'],
         });
         Engine.get_default().get_objects_by_query(query_obj,
                                          this._cancellable,
