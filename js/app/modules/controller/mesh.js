@@ -1,6 +1,5 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -143,11 +142,6 @@ const Mesh = new Module.Class({
                 if (this.template_type === 'B')
                     this._update_article_list();
                 dispatcher.dispatch({
-                    action_type: Actions.SHOW_ARTICLE,
-                    model: item.model,
-                    animation_type: this._get_article_animation_type(),
-                });
-                dispatcher.dispatch({
                     action_type: Actions.SHOW_ARTICLE_PAGE,
                 });
                 break;
@@ -196,20 +190,6 @@ const Mesh = new Module.Class({
                 action_type: Actions.SHOW_ARTICLE_SEARCH,
             });
         }
-    },
-
-    _get_article_animation_type: function () {
-        // FIXME: move to article stack
-        let history = HistoryStore.get_default();
-        let direction = history.get_direction();
-        let last_index = history.get_current_index();
-        last_index += (direction === HistoryStore.Direction.BACKWARDS ? 1 : -1);
-        let last_item = history.get_items()[last_index];
-        if (!last_item || last_item.page_type !== Pages.ARTICLE)
-            return EosKnowledgePrivate.LoadingAnimationType.NONE;
-        if (direction === HistoryStore.Direction.BACKWARDS)
-            return EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
-        return EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
     },
 
     _on_search_focus: function (view, focused) {

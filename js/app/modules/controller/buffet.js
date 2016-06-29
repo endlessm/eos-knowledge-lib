@@ -2,7 +2,6 @@
 
 /* exported Buffet */
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 
@@ -291,23 +290,10 @@ const Buffet = new Module.Class({
                 this._do_search(item);
                 break;
             case Pages.ARTICLE:
-                let payload = {
-                    action_type: Actions.SHOW_ARTICLE,
-                    model: item.model,
-                    animation_type: this._get_article_animation_type(),
-                };
-                if (item.context) {
-                    let index = item.context.indexOf(item.model);
-                    if (index > 0)
-                        payload.previous_model = item.context[index - 1];
-                    if (index < item.context.length - 1)
-                        payload.next_model = item.context[index + 1];
-                }
                 dispatcher.dispatch({
                     action_type: Actions.FEATURE_ITEM,
                     model: item.model,
                 });
-                dispatcher.dispatch(payload);
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_ARTICLE_PAGE,
                     context_label: item.context_label,
@@ -344,19 +330,5 @@ const Buffet = new Module.Class({
         });
 
         this._update_highlight();
-    },
-
-    _get_article_animation_type: function () {
-        // FIXME: move to article stack
-        let history = HistoryStore.get_default();
-        let direction = history.get_direction();
-        let last_index = history.get_current_index();
-        last_index += (direction === HistoryStore.Direction.BACKWARDS ? 1 : -1);
-        let last_item = history.get_items()[last_index];
-        if (!last_item || last_item.page_type !== Pages.ARTICLE)
-            return EosKnowledgePrivate.LoadingAnimationType.NONE;
-        if (direction === HistoryStore.Direction.BACKWARDS)
-            return EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
-        return EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
     },
 });

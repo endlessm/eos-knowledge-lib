@@ -5,23 +5,27 @@ Utils.register_gresource();
 
 const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
+const HistoryStore = imports.app.historyStore;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const MediaLightbox = imports.app.modules.contentGroup.mediaLightbox;
+const Pages = imports.app.pages;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
 describe('ContentGroup.MediaLightbox', function () {
-    let module, engine, factory, dispatcher;
+    let module, engine, factory, dispatcher, store;
 
     beforeEach(function () {
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
         dispatcher = MockDispatcher.mock_default();
         engine = MockEngine.mock_default();
+        store = new HistoryStore.HistoryStore();
+        HistoryStore.set_default(store);
 
         [module, factory] = MockFactory.setup_tree({
             type: MediaLightbox.MediaLightbox,
@@ -39,8 +43,8 @@ describe('ContentGroup.MediaLightbox', function () {
         let article_model = new ArticleObjectModel.ArticleObjectModel({
             resources: [media_object_uri],
         });
-        dispatcher.dispatch({
-            action_type: Actions.SHOW_ARTICLE,
+        store.set_current_item_from_props({
+            page_type: Pages.ARTICLE,
             model: article_model,
         });
         dispatcher.dispatch({
@@ -58,8 +62,8 @@ describe('ContentGroup.MediaLightbox', function () {
         let article_model = new ArticleObjectModel.ArticleObjectModel({
             resources: [media_object_uri],
         });
-        dispatcher.dispatch({
-            action_type: Actions.SHOW_ARTICLE,
+        store.set_current_item_from_props({
+            page_type: Pages.ARTICLE,
             model: article_model,
         });
         dispatcher.dispatch({

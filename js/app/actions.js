@@ -48,7 +48,6 @@ const CLEAR_HIGHLIGHTED_ITEM = 'clear-highlighted-item';
 const PAGE_READY = 'page-ready';
 const SHOW_SET = 'show-set';
 const SET_READY = 'set-ready';
-const SHOW_ARTICLE = 'show-article';
 const SHOW_MEDIA = 'show-media';
 const HIDE_MEDIA = 'hide-media';
 const SHOW_BRAND_PAGE = 'show-brand-page';

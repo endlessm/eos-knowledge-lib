@@ -1,8 +1,10 @@
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
+const HistoryStore = imports.app.historyStore;
 const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
+const Pages = imports.app.pages;
 
 /**
  * Class: MediaLightbox
@@ -29,11 +31,12 @@ const MediaLightbox = new Module.Class({
         this._loading_new_lightbox = false;
         this._current_index = -1;
         this._article_model = null;
+
+        HistoryStore.get_default().connect('changed',
+            this._on_history_changed.bind(this));
+
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
-                case Actions.SHOW_ARTICLE:
-                    this._article_model = payload.model;
-                    break;
                 case Actions.SHOW_MEDIA:
                     this._preview_media_object(payload.model);
                     break;
@@ -45,6 +48,12 @@ const MediaLightbox = new Module.Class({
 
         this.connect('navigation-previous-clicked', () => this._on_previous_clicked());
         this.connect('navigation-next-clicked', () => this._on_next_clicked());
+    },
+
+    _on_history_changed: function () {
+        let item = HistoryStore.get_default().get_current_item();
+        if (item.page_type === Pages.ARTICLE)
+            this._article_model = item.model;
     },
 
     _on_previous_clicked: function () {

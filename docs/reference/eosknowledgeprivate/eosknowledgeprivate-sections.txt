@@ -1,13 +1,10 @@
 <SECTION>
 <FILE>enums</FILE>
-EknLoadingAnimation
 EknTextTransform
 EknTreeNodeColumn
 <SUBSECTION Standard>
-EKN_TYPE_LOADING_ANIMATION
 EKN_TYPE_TEXT_TRANSFORM
 EKN_TYPE_TREE_NODE_COLUMN
-ekn_loading_animation_get_type
 ekn_text_transform_get_type
 ekn_tree_node_column_get_type
 <SUBSECTION Private>
