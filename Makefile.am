@@ -72,7 +72,6 @@ scss_toplevels = \
 	$(NULL)
 scss_partials = \
 	$(srcdir)/data/css/_colors.scss \
-	$(srcdir)/data/css/_common.scss \
 	$(srcdir)/data/css/_typography.scss \
 	$(srcdir)/data/css/modules/arrangement/_half.scss \
 	$(srcdir)/data/css/modules/arrangement/_list.scss \
