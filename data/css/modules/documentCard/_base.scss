@@ -1,7 +1,7 @@
 .DocumentCard {
     WebKitWebView {
         background-color: $background-light-color;
-        background-image: url('../templates/images/noise.png');
+        background-image: image-url('../templates/images/noise.png');
     }
 
     .title {

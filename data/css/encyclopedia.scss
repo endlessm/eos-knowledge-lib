@@ -191,7 +191,7 @@ $accent-light-color: #044a80 !default;
     separator {
         min-height: 15px;
         background-color: transparent;
-        background-image: url('../images/separator.png');
+        background-image: image-url('separator.png');
         background-size: 100%;
         background-repeat: no-repeat;
     }

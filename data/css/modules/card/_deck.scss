@@ -1,5 +1,5 @@
 .CardDeck {
-    background-image: url('../images/deckbg.svg');
+    background-image: image-url('deckbg.svg');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-position: center;
@@ -19,7 +19,7 @@
         margin: 13px;
 
         &.arrow {
-            -gtk-icon-source: url("../images/arrow-white.svg");
+            -gtk-icon-source: image-url('arrow-white.svg');
             -gtk-icon-transform: rotate(45deg);
         }
     }

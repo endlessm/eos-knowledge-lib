@@ -4,7 +4,7 @@
     color: $accent-light-color;
 
     .ThemeableImage {
-        -gtk-icon-source: url('../images/news-arrow-dark.svg');
+        -gtk-icon-source: image-url('news-arrow-dark.svg');
         min-height: 14px;
         min-width: 14px;
         margin-left: 5px;
@@ -15,7 +15,7 @@
         color: $accent-dark-color;
 
         .ThemeableImage {
-            -gtk-icon-source: url('../images/news-arrow-light.svg');
+            -gtk-icon-source: image-url('news-arrow-light.svg');
         }
     }
 }
