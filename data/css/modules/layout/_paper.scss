@@ -1,0 +1,10 @@
+.LayoutPaper {
+    &__content {
+        background-image: linear-gradient(to bottom, #ececec 0%, #ececec 100%),
+                          url('../templates/images/noise.png');
+    }
+
+    .search-page & .LayoutBox {
+        padding: 0 45px;
+    }
+}
