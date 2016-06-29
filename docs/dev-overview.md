@@ -42,15 +42,12 @@ to day basis.
    descriptions of applications (app.json) and manifest for what data (db.json) should be
    inside the app. This repo builds bundles, like the one above, which are eventually
    shipped.
- * [eos-knowledge-db-build](https://github.com/endlessm/eos-knowledge-db-build) - Contains
+ * [endless-content-factory](https://github.com/endlessm/endless-content-factory) - Contains
    tools to build the database and shard file from a db.json.
  * [eos-shard](https://github.com/endlessm/eos-shard) - Contains an "EosShard" library
    which knows how to interpret the "shard file format". Used by both
    eos-knowledge-db-build (to build the shard on our servers) and eos-knowledge-lib (to
    read from the shard at runtime).
- * [eos-lambda-services](http://github.com/endlessm/eos-lambda-services) - Contains some
-   of our build process, but hosted on the cloud in an
-   [AWS Lambda](https://aws.amazon.com/lambda/) instance. Used by eos-knowledge-db-build.
 
 Additionally, we have these deprecated repos:
 
@@ -83,16 +80,23 @@ Additionally, we have these deprecated repos:
 # Building a Knowledge App
 
 To build a knowledge app, the process can be a little convoluted. You will need checkouts
-of three repos: eos-knowledge-apps, eos-knowledge-db-build, and eos-lambda-services. You
-will also need a relatively recent version of eos-shard, so if you do not have it, build
-that from git as well.
+of two repos: eos-knowledge-apps and endless-content-factory. You will also need a relatively
+recent version of eos-shard, so if you do not have it, build that from git as well.
 
-## eos-knowledge-db-build
+`endless-content-factory` is a microservices-oriented system designed around cloud cluster
+deployments, but there is limited support for running some of the services locally on your
+development machine.
 
-To build and install our build scripts for `eos-knowledge-db-build`, I
-use:
+## db-build
 
-`$ python setup.py install --user`
+The first microservice is `db-build`.
+
+To build and install our build scripts for `db-build`, I use:
+
+```
+$ cd endless-content-factory/src/eos-knowledge-db-build
+$ python setup.py install --user
+```
 
 This will install our scripts in `~/.local/bin/` and the library in
 `~/.local/lib/python2.7/`.
@@ -100,20 +104,24 @@ This will install our scripts in `~/.local/bin/` and the library in
 The main script is called `get_app_content.py` and is the main powerhouse
 behind our build process. This is in charge of fetching articles and
 media, transforming and normalizing the content, sometimes calling out
-to our cloud Lambda service, creating a Xapian database, and arranging
-and massaging all the data so it is ready for packing.
+to our lambda service, creating a Xapian database, and arranging and
+massaging all the data so it is ready for packing.
 
-## eos-lambda-services
+## lambda
 
-Since developers do not have credentials to access our production
-Lambda services, and since developer laptops are a lot cheaper to pay
-for than cloud hosting, we'll need to run a Lambda server
-locally. Check out `eos-lambda-services` from git and then run:
+Another microservice, which is a helper microservice for our build process, is
+lambda, which performs HTML sanitization and cleanup. It's written in node
+because it's slightly more natural to use JavaScript for DOM manipulation.
 
-`$ npm run mock-server -- -f`
+To deploy it in a test system, use:
 
-This will install all of our requirements and then start up a dummy
-mock server which emulates the official Lambda web API.
+```
+$ cd endless-content-factory/src/eos-lambda-services
+$ npm run mock-server -- -f
+```
+
+This will install all of our requirements and then start up a server that
+`db-build` can talk to.
 
 ## eos-knowledge-apps
 
@@ -135,9 +143,9 @@ during make. We should probably fix that some day.
 
 This should put our build scripts into motion, which will download
 everything specified in the db.json from Wikipedia and process it by
-uploading it to your Lambda instance, running locally, and then
+uploading it to your lambda instance, running locally, and then
 process it some more. The separation of concerns between db-build and
-Lambda is a bit messy right now, but should be more clear as SOMA
+lambda is a bit messy right now, but should be more clear as SOMA
 develops.
 
 If you are downloading a lot of data, please use our internal build
