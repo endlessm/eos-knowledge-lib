@@ -324,13 +324,22 @@ const DomainV3 = new Lang.Class({
     Name: 'DomainV3',
     Extends: Domain,
 
-    _get_subscription_id: function () {
-        let file = this._get_content_dir().get_child('subscriptions.json');
-        let [success, data] = file.load_contents(null);
-        let subscriptions = JSON.parse(data);
+    _get_subscription_entry: function () {
+        if (this._subscription_entry === undefined) {
+            let file = this._get_content_dir().get_child('subscriptions.json');
+            let [success, data] = file.load_contents(null);
+            let subscriptions = JSON.parse(data);
 
-        // XXX: For now, we only support the first subscription.
-        return subscriptions.subscriptions[0].id;
+            // XXX: For now, we only support the first subscription.
+            let subscription_entry = subscriptions.subscriptions[0];
+            this._subscription_entry = subscription_entry;
+        }
+
+        return this._subscription_entry;
+    },
+
+    _get_subscription_id: function () {
+        return this._get_subscription_entry().id;
     },
 
     _get_subscription_dir: function () {
@@ -496,12 +505,19 @@ const DomainV3 = new Lang.Class({
         try {
             let proxy = new DownloaderProxy(Gio.DBus.session, 'com.endlessm.EknDownloader', '/com/endlessm/EknDownloader');
 
+            let subscription_entry = this._get_subscription_entry();
+            let id = subscription_entry.id;
+            let disable_updates = !!subscription_entry.disable_updates;
+
+            if (disable_updates)
+                return;
+
             // Synchronously apply any update we have.
-            proxy.ApplyUpdateSync(this._get_subscription_id());
+            proxy.ApplyUpdateSync(id);
 
             // Regardless of whether or not we applied an update,
             // let's see about fetching a new one...
-            proxy.FetchUpdateRemote(this._get_subscription_id());
+            proxy.FetchUpdateRemote(id);
         } catch(e) {
             logError(e, "Could not update domain");
         }
