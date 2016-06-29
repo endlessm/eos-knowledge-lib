@@ -6,9 +6,12 @@
 $body-font: 'Lato';
 $display-font: 'Lato';
 $display-font-composite: 'Roboto';
+$title-font: 'Lato';
 
 @import 'modules/banner/app';
 @import 'modules/banner/search';
+
+@import 'modules/card/knowledgeDocument';
 
 @import 'modules/contentGroup/search';
 
@@ -207,17 +210,8 @@ scrollbar {
     }
 }
 
-.webview-tooltip {
-    background-color: transparentize(black, 1 - 0.4);
-    border-radius: 8px 8px 8px 8px;
-    padding: 10px 14px;
-
-    label {
-        color: white;
-        font-family: $display-font;
-        font-size: 1.3em; /* 16px / 12px/em */
-        font-weight: bold;
-    }
+.webview-tooltip label {
+    font-size: 1.3em; /* 16px / 12px/em */
 }
 
 /* Changes for composite TVs */
