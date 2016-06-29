@@ -117,6 +117,11 @@ const ArticleStack = new Module.Class({
 
         if (!last_item || last_item.page_type !== Pages.ARTICLE)
             return Gtk.StackTransitionType.NONE;
+        // Do not animate if transitioning in or out of a lightbox
+        let current_item = history.get_current_item();
+        if (last_item.media_model && !current_item.media_model ||
+            !last_item.media_model && current_item.media_model)
+            return Gtk.StackTransitionType.NONE;
         // If not doing sliding animation, direction does not matter
         if (!this.do_sliding_animation)
             return Gtk.StackTransitionType.CROSSFADE;
@@ -128,6 +133,9 @@ const ArticleStack = new Module.Class({
     _on_history_changed: function () {
         let item = HistoryStore.get_default().get_current_item();
         if (item.page_type !== Pages.ARTICLE)
+            return;
+        if (this.visible_child &&
+            this.visible_child.model.ekn_id === item.model.ekn_id)
             return;
 
         let document_card_props = {

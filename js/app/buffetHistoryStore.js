@@ -78,10 +78,9 @@ const BuffetHistoryStore = new GObject.Class({
                         context: item.context,
                     });
                     break;
+                case Actions.LIGHTBOX_CLOSED:
                 case Actions.SEARCH_BOX_FOCUSED:
-                    Dispatcher.get_default().dispatch({
-                        action_type: Actions.HIDE_MEDIA,
-                    });
+                    this.close_lightbox();
                     break;
                 case Actions.DBUS_LOAD_ITEM_CALLED:
                     this.load_dbus_item(payload.ekn_id, payload.query,

@@ -164,9 +164,11 @@ const HistoryStore = new GObject.Class({
                     context_label: model.title,
                 });
             } else if (model instanceof MediaObjectModel.MediaObjectModel) {
-                Dispatcher.get_default().dispatch({
-                    action_type: Actions.SHOW_MEDIA,
-                    model: model,
+                let old_item = this.get_current_item();
+                this.set_current_item_from_props({
+                    page_type: old_item.page_type,
+                    model: old_item.model,
+                    media_model: model,
                 });
             }
         });
@@ -186,6 +188,24 @@ const HistoryStore = new GObject.Class({
                 logError(error);
             }
         });
+    },
+
+    close_lightbox: function () {
+        let item = this.get_current_item();
+        if (!item.media_model)
+            return;
+        let target_item = this.search_backwards(-1, item =>
+            item.media_model === null);
+        if (!target_item) {
+            target_item = {
+                page_type: item.page_type,
+                query: item.query,
+                context_label: item.context_label,
+                timestamp: item.timestamp,
+                model: item.model,
+            };
+        }
+        this.set_current_item(HistoryItem.HistoryItem.new_from_object(target_item));
     },
 });
 

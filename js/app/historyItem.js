@@ -41,6 +41,21 @@ const HistoryItem = new Knowledge.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ContentObjectModel.ContentObjectModel),
         /**
+         * Property: media-model
+         * Content object model representing lightboxed media on this page
+         *
+         * This is used to control whether a media object is displayed in a
+         * lightbox on top of the page listed in <page-type> (which displays the
+         * object given in <model>.)
+         *
+         * If null, then no lightbox should be displayed.
+         */
+        'media-model': GObject.ParamSpec.object('media-model',
+            'Media model',
+            'Content object model representing lightboxed media on this page',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ContentObjectModel.ContentObjectModel),
+        /**
          * Property: query
          *
          * A query string entered by the user causing navigation to this history
@@ -91,13 +106,23 @@ const HistoryItem = new Knowledge.Class({
     },
 
     equals: function (item) {
-        if (this.model)
-            return this.page_type === item.page_type &&
-            (this.model === null && item.model === null || this.model.ekn_id === item.model.ekn_id);
-        return this.page_type === item.page_type &&
-            this.query === item.query;
+        let page_equal = this.page_type === item.page_type;
+        let query_equal = this.query === item.query;
+        let model_equal = _models_equal_or_both_null(this.model, item.model);
+        let media_equal = _models_equal_or_both_null(this.media_model,
+            item.media_model);
+        return page_equal && query_equal && model_equal && media_equal;
     },
 });
+
+// Helper function
+function _models_equal_or_both_null (a, b) {
+    if (a === null && b === null)
+        return true;
+    if (a === null || b === null)
+        return false;
+    return a.ekn_id === b.ekn_id;
+}
 
 /**
  * Function: new_from_object

@@ -3,12 +3,10 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const HistoryStore = imports.app.historyStore;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Minimal = imports.tests.minimal;
-const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const MediaLightbox = imports.app.modules.contentGroup.mediaLightbox;
@@ -18,11 +16,11 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 Gtk.init(null);
 
 describe('ContentGroup.MediaLightbox', function () {
-    let module, engine, factory, dispatcher, store;
+    let module, engine, factory, store;
+    let media_model, article_model;
 
     beforeEach(function () {
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
-        dispatcher = MockDispatcher.mock_default();
         engine = MockEngine.mock_default();
         store = new HistoryStore.HistoryStore();
         HistoryStore.set_default(store);
@@ -33,52 +31,55 @@ describe('ContentGroup.MediaLightbox', function () {
                 'card': { type: Minimal.MinimalCard },
             },
         });
+
+        media_model = new MediaObjectModel.MediaObjectModel({
+            ekn_id: 'ekn://foo/bar',
+        });
+        article_model = new ArticleObjectModel.ArticleObjectModel({
+            resources: ['ekn://foo/bar'],
+        });
     });
 
-    it('creates pack a card module from the card slot', function () {
-        let media_object_uri = 'ekn://foo/bar';
-        let media_object = new MediaObjectModel.MediaObjectModel({
-            ekn_id: media_object_uri,
-        });
-        let article_model = new ArticleObjectModel.ArticleObjectModel({
-            resources: [media_object_uri],
-        });
+    it('shows a media object on change to history item with media model', function () {
         store.set_current_item_from_props({
             page_type: Pages.ARTICLE,
             model: article_model,
+            media_model: media_model,
         });
-        dispatcher.dispatch({
-            action_type: Actions.SHOW_MEDIA,
-            model: media_object,
-        });
+        expect(module.reveal_overlays).toBeTruthy();
         expect(module).toHaveDescendantWithClass(Minimal.MinimalCard);
     });
 
     it('loads media into lightbox if and only if it is a member of article\'s resource array', function () {
-        let media_object_uri = 'ekn://foo/bar';
-        let media_object = new MediaObjectModel.MediaObjectModel({
-            ekn_id: media_object_uri,
+        store.set_current_item_from_props({
+            page_type: Pages.ARTICLE,
+            model: article_model,
+            media_model: media_model,
         });
-        let article_model = new ArticleObjectModel.ArticleObjectModel({
-            resources: [media_object_uri],
+        expect(factory.get_created('card').length).toBe(1);
+
+        let nonexistent_media_object = new MediaObjectModel.MediaObjectModel({
+            ekn_id: 'ekn://no/media',
         });
         store.set_current_item_from_props({
             page_type: Pages.ARTICLE,
             model: article_model,
-        });
-        dispatcher.dispatch({
-            action_type: Actions.SHOW_MEDIA,
-            model: media_object,
+            media_model: nonexistent_media_object,
         });
         expect(factory.get_created('card').length).toBe(1);
+    });
 
-        let nonexistant_media_object = new MediaObjectModel.MediaObjectModel({
-            ekn_id: 'ekn://no/media',
+    it('closes the lightbox on history item without media model', function () {
+        store.set_current_item_from_props({
+            page_type: Pages.ARTICLE,
+            model: article_model,
+            media_model: media_model,
         });
-        dispatcher.dispatch({
-            action_type: Actions.SHOW_MEDIA,
-            model: nonexistant_media_object,
+        expect(module.reveal_overlays).toBeTruthy();
+        store.set_current_item_from_props({
+            page_type: Pages.ARTICLE,
+            model: article_model,
         });
-        expect(factory.get_created('card').length).toBe(1);
+        expect(module.reveal_overlays).toBeFalsy();
     });
 });

@@ -241,9 +241,6 @@ const Buffet = new Module.Class({
         let item = history.get_current_item();
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
-            action_type: Actions.HIDE_MEDIA,
-        });
-        dispatcher.dispatch({
             action_type: Actions.CLEAR_HIGHLIGHTED_ITEM,
             model: item.model,
         });
