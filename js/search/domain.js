@@ -333,10 +333,6 @@ const DomainV3 = new Lang.Class({
         return subscriptions.subscriptions[0].id;
     },
 
-    get_subscription_ids: function () {
-        return [this._get_subscription_id()];
-    },
-
     _get_subscription_dir: function () {
         if (this._subscription_dir === undefined) {
             let subscription_id = this._get_subscription_id();
