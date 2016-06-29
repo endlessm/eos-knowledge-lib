@@ -158,10 +158,11 @@ const Engine = Lang.Class({
 
             let do_query = (query_obj) => {
                 domain_obj.get_objects_by_query(query_obj, cancellable, task.catch_callback_errors((domain_obj, query_task) => {
-                    let results = domain_obj.get_objects_by_query_finish(query_task);
+                    let [results, info] =
+                        domain_obj.get_objects_by_query_finish(query_task);
 
                     if (results.length === 0) {
-                        task.return_value([[], null]);
+                        task.return_value([[], info]);
                         return;
                     }
 
@@ -173,8 +174,11 @@ const Engine = Lang.Class({
                             offset: results.length + query_obj.offset,
                         });
                     }
+                    Object.defineProperty(info, 'more_results', {
+                        value: more_results_query,
+                    });
 
-                    task.return_value([results, more_results_query]);
+                    task.return_value([results, info]);
                 }));
             };
 
@@ -195,9 +199,14 @@ const Engine = Lang.Class({
     /**
      * Function: get_objects_by_query_finish
      *
-     * Finishes a call to <get_objects_by_query>. Returns both a list of
-     * <ContentObjectModels> and <QueryObject> which can be used to get more
-     * results for the same query. Throws an error if one occurred.
+     * Finishes a call to <get_objects_by_query>.
+     * Returns both a list of <ContentObjectModels> and a dictionary with
+     * results info.
+     * Throws an error if one occurred.
+     *
+     * Members of the info object:
+     *   more_results - <QueryObject> which can be used to get more results for
+     *     the same query.
      *
      * Parameters:
      *   task - The task returned by <get_objects_by_query>

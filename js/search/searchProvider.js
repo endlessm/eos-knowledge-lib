@@ -153,7 +153,7 @@ const AppSearchProvider = Lang.Class({
                                           this._cancellable,
                                           (engine, query_task) => {
             try {
-                let [results, get_more_results_query] = engine.get_objects_by_query_finish(query_task);
+                let [results] = engine.get_objects_by_query_finish(query_task);
                 this._add_results_to_cache(results);
                 let ids = results.map(function (result) { return result.ekn_id; });
                 invocation.return_value(new GLib.Variant('(as)', [ids]));

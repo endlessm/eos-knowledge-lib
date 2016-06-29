@@ -47,7 +47,9 @@ describe('Navigation.SearchBox', function () {
     });
 
     it('calls into engine for auto complete results', function () {
-        engine.get_objects_by_query_finish.and.returnValue([[], null]);
+        engine.get_objects_by_query_finish.and.returnValue([[], {
+            more_results: null,
+        }]);
         box.text = 'foo';
         expect(engine.get_objects_by_query).toHaveBeenCalled();
     });
@@ -57,7 +59,9 @@ describe('Navigation.SearchBox', function () {
             ekn_id: 'ekn://aaaabbbbccccdddd',
             title: 'foo',
         });
-        engine.get_objects_by_query_finish.and.returnValue([[ model ], null]);
+        engine.get_objects_by_query_finish.and.returnValue([[model], {
+            more_results: null,
+        }]);
         box.text = 'foo';
         box.emit('menu-item-selected', 'ekn://aaaabbbbccccdddd');
         let payload = dispatcher.last_payload_with_type(Actions.AUTOCOMPLETE_CLICKED);

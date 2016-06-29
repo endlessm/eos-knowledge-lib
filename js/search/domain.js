@@ -171,10 +171,11 @@ const Domain = new Lang.Class({
                 let json_ld = this._xapian_bridge.query_finish(query_task);
 
                 if (json_ld.results.length === 0) {
-                    task.return_value([]);
+                    task.return_value([[], {}]);
                     return;
                 }
 
+                let info = {};
                 AsyncTask.all(this, (add_task) => {
                     json_ld.results.forEach((result) => {
                         add_task((cancellable, callback) => this.resolve_xapian_result(result, cancellable, callback),
@@ -182,7 +183,7 @@ const Domain = new Lang.Class({
                     });
                 }, cancellable, task.catch_callback_errors((source, resolve_task) => {
                     let results = AsyncTask.all_finish(resolve_task);
-                    task.return_value(results);
+                    task.return_value([results, info]);
                 }));
             }));
         }));

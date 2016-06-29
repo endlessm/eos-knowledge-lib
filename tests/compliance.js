@@ -293,7 +293,9 @@ function test_selection_compliance (SelectionClass, extra_slots={}) {
             // Not all Selections might use the Xapian engine, but I can't think
             // of a better place to put this
             let engine = MockEngine.mock_default();
-            engine.get_objects_by_query_finish.and.returnValue([[], null]);
+            engine.get_objects_by_query_finish.and.returnValue([[], {
+                more_results: null,
+            }]);
 
             [selection, factory] = MockFactory.setup_tree({
                 type: SelectionClass,

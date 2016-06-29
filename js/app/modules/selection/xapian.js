@@ -54,14 +54,15 @@ const Xapian = new Module.Class({
             this._loading = false;
             this.notify('loading');
 
-            let results, more;
+            let results, info;
             try {
-                [results, more] = engine.get_objects_by_query_finish(task);
+                [results, info] = engine.get_objects_by_query_finish(task);
             } catch (e) {
                 logError(e, 'Failed to load content from engine');
                 results = [];
-                more = null;
+                info = { more_results: null };
             }
+            let more = info.more_results;
 
             if (!more) {
                 this._query_index++;

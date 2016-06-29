@@ -79,7 +79,7 @@ const MoltresEngine = new Lang.Class({
     },
 
     get_objects_by_query_finish: function () {
-        return [this._to_return, null];
+        return [this._to_return, {}];
     },
 
     _ARTICLES: [

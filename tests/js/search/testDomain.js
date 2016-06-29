@@ -262,7 +262,7 @@ describe('DomainV2', function () {
             mock_query(undefined, mock_data);
 
             domain.get_objects_by_query(new QueryObject.QueryObject(), null, function (domain, task) {
-                let results = domain.get_objects_by_query_finish(task);
+                let [results] = domain.get_objects_by_query_finish(task);
                 expect(results).toEqual(mock_data);
                 done();
             });

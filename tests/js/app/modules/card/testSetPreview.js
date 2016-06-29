@@ -32,7 +32,9 @@ describe('Card.SetPreview', function () {
         let mock_models = [1, 2, 3].map(num => new ArticleObjectModel.ArticleObjectModel({
             ekn_id: 'ekn://test/' + num,
         }));
-        engine.get_objects_by_query_finish.and.returnValue([mock_models, null]);
+        engine.get_objects_by_query_finish.and.returnValue([mock_models, {
+            more_results: null,
+        }]);
 
         factory = new MockFactory.MockFactory({
             type: SetPreview.SetPreview,

@@ -109,7 +109,7 @@ describe('ContentGroup.HierarchicalSet', function () {
                 subsets.concat(articles_in_master_set)
                     .concat(articles_in_subset)
                     .concat(articles_with_extra_tags),
-                null]);
+                { more_results: null }]);
 
             module.reference_module('scroll-server', (scroll_module) => {
                 scroll_server = scroll_module;

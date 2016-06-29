@@ -88,14 +88,13 @@ const SetPreview = new Module.Class({
             sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
         });
         Engine.get_default().get_objects_by_query(query, null, (engine, res) => {
-            let models, get_more;
             try {
-                [models, get_more] = engine.get_objects_by_query_finish(res);
+                let [models] = engine.get_objects_by_query_finish(res);
+                this.arrangement.set_models(models);
             } catch (e) {
                 logError(e, 'Failed to load articles from database');
                 return;
             }
-            this.arrangement.set_models(models);
             if (done)
                 done();
         });
