@@ -8,6 +8,7 @@ $display-font: 'Lato';
 $display-font-composite: 'Roboto';
 
 @import 'modules/banner/app';
+@import 'modules/banner/search';
 
 @import 'modules/contentGroup/search';
 
@@ -165,8 +166,7 @@ $display-font-composite: 'Roboto';
         font-weight: 300;
         font-size: 2em; /* 24px / 12px/em */
         color: #7e7e7e;
-        padding-top: 40px;
-        padding-bottom: 20px;
+        padding: 40px 0 20px;
     }
 
     .composite .search-page & {
