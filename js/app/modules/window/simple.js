@@ -48,17 +48,6 @@ const Simple = new Module.Class({
         'search': {},
     },
 
-    Signals: {
-        /**
-         * Event: search-focused
-         *
-         * This event is triggered when the user focuses the search bar.
-         */
-        'search-focused': {
-            param_types: [GObject.TYPE_BOOLEAN]
-        },
-    },
-
     WINDOW_WIDTH_THRESHOLD: 800,
     WINDOW_HEIGHT_THRESHOLD: 600,
 

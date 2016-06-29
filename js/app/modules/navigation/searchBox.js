@@ -1,6 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
+const Gdk = imports.gi.Gdk;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
@@ -44,6 +45,7 @@ const SearchBox = new Module.Class({
         this._autocomplete_models = {};
         this._cancellable = null;
         this._link_action_set = false;
+        this.add_events(Gdk.EventMask.FOCUS_CHANGE_MASK);
 
         HistoryStore.get_default().connect('changed',
             this._on_history_changed.bind(this));
@@ -51,6 +53,11 @@ const SearchBox = new Module.Class({
         this.connect_after('map', () => {
             if (this.focus_on_map)
                 this.grab_focus();
+        });
+        this.connect('focus-in-event', () => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.SEARCH_BOX_FOCUSED,
+            });
         });
         this.connect('changed', () => {
             this._update_link_action();

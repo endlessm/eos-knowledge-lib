@@ -72,11 +72,6 @@ const Mesh = new Module.Class({
             }
         });
 
-        if (this.template_type !== 'encyclopedia') {
-            // Connect signals
-            this._window.connect('search-focused', this._on_search_focus.bind(this));
-        }
-
         this._window.connect('key-press-event', this._on_key_press_event.bind(this));
         history.connect('changed', this._on_history_change.bind(this));
     },
@@ -190,13 +185,6 @@ const Mesh = new Module.Class({
                 action_type: Actions.SHOW_ARTICLE_SEARCH,
             });
         }
-    },
-
-    _on_search_focus: function (view, focused) {
-        // If the user focused the search box, ensure that the lightbox is hidden
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.HIDE_MEDIA,
-        });
     },
 
     _update_article_list: function () {

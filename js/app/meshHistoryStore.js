@@ -52,6 +52,11 @@ const MeshHistoryStore = new GObject.Class({
                         target_item = { page_type: Pages.HOME };
                     this.set_current_item(HistoryItem.HistoryItem.new_from_object(target_item));
                     break;
+                case Actions.SEARCH_BOX_FOCUSED:
+                    Dispatcher.get_default().dispatch({
+                        action_type: Actions.HIDE_MEDIA,
+                    });
+                    break;
                 case Actions.SEARCH_TEXT_ENTERED:
                 case Actions.DBUS_LOAD_QUERY_CALLED:
                     this.do_search(payload.query, payload.timestamp);
