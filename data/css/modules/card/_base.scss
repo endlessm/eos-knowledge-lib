@@ -17,6 +17,21 @@
         -gtk-icon-source: none; /* kill the arrow that Gtk adds by default in Gtk.render_arrow() */
     }
 
+    &.invisible {
+        opacity: 0.0;
+    }
+
+    &.fade-in {
+        transition: opacity 1000ms ease-in-out;
+        opacity: 1.0;
+    }
+
+    .thumbnail {
+        background-position: center;
+        background-size: 100% 100%;
+        border-width: 0px;
+    }
+
     &.width-c .title,
     &.width-d.height-c .title,
     &.width-d.height-b .title {

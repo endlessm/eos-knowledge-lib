@@ -1,26 +1,66 @@
 @import 'common';
 
-$template-b-text-color: #eeccf8;
-$template-b-text-color-hover: #d64970;
-$template-b-text-color-highlighted: #333333;
+@import 'colors';
+@import 'typography';
+
+$primary-light-color: #eeccf8;
+$primary-medium-color: #d64970;
+$primary-dark-color: #2e3436;
+
+$background-light-color: #ececec;
+$background-dark-color: #d3d7cf;
+
+$accent-light-color: #f16e47;
+$accent-dark-color: #d16550;
+
+$legacy-post-card-border-color: transparentize(black, 1 - 0.70);
+$legacy-post-card-border-color-hover: white;
+
+$body-font: 'Lato';
+$title-font: 'Montserrat';
+$title-font-composite: 'Roboto';
+$display-font: 'Lato';
+$display-font-composite: 'Roboto';
+
+@import 'modules/banner/app';
+
+@import 'modules/card/base';
+@import 'modules/card/knowledgeDocument';
+@import 'modules/card/legacyPolaroid';
+@import 'modules/card/legacyPost';
+
+@import 'modules/contentGroup/search';
+
+@import 'modules/documentCard/base';
+
+@import 'modules/layout/hamburgerBasement';
+@import 'modules/layout/navigation';
+@import 'modules/layout/sidebar';
+
+@import 'modules/pager/parallaxBackground';
+
+@import 'modules/window/simple';
+
+@import 'preset_a';
+@import 'preset_b';
 
 .WindowSimple {
     /* Changed color here so scrollbars are visible. Only affects smoke tests all
      * apps have image backgrounds.*/
     background-color: #888888;
 
-    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 
     /* FIXME: for the time being, until we can properly customize the webkit
     scrollbars, style the GTK scrollbars to look slightly more like them */
     scrollbar {
+        background-color: transparent;
+        padding: 0px;
+
         slider {
-            min-width: 8px;
             min-height: 8px;
             background-color: #333333;
-            border-radius: 20px;
         }
 
         trough {
@@ -29,183 +69,24 @@ $template-b-text-color-highlighted: #333333;
     }
 }
 
-.PagerParallaxBackground {
-    &--parallax {
-        transition: background-position 0.5s ease, background-image 0.5s ease;
-
-        &.PagerParallaxBackground--landscape {
-            background-size: 110% auto;
-        }
-
-        &.PagerParallaxBackground--portrait {
-            background-size: auto 110%;
-        }
-
-        &.PagerParallaxBackground--left {
-            background-position: 0% 50%;
-        }
-
-        &.PagerParallaxBackground--center {
-            background-position: 50% 50%;
-        }
-
-        &.PagerParallaxBackground--right {
-            background-position: 100% 50%;
-        }
-    }
-}
-
-.BannerApp {
-    .ThemeableImage {
-        -EknThemeableImage-sizing: "size-down";
-        min-width: 200px;
-        min-height: 200px;
-    }
-}
-
-.Card {
-    &.invisible {
-        opacity: 0.0;
-    }
-
-    &.fade-in {
-        transition: opacity 1000ms ease-in-out;
-        opacity: 1.0;
-    }
-
-    .thumbnail {
-        background-position: center;
-        background-size: 100% 100%;
-        border-width: 0px;
-    }
-
-}
-
 .section-page,
 .search-page {
     .title {
-        font-family: Montserrat;
+        font-family: $title-font;
         font-weight: bold;
     }
 }
 
 .ContentGroupSearch {
-    spinner {
-        margin: 20px;
+    background-color: transparentize(black, 1 - 0.25);
+
+    .ArrangementScrollingList__grid {
+        padding: 0;
     }
 }
 
-.CardLegacyPolaroid {
-    padding: 10px 10px 0px 10px;
-    margin: 7px;
-    background-color: white;
-
-    .title {
-        padding: 4px 0px 4px 0px;
-        color: #d16550;
-        font-family: 'Montserrat', sans-serif;
-        font-size: 0.9em;
-        font-weight: bold;
-    }
-
-    .thumbnail {
-        min-height: 133px;
-    }
-
-    .card-synopsis {
-        padding: 0px 0px 4px 0px;
-        color: #666666;
-        font-size: 0.8em;
-        text-shadow: white 0px 1px 0px;
-
-        &.highlighted {
-            background-color: #d3d7cf;
-        }
-    }
-
-    .title.highlighted {
-        background-color: #d3d7cf;
-    }
-
-    .composite & {
-        .title {
-            font-weight: 600;
-            font-size: 16.4px;  /* Original spec may have been wrong */
-        }
-
-        .card-synopsis {
-            color: black;
-            font-size: 16.4px;  /* 14px spec * 88% */
-            text-shadow: none;
-        }
-    }
-}
-
-.LayoutSidebar {
-    .sidebar {
-        .CardTitle {
-            padding: 6px;
-            border: 2px solid transparentize(white, 1);
-            background-color: transparentize(white, 1);
-            transition: background-color 250ms ease-in-out,
-                        background-image 250ms ease-in-out,
-                        border 250ms ease-in-out;
-
-            .title {
-                padding: 0em 0em 0em 1.5em;
-                font-family: Lato;
-                font-size: 1.125em; /* 18pt * 1/12 * 0.75 DPI correction factor */
-                font-weight: normal;
-                color: $template-b-text-color;
-                transition: color 250ms ease-in-out;
-            }
-
-            &:hover {
-                border: 2px solid white;
-                background-color: transparentize(white, 1 - 0.9);
-                background-image: linear-gradient(-179deg,
-                                                  transparentize(white, 1 - 0.05) 0%,
-                                                  transparentize(black, 1 - 0.05) 100%);
-
-                .title {
-                    color: $template-b-text-color-hover;
-                }
-            }
-
-            &.highlighted {
-                background: transparentize(white, 1 - 0.8);
-                text-shadow: 0px 1px 0px white;
-                font-weight: bold;
-                transition-property: none;
-
-                .title {
-                    color: $template-b-text-color-highlighted;
-                    transition-property: none;
-                }
-
-                &:hover {
-                    border: 2px solid white;
-                    background-color: transparentize(white, 1 - 0.9);
-                    background-image: linear-gradient(-179deg,
-                                                      transparentize(white, 1 - 0.05) 0%,
-                                                      transparentize(black, 1 - 0.05) 100%);
-
-                    .title {
-                        color: $template-b-text-color-highlighted;
-                        transition-property: none;
-                    }
-                }
-            }
-        }
-    }
-
-    & .content {
-        background-image: linear-gradient(-180deg, rgba(0,0,0,0.0) 65%, rgba(0,0,0,0.30) 85%, rgba(0,0,0,0.70) 100%);
-    }
-
-    .composite & .sidebar .CardTitle .title {
-        font-family: Roboto;
-    }
+.results-message-background {
+    background-color: transparent;
 }
 
 .pdf-card-icon {
@@ -217,155 +98,6 @@ $template-b-text-color-highlighted: #333333;
     color: #666666
 }
 
-$legacy-post-card-border-color: transparentize(black, 1 - 0.7);
-$legacy-post-card-border-color-hover: white;
-
-.CardLegacyPost {
-    border-style: solid;
-    border-width: 5px;
-    border-color: $legacy-post-card-border-color;
-    transition: border-color 250ms ease-in-out;
-
-    &:hover {
-        border-color: $legacy-post-card-border-color-hover;
-
-        .title {
-            color: $template-b-text-color-hover;
-            background-color: $legacy-post-card-border-color-hover;
-        }
-    }
-
-    .thumbnail {
-        background-size: cover;
-    }
-
-    .title {
-        color: $template-b-text-color;
-        font-size: 1.8em;
-        padding: .9em 0em;
-        background-color: $legacy-post-card-border-color;
-        transition: color 250ms ease-in-out,
-                    background-color 250ms ease-in-out;
-    }
-}
-
-.TableOfContents {
-    &__entry {
-        color: rgb(204, 204, 204);
-        font-weight: 900;  /* Black */
-        font-size: .7em;
-        background-color: transparent;
-        transition: background-color 150ms ease-in-out;
-        border-radius: 1.75em;
-        padding: .75em 0em .75em 0em;
-        margin-bottom: .4em;
-
-        &:hover,
-        &:selected {
-            color: white;
-        }
-
-        &:selected {
-            background-color: transparentize(white, 1 - 0.247);
-        }
-    }
-
-    &__entryTitle {
-        padding-left: 1.5em;
-    }
-
-    &__entryIndex {
-        padding: 0em 2em 0em 2em;
-    }
-
-    &__arrow {
-        color: rgb(204, 204, 204);
-        border-radius: 50%;
-        border-width: 1px;
-        border-style: solid;
-        border-color: transparentize(black, 1 - 0.3);
-        padding: 5px;
-        box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.3);
-
-        &:hover {
-            color: white;
-            border-color: transparentize(black, 1 - 0.4);
-            box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.4);
-        }
-
-        &:disabled {
-            color: transparentize(rgb(204, 204, 204), 1 - 0.3);
-            border-color: transparentize(black, 1 - 0.15);
-            box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.15);
-        }
-    }
-
-    /* Style table of contents when collapsed without section titles */
-    &--collapsed &__entry {
-        border-radius: 1.75em 0em 0em 1.75em;
-    }
-
-    &--collapsed &__entryIndex {
-        padding-left: 0em;
-        padding-right: 0em;
-    }
-}
-
-$tab-button-background: #F16E47;
-$tab-button-gradient-light: $tab-button-background;
-$tab-button-gradient-dark: mix($tab-button-background, black, 65%);
-$tab-button-gradient-active-light: $tab-button-gradient-light;
-$tab-button-gradient-active-dark: $tab-button-gradient-dark;
-$tab-button-gradient-hover-light: mix($tab-button-background, black, 95%);
-$tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
-
-.TabButton {
-    color: white;
-    padding-right: 1.8em;
-    padding-left: 2.4em;
-    padding-top: 1.0em;
-    padding-bottom: 0.9em;
-    border-style: solid;
-    font-weight: bold;
-    font-size: 0.75em;  /* 12pt * 1/12 * 0.75 DPI correction factor */
-    text-shadow: 0px -1px 0px transparentize(black, 1 - 0.40);
-    -gtk-icon-shadow: 0px -1px 1px transparentize(black, 1 - 0.44);
-    background: linear-gradient(to bottom,
-                                $tab-button-gradient-light,
-                                $tab-button-gradient-dark);
-    box-shadow: inset 0px 1px 4px 0px transparentize(white, 1 - 0.19);
-
-    &:dir(ltr) image {
-        padding-left: 15px;
-    }
-
-    &:dir(rtl) image {
-        padding-right: 15px;
-    }
-
-    &:hover {
-        background: linear-gradient(to bottom,
-                                    $tab-button-gradient-hover-light,
-                                    $tab-button-gradient-hover-dark);
-    }
-
-    &:active {
-        background: linear-gradient(to bottom,
-                                    $tab-button-gradient-active-dark,
-                                    $tab-button-gradient-active-light);
-    }
-
-    &.bottom {
-        border-top-left-radius: 1.7em;
-        border-top-right-radius: 1.7em;
-    }
-
-    &.top {
-        border-bottom-left-radius: 1.7em;
-        border-bottom-right-radius: 1.7em;
-    }
-}
-
 .NavigationSearchBox {
     .home-page & {
         box-shadow: inset 0em 0.16em 0.16em transparentize(black, 1 - 0.14);
@@ -374,8 +106,8 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
                           linear-gradient(to bottom, white, white);
         background-clip: padding-box;
         padding: 0.75em 0.55em 0.75em 0.55em;
-        color: #2e3436;
-        caret-color: #2e3436;
+        color: $primary-dark-color;
+        caret-color: $primary-dark-color;
         font-size: 1em;
 
         border-style: solid;
@@ -388,11 +120,11 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 
         selection {
             color: white;
-            background-color: #2e3436;
+            background-color: $primary-dark-color;
         }
 
         &:selected {
-            background-color: lighter(#2e3436);
+            background-color: lighter($primary-dark-color);
             color: #eeeeec;
         }
 
@@ -416,300 +148,20 @@ $tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
     background-color: transparent;
 }
 
-.DocumentCard {
-    WebKitWebView {
-        background-color: #ececec;
-        background-image: url('../templates/images/noise.png');
-    }
-
-    .title {
-        font-family: Montserrat;
-        font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
-        font-weight: bold;
-
-        &.collapsed {
-            margin-bottom: 10px;
-        }
-    }
-}
-
-.NavButtonOverlay {
-    &__backButton,
-    &__forwardButton {
-        color: white;
-        background-color: transparentize(black, 1 - 0.2);
-        border: 1px solid transparentize(white, 1 - 0.4);
-        box-shadow: inset 0px 1px 1px 0px transparentize(black, 1 - 0.5),
-            inset 0px 1px 4px 0px transparentize(black, 1 - 0.4);
-        -EknGrowButton-grow-pixels: 15;
-    }
-
-    &__backButton,
-    &__forwardButton:dir(rtl) {
-        border-left: 0px;
-        border-radius: 0px 27px 27px 0px;
-        padding: 15px;
-    }
-
-    &__forwardButton,
-    &__backButton:dir(rtl) {
-        border-radius: 27px 0px 0px 27px;
-        border-right: 0px;
-        padding: 15px;
-    }
-
-    &__backButtonImage,
-    &__forwardButtonImage {
-        color: white;
-        box-shadow: 0px 1px transparentize(black, 1 - 0.8); /* FIXME: box-shadow outset doesn't currently work in GTK */
-        min-width: 22px;
-        min-height: 22px;
-    }
-
-    &__backButtonImage {
-        -gtk-icon-source: -gtk-icontheme("go-previous-symbolic");
-    }
-
-    &__forwardButtonImage {
-        -gtk-icon-source: -gtk-icontheme("go-next-symbolic");
-    }
-
-    &__backButtonImage:dir(rtl) {
-        -gtk-icon-source: -gtk-icontheme("go-previous-symbolic-rtl");
-    }
-
-    &__forwardButtonImage:dir(rtl) {
-        -gtk-icon-source: -gtk-icontheme("go-next-symbolic-rtl");
-    }
-}
-
-.PDFView {
-    background-image: url('../images/pdf-background.png');
-}
-
-.webview-tooltip {
-    background-color: transparentize(black, 1 - 0.4);
-    border-radius: 8px 8px 8px 8px;
-    padding: 10px 14px;
-
-    label {
-        color: white;
-        font-family: Lato;
-        font-size: 1.0em; /* 16px / 12px/em * 72/96 */
-        font-weight: bold;
-    }
-}
-
-/* Specific to Preset A */
-
-.preset-a {
-    .home-page .CardLegacyPolaroid .title {
-        padding: 9px 0px 9px 0px;
-    }
-
-    .section-page,
-    .search-page {
-        .ContentGroup__title {
-            font-family: Montserrat;
-            font-weight: bold;
-            font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
-            padding-top: 1.0em;
-            padding-bottom: 1.0em;
-        }
-
-        padding: 0 100px;
-
-        .title {
-            padding-top: 1.0em;
-            padding-bottom: 1.0em;
-
-            font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
-        }
-
-        separator {
-            min-height: 1px;
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .CardLegacyPolaroid .title {
-            font-size: 0.9em;
-            text-shadow: 0px 1px 0px white;
-        }
-    }
-
-    .section-page  flowbox {
-        margin-top: 20px;
-    }
-
-    .search-page .ContentGroupSearch {
-        .results-message-title,
-        .results-message-subtitle,
-        .error-message {
-            padding-top: 2.0em;
-        }
-    }
-
-    .article-page .document-card-content-frame {
-        padding: 20px 0px;
-    }
-}
-
-.window-small.preset-a {
-    .section-page,
-    .search-page {
-        .title, .ContentGroup__title {
-            font-size: 1.75em; /* 28pt * 1/12 * 0.75 DPI correction factor */
-        }
-    }
-
-    .ContentGroupSearch {
-        .results-message-title,
-        .results-message-subtitle,
-        .error-message {
-            padding-top: 1.5em;
-        }
-    }
-}
-
-/* Specific to Preset B */
-
-.preset-b {
-    .home-page {
-        .LayoutBox {
-            min-height: 240px;
-        }
-
-        .ContentGroupSet {
-            background-color: black;
-        }
-    }
-
-    .section-page,
-    .search-page {
-        .title {
-            font-size: 4.5em; /* 72pt * 1/12 * 0.75 DPI correction factor */
-            padding: 0.9em 0em 0.9em 1.2em;
-            color: white;
-        }
-
-        scrollbar {
-            trough {
-                padding: 0px 3px;
-                background-color: transparentize(black, 1 - 0.5);
-                background-image: linear-gradient(89deg,
-                                                  transparentize(white, 1 - 0.1) 0%,
-                                                  transparentize(black, 1 - 0.1) 100%);
-                box-shadow: inset 1px 0px 0px 0px transparentize(black, 1 - 0.15);
-            }
-
-            slider {
-                background-color: #888888;
-            }
-        }
-
-        .ContentGroupSearch, .ContentGroup {
-            background-color: transparentize(black, 1 - 0.75);
-        }
-    }
-
-    .search-page .ContentGroupSearch {
-        .results-message-title,
-        .results-message-subtitle,
-        .error-message {
-            font-size: 1.2em;
-            padding: 10px 25px;
-        }
-    }
-
-    .section-page,
-    .article-page {
-        .ContentGroup {
-            background-color: transparentize(black, 1 - 0.75);
-        }
-    }
-
-    .article-page .sidebar {
-        padding-left: 60px;
-    }
-
-    .PagerParallaxBackground {
-        -EknPager_Simple-transitions-style: 'slide-center';
-    }
-}
-
-.window-small.preset-b {
-    .section-page,
-    .search-page {
-        .title {
-            font-size: 3.5em; /* 56pt * 1/12 * 0.75 DPI correction factor */
-            padding: 0.9em 0em 0.9em 1.2em;
-            color: white;
-        }
-    }
-
-    .search-page .ContentGroupSearch {
-        .results-message-title,
-        .results-message-subtitle,
-        .error-message {
-            font-size: 0.8em;
-            padding: 8px 15px;
-        }
-    }
+.webview-tooltip label {
+    font-family: $display-font;
 }
 
 /* Changes for composite TVs */
 
 .composite {
-    font-family: Roboto;
+    font-family: $display-font-composite;
 
     .title {
-        font-family: Roboto;
+        font-family: $title-font-composite;
     }
 
     headerbar entry {
         font-size: 21.1px;  /* 18px spec * 88% because spec was at 110% scale not 125% */
-    }
-
-    &.preset-a {
-        .section-page,
-        .search-page {
-            .title {
-                font-size: 16.4px;  /* 14px spec * 88% */
-            }
-        }
-
-        .search-page .ContentGroupSearch {
-            .results-message-title,
-            .results-message-subtitle,
-            .error-message {
-                font-size: 18.8px;  /* 16px spec * 88% */
-            }
-        }
-    }
-
-    &.preset-b {
-        .home-page .LayoutBox {
-            min-height: 120px;
-        }
-
-        .search-page,
-        .article-page {
-            background-color: transparentize(black, 1 - 0.8);
-        }
-
-        .search-page .ContentGroupSearch {
-            .results-message-title,
-            .results-message-subtitle,
-            .error-message {
-                font-size: 14.1px;  /* 12px spec * 88% */
-            }
-        }
-
-        .section-page,
-        .article-page {
-            .ContentGroup {
-                background-color: transparentize(black, 1 - 0.8);
-            }
-        }
     }
 }

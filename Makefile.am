@@ -62,6 +62,8 @@ scss_toplevels = \
 	$(srcdir)/data/css/mesh.scss \
 	$(srcdir)/data/css/news.scss \
 	$(srcdir)/data/css/picard.scss \
+	$(srcdir)/data/css/preset_a.scss \
+	$(srcdir)/data/css/preset_b.scss \
 	$(srcdir)/data/templates/css/prensa-libre.scss \
 	$(srcdir)/data/templates/css/buffet-custom.scss \
 	$(srcdir)/data/templates/css/wikihow.scss \
@@ -87,6 +89,8 @@ scss_partials = \
 	$(srcdir)/data/css/modules/card/_base.scss \
 	$(srcdir)/data/css/modules/card/_deck.scss \
 	$(srcdir)/data/css/modules/card/_knowledgeDocument.scss \
+	$(srcdir)/data/css/modules/card/_legacyPolaroid.scss \
+	$(srcdir)/data/css/modules/card/_legacyPost.scss \
 	$(srcdir)/data/css/modules/card/_list.scss \
 	$(srcdir)/data/css/modules/card/_media.scss \
 	$(srcdir)/data/css/modules/card/_post.scss \
@@ -100,13 +104,18 @@ scss_partials = \
 	$(srcdir)/data/css/modules/contentGroup/_mediaLightbox.scss \
 	$(srcdir)/data/css/modules/contentGroup/_search.scss \
 	$(srcdir)/data/css/modules/contentGroup/_thematic.scss \
+	$(srcdir)/data/css/modules/documentCard/_base.scss \
 	$(srcdir)/data/css/modules/layout/_dynamicBackground.scss \
+	$(srcdir)/data/css/modules/layout/_hamburgerBasement.scss \
 	$(srcdir)/data/css/modules/layout/_infiniteScrolling.scss \
+	$(srcdir)/data/css/modules/layout/_navigation.scss \
 	$(srcdir)/data/css/modules/layout/_responsiveMargins.scss \
 	$(srcdir)/data/css/modules/layout/_scrolling.scss \
+	$(srcdir)/data/css/modules/layout/_sidebar.scss \
 	$(srcdir)/data/css/modules/layout/_sideMenu.scss \
 	$(srcdir)/data/css/modules/layout/_topMenu.scss \
 	$(srcdir)/data/css/modules/navigation/_searchBox.scss \
+	$(srcdir)/data/css/modules/pager/_parallaxBackground.scss \
 	$(srcdir)/data/css/modules/window/_simple.scss \
 	$(srcdir)/data/templates/css/_eos-modal.scss \
 	$(srcdir)/data/templates/css/_eos-no-link.scss \

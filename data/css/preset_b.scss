@@ -1,0 +1,110 @@
+.preset-b {
+    .home-page {
+        .LayoutBox {
+            min-height: 240px;
+        }
+
+        .ContentGroupSet {
+            background-color: black;
+        }
+    }
+
+    .section-page,
+    .search-page {
+        .title {
+            font-size: 4.5em; /* 72pt * 1/12 * 0.75 DPI correction factor */
+            padding: 0.9em 0em 0.9em 1.2em;
+            color: white;
+        }
+
+        scrollbar {
+            trough {
+                padding: 0px 3px;
+                background-color: transparentize(black, 1 - 0.5);
+                background-image: linear-gradient(89deg,
+                                                  transparentize(white, 1 - 0.1) 0%,
+                                                  transparentize(black, 1 - 0.1) 100%);
+                box-shadow: inset 1px 0px 0px 0px transparentize(black, 1 - 0.15);
+            }
+
+            slider {
+                background-color: #888888;
+            }
+        }
+
+        .ContentGroupSearch {
+            background-color: transparentize(black, 1 - 0.75);
+
+            .results-message-title,
+            .results-message-subtitle,
+            .error-message {
+                color:white;
+                font-size: 1.2em;
+                font-style: normal;
+                padding: 10px 25px;
+            }
+        }
+    }
+
+    .section-page,
+    .article-page {
+        .ContentGroupItem,
+        .ContentGroupSearch {
+            background-color: transparentize(black, 1 - 0.75);
+        }
+    }
+
+    .article-page .sidebar {
+        padding-left: 60px;
+    }
+
+    .PagerParallaxBackground {
+        -EknPager_Simple-transitions-style: 'slide-center';
+    }
+}
+
+.window-small.preset-b {
+    .section-page,
+    .search-page {
+        .title {
+            font-size: 3.5em; /* 56pt * 1/12 * 0.75 DPI correction factor */
+            padding: 0.9em 0em 0.9em 1.2em;
+            color: white;
+        }
+    }
+
+    .search-page .ContentGroupSearch {
+        .results-message-title,
+        .results-message-subtitle,
+        .error-message {
+            font-size: 0.8em;
+            padding: 8px 15px;
+        }
+    }
+}
+
+.composite.preset-b {
+    .home-page .LayoutBox {
+        min-height: 120px;
+    }
+
+    .search-page,
+    .article-page {
+        background-color: transparentize(black, 1 - 0.8);
+    }
+
+    .search-page .ContentGroupSearch {
+        .results-message-title,
+        .results-message-subtitle,
+        .error-message {
+            font-size: 14.1px;  /* 12px spec * 88% */
+        }
+    }
+
+    .section-page,
+    .article-page {
+        .ContentGroupItem {
+            background-color: transparentize(black, 1 - 0.8);
+        }
+    }
+}

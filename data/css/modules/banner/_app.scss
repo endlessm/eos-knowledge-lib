@@ -15,6 +15,12 @@
         min-height: 200px;
     }
 
+    .ThemeableImage {
+        -EknThemeableImage-sizing: "size-down";
+        min-width: 200px;
+        min-height: 200px;
+    }
+
     .composite & {
         font-size: 22.3px;  /* 19px spec * 88% */
     }
