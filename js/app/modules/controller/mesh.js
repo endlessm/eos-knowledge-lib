@@ -125,10 +125,8 @@ const Mesh = new Module.Class({
             model: item.model,
         });
 
-        let search_text = '';
         switch (item.page_type) {
             case Pages.SEARCH:
-                search_text = item.query;
                 this._update_search_results(item);
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_SEARCH_PAGE,
@@ -168,10 +166,6 @@ const Mesh = new Module.Class({
                 }
                 break;
         }
-        dispatcher.dispatch({
-            action_type: Actions.SET_SEARCH_TEXT,
-            text: search_text,
-        });
     },
 
     _show_home_if_ready: function () {

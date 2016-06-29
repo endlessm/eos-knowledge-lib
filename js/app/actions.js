@@ -46,7 +46,6 @@ const SEARCH_FAILED = 'search-failed';
 const HIGHLIGHT_ITEM = 'highlight-item';
 const CLEAR_HIGHLIGHTED_ITEM = 'clear-highlighted-item';
 const PAGE_READY = 'page-ready';
-const SET_SEARCH_TEXT = 'set-search-text';
 const SHOW_SET = 'show-set';
 const SET_READY = 'set-ready';
 const SHOW_ARTICLE = 'show-article';

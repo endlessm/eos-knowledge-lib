@@ -249,7 +249,6 @@ const Buffet = new Module.Class({
             model: item.model,
         });
 
-        let search_text = '';
         switch (item.page_type) {
             case Pages.SET:
                 dispatcher.dispatch({
@@ -290,7 +289,6 @@ const Buffet = new Module.Class({
                 break;
             case Pages.SEARCH:
                 this._do_search(item);
-                search_text = item.query;
                 break;
             case Pages.ARTICLE:
                 let payload = {
@@ -331,10 +329,6 @@ const Buffet = new Module.Class({
                 });
                 break;
         }
-        dispatcher.dispatch({
-            action_type: Actions.SET_SEARCH_TEXT,
-            text: search_text,
-        });
     },
 
     _show_home_if_ready: function () {

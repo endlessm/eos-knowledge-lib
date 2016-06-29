@@ -9,7 +9,9 @@ const Actions = imports.app.actions;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
+const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
+const Pages = imports.app.pages;
 const QueryObject = imports.search.queryObject;
 const Utils = imports.app.utils;
 
@@ -43,14 +45,8 @@ const SearchBox = new Module.Class({
         this._cancellable = null;
         this._link_action_set = false;
 
-        let dispatcher = Dispatcher.get_default();
-        dispatcher.register((payload) => {
-            switch(payload.action_type) {
-                case Actions.SET_SEARCH_TEXT:
-                    this.set_text_programmatically(payload.text);
-                    break;
-            }
-        });
+        HistoryStore.get_default().connect('changed',
+            this._on_history_changed.bind(this));
 
         this.connect_after('map', () => {
             if (this.focus_on_map)
@@ -63,14 +59,14 @@ const SearchBox = new Module.Class({
             this._on_text_changed();
         });
         this.connect('activate', () => {
-            dispatcher.dispatch({
+            Dispatcher.get_default().dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
                 query: this.text,
             });
         });
         this.connect('menu-item-selected', (entry, ekn_id) => {
             let model = this._autocomplete_models.filter((model) => model.ekn_id === ekn_id)[0];
-            dispatcher.dispatch({
+            Dispatcher.get_default().dispatch({
                 action_type: Actions.ITEM_CLICKED,
                 query: this.text,
                 model: model,
@@ -83,6 +79,12 @@ const SearchBox = new Module.Class({
                 query: this.text,
             });
         });
+    },
+
+    _on_history_changed: function () {
+        let item = HistoryStore.get_default().get_current_item();
+        let search_text = item.page_type == Pages.SEARCH ? item.query : '';
+        this.set_text_programmatically(search_text);
     },
 
     _on_text_changed: function () {
