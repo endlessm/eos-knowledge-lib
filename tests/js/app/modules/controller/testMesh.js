@@ -81,7 +81,10 @@ describe('Controller.Mesh', function () {
             },
         ];
         engine.get_objects_by_query_finish.and.returnValue([sections.map((section) =>
-            new SetObjectModel.SetObjectModel(section)), null]);
+            new SetObjectModel.SetObjectModel(section)),
+            {
+                more_results: null,
+            }]);
 
         [mesh, factory] = MockFactory.setup_tree({
             type: Mesh.Mesh,
@@ -163,7 +166,9 @@ describe('Controller.Mesh', function () {
             set_model = new SetObjectModel.SetObjectModel({
                 ekn_id: 'ekn://foo/set',
             });
-            engine.get_objects_by_query_finish.and.returnValue([[article_model], null]);
+            engine.get_objects_by_query_finish.and.returnValue([[article_model], {
+                more_results: null,
+            }]);
             store.set_current_item_from_props({
                 page_type: Pages.SET,
                 model: set_model,
@@ -212,7 +217,9 @@ describe('Controller.Mesh', function () {
             article_model = new ContentObjectModel.ContentObjectModel({
                 ekn_id: 'ekn://foo/bar',
             });
-            engine.get_objects_by_query_finish.and.returnValue([[article_model], null]);
+            engine.get_objects_by_query_finish.and.returnValue([[article_model], {
+                more_results: null,
+            }]);
             store.set_current_item_from_props({
                 page_type: Pages.SEARCH,
                 query: 'foo',
@@ -310,7 +317,9 @@ describe('Controller.Mesh', function () {
         let model = new ContentObjectModel.ContentObjectModel({
             ekn_id: 'ekn://foo/bar',
         });
-        engine.get_objects_by_query_finish.and.returnValue([[ model ], null]);
+        engine.get_objects_by_query_finish.and.returnValue([[ model ], {
+            more_results: null,
+        }]);
         store.set_current_item_from_props({
             page_type: Pages.ARTICLE,
             model: model,

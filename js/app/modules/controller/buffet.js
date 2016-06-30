@@ -124,9 +124,9 @@ const Buffet = new Module.Class({
 
         let query = new QueryObject.QueryObject(query_props);
         Engine.get_default().get_objects_by_query(query, null, (engine, task) => {
-            let results, get_more_results_query;
+            let results;
             try {
-                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+                [results] = engine.get_objects_by_query_finish(task);
             } catch (error) {
                 logError(error);
                 return;
@@ -169,9 +169,9 @@ const Buffet = new Module.Class({
             tags_match_any: ['EknArticleObject'],
         });
         Engine.get_default().get_objects_by_query(query_obj, null, (engine, task) => {
-            let results, get_more;
+            let results, info;
             try {
-                [results, get_more] = engine.get_objects_by_query_finish(task);
+                [results, info] = engine.get_objects_by_query_finish(task);
             } catch (error) {
                 logError(error);
                 let dispatcher = Dispatcher.get_default();
@@ -182,7 +182,7 @@ const Buffet = new Module.Class({
                 });
                 return;
             }
-            this._get_more_results_query = get_more;
+            this._get_more_results_query = info.more_results;
             dispatcher.dispatch({
                 action_type: Actions.CLEAR_SEARCH,
             });
@@ -212,9 +212,9 @@ const Buffet = new Module.Class({
         if (!this._get_more_results_query)
             return;
         Engine.get_default().get_objects_by_query(this._get_more_results_query, null, (engine, task) => {
-            let results, get_more;
+            let results, info;
             try {
-                [results, get_more] = engine.get_objects_by_query_finish(task);
+                [results, info] = engine.get_objects_by_query_finish(task);
             } catch (error) {
                 logError(error);
                 return;
@@ -223,7 +223,7 @@ const Buffet = new Module.Class({
             if (results.length < 1)
                 return;
 
-            this._get_more_results_query = get_more;
+            this._get_more_results_query = info.more_results;
             Dispatcher.get_default().dispatch({
                 action_type: Actions.APPEND_SEARCH,
                 models: results,

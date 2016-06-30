@@ -2,12 +2,14 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
+const Overflow = imports.app.modules.arrangement.overflow;
 const Utils = imports.app.utils;
 
 const BATCH_SIZE = 10;
@@ -24,6 +26,16 @@ const ContentGroup = new Module.Class({
         'selection': {},
         'title': {},
         'trigger': {},
+    },
+
+    Properties: {
+        /**
+         * Property: has-more-content
+         * Whether this content group has more content to show
+         */
+        'has-more-content': GObject.ParamSpec.boolean('has-more-content',
+            'Has more content', 'Has more content',
+            GObject.ParamFlags.READABLE),
     },
 
     _init: function (props={}) {
@@ -95,6 +107,18 @@ const ContentGroup = new Module.Class({
         });
 
         this.attach(stack, 0, 1, 2, 1);
+
+        [[this._selection, 'can-load-more'], [this._arrangement, 'all-visible']].forEach((arr) => {
+            let obj = arr[0];
+            let property = arr[1];
+            obj.connect('notify::' + property, () => {
+                this.notify('has-more-content');
+            });
+        });
+    },
+
+    get has_more_content () {
+        return (!this._arrangement.all_visible || this._selection.can_load_more);
     },
 
     make_ready: function (cb=function () {}) {

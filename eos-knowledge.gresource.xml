@@ -87,7 +87,6 @@
     <file>js/app/interfaces/card.js</file>
     <file>js/app/interfaces/controller.js</file>
     <file>js/app/interfaces/documentCard.js</file>
-    <file>js/app/interfaces/expandable.js</file>
     <file>js/app/interfaces/filter.js</file>
     <file>js/app/interfaces/module.js</file>
     <file>js/app/interfaces/navigationCard.js</file>
@@ -134,7 +133,6 @@
     <file>js/app/modules/contentGroup/hierarchicalSet.js</file>
     <file>js/app/modules/contentGroup/mediaLightbox.js</file>
     <file>js/app/modules/contentGroup/search.js</file>
-    <file>js/app/modules/contentGroup/set.js</file>
     <file>js/app/modules/contentGroup/staticText.js</file>
     <file>js/app/modules/contentGroup/thematic.js</file>
     <file>js/app/modules/controller/buffet.js</file>

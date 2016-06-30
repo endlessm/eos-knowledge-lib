@@ -18,7 +18,7 @@ const MockEngine = new Lang.Class({
         // Use like so, for example:
         // engine.get_object_by_id_finish.and.returnValue(my_object);
         // engine.get_objects_by_query_finish.and.returnValue([[object1,
-        //    object2], null])
+        //    object2], {}])
         spyOn(this, 'get_object_by_id').and.callThrough();
         spyOn(this, 'get_object_by_id_finish');
         spyOn(this, 'get_objects_by_query').and.callThrough();

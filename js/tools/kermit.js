@@ -100,7 +100,7 @@ function query (app_id, query_string) {
 function perform_query (engine, query_obj) {
     engine.get_objects_by_query(query_obj, null, (engine, task) => {
         try {
-            let [results, more_results] = engine.get_objects_by_query_finish(task);
+            let [results, info] = engine.get_objects_by_query_finish(task);
             results.forEach(function (result) {
                 let id = result.ekn_id.split('/').pop();
                 print_result(id, result.content_type, result.title);
@@ -111,7 +111,7 @@ function perform_query (engine, query_obj) {
             if (results.length < BATCH_SIZE) {
                 System.exit(0);
             } else {
-                perform_query(engine, more_results);
+                perform_query(engine, info.more_results);
             }
         } catch (e) {
             fail_with_error(e);

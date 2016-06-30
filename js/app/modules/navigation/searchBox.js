@@ -107,9 +107,8 @@ const SearchBox = new Module.Class({
             if (query !== Utils.sanitize_query(this.text))
                 return;
 
-            let get_more_results_query;
             try {
-                [this._autocomplete_models, get_more_results_query] = engine.get_objects_by_query_finish(task);
+                [this._autocomplete_models] = engine.get_objects_by_query_finish(task);
             } catch (error) {
                 if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                     logError(error);

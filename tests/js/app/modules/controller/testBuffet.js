@@ -49,7 +49,9 @@ describe('Controller.Buffet', function () {
         media_model = new MediaObjectModel.MediaObjectModel();
 
         engine = MockEngine.mock_default();
-        engine.get_objects_by_query_finish.and.returnValue([set_models, null]);
+        engine.get_objects_by_query_finish.and.returnValue([set_models, {
+            more_results: null,
+        }]);
 
         spyOn(reading_history, 'mark_article_read');
 
@@ -230,12 +232,18 @@ describe('Controller.Buffet', function () {
             engine.get_objects_by_query_finish.and.callFake(() => {
                 let calls = engine.get_objects_by_query.calls.count();
                 if (calls == 1)
-                    return [[0, 1, 2, 3, 4].map(() =>
-                        new ContentObjectModel.ContentObjectModel()), 1];
+                    return [
+                        [0, 1, 2, 3, 4].map(() =>
+                            new ContentObjectModel.ContentObjectModel()),
+                        { more_results: 1 },
+                    ];
                 if (calls == 2)
-                    return [[0, 1].map(() =>
-                        new ContentObjectModel.ContentObjectModel()), null];
-                return [[], null];
+                    return [
+                        [0, 1].map(() =>
+                            new ContentObjectModel.ContentObjectModel()),
+                        { more_results: null },
+                    ];
+                return [[], { more_results: null }];
             });
             store.set_current_item_from_props({
                 page_type: Pages.SEARCH,

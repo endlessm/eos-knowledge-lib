@@ -126,13 +126,14 @@ const HierarchicalSet = new Module.Class({
             return;
         Engine.get_default().get_objects_by_query(query, null, (engine, task) => {
             this._load_operation_in_progress = false;
-            let results;
+            let results, info;
             try {
-                [results, this._get_more] = engine.get_objects_by_query_finish(task);
+                [results, info] = engine.get_objects_by_query_finish(task);
             } catch (e) {
                 logError(e, 'Failed to load objects from set');
                 return;
             }
+            this._get_more = info.more_results;
 
             if (results.length === 0)
                 return;

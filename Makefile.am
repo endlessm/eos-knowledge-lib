@@ -364,7 +364,6 @@ javascript_tests = \
 	tests/js/app/modules/contentGroup/testHierarchicalSet.js \
 	tests/js/app/modules/contentGroup/testMediaLightbox.js \
 	tests/js/app/modules/contentGroup/testSearch.js \
-	tests/js/app/modules/contentGroup/testSet.js \
 	tests/js/app/modules/contentGroup/testThematic.js \
 	tests/js/app/modules/controller/testBuffet.js \
 	tests/js/app/modules/controller/testMesh.js \

@@ -200,12 +200,13 @@ defines:
           type: Layout.ResponsiveMargins
           slots:
             content:
-              type: ContentGroup.Set
+              type: ContentGroup.ContentGroup
               slots:
                 arrangement:
                   type: Arrangement.SquareGuys
                   slots:
                     card: *set-card
+                selection: Selection.AllSets
 
 - &article-page
   <<: *page-with-menu

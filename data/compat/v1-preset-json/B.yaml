@@ -39,12 +39,13 @@ defines:
             halign: center
             valign: center
             focus-on-map: true
-    - shortdef: 'ContentGroup.Set(expand: true)'
+    - shortdef: 'ContentGroup.ContentGroup(expand: true)'
       slots:
         arrangement:
           type: Arrangement.TiledGrid
           slots:
             card: Card.LegacyPost
+        selection: Selection.AllSets
 
 - &set-page
   <<: *sidebar-right

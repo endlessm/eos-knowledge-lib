@@ -108,7 +108,7 @@ describe('ContentGroup.Thematic', function () {
                 engine.get_objects_by_query_finish.and.callFake((task) => {
                     let results = article_models.filter(model =>
                             task.filter(tag => model.tags.indexOf(tag) < 0).length === 0);
-                    return [results, null];
+                    return [results, { more_results: null }];
                 });
             });
 

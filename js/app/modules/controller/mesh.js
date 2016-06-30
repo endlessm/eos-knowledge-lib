@@ -264,9 +264,9 @@ const Mesh = new Module.Class({
         this._search_cancellable.reset();
         this._more_search_results_query = null;
         Engine.get_default().get_objects_by_query(query_obj, this._search_cancellable, (engine, task) => {
-            let results, get_more_results_query;
+            let results, info;
             try {
-                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+                [results, info] = engine.get_objects_by_query_finish(task);
             } catch (error) {
                 if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                     return;
@@ -278,7 +278,7 @@ const Mesh = new Module.Class({
                 });
                 return;
             }
-            this._more_search_results_query = get_more_results_query;
+            this._more_search_results_query = info.more_results;
 
             dispatcher.dispatch({
                 action_type: Actions.CLEAR_SEARCH,
@@ -300,9 +300,9 @@ const Mesh = new Module.Class({
         if (!this._more_search_results_query)
             return;
         Engine.get_default().get_objects_by_query(this._more_search_results_query, this._search_cancellable, (engine, task) => {
-            let results, get_more_results_query;
+            let results, info;
             try {
-                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+                [results, info] = engine.get_objects_by_query_finish(task);
             } catch (error) {
                 if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                     return;
@@ -318,7 +318,7 @@ const Mesh = new Module.Class({
                 action_type: Actions.APPEND_SEARCH,
                 models: results,
             });
-            this._more_search_results_query = get_more_results_query;
+            this._more_search_results_query = info.more_results;
         });
         // Null the query to avoid double loading.
         this._more_search_results_query = null;
@@ -350,9 +350,9 @@ const Mesh = new Module.Class({
         this._set_cancellable.reset();
         this._more_set_results_query = null;
         Engine.get_default().get_objects_by_query(query_obj, this._set_cancellable, (engine, task) => {
-            let results, get_more_results_query;
+            let results, info;
             try {
-                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+                [results, info] = engine.get_objects_by_query_finish(task);
             } catch (error) {
                 if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                     return;
@@ -360,7 +360,7 @@ const Mesh = new Module.Class({
                 callback();
                 return;
             }
-            this._more_set_results_query = get_more_results_query;
+            this._more_set_results_query = info.more_results;
 
             dispatcher.dispatch({
                 action_type: Actions.CLEAR_ITEMS,
@@ -382,9 +382,9 @@ const Mesh = new Module.Class({
         if (!this._more_set_results_query)
             return;
         Engine.get_default().get_objects_by_query(this._more_set_results_query, this._set_cancellable, (engine, task) => {
-            let results, get_more_results_query;
+            let results, info;
             try {
-                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+                [results, info] = engine.get_objects_by_query_finish(task);
             } catch (error) {
                 if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                     logError(error);
@@ -399,7 +399,7 @@ const Mesh = new Module.Class({
                 action_type: Actions.APPEND_ITEMS,
                 models: results,
             });
-            this._more_set_results_query = get_more_results_query;
+            this._more_set_results_query = info.more_results;
         });
         // Null the query to avoid double loading.
         this._more_set_results_query = null;

@@ -225,6 +225,7 @@ describe('DomainV2', function () {
     });
 
     describe('get_objects_by_query', function () {
+        const UPPER_BOUND = 50;
         beforeEach(function () {
             let requested_ids = [];
             spyOn(domain, 'resolve_xapian_result').and.callFake(function (id, cancellable, callback) {
@@ -246,7 +247,10 @@ describe('DomainV2', function () {
             });
             spyOn(bridge, 'query_finish');
             if (mock_results) {
-                let mock_data = { results: mock_results.map(JSON.stringify) };
+                let mock_data = {
+                    results: mock_results.map(JSON.stringify),
+                    upperBound: UPPER_BOUND,
+                };
                 bridge.query_finish.and.returnValue(mock_data);
             } else if (mock_err) {
                 bridge.query_finish.and.throwError(mock_err);
@@ -262,8 +266,9 @@ describe('DomainV2', function () {
             mock_query(undefined, mock_data);
 
             domain.get_objects_by_query(new QueryObject.QueryObject(), null, function (domain, task) {
-                let results = domain.get_objects_by_query_finish(task);
+                let [results, info] = domain.get_objects_by_query_finish(task);
                 expect(results).toEqual(mock_data);
+                expect(info.upper_bound).toEqual(UPPER_BOUND);
                 done();
             });
         });

@@ -54,14 +54,15 @@ const Xapian = new Module.Class({
             this._loading = false;
             this.notify('loading');
 
-            let results, more;
+            let results, info;
             try {
-                [results, more] = engine.get_objects_by_query_finish(task);
+                [results, info] = engine.get_objects_by_query_finish(task);
             } catch (e) {
                 logError(e, 'Failed to load content from engine');
                 results = [];
-                more = null;
+                info = { more_results: null };
             }
+            let more = info.more_results;
 
             if (!more) {
                 this._query_index++;
@@ -69,7 +70,7 @@ const Xapian = new Module.Class({
             }
 
             this._get_more = more;
-            let can_load_more = !!more;
+            let can_load_more = !!more && (info.upper_bound > results.length);
             if (can_load_more !== this._can_load_more) {
                 this._can_load_more = can_load_more;
                 this.notify('can-load-more');
