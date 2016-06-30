@@ -397,11 +397,13 @@ javascript_tests = \
 	tests/js/app/modules/selection/testSupplementaryArticles.js \
 	tests/js/app/modules/window/testSimple.js \
 	tests/js/app/testArticleHTMLRenderer.js \
+	tests/js/app/testBuffetHistoryStore.js \
 	tests/js/app/testDispatcher.js \
 	tests/js/app/testDominantColor.js \
 	tests/js/app/testHistoryItem.js \
 	tests/js/app/testHistoryStore.js \
 	tests/js/app/testKnowledge.js \
+	tests/js/app/testMeshHistoryStore.js \
 	tests/js/app/testModuleFactory.js \
 	tests/js/app/testReadingHistoryModel.js \
 	tests/js/app/testSetMap.js \

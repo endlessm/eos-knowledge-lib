@@ -1,8 +1,22 @@
+/* exported HistoryStore, get_default, set_default */
+
+const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 
+const ArticleObjectModel = imports.search.articleObjectModel;
 const Actions = imports.app.actions;
+const Engine = imports.search.engine;
 const Dispatcher = imports.app.dispatcher;
 const HistoryItem = imports.app.historyItem;
+const MediaObjectModel = imports.search.mediaObjectModel;
+const Pages = imports.app.pages;
+const SetObjectModel = imports.search.setObjectModel;
+const Utils = imports.app.utils;
+
+const Direction = {
+    BACKWARDS: 'backwards',
+    FORWARDS: 'forwards',
+};
 
 /**
  * Class: HistoryStore
@@ -15,17 +29,11 @@ const HistoryStore = new GObject.Class({
 
     Signals: {
         /**
-         * Event: history-item-changed
+         * Event: changed
          *
          * Emitted when the history item changes.
-         *
-         * Parameters:
-         *   item - the history item
-         *   backwards - true if we are currently navigating backwards
          */
-        'history-item-changed': {
-            param_types: [GObject.TYPE_OBJECT, GObject.TYPE_OBJECT, GObject.TYPE_BOOLEAN],
-        },
+        'changed': {},
     },
 
     _init: function (props={}) {
@@ -33,6 +41,7 @@ const HistoryStore = new GObject.Class({
 
         this._items = [];
         this._index = -1;
+        this._direction = Direction.FORWARDS;
 
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
@@ -51,18 +60,18 @@ const HistoryStore = new GObject.Class({
     _go_back: function () {
         if (!this._items || this._index <= 0)
             return;
-        let last_item = this.get_current_item();
         this._index = this._index - 1;
-        this.emit('history-item-changed', this.get_current_item(), last_item, true);
+        this._direction = Direction.BACKWARDS;
+        this.emit('changed');
         this._dispatch_history_enabled();
     },
 
     _go_forward: function () {
         if (!this._items || this._index >= this._items.length - 1)
             return;
-        let last_item = this.get_current_item();
         this._index = this._index + 1;
-        this.emit('history-item-changed', this.get_current_item(), last_item, false);
+        this._direction = Direction.FORWARDS;
+        this.emit('changed');
         this._dispatch_history_enabled();
     },
 
@@ -78,14 +87,40 @@ const HistoryStore = new GObject.Class({
         });
     },
 
+    get_items: function () {
+        return this._items;
+    },
+
+    get_current_index: function () {
+        return this._index;
+    },
+
+    get_direction: function () {
+        return this._direction;
+    },
+
     get_current_item: function () {
-        return this._items[this._index] || null;
+        return this.get_items()[this.get_current_index()] || null;
     },
 
-    item_count: function () {
-        return this._items.length;
+    /**
+     * Method: search_backwards
+     *
+     * Helper to search backwards in the history for an item. Takes a starting
+     * offset and a match function, which should return true of a match, false
+     * otherwise. Returns the matching item or null.
+     */
+    search_backwards: function (offset, match_fn) {
+        let item;
+        let index = this._index + offset;
+        do {
+            item = this._items[index--];
+        } while (item && !match_fn(item));
+        return item || null;
     },
 
+    // Common helper functions for history stores, not for use from other
+    // modules...
     set_current_item: function (item) {
         if (!this.get_current_item() || !this.get_current_item().equals(item)) {
             this._items = this._items.slice(0, this._index + 1);
@@ -98,18 +133,80 @@ const HistoryStore = new GObject.Class({
         this.set_current_item(new HistoryItem.HistoryItem(props));
     },
 
-    /**
-     * Method: search_backwards
-     *
-     * Helper to search backwards in the history for an item. Takes a starting
-     * index and a match function, which should return true of a match, false
-     * otherwise. Returns the matching item or null.
-     */
-    search_backwards: function (index, match_fn) {
-        let item;
-        do {
-            item = this._items[index--];
-        } while (item && !match_fn(item));
-        return item || null;
+    do_search: function (query, timestamp) {
+        let sanitized_query = Utils.sanitize_query(query);
+        if (sanitized_query.length === 0)
+            return;
+
+        Utils.record_search_metric(query);
+        this.set_current_item_from_props({
+            page_type: Pages.SEARCH,
+            query: sanitized_query,
+            timestamp: timestamp || Gdk.CURRENT_TIME,
+        });
+    },
+
+    // This is by no means how all history stores need to handle showing
+    // articles, sets and media. But because all our current stores handle these
+    // the same after a link click, factoring out this common function. When we
+    // diverge in future interactions we should revisit this decomposition.
+    show_ekn_id: function (ekn_id) {
+        Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
+            let model;
+            try {
+                model = engine.get_object_by_id_finish(task);
+            } catch (error) {
+                logError(error);
+                return;
+            }
+
+            if (model instanceof ArticleObjectModel.ArticleObjectModel) {
+                this.set_current_item_from_props({
+                    page_type: Pages.ARTICLE,
+                    model: model,
+                });
+            } else if (model instanceof SetObjectModel.SetObjectModel) {
+                this.set_current_item_from_props({
+                    page_type: Pages.SET,
+                    model: model,
+                    context_label: model.title,
+                });
+            } else if (model instanceof MediaObjectModel.MediaObjectModel) {
+                Dispatcher.get_default().dispatch({
+                    action_type: Actions.SHOW_MEDIA,
+                    model: model,
+                });
+            }
+        });
+    },
+
+    load_dbus_item: function (ekn_id, query, timestamp) {
+        Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
+            try {
+                let model = engine.get_object_by_id_finish(task);
+                this.set_current_item_from_props({
+                    page_type: Pages.ARTICLE,
+                    model: model,
+                    query: query,
+                    timestamp: timestamp || Gdk.CURRENT_TIME,
+                });
+            } catch (error) {
+                logError(error);
+            }
+        });
     },
 });
+
+let [get_default, set_default] = (function () {
+    let history_store = null;
+    return [
+        function () {
+            if (history_store === null)
+                history_store = new HistoryStore();
+            return history_store;
+        },
+        function (store) {
+            history_store = store;
+        },
+    ];
+})();

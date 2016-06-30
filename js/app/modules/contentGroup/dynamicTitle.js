@@ -29,13 +29,17 @@ const DynamicTitle = new Module.Class({
         if (content_group === null)
             throw new Error('DynamicTitles must be a descendant of ContentGroup');
 
+        let selection = content_group.get_selection();
+        let update_label = () => {
+            if (selection.model)
+                this.label = this.format_string.format(selection.model.title);
+        };
+
         // FIXME: Remove this when we come up with a better way to handle dynamic titles
         // in https://phabricator.endlessm.com/T11907
-        this.label = this.format_string.format(content_group.get_selection().model.title);
+        update_label();
 
-        content_group.get_selection().connect('notify::model', () => {
-            this.label = this.format_string.format(content_group.get_selection().model.title);
-        });
+        selection.connect('notify::model', update_label);
         cb();
     },
 });

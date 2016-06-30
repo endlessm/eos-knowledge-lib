@@ -1,9 +1,10 @@
 /* exported dbus_object_path_for_webview, get_css_for_title_and_module,
 get_web_plugin_dbus_name, get_web_plugin_dbus_name_for_webview,
-has_descendant_with_type, render_border_with_arrow,
+has_descendant_with_type, record_search_metric, render_border_with_arrow,
 split_out_conditional_knobs, vfunc_draw_background_default */
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const EosMetrics = imports.gi.EosMetrics;
 const Format = imports.format;
 const Gdk = imports.gi.Gdk;
 const Gettext = imports.gettext;
@@ -460,4 +461,13 @@ function vfunc_draw_background_default (cr) {
     let retval = this.parent(cr);
     cr.$dispose();
     return retval;
+}
+
+const SEARCH_METRIC_EVENT_ID = 'a628c936-5d87-434a-a57a-015a0f223838';
+// Should be mocked out during tests so that we don't actually send metrics
+function record_search_metric (query) {
+    let app_id = Gio.Application.get_default().application_id;
+    let recorder = EosMetrics.EventRecorder.get_default();
+    recorder.record_event(SEARCH_METRIC_EVENT_ID, new GLib.Variant('(ss)',
+        [query, app_id]));
 }

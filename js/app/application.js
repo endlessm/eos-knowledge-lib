@@ -6,6 +6,7 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 
+const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Knowledge = imports.app.knowledge;
@@ -91,18 +92,30 @@ const Application = new Knowledge.Class({
 
     LoadItem: function (ekn_id, query, timestamp) {
         this.ensure_controller();
-        this._controller.activate_search_result(timestamp, ekn_id, query);
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.DBUS_LOAD_ITEM_CALLED,
+            ekn_id: ekn_id,
+            query: query,
+            timestamp: timestamp,
+        });
     },
 
     LoadQuery: function (query, timestamp) {
         this.ensure_controller();
-        this._controller.search(timestamp, query);
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.DBUS_LOAD_QUERY_CALLED,
+            query: query,
+            timestamp: timestamp,
+        });
     },
 
     vfunc_activate: function () {
         this.parent();
         this.ensure_controller();
-        this._controller.desktop_launch(Gdk.CURRENT_TIME);
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.LAUNCHED_FROM_DESKTOP,
+            timestamp: Gdk.CURRENT_TIME,
+        });
     },
 
     // To be overridden in subclass

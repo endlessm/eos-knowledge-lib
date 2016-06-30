@@ -5,7 +5,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const Launcher = imports.app.interfaces.launcher;
 const Module = imports.app.interfaces.module;
 
 const CSS_RESOURCE_PATH = '/com/endlessm/knowledge/data/css/';
@@ -23,7 +22,7 @@ const CSS_RESOURCE_PATH = '/com/endlessm/knowledge/data/css/';
 const Controller = new Lang.Interface({
     Name: 'Controller',
     GTypeName: 'EknController',
-    Requires: [ Module.Module, Launcher.Launcher ],
+    Requires: [ Module.Module ],
 
     Properties: {
         /**
@@ -41,13 +40,6 @@ const Controller = new Lang.Interface({
             'Presenter for article page',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
-        /**
-         * Property: history-store
-         *
-         * The store containing the history state of the application.
-         */
-        'history-store': GObject.ParamSpec.object('history-store', 'history-store', 'history-store',
-            GObject.ParamFlags.READABLE, GObject.Object),
         /**
          * Property: template-type
          * The template type for the Knowledge app.

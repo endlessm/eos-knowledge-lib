@@ -136,7 +136,9 @@ const Simple = new Module.Class({
                 case Actions.SET_READY:
                     this.set_busy(false);
                     break;
-                case Actions.PRESENT_WINDOW:
+                case Actions.LAUNCHED_FROM_DESKTOP:
+                case Actions.DBUS_LOAD_QUERY_CALLED:
+                case Actions.DBUS_LOAD_ITEM_CALLED:
                     this._pending_present = true;
                     this._present_timestamp = payload.timestamp;
                     break;
@@ -148,7 +150,7 @@ const Simple = new Module.Class({
                     this._update_top_bar_visibility();
                     this._present_if_needed();
                     break;
-                case Actions.SHOW_SECTION_PAGE:
+                case Actions.SHOW_SET_PAGE:
                 case Actions.SHOW_ALL_SETS_PAGE:
                 case Actions.SHOW_SEARCH_PAGE:
                 case Actions.SHOW_ARTICLE_PAGE:

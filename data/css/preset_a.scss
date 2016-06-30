@@ -8,7 +8,7 @@
         color: white;
     }
 
-    .section-page,
+    .set-page,
     .search-page {
         padding: 0 100px;
 
@@ -30,7 +30,7 @@
         }
     }
 
-    .section-page  flowbox {
+    .set-page  flowbox {
         margin-top: 20px;
     }
 
@@ -53,7 +53,7 @@
 }
 
 .window-small.preset-a {
-    .section-page,
+    .set-page,
     .search-page {
         .title {
             font-size: 1.75em; /* 28pt * 1/12 * 0.75 DPI correction factor */
@@ -70,7 +70,7 @@
 }
 
 .composite.preset-a {
-    .section-page,
+    .set-page,
     .search-page {
         .title {
             font-size: 16.4px;  /* 14px spec * 88% */

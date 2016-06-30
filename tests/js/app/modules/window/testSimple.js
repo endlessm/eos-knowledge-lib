@@ -6,7 +6,6 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const Actions = imports.app.actions;
-const Launcher = imports.app.interfaces.launcher;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
 const PagerSimple = imports.app.modules.pager.simple;
@@ -116,28 +115,32 @@ describe('Window.Simple', function () {
             expect(view.set_busy).toHaveBeenCalledWith(false);
         });
 
-        it('presents itself after the first page is shown', function () {
-            spyOn(view, 'show_all');
-            spyOn(view, 'present');
-            spyOn(view, 'present_with_time');
-            dispatcher.dispatch({
-                action_type: Actions.PRESENT_WINDOW,
-                timestamp: 0,
-                launch_type: Launcher.LaunchType.DESKTOP,
+        function test_launch_action (action, descriptor) {
+            it('presents itself on ' + descriptor + ' after the first page is shown', function () {
+                spyOn(view, 'show_all');  // stub out
+                spyOn(view, 'present');
+                spyOn(view, 'present_with_time');
+                dispatcher.dispatch({
+                    action_type: action,
+                    timestamp: 0,
+                });
+                expect(view.present).not.toHaveBeenCalled();
+                expect(view.present_with_time).not.toHaveBeenCalled();
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_HOME_PAGE,
+                });
+                expect(view.present.calls.any() || view.present_with_time.calls.any()).toBeTruthy();
             });
-            expect(view.present).not.toHaveBeenCalled();
-            expect(view.present_with_time).not.toHaveBeenCalled();
-            dispatcher.dispatch({
-                action_type: Actions.SHOW_HOME_PAGE,
-                timestamp: 0,
-                launch_type: Launcher.LaunchType.DESKTOP,
-            });
-            expect(view.present.calls.any() || view.present_with_time.calls.any()).toBeTruthy();
-        });
+        }
+        test_launch_action(Actions.LAUNCHED_FROM_DESKTOP, 'desktop launch');
+        test_launch_action(Actions.DBUS_LOAD_QUERY_CALLED,
+            'desktop search open');
+        test_launch_action(Actions.DBUS_LOAD_ITEM_CALLED,
+            'desktop search result open');
 
         it('disables the home button when in the home page', function () {
             expect(view._home_button).toBeDefined();
-            dispatcher.dispatch({ action_type: Actions.SHOW_SECTION_PAGE });
+            dispatcher.dispatch({ action_type: Actions.SHOW_SET_PAGE });
             expect(view._home_button.sensitive).toBe(true);
             dispatcher.dispatch({ action_type: Actions.SHOW_HOME_PAGE });
             expect(view._home_button.sensitive).toBe(false);
@@ -145,7 +148,7 @@ describe('Window.Simple', function () {
 
         it('disables the home button when in the brand page', function () {
             expect(view._home_button).toBeDefined();
-            dispatcher.dispatch({ action_type: Actions.SHOW_SECTION_PAGE });
+            dispatcher.dispatch({ action_type: Actions.SHOW_SET_PAGE });
             expect(view._home_button.sensitive).toBe(true);
             dispatcher.dispatch({ action_type: Actions.SHOW_BRAND_PAGE });
             expect(view._home_button.sensitive).toBe(false);

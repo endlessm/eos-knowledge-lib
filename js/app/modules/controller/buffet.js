@@ -3,38 +3,22 @@
 /* exported Buffet */
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
-const EosMetrics = imports.gi.EosMetrics;
-const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 
 const Actions = imports.app.actions;
-const ArticleObjectModel = imports.search.articleObjectModel;
-const Config = imports.app.config;
+const BuffetHistoryStore = imports.app.buffetHistoryStore;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
-const HistoryStore = imports.app.historyStore;
 const Controller = imports.app.interfaces.controller;
-const Launcher = imports.app.interfaces.launcher;
-const MediaObjectModel = imports.search.mediaObjectModel;
+const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
+const Pages = imports.app.pages;
 const ReadingHistoryModel = imports.app.readingHistoryModel;
 const SetMap = imports.app.setMap;
-const SetObjectModel = imports.search.setObjectModel;
 const QueryObject = imports.search.queryObject;
-const Utils = imports.app.utils;
 
-let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
-
-const Pages = {
-    HOME: 'home',
-    SET: 'set',
-    SEARCH: 'search',
-    ARTICLE: 'article',
-    ALL_SETS: 'all-sets',
-};
 const RESULTS_SIZE = 15;
-const SEARCH_METRIC_EVENT_ID = 'a628c936-5d87-434a-a57a-015a0f223838';
 
 /**
  * Class: Buffet
@@ -46,12 +30,12 @@ const SEARCH_METRIC_EVENT_ID = 'a628c936-5d87-434a-a57a-015a0f223838';
  * The user can pass along the buffet table, choosing what looks nice.
  *
  * Implements:
- *    <Module>, <Launcher>, <Controller>
+ *    <Module>, <Controller>
  */
 const Buffet = new Module.Class({
     Name: 'Controller.Buffet',
     Extends: GObject.Object,
-    Implements: [Launcher.Launcher, Controller.Controller],
+    Implements: [Controller.Controller],
 
     BRAND_PAGE_TIME_MS: 1500,
 
@@ -60,6 +44,9 @@ const Buffet = new Module.Class({
 
         this.parent(props);
 
+        let history = new BuffetHistoryStore.BuffetHistoryStore();
+        HistoryStore.set_default(history);
+
         this._window = this.create_submodule('window', {
             application: this.application,
             visible: false,
@@ -67,79 +54,21 @@ const Buffet = new Module.Class({
 
         this.load_theme();
 
-        this.history_store = new HistoryStore.HistoryStore();
-
         this._brand_page_timeout_id = 0;
 
 
         Dispatcher.get_default().register((payload) => {
             switch (payload.action_type) {
-                case Actions.HOME_CLICKED:
-                    this.history_store.set_current_item_from_props({
-                        page_type: Pages.HOME,
-                    });
-                    break;
-                case Actions.SET_CLICKED:
-                    this.history_store.set_current_item_from_props({
-                        page_type: Pages.SET,
-                        model: payload.model,
-                        context_label: payload.model.title,
-                    });
-                    break;
-                case Actions.ALL_SETS_CLICKED:
-                    this.history_store.set_current_item_from_props({
-                        page_type: Pages.ALL_SETS,
-                    });
-                    break;
-                case Actions.SEARCH_TEXT_ENTERED:
-                    this._start_search_via_history(payload.query);
-                    break;
                 case Actions.NEED_MORE_SEARCH:
                     this._load_more_results();
                     break;
                 case Actions.NEED_MORE_SUPPLEMENTARY_ARTICLES:
                     this._load_more_supplementary_articles(payload);
                     break;
-                case Actions.ARTICLE_LINK_CLICKED:
-                    this._load_ekn_id(payload.ekn_id);
-                    break;
-                case Actions.AUTOCOMPLETE_CLICKED:
-                case Actions.ITEM_CLICKED:
-                case Actions.SEARCH_CLICKED:
-                    if (payload.model instanceof SetObjectModel.SetObjectModel) {
-                        this.history_store.set_current_item_from_props({
-                            page_type: Pages.SET,
-                            model: payload.model,
-                        });
-                    } else {
-                        let context_label = '';
-                        if (payload.query) {
-                            context_label = _("Results were found for “%s”").format(payload.query);
-                        } else if (payload.context_label) {
-                            context_label = payload.context_label;
-                        }
-                        this.history_store.set_current_item_from_props({
-                            page_type: Pages.ARTICLE,
-                            model: payload.model,
-                            context: payload.context,
-                            context_label: context_label,
-                        });
-                    }
-                    break;
-                case Actions.PREVIOUS_DOCUMENT_CLICKED:
-                case Actions.NEXT_DOCUMENT_CLICKED:
-                    let item = this.history_store.get_current_item();
-                    this.history_store.set_current_item_from_props({
-                        page_type: Pages.ARTICLE,
-                        model: payload.model,
-                        context: item.context,
-                    });
-                    break;
             }
         });
 
-        this.history_store.connect('history-item-changed',
-            this._on_history_item_change.bind(this));
+        history.connect('changed', this._on_history_change.bind(this));
     },
 
     make_ready: function (cb) {
@@ -215,20 +144,8 @@ const Buffet = new Module.Class({
         this._update_highlight();
     },
 
-    _start_search_via_history: function (query) {
-        let sanitized_query = Utils.sanitize_query(query);
-        if (sanitized_query.length === 0)
-            return;
-
-        this.record_search_metric(query);
-        this.history_store.set_current_item_from_props({
-            page_type: Pages.SEARCH,
-            query: sanitized_query,
-        });
-    },
-
     _update_highlight: function () {
-        let item = this.history_store.get_current_item();
+        let item = HistoryStore.get_default().get_current_item();
         if (item.page_type === Pages.SET) {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.HIGHLIGHT_ITEM,
@@ -320,7 +237,9 @@ const Buffet = new Module.Class({
         this._update_highlight();
     },
 
-    _on_history_item_change: function (presenter, item, last_item, is_going_back) {
+    _on_history_change: function () {
+        let history = HistoryStore.get_default();
+        let item = history.get_current_item();
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
             action_type: Actions.HIDE_MEDIA,
@@ -338,7 +257,7 @@ const Buffet = new Module.Class({
                     model: item.model,
                 });
                 dispatcher.dispatch({
-                    action_type: Actions.SHOW_SECTION_PAGE,
+                    action_type: Actions.SHOW_SET_PAGE,
                 });
                 dispatcher.dispatch({
                     action_type: Actions.CLEAR_SUPPLEMENTARY_ARTICLES,
@@ -351,7 +270,7 @@ const Buffet = new Module.Class({
                 });
                 break;
             case Pages.HOME:
-                if (this.history_store.item_count() === 1) {
+                if (history.get_items().length === 1) {
                     Dispatcher.get_default().dispatch({
                         action_type: Actions.SHOW_BRAND_PAGE,
                     });
@@ -374,16 +293,10 @@ const Buffet = new Module.Class({
                 search_text = item.query;
                 break;
             case Pages.ARTICLE:
-                let animation_type = EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
-                if (!last_item || last_item.page_type !== Pages.ARTICLE) {
-                    animation_type = EosKnowledgePrivate.LoadingAnimationType.NONE;
-                } else if (is_going_back) {
-                    animation_type = EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
-                }
                 let payload = {
                     action_type: Actions.SHOW_ARTICLE,
                     model: item.model,
-                    animation_type: animation_type,
+                    animation_type: this._get_article_animation_type(),
                 };
                 if (item.context) {
                     let index = item.context.indexOf(item.model);
@@ -425,7 +338,7 @@ const Buffet = new Module.Class({
     },
 
     _show_home_if_ready: function () {
-        let item = this.history_store.get_current_item();
+        let item = HistoryStore.get_default().get_current_item();
         if (!item || item.page_type !== Pages.HOME)
             return;
         if (!this._content_ready)
@@ -439,87 +352,17 @@ const Buffet = new Module.Class({
         this._update_highlight();
     },
 
-    _load_ekn_id: function (ekn_id) {
-        Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
-            let model;
-            try {
-                model = engine.get_object_by_id_finish(task);
-            } catch (error) {
-                logError(error);
-                return;
-            }
-
-            this._load_model(model);
-        });
-    },
-
-    _load_model: function (model) {
-        if (model instanceof ArticleObjectModel.ArticleObjectModel) {
-            this.history_store.set_current_item_from_props({
-                page_type: Pages.ARTICLE,
-                model: model,
-            });
-        } else if (model instanceof SetObjectModel.SetObjectModel) {
-            this.history_store.set_current_item_from_props({
-                page_type: Pages.SET,
-                model: model,
-                context_label: model.title,
-            });
-        } else if (model instanceof MediaObjectModel.MediaObjectModel) {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.SHOW_MEDIA,
-                model: model,
-            });
-        }
-    },
-
-    _dispatch_present: function (timestamp) {
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.PRESENT_WINDOW,
-            timestamp: timestamp,
-        });
-    },
-
-    // Launcher implementation
-    desktop_launch: function (timestamp) {
-        this._dispatch_present(timestamp);
-        this.history_store.set_current_item_from_props({
-            page_type: Pages.HOME,
-        });
-    },
-
-    // Launcher override
-    search: function (timestamp, query) {
-        this._dispatch_present(timestamp);
-        this._start_search_via_history(query);
-    },
-
-    // Launcher override
-    activate_search_result: function (timestamp, ekn_id, query) {
-        this._dispatch_present(timestamp);
-        // Show an empty article page while waiting
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.SHOW_ARTICLE_PAGE,
-        });
-
-        Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
-            try {
-                let model = engine.get_object_by_id_finish(task);
-                this.history_store.set_current_item_from_props({
-                    page_type: Pages.ARTICLE,
-                    model: model,
-                    query: query,
-                });
-            } catch (error) {
-                logError(error);
-            }
-        });
-    },
-
-    // Should be mocked out during tests so that we don't actually send metrics
-    record_search_metric: function (query) {
-        let recorder = EosMetrics.EventRecorder.get_default();
-        recorder.record_event(SEARCH_METRIC_EVENT_ID, new GLib.Variant('(ss)',
-            [query, this.application.application_id]));
+    _get_article_animation_type: function () {
+        // FIXME: move to article stack
+        let history = HistoryStore.get_default();
+        let direction = history.get_direction();
+        let last_index = history.get_current_index();
+        last_index += (direction === HistoryStore.Direction.BACKWARDS ? 1 : -1);
+        let last_item = history.get_items()[last_index];
+        if (!last_item || last_item.page_type !== Pages.ARTICLE)
+            return EosKnowledgePrivate.LoadingAnimationType.NONE;
+        if (direction === HistoryStore.Direction.BACKWARDS)
+            return EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
+        return EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
     },
 });

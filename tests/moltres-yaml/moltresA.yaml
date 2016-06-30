@@ -31,7 +31,7 @@ defines:
       shortdef: 'ContentGroup.Set(expand: true)'
       slots: *main-arrangement-slot
 
-- &section-page
+- &set-page
   shortdef: 'Layout.Box(orientation: vertical)'
   slots:
     contents:
@@ -77,6 +77,6 @@ root:
             background-image-uri: "resource:///com/endlessm/knowledge/data/images/tools/forest.jpg"
           slots:
             home-page: *home-page
-            section-page: *section-page
+            set-page: *set-page
             search-page: *search-page
             article-page: *article-page

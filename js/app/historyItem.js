@@ -1,3 +1,4 @@
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 
 const ContentObjectModel = imports.search.contentObjectModel;
@@ -58,6 +59,16 @@ const HistoryItem = new Knowledge.Class({
             'The context label describing what category this item belongs to',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
+        /**
+         * Property: timestamp
+         *
+         * The timestamp of the user action that generated this item, currently
+         * only used for dbus activation actions.
+         */
+        'timestamp': GObject.ParamSpec.uint('timestamp', 'Timestamp',
+            'The timestamp of the user action that generated this item',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            0, GLib.MAXUINT32, 0),
     },
 
     _init: function (props={}) {
