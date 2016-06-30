@@ -72,7 +72,6 @@ scss_toplevels = \
 	$(NULL)
 scss_partials = \
 	$(srcdir)/data/css/_colors.scss \
-	$(srcdir)/data/css/_common.scss \
 	$(srcdir)/data/css/_typography.scss \
 	$(srcdir)/data/css/modules/arrangement/_half.scss \
 	$(srcdir)/data/css/modules/arrangement/_list.scss \
@@ -109,6 +108,7 @@ scss_partials = \
 	$(srcdir)/data/css/modules/layout/_hamburgerBasement.scss \
 	$(srcdir)/data/css/modules/layout/_infiniteScrolling.scss \
 	$(srcdir)/data/css/modules/layout/_navigation.scss \
+	$(srcdir)/data/css/modules/layout/_paper.scss \
 	$(srcdir)/data/css/modules/layout/_responsiveMargins.scss \
 	$(srcdir)/data/css/modules/layout/_scrolling.scss \
 	$(srcdir)/data/css/modules/layout/_sidebar.scss \
@@ -116,6 +116,7 @@ scss_partials = \
 	$(srcdir)/data/css/modules/layout/_topMenu.scss \
 	$(srcdir)/data/css/modules/navigation/_searchBox.scss \
 	$(srcdir)/data/css/modules/pager/_parallaxBackground.scss \
+	$(srcdir)/data/css/modules/pager/_simple.scss \
 	$(srcdir)/data/css/modules/window/_simple.scss \
 	$(srcdir)/data/templates/css/_eos-modal.scss \
 	$(srcdir)/data/templates/css/_eos-no-link.scss \
