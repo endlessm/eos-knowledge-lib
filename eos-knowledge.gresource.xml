@@ -41,8 +41,6 @@
     <file compressed="true">data/templates/js/hide-broken-images.js</file>
     <file compressed="true">data/templates/js/jquery-min.js</file>
     <file compressed="true">data/templates/js/scroll-manager.js</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/arrangement/grid.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/arrangement/scrollingList.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/app.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/search.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/deck.ui</file>
@@ -94,7 +92,6 @@
     <file>js/app/modules/arrangement/pianola.js</file>
     <file>js/app/modules/arrangement/quarter.js</file>
     <file>js/app/modules/arrangement/quilt.js</file>
-    <file>js/app/modules/arrangement/scrollingList.js</file>
     <file>js/app/modules/arrangement/sideBySide.js</file>
     <file>js/app/modules/arrangement/squareGuys.js</file>
     <file>js/app/modules/arrangement/thirdRock.js</file>

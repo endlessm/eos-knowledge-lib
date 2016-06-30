@@ -50,15 +50,21 @@ defines:
     context: Banner.Context
     sidebar:
       # Main menu
-      shortdef: 'ContentGroup.SuggestedCategories(show-title: false)'
+      type: Layout.Scrolling
       slots:
-        arrangement:
-          type: Arrangement.ScrollingList
+        content:
+          type: ContentGroup.ContentGroup
           slots:
-            card:
-              type: Card.Title
-              properties: *card-all-uppercase-properties
-            filter: Filter.Featured
+            arrangement:
+              type: Arrangement.List
+              slots:
+                card:
+                  type: Card.Title
+                  properties: *card-all-uppercase-properties
+            selection:
+              type: Selection.AllSets
+              slots:
+                filter: Filter.Featured
 
 - &home-page
   <<: *page-with-menu
@@ -105,7 +111,8 @@ defines:
     <<: *page-with-menu-slots
     content:
       type: Layout.InfiniteScrolling
-      id: theme-scroll
+      references:
+        lazy-load: thematic-sets
       slots:
         content:
           type: Layout.ResponsiveMargins
@@ -114,16 +121,42 @@ defines:
               shortdef: 'Layout.Box(orientation: vertical)'
               slots:
                 contents:
-                - shortdef: 'ContentGroup.Thematic(halign: center)'
+                - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
+                  styles:
+                    - thematic-group
                   slots:
                     arrangement:
-                      type: Arrangement.Half
-                      properties: *arrangement-spacing-properties
+                      shortdef: 'Arrangement.List(orientation: vertical, homogeneous: false, max-rows: 5)'
                       slots:
-                        card: *main-card
-                    header-card: *header-card
-                  references:
-                    scroll-server: theme-scroll
+                        card:
+                          type: Card.ContentGroup
+                          slots:
+                            arrangement:
+                              type: Arrangement.Half
+                              slots:
+                                card: *main-card
+                            title:
+                              type: ContentGroup.DynamicTitle
+                              properties:
+                                format-string: '%s'
+                                halign: start
+                            trigger:
+                              shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
+                              slots:
+                                contents:
+                                - shortdef: 'ContentGroup.DynamicTitle(format-string: "See more from %s")'
+                                - type: Decoration.ThemeableImage
+                                  properties:
+                                    valign: end
+                                    halign: end
+                            selection:
+                              type: Selection.ArticlesForSetCrossSection
+                    selection:
+                      type: Selection.AllSets
+                      id: thematic-sets
+                      slots:
+                        filter:
+                          type: Filter.Thematic
                 - *category-suggestions
 
 - &search-page
@@ -131,27 +164,34 @@ defines:
   slots:
     <<: *page-with-menu-slots
     content:
-      type: ContentGroup.ContentGroup
-      styles:
-      - search-results
-      properties:
-        halign: fill
+      type: Layout.InfiniteScrolling
+      references:
+        lazy-load: search-results
       slots:
-        arrangement:
-          type: Arrangement.ScrollingList
+        content:
+          type: ContentGroup.ContentGroup
+          styles:
+          - search-results
+          properties:
+            halign: fill
           slots:
-            card: Card.List
-        selection: Selection.Search
-        no-results:
-          shortdef: Layout.Scrolling
-          slots:
-            content:
-              shortdef: 'Layout.Box(orientation: vertical)'
+            arrangement:
+              type: Arrangement.List
               slots:
-                contents:
-                - ContentGroup.NoResultsMessage
-                - *article-suggestions
-                - *category-suggestions
+                card: Card.List
+            selection:
+              type: Selection.Search
+              id: search-results
+            no-results:
+              shortdef: Layout.Scrolling
+              slots:
+                content:
+                  shortdef: 'Layout.Box(orientation: vertical)'
+                  slots:
+                    contents:
+                    - ContentGroup.NoResultsMessage
+                    - *article-suggestions
+                    - *category-suggestions
 
 - &all-sets-page
   <<: *page-with-menu
