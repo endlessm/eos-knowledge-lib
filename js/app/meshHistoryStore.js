@@ -10,6 +10,7 @@ const Dispatcher = imports.app.dispatcher;
 const HistoryItem = imports.app.historyItem;
 const HistoryStore = imports.app.historyStore;
 const Pages = imports.app.pages;
+const SetObjectModel = imports.search.setObjectModel;
 
 /**
  * Class: MeshHistoryStore
@@ -31,18 +32,16 @@ const MeshHistoryStore = new GObject.Class({
                         timestamp: payload.timestamp || Gdk.CURRENT_TIME,
                     });
                     break;
-                case Actions.SET_CLICKED:
-                    this.set_current_item_from_props({
-                        page_type: Pages.SET,
-                        model: payload.model,
-                    });
-                    break;
-                case Actions.ITEM_CLICKED:
-                case Actions.SEARCH_CLICKED:
-                    this.set_current_item_from_props({
-                        page_type: Pages.ARTICLE,
-                        model: payload.model,
-                    });
+                case Actions.ITEM_CLICKED: {
+                    let props = { model: payload.model };
+                    if (payload.model instanceof SetObjectModel.SetObjectModel)
+                        props['page_type'] = Pages.SET;
+                    else
+                        props['page_type'] = Pages.ARTICLE;
+                    if (payload.query)
+                        props['query'] = payload.query;
+                    this.set_current_item_from_props(props);
+                }
                     break;
                 case Actions.NAV_BACK_CLICKED:
                     let item = this.get_current_item();
@@ -52,13 +51,6 @@ const MeshHistoryStore = new GObject.Class({
                     if (!target_item)
                         target_item = { page_type: Pages.HOME };
                     this.set_current_item(HistoryItem.HistoryItem.new_from_object(target_item));
-                    break;
-                case Actions.AUTOCOMPLETE_CLICKED:
-                    this.set_current_item_from_props({
-                        page_type: Pages.ARTICLE,
-                        model: payload.model,
-                        query: payload.query,
-                    });
                     break;
                 case Actions.SEARCH_TEXT_ENTERED:
                 case Actions.DBUS_LOAD_QUERY_CALLED:

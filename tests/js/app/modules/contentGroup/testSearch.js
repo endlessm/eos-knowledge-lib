@@ -178,7 +178,7 @@ describe('ContentGroup.Search', function () {
         expect(arrangement.clear_highlight).toHaveBeenCalled();
     });
 
-    it('dispatches search clicked', function () {
+    it('dispatches item-clicked', function () {
         let model = new ContentObjectModel.ContentObjectModel();
         dispatcher.dispatch({
             action_type: Actions.APPEND_SEARCH,
@@ -187,7 +187,7 @@ describe('ContentGroup.Search', function () {
         });
         arrangement.emit('card-clicked', model);
         Utils.update_gui();
-        let payload = dispatcher.last_payload_with_type(Actions.SEARCH_CLICKED);
+        let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
         let matcher = jasmine.objectContaining({
             model: model,
             context: [ model ],

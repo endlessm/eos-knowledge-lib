@@ -99,7 +99,7 @@ const Search = new Module.Class({
         this._arrangement = this.create_submodule('arrangement');
         this._arrangement.connect('card-clicked', (arrangement, model) => {
             Dispatcher.get_default().dispatch({
-                action_type: Actions.SEARCH_CLICKED,
+                action_type: Actions.ITEM_CLICKED,
                 model: model,
                 context: arrangement.get_models(),
                 query: this._query,

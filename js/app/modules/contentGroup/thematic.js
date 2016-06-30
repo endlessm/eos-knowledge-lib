@@ -160,7 +160,7 @@ const Thematic = new Module.Class({
         });
         card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
-                action_type: Actions.SET_CLICKED,
+                action_type: Actions.ITEM_CLICKED,
                 model: model,
                 context: this._sets,
             });

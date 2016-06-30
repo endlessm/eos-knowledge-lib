@@ -40,20 +40,12 @@ const BuffetHistoryStore = new GObject.Class({
                         page_type: Pages.ALL_SETS,
                     });
                     break;
-                case Actions.SET_CLICKED:
-                    this.set_current_item_from_props({
-                        page_type: Pages.SET,
-                        model: payload.model,
-                        context_label: payload.model.title,
-                    });
-                    break;
-                case Actions.AUTOCOMPLETE_CLICKED:
                 case Actions.ITEM_CLICKED:
-                case Actions.SEARCH_CLICKED:
                     if (payload.model instanceof SetObjectModel.SetObjectModel) {
                         this.set_current_item_from_props({
                             page_type: Pages.SET,
                             model: payload.model,
+                            context_label: payload.model.title,
                         });
                     } else {
                         let context_label = '';

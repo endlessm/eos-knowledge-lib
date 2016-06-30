@@ -24,10 +24,11 @@ describe('Selection.ArticlesForSet', function () {
         });
     });
 
-    it('dispatches a SET_CLICKED when asked to show more', function () {
+    it('dispatches item-clicked when asked to show more', function () {
         let model = new ContentObjectModel.ContentObjectModel();
         selection.model = model;
         selection.show_more();
-        expect(dispatcher.last_payload_with_type(Actions.SET_CLICKED)).toBeDefined();
+        expect(dispatcher.last_payload_with_type(Actions.ITEM_CLICKED))
+            .toBeDefined();
     });
 });

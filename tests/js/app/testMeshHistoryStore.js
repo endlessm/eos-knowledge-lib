@@ -33,12 +33,12 @@ describe('MeshHistoryStore', function () {
         expect(store.get_current_item().page_type).toBe(Pages.HOME);
     });
 
-    it('shows the set page when set clicked', function () {
+    it('shows the set page when a set model is clicked', function () {
         let model = new SetObjectModel.SetObjectModel({
             ekn_id: 'ekn://foo/set',
         });
         dispatcher.dispatch({
-            action_type: Actions.SET_CLICKED,
+            action_type: Actions.ITEM_CLICKED,
             model: model,
         });
         expect(store.get_current_item().page_type).toBe(Pages.SET);
@@ -50,17 +50,6 @@ describe('MeshHistoryStore', function () {
         });
         dispatcher.dispatch({
             action_type: Actions.ITEM_CLICKED,
-            model: model,
-        });
-        expect(store.get_current_item().page_type).toBe(Pages.ARTICLE);
-    });
-
-    it('shows the article page when search result clicked', function () {
-        let model = new ArticleObjectModel.ArticleObjectModel({
-            ekn_id: 'ekn://foo/bar',
-        });
-        dispatcher.dispatch({
-            action_type: Actions.SEARCH_CLICKED,
             model: model,
         });
         expect(store.get_current_item().page_type).toBe(Pages.ARTICLE);
@@ -122,12 +111,12 @@ describe('MeshHistoryStore', function () {
         expect(store.get_current_item().page_type).toBe(Pages.SET);
     });
 
-    it('sets the appropriate state when autocomplete clicked', function () {
+    it('sets the appropriate state when item clicked with a query (e.g. autocomplete)', function () {
         let model = new ArticleObjectModel.ArticleObjectModel({
             ekn_id: 'ekn://foo/bar',
         });
         dispatcher.dispatch({
-            action_type: Actions.AUTOCOMPLETE_CLICKED,
+            action_type: Actions.ITEM_CLICKED,
             model: model,
             query: 'foo',
         });
