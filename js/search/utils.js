@@ -47,6 +47,8 @@ function components_from_ekn_id (ekn_id) {
 }
 
 function domain_from_app_id (app_id) {
+    if (app_id.indexOf('-') === -1)
+        return app_id.split('.').slice(-2).join('.');
     return app_id.split('.').pop();
 }
 

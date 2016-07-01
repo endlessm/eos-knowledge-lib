@@ -11,7 +11,7 @@
         }
 
         .after {
-            -gtk-icon-source: url('../images/title-arrow-dark.svg');
+            -gtk-icon-source: image-url('title-arrow-dark.svg');
             min-height: 10px;
             min-width: 11px;
             margin-left: 8px;
@@ -24,7 +24,7 @@
             }
 
             .after {
-                -gtk-icon-source: url('../images/title-arrow-light.svg');
+                -gtk-icon-source: image-url('title-arrow-light.svg');
             }
         }
     }

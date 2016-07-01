@@ -55,7 +55,7 @@ scss_verbose = $(scss_verbose_@AM_V@)
 scss_verbose_ = $(scss_verbose_@AM_DEFAULT_V@)
 scss_verbose_0 = @echo "  SCSS     $@";
 
-scss_toplevels = \
+scss_theme_toplevels = \
 	$(srcdir)/data/css/buffet.scss \
 	$(srcdir)/data/css/default.scss \
 	$(srcdir)/data/css/encyclopedia.scss \
@@ -64,15 +64,13 @@ scss_toplevels = \
 	$(srcdir)/data/css/picard.scss \
 	$(srcdir)/data/css/preset_a.scss \
 	$(srcdir)/data/css/preset_b.scss \
-	$(srcdir)/data/templates/css/prensa-libre.scss \
-	$(srcdir)/data/templates/css/buffet-custom.scss \
-	$(srcdir)/data/templates/css/wikihow.scss \
-	$(srcdir)/data/templates/css/wikimedia.scss \
-	$(srcdir)/data/templates/css/clipboard.scss \
 	$(NULL)
-scss_partials = \
+scss_theme_base_partials = \
+	$(srcdir)/data/css/_project-setup.scss \
 	$(srcdir)/data/css/_colors.scss \
 	$(srcdir)/data/css/_typography.scss \
+	$(NULL)
+scss_theme_arrangement_partials = \
 	$(srcdir)/data/css/modules/arrangement/_half.scss \
 	$(srcdir)/data/css/modules/arrangement/_list.scss \
 	$(srcdir)/data/css/modules/arrangement/_piano.scss \
@@ -81,10 +79,14 @@ scss_partials = \
 	$(srcdir)/data/css/modules/arrangement/_squareGuys.scss \
 	$(srcdir)/data/css/modules/arrangement/_thirties.scss \
 	$(srcdir)/data/css/modules/arrangement/_windshield.scss \
+	$(NULL)
+scss_theme_banner_partials = \
 	$(srcdir)/data/css/modules/banner/_app.scss \
 	$(srcdir)/data/css/modules/banner/_context.scss \
 	$(srcdir)/data/css/modules/banner/_search.scss \
 	$(srcdir)/data/css/modules/banner/_set.scss \
+	$(NULL)
+scss_theme_card_partials = \
 	$(srcdir)/data/css/modules/card/_base.scss \
 	$(srcdir)/data/css/modules/card/_deck.scss \
 	$(srcdir)/data/css/modules/card/_knowledgeDocument.scss \
@@ -97,13 +99,19 @@ scss_partials = \
 	$(srcdir)/data/css/modules/card/_text.scss \
 	$(srcdir)/data/css/modules/card/_thumb.scss \
 	$(srcdir)/data/css/modules/card/_title.scss \
+	$(NULL)
+scss_theme_content_partials = \
 	$(srcdir)/data/css/modules/contentGroup/_cardContainer.scss \
 	$(srcdir)/data/css/modules/contentGroup/_contentGroup.scss \
 	$(srcdir)/data/css/modules/contentGroup/_hierarchicalSet.scss \
 	$(srcdir)/data/css/modules/contentGroup/_mediaLightbox.scss \
 	$(srcdir)/data/css/modules/contentGroup/_search.scss \
 	$(srcdir)/data/css/modules/contentGroup/_thematic.scss \
+	$(NULL)
+scss_theme_document_partials = \
 	$(srcdir)/data/css/modules/documentCard/_base.scss \
+	$(NULL)
+scss_theme_layout_partials = \
 	$(srcdir)/data/css/modules/layout/_dynamicBackground.scss \
 	$(srcdir)/data/css/modules/layout/_hamburgerBasement.scss \
 	$(srcdir)/data/css/modules/layout/_infiniteScrolling.scss \
@@ -114,13 +122,47 @@ scss_partials = \
 	$(srcdir)/data/css/modules/layout/_sidebar.scss \
 	$(srcdir)/data/css/modules/layout/_sideMenu.scss \
 	$(srcdir)/data/css/modules/layout/_topMenu.scss \
+	$(NULL)
+scss_theme_navigation_partials = \
 	$(srcdir)/data/css/modules/navigation/_searchBox.scss \
+	$(NULL)
+scss_theme_pager_partials = \
 	$(srcdir)/data/css/modules/pager/_parallaxBackground.scss \
 	$(srcdir)/data/css/modules/pager/_simple.scss \
+	$(NULL)
+scss_theme_window_partials = \
 	$(srcdir)/data/css/modules/window/_simple.scss \
+	$(NULL)
+
+scss_theme_partials = \
+	$(scss_theme_base_partials) \
+	$(scss_theme_arrangement_partials) \
+	$(scss_theme_banner_partials) \
+	$(scss_theme_card_partials) \
+	$(scss_theme_content_partials) \
+	$(scss_theme_document_partials) \
+	$(scss_theme_layout_partials) \
+	$(scss_theme_navigation_partials) \
+	$(scss_theme_pager_partials) \
+	$(scss_theme_window_partials) \
+	$(NULL)
+
+scss_template_toplevels = \
+	$(srcdir)/data/templates/css/prensa-libre.scss \
+	$(srcdir)/data/templates/css/buffet-custom.scss \
+	$(srcdir)/data/templates/css/wikihow.scss \
+	$(srcdir)/data/templates/css/wikimedia.scss \
+	$(srcdir)/data/templates/css/clipboard.scss \
+	$(NULL)
+
+scss_template_partials = \
 	$(srcdir)/data/templates/css/_eos-modal.scss \
 	$(srcdir)/data/templates/css/_eos-no-link.scss \
 	$(NULL)
+
+scss_toplevels = $(scss_theme_toplevels) $(scss_template_toplevels)
+scss_partials = $(scss_theme_partials) $(scss_template_partials)
+
 scss_targets = $(patsubst $(srcdir)/%.scss,$(builddir)/%.css,$(scss_toplevels))
 
 # Rebuild the css files whenever a partial changes
@@ -130,7 +172,7 @@ $(scss_targets): $(scss_partials)
 .scss.css:
 	$(scss_verbose) $(MKDIR_P) $(dir $@) && $(SCSS) --compass -E utf-8 --stop-on-error --sourcemap=none $< $@ || rm -f $@
 
-EXTRA_DIST += $(scss_toplevels) $(scss_partials)
+EXTRA_DIST += $(scss_template_toplevels) $(scss_template_partials)
 CLEANFILES += $(scss_targets)
 clean-local::
 	rm -rf .sass-cache
@@ -326,7 +368,46 @@ bin_SCRIPTS += \
 
 dist_pkgdata_DATA = data/downloader.ini
 
-EXTRA_DIST += autobahn
+# so we can find our .scss files
+pkgconfigdir = $(datadir)/pkgconfig
+pkgconfig_DATA = data/eos-knowledge-0.pc
+
+# so we can package our .scss files
+themetopdir = $(pkgdatadir)/theme
+dist_themetop_DATA = $(scss_theme_toplevels) $(scss_theme_base_partials)
+
+thememodulesdir = $(themetopdir)/modules
+
+themearrangementdir = $(thememodulesdir)/arrangement
+dist_themearrangement_DATA = $(scss_theme_arrangement_partials)
+
+themebannerdir = $(thememodulesdir)/banner
+dist_themebanner_DATA = $(scss_theme_banner_partials)
+
+themecarddir = $(thememodulesdir)/card
+dist_themecard_DATA = $(scss_theme_card_partials)
+
+themecontentdir = $(thememodulesdir)/contentGroup
+dist_themecontent_DATA = $(scss_theme_content_partials)
+
+themedocumentdir = $(thememodulesdir)/documentCard
+dist_themedocument_DATA = $(scss_theme_document_partials)
+
+themelayoutdir = $(thememodulesdir)/layout
+dist_themelayout_DATA = $(scss_theme_layout_partials)
+
+themenavigationdir = $(thememodulesdir)/navigation
+dist_themenavigation_DATA = $(scss_theme_navigation_partials)
+
+themepagerdir = $(thememodulesdir)/pager
+dist_themepager_DATA = $(scss_theme_pager_partials)
+
+themewindowdir = $(thememodulesdir)/window
+dist_themewindow_DATA = $(scss_theme_window_partials)
+
+EXTRA_DIST += \
+	autobahn \
+	data/eos-knowledge-0.pc.in
 
 # # # TESTS # # #
 

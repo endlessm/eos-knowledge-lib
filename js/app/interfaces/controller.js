@@ -87,12 +87,15 @@ const Controller = new Lang.Interface({
     },
 
     load_theme: function () {
-        if (!this.theme)
-            return;
         let provider = new Gtk.CssProvider();
-        provider.load_from_resource(CSS_RESOURCE_PATH + this.theme + '.css');
+        if (this.css) {
+            provider.load_from_data(this.css);
+        } else if (this.theme) {
+            provider.load_from_resource(CSS_RESOURCE_PATH + this.theme + '.css');
+        } else {
+            return;
+        }
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
             provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     },
-
 });

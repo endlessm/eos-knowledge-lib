@@ -256,6 +256,7 @@ AC_CACHE_SAVE
 dnl List files here that the configure script should output
 AC_CONFIG_FILES([
     Makefile
+    data/eos-knowledge-0.pc
     po/Makefile.in
     docs/reference/eosknowledgeprivate/Makefile
     js/app/config.js.in

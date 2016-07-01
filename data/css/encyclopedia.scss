@@ -1,16 +1,16 @@
 @import "project-setup";
 @import "compass";
 
+$body-font: 'Lato' !default;
+$display-font: 'Lato' !default;
+$display-font-composite: 'Roboto' !default;
+$title-font: 'Lato' !default;
+
+$background-light-color: #f5f5f5 !default;
+$accent-light-color: #044a80 !default;
+
 @import 'colors';
 @import 'typography';
-
-$body-font: 'Lato';
-$display-font: 'Lato';
-$display-font-composite: 'Roboto';
-$title-font: 'Lato';
-
-$background-light-color: #f5f5f5;
-$accent-light-color: #044a80;
 
 @import 'modules/banner/app';
 @import 'modules/banner/search';
@@ -191,7 +191,7 @@ $accent-light-color: #044a80;
     separator {
         min-height: 15px;
         background-color: transparent;
-        background-image: url('../images/separator.png');
+        background-image: image-url('separator.png');
         background-size: 100%;
         background-repeat: no-repeat;
     }

@@ -1,25 +1,25 @@
 @import "project-setup";
 @import "compass";
 
+/* === Colors and Fonts (Overrides) === */
+
+$primary-light-color: #7297a7 !default;
+$primary-medium-color: #0f1b3c !default;
+$accent-light-color: #0f1b3c !default;
+$accent-dark-color: #7297a7 !default;
+$background-light-color: #e9e5e0 !default;
+$background-dark-color: #0f1b3c !default;
+
+$body-font: Merriweather !default;
+$title-font: 'Fira Sans' !default;
+$display-font: Merriweather !default;
+$context-font: Merriweather !default;
+$support-font: 'Fira Sans' !default;
+
 /* === Colors and Fonts === */
 
 @import 'colors';
 @import 'typography';
-
-/* === Colors and Fonts (Overrides) === */
-
-$primary-light-color: #7297a7;
-$primary-medium-color: #0f1b3c;
-$accent-light-color: #0f1b3c;
-$accent-dark-color: #7297a7;
-$background-light-color: #e9e5e0;
-$background-dark-color: #0f1b3c;
-
-$body-font: Merriweather;
-$title-font: 'Fira Sans';
-$display-font: Merriweather;
-$context-font: Merriweather;
-$support-font: 'Fira Sans';
 
 /* === Modules === */
 

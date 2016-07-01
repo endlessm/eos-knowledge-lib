@@ -1,16 +1,16 @@
-$primary-light-color: #5e7790;
-$primary-medium-color: #2d3e4e;
-$primary-dark-color: #1b242e;
+$primary-light-color: #5e7790 !default;
+$primary-medium-color: #2d3e4e !default;
+$primary-dark-color: #1b242e !default;
 
-$accent-light-color: #ff6835;
-$accent-dark-color: #cc532b;
+$accent-light-color: #ff6835 !default;
+$accent-dark-color: #cc532b !default;
 
-$background-light-color: #e9e9e3;
-$background-dark-color: #ddddd5;
+$background-light-color: #e9e9e3 !default;
+$background-dark-color: #ddddd5 !default;
 
-$white-60-color: transparentize(white, 0.4);
-$black-20-color: transparentize(black, 0.8);
-$black-60-color: transparentize(black, 0.4);
-$black-80-color: transparentize(black, 0.2);
+$white-60-color: transparentize(white, 0.4) !default;
+$black-20-color: transparentize(black, 0.8) !default;
+$black-60-color: transparentize(black, 0.4) !default;
+$black-80-color: transparentize(black, 0.2) !default;
 
-$tab-button-background: $accent-light-color;
+$tab-button-background: $accent-light-color !default;
