@@ -15,16 +15,9 @@ function get_dominant_color (model, cancellable, callback) {
     task.catch_errors(() => {
         if (!model.thumbnail_uri)
             throw new Error('Could not find thumbnail uri');
-        if (model.thumbnail_uri.startsWith('ekn://')) {
-            Engine.get_default().get_object_by_id(model.thumbnail_uri, cancellable, task.catch_callback_errors((engine, engine_task) => {
-                let media_object = engine.get_object_by_id_finish(engine_task);
-                let stream = media_object.get_content_stream();
-                task.return_value(_extract_color(stream));
-            }));
-        } else {
-            let stream = Gio.File.new_for_uri(model.thumbnail_uri).read(null);
-            task.return_value(_extract_color(stream));
-        }
+
+        let stream = Gio.File.new_for_uri(model.thumbnail_uri).read(null);
+        task.return_value(_extract_color(stream));
     });
     return task;
 }

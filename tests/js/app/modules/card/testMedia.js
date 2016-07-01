@@ -21,46 +21,50 @@ describe ('Card.Media', function () {
             caption: 'foo',
             license: 'bar',
             copyright_holder: 'baz',
-            get_content_stream: () => null,
             content_type: 'image/jpeg',
         });
+        imageObject.get_content_stream = () => null;
     });
 
     it ('hides separator when caption or attribution not visible', function () {
         let noCaption = new MediaObjectModel.ImageObjectModel({
             license: 'bar',
             copyright_holder: 'baz',
-            get_content_stream: () => null,
             content_type: 'image/jpeg',
         });
+        noCaption.get_content_stream = () => null;
 
         let noAttribution = new MediaObjectModel.ImageObjectModel({
             caption: 'foo',
-            get_content_stream: () => null,
             content_type: 'image/jpeg',
         });
+        noAttribution.get_content_stream = () => null;
 
         let media_card = new Media.Media({
             model: imageObject,
         });
+        media_card.get_content_stream = () => null;
         expect(media_card._separator.visible).toBe(true);
         media_card = new Media.Media({
             model: noCaption,
         });
+        media_card.get_content_stream = () => null;
         expect(media_card._separator.visible).toBe(false);
         media_card = new Media.Media({
             model: noAttribution,
         });
+        media_card.get_content_stream = () => null;
         expect(media_card._separator.visible).toBe(false);
     });
 
     it('has labels that understand Pango markup', function () {
+        let model = new MediaObjectModel.ImageObjectModel({
+            copyright_holder: '!!!',
+            caption: '@@@',
+        });
+        model.get_content_stream = () => null;
         let card = new Media.Media({
-            model: new MediaObjectModel.ImageObjectModel({
-                copyright_holder: '!!!',
-                caption: '@@@',
-                get_content_stream: () => null,
-            }),
+            model: model,
         });
         expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
         expect(Gtk.test_find_label(card, '*@@@*').use_markup).toBeTruthy();
@@ -72,12 +76,14 @@ describe ('Card.Media', function () {
         let attribution_button;
 
         it ('displays license file when license is known', function () {
+            let model = new MediaObjectModel.ImageObjectModel({
+                license: 'CC BY 4.0',
+                copyright_holder: copyright_holder,
+            });
+            model.get_content_stream = () => null;
+
             card = new Media.Media({
-                model: new MediaObjectModel.ImageObjectModel({
-                    license: 'CC BY 4.0',
-                    copyright_holder: copyright_holder,
-                    get_content_stream: () => null,
-                }),
+                model: model,
             });
 
             attribution_button = Gtk.test_find_label(card, '*!!!*').get_parent();
@@ -85,12 +91,14 @@ describe ('Card.Media', function () {
         });
 
         it ('does not display license file when license is unknown', function () {
+            let model = new MediaObjectModel.ImageObjectModel({
+                license: 'foobar',
+                copyright_holder: copyright_holder,
+            });
+            model.get_content_stream = () => null;
+
             card = new Media.Media({
-                model: new MediaObjectModel.ImageObjectModel({
-                    license: 'foobar',
-                    copyright_holder: copyright_holder,
-                    get_content_stream: () => null,
-                }),
+                model: model,
             });
 
             attribution_button = Gtk.test_find_label(card, '*!!!*').get_parent();

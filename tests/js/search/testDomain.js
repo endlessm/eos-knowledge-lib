@@ -95,12 +95,6 @@ function create_mock_domain_for_version (versionNo) {
 
     // Don't hit the disk.
     domain._content_dir = Gio.File.new_for_path('/foo');
-    spyOn(domain, 'load').and.callFake(function (cancellable, callback) {
-        callback(null);
-    });
-    spyOn(domain, 'load_finish').and.callFake(function () {
-        return null;
-    });
 
     return domain;
 }
@@ -204,10 +198,6 @@ describe('DomainV2', function () {
                 let result = domain.get_object_by_id_finish(task);
                 expect(result).toBeA(ArticleObjectModel.ArticleObjectModel);
                 expect(result.content_type).toBe('text/html');
-                let stream = result.get_content_stream();
-                expect(stream).toBeA(Gio.InputStream);
-                let html = stream.read_bytes(16, null).get_data().toString();
-                expect(html).toBe(mock_content);
                 done();
             });
         });

@@ -131,8 +131,8 @@ const XapianBridge = new Lang.Class({
                         message.uri.to_string(true) + ': ' +
                         message.reason_phrase);
                 }
-                let data = message.response_body.data;
-                task.return_value(this._parse_json_ld_message(data));
+                let data = JSON.parse(message.response_body.data);
+                task.return_value(data);
             }));
 
             if (cancellable) {
@@ -146,17 +146,6 @@ const XapianBridge = new Lang.Class({
 
     _send_json_ld_request_finish: function (task) {
         return task.finish();
-    },
-
-    _parse_json_ld_message: function (message) {
-        // The following is a patch for old databases. Prior to 2.3 the databases had the
-        // old node.js knowledge engine routes hard coded. We will replace them
-        // with the new ekn uri scheme.
-        message = message.replace(/http:\/\/localhost:3003\/api\//g, 'ekn://');
-        message = message.replace(/http:\/\/localhost:3003\//g, 'ekn://');
-        // End patch
-
-        return JSON.parse(message);
     },
 
     get_fixed_query: function (query_obj, domain_params, cancellable, callback) {

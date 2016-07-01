@@ -9,14 +9,10 @@ const MockShardFile = new Lang.Class({
         this.parent(props);
 
         spyOn(this, 'find_record_by_hex_name');
-        spyOn(this, 'init_async').and.callThrough();
+        spyOn(this, 'init');
     },
 
-    init_async: function (priority, cancellable, callback) {
-        callback(this);
-    },
-    init_finish: function () {},
-
+    init: function () {},
     find_record_by_hex_name: function () {},
 });
 

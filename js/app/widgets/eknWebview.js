@@ -125,10 +125,6 @@ const EknWebview = new Knowledge.Class({
         return task;
     },
 
-    _load_record: function (id, cancellable, callback) {
-        return Engine.get_default().load_record_by_id(id, cancellable, callback);
-    },
-
     _load_ekn_uri: function (req) {
         let fail_with_error = (error) => {
             logError(error);
@@ -153,17 +149,14 @@ const EknWebview = new Knowledge.Class({
                 }
             });
         } else {
-            let [hash, blob_name] = components;
-            this._load_record(id, cancellable, (source, load_task) => {
-                try {
-                    let record = load_task.finish();
-                    let blob = record.lookup_blob(blob_name);
-                    let stream = blob.get_stream();
-                    req.finish(stream, -1, blob.content_type);
-                } catch (error) {
-                    fail_with_error(error);
-                }
-            });
+            try {
+                let file = Gio.File.new_for_uri(id);
+                let stream = file.read(cancellable);
+                let info = file.query_info(Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE, Gio.FileQueryInfoFlags.NONE, cancellable);
+                req.finish(stream, -1, info.get_content_type());
+            } catch (error) {
+                fail_with_error(error);
+            }
         }
     },
 

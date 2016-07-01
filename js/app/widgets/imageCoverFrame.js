@@ -60,23 +60,24 @@ const ImageCoverFrame = new Knowledge.Class({
     },
 
     vfunc_draw: function (cr) {
-        if (!this._stream)
-            return true;
+        if (this._stream) {
+            // This is just a static image, we should only need to redraw after a
+            // resize of the contents is changed
+            let allocation = this.get_allocation();
+            if (this._last_width !== allocation.width || this._last_height !== allocation.height)
+                this._surface_cache.invalidate();
+            this._last_width = allocation.width;
+            this._last_height = allocation.height;
 
-        // This is just a static image, we should only need to redraw after a
-        // resize of the contents is changed
-        let allocation = this.get_allocation();
-        if (this._last_width !== allocation.width || this._last_height !== allocation.height)
-            this._surface_cache.invalidate();
-        this._last_width = allocation.width;
-        this._last_height = allocation.height;
+            cr.setSourceSurface(this._surface_cache.get_surface(), 0, 0);
+            cr.paint();
+        }
 
-        cr.setSourceSurface(this._surface_cache.get_surface(), 0, 0);
-        cr.paint();
         // We need to manually call dispose on cairo contexts. This is somewhat related to the bug listed here
         // https://bugzilla.gnome.org/show_bug.cgi?id=685513 for the shell. We should see if they come up with
         // a better fix in the future, i.e. fix this through gjs.
         cr.$dispose();
+
         return true;
     }
 });

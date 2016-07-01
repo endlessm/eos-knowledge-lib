@@ -134,10 +134,11 @@ describe('Card interface', function () {
 
     it('sets a thumbnail frame visible if model has a thumbnail uri', function () {
         let engine = MockEngine.mock_default();
-        engine.get_object_by_id_finish.and.callFake(() =>
-            new MediaObjectModel.MediaObjectModel({
-                get_content_stream: () => new Gio.MemoryInputStream(),
-            }));
+        engine._lookup_ekn_uri.and.callFake(() => {
+            let stream = new Gio.MemoryInputStream();
+            return new MockEngine.MockEknGFile(stream);
+        });
+
         let frame = new Gtk.Frame();
         card.set_thumbnail_frame_from_model(frame);
         expect(frame.visible).toBeTruthy();
