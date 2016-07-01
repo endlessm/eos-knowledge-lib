@@ -35,7 +35,9 @@ const ArticlesForSet = new Module.Class({
         }
     },
 
-    construct_query_object: function (limit) {
+    construct_query_object: function (limit, query_index) {
+        if (query_index > 0)
+            return null;
         if (!this.model)
             throw new Error('You should not be loading this selection unless on the set page');
 
