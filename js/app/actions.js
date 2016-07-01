@@ -24,7 +24,6 @@ const LIGHTBOX_CLOSED = 'lightbox-closed';
 // to update application state.
 const SHOW_ARTICLE_SEARCH = 'show-article-search';
 const HIDE_ARTICLE_SEARCH = 'hide-article-search';
-const FILTER_ITEMS = 'filter-items';
 const FEATURE_ITEM = 'feature-item';
 
 // FIXME: These actions will be replaces by the Selection API

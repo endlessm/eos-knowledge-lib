@@ -205,27 +205,6 @@ const Arrangement = new Lang.Interface({
     },
 
     /**
-     * Method: remove_model
-     * Remove a card model from the arrangement
-     *
-     * Note that removing a card directly with *Gtk.Container.remove()* will
-     * not remove the model from the arrangement.
-     *
-     * Parameters:
-     *   model - a <ContentObjectModel>
-     */
-    remove_model: function (model) {
-        let match = this._models.filter((iter_m) => model.ekn_id === iter_m.ekn_id);
-        if (match.length > 0)
-            this._models.splice(this._models.indexOf(match[0]), 1);
-        let card = this._cards_by_id.get(model.ekn_id);
-        if (card) {
-            this._cards_by_id.delete(model.ekn_id);
-            this.unpack_card(card);
-        }
-    },
-
-    /**
      * Method: get_models
      * Get all card models in the arrangement
      */
