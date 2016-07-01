@@ -20,6 +20,14 @@ const ContentGroup = new Module.Class({
     Extends: ContentGroupSuper.ContentGroup,
     Implements: [Card.Card],
 
+    _init: function (props={}) {
+        this.parent(props);
+
+        this.get_selection().connect('models-changed', () => {
+            this.visible = this.get_selection().get_models().length > 0;
+        });
+    },
+
     // By default GJS will prefer the Interface's make_ready implementation
     // over the superclasses. But we want the one from ContentGroup.ContentGroup
     make_ready: function () {

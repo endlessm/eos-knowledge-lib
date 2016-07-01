@@ -9,7 +9,7 @@ const QueryObject = imports.search.queryObject;
 const Xapian = imports.app.modules.selection.xapian;
 
 const AllHighlights = new Module.Class({
-    Name: 'AllHighlightsSelection',
+    Name: 'Selection.AllHighlights',
     Extends: Xapian.Xapian,
 
     construct_query_object: function (limit, query_index) {

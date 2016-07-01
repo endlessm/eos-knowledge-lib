@@ -10,7 +10,7 @@ const ReadingHistoryModel = imports.app.readingHistoryModel;
 const Xapian = imports.app.modules.selection.xapian;
 
 const SupplementaryArticles = new Module.Class({
-    Name: 'SupplementaryArticlesSelection',
+    Name: 'Selection.SupplementaryArticles',
     Extends: Xapian.Xapian,
 
     _init: function (props) {

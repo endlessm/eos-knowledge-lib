@@ -27,6 +27,17 @@ const List = new Module.Class({
             'The maximum number of card rows to be displayed.',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, GLib.MAXUINT16, 0),
+        /**
+         * Property: homogeneous
+         * Whether or not the cards should all be placed in a single size group
+         *
+         * Default:
+         *   true
+         */
+        'homogeneous': GObject.ParamSpec.boolean('homogeneous', 'Homogeneous',
+            'Whether or not the cards should all be placed in a single size group',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            true),
     },
 
     _init: function (props={}) {
@@ -39,12 +50,14 @@ const List = new Module.Class({
     // Arrangement override
     unpack_card: function (widget) {
         this.remove(widget);
-        this._size_group.remove_widget(widget);
+        if (this.homogeneous)
+            this._size_group.remove_widget(widget);
     },
 
     // Arrangement override
     pack_card: function (widget, position=-1) {
-        this._size_group.add_widget(widget);
+        if (this.homogeneous)
+            this._size_group.add_widget(widget);
         if (position === -1) {
             this.add(widget);
             return;

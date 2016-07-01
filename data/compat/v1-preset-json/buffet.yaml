@@ -160,13 +160,41 @@ defines:
               shortdef: 'Layout.Box(orientation: vertical)'
               slots:
                 contents:
-                - shortdef: 'ContentGroup.Thematic(halign: center)'
+                - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
+                  styles:
+                    - thematic-group
                   slots:
                     arrangement:
-                      type: Arrangement.Half
+                      shortdef: 'Arrangement.List(orientation: vertical, homogeneous: false, max-rows: 5)'
                       slots:
-                        card: *main-card
-                    header-card: *header-card
+                        card:
+                          type: Card.ContentGroup
+                          slots:
+                            arrangement:
+                              type: Arrangement.Half
+                              slots:
+                                card: *main-card
+                            title:
+                              type: ContentGroup.DynamicTitle
+                              properties:
+                                format-string: '%s'
+                                halign: start
+                            trigger:
+                              shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
+                              slots:
+                                contents:
+                                - shortdef: 'ContentGroup.DynamicTitle(format-string: "See more from %s")'
+                                - type: Decoration.ThemeableImage
+                                  properties:
+                                    valign: end
+                                    halign: end
+                            selection:
+                              type: Selection.ArticlesForSetCrossSection
+                    selection:
+                      type: Selection.AllSets
+                      slots:
+                        filter:
+                          type: Filter.Thematic
                   references:
                     scroll-server: theme-scroll
                 - *category-suggestions

@@ -8,7 +8,7 @@ const QueryObject = imports.search.queryObject;
 const Xapian = imports.app.modules.selection.xapian;
 
 const Search = new Module.Class({
-    Name: 'SearchSelection',
+    Name: 'Selection.Search',
     Extends: Xapian.Xapian,
 
     _init: function (props) {

@@ -9,7 +9,7 @@ const QueryObject = imports.search.queryObject;
 const Xapian = imports.app.modules.selection.xapian;
 
 const AllSets = new Module.Class({
-    Name: 'AllSetsSelection',
+    Name: 'Selection.AllSets',
     Extends: Xapian.Xapian,
 
     construct_query_object: function (limit, query_index) {
