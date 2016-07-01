@@ -9,7 +9,7 @@ const SetObjectModel = imports.search.setObjectModel;
 const Xapian = imports.app.modules.selection.xapian;
 
 const SubsetsForSet = new Module.Class({
-    Name: 'SubsetsForSetSelection',
+    Name: 'Selection.SubsetsForSet',
     Extends: Xapian.Xapian,
 
     _init: function (props) {

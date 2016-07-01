@@ -11,7 +11,7 @@ const SetObjectModel = imports.search.setObjectModel;
 const Xapian = imports.app.modules.selection.xapian;
 
 const ArticlesForSet = new Module.Class({
-    Name: 'ArticlesForSetSelection',
+    Name: 'Selection.ArticlesForSet',
     Extends: Xapian.Xapian,
 
     _init: function (props) {
