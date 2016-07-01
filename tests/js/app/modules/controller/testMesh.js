@@ -1,6 +1,5 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
@@ -304,12 +303,6 @@ describe('Controller.Mesh', function () {
 
         it('shows the article page', function () {
             expect(dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_PAGE)).toBeDefined();
-        });
-
-        it('shows the article without animation when first loading the page', function () {
-            let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
-            expect(payload.model).toBe(article_model);
-            expect(payload.animation_type).toBe(EosKnowledgePrivate.LoadingAnimationType.NONE);
         });
     });
 

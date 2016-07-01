@@ -91,17 +91,7 @@ const Simple = new Module.Class({
                 this.get_style_context().remove_class(_animating_class);
         });
 
-        let dispatcher = Dispatcher.get_default();
-        dispatcher.dispatch({
-            action_type: Actions.NAV_BACK_ENABLED_CHANGED,
-            enabled: false,
-        });
-        dispatcher.dispatch({
-            action_type: Actions.NAV_FORWARD_ENABLED_CHANGED,
-            enabled: false,
-        });
-
-        dispatcher.register(payload => {
+        Dispatcher.get_default().register(payload => {
             switch (payload.action_type) {
                 case Actions.SHOW_BRAND_PAGE:
                     if (this._brand_page)
@@ -162,10 +152,6 @@ const Simple = new Module.Class({
         this.transition_type = this._get_transition(new_page, old_page,
             transitions_style);
 
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.NAV_BACK_ENABLED_CHANGED,
-            enabled: !this._is_page_on_left(new_page),
-        });
         this.visible_child = new_page;
 
         // The first transition on app startup has duration 0, subsequent ones

@@ -5,18 +5,20 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const Actions = imports.app.actions;
-const MockDispatcher = imports.tests.mockDispatcher;
+const HistoryStore = imports.app.historyStore;
 const MockFactory = imports.tests.mockFactory;
 const Scrolling = imports.app.modules.layout.scrolling;
+const Pages = imports.app.pages;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
 describe('Layout.Scrolling', function () {
-    let factory, layout;
+    let factory, layout, store;
 
     beforeEach(function () {
+        store = new HistoryStore.HistoryStore();
+        HistoryStore.set_default(store);
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
         [layout, factory] = MockFactory.setup_tree({
@@ -37,18 +39,16 @@ describe('Layout.Scrolling', function () {
             layout.vadjustment.set_value(layout.vadjustment.get_upper());
         });
 
-        function test_show_page (action, descriptor) {
-            it('scrolls back to the top when showing the ' + descriptor + ' page', function () {
-                MockDispatcher.mock_default().dispatch({
-                    action_type: action,
-                });
+        function test_show_page (page) {
+            it('scrolls back to the top of the ' + page + ' page', function () {
+                store.set_current_item_from_props({ page_type: page });
                 expect(layout.vadjustment.get_value()).toBe(layout.vadjustment.get_lower());
             });
         }
-        test_show_page(Actions.SHOW_HOME_PAGE, 'home');
-        test_show_page(Actions.SHOW_ALL_SETS_PAGE, 'sets');
-        test_show_page(Actions.SHOW_SET_PAGE, 'set');
-        test_show_page(Actions.SHOW_SEARCH_PAGE, 'search');
-        test_show_page(Actions.SHOW_ARTICLE_PAGE, 'article');
+        test_show_page(Pages.HOME);
+        test_show_page(Pages.ALL_SETS);
+        test_show_page(Pages.SET);
+        test_show_page(Pages.SEARCH);
+        test_show_page(Pages.ARTICLE);
     });
 });

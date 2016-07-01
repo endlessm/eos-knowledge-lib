@@ -185,17 +185,6 @@ describe('Controller.Buffet', function () {
             expect(payload).toBeDefined();
         });
 
-        it('dispatches show article with the article model', function () {
-            let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
-            expect(payload.model).toBe(article_model);
-        });
-
-        it('dispatches show article with previous and next models', function () {
-            let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
-            expect(payload.previous_model).toBe(prev_model);
-            expect(payload.next_model).toBe(next_model);
-        });
-
         it('dispatches show article with a context label', function () {
             let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_PAGE);
             expect(payload.context_label).toBe('Some Context');

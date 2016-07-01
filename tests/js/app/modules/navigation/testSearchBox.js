@@ -7,26 +7,41 @@ Gtk.init(null);
 const Actions = imports.app.actions;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const ContentObjectModel = imports.search.contentObjectModel;
+const HistoryStore = imports.app.historyStore;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
+const Pages = imports.app.pages;
 const SearchBox = imports.app.modules.navigation.searchBox;
 
 describe('Navigation.SearchBox', function () {
-    let box, engine, dispatcher;
+    let box, engine, dispatcher, store;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         engine = MockEngine.mock_default();
         dispatcher = MockDispatcher.mock_default();
+        store = new HistoryStore.HistoryStore();
+        HistoryStore.set_default(store);
         box = new SearchBox.SearchBox();
     });
 
-    it('sets search text when set-search-text is dispatched', function () {
-        dispatcher.dispatch({
-            action_type: Actions.SET_SEARCH_TEXT,
-            text: 'foo',
+    it('sets search text to search query on search page', function () {
+        store.set_current_item_from_props({
+            page_type: Pages.SEARCH,
+            query: 'foo',
         });
         expect(box.text).toBe('foo');
+    });
+
+    it('blanks search text on other pages', function () {
+        store.set_current_item_from_props({ page_type: Pages.HOME });
+        expect(box.text).toBe('');
+        store.set_current_item_from_props({ page_type: Pages.SET });
+        expect(box.text).toBe('');
+        store.set_current_item_from_props({ page_type: Pages.ARTICLE });
+        expect(box.text).toBe('');
+        store.set_current_item_from_props({ page_type: Pages.ALL_SETS });
+        expect(box.text).toBe('');
     });
 
     it('grabs focus when mapped if focus-on-map is set', function () {

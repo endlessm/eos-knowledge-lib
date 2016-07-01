@@ -18,7 +18,6 @@ G_BEGIN_DECLS
 /* Shared typedefs for enumerations */
 
 #define EKN_TYPE_TREE_NODE_COLUMN   (ekn_tree_node_column_get_type ())
-#define EKN_TYPE_LOADING_ANIMATION   (ekn_loading_animation_get_type ())
 #define EKN_TYPE_TEXT_TRANSFORM     (ekn_text_transform_get_type ())
 
 /**
@@ -49,25 +48,6 @@ typedef enum
 } EknTreeNodeColumn;
 
 /**
- * EknLoadingAnimation:
- * @EKN_LOADING_ANIMATION_TYPE_NONE: no animation for page
- * @EKN_LOADING_ANIMATION_TYPE_FORWARDS_NAVIGATION: animation for a forwards navigation of page
- * @EKN_LOADING_ANIMATION_TYPE_BACKWARDS_NAVIGATION: animation for a backwards navigation of page
- * @EKN_LOADING_ANIMATION_TYPE_MULTI_FORWARDS_NAVIGATION: animation for skipping multiple items forward
- * @EKN_LOADING_ANIMATION_TYPE_MULTI_BACKWARDS_NAVIGATION: animation for skipping multiple items backwards
- *
- * Constants referring to different types of animation for loading a new page
- */
-typedef enum
-{
-  EKN_LOADING_ANIMATION_TYPE_NONE,
-  EKN_LOADING_ANIMATION_TYPE_FORWARDS_NAVIGATION,
-  EKN_LOADING_ANIMATION_TYPE_BACKWARDS_NAVIGATION,
-  EKN_LOADING_ANIMATION_TYPE_MULTI_FORWARDS_NAVIGATION,
-  EKN_LOADING_ANIMATION_TYPE_MULTI_BACKWARDS_NAVIGATION
-} EknLoadingAnimation;
-
-/**
  * EknTextTransform:
  * @EKN_TEXT_TRANSFORM_NONE: no formatting change
  * @EKN_TEXT_TRANSFORM_CAPITALIZE: capitalize the first letter of each word
@@ -93,9 +73,6 @@ typedef enum
 
 EKN_AVAILABLE_IN_0_0
 GType ekn_tree_node_column_get_type  (void) G_GNUC_CONST;
-
-EKN_AVAILABLE_IN_0_0
-GType ekn_loading_animation_get_type (void) G_GNUC_CONST;
 
 EKN_AVAILABLE_IN_0_4
 GType ekn_text_transform_get_type    (void) G_GNUC_CONST;

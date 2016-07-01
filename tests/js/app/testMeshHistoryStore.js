@@ -126,6 +126,28 @@ describe('MeshHistoryStore', function () {
         expect(item.query).toBe('foo');
     });
 
+    function test_close_lightbox (action, descriptor) {
+        it('closes the lightbox when ' + descriptor, function () {
+            let model = new ArticleObjectModel.ArticleObjectModel({
+                ekn_id: 'ekn://foo/bar',
+            });
+            let media_model = new MediaObjectModel.MediaObjectModel({
+                ekn_id: 'ekn://foo/pix',
+            });
+            store.set_current_item_from_props({
+                page_type: Pages.ARTICLE,
+                model: model,
+                media_model: media_model,
+            });
+            dispatcher.dispatch({
+                action_type: action,
+            });
+            expect(store.get_current_item().media_model).toBeNull();
+        });
+    }
+    test_close_lightbox(Actions.LIGHTBOX_CLOSED, 'lightbox close clicked');
+    test_close_lightbox(Actions.SEARCH_BOX_FOCUSED, 'search box focused');
+
     function test_search_action (action, descriptor) {
         describe('when ' + descriptor, function () {
             beforeEach(function () {
@@ -155,7 +177,7 @@ describe('MeshHistoryStore', function () {
             engine.get_object_by_id_finish.and.returnValue(model);
             dispatcher.dispatch({
                 action_type: Actions.ARTICLE_LINK_CLICKED,
-                model: model,
+                ekn_id: 'ekn://foo/bar',
             });
             expect(store.get_current_item().page_type).toBe(Pages.ARTICLE);
         });
@@ -167,10 +189,9 @@ describe('MeshHistoryStore', function () {
             engine.get_object_by_id_finish.and.returnValue(model);
             dispatcher.dispatch({
                 action_type: Actions.ARTICLE_LINK_CLICKED,
-                model: model,
+                ekn_id: 'ekn://foo/pix',
             });
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_MEDIA))
-                .toBeDefined();
+            expect(store.get_current_item().media_model).toBe(model);
         });
     });
 

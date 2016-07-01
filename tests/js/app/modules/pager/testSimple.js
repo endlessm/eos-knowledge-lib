@@ -59,14 +59,6 @@ describe('Pager.Simple', function () {
             expect(home_page.make_ready).toHaveBeenCalled();
         });
 
-        it('dispatches the correct actions for the navigation back button', function () {
-            let payload = dispatcher.last_payload_with_type(Actions.NAV_BACK_ENABLED_CHANGED);
-            expect(payload.enabled).toBeFalsy();
-            dispatcher.dispatch({ action_type: Actions.SHOW_SET_PAGE });
-            payload = dispatcher.last_payload_with_type(Actions.NAV_BACK_ENABLED_CHANGED);
-            expect(payload.enabled).toBeTruthy();
-        });
-
         // Need a way to reliably test this without relying on timing
         it('has the animating style class when animating');
 

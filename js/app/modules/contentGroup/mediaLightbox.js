@@ -1,6 +1,7 @@
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
+const HistoryStore = imports.app.historyStore;
 const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
 
@@ -29,22 +30,28 @@ const MediaLightbox = new Module.Class({
         this._loading_new_lightbox = false;
         this._current_index = -1;
         this._article_model = null;
-        Dispatcher.get_default().register((payload) => {
-            switch(payload.action_type) {
-                case Actions.SHOW_ARTICLE:
-                    this._article_model = payload.model;
-                    break;
-                case Actions.SHOW_MEDIA:
-                    this._preview_media_object(payload.model);
-                    break;
-                case Actions.HIDE_MEDIA:
-                    this.reveal_overlays = false;
-                    break;
-            }
-        });
 
+        HistoryStore.get_default().connect('changed',
+            this._on_history_changed.bind(this));
+        this.connect('close-clicked', this._on_close.bind(this));
         this.connect('navigation-previous-clicked', () => this._on_previous_clicked());
         this.connect('navigation-next-clicked', () => this._on_next_clicked());
+    },
+
+    _on_history_changed: function () {
+        let item = HistoryStore.get_default().get_current_item();
+        if (item.media_model) {
+            this._article_model = item.model;
+            this._preview_media_object(item.media_model);
+        } else {
+            this.reveal_overlays = false;
+        }
+    },
+
+    _on_close: function () {
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.LIGHTBOX_CLOSED,
+        });
     },
 
     _on_previous_clicked: function () {

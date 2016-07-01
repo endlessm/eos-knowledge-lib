@@ -89,6 +89,7 @@ const Lightbox = new Knowledge.Class({
     Signals: {
         'navigation-previous-clicked': {},
         'navigation-next-clicked': {},
+        'close-clicked': {},
     },
 
     _init: function (params) {
@@ -99,12 +100,10 @@ const Lightbox = new Knowledge.Class({
         this._has_close_button = true;
 
         this._lightbox_container = new LightboxContainer();
-        this._lightbox_container.connect('clicked', Lang.bind(this, function () {
-            this.reveal_overlays = false;
-        }));
-        this._lightbox_container.connect('close-clicked', Lang.bind(this, function () {
-            this.reveal_overlays = false;
-        }));
+        this._lightbox_container.connect('clicked',
+            this._should_close.bind(this));
+        this._lightbox_container.connect('close-clicked',
+            this._should_close.bind(this));
 
         this._revealer = new Gtk.Revealer({
             no_show_all: true,
@@ -211,7 +210,11 @@ const Lightbox = new Knowledge.Class({
 
     get has_back_button () {
         return this._lightbox_container.back_arrow_visible;
-    }
+    },
+
+    _should_close: function () {
+        this.emit('close-clicked');
+    },
 });
 
 // A private container used to house the lightbox-widget in the overlay.
