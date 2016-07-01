@@ -51,7 +51,7 @@ const SetPreview = new Module.Class({
         this.attach(header_card, 0, 0, 1, 1);
         header_card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
-                action_type: Actions.SET_CLICKED,
+                action_type: Actions.ITEM_CLICKED,
                 model: this.model,
                 context_label: this.model.title,
             });
@@ -61,7 +61,7 @@ const SetPreview = new Module.Class({
         if (this.show_trigger) {
             this.trigger.connect('clicked', () => {
                 Dispatcher.get_default().dispatch({
-                    action_type: Actions.SET_CLICKED,
+                    action_type: Actions.ITEM_CLICKED,
                     model: this.model,
                     context_label: this.model.title,
                 });

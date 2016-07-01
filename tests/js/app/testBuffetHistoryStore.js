@@ -40,75 +40,15 @@ describe('BuffetHistoryStore', function () {
         expect(store.get_current_item().page_type).toBe(Pages.ALL_SETS);
     });
 
-    it('shows the set page when set clicked', function () {
+    it('shows the set page when a set model is clicked', function () {
         let model = new SetObjectModel.SetObjectModel({
             ekn_id: 'ekn://foo/set',
         });
         dispatcher.dispatch({
-            action_type: Actions.SET_CLICKED,
+            action_type: Actions.ITEM_CLICKED,
             model: model,
         });
         expect(store.get_current_item().page_type).toBe(Pages.SET);
-    });
-
-    describe('when set clicked', function () {
-        let model;
-
-        beforeEach(function () {
-            model = new SetObjectModel.SetObjectModel({
-                ekn_id: 'ekn://foo/bar',
-            });
-        });
-
-        it('in search results, shows the set page', function () {
-            dispatcher.dispatch({
-                action_type: Actions.SEARCH_CLICKED,
-                model: model,
-            });
-            expect(store.get_current_item().page_type).toBe(Pages.SET);
-        });
-
-        it('in autocomplete, shows the set page', function () {
-            dispatcher.dispatch({
-                action_type: Actions.AUTOCOMPLETE_CLICKED,
-                model: model,
-            });
-            expect(store.get_current_item().page_type).toBe(Pages.SET);
-        });
-    });
-
-    describe('when article clicked', function () {
-        let model;
-
-        beforeEach(function () {
-            model = new ArticleObjectModel.ArticleObjectModel({
-                ekn_id: 'ekn://foo/bar',
-            });
-        });
-
-        it('in item listing, shows the article page', function () {
-            dispatcher.dispatch({
-                action_type: Actions.ITEM_CLICKED,
-                model: model,
-            });
-            expect(store.get_current_item().page_type).toBe(Pages.ARTICLE);
-        });
-
-        it('in search results, shows the article page', function () {
-            dispatcher.dispatch({
-                action_type: Actions.SEARCH_CLICKED,
-                model: model,
-            });
-            expect(store.get_current_item().page_type).toBe(Pages.ARTICLE);
-        });
-
-        it('in autocomplete, shows the article page', function () {
-            dispatcher.dispatch({
-                action_type: Actions.AUTOCOMPLETE_CLICKED,
-                model: model,
-            });
-            expect(store.get_current_item().page_type).toBe(Pages.ARTICLE);
-        });
     });
 
     function test_search_action (action, descriptor) {
@@ -159,70 +99,52 @@ describe('BuffetHistoryStore', function () {
         });
     });
 
-    function test_article_click_action (action, descriptor) {
-        describe('when a ' + descriptor + ' is clicked', function () {
-            let prev_model, next_model;
-            beforeEach(function () {
-                let model = new ArticleObjectModel.ArticleObjectModel({
-                    ekn_id: 'ekn://test/article',
-                });
-                prev_model = new ArticleObjectModel.ArticleObjectModel({
-                    ekn_id: 'ekn://test/prev',
-                });
-                next_model = new ArticleObjectModel.ArticleObjectModel({
-                    ekn_id: 'ekn://test/next',
-                });
-
-                dispatcher.dispatch({
-                    action_type: action,
-                    model: model,
-                    context: [prev_model, model, next_model],
-                    context_label: 'Some Context',
-                });
+    describe('when an article card is clicked', function () {
+        let prev_model, next_model;
+        beforeEach(function () {
+            let model = new ArticleObjectModel.ArticleObjectModel({
+                ekn_id: 'ekn://test/article',
+            });
+            prev_model = new ArticleObjectModel.ArticleObjectModel({
+                ekn_id: 'ekn://test/prev',
+            });
+            next_model = new ArticleObjectModel.ArticleObjectModel({
+                ekn_id: 'ekn://test/next',
             });
 
-            it('goes to article page', function () {
-                let item = store.get_current_item();
-                expect(item.page_type).toBe(Pages.ARTICLE);
-            });
-
-            it('goes to set page if the model was a set', function () {
-                let model = new SetObjectModel.SetObjectModel({
-                    ekn_id: 'ekn://test/set',
-                });
-                dispatcher.dispatch({
-                    action_type: action,
-                    model: model,
-                    context: [model],
-                    context_label: 'Some context',
-                });
-                expect(store.get_current_item().page_type).toBe(Pages.SET);
-            });
-
-            it('handles previous card click', function () {
-                dispatcher.dispatch({
-                    action_type: Actions.PREVIOUS_DOCUMENT_CLICKED,
-                    model: prev_model,
-                });
-                let item = store.get_current_item();
-                expect(item.page_type).toBe(Pages.ARTICLE);
-                expect(item.model).toBe(prev_model);
-            });
-
-            it('handles next card click', function () {
-                dispatcher.dispatch({
-                    action_type: Actions.NEXT_DOCUMENT_CLICKED,
-                    model: next_model,
-                });
-                let item = store.get_current_item();
-                expect(item.page_type).toBe(Pages.ARTICLE);
-                expect(item.model).toBe(next_model);
+            dispatcher.dispatch({
+                action_type: Actions.ITEM_CLICKED,
+                model: model,
+                context: [prev_model, model, next_model],
+                context_label: 'Some Context',
             });
         });
-    }
-    test_article_click_action(Actions.ITEM_CLICKED, 'item');
-    test_article_click_action(Actions.SEARCH_CLICKED, 'search item');
-    test_article_click_action(Actions.AUTOCOMPLETE_CLICKED, 'autocomplete entry');
+
+        it('goes to article page', function () {
+            let item = store.get_current_item();
+            expect(item.page_type).toBe(Pages.ARTICLE);
+        });
+
+        it('handles previous card click', function () {
+            dispatcher.dispatch({
+                action_type: Actions.PREVIOUS_DOCUMENT_CLICKED,
+                model: prev_model,
+            });
+            let item = store.get_current_item();
+            expect(item.page_type).toBe(Pages.ARTICLE);
+            expect(item.model).toBe(prev_model);
+        });
+
+        it('handles next card click', function () {
+            dispatcher.dispatch({
+                action_type: Actions.NEXT_DOCUMENT_CLICKED,
+                model: next_model,
+            });
+            let item = store.get_current_item();
+            expect(item.page_type).toBe(Pages.ARTICLE);
+            expect(item.model).toBe(next_model);
+        });
+    });
 
     describe('when desktop search result opened', function () {
         let model;

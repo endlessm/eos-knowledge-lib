@@ -185,12 +185,12 @@ describe('ContentGroup.Thematic', function () {
                         .toBeDefined();
                 });
 
-                describe('when clicking', function () {
-                    it('on the header card, dispatches set-clicked', function () {
+                describe('item-clicked', function () {
+                    it('is dispatched when clicking on the header card', function () {
                         dispatcher.reset();
                         headers[0].emit('clicked');
                         Utils.update_gui();
-                        let payload = dispatcher.last_payload_with_type(Actions.SET_CLICKED);
+                        let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
                         let matcher = jasmine.objectContaining({
                             model: set_models[0],
                             context: set_models,
@@ -198,7 +198,7 @@ describe('ContentGroup.Thematic', function () {
                         expect(payload).toEqual(matcher);
                     });
 
-                    it('on a card in an arrangement, dispatches item-clicked', function () {
+                    it('is dispatched when clicking on a card in an arrangement', function () {
                         let model = arrangements[0].get_models()[0];
                         arrangements[0].emit('card-clicked', model);
                         Utils.update_gui();

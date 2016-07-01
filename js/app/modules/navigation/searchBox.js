@@ -71,7 +71,7 @@ const SearchBox = new Module.Class({
         this.connect('menu-item-selected', (entry, ekn_id) => {
             let model = this._autocomplete_models.filter((model) => model.ekn_id === ekn_id)[0];
             dispatcher.dispatch({
-                action_type: Actions.AUTOCOMPLETE_CLICKED,
+                action_type: Actions.ITEM_CLICKED,
                 query: this.text,
                 model: model,
                 context: this._autocomplete_models,

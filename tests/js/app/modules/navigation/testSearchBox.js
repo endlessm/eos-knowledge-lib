@@ -64,7 +64,7 @@ describe('Navigation.SearchBox', function () {
         }]);
         box.text = 'foo';
         box.emit('menu-item-selected', 'ekn://aaaabbbbccccdddd');
-        let payload = dispatcher.last_payload_with_type(Actions.AUTOCOMPLETE_CLICKED);
+        let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
         expect(payload.model).toBe(model);
         expect(payload.context).toEqual([ model ]);
         expect(payload.query).toEqual('foo');

@@ -41,7 +41,7 @@ const ArticlesForSet = new Module.Class({
 
     show_more: function () {
         Dispatcher.get_default().dispatch({
-            action_type: Actions.SET_CLICKED,
+            action_type: Actions.ITEM_CLICKED,
             model: this.model,
             context_label: this.model.title,
         });

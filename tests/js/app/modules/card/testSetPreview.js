@@ -84,11 +84,11 @@ describe('Card.SetPreview', function () {
             support_cards.forEach(widget => expect(card).not.toHaveDescendant(widget));
         });
 
-        it('dispatches set-clicked when the title card is clicked', function () {
+        it('dispatches item-clicked when the title card is clicked', function () {
             let header = factory.get_last_created('header-card');
             header.emit('clicked');
             Utils.update_gui();
-            let payload = dispatcher.last_payload_with_type(Actions.SET_CLICKED);
+            let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
             let matcher = jasmine.objectContaining({
                 model: card.model,
                 context_label: card.model.title,
