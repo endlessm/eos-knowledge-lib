@@ -89,3 +89,15 @@ Description: EndlessOS Knowledge Library Private Documentation
  API documentation for the knowledge private C library. Install this
  if you want to access the API documentation locally, either in your
  browser or in the Devhelp program.
+
+Package: eos-knowledge-0-dev
+Section: non-free/libdevel
+Architecture: all
+Depends: python3,
+         python3-polib,
+         python3-yaml,
+         pkg-config,
+         ruby-compass,
+         ruby-sass,
+         ${misc:Depends}
+Description: EndlessOS Knowledge Library devel package
