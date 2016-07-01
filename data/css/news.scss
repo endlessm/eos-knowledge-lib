@@ -41,13 +41,11 @@ $support-font: 'Fira Sans' !default;
 @import 'modules/card/list';
 @import 'modules/card/media';
 @import 'modules/card/post';
-@import 'modules/card/setPreview';
 @import 'modules/card/thumb';
 @import 'modules/card/title';
 
 @import 'modules/contentGroup/cardContainer';
 @import 'modules/contentGroup/contentGroup';
-@import 'modules/contentGroup/hierarchicalSet';
 @import 'modules/contentGroup/mediaLightbox';
 @import 'modules/contentGroup/search';
 
@@ -74,8 +72,8 @@ $support-font: 'Fira Sans' !default;
     margin-bottom: 50px;
 }
 
-.CardSetPreview separator {
-    background-color: transparent;
+.hierarchical-set {
+    margin-bottom: 20px;
 }
 
 .LayoutTopMenu__menu {
@@ -136,6 +134,9 @@ $support-font: 'Fira Sans' !default;
     background-color: transparent;
 }
 
-.BannerSet .Card .title {
-    color: white;
+.BannerSet {
+    margin-bottom: 15px;
+    .Card .title {
+        color: white;
+    }
 }

@@ -95,7 +95,6 @@ scss_theme_card_partials = \
 	$(srcdir)/data/css/modules/card/_list.scss \
 	$(srcdir)/data/css/modules/card/_media.scss \
 	$(srcdir)/data/css/modules/card/_post.scss \
-	$(srcdir)/data/css/modules/card/_setPreview.scss \
 	$(srcdir)/data/css/modules/card/_text.scss \
 	$(srcdir)/data/css/modules/card/_thumb.scss \
 	$(srcdir)/data/css/modules/card/_title.scss \
@@ -103,7 +102,6 @@ scss_theme_card_partials = \
 scss_theme_content_partials = \
 	$(srcdir)/data/css/modules/contentGroup/_cardContainer.scss \
 	$(srcdir)/data/css/modules/contentGroup/_contentGroup.scss \
-	$(srcdir)/data/css/modules/contentGroup/_hierarchicalSet.scss \
 	$(srcdir)/data/css/modules/contentGroup/_mediaLightbox.scss \
 	$(srcdir)/data/css/modules/contentGroup/_search.scss \
 	$(srcdir)/data/css/modules/contentGroup/_thematic.scss \
@@ -442,12 +440,10 @@ javascript_tests = \
 	tests/js/app/modules/card/testMedia.js \
 	tests/js/app/modules/card/testPost.js \
 	tests/js/app/modules/card/testSequence.js \
-	tests/js/app/modules/card/testSetPreview.js \
 	tests/js/app/modules/card/testText.js \
 	tests/js/app/modules/card/testThumb.js \
 	tests/js/app/modules/card/testTitle.js \
 	tests/js/app/modules/contentGroup/testContentGroup.js \
-	tests/js/app/modules/contentGroup/testHierarchicalSet.js \
 	tests/js/app/modules/contentGroup/testMediaLightbox.js \
 	tests/js/app/modules/contentGroup/testSearch.js \
 	tests/js/app/modules/contentGroup/testThematic.js \

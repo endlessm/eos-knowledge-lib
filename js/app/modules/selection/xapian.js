@@ -77,9 +77,7 @@ const Xapian = new Module.Class({
             }
 
             let results_added = results.filter(this.add_model, this);
-            if (results_added.length > 0) {
-                this.emit('models-changed');
-            }
+            this.emit('models-changed');
             if (results_added.length < num_desired && this._can_load_more)
                 this.queue_load_more(num_desired - results_added.length);
         });

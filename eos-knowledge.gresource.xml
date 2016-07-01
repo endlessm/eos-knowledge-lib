@@ -123,14 +123,12 @@
     <file>js/app/modules/card/media.js</file>
     <file>js/app/modules/card/post.js</file>
     <file>js/app/modules/card/sequence.js</file>
-    <file>js/app/modules/card/setPreview.js</file>
     <file>js/app/modules/card/text.js</file>
     <file>js/app/modules/card/thumb.js</file>
     <file>js/app/modules/card/title.js</file>
     <file>js/app/modules/contentGroup/cardContainer.js</file>
     <file>js/app/modules/contentGroup/contentGroup.js</file>
     <file>js/app/modules/contentGroup/dynamicTitle.js</file>
-    <file>js/app/modules/contentGroup/hierarchicalSet.js</file>
     <file>js/app/modules/contentGroup/mediaLightbox.js</file>
     <file>js/app/modules/contentGroup/search.js</file>
     <file>js/app/modules/contentGroup/staticText.js</file>
@@ -140,6 +138,7 @@
     <file>js/app/modules/decoration/separator.js</file>
     <file>js/app/modules/decoration/themeableImage.js</file>
     <file>js/app/modules/filter/featured.js</file>
+    <file>js/app/modules/filter/otherGroup.js</file>
     <file>js/app/modules/filter/sets.js</file>
     <file>js/app/modules/filter/unread.js</file>
     <file>js/app/modules/layout/articleStack.js</file>
@@ -166,6 +165,7 @@
     <file>js/app/modules/selection/allSets.js</file>
     <file>js/app/modules/selection/articlesForSet.js</file>
     <file>js/app/modules/selection/selection.js</file>
+    <file>js/app/modules/selection/subsetsForSet.js</file>
     <file>js/app/modules/selection/suggestedArticles.js</file>
     <file>js/app/modules/selection/supplementaryArticles.js</file>
     <file>js/app/modules/selection/xapian.js</file>

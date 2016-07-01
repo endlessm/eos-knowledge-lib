@@ -110,7 +110,7 @@ describe('Window.Simple', function () {
             });
             expect(view.set_busy).toHaveBeenCalledWith(true);
             dispatcher.dispatch({
-                action_type: Actions.SET_READY,
+                action_type: Actions.PAGE_READY,
             });
             expect(view.set_busy).toHaveBeenCalledWith(false);
         });

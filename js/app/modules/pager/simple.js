@@ -141,6 +141,11 @@ const Simple = new Module.Class({
     },
 
     _show_page: function (new_page) {
+        new_page.make_ready(() => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.PAGE_READY,
+            });
+        });
         let old_page = this.visible_child;
         if (old_page === new_page) {
             // Even though we didn't change, this should still count as the
@@ -148,8 +153,6 @@ const Simple = new Module.Class({
             this.transition_duration = Utils.DEFAULT_PAGE_TRANSITION_DURATION;
             return;
         }
-
-        new_page.make_ready();
 
         let context = this.get_style_context();
         let flags = this.get_state_flags();

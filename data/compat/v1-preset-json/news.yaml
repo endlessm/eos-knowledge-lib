@@ -50,17 +50,6 @@ defines:
       type: Card.Thumb
       properties: *common-card-properties
 
-- &set-preview
-  shortdef: 'Card.SetPreview(trigger-capitalization: lowercase)'
-  slots:
-    arrangement:
-      shortdef: 'Arrangement.Thirties(max-rows: 1)'
-      slots:
-        card: *main-card
-        filter: *no-sets
-        order: 'Order.PublishedDate(ascending: false)'
-    header-card: *header-card
-
 # Pages
 - &home-page
   <<: *menu
@@ -158,19 +147,60 @@ defines:
                     - type: Layout.ResponsiveMargins
                       slots:
                         content:
-                          shortdef: 'ContentGroup.HierarchicalSet(halign: center)'
+                          shortdef: 'ContentGroup.ContentGroup(halign: center)'
                           slots:
                             arrangement:
                               type: Arrangement.List
+                              slots:
+                                card: Card.List
                               properties:
                                 row-spacing: 20
                                 orientation: vertical
+                            selection:
+                              type: Selection.ArticlesForSet
                               slots:
-                                card: Card.List
                                 order: 'Order.PublishedDate(ascending: false)'
-                            set-card: *set-preview
-                          references:
-                            scroll-server: theme-scroll
+                                filter:
+                                  type: Filter.OtherGroup
+                                  references:
+                                    other: set-page-subsets
+
+                    - type: Layout.ResponsiveMargins
+                      slots:
+                        content:
+                          shortdef: 'ContentGroup.ContentGroup(halign: center)'
+                          styles:
+                          - hierarchical-set
+                          slots:
+                            arrangement:
+                              shortdef: 'Arrangement.List(max-rows: 3, orientation: vertical)'
+                              slots:
+                                card:
+                                  type: Card.ContentGroup
+                                  slots:
+                                    title:
+                                      type: ContentGroup.DynamicTitle
+                                      properties:
+                                        halign: start
+                                    trigger:
+                                      shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
+                                      slots:
+                                        contents:
+                                        - shortdef: 'ContentGroup.DynamicTitle(format-string: "see more from %s")'
+                                        - type: Decoration.ThemeableImage
+                                          properties:
+                                            valign: end
+                                            halign: end
+                                    arrangement:
+                                      shortdef: 'Arrangement.Thirties(max-rows: 1)'
+                                      slots:
+                                        card: *main-card
+                                    selection:
+                                      type: Selection.ArticlesForSet
+                                      id: set-page-subsets
+                                      slots:
+                                        order: 'Order.PublishedDate(ascending: false)'
+                            selection: Selection.SubsetsForSet
                     - type: Layout.ResponsiveMargins
                       styles:
                         - dark-background

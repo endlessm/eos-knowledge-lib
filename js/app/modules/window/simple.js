@@ -133,7 +133,7 @@ const Simple = new Module.Class({
                     break;
                 case Actions.SEARCH_READY:
                 case Actions.SEARCH_FAILED:
-                case Actions.SET_READY:
+                case Actions.PAGE_READY:
                     this.set_busy(false);
                     break;
                 case Actions.LAUNCHED_FROM_DESKTOP:

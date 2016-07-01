@@ -1,17 +1,15 @@
-/* exported ArticlesForSet */
+/* exported SubsetsForSet */
 
 // Copyright 2016 Endless Mobile, Inc.
 
-const Actions = imports.app.actions;
-const Dispatcher = imports.app.dispatcher;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
 const SetObjectModel = imports.search.setObjectModel;
 const Xapian = imports.app.modules.selection.xapian;
 
-const ArticlesForSet = new Module.Class({
-    Name: 'ArticlesForSetSelection',
+const SubsetsForSet = new Module.Class({
+    Name: 'SubsetsForSetSelection',
     Extends: Xapian.Xapian,
 
     _init: function (props) {
@@ -42,15 +40,7 @@ const ArticlesForSet = new Module.Class({
         return new QueryObject.QueryObject({
             limit: limit,
             tags_match_any: this.model.child_tags,
-            tags_match_all: ['EknArticleObject'],
-        });
-    },
-
-    show_more: function () {
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.ITEM_CLICKED,
-            model: this.model,
-            context_label: this.model.title,
+            tags_match_all: ['EknSetObject'],
         });
     },
 });

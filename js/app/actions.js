@@ -49,6 +49,7 @@ const NAV_BACK_ENABLED_CHANGED = 'nav-back-enabled-changed';
 const NAV_FORWARD_ENABLED_CHANGED = 'nav-forward-enabled-changed';
 const HISTORY_BACK_ENABLED_CHANGED = 'history-back-enabled-changed';
 const HISTORY_FORWARD_ENABLED_CHANGED = 'history-back-forward-changed';
+const PAGE_READY = 'page-ready';
 const SET_SEARCH_TEXT = 'set-search-text';
 const SHOW_SET = 'show-set';
 const SET_READY = 'set-ready';
