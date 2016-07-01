@@ -21,30 +21,19 @@ const USAGE = [
 const BATCH_SIZE = 10;
 
 function main () {
-    switch (ARGV[0]) {
-        case 'grep':
-            if (ARGV.length === 3) {
-                grep(ARGV[1], ARGV[2]);
-                break;
-            }
-        case 'list':
-            if (ARGV.length === 2) {
-                grep(ARGV[1], '');
-                break;
-            }
-        case 'dump':
-            if (ARGV.length === 4) {
-                dump(ARGV[1], ARGV[2], ARGV[3]);
-                break;
-            }
-        case 'query':
-            if (ARGV.length === 3) {
-                query(ARGV[1], ARGV[2]);
-                break;
-            }
-        default:
-            fail_with_message(USAGE);
-    }
+    let argv = ARGV.slice();
+    let action = argv.shift();
+
+    if (action === 'grep' && argv.length === 2)
+        grep(argv[0], argv[1]);
+    else if (action === 'list' && argv.length === 1)
+        grep(argv[0], '');
+    else if (action === 'dump' && argv.length === 3)
+        dump(argv[0], argv[1], argv[2]);
+    else if (action === 'query' && argv.length === 2)
+        query(argv[0], argv[1]);
+    else
+        fail_with_message(USAGE);
 }
 
 function grep (path, pattern) {
