@@ -32,12 +32,11 @@
             }
         }
 
-        .ContentGroupSearch {
+        .search-results {
             background-color: transparentize(black, 1 - 0.75);
 
-            .results-message-title,
-            .results-message-subtitle,
-            .error-message {
+            .ContentGroupNoResultsMessage__title,
+            .ContentGroupNoResultsMessage__subtitle {
                 color:white;
                 font-size: 1.2em;
                 font-style: normal;
@@ -49,7 +48,7 @@
     .set-page,
     .article-page {
         .ContentGroupItem,
-        .ContentGroupSearch {
+        .search-results {
             background-color: transparentize(black, 1 - 0.75);
         }
     }
@@ -73,13 +72,10 @@
         }
     }
 
-    .search-page .ContentGroupSearch {
-        .results-message-title,
-        .results-message-subtitle,
-        .error-message {
-            font-size: 0.8em;
-            padding: 8px 15px;
-        }
+    .ContentGroupNoResultsMessage__title,
+    .ContentGroupNoResultsMessage__subtitle {
+        font-size: 0.8em;
+        padding: 8px 15px;
     }
 }
 
@@ -93,12 +89,9 @@
         background-color: transparentize(black, 1 - 0.8);
     }
 
-    .search-page .ContentGroupSearch {
-        .results-message-title,
-        .results-message-subtitle,
-        .error-message {
-            font-size: 14.1px;  /* 12px spec * 88% */
-        }
+    .ContentGroupNoResultsMessage__title,
+    .ContentGroupNoResultsMessage__subtitle {
+        font-size: 14.1px;  /* 12px spec * 88% */
     }
 
     .set-page,

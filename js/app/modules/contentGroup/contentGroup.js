@@ -7,6 +7,7 @@ const Gtk = imports.gi.Gtk;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
+const HistoryStore = imports.app.historyStore;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 const Overflow = imports.app.modules.arrangement.overflow;
@@ -16,6 +17,7 @@ const BATCH_SIZE = 10;
 
 const CONTENT_PAGE_NAME = 'content';
 const SPINNER_PAGE_NAME = 'spinner';
+const NO_RESULTS_PAGE_NAME = 'no-results';
 
 const ContentGroup = new Module.Class({
     Name: 'ContentGroup',
@@ -26,6 +28,7 @@ const ContentGroup = new Module.Class({
         'selection': {},
         'title': {},
         'trigger': {},
+        'no-results': {},  // optional
     },
 
     Properties: {
@@ -81,21 +84,27 @@ const ContentGroup = new Module.Class({
 
         if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
             this._arrangement.connect('need-more-content', () => {
-                this._selection.queue_load_more(BATCH_SIZE)
+                if (this._selection.can_load_more)
+                    this._selection.queue_load_more(BATCH_SIZE)
             });
         }
 
-        let stack = new Gtk.Stack({
+        this._no_results = this.create_submodule('no-results');
+
+        this._stack = new Gtk.Stack({
             visible: true,
         });
         let spinner = new Gtk.Spinner();
-        stack.add_named(spinner, SPINNER_PAGE_NAME);
-        stack.add_named(this._arrangement, CONTENT_PAGE_NAME);
+        this._stack.add_named(spinner, SPINNER_PAGE_NAME);
+        this._stack.add_named(this._arrangement, CONTENT_PAGE_NAME);
+
+        if (this._no_results)
+            this._stack.add_named(this._no_results, NO_RESULTS_PAGE_NAME);
 
         // When the spinner is not being shown on screen, set it to
         // be inactive to help with performance.
-        stack.connect('notify::visible-child', () => {
-            spinner.active = stack.visible_child_name === SPINNER_PAGE_NAME;
+        this._stack.connect('notify::visible-child', () => {
+            spinner.active = this._stack.visible_child_name === SPINNER_PAGE_NAME;
         });
         this._selection = this.create_submodule('selection', {
             model: this.model || null,
@@ -103,10 +112,10 @@ const ContentGroup = new Module.Class({
         this._selection.connect('models-changed',
             this._on_models_changed.bind(this));
         this._selection.connect('notify::loading', () => {
-            stack.visible_child_name = this._selection.loading ? SPINNER_PAGE_NAME : CONTENT_PAGE_NAME;
+            this._stack.visible_child_name = this._selection.loading ? SPINNER_PAGE_NAME : CONTENT_PAGE_NAME;
         });
 
-        this.attach(stack, 0, 1, 2, 1);
+        this.attach(this._stack, 0, 1, 2, 1);
 
         [[this._selection, 'can-load-more'], [this._arrangement, 'all-visible']].forEach((arr) => {
             let obj = arr[0];
@@ -115,6 +124,9 @@ const ContentGroup = new Module.Class({
                 this.notify('has-more-content');
             });
         });
+
+        HistoryStore.get_default().connect('changed',
+            this._on_history_changed.bind(this));
     },
 
     get has_more_content () {
@@ -124,12 +136,13 @@ const ContentGroup = new Module.Class({
     make_ready: function (cb=function () {}) {
         this._arrangement.clear();
         this._selection.clear();
+
+        [this._title, this._trigger, this._no_results].forEach((module) => {
+            if (module)
+                module.make_ready();
+        });
         this._load_callback = cb;
         this.load();
-        if (this._title)
-            this._title.make_ready();
-        if (this._trigger)
-            this._trigger.make_ready();
     },
 
     get_selection: function () {
@@ -138,10 +151,15 @@ const ContentGroup = new Module.Class({
 
     _on_models_changed: function () {
         let models = this._selection.get_models();
-        let max_cards = this._arrangement.get_max_cards();
-        if (max_cards > -1)
-            models.splice(max_cards);
-        this._arrangement.set_models(models);
+        if (models.length === 0 && this._no_results) {
+            this._stack.visible_child_name = NO_RESULTS_PAGE_NAME;
+        } else {
+            let max_cards = this._arrangement.get_max_cards();
+            if (max_cards > -1)
+                models.splice(max_cards);
+            this._arrangement.set_models(models);
+            this._stack.visible_child_name = CONTENT_PAGE_NAME;
+        }
 
         // If this is the first time models are loaded, invoke the callback
         if (this._load_callback) {
@@ -152,6 +170,12 @@ const ContentGroup = new Module.Class({
         if (models.length > 0 && this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
             this._arrangement.new_content_added();
         }
+    },
+
+    _on_history_changed: function () {
+        let item = HistoryStore.get_default().get_current_item();
+        if (item.query)
+            this._arrangement.highlight_string(item.query);
     },
 
     load: function () {

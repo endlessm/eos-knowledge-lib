@@ -47,7 +47,7 @@ $support-font: 'Fira Sans' !default;
 @import 'modules/contentGroup/cardContainer';
 @import 'modules/contentGroup/contentGroup';
 @import 'modules/contentGroup/mediaLightbox';
-@import 'modules/contentGroup/search';
+@import 'modules/contentGroup/noResultsMessage';
 
 @import 'modules/layout/dynamicBackground';
 @import 'modules/layout/infiniteScrolling';
@@ -112,7 +112,7 @@ $support-font: 'Fira Sans' !default;
 
 /* Selects the background around the suggested articles modules; cumbersome! */
 .vertical .LayoutResponsiveMargins.supplementary-articles,
-.no-results .vertical .LayoutResponsiveMargins {
+.search-results .vertical .LayoutResponsiveMargins {
     background-color: $background-dark-color;
 }
 
@@ -139,4 +139,15 @@ $support-font: 'Fira Sans' !default;
     .Card .title {
         color: white;
     }
+}
+
+.search-results {
+    background-color: transparent;
+    .LayoutScrolling {
+        background-color: transparent;
+    }
+}
+
+.ContentGroupNoResultsMessage__subtitle {
+    padding-left: 160px;
 }

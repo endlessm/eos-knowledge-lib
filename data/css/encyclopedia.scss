@@ -18,8 +18,9 @@ $accent-light-color: #044a80 !default;
 @import 'modules/card/knowledgeDocument';
 @import 'modules/card/media';
 
+@import 'modules/contentGroup/contentGroup';
 @import 'modules/contentGroup/mediaLightbox';
-@import 'modules/contentGroup/search';
+@import 'modules/contentGroup/noResultsMessage';
 
 @import 'modules/layout/paper';
 
@@ -103,7 +104,7 @@ $accent-light-color: #044a80 !default;
     background-color: transparentize(#212526, 1 - 0.90);
 }
 
-.ContentGroupSearch {
+.search-results {
     background-color: transparent;
 
     color: #464646;
@@ -118,9 +119,8 @@ $accent-light-color: #044a80 !default;
         background-color: #888a85;
     }
 
-    .results-message-title,
-    .results-message-subtitle,
-    .error-message {
+    .ContentGroupNoResultsMessage__title,
+    .ContentGroupNoResultsMessage__subtitle {
         color: $black-60-color;
         font-size: 1.25em;  /* 15px / 12px/em */
         font-style: normal;
