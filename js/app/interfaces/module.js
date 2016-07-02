@@ -148,16 +148,6 @@ const Module = new Lang.Interface({
     },
 
     /**
-     * FIXME: We should be able to remove this once we remove ThematicModule
-     * Method: clear_submodules
-     * Clears the list of submodules from this module
-     *
-     */
-    clear_submodules: function () {
-        this._submodules_array = [];
-    },
-
-    /**
      * Method: drop_submodule
      * Drops the given submodule (if it exists) from the list of submodules.
      *
