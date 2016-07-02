@@ -14,13 +14,6 @@ describe('Arrangement interface', function () {
             type: Minimal.MinimalArrangement,
             slots: {
                 'card': { type: Minimal.MinimalCard },
-                'order': {
-                    type: Minimal.MinimalOrder,
-                    properties: {
-                        'ascending': false,
-                    },
-                },
-                'filter': { type: Minimal.TitleFilter },
             },
         });
         arrangement = factory.create_root_module();
@@ -47,29 +40,10 @@ describe('Arrangement interface', function () {
         factory.get_last_created('card').emit('clicked');
     });
 
-    it('packs its cards in the correct order', function () {
-        spyOn(arrangement, 'pack_card');
-        let models = Minimal.add_ordered_cards(arrangement, 5);
-        // reverse it because we asked for ascending to be false
-        arrangement.pack_card.calls.allArgs().reverse().forEach((args, ix) => {
-            expect(args[0].model).toBe(models[ix]);
-        });
-    });
-
-    it('filters its cards', function () {
-        spyOn(arrangement, 'pack_card');
-        let models = Minimal.add_filtered_cards(arrangement, 3, 3);
-        expect(arrangement.pack_card.calls.count()).toBe(3);
-        arrangement.pack_card.calls.allArgs().map(args => args[0].model).forEach(model => {
-            expect(models).toContain(model);
-            expect(model.title).toEqual('#nofilter');
-        });
-    });
-
     it('does not create cards for cards beyond the max', function () {
         spyOn(arrangement, 'pack_card');
         arrangement.max_cards = 1;
-        Minimal.add_filtered_cards(arrangement, 3, 3);
+        Minimal.add_cards(arrangement, 3);
         expect(arrangement.pack_card.calls.count()).toBe(1);
     });
 });

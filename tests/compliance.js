@@ -66,7 +66,6 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
                 type: ArrangementClass,
                 slots: _merge_slots_into(extra_slots, {
                     'card': { type: Minimal.MinimalCard },
-                    'filter': { type: Minimal.TitleFilter },
                 }),
             });
         });
@@ -82,14 +81,6 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
             let created_cards = factory.get_created('card');
             let cards = models.map(model => created_cards.filter(card => card.model === model)[0]);
             return cards.slice(cards.length - ncards);
-        }
-
-        function add_filtered_card(a) {
-            let model = new ContentObjectModel.ContentObjectModel({
-                title: '0Filter me out',
-            });
-            a.set_models(a.get_models().concat([model]));
-            return model;
         }
 
         it('by adding cards to the list', function () {
@@ -117,29 +108,6 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
                 expect(arrangement.get_models()).toContain(card.model));
         });
 
-        it('by retrieving the models in sorted order', function () {
-            [arrangement, factory] = MockFactory.setup_tree({
-                type: ArrangementClass,
-                slots: _merge_slots_into(extra_slots, {
-                    'card': { type: Minimal.MinimalCard },
-                    'order': { type: Minimal.MinimalOrder },
-                }),
-            });
-
-            let models = [];
-            // If arrangement has max card limit, respect that, otherwise just test with 4 cards.
-            let count = arrangement.get_max_cards() > -1 ? arrangement.get_max_cards() : 4;
-            for (let ix = count; ix > 0; ix--) {
-                let model = new ContentObjectModel.ContentObjectModel({
-                    title: ix.toString(),
-                });
-                models.push(model);
-            }
-            arrangement.set_models(models);
-
-            expect(arrangement.get_models()).toEqual(models.reverse());
-        });
-
         it('by returning the card corresponding to a model', function () {
             let model1 = new ContentObjectModel.ContentObjectModel();
             let model2 = new ContentObjectModel.ContentObjectModel();
@@ -159,33 +127,6 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
             expect(card.highlight_string).not.toEqual('foo');
             arrangement.highlight_string('foo');
             expect(card.highlight_string).toEqual('foo');
-        });
-
-        it('by not creating a card for a filtered-out model', function () {
-            add_filtered_card(arrangement);
-            expect(factory.get_created('card').length).toBe(0);
-        });
-
-        it('by not updating the card count for a filtered-out model', function () {
-            add_cards(arrangement, 3);
-            add_filtered_card(arrangement);
-
-            expect(arrangement.get_card_count()).toBe(3);
-        });
-
-        it('by not returning a card for a model that has none', function () {
-            let model = add_filtered_card(arrangement);
-
-            expect(arrangement.get_card_for_model(model)).not.toBeDefined();
-        });
-
-        it('by not including filtered-out models in the filtered models list', function () {
-            add_cards(arrangement, 3);
-            let model = add_filtered_card(arrangement);
-            let models = arrangement.get_models();
-
-            expect(models.length).toBe(3);
-            expect(models).not.toContain(model);
         });
     });
 }

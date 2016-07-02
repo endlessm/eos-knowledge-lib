@@ -12,15 +12,13 @@ const Module = imports.app.interfaces.module;
 
 /**
  * Interface: Arrangement
- * Arrangement and order of cards in a container
+ * Arrangement of cards in a container
  *
  * An arrangement controls how a group of cards are presented in the UI.
  * Examples of arrangements: a list, a grid, etc.
  *
  * Slots:
  *   card-type - controls how the card models are converted into cards
- *   order
- *   filter
  */
 const Arrangement = new Lang.Interface({
     Name: 'Arrangement',
@@ -67,8 +65,6 @@ const Arrangement = new Lang.Interface({
         'card': {
             multi: true,
         },
-        'order': {},
-        'filter': {},
     },
 
     Signals: {
@@ -87,8 +83,6 @@ const Arrangement = new Lang.Interface({
     _interface_init: function () {
         this._cards_by_id = new Map();
         this._models = [];
-        this._order_module = this.create_submodule('order');
-        this._filter_module = this.create_submodule('filter');
     },
 
 
@@ -112,8 +106,6 @@ const Arrangement = new Lang.Interface({
      *
      * Contrast to <get_count()>.
      * This returns the number of cards currently displaying in the arrangement.
-     * There may be card models added to the arrangement that are not shown as
-     * cards because they are filtered out.
      *
      * This is a method for technical reasons, but it should be treated like a
      * read-only property.
@@ -155,20 +147,13 @@ const Arrangement = new Lang.Interface({
      *   models - an array of <ContentObjectModel>s
      */
     set_models: function (models) {
-        // FIXME: Stopgap measure until all content groups use selections
-        models = models.slice();
-        if (this._filter_module)
-            models = models.filter(this._filter_module.include.bind(this._filter_module));
-        if (this._order_module)
-            models.sort(this._order_module.compare.bind(this._order_module));
-
         // unpack all cards
         let cards = [...this._cards_by_id.values()];
         cards.forEach((card) => {
             this.unpack_card(card);
         });
 
-        this._models = models;
+        this._models = models.slice();
 
         // only maintain the number of models we care about
         if (this.get_max_cards() > -1)
@@ -215,8 +200,6 @@ const Arrangement = new Lang.Interface({
     /**
      * Method: get_cards
      * Get card models in the arrangement that are to be displayed.
-     *
-     * This method will return filtered and ordered cards.
      */
     get_cards: function () {
         let models = this.get_models();
@@ -267,16 +250,6 @@ const Arrangement = new Lang.Interface({
         for (let card of this._cards_by_id.values()) {
             card.get_style_context().remove_class('highlighted');
         }
-    },
-
-    // FIXME: These two will go away once modules start using selections
-    // for ordering and filtering.
-    get_order: function () {
-        return this._order_module;
-    },
-
-    get_filter: function () {
-        return this._filter_module;
     },
 
     /**

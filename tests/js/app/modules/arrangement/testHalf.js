@@ -22,8 +22,6 @@ describe('Arrangement.Half', function () {
             type: Half.Half,
             slots: {
                 'card': { type: Minimal.MinimalCard },
-                'order': { type: Minimal.MinimalOrder },
-                'filter': { type: Minimal.TitleFilter },
             },
         });
 
@@ -37,8 +35,7 @@ describe('Arrangement.Half', function () {
 
     function testSizingArrangementForDimensions(arrangement_size, card_width, card_height) {
         it('handles arrangement with width=' + arrangement_size, function () {
-            Minimal.add_ordered_cards(arrangement, 5);
-            Minimal.add_filtered_cards(arrangement, 1, 0);
+            Minimal.add_cards(arrangement, 5);
             win.set_size_request(arrangement_size, arrangement_size);
             win.show_all();
 
@@ -64,7 +61,7 @@ describe('Arrangement.Half', function () {
 
     function testFeaturedCardsInArrangement(total_cards, featured_cards, featured_size, non_featured_size) {
         it('treats ' + featured_cards + ' cards as featured when ' + total_cards + ' cards are added', function () {
-            Minimal.add_ordered_cards(arrangement, total_cards);
+            Minimal.add_cards(arrangement, total_cards);
 
             // In a 1000px wide arrangement, feature cards will be 500px wide
             // and regular cards will be 333px wide.

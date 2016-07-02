@@ -18,15 +18,12 @@ describe('Arrangement.TiledGrid', function () {
             type: TiledGrid.TiledGrid,
             slots: {
                 'card': { type: Minimal.MinimalCard },
-                'order': { type: Minimal.MinimalOrder },
-                'filter': { type: Minimal.TitleFilter },
             },
         });
     });
 
     function add_cards(ncards) {
-        Minimal.add_ordered_cards(arrangement, ncards);
-        Minimal.add_filtered_cards(arrangement, 1, 0);
+        Minimal.add_cards(arrangement, ncards);
         Utils.update_gui();
         return factory.get_created('card');
     }

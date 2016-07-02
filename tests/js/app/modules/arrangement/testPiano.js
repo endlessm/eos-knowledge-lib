@@ -20,8 +20,6 @@ describe('Arrangement.Piano', function () {
             type: Piano.Piano,
             slots: {
                 'card': { type: Minimal.MinimalCard },
-                'order': { type: Minimal.MinimalOrder },
-                'filter': { type: Minimal.TitleFilter },
             },
         });
     });
@@ -30,8 +28,7 @@ describe('Arrangement.Piano', function () {
         let win;
 
         beforeEach(function () {
-            Minimal.add_ordered_cards(arrangement, 4);
-            Minimal.add_filtered_cards(arrangement, 1, 0);
+            Minimal.add_cards(arrangement, 4);
             win = new Gtk.OffscreenWindow();
             win.add(arrangement);
             win.show_all();
