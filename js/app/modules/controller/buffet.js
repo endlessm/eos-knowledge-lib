@@ -55,22 +55,10 @@ const Buffet = new Module.Class({
 
         this._brand_page_timeout_id = 0;
 
-
-        Dispatcher.get_default().register((payload) => {
-            switch (payload.action_type) {
-                case Actions.NEED_MORE_SEARCH:
-                    this._load_more_results();
-                    break;
-                case Actions.NEED_MORE_SUPPLEMENTARY_ARTICLES:
-                    this._load_more_supplementary_articles(payload);
-                    break;
-            }
-        });
-
         history.connect('changed', this._on_history_change.bind(this));
     },
 
-    make_ready: function (cb) {
+    make_ready: function (cb=function () {}) {
         // Load all sets, with which to populate the highlights and thematic
         // pages
         Engine.get_default().get_objects_by_query(new QueryObject.QueryObject({
@@ -87,60 +75,12 @@ const Buffet = new Module.Class({
 
             SetMap.init_map_with_models(models);
 
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.APPEND_SETS,
-                models: models,
+            this._window.make_ready(() => {
+                this._content_ready = true;
+                this._show_home_if_ready();
+                cb();
             });
         });
-        this._window.make_ready(() => {
-            this._content_ready = true;
-            this._show_home_if_ready();
-        });
-    },
-
-    _load_more_supplementary_articles: function (payload) {
-        let query_props = {
-            sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
-        };
-
-        if (payload.need_unread) {
-            query_props.excluded_ids = [...ReadingHistoryModel.get_default().get_read_articles()];
-        }
-
-        let current_set_tags = payload.set_tags.slice();
-
-        // SupplementaryArticle modules can either show articles from the same category
-        // as the current article, or articles from different categories.
-        // In the the second case, we want to exclude all articles tagged with
-        // the current article's tags.
-        if (payload.same_set) {
-            current_set_tags.push('EknArticleObject');
-            query_props.tags_match_all = current_set_tags;
-        } else {
-            query_props.excluded_tags = current_set_tags;
-            query_props.tags_match_all = ['EknArticleObject'];
-        }
-
-        let query = new QueryObject.QueryObject(query_props);
-        Engine.get_default().get_objects_by_query(query, null, (engine, task) => {
-            let results;
-            try {
-                [results] = engine.get_objects_by_query_finish(task);
-            } catch (error) {
-                logError(error);
-                return;
-            }
-
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.APPEND_SUPPLEMENTARY_ARTICLES,
-                models: results,
-                same_set: payload.same_set,
-                set_tags: payload.set_tags,
-                need_unread: payload.need_unread,
-            });
-        });
-
-        this._update_highlight();
     },
 
     _update_highlight: function () {
@@ -182,14 +122,6 @@ const Buffet = new Module.Class({
                 return;
             }
             this._get_more_results_query = info.more_results;
-            dispatcher.dispatch({
-                action_type: Actions.CLEAR_SEARCH,
-            });
-            dispatcher.dispatch({
-                action_type: Actions.APPEND_SEARCH,
-                models: results,
-                query: history_item.query,
-            });
 
             if (results.length > 0) {
                 dispatcher.dispatch({
@@ -203,35 +135,6 @@ const Buffet = new Module.Class({
                 query: history_item.query,
             });
         });
-
-        this._update_highlight();
-    },
-
-    _load_more_results: function () {
-        if (!this._get_more_results_query)
-            return;
-        Engine.get_default().get_objects_by_query(this._get_more_results_query, null, (engine, task) => {
-            let results, info;
-            try {
-                [results, info] = engine.get_objects_by_query_finish(task);
-            } catch (error) {
-                logError(error);
-                return;
-            }
-
-            if (results.length < 1)
-                return;
-
-            this._get_more_results_query = info.more_results;
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.APPEND_SEARCH,
-                models: results,
-            });
-        });
-        // Null the query we just sent to the engine, when results come back
-        // we'll have a new more results query. But this keeps us from double
-        // loading this query.
-        this._get_more_results_query = null;
 
         this._update_highlight();
     },
@@ -254,15 +157,7 @@ const Buffet = new Module.Class({
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_SET_PAGE,
                 });
-                dispatcher.dispatch({
-                    action_type: Actions.CLEAR_SUPPLEMENTARY_ARTICLES,
-                    same_set: false,
-                });
-                this._load_more_supplementary_articles({
-                    set_tags: item.model.child_tags,
-                    same_set: false,
-                    need_unread: true,
-                });
+                this._update_highlight();
                 break;
             case Pages.HOME:
                 if (history.get_items().length === 1) {
@@ -298,18 +193,7 @@ const Buffet = new Module.Class({
 
                 ReadingHistoryModel.get_default().mark_article_read(item.model.ekn_id);
 
-                // First load unread articles that are in the same category
-                this._load_more_supplementary_articles({
-                    set_tags: item.model.tags,
-                    same_set: true,
-                    need_unread: true,
-                });
-                // Then also load unread articles from different categories
-                this._load_more_supplementary_articles({
-                    set_tags: item.model.tags,
-                    same_set: false,
-                    need_unread: true,
-                });
+                this._update_highlight();
                 break;
         }
     },

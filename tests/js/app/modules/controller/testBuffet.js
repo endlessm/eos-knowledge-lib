@@ -101,16 +101,6 @@ describe('Controller.Buffet', function () {
         expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_PAGE)).not.toBeDefined();
     });
 
-    it('dispatches set models to populate the app with', function () {
-        buffet.make_ready();
-        let payloads = dispatcher.payloads_with_type(Actions.APPEND_SETS);
-        expect(payloads.length).toBe(1);
-        expect(set_models).toEqual(payloads[0].models);
-        expect(engine.get_objects_by_query)
-            .toHaveBeenCalledWith(jasmine.objectContaining({ tags_match_any: ['EknSetObject'] }),
-                jasmine.any(Object), jasmine.any(Function));
-    });
-
     describe('on state change to set page', function () {
         beforeEach(function () {
             dispatcher.dispatch({
@@ -131,16 +121,6 @@ describe('Controller.Buffet', function () {
         it('signals that a set should be loaded', function () {
             expect(dispatcher.last_payload_with_type(Actions.SHOW_SET).model)
                 .toBe(set_models[0]);
-        });
-
-        it('dispatch a set of unread articles', function () {
-            let payload = dispatcher.last_payload_with_type(Actions.APPEND_SUPPLEMENTARY_ARTICLES);
-            expect(payload).toBeDefined();
-            expect(payload.same_set).toBeFalsy();
-            expect(engine.get_objects_by_query.calls.mostRecent().args[0])
-                .toEqual(jasmine.objectContaining({
-                    tags_match_all: jasmine.arrayContaining(['EknArticleObject']),
-                }));
         });
     });
 
@@ -189,22 +169,6 @@ describe('Controller.Buffet', function () {
             let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_PAGE);
             expect(payload.context_label).toBe('Some Context');
         });
-
-        it('dispatches unread articles from both within and outside current category', function () {
-            let payloads = dispatcher.payloads_with_type(Actions.APPEND_SUPPLEMENTARY_ARTICLES);
-            expect(payloads.length).toBe(2);
-
-            expect(payloads[0].need_unread).toBeTruthy();
-            expect(payloads[1].need_unread).toBeTruthy();
-            // One of the dispatches should ask for articles from the same set
-            // and the other should ask for articles from different sets. Ensure
-            // that we are getting both types.
-            if (payloads[0].same_set === true) {
-                expect(payloads[1].same_set).toBeFalsy();
-            } else {
-                expect(payloads[1].same_set).toBeTruthy();
-            }
-        });
     });
 
     it('changes to the all sets page on state change', function () {
@@ -247,22 +211,6 @@ describe('Controller.Buffet', function () {
                 .toBeDefined();
             expect(dispatcher.last_payload_with_type(Actions.SEARCH_READY).query)
                 .toEqual('user query');
-        });
-
-        it('batches the results', function () {
-            expect(dispatcher.last_payload_with_type(Actions.CLEAR_SEARCH))
-                .toBeDefined();
-            let append_payloads = dispatcher.payloads_with_type(Actions.APPEND_SEARCH);
-            expect(append_payloads.length).toBe(1);
-            expect(append_payloads[0].models.length).toBe(5);
-
-            dispatcher.dispatch({
-                action_type: Actions.NEED_MORE_SEARCH,
-            });
-            Utils.update_gui();
-            append_payloads = dispatcher.payloads_with_type(Actions.APPEND_SEARCH);
-            expect(append_payloads.length).toBe(2);
-            expect(append_payloads[1].models.length).toBe(2);
         });
     });
 });
