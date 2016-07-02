@@ -110,18 +110,6 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
             expect(arrangement.get_count()).toBe(0);
         });
 
-        it('by being able to remove individual cards', function () {
-            let cards = add_cards(arrangement, 3);
-            let models = arrangement.get_models();
-            arrangement.remove_model(models[1]);
-            Utils.update_gui();
-
-            expect(arrangement.get_count()).toBe(2);
-            expect(arrangement).toHaveDescendant(cards[0]);
-            expect(arrangement).not.toHaveDescendant(cards[1]);
-            expect(arrangement).toHaveDescendant(cards[2]);
-        });
-
         it('by retrieving the contained models', function () {
             let cards = add_cards(arrangement, 3);
 
@@ -183,14 +171,6 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
             add_filtered_card(arrangement);
 
             expect(arrangement.get_card_count()).toBe(3);
-        });
-
-        it('by removing a model that has no card', function () {
-            add_cards(arrangement, 3);
-            let model = add_filtered_card(arrangement);
-            arrangement.remove_model(model);
-
-            expect(arrangement.get_models()).not.toContain(model);
         });
 
         it('by not returning a card for a model that has none', function () {
