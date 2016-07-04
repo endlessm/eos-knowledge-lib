@@ -60,50 +60,15 @@ const Mesh = new Module.Class({
         this._brand_page_timeout_id = 0;
         this._home_content_loaded = false;
 
-        let dispatcher = Dispatcher.get_default();
-        dispatcher.register((payload) => {
-            switch(payload.action_type) {
-                case Actions.NEED_MORE_ITEMS:
-                    this._load_more_set_results();
-                    break;
-                case Actions.NEED_MORE_SEARCH:
-                    this._load_more_search_results();
-                    break;
-            }
-        });
-
         this._window.connect('key-press-event', this._on_key_press_event.bind(this));
         history.connect('changed', this._on_history_change.bind(this));
     },
 
     make_ready: function (cb=function () {}) {
-        let query_obj = new QueryObject.QueryObject({
-            limit: -1,
-            tags_match_any: [ Engine.HOME_PAGE_TAG, 'EknSetObject' ],
-            sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
-        });
-        Engine.get_default().get_objects_by_query(query_obj, null, (engine, inner_task) => {
-            let [models] = engine.get_objects_by_query_finish(inner_task);
-
-            // FIXME: This sorting should ideally happen in the arrangement
-            // once it has a sort-by API.
-            let sorted_models = models.sort((a, b) => {
-                let sortVal = 0;
-                if (a.featured)
-                    sortVal--;
-                if (b.featured)
-                    sortVal++;
-                return sortVal;
-            });
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.APPEND_SETS,
-                models: sorted_models,
-            });
-        });
-
         this._window.make_ready(() => {
             this._home_content_loaded = true;
             this._show_home_if_ready();
+            cb();
         });
     },
 
@@ -239,48 +204,12 @@ const Mesh = new Module.Class({
             }
             this._more_search_results_query = info.more_results;
 
-            dispatcher.dispatch({
-                action_type: Actions.CLEAR_SEARCH,
-            });
-            dispatcher.dispatch({
-                action_type: Actions.APPEND_SEARCH,
-                models: results,
-                query: item.query,
-            });
             this._update_highlight();
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_READY,
                 query: item.query,
             });
         });
-    },
-
-    _load_more_search_results: function () {
-        if (!this._more_search_results_query)
-            return;
-        Engine.get_default().get_objects_by_query(this._more_search_results_query, this._search_cancellable, (engine, task) => {
-            let results, info;
-            try {
-                [results, info] = engine.get_objects_by_query_finish(task);
-            } catch (error) {
-                if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                    return;
-                logError(error);
-                return;
-            }
-            if (!results)
-                return;
-
-            let dispatcher = Dispatcher.get_default();
-            this._update_highlight();
-            dispatcher.dispatch({
-                action_type: Actions.APPEND_SEARCH,
-                models: results,
-            });
-            this._more_search_results_query = info.more_results;
-        });
-        // Null the query to avoid double loading.
-        this._more_search_results_query = null;
     },
 
     _update_set_results: function (item, callback=() => {}) {
@@ -320,14 +249,6 @@ const Mesh = new Module.Class({
                 return;
             }
             this._more_set_results_query = info.more_results;
-
-            dispatcher.dispatch({
-                action_type: Actions.CLEAR_ITEMS,
-            });
-            dispatcher.dispatch({
-                action_type: Actions.APPEND_ITEMS,
-                models: results,
-            });
             this._update_highlight();
             dispatcher.dispatch({
                 action_type: Actions.SET_READY,
@@ -335,33 +256,6 @@ const Mesh = new Module.Class({
             });
             callback();
         });
-    },
-
-    _load_more_set_results: function () {
-        if (!this._more_set_results_query)
-            return;
-        Engine.get_default().get_objects_by_query(this._more_set_results_query, this._set_cancellable, (engine, task) => {
-            let results, info;
-            try {
-                [results, info] = engine.get_objects_by_query_finish(task);
-            } catch (error) {
-                if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                    logError(error);
-                return;
-            }
-            if (!results)
-                return;
-
-            let dispatcher = Dispatcher.get_default();
-            this._update_highlight();
-            dispatcher.dispatch({
-                action_type: Actions.APPEND_ITEMS,
-                models: results,
-            });
-            this._more_set_results_query = info.more_results;
-        });
-        // Null the query to avoid double loading.
-        this._more_set_results_query = null;
     },
 
     _update_highlight: function () {

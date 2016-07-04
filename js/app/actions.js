@@ -27,18 +27,6 @@ const HIDE_ARTICLE_SEARCH = 'hide-article-search';
 const FEATURE_ITEM = 'feature-item';
 
 // FIXME: These actions will be replaces by the Selection API
-const APPEND_SETS = 'append-sets';
-const APPEND_ITEMS = 'append-items';
-const APPEND_SEARCH = 'append-search';
-const NEED_MORE_SETS = 'need-more-sets';
-const NEED_MORE_ITEMS = 'need-more-items';
-const NEED_MORE_SEARCH = 'need-more-search';
-const NEED_MORE_SUPPLEMENTARY_ARTICLES = 'need-more-supplementary-articles';
-const APPEND_SUPPLEMENTARY_ARTICLES = 'append-supplementary-articles';
-const CLEAR_SUPPLEMENTARY_ARTICLES = 'clear-supplementary-articles';
-const CLEAR_SETS = 'clear-sets';
-const CLEAR_ITEMS = 'clear-items';
-const CLEAR_SEARCH = 'clear-search';
 const SEARCH_STARTED = 'search-started';
 const SEARCH_READY = 'search-ready';
 const SEARCH_FAILED = 'search-failed';

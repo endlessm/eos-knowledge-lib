@@ -102,18 +102,6 @@ describe('Controller.Mesh', function () {
         spyOn(AppUtils, 'record_search_metric');
     });
 
-    it('dispatches category models for home page', () => {
-        store.set_current_item_from_props({
-            page_type: Pages.HOME,
-        });
-        let payloads = dispatcher.dispatched_payloads.filter((payload) => {
-            return payload.action_type === Actions.APPEND_SETS;
-        });
-        expect(payloads.length).toBe(1);
-        expect(sections.map((section) => section['title']))
-            .toEqual(payloads[0].models.map((model) => model.title));
-    });
-
     it('shows the brand page until timeout has expired and sets are loaded', function () {
         store.set_current_item_from_props({
             page_type: Pages.HOME,
@@ -186,16 +174,6 @@ describe('Controller.Mesh', function () {
             expect(payload.model).toBe(set_model);
         });
 
-        it('loads the set items from engine', function () {
-            expect(dispatcher.has_payload_sequence([
-                Actions.CLEAR_ITEMS,
-                Actions.APPEND_ITEMS,
-                Actions.SET_READY
-            ])).toBe(true);
-            let payload = dispatcher.last_payload_with_type(Actions.APPEND_ITEMS);
-            expect(payload.models).toEqual([ article_model ]);
-        });
-
         it('cancels existing set queries', function () {
             let cancellable = engine.get_objects_by_query.calls.mostRecent().args[1];
             let cancel_spy = jasmine.createSpy();
@@ -247,18 +225,11 @@ describe('Controller.Mesh', function () {
             expect(started_index).toBeLessThan(show_page_index);
         });
 
-        it('loads the results from engine', function () {
+        it('dispatches search-started and search-ready in order', function () {
             expect(dispatcher.has_payload_sequence([
                 Actions.SEARCH_STARTED,
-                Actions.CLEAR_SEARCH,
-                Actions.APPEND_SEARCH,
                 Actions.SEARCH_READY,
             ])).toBe(true);
-            let payload = dispatcher.last_payload_with_type(Actions.APPEND_SEARCH);
-            expect(payload).toEqual(jasmine.objectContaining({
-                models: [ article_model ],
-                query: 'foo',
-            }));
         });
     });
 
@@ -304,25 +275,6 @@ describe('Controller.Mesh', function () {
         it('shows the article page', function () {
             expect(dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_PAGE)).toBeDefined();
         });
-    });
-
-    it('loads the article list when changing to article page with query', function () {
-        let model = new ContentObjectModel.ContentObjectModel({
-            ekn_id: 'ekn://foo/bar',
-        });
-        engine.get_objects_by_query_finish.and.returnValue([[ model ], {
-            more_results: null,
-        }]);
-        store.set_current_item_from_props({
-            page_type: Pages.ARTICLE,
-            model: model,
-            query: 'foo',
-        });
-        let payload = dispatcher.last_payload_with_type(Actions.APPEND_SEARCH);
-        expect(payload).toEqual(jasmine.objectContaining({
-            models: [ model ],
-            query: 'foo',
-        }));
     });
 
     it('makes queries for set objects with the correct tags', function () {

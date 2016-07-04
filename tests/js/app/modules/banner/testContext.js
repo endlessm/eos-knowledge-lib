@@ -3,62 +3,51 @@
 const Gtk = imports.gi.Gtk;
 Gtk.init(null);
 
-const Actions = imports.app.actions;
-const ArticleObjectModel = imports.search.articleObjectModel;
 const Context = imports.app.modules.banner.context;
-const MockDispatcher = imports.tests.mockDispatcher;
-const SetObjectModel = imports.search.setObjectModel;
+const HistoryStore = imports.app.historyStore;
+const Pages = imports.app.pages;
 
 describe('Banner.Context', function () {
-    let module, dispatcher;
+    let module, store;
 
     beforeEach(function () {
-        dispatcher = MockDispatcher.mock_default();
+        store = new HistoryStore.HistoryStore();
+        HistoryStore.set_default(store);
         module = new Context.Context();
         module.label = 'clobber me';
     });
 
     it('changes the context label when going to the home page', function () {
-        dispatcher.dispatch({
-            action_type: Actions.SHOW_HOME_PAGE,
-        });
+        store.set_current_item_from_props({ page_type: Pages.HOME });
         expect(module.label).not.toEqual('clobber me');
     });
 
-    it('displays the set name when showing a set', function () {
-        dispatcher.dispatch({
-            action_type: Actions.SHOW_SET,
-            model: new SetObjectModel.SetObjectModel({
-                title: 'Set title',
-            }),
+    it('changes the context label when going to the all-sets page', function () {
+        store.set_current_item_from_props({ page_type: 'all-sets' });
+        expect(module.label).not.toEqual('clobber me');
+    });
+
+    it('displays the given context label when showing a set', function () {
+        store.set_current_item_from_props({
+            page_type: Pages.SET,
+            context_label: 'Set title',
         });
         expect(module.label).toEqual('Set title');
     });
 
-    it('displays the context label when showing an article', function () {
-        dispatcher.dispatch({
-            action_type: Actions.SHOW_ARTICLE_PAGE,
+    it('displays the given context label when showing an article', function () {
+        store.set_current_item_from_props({
+            page_type: Pages.ARTICLE,
             context_label: 'Some context',
         });
         expect(module.label).toEqual('Some context');
     });
 
-
-    describe('when showing search', function () {
-        beforeEach(function () {
-            dispatcher.dispatch({
-                action_type: Actions.APPEND_SEARCH,
-                models: [0, 1, 2, 3].map(() =>
-                    new ArticleObjectModel.ArticleObjectModel()),
-            });
-            dispatcher.dispatch({
-                action_type: Actions.SEARCH_READY,
-                query: 'some user text',
-            });
+    it('displays the user query when showing search', function () {
+        store.set_current_item_from_props({
+            page_type: Pages.SEARCH,
+            query: 'some user text',
         });
-
-        it('displays the user query when showing search', function () {
-            expect(module.label).toMatch(/some user text/);
-        });
+        expect(module.label).toMatch(/some user text/);
     });
 });
