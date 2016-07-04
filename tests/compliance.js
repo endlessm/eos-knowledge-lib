@@ -162,48 +162,6 @@ function test_arrangement_fade_in_compliance(ArrangementClass, extra_slots={}) {
     });
 }
 
-function test_card_container_fade_in_compliance(action, CardContainerClass, extra_slots={}) {
-    describe(CardContainerClass.$gtype.name + ' implements the optional fade-in part of CardContainer', function () {
-        let arrangement, dispatcher, model;
-
-        beforeEach(function () {
-            dispatcher = MockDispatcher.mock_default();
-            let [, factory] = MockFactory.setup_tree({
-                type: CardContainerClass,
-                slots: _merge_slots_into(extra_slots, {
-                    'arrangement': {
-                        type: Minimal.MinimalArrangement,
-                        slots: {
-                            'card': { type: Minimal.MinimalCard },
-                        },
-                    },
-                }),
-            });
-            arrangement = factory.get_last_created('arrangement');
-            model = new ContentObjectModel.ContentObjectModel();
-            dispatcher.dispatch({
-                action_type: action,
-                models: [model],
-            });
-            Utils.update_gui();
-        });
-
-        it('does not fade in the first batch of cards', function () {
-            expect(arrangement.fade_cards).toBeFalsy();
-        });
-
-        it('does fade in subsequent batches', function () {
-            model = new ContentObjectModel.ContentObjectModel();
-            dispatcher.dispatch({
-                action_type: action,
-                models: [model],
-            });
-            Utils.update_gui();
-            expect(arrangement.fade_cards).toBeTruthy();
-        });
-    });
-}
-
 function test_selection_compliance (SelectionClass, setup=function () {}, extra_slots={}) {
     describe(SelectionClass.$gtype.name + ' implements Selection correctly', function () {
         let factory, selection, reading_history;

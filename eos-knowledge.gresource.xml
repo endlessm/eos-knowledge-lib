@@ -126,7 +126,6 @@
     <file>js/app/modules/card/text.js</file>
     <file>js/app/modules/card/thumb.js</file>
     <file>js/app/modules/card/title.js</file>
-    <file>js/app/modules/contentGroup/cardContainer.js</file>
     <file>js/app/modules/contentGroup/contentGroup.js</file>
     <file>js/app/modules/contentGroup/dynamicTitle.js</file>
     <file>js/app/modules/contentGroup/mediaLightbox.js</file>

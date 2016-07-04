@@ -5,7 +5,6 @@ js/app/articleHTMLRenderer.js
 js/app/buffetHistoryStore.js
 js/app/modules/banner/context.js
 js/app/modules/banner/search.js
-js/app/modules/contentGroup/cardContainer.js
 js/app/modules/contentGroup/noResultsMessage.js
 js/app/modules/controller/buffet.js
 js/app/modules/layout/articleStack.js

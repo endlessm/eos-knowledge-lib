@@ -100,7 +100,6 @@ scss_theme_card_partials = \
 	$(srcdir)/data/css/modules/card/_title.scss \
 	$(NULL)
 scss_theme_content_partials = \
-	$(srcdir)/data/css/modules/contentGroup/_cardContainer.scss \
 	$(srcdir)/data/css/modules/contentGroup/_contentGroup.scss \
 	$(srcdir)/data/css/modules/contentGroup/_mediaLightbox.scss \
 	$(srcdir)/data/css/modules/contentGroup/_noResultsMessage.scss \
@@ -535,7 +534,6 @@ EXTRA_DIST += \
 	tests/InstanceOfMatcher.js \
 	tests/compliance.js \
 	tests/minimal.js \
-	tests/mockCardContainer.js \
 	tests/mockDispatcher.js \
 	tests/mockEngine.js \
 	tests/mockFactory.js \
