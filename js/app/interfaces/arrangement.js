@@ -246,7 +246,7 @@ const Arrangement = new Lang.Interface({
             card.get_style_context().add_class('highlighted');
     },
 
-    clear_highlight: function() {
+    clear_highlight: function () {
         for (let card of this._cards_by_id.values()) {
             card.get_style_context().remove_class('highlighted');
         }
