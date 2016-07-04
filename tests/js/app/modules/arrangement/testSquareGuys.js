@@ -90,13 +90,10 @@ function testSizingArrangementForDimensions(message, arr_width, arr_height, max_
             },
             slots: {
                 'card': { type: Minimal.MinimalCard },
-                'order': { type: Minimal.MinimalOrder },
-                'filter': { type: Minimal.TitleFilter },
             },
         });
 
-        Minimal.add_ordered_cards(arrangement, 8);
-        Minimal.add_filtered_cards(arrangement, 1, 0);
+        Minimal.add_cards(arrangement, 8);
 
         let win = new Gtk.OffscreenWindow();
         win.add(arrangement);

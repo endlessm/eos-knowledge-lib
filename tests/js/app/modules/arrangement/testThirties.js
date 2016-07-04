@@ -39,13 +39,10 @@ describe('Arrangement.Thirties', function () {
                 type: Thirties.Thirties,
                 slots: {
                     'card': { type: Minimal.MinimalCard },
-                    'order': { type: Minimal.MinimalOrder },
-                    'filter': { type: Minimal.TitleFilter },
                 },
             });
 
-            Minimal.add_ordered_cards(arrangement, 10);
-            Minimal.add_filtered_cards(arrangement, 1, 0);
+            Minimal.add_cards(arrangement, 10);
             win = new Gtk.OffscreenWindow();
             win.add(arrangement);
             win.show_all();

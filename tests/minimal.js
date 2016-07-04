@@ -1,8 +1,8 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported add_filtered_cards, add_ordered_cards, MinimalArrangement,
-MinimalBinModule, MinimalCard, MinimalDocumentCard, MinimalHomePage,
-MinimalModule, MinimalNavigationCard, MinimalOrder, TitleFilter */
+/* exported add_cards, MinimalArrangement, MinimalBinModule, MinimalCard,
+MinimalDocumentCard, MinimalHomePage, MinimalModule, MinimalNavigationCard,
+MinimalOrder, TitleFilter */
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -184,32 +184,10 @@ const TitleFilter = new Module.Class({
     },
 });
 
-function add_ordered_cards(arrangement, ncards) {
+function add_cards(arrangement, ncards) {
     let models = [];
-    for (let i = 0; i < ncards; i++) {
-        let model = new ContentObjectModel.ContentObjectModel({
-            title: i.toString(),
-        });
-        models.push(model);
-    }
-    arrangement.set_models(arrangement.get_models().concat(models));
-    return models;
-}
-
-function add_filtered_cards(arrangement, n_yes, n_no) {
-    let models = [];
-    for (let i = 0; i < n_yes; i++) {
-        let model = new ContentObjectModel.ContentObjectModel({
-            title: '0Filter me out',
-        });
-        models.push(model);
-    }
-    for (let i = 0; i < n_no; i++) {
-        let model = new ContentObjectModel.ContentObjectModel({
-            title: '#nofilter',
-        });
-        models.push(model);
-    }
+    for (let i = 0; i < ncards; i++)
+        models.push(new ContentObjectModel.ContentObjectModel());
     arrangement.set_models(arrangement.get_models().concat(models));
     return models;
 }
