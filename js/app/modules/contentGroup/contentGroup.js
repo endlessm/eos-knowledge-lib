@@ -85,7 +85,7 @@ const ContentGroup = new Module.Class({
         if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
             this._arrangement.connect('need-more-content', () => {
                 if (this._selection.can_load_more)
-                    this._selection.queue_load_more(BATCH_SIZE)
+                    this._selection.queue_load_more(BATCH_SIZE);
             });
         }
 
