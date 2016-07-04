@@ -85,6 +85,8 @@ const Xapian = new Module.Class({
 
     clear: function () {
         this._get_more = null;
+        this._query_index = 0;
+        this._can_load_more = true;
         this.parent();
     },
 });
