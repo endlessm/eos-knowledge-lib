@@ -39,7 +39,6 @@ function transform_v1_description(json) {
     }
 
     set_prop_for_type('Banner.App', 'image-uri', json['titleImageURI']);
-    set_prop_for_type('Window.Simple', 'title', json['appTitle']);
     set_prop_for_type('Pager.ParallaxBackground', 'background-image-uri',
         json['backgroundHomeURI']);
 

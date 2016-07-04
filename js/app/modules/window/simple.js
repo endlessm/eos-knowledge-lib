@@ -6,6 +6,7 @@ const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
+const Gio = imports.gi.Gio;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -53,6 +54,11 @@ const Simple = new Module.Class({
 
     _init: function (props) {
         this.parent(props);
+
+        // Set window title from desktop application file
+        let app_id = Gio.Application.get_default().application_id;
+        let app_info = Gio.DesktopAppInfo.new(app_id + '.desktop');
+        this.title = (app_info) ? app_info.get_display_name() : app_id;
 
         // We need to pack a bunch of modules inside each other, but some of
         // them are optional. "matryoshka" is the innermost widget that needs to
