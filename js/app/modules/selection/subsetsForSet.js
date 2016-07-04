@@ -33,9 +33,12 @@ const SubsetsForSet = new Module.Class({
         }
     },
 
-    construct_query_object: function (limit) {
+    construct_query_object: function (limit, query_index) {
         if (!this.model)
             throw new Error('You should not be loading this selection unless on the set page');
+
+        if (query_index > 0)
+            return null;
 
         return new QueryObject.QueryObject({
             limit: limit,
