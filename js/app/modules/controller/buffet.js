@@ -83,16 +83,6 @@ const Buffet = new Module.Class({
         });
     },
 
-    _update_highlight: function () {
-        let item = HistoryStore.get_default().get_current_item();
-        if (item.page_type === Pages.SET) {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.HIGHLIGHT_ITEM,
-                model: item.model,
-            });
-        }
-    },
-
     _do_search: function (history_item) {
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
@@ -135,18 +125,12 @@ const Buffet = new Module.Class({
                 query: history_item.query,
             });
         });
-
-        this._update_highlight();
     },
 
     _on_history_change: function () {
         let history = HistoryStore.get_default();
         let item = history.get_current_item();
         let dispatcher = Dispatcher.get_default();
-        dispatcher.dispatch({
-            action_type: Actions.CLEAR_HIGHLIGHTED_ITEM,
-            model: item.model,
-        });
 
         switch (item.page_type) {
             case Pages.SET:
@@ -157,7 +141,6 @@ const Buffet = new Module.Class({
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_SET_PAGE,
                 });
-                this._update_highlight();
                 break;
             case Pages.HOME:
                 if (history.get_items().length === 1) {
@@ -192,8 +175,6 @@ const Buffet = new Module.Class({
                 });
 
                 ReadingHistoryModel.get_default().mark_article_read(item.model.ekn_id);
-
-                this._update_highlight();
                 break;
         }
     },
@@ -209,7 +190,5 @@ const Buffet = new Module.Class({
         Dispatcher.get_default().dispatch({
             action_type: Actions.SHOW_HOME_PAGE,
         });
-
-        this._update_highlight();
     },
 });

@@ -76,10 +76,6 @@ const Mesh = new Module.Class({
         let history = HistoryStore.get_default();
         let item = history.get_current_item();
         let dispatcher = Dispatcher.get_default();
-        dispatcher.dispatch({
-            action_type: Actions.CLEAR_HIGHLIGHTED_ITEM,
-            model: item.model,
-        });
 
         switch (item.page_type) {
             case Pages.SEARCH:
@@ -161,7 +157,6 @@ const Mesh = new Module.Class({
             }
             return false;
         });
-        this._update_highlight();
     },
 
     _update_search_results: function (item) {
@@ -204,7 +199,6 @@ const Mesh = new Module.Class({
             }
             this._more_search_results_query = info.more_results;
 
-            this._update_highlight();
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_READY,
                 query: item.query,
@@ -249,22 +243,11 @@ const Mesh = new Module.Class({
                 return;
             }
             this._more_set_results_query = info.more_results;
-            this._update_highlight();
             dispatcher.dispatch({
                 action_type: Actions.SET_READY,
                 model: item.model,
             });
             callback();
         });
-    },
-
-    _update_highlight: function () {
-        let item = HistoryStore.get_default().get_current_item();
-        if (item.page_type === Pages.ARTICLE) {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.HIGHLIGHT_ITEM,
-                model: item.model,
-            });
-        }
     },
 });

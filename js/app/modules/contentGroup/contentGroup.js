@@ -158,6 +158,10 @@ const ContentGroup = new Module.Class({
             if (max_cards > -1)
                 models.splice(max_cards);
             this._arrangement.set_models(models);
+            let item = HistoryStore.get_default().get_current_item();
+            if (item && item.model) {
+                this._arrangement.highlight(item.model);
+            }
             this._stack.visible_child_name = CONTENT_PAGE_NAME;
         }
 

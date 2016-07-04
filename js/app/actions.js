@@ -32,8 +32,6 @@ const SEARCH_READY = 'search-ready';
 const SEARCH_FAILED = 'search-failed';
 
 // FIXME: These actions will be replaced by the HistoryStore API
-const HIGHLIGHT_ITEM = 'highlight-item';
-const CLEAR_HIGHLIGHTED_ITEM = 'clear-highlighted-item';
 const PAGE_READY = 'page-ready';
 const SHOW_SET = 'show-set';
 const SET_READY = 'set-ready';
