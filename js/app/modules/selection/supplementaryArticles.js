@@ -29,20 +29,21 @@ const SupplementaryArticles = new Module.Class({
     },
 
     construct_query_object: function (limit, query_index) {
-        let query_object = new QueryObject.QueryObject({
+        let query_object_params = {
             limit: limit,
             tags_match_all: ['EknArticleObject'],
             excluded_tags: this.model ? this.model.child_tags : [],
             sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
-        });
+        };
         switch (query_index) {
             case 0:
-                query_object.excluded_ids = [...ReadingHistoryModel.get_default().get_read_articles()];
-                return query_object;
+                query_object_params.excluded_ids = [...ReadingHistoryModel.get_default().get_read_articles()];
+                break;
             case 1:
-                return query_object;
+                break;
             default:
                 return null;
         }
+        return new QueryObject.QueryObject(query_object_params);
     },
 });
