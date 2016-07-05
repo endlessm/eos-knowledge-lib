@@ -75,13 +75,14 @@ $display-font-composite: 'Roboto' !default;
 
 .set-page,
 .search-page {
+    .ContentGroup__title,
     .title {
         font-family: $title-font;
         font-weight: bold;
     }
 }
 
-.search-results {
+.ContentGroup {
     background-color: transparentize(black, 1 - 0.25);
 
     .ArrangementScrollingList__grid {
