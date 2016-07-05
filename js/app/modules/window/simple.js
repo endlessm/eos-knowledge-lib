@@ -118,12 +118,6 @@ const Simple = new Module.Class({
         HistoryStore.get_default().connect('changed', this._on_history_change.bind(this));
         dispatcher.register((payload) => {
             switch(payload.action_type) {
-                case Actions.HISTORY_BACK_ENABLED_CHANGED:
-                    this._history_buttons.back_button.sensitive = payload.enabled;
-                    break;
-                case Actions.HISTORY_FORWARD_ENABLED_CHANGED:
-                    this._history_buttons.forward_button.sensitive = payload.enabled;
-                    break;
                 case Actions.SEARCH_STARTED:
                 case Actions.SHOW_SET:
                     this.set_busy(true);
