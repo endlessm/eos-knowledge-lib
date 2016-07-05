@@ -120,20 +120,38 @@ describe('Window.Simple', function () {
         });
 
         function test_launch_action (action, descriptor) {
-            it('presents itself on ' + descriptor + ' after the first page is shown', function () {
-                spyOn(view, 'show_all');  // stub out
-                spyOn(view, 'present');
-                spyOn(view, 'present_with_time');
-                dispatcher.dispatch({
-                    action_type: action,
-                    timestamp: 0,
+            describe('on ' + descriptor, function () {
+                beforeEach(function () {
+                    spyOn(view, 'show_all');  // stub out
+                    spyOn(view, 'present');
+                    spyOn(view, 'present_with_time');
                 });
-                expect(view.present).not.toHaveBeenCalled();
-                expect(view.present_with_time).not.toHaveBeenCalled();
-                dispatcher.dispatch({
-                    action_type: Actions.SHOW_HOME_PAGE,
+
+                it('presents itself after the first page is shown', function () {
+                    dispatcher.dispatch({
+                        action_type: action,
+                        timestamp: 0,
+                    });
+                    expect(view.present).not.toHaveBeenCalled();
+                    expect(view.present_with_time).not.toHaveBeenCalled();
+                    dispatcher.dispatch({
+                        action_type: Actions.SHOW_HOME_PAGE,
+                    });
+                    expect(view.present.calls.any() || view.present_with_time.calls.any()).toBeTruthy();
                 });
-                expect(view.present.calls.any() || view.present_with_time.calls.any()).toBeTruthy();
+
+                it('does not present itself until the action is dispatched', function () {
+                    dispatcher.dispatch({
+                        action_type: Actions.SHOW_HOME_PAGE,
+                    });
+                    expect(view.present).not.toHaveBeenCalled();
+                    expect(view.present_with_time).not.toHaveBeenCalled();
+                    dispatcher.dispatch({
+                        action_type: action,
+                        timestamp: 0,
+                    });
+                    expect(view.present.calls.any() || view.present_with_time.calls.any()).toBeTruthy();
+                });
             });
         }
         test_launch_action(Actions.LAUNCHED_FROM_DESKTOP, 'desktop launch');

@@ -130,8 +130,7 @@ const Simple = new Module.Class({
                 case Actions.LAUNCHED_FROM_DESKTOP:
                 case Actions.DBUS_LOAD_QUERY_CALLED:
                 case Actions.DBUS_LOAD_ITEM_CALLED:
-                    this._pending_present = true;
-                    this._present_timestamp = payload.timestamp;
+                    this._needs_present(payload.timestamp);
                     break;
                 case Actions.SHOW_BRAND_PAGE:
                 case Actions.SHOW_HOME_PAGE:
@@ -192,15 +191,28 @@ const Simple = new Module.Class({
         }
     },
 
+    _needs_present: function (timestamp) {
+        this._pending_present = true;
+        this._present_timestamp = timestamp;
+        if (this._present_ready)
+            this._present();
+    },
+
     _present_if_needed: function () {
         if (this._pending_present) {
-            if (this._present_timestamp)
-                this.present_with_time(this._present_timestamp);
-            else
-                this.present();
-            this._pending_present = false;
-            this._present_timestamp = null;
+            this._present();
+        } else {
+            this._present_ready = true;
         }
+    },
+
+    _present: function () {
+        if (this._present_timestamp)
+            this.present_with_time(this._present_timestamp);
+        else
+            this.present();
+        this._pending_present = false;
+        this._present_timestamp = null;
     },
 
     make_ready: function (cb=function () {}) {
