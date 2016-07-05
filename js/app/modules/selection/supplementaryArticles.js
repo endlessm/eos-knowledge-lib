@@ -2,8 +2,7 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
-const Actions = imports.app.actions;
-const Dispatcher = imports.app.dispatcher;
+const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
 const ReadingHistoryModel = imports.app.readingHistoryModel;
@@ -13,26 +12,20 @@ const SupplementaryArticles = new Module.Class({
     Name: 'Selection.SupplementaryArticles',
     Extends: Xapian.Xapian,
 
-    _init: function (props) {
-        this.parent(props);
-
-        // FIXME: Remove this when we have history store
-        Dispatcher.get_default().register((payload) => {
-            switch(payload.action_type) {
-                case Actions.SHOW_SET:
-                    if (this.global) {
-                        this.model = payload.model;
-                    }
-                    break;
-            }
-        });
-    },
-
     construct_query_object: function (limit, query_index) {
+        let model = this.model;
+        if (this.global) {
+            let item = HistoryStore.get_default().get_current_item();
+            model = item.model;
+        }
+
+        if (!model)
+            throw new Error('You should not be loading this selection unless on the set page');
+
         let query_object_params = {
             limit: limit,
             tags_match_all: ['EknArticleObject'],
-            excluded_tags: this.model ? this.model.child_tags : [],
+            excluded_tags: model.child_tags,
             sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
         };
         switch (query_index) {
