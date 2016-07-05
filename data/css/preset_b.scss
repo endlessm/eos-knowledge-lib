@@ -32,23 +32,20 @@
             }
         }
 
-        .search-results {
-            background-color: transparentize(black, 1 - 0.75);
-
-            .ContentGroupNoResultsMessage__title,
-            .ContentGroupNoResultsMessage__subtitle {
-                color:white;
-                font-size: 1.2em;
-                font-style: normal;
-                padding: 10px 25px;
-            }
+        .ContentGroupNoResultsMessage__title,
+        .ContentGroupNoResultsMessage__subtitle {
+            color:white;
+            font-size: 1.2em;
+            font-style: normal;
+            padding: 10px 25px;
         }
     }
 
     .set-page,
+    .search-page,
     .article-page {
         .ContentGroupItem,
-        .search-results {
+        .ContentGroup {
             background-color: transparentize(black, 1 - 0.75);
         }
     }
