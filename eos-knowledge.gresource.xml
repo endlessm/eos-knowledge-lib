@@ -144,7 +144,6 @@
     <file>js/app/modules/layout/paper.js</file>
     <file>js/app/modules/layout/responsiveMargins.js</file>
     <file>js/app/modules/layout/scrolling.js</file>
-    <file>js/app/modules/layout/searchAndItem.js</file>
     <file>js/app/modules/layout/sidebar.js</file>
     <file>js/app/modules/layout/sideMenu.js</file>
     <file>js/app/modules/layout/topMenu.js</file>
@@ -157,6 +156,7 @@
     <file>js/app/modules/pager/simple.js</file>
     <file>js/app/modules/selection/allHighlights.js</file>
     <file>js/app/modules/selection/allSets.js</file>
+    <file>js/app/modules/selection/articleContext.js</file>
     <file>js/app/modules/selection/articlesForSet.js</file>
     <file>js/app/modules/selection/articlesForSetCrossSection.js</file>
     <file>js/app/modules/selection/search.js</file>

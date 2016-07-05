@@ -2,7 +2,6 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
-
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const HistoryStore = imports.app.historyStore;
