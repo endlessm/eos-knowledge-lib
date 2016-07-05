@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-06-21 01:48+0000\n"
-"PO-Revision-Date: 2016-06-14 01:47+0000\n"
+"POT-Creation-Date: 2016-06-28 01:50+0000\n"
+"PO-Revision-Date: 2016-06-28 01:51+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Thai (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/th/)\n"
 "MIME-Version: 1.0\n"
@@ -21,16 +21,12 @@ msgstr ""
 msgid "PDF"
 msgstr ""
 
-#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:139
+#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:141
 msgid "Next Article"
 msgstr ""
 
-#: data/widgets/card/sequence.ui:59 js/app/modules/layout/articleStack.js:122
+#: data/widgets/card/sequence.ui:59 js/app/modules/layout/articleStack.js:124
 msgid "Previous Article"
-msgstr ""
-
-#: data/widgets/contentGroup/suggestedCategories.ui:22
-msgid "Browse by topic"
 msgstr ""
 
 #: data/widgets/layout/sideMenu.ui:95
@@ -108,7 +104,6 @@ msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr ""
 
 #: js/app/modules/banner/context.js:39 js/app/modules/banner/context.js:47
-#: js/app/modules/contentGroup/highlights.js:134
 msgid "Highlights"
 msgstr ""
 
@@ -125,7 +120,7 @@ msgstr ""
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep %s token in your translation.
-#: js/app/modules/banner/context.js:72 js/app/modules/controller/buffet.js:143
+#: js/app/modules/banner/context.js:72 js/app/modules/controller/buffet.js:117
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr ""
@@ -182,10 +177,6 @@ msgstr ""
 
 #: js/app/modules/contentGroup/search.js:202
 msgid "There was an error during your search."
-msgstr ""
-
-#: js/app/modules/contentGroup/supplementaryArticles.js:37
-msgid "Other news"
 msgstr ""
 
 #: js/app/modules/layout/hamburgerBasement.js:41

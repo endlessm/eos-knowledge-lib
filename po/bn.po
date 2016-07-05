@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-06-21 01:48+0000\n"
-"PO-Revision-Date: 2016-06-23 09:22+0000\n"
-"Last-Translator: Aditi Kabir <aditi.kabir@gmail.com>\n"
+"POT-Creation-Date: 2016-06-28 01:50+0000\n"
+"PO-Revision-Date: 2016-06-30 15:56+0000\n"
+"Last-Translator: Shimon Sharmin <oparthib@gmail.com>\n"
 "Language-Team: Bengali (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/bn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,17 +22,13 @@ msgstr ""
 msgid "PDF"
 msgstr "পিডিএফ "
 
-#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:139
+#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:141
 msgid "Next Article"
 msgstr "পরের রচনা "
 
-#: data/widgets/card/sequence.ui:59 js/app/modules/layout/articleStack.js:122
+#: data/widgets/card/sequence.ui:59 js/app/modules/layout/articleStack.js:124
 msgid "Previous Article"
 msgstr "আগের রচনা "
-
-#: data/widgets/contentGroup/suggestedCategories.ui:22
-msgid "Browse by topic"
-msgstr "বিষয় ধরে ব্রাউজ "
 
 #: data/widgets/layout/sideMenu.ui:95
 #: js/app/modules/layout/hamburgerBasement.js:57
@@ -53,7 +49,7 @@ msgstr "এই পেজটিতে আছে বিষয় {প্রকৃত-
 #. wikiHow in your language.
 #: js/app/articleHTMLRenderer.js:92
 msgid "http://wikihow.com"
-msgstr ""
+msgstr "http://wikihow.com"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -109,7 +105,6 @@ msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "বিষয় কৃতজ্ঞতা {ব্লগ-লিঙ্ক}, {লাইসেন্স-লিঙ্ক} আইনী ছাড়পত্রের অধীনে। "
 
 #: js/app/modules/banner/context.js:39 js/app/modules/banner/context.js:47
-#: js/app/modules/contentGroup/highlights.js:134
 msgid "Highlights"
 msgstr "চুম্বক অংশ "
 
@@ -126,7 +121,7 @@ msgstr "“%s” এর অনুসন্ধান ফলাফল "
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep %s token in your translation.
-#: js/app/modules/banner/context.js:72 js/app/modules/controller/buffet.js:143
+#: js/app/modules/banner/context.js:72 js/app/modules/controller/buffet.js:117
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "“%s”এর জন্য প্রাপ্ত ফলাফল "
@@ -170,7 +165,7 @@ msgstr "দুঃখিত :-( "
 
 #: js/app/modules/contentGroup/search.js:182
 msgid "There are no results that match your search.\n"
-msgstr ""
+msgstr "আপনার সন্ধানের সাথে মেলে এমন ফলাফল পাওয়া যায় নি। \n"
 
 #: js/app/modules/contentGroup/search.js:184
 msgid ""
@@ -179,15 +174,11 @@ msgid ""
 "  •  Check your spelling\n"
 "  •  Try other words that mean the same thing\n"
 "  •  Try using more general words"
-msgstr ""
+msgstr "আমাদের পরামর্শ হল:\n\n• বানান ঠিক কিনা দেখুন\n• একই কথা অন্য শব্দে দেখুন \n• আরও সাধারণ শব্দ দেখুন "
 
 #: js/app/modules/contentGroup/search.js:202
 msgid "There was an error during your search."
 msgstr "আপনার অনুসন্ধানের সময়য় ত্রুটি দেখা দিয়েছে। "
-
-#: js/app/modules/contentGroup/supplementaryArticles.js:37
-msgid "Other news"
-msgstr "অন্য খবর "
 
 #: js/app/modules/layout/hamburgerBasement.js:41
 msgid "SEE ALL CATEGORIES"
