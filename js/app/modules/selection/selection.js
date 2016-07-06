@@ -5,6 +5,7 @@
 const GObject = imports.gi.GObject;
 
 const ContentObjectModel = imports.search.contentObjectModel;
+const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 
 const Selection = new Module.Class({
@@ -107,5 +108,19 @@ const Selection = new Module.Class({
     // backed by this selection.
     show_more: function () {
         // NO-OP - implement in subclass
+    },
+
+    emit_models_when_not_animating: function () {
+        let store = HistoryStore.get_default();
+        if (!store.animating) {
+            this.emit('models-changed');
+        } else {
+            let id = store.connect('notify::animating', () => {
+                if (!store.animating) {
+                    this.emit('models-changed');
+                }
+                store.disconnect(id);
+            });
+        }
     },
 });
