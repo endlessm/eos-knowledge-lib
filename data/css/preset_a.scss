@@ -14,7 +14,7 @@
     padding: 0 100px;
 
     .ContentGroupContentGroup__title,
-    .BannerSearch {
+    .BannerSearch__title {
         padding-top: 1.0em;
         padding-bottom: 1.0em;
 
@@ -56,7 +56,7 @@
     .set-page,
     .search-page {
         .ContentGroupContentGroup__title,
-        .BannerSearch {
+        .BannerSearch__title {
             font-size: 1.75em; /* 28pt * 1/12 * 0.75 DPI correction factor */
         }
     }
@@ -71,7 +71,7 @@
     .set-page,
     .search-page {
         .ContentGroupContentGroup__title,
-        .BannerSearch {
+        .BannerSearch__title {
             font-size: 16.4px;  /* 14px spec * 88% */
         }
     }
