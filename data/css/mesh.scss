@@ -81,8 +81,6 @@ $display-font-composite: 'Roboto' !default;
 }
 
 .ContentGroupContentGroup {
-    background-color: transparentize(black, 1 - 0.25);
-
     .ArrangementScrollingList__grid {
         padding: 0;
     }
