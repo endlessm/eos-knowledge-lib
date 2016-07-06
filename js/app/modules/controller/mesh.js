@@ -122,11 +122,6 @@ const Mesh = new Module.Class({
             return;
         }
         this._current_search_query = item.query;
-
-        dispatcher.dispatch({
-            action_type: Actions.SEARCH_STARTED,
-            query: item.query,
-        });
         this._search_cancellable.cancel();
         this._search_cancellable.reset();
         this._more_search_results_query = null;

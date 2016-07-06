@@ -27,7 +27,6 @@ const HIDE_ARTICLE_SEARCH = 'hide-article-search';
 const FEATURE_ITEM = 'feature-item';
 
 // FIXME: These actions will be replaces by the Selection API
-const SEARCH_STARTED = 'search-started';
 const SEARCH_READY = 'search-ready';
 const SEARCH_FAILED = 'search-failed';
 

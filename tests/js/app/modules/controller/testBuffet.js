@@ -113,8 +113,6 @@ describe('Controller.Buffet', function () {
         });
 
         it('launches a search', function () {
-            expect(dispatcher.last_payload_with_type(Actions.SEARCH_STARTED).query)
-                .toEqual('user query');
             expect(dispatcher.last_payload_with_type(Actions.SEARCH_READY).query)
                 .toEqual('user query');
         });

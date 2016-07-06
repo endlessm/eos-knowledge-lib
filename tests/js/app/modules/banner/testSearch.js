@@ -3,37 +3,27 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const Actions = imports.app.actions;
-const MockDispatcher = imports.tests.mockDispatcher;
+const HistoryStore = imports.app.historyStore;
+const Pages = imports.app.pages;
 const Search = imports.app.modules.banner.search;
 
 Gtk.init(null);
 
 describe('Banner.Search', function () {
-    let searchBanner, dispatcher;
+    let searchBanner, store;
 
     beforeEach(function () {
-        dispatcher = MockDispatcher.mock_default();
+        store = new HistoryStore.HistoryStore();
+        HistoryStore.set_default(store);
         searchBanner = new Search.Search();
     });
 
     it('displays the query string somewhere when the search starts', function () {
         expect(Gtk.test_find_label(searchBanner, '*myfoobar*')).toBeNull();
-        dispatcher.dispatch({
-            action_type: Actions.SEARCH_STARTED,
+        store.set_current_item_from_props({
+            page_type: Pages.SEARCH,
             query: 'myfoobar',
         });
-        Utils.update_gui();
-        expect(Gtk.test_find_label(searchBanner, '*myfoobar*')).not.toBeNull();
-    });
-
-    it('displays the query string somewhere when the search is complete', function () {
-        expect(Gtk.test_find_label(searchBanner, '*myfoobar*')).toBeNull();
-        dispatcher.dispatch({
-            action_type: Actions.SEARCH_READY,
-            query: 'myfoobar',
-        });
-        Utils.update_gui();
         expect(Gtk.test_find_label(searchBanner, '*myfoobar*')).not.toBeNull();
     });
 });

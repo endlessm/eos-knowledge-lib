@@ -74,10 +74,6 @@ const Buffet = new Module.Class({
 
     _do_search: function (history_item) {
         let dispatcher = Dispatcher.get_default();
-        dispatcher.dispatch({
-            action_type: Actions.SEARCH_STARTED,
-            query: history_item.query,
-        });
         let query_obj = new QueryObject.QueryObject({
             query: history_item.query,
             limit: RESULTS_SIZE,

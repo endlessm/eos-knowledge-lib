@@ -165,11 +165,9 @@ describe('Controller.Mesh', function () {
                 jasmine.any(Function));
         });
 
-        it('dispatches search-started and search-ready in order', function () {
-            expect(dispatcher.has_payload_sequence([
-                Actions.SEARCH_STARTED,
-                Actions.SEARCH_READY,
-            ])).toBe(true);
+        it('dispatches search-ready', function () {
+            expect(dispatcher.last_payload_with_type(Actions.SEARCH_READY))
+                .toBeDefined();
         });
     });
 
