@@ -4,17 +4,17 @@
     background-size: 100% 100%;
     background-position: center;
 
-    .title {
+    &__title {
         font-weight: 300;
     }
 
-    .content-frame {
+    &__contentFrame {
         padding: 20px 0px 20px 0px;
         background-color: transparentize(white, 1 - 0.949);
         min-height: 80px;  /* 120px, compensated for 20px padding */
     }
 
-    .thumbnail {
+    &__thumbnail {
         border: 0px solid transparent;  /* used for the triangle in the corner */
         margin: 13px;
 
@@ -29,13 +29,13 @@
         background-size: 98% 98%;
     }
 
-    &.height-b .content-frame,
-    &.height-a .content-frame {
+    &.height-b &__contentFrame,
+    &.height-a &__contentFrame {
         min-height: 40px;  /* 80px, compensated for 20px padding */
     }
 
-    &:hover .thumbnail,
-    &:active .thumbnail {
+    &:hover &__thumbnail,
+    &:active &__thumbnail {
         outline: 1px solid $primary-light-color;
         border-color: $primary-light-color;
         /* used for the triangle in the corner */
@@ -43,7 +43,7 @@
         -gtk-outline-radius: 0;
     }
 
-    .composite & .title {
+    .composite &__title {
         font-weight: normal;
     }
 }

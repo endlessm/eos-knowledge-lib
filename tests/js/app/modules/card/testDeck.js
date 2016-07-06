@@ -22,9 +22,9 @@ describe('Card.Deck', function () {
     });
 
     it('has the correct style classes', function () {
-        expect(card).toHaveDescendantWithCssClass('content-frame');
-        expect(card).toHaveDescendantWithCssClass('title');
-        expect(card).toHaveDescendantWithCssClass('thumbnail');
+        expect(card).toHaveDescendantWithCssClass('CardDeck__contentFrame');
+        expect(card).toHaveDescendantWithCssClass('CardDeck__title');
+        expect(card).toHaveDescendantWithCssClass('CardDeck__thumbnail');
     });
 
     it('has labels that understand Pango markup', function () {
