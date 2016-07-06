@@ -4,9 +4,8 @@
 
 const GLib = imports.gi.GLib;
 
-const Actions = imports.app.actions;
-const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
+const HistoryStore = imports.app.historyStore;
 const QueryObject = imports.search.queryObject;
 const Utils = imports.app.utils;
 const Xapian = imports.app.modules.selection.xapian;
@@ -17,24 +16,22 @@ const SuggestedArticles = new Module.Class({
 
     _init: function (props) {
         this.parent(props);
-        this._query = '';
+        HistoryStore.get_default().connect('changed', this._on_history_changed.bind(this));
+    },
 
-        // FIXME: This will go away after centralization of app state
-        Dispatcher.get_default().register((payload) => {
-            switch(payload.action_type) {
-                case Actions.SEARCH_TEXT_ENTERED:
-                    this._query = payload.query;
-                    this.queue_load_more(4);
-                    break;
-            }
-        });
+    _on_history_changed: function () {
+        this.clear();
     },
 
     _TOTAL_ARTICLES: 50,
     construct_query_object: function (limit, query_index) {
+        let item = HistoryStore.get_default().get_current_item();
+        if (!item)
+            throw new Error('This selection only works when there are search terms');
+
         if (query_index > 0)
             return null;
-        let hash = Utils.dumb_hash(this._query);
+        let hash = Utils.dumb_hash(item.query);
         // FIXME: We still need a better way to issue a query for
         // 'random' articles. This just gets a random offset and then
         // requests articles (in order) starting from that point.
