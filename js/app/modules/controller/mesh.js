@@ -49,7 +49,6 @@ const Mesh = new Module.Class({
             application: this.application,
             visible: false,
         });
-        Compat.add_preset_style_classes(this._window, this.template_type);
 
         this.load_theme();
 

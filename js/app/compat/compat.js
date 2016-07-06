@@ -1,4 +1,4 @@
-/* exported add_preset_style_classes, extract_css_from_v1_description,
+/* exported extract_css_from_v1_description,
 load_v1_compatibility_preset, transform_v1_description */
 
 const Gdk = imports.gi.Gdk;
@@ -43,13 +43,6 @@ function transform_v1_description(json) {
         json['backgroundHomeURI']);
 
     return preset;
-}
-
-function add_preset_style_classes(win, template_type) {
-    if (template_type === 'A')
-        win.get_style_context().add_class('preset-a');
-    else if (template_type === 'B')
-        win.get_style_context().add_class('preset-b');
 }
 
 function extract_css_from_v1_description(json) {

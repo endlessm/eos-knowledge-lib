@@ -59,16 +59,16 @@ scss_theme_toplevels = \
 	$(srcdir)/data/css/buffet.scss \
 	$(srcdir)/data/css/default.scss \
 	$(srcdir)/data/css/encyclopedia.scss \
-	$(srcdir)/data/css/mesh.scss \
 	$(srcdir)/data/css/news.scss \
 	$(srcdir)/data/css/picard.scss \
+	$(srcdir)/data/css/preset_a.scss \
+	$(srcdir)/data/css/preset_b.scss \
 	$(NULL)
 scss_theme_base_partials = \
 	$(srcdir)/data/css/_project-setup.scss \
 	$(srcdir)/data/css/_colors.scss \
 	$(srcdir)/data/css/_typography.scss \
-	$(srcdir)/data/css/preset_a.scss \
-	$(srcdir)/data/css/preset_b.scss \
+	$(srcdir)/data/css/mesh.scss \
 	$(NULL)
 scss_theme_arrangement_partials = \
 	$(srcdir)/data/css/modules/arrangement/_half.scss \

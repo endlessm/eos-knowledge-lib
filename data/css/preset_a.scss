@@ -1,58 +1,58 @@
-.preset-a {
-    .home-page .CardLegacyPolaroid .title {
-        padding: 9px 0px;
+@import 'mesh';
+
+.home-page .CardLegacyPolaroid .title {
+    padding: 9px 0px;
+}
+
+.CardTitle .title,
+.CardKnowledgeDocument .title {
+    color: white;
+}
+
+.set-page,
+.search-page {
+    padding: 0 100px;
+
+    .ContentGroup__title,
+    .title {
+        padding-top: 1.0em;
+        padding-bottom: 1.0em;
+
+        font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
     }
 
-    .CardTitle .title,
-    .CardKnowledgeDocument .title {
-        color: white;
+    separator {
+        min-height: 1px;
+        background-color: rgba(255, 255, 255, 0.3);
     }
 
-    .set-page,
-    .search-page {
-        padding: 0 100px;
-
-        .ContentGroup__title,
-        .title {
-            padding-top: 1.0em;
-            padding-bottom: 1.0em;
-
-            font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
-        }
-
-        separator {
-            min-height: 1px;
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .CardLegacyPolaroid .title {
-            font-size: 0.77em;
-            text-shadow: 0px 1px 0px white;
-        }
-    }
-
-    .set-page  flowbox {
-        margin-top: 20px;
-    }
-
-    .search-results {
-        background-color: transparent;
-
-        .ContentGroupNoResultsMessage__title,
-        .ContentGroupNoResultsMessage__subtitle {
-            color:white;
-            font-size: 16px;
-            font-style:normal;
-            padding: 2.0em 0 0 0;
-        }
-    }
-
-    .article-page .document-card-content-frame {
-        padding: 20px 0px;
+    .CardLegacyPolaroid .title {
+        font-size: 0.77em;
+        text-shadow: 0px 1px 0px white;
     }
 }
 
-.window-small.preset-a {
+.set-page  flowbox {
+    margin-top: 20px;
+}
+
+.search-results {
+    background-color: transparent;
+
+    .ContentGroupNoResultsMessage__title,
+    .ContentGroupNoResultsMessage__subtitle {
+        color:white;
+        font-size: 16px;
+        font-style:normal;
+        padding: 2.0em 0 0 0;
+    }
+}
+
+.article-page .document-card-content-frame {
+    padding: 20px 0px;
+}
+
+.window-small {
     .set-page,
     .search-page {
         .ContentGroup__title,
@@ -67,7 +67,7 @@
     }
 }
 
-.composite.preset-a {
+.composite {
     .set-page,
     .search-page {
         .ContentGroup__title,

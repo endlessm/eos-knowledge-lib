@@ -45,9 +45,6 @@ $display-font-composite: 'Roboto' !default;
 
 @import 'modules/window/simple';
 
-@import 'preset_a';
-@import 'preset_b';
-
 .WindowSimple {
     /* Changed color here so scrollbars are visible. Only affects smoke tests all
      * apps have image backgrounds.*/
