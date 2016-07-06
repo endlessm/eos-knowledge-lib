@@ -170,11 +170,6 @@ const Mesh = new Module.Class({
             return;
         }
         this._current_set_id = item.model.ekn_id;
-
-        dispatcher.dispatch({
-            action_type: Actions.SHOW_SET,
-            model: item.model,
-        });
         this._set_cancellable.cancel();
         this._set_cancellable.reset();
         this._more_set_results_query = null;

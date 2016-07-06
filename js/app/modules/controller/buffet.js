@@ -118,12 +118,6 @@ const Buffet = new Module.Class({
         let dispatcher = Dispatcher.get_default();
 
         switch (item.page_type) {
-            case Pages.SET:
-                dispatcher.dispatch({
-                    action_type: Actions.SHOW_SET,
-                    model: item.model,
-                });
-                break;
             case Pages.SEARCH:
                 this._do_search(item);
                 break;

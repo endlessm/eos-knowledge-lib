@@ -68,24 +68,6 @@ describe('Controller.Buffet', function () {
         spyOn(AppUtils, 'record_search_metric');
     });
 
-    describe('on state change to set page', function () {
-        beforeEach(function () {
-            dispatcher.dispatch({
-                action_type: Actions.LAUNCHED_FROM_DESKTOP,
-            });
-            buffet.make_ready();
-            store.set_current_item_from_props({
-                page_type: Pages.SET,
-                model: set_models[0],
-            });
-        });
-
-        it('signals that a set should be loaded', function () {
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_SET).model)
-                .toBe(set_models[0]);
-        });
-    });
-
     it('records reading history on state change to article page', function() {
         let prev_model = new ArticleObjectModel.ArticleObjectModel({
             ekn_id: 'ekn://test/prev',

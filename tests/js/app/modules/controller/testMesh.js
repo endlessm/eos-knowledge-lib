@@ -127,11 +127,6 @@ describe('Controller.Mesh', function () {
                 .toBeDefined();
         });
 
-        it('shows the set', function () {
-            let payload = dispatcher.last_payload_with_type(Actions.SHOW_SET);
-            expect(payload.model).toBe(set_model);
-        });
-
         it('cancels existing set queries', function () {
             let cancellable = engine.get_objects_by_query.calls.mostRecent().args[1];
             let cancel_spy = jasmine.createSpy();
