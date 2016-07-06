@@ -34,6 +34,7 @@ const Domain = new Lang.Class({
 
         this._content_dir = null;
         this._shard_file = null;
+        this._shard_inited = false;
     },
 
     _get_content_dir: function () {
@@ -71,14 +72,22 @@ const Domain = new Lang.Class({
         return new Model({}, json_ld);
     },
 
+    load_sync: function () {
+        if (this._shard_inited)
+            return;
+
+        this._load_sync_internal();
+        this._shard_inited = true;
+    },
+
     /**
-     * Function: load_sync
+     * Function: _load_sync_internal
      *
      * Private method, intended to be overridden by subclasses.
      *
      * Loads the domain from disk synchronously.
      */
-    load_sync: function (cancellable) {
+    _load_sync_internal: function () {
         throw new Error('Should be overridden in subclasses');
     },
 
@@ -264,7 +273,7 @@ const DomainV2 = new Lang.Class({
             this._link_table = table_record.data.load_as_dictionary();
     },
 
-    load_sync: function() {
+    _load_sync_internal: function () {
         // Don't allow init() to be cancelled; otherwise, cancellation
         // will spoil the object for future use.
         let shard_file = this._get_shard_file();
@@ -453,9 +462,8 @@ const DomainV3 = new Lang.Class({
         this._link_tables = tables.filter((t) => t);
     },
 
-    load_sync: function () {
+    _load_sync_internal: function () {
         this._load_shards(null);
-
         // Don't allow init() to be cancelled; otherwise,
         // cancellation will spoil the object for future use.
         Ekns.utils_parallel_init(this._shards, 0, null);
