@@ -76,6 +76,12 @@ describe('Pager.Simple', function () {
             let article_page = factory.get_last_created('article-page');
             expect(pager.visible_child).toBe(article_page);
         });
+
+        it('indicates busy while showing pages', function () {
+            spyOn(pager, '_set_busy');
+            store.set_current_item_from_props({ page_type: 'set' });
+            expect(pager._set_busy).toHaveBeenCalledWith(true);
+        });
     });
 
     describe('with a brand page', function () {

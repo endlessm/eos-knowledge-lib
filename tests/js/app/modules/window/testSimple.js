@@ -83,42 +83,6 @@ describe('Window.Simple', function () {
             expect(view.background_image_uri).toBe(BACKGROUND_URI);
         });
 
-        it('indicates busy during a search', function () {
-            spyOn(view, 'set_busy');
-            dispatcher.dispatch({
-                action_type: Actions.SEARCH_STARTED,
-            });
-            expect(view.set_busy).toHaveBeenCalledWith(true);
-            dispatcher.dispatch({
-                action_type: Actions.SEARCH_READY,
-            });
-            expect(view.set_busy).toHaveBeenCalledWith(false);
-        });
-
-        it('indicates busy during a failed search', function () {
-            spyOn(view, 'set_busy');
-            dispatcher.dispatch({
-                action_type: Actions.SEARCH_STARTED,
-            });
-            expect(view.set_busy).toHaveBeenCalledWith(true);
-            dispatcher.dispatch({
-                action_type: Actions.SEARCH_FAILED,
-            });
-            expect(view.set_busy).toHaveBeenCalledWith(false);
-        });
-
-        it('indicates busy while querying a set', function () {
-            spyOn(view, 'set_busy');
-            dispatcher.dispatch({
-                action_type: Actions.SHOW_SET,
-            });
-            expect(view.set_busy).toHaveBeenCalledWith(true);
-            dispatcher.dispatch({
-                action_type: Actions.PAGE_READY,
-            });
-            expect(view.set_busy).toHaveBeenCalledWith(false);
-        });
-
         function test_launch_action (action, descriptor) {
             describe('on ' + descriptor, function () {
                 beforeEach(function () {

@@ -3,6 +3,7 @@
 /* exported Simple */
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
@@ -91,14 +92,8 @@ const Simple = new Module.Class({
             this.add(this._all_sets_page);
         }
 
-        let _animating_class = Utils.get_modifier_style_class(Simple,
-            'animating');
-        this.connect('notify::transition-running', () => {
-            if (this.transition_running)
-                this.get_style_context().add_class(_animating_class);
-            else
-                this.get_style_context().remove_class(_animating_class);
-        });
+        this.connect('notify::transition-running',
+            this._on_notify_transition_running.bind(this));
 
         Dispatcher.get_default().register(payload => {
             switch (payload.action_type) {
@@ -111,6 +106,31 @@ const Simple = new Module.Class({
             }
         });
         HistoryStore.get_default().connect('changed', this._on_history_change.bind(this));
+    },
+
+    _on_notify_transition_running: function () {
+        let animating_class = Utils.get_modifier_style_class(Simple,
+            'animating');
+
+        if (this.transition_running) {
+            this.get_style_context().add_class(animating_class);
+        } else {
+            this.get_style_context().remove_class(animating_class);
+            this._set_busy(false);
+        }
+    },
+
+    _set_busy: function (busy) {
+        let gdk_window = this.get_window();
+        if (!gdk_window)
+            return;
+
+        let cursor = null;
+        if (busy)
+            cursor = Gdk.Cursor.new_for_display(Gdk.Display.get_default(),
+                Gdk.CursorType.WATCH);
+
+        gdk_window.cursor = cursor;
     },
 
     _reveal_home_if_ready: function () {
@@ -175,9 +195,7 @@ const Simple = new Module.Class({
             // Even though we didn't change, this should still count as the
             // first transition.
             this.transition_duration = Utils.DEFAULT_PAGE_TRANSITION_DURATION;
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.PAGE_READY,
-            });
+            this._set_busy(false);
             return;
         }
 
@@ -189,14 +207,17 @@ const Simple = new Module.Class({
         this.transition_type = this._get_transition(new_page, old_page,
             transitions_style);
 
+        this._set_busy(true);
+
         new_page.make_ready(() => {
             this.visible_child = new_page;
             // The first transition on app startup has duration 0, subsequent ones
             // are normal.
             this.transition_duration = Utils.DEFAULT_PAGE_TRANSITION_DURATION;
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.PAGE_READY,
-            });
+
+            if (this.transition_type === Gtk.StackTransitionType.NONE)
+                this._set_busy(false);
+            // Otherwise it will be done at the end of the animation
         });
     },
 

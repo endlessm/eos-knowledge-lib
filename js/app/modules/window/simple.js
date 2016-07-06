@@ -3,7 +3,6 @@
 /* exported Simple */
 
 const Endless = imports.gi.Endless;
-const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Gio = imports.gi.Gio;
@@ -119,15 +118,6 @@ const Simple = new Module.Class({
         HistoryStore.get_default().connect('changed', this._on_history_change.bind(this));
         dispatcher.register((payload) => {
             switch(payload.action_type) {
-                case Actions.SEARCH_STARTED:
-                case Actions.SHOW_SET:
-                    this.set_busy(true);
-                    break;
-                case Actions.SEARCH_READY:
-                case Actions.SEARCH_FAILED:
-                case Actions.PAGE_READY:
-                    this.set_busy(false);
-                    break;
                 case Actions.LAUNCHED_FROM_DESKTOP:
                 case Actions.DBUS_LOAD_QUERY_CALLED:
                 case Actions.DBUS_LOAD_ITEM_CALLED:
@@ -203,18 +193,6 @@ const Simple = new Module.Class({
             this._present_if_needed();
             cb();
         });
-    },
-
-    set_busy: function (busy) {
-        let gdk_window = this.page_manager.get_window();
-        if (!gdk_window)
-            return;
-
-        let cursor = null;
-        if (busy)
-            cursor = Gdk.Cursor.new_for_display(Gdk.Display.get_default(),
-                Gdk.CursorType.WATCH);
-        gdk_window.cursor = cursor;
     },
 
     vfunc_size_allocate: function (alloc) {
