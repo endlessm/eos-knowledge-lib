@@ -29,19 +29,6 @@ const Simple = new Module.Class({
     Name: 'Window.Simple',
     Extends: Endless.Window,
 
-    Properties: {
-        /**
-         * Property: animating
-         *
-         * Temporary property which can be used to notify when the page
-         * transition our running. Will likely be replaced when we have a better
-         * way to update state between non-controller modules.
-         */
-        'animating': GObject.ParamSpec.boolean('animating',
-            'Animating', 'Animating',
-            GObject.ParamFlags.READABLE, false),
-    },
-
     Slots: {
         'lightbox': {},
         'navigation': {},  // optional
@@ -161,11 +148,8 @@ const Simple = new Module.Class({
         this._history_buttons.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED);
         button_box.show_all();
 
-        this.animating = false;
         let focused_widget = null;
         this._pager.connect('notify::transition-running', function () {
-            this.animating = this._pager.transition_running;
-            this.notify('animating');
             if (this._pager.transition_running) {
                 focused_widget = this.get_focus();
                 Utils.squash_all_window_content_updates_heavy_handedly(this);
