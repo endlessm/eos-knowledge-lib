@@ -99,7 +99,7 @@ $support-font: 'Fira Sans' !default;
 
 .ArrangementSideBySide {
     .CardTitle {
-        &:hover label.title {
+        &:hover &__title {
             border-bottom: 1px solid $accent-dark-color;
             color: $accent-dark-color;
         }

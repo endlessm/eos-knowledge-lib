@@ -21,15 +21,15 @@ describe('Card.Title', function () {
     });
 
     it('has a label with title class', function () {
-        expect(card).toHaveDescendantWithCssClass('title');
+        expect(card).toHaveDescendantWithCssClass('CardTitle__title');
     });
 
     it('has a widget with before class', function () {
-        expect(card).toHaveDescendantWithCssClass('before');
+        expect(card).toHaveDescendantWithCssClass('CardTitle__before');
     });
 
     it('has a widget with after class', function () {
-        expect(card).toHaveDescendantWithCssClass('after');
+        expect(card).toHaveDescendantWithCssClass('CardTitle__after');
     });
 
     it('has labels that understand Pango markup', function () {

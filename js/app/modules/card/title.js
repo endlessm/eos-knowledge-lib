@@ -57,14 +57,16 @@ const Title = new Module.Class({
             valign: Gtk.Align.CENTER,
             halign: Gtk.Align.CENTER,
         });
-        before.get_style_context().add_class('before');
+        let before_class = Utils.get_element_style_class(Title, 'before');
+        before.get_style_context().add_class(before_class);
         this._grid.attach(before, 0, 0, 1, 1);
         let after = new ThemeableImage.ThemeableImage({
             visible: true,
             valign: Gtk.Align.CENTER,
             halign: Gtk.Align.CENTER,
         });
-        after.get_style_context().add_class('after');
+        let after_class = Utils.get_element_style_class(Title, 'after');
+        after.get_style_context().add_class(after_class);
         this._grid.attach(after, 2, 0, 1, 1);
     },
 

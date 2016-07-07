@@ -143,17 +143,17 @@ $accent-light-color: #044a80 !default;
             padding: 0 0 0 0;
         }
 
-        .before {
-            -gtk-icon-source: -gtk-icontheme("media-record-symbolic");
-            min-width: 6px;
-            min-height: 6px;
-            color: rgba(145, 145, 145, 0.5);
-            padding-right: 0.6em;
-        }
-
         &:hover &__title {
             text-decoration: underline;
         }
+    }
+
+    .CardTitle__before {
+        -gtk-icon-source: -gtk-icontheme("media-record-symbolic");
+        min-width: 6px;
+        min-height: 6px;
+        color: rgba(145, 145, 145, 0.5);
+        padding-right: 0.6em;
     }
 
     .ArrangementScrollingList__grid {
