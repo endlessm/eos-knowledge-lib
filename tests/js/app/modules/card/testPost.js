@@ -22,9 +22,9 @@ describe('Card.Post', function () {
     });
 
     it('has the correct style classes', function () {
-        expect(card).toHaveDescendantWithCssClass('content-frame');
-        expect(card).toHaveDescendantWithCssClass('title');
-        expect(card).toHaveDescendantWithCssClass('thumbnail');
+        expect(card).toHaveDescendantWithCssClass('CardPost__contentFrame');
+        expect(card).toHaveDescendantWithCssClass('CardPost__title');
+        expect(card).toHaveDescendantWithCssClass('CardPost__thumbnail');
     });
 
     it('has labels that understand Pango markup', function () {

@@ -18,7 +18,7 @@
             <property name="can_focus">False</property>
             <property name="expand">True</property>
             <style>
-              <class name="thumbnail"/>
+              <class name="CardPost__thumbnail"/>
             </style>
           </object>
         </child>
@@ -45,14 +45,16 @@
                     <property name="lines">2</property>
                     <property name="justify">center</property>
                     <style>
-                      <class name="title"/>
+                      <class name="CardPost__title"/>
+                      <class name="Card__title"/>
                     </style>
                   </object>
                 </child>
               </object>
             </child>
             <style>
-              <class name="content-frame"/>
+              <class name="CardPost__contentFrame"/>
+              <class name="Card__contentFrame"/>
             </style>
           </object>
           <packing>
