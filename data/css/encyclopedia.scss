@@ -136,7 +136,7 @@ $accent-light-color: #044a80 !default;
     .Card {
         padding-bottom: 1.5em;
 
-        .title {
+        &__title {
             font-weight: normal;
             font-size: 1.25em;  /* 15px / 12px/em */
             color: #277090;
@@ -151,7 +151,7 @@ $accent-light-color: #044a80 !default;
             padding-right: 0.6em;
         }
 
-        &:hover .title {
+        &:hover &__title {
             text-decoration: underline;
         }
     }
@@ -165,7 +165,7 @@ $accent-light-color: #044a80 !default;
             font-size: 17.6px;  /* 15px spec * 88% */
         }
 
-        .Card .title {
+        .Card__title {
             font-size: 18.8px;  /* 16px spec * 88% */
         }
     }

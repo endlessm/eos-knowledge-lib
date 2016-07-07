@@ -118,7 +118,7 @@ $support-font: 'Fira Sans' !default;
 
 /* Adjust context frame in supplementary article and suggested article cards */
 .supplementary-articles .CardThumb frame:nth-child(2),
-.search-page-suggestions .content-frame {
+.ContentGroupSuggestedArticles .Card__contentFrame {
     margin-top: -10px;
 }
 
@@ -136,7 +136,7 @@ $support-font: 'Fira Sans' !default;
 
 .BannerSet {
     margin-bottom: 15px;
-    .Card .title {
+    .Card__title {
         color: white;
     }
 }

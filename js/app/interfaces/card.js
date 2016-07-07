@@ -298,7 +298,10 @@ const Card = new Lang.Interface({
             }
         }
 
-        widget.get_style_context().add_class('card-context');
+        let context = widget.get_style_context();
+        context.add_class(Utils.get_element_style_class('Card', 'context'));
+        context.add_class(Utils.get_element_style_class(this.constructor, 'context'));
+
         widget.show_all();
         return widget;
     },
@@ -334,6 +337,10 @@ const Card = new Lang.Interface({
         let stream = file.read(cancellable);
         coveredFrame.set_content(stream);
         frame.visible = true;
+
+        let context = frame.get_style_context();
+        context.add_class(Utils.get_element_style_class('Card', 'thumbnail'));
+        context.add_class(Utils.get_element_style_class(this.constructor, 'thumbnail'));
     },
 
     /**
@@ -394,6 +401,9 @@ const Card = new Lang.Interface({
     set_title_label_from_model: function (label) {
         this.set_label_or_hide(label,
             Utils.format_capitals(this.model.title, this.title_capitalization));
+        let context = label.get_style_context();
+        context.add_class(Utils.get_element_style_class('Card', 'title'));
+        context.add_class(Utils.get_element_style_class(this.constructor, 'title'));
     },
 
     /**

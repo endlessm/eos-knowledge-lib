@@ -20,13 +20,13 @@
 
         .Card {
             margin-top: 5px;
-            .title {
+            &__title {
                 font-size: 21.3px;
                 font-family: $title-font;
                 color: white;
             }
 
-            &:hover .title {
+            &:hover &__title {
                 color: $accent-light-color;
             }
         }

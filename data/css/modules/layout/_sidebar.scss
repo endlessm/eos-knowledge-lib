@@ -24,7 +24,7 @@
                                                   transparentize(white, 1 - 0.05) 0%,
                                                   transparentize(black, 1 - 0.05) 100%);
 
-                .title {
+                .Card__title {
                     color: $primary-medium-color;
                 }
             }
@@ -35,7 +35,7 @@
                 font-weight: bold;
                 transition-property: none;
 
-                .title {
+                .Card__title {
                     color: $primary-dark-color;
                     transition-property: none;
                 }
@@ -47,7 +47,7 @@
                                                       transparentize(white, 1 - 0.05) 0%,
                                                       transparentize(black, 1 - 0.05) 100%);
 
-                    .title {
+                    .Card__title {
                         color: $primary-dark-color;
                         transition-property: none;
                     }

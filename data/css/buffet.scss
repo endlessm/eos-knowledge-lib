@@ -75,19 +75,19 @@ $title-alt-font: 'Lato Thin' !default;
 /* === Modules (Overrides) === */
 
 .Card {
-    &.highlighted .title {
+    &.highlighted &__title {
         color: $primary-medium-color;
     }
 
-    .card-synopsis {
+    &__synopsis {
         color: black;
+
+        &.highlighted {
+            background-color: $card-highlighted-color;
+        }
     }
 
-    .title.highlighted {
-        background-color: $card-highlighted-color;
-    }
-
-    .card-synopsis.highlighted {
+    &__title.highlighted {
         background-color: $card-highlighted-color;
     }
 }
@@ -97,7 +97,7 @@ $title-alt-font: 'Lato Thin' !default;
     padding: 15px 20px;
 
     /* FIXME: remove or update this after modularity issues are fixed */
-    .composite & .title {
+    .composite & .Card__title {
         font-weight: normal;
     }
 
@@ -146,7 +146,7 @@ $title-alt-font: 'Lato Thin' !default;
         padding: 0 0px;
     }
 
-    .search-page-suggestions .content-frame {
+    .search-page-suggestions .Card__contentFrame {
         margin-top: -10px;
     }
 
@@ -270,7 +270,7 @@ $title-alt-font: 'Lato Thin' !default;
     }
 }
 
-.browse-content .title {
+.browse-content .Card__title {
     font-weight: 200;
     font-size: 29.3px;
     color: #999999;
@@ -337,12 +337,12 @@ $title-alt-font: 'Lato Thin' !default;
         background-color: white;
 
         .Card {
-            .title {
+            &__title {
                 font-family: $title-alt-font;
                 color: $accent-light-color;
             }
 
-            &:hover .title {
+            &:hover &__title {
                 color: $menu-hover-color;
             }
         }
@@ -377,7 +377,7 @@ $title-alt-font: 'Lato Thin' !default;
     color: $banner-label-color;
 }
 
-.card-context {
+.Card__context {
     font-style: italic;
 }
 
@@ -385,7 +385,7 @@ $title-alt-font: 'Lato Thin' !default;
 
 .composite {
     .LayoutSideMenu__homeButton,
-    .LayoutSideMenu__menu .Card .title,
+    .LayoutSideMenu__menu .Card__title,
     .BannerContext {
         font-family: $title-font;
     }

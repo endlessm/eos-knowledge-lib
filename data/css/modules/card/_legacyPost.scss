@@ -9,11 +9,11 @@ $legacy-post-card-border-color-hover: white;
 
     &:hover {
         border-color: $legacy-post-card-border-color-hover;
+    }
 
-        .title {
-            color: $primary-medium-color;
-            background-color: $legacy-post-card-border-color-hover;
-        }
+    &:hover &__title {
+        color: $primary-medium-color;
+        background-color: $legacy-post-card-border-color-hover;
     }
 
     &__thumbnail {
