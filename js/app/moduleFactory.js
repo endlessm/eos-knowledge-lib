@@ -1,7 +1,6 @@
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const Compat = imports.app.compat.compat;
 const Engine = imports.search.engine;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Knowledge = imports.app.knowledge;
@@ -54,13 +53,10 @@ const ModuleFactory = new Knowledge.Class({
 
         this.parent(props);
 
-        if (!this.app_json.hasOwnProperty('version') || this.app_json.version < 2) {
-            this.app_json = Compat.transform_v1_description(this.app_json);
-            this._version = 1;
-        } else {
-            this._version = this.app_json.version;
+        if (!this.app_json.hasOwnProperty('version') || this.app_json.version !== 2) {
+            throw new Error('Only version 2 of JSON files are supported');
         }
-        // After this point, the app.json must be the current version!
+        this._version = this.app_json.version;
 
         this._root = null;
         this._ids = new Set();

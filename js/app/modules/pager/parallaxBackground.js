@@ -10,6 +10,8 @@ const Module = imports.app.interfaces.module;
 const Simple = imports.app.modules.pager.simple;
 const Utils = imports.app.utils;
 
+const IMAGE_URI = 'resource:///app/assets/backgroundHome';
+
 /**
  * Class: ParallaxBackground
  * Pager that provides a parallax effect on its page backgrounds
@@ -32,19 +34,6 @@ const ParallaxBackground = new Module.Class({
     Name: 'Pager.ParallaxBackground',
     Extends: Simple.Simple,
 
-    Properties: {
-        /**
-         * Property: background-image-uri
-         * The background image of this window
-         *
-         * Used for size calculations.
-         */
-        'background-image-uri': GObject.ParamSpec.string('background-image-uri',
-            'Background image URI', 'The background image of this window',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            ''),
-    },
-
     _init: function (props={}) {
         this.parent(props);
 
@@ -62,14 +51,12 @@ const ParallaxBackground = new Module.Class({
             context.add_class(this._style_classes['parallax']);
 
         this._background_image_ratio = 1.0;
-        if (this.background_image_uri) {
-            try {
-                let stream = Gio.File.new_for_uri(this.background_image_uri).read(null);
-                let bg_pixbuf = GdkPixbuf.Pixbuf.new_from_stream(stream, null);
-                this._background_image_ratio = bg_pixbuf.width / bg_pixbuf.height;
-            } catch (e) {
-                logError(e, 'Background image URI is not a valid format.');
-            }
+        try {
+            let stream = Gio.File.new_for_uri(IMAGE_URI).read(null);
+            let bg_pixbuf = GdkPixbuf.Pixbuf.new_from_stream(stream, null);
+            this._background_image_ratio = bg_pixbuf.width / bg_pixbuf.height;
+        } catch (error) {
+            logError(error, 'Could not load background image');
         }
 
         this.connect('notify::visible-child',

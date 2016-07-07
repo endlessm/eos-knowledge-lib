@@ -5,7 +5,6 @@ const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 
 const Actions = imports.app.actions;
-const Compat = imports.app.compat.compat;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Controller = imports.app.interfaces.controller;

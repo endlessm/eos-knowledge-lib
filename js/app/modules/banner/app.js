@@ -10,6 +10,8 @@ const Module = imports.app.interfaces.module;
 const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
 
+const IMAGE_URI = 'resource:///app/assets/titleImage';
+
 /**
  * Class: App
  *
@@ -24,13 +26,6 @@ const App = new Module.Class({
     Extends: Gtk.Grid,
 
     Properties: {
-        /**
-         * Property: image-uri
-         * A URI to the title image. Defaults to an empty string.
-         */
-        'image-uri': GObject.ParamSpec.string('image-uri', 'Page Title Image URI',
-            'URI to the title image',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: show-subtitle
          * Whether to show an application subtitle underneath the image.
@@ -64,14 +59,16 @@ const App = new Module.Class({
         props.expand = props.expand || false;
         this.parent(props);
 
-        if (this.image_uri) {
+        try {
             let image = new ThemeableImage.ThemeableImage({
-                image_uri: this.image_uri,
+                image_uri: IMAGE_URI,
                 visible: true,
                 expand: true,
                 valign: Gtk.Align.END,
             });
             this.attach(image, 0, 0, 1, 1);
+        } catch (error) {
+            logError(error, 'Could not load title image');
         }
 
         let subtitle = '';

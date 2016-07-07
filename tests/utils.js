@@ -24,6 +24,11 @@ function register_gresource() {
     resource._register();
 }
 
+function register_test_gresource() {
+    let resource = Gio.Resource.load(get_test_content_builddir() + 'test-content.gresource');
+    resource._register();
+}
+
 function update_gui () {
     while (Gtk.events_pending())
         Gtk.main_iteration(false);

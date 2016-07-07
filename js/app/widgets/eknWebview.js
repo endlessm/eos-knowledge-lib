@@ -9,7 +9,6 @@ const WebKit2 = imports.gi.WebKit2;
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const AsyncTask = imports.search.asyncTask;
-const Compat = imports.app.compat.compat;
 const Config = imports.app.config;
 const Engine = imports.search.engine;
 const Knowledge = imports.app.knowledge;

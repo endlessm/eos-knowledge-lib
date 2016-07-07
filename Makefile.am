@@ -520,8 +520,9 @@ yaml_tests = \
 	tests/autobahn/test-autobahn-translation \
 	$(NULL)
 test_content = \
-	tests/test-content/pig1.jpg \
+	tests/test-content/backgroundHome \
 	tests/test-content/pdf-sample1.pdf \
+	tests/test-content/titleImage \
 	$(NULL)
 EXTRA_DIST += \
 	$(javascript_tests) \
