@@ -1,6 +1,6 @@
 @import 'mesh';
 
-.home-page .CardLegacyPolaroid .title {
+.home-page .CardLegacyPolaroid__title {
     padding: 9px 0px;
 }
 
@@ -26,7 +26,7 @@
         background-color: rgba(255, 255, 255, 0.3);
     }
 
-    .CardLegacyPolaroid .title {
+    .CardLegacyPolaroid__title {
         font-size: 0.77em;
         text-shadow: 0px 1px 0px white;
     }

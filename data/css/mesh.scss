@@ -93,13 +93,15 @@ $display-font-composite: 'Roboto' !default;
     background-color: transparent;
 }
 
-.pdf-card-icon {
-    padding-top: 10px;
-}
+.CardLegacyPolaroid {
+    &__icon {
+        padding-top: 10px;
+    }
 
-.pdf-card-label {
-    font-size: 0.9em;
-    color: #666666;
+    &__label {
+        font-size: 0.9em;
+        color: #666666;
+    }
 }
 
 .media-card-caption {
