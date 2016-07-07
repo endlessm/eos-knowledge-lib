@@ -10,7 +10,7 @@
   <object class="GtkFrame" id="thumbnail-frame">
     <property name="can_focus">False</property>
     <style>
-      <class name="thumbnail"/>
+      <class name="CardThumb__thumbnail"/>
     </style>
   </object>
   <object class="GtkFrame" id="content-frame">
@@ -34,7 +34,8 @@
             <property name="ellipsize">end</property>
             <property name="lines">2</property>
             <style>
-              <class name="title"/>
+              <class name="CardThumb__title"/>
+              <class name="Card__title"/>
             </style>
           </object>
         </child>
@@ -49,14 +50,16 @@
             <property name="ellipsize">end</property>
             <property name="lines">5</property>
             <style>
-              <class name="card-synopsis"/>
+              <class name="CardThumb__synopsis"/>
+              <class name="Card__synopsis"/>
             </style>
           </object>
         </child>
       </object>
     </child>
     <style>
-      <class name="content-frame"/>
+      <class name="CardThumb__contentFrame"/>
+      <class name="Card__contentFrame"/>
     </style>
   </object>
 </interface>
