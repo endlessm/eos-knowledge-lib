@@ -128,6 +128,16 @@ def translate(loader, node):
     entry = po.find(node.value)
     return entry.msgstr if entry.translated() else node.value
 
+
+def import_yaml(loader, node):
+    if not include_path:
+        raise ValueError('You must specify the path for the .yaml files.');
+    yaml_file = node.value + os.extsep + 'yaml'
+    filename = os.path.join(include_path, yaml_file)
+    with open(filename, 'r') as stream:
+        return yaml.load(stream)
+
+
 # Shared state
 pot = polib.POFile(check_for_duplicates=True)
 pot.metadata = {
@@ -138,6 +148,7 @@ pot.metadata = {
 }
 po = None
 infile_name = None
+include_path = None
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Preprocess app.json.')
@@ -152,11 +163,15 @@ if __name__ == '__main__':
     parser.add_argument('-t', '--translations',
                         type=argparse.FileType('r', encoding='utf-8'),
                         help='.po file to use for translations (default: none)')
+    parser.add_argument('-I', '--include', type=str, default=None,
+                        help='Path to the .yaml files (default: none)')
     args = parser.parse_args()
 
     infile_name = args.input.name
+    include_path = args.include
 
     yaml.add_constructor('!translate', translate)
+    yaml.add_constructor('!import', import_yaml)
 
     if args.translations:
         po = polib.pofile(args.translations.read())
