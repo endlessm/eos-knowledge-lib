@@ -5,7 +5,7 @@
 }
 
 .CardTitle .title,
-.CardKnowledgeDocument .title {
+.CardKnowledgeDocument__title {
     color: white;
 }
 
@@ -48,7 +48,7 @@
     }
 }
 
-.article-page .document-card-content-frame {
+.article-page .CardKnowledgeDocument__contentFrame {
     padding: 20px 0px;
 }
 

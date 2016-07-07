@@ -1,3 +1,9 @@
+.CardKnowledgeDocument {
+    &__contentFrame {
+        padding: 0;
+    }
+}
+
 .WebviewTooltip {
     background-color: transparentize(black, 1 - 0.4);
     border-radius: 8px 8px 8px 8px;
@@ -5,7 +11,7 @@
 
     label {
         color: white;
-        font-family: $title-font;
+        font-family: $display-font;
         font-size: 1.0em; /* 16px / 12px/em * 72/96 */
         font-weight: bold;
     }

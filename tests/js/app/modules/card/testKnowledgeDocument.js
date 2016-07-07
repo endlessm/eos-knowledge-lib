@@ -71,13 +71,13 @@ describe('Card.KnowledgeDocument', function () {
 
     describe('Style class of document card', function () {
         it('has a descendant with title class', function () {
-            expect(card).toHaveDescendantWithCssClass('title');
+            expect(card).toHaveDescendantWithCssClass('CardKnowledgeDocument__title');
         });
         it('has a descendant with toolbar frame class', function () {
-            expect(card).toHaveDescendantWithCssClass('document-card-toolbar-frame');
+            expect(card).toHaveDescendantWithCssClass('CardKnowledgeDocument__toolbarFrame');
         });
         it('has an expanded table of contents by default', function () {
-            expect(card.toc).not.toHaveCssClass('collapsed');
+            expect(card.toc).not.toHaveCssClass('CardKnowledgeDocument__toolbarFrame--collapsed');
         });
     });
 
