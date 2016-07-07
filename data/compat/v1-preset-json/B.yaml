@@ -84,7 +84,7 @@ defines:
         item: *set-items
 
 root:
-  shortdef: 'Controller.Mesh(theme: mesh)'
+  shortdef: 'Controller.Mesh(theme: preset_b)'
   slots:
     window:
       type: Window.Simple

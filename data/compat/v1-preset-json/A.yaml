@@ -76,7 +76,7 @@ defines:
     card: 'Card.KnowledgeDocument(show-toc: true)'
 
 root:
-  shortdef: 'Controller.Mesh(theme: mesh)'
+  shortdef: 'Controller.Mesh(theme: preset_a)'
   slots:
     window:
       type: Window.Simple
