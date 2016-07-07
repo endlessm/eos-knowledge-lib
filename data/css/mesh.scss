@@ -104,12 +104,14 @@ $display-font-composite: 'Roboto' !default;
     }
 }
 
-.media-card-caption {
-    color: #666666;
-}
+.CardMedia {
+    &__caption {
+        color: #666666;
+    }
 
-.media-card-attribution-text {
-    color: #b2b2b2;
+    &__attributionText {
+        color: #b2b2b2;
+    }
 }
 
 .NavigationSearchBox {
