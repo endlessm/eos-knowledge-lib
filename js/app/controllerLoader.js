@@ -35,8 +35,6 @@ let create_controller = function (application, resource_path) {
         css = data.toString();
     }
 
-    Compat.extract_css_from_v1_description(app_json);
-
     application.image_attribution_file = resource_file.get_child('credits.json');
 
     return create_controller_with_app_json(application, app_json, {
