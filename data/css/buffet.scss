@@ -291,6 +291,8 @@ $title-alt-font: 'Lato Thin' !default;
 .CardList,
 .CardPost,
 .CardThumb {
+    &__title,
+    &__context,
     .title,
     .card-context {
         font-weight: normal;
