@@ -4,8 +4,6 @@ const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 const WebKit2 = imports.gi.WebKit2;
 
-const Actions = imports.app.actions;
-const Dispatcher = imports.app.dispatcher;
 const Knowledge = imports.app.knowledge;
 const Utils = imports.app.utils;
 
@@ -14,6 +12,10 @@ const ARTICLE_SEARCH_MAX_RESULTS = 200;
 const InArticleSearch = new Knowledge.Class({
     Name: 'InArticleSearch',
     Extends: Gtk.Frame,
+
+    Signals: {
+        'stop-search': {},
+    },
 
     _init: function(web_view) {
         this.parent({
@@ -30,6 +32,9 @@ const InArticleSearch = new Knowledge.Class({
                                    this.search_changed.bind(this));
         this._search_entry.connect('key-press-event',
                                    this.on_key_press_event.bind(this));
+        this._search_entry.connect('stop-search',
+            () => this.emit('stop-search'));
+
         let entry_class = Utils.get_element_style_class(InArticleSearch, 'entry');
         this._search_entry.get_style_context().add_class(entry_class);
 
@@ -64,17 +69,6 @@ const InArticleSearch = new Knowledge.Class({
         grid.show_all();
 
         this.add(grid);
-
-        Dispatcher.get_default().register((payload) => {
-            switch(payload.action_type) {
-                case Actions.SHOW_ARTICLE_SEARCH:
-                    this.open();
-                    break;
-                case Actions.HIDE_ARTICLE_SEARCH:
-                    this.close();
-                    break;
-            }
-        });
     },
 
     search_changed: function() {

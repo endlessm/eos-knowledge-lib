@@ -1,10 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 
-const Actions = imports.app.actions;
-const Dispatcher = imports.app.dispatcher;
 const Controller = imports.app.interfaces.controller;
 const HistoryStore = imports.app.historyStore;
 const MeshHistoryStore = imports.app.meshHistoryStore;
@@ -35,28 +32,9 @@ const Mesh = new Module.Class({
         });
 
         this.load_theme();
-
-        this._window.connect('key-press-event', this._on_key_press_event.bind(this));
     },
 
     make_ready: function (cb=function () {}) {
         this._window.make_ready(cb);
-    },
-
-    _on_key_press_event: function (widget, event) {
-        let keyval = event.get_keyval()[1];
-        let state = event.get_state()[1];
-
-        let dispatcher = Dispatcher.get_default();
-        if (keyval === Gdk.KEY_Escape) {
-            dispatcher.dispatch({
-                action_type: Actions.HIDE_ARTICLE_SEARCH,
-            });
-        } else if (((state & Gdk.ModifierType.CONTROL_MASK) !== 0) &&
-                    keyval === Gdk.KEY_f) {
-            dispatcher.dispatch({
-                action_type: Actions.SHOW_ARTICLE_SEARCH,
-            });
-        }
     },
 });

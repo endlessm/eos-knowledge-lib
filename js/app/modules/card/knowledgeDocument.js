@@ -3,6 +3,7 @@
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const WebKit2 = imports.gi.WebKit2;
@@ -11,6 +12,7 @@ const AsyncTask = imports.search.asyncTask;
 const Card = imports.app.interfaces.card;
 const DocumentCard = imports.app.interfaces.documentCard;
 const EknWebview = imports.app.widgets.eknWebview;
+const HistoryStore = imports.app.historyStore;
 const InArticleSearch = imports.app.widgets.inArticleSearch;
 const Module = imports.app.interfaces.module;
 const PDFView = imports.app.widgets.PDFView;
@@ -182,7 +184,20 @@ const KnowledgeDocument = new Module.Class({
                 this.content_view = this._get_webview();
 
                 let article_search = new InArticleSearch.InArticleSearch(this.content_view);
+                let history = HistoryStore.get_default();
+                let action = history.lookup_action('article-search-visible');
+                article_search.search_mode_enabled = action.state.unpack();
                 this._content_grid.attach(article_search, 0, 2, 1, 1);
+
+                history.connect('action-state-changed::article-search-visible', (history, name, value) => {
+                    if (value.unpack())
+                        article_search.open();
+                    else
+                        article_search.close();
+                });
+                article_search.connect('stop-search', () => {
+                    action.change_state(new GLib.Variant('b', false));
+                });
 
                 this._webview_load_id = this.content_view.connect('load-changed', (view, status) => {
                     if (status !== WebKit2.LoadEvent.COMMITTED)
