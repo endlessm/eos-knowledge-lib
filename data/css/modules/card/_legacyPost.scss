@@ -16,12 +16,13 @@ $legacy-post-card-border-color-hover: white;
         }
     }
 
-    .thumbnail {
+    &__thumbnail {
         background-size: cover;
     }
 
-    .title {
+    &__title {
         color: $primary-light-color;
+        font-family: $title-font;
         font-size: 1.8em;
         padding: .9em 0em;
         background-color: $legacy-post-card-border-color;
