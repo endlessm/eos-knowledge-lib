@@ -2,6 +2,7 @@ prefix = @prefix@
 datarootdir = @datarootdir@
 datadir = @datadir@
 eos_theme_path=@datadir@/@PACKAGE@/theme/
+eos_preset_path=@datadir@/@PACKAGE@/preset/
 
 Name: eos-knowledge-0
 Description: Knowledge library scss themes
