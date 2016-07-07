@@ -51,7 +51,8 @@ const Text = new Module.Class({
         }
 
         if (this.highlighted) {
-            this.get_style_context().add_class('highlighted');
+            let klass = Utils.get_modifier_style_class(Text, 'highlighted');
+            this.get_style_context().add_class(klass);
         }
 
         Utils.set_hand_cursor_on_widget(this);

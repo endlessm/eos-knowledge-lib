@@ -34,9 +34,9 @@ describe('Card.Text', function () {
     });
 
     it('has label style classes', function () {
-        expect(card).toHaveDescendantWithCssClass('title');
-        expect(card).toHaveDescendantWithCssClass('card-synopsis');
-        expect(card).toHaveDescendantWithCssClass('card-context');
+        expect(card).toHaveDescendantWithCssClass('CardText__title');
+        expect(card).toHaveDescendantWithCssClass('CardText__synopsis');
+        expect(card).toHaveDescendantWithCssClass('CardText__context');
     });
 
     it('has labels that understand Pango markup', function () {
