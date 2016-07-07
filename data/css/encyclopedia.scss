@@ -9,6 +9,7 @@ $title-font: 'Lato' !default;
 $background-light-color: #f5f5f5 !default;
 $accent-light-color: #044a80 !default;
 
+@import 'assets';
 @import 'colors';
 @import 'typography';
 
@@ -220,6 +221,17 @@ scrollbar {
 
 .webview-tooltip label {
     font-size: 1.3em; /* 16px / 12px/em */
+}
+
+/* Changes from deprecated compat.js */
+
+.home-page {
+    background-image: url($primary-background-image);
+}
+
+.article-page,
+.search-page {
+    background-image: url($secondary-background-image);
 }
 
 /* Changes for composite TVs */

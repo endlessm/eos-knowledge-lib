@@ -44,33 +44,3 @@ function transform_v1_description(json) {
 
     return preset;
 }
-
-function extract_css_from_v1_description(json) {
-    let primary = json['backgroundHomeURI'];
-    let secondary = json['backgroundSectionURI'];
-
-    let css = '\nEosWindow { background-image: url("' + primary + '"); }\n';
-    switch (json['templateType']) {
-        case 'A':
-        case 'B':
-            css += '.PagerParallaxBackground--left {\
-                background-image: url("' + primary + '");\
-            }\
-            .PagerParallaxBackground--center, .PagerParallaxBackground--right {\
-                background-image: url("' + secondary + '");\
-            }';
-            break;
-        case 'encyclopedia':
-            css += '.home-page {\
-                background-image: url("' + primary + '");\
-            }\
-            .article-page, .search-page {\
-                background-image: url("' + secondary + '");\
-            }';
-    }
-
-    let provider = new Gtk.CssProvider();
-    provider.load_from_data(css);
-    Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
-        provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-}

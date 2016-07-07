@@ -65,6 +65,7 @@ scss_theme_toplevels = \
 	$(srcdir)/data/css/preset_b.scss \
 	$(NULL)
 scss_theme_base_partials = \
+	$(srcdir)/data/css/_assets.scss \
 	$(srcdir)/data/css/_project-setup.scss \
 	$(srcdir)/data/css/_colors.scss \
 	$(srcdir)/data/css/_typography.scss \

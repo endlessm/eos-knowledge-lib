@@ -20,6 +20,7 @@ $title-font-composite: 'Roboto' !default;
 $display-font: 'Lato' !default;
 $display-font-composite: 'Roboto' !default;
 
+@import 'assets';
 @import 'colors';
 @import 'typography';
 
@@ -160,6 +161,17 @@ $display-font-composite: 'Roboto' !default;
 
 .webview-tooltip label {
     font-family: $display-font;
+}
+
+/* Changes from deprecated compat.js */
+
+.PagerParallaxBackground--left {
+    background-image: url($primary-background-image);
+}
+
+.PagerParallaxBackground--center,
+.PagerParallaxBackground--right {
+    background-image: url($secondary-background-image);
 }
 
 /* Changes for composite TVs */
