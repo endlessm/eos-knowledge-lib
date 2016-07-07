@@ -86,7 +86,7 @@ const WebviewTooltipPresenter = new Knowledge.Class({
 
     show_external_link_tooltip: function (tooltip, uri) {
         let builder = this._get_widget_builder();
-        let contents = builder.get_object('external-link-tooltip');
+        let contents = builder.get_object('WebviewTooltipExternalLink');
 
         let title_label = builder.get_object('link-label');
         title_label.label = uri;
@@ -97,7 +97,7 @@ const WebviewTooltipPresenter = new Knowledge.Class({
 
     show_license_tooltip: function (tooltip) {
         let builder = this._get_widget_builder();
-        let contents = builder.get_object('license-tooltip');
+        let contents = builder.get_object('WebviewTooltipLicense');
 
         tooltip.add(contents);
         tooltip.show_all();
@@ -105,7 +105,7 @@ const WebviewTooltipPresenter = new Knowledge.Class({
 
     show_default_tooltip: function (tooltip, title) {
         let builder = this._get_widget_builder();
-        let contents = builder.get_object('default-tooltip');
+        let contents = builder.get_object('WebviewTooltipDefault');
         contents.label = title;
 
         tooltip.add(contents);
@@ -145,7 +145,7 @@ const WebviewTooltipPresenter = new Knowledge.Class({
             }),
             modal: false,
         });
-        this._link_tooltip.get_style_context().add_class('webview-tooltip');
+        this._link_tooltip.get_style_context().add_class('WebviewTooltip');
         if (!this.emit('show-tooltip', this._link_tooltip, uri))
             this._remove_link_tooltip();
     },

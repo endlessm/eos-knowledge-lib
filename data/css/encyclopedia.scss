@@ -211,7 +211,7 @@ scrollbar {
     }
 }
 
-.webview-tooltip label {
+.WebviewTooltip__label {
     font-size: 1.3em; /* 16px / 12px/em */
 }
 
@@ -229,7 +229,7 @@ scrollbar {
 .composite {
     font-family: $display-font-composite;
 
-    .webview-tooltip label {
+    .WebviewTooltip__label {
         font-weight: bold;
         font-size: 18.8px;  /* 16px spec * 88% */
     }
