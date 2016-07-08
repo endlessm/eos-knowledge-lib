@@ -3,12 +3,16 @@
 /* exported Simple */
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
+const GLib = imports.gi.GLib;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
+const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
+const Pages = imports.app.pages;
 const Utils = imports.app.utils;
 
 /**
@@ -42,10 +46,16 @@ const Simple = new Module.Class({
         'set-page': {},  // optional
     },
 
+    // Overridable in tests. Brand page should be visible for 2 seconds. The
+    // transition is currently hardcoded to a slow fade over 500 ms.
+    BRAND_PAGE_TIME_MS: 1500,
+
     _init: function (props={}) {
         props.transition_duration = 0;
         this.parent(props);
 
+        this._home_content_ready = false;
+        this._brand_page_timeout_id = 0;
         this._transitions_style = 'slide-all';
 
         this._brand_page = this.create_submodule('brand-page');
@@ -82,65 +92,110 @@ const Simple = new Module.Class({
             this.add(this._all_sets_page);
         }
 
-        let _animating_class = Utils.get_modifier_style_class(Simple,
-            'animating');
-        this.connect('notify::transition-running', () => {
-            if (this.transition_running)
-                this.get_style_context().add_class(_animating_class);
-            else
-                this.get_style_context().remove_class(_animating_class);
-        });
+        this.connect('notify::transition-running',
+            this._on_notify_transition_running.bind(this));
 
         Dispatcher.get_default().register(payload => {
             switch (payload.action_type) {
-                case Actions.SHOW_BRAND_PAGE:
-                    if (this._brand_page)
-                        this._show_page(this._brand_page);
-                    else
-                        this._show_page(this._home_page);
-                    break;
-                case Actions.SHOW_HOME_PAGE:
-                    this._show_page(this._home_page);
-                    break;
-                case Actions.SHOW_SET_PAGE:
-                    if (this._set_page)
-                        this._show_page(this._set_page);
-                    break;
-                case Actions.SHOW_ALL_SETS_PAGE:
-                    if (this._all_sets_page)
-                        this._show_page(this._all_sets_page);
-                    break;
-                case Actions.SHOW_SEARCH_PAGE:
-                    if (this._search_page)
-                        this._show_page(this._search_page);
-                    break;
                 case Actions.DBUS_LOAD_ITEM_CALLED:
                     // Show an empty article page, bypassing the navigation
                     // history, while waiting for the item to load
-                case Actions.SHOW_ARTICLE_PAGE:
                     if (this._article_page)
                         this._show_page(this._article_page);
                     break;
             }
         });
+        HistoryStore.get_default().connect('changed', this._on_history_change.bind(this));
+    },
+
+    _on_notify_transition_running: function () {
+        let animating_class = Utils.get_modifier_style_class(Simple,
+            'animating');
+
+        if (this.transition_running) {
+            this.get_style_context().add_class(animating_class);
+        } else {
+            this.get_style_context().remove_class(animating_class);
+            this._set_busy(false);
+        }
+    },
+
+    _set_busy: function (busy) {
+        let gdk_window = this.get_window();
+        if (!gdk_window)
+            return;
+
+        let cursor = null;
+        if (busy)
+            cursor = Gdk.Cursor.new_for_display(Gdk.Display.get_default(),
+                Gdk.CursorType.WATCH);
+
+        gdk_window.cursor = cursor;
+    },
+
+    _reveal_home_if_ready: function () {
+        if (!this._home_content_ready || this._brand_page_timeout_id !== 0)
+            return;
+        this._show_page(this._home_page);
+    },
+
+    _start_brand_page: function () {
+        this._show_page(this._brand_page);
+        this._brand_page_timeout_id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, this.BRAND_PAGE_TIME_MS, () => {
+            this._brand_page_timeout_id = 0;
+            this._reveal_home_if_ready();
+            return GLib.SOURCE_REMOVE;
+        });
+        this._home_page.make_ready(() => {
+            this._home_content_ready = true;
+            this._reveal_home_if_ready();
+        });
+    },
+
+    _show_page_if_present: function (page) {
+        if (page)
+            this._show_page(page);
+    },
+
+    _on_history_change: function (history) {
+        let item = history.get_current_item();
+        switch (item.page_type) {
+            case Pages.HOME:
+                if (this._brand_page && history.get_items().length === 1)
+                    this._start_brand_page();
+                else
+                    this._show_page(this._home_page);
+                break;
+            case Pages.SET:
+                this._show_page_if_present(this._set_page);
+                break;
+            case Pages.ALL_SETS:
+                this._show_page_if_present(this._all_sets_page);
+                break;
+            case Pages.SEARCH:
+                this._show_page_if_present(this._search_page);
+                break;
+            case Pages.ARTICLE:
+                this._show_page_if_present(this._article_page);
+                break;
+        }
     },
 
     // Module override
     make_ready: function (cb=function () {}) {
-        this._home_page.make_ready(cb);
+        this._home_page.make_ready(() => {
+            this._home_content_ready = true;
+            cb();
+        });
     },
 
     _show_page: function (new_page) {
-        new_page.make_ready(() => {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.PAGE_READY,
-            });
-        });
         let old_page = this.visible_child;
         if (old_page === new_page) {
             // Even though we didn't change, this should still count as the
             // first transition.
             this.transition_duration = Utils.DEFAULT_PAGE_TRANSITION_DURATION;
+            this._set_busy(false);
             return;
         }
 
@@ -152,11 +207,18 @@ const Simple = new Module.Class({
         this.transition_type = this._get_transition(new_page, old_page,
             transitions_style);
 
-        this.visible_child = new_page;
+        this._set_busy(true);
 
-        // The first transition on app startup has duration 0, subsequent ones
-        // are normal.
-        this.transition_duration = Utils.DEFAULT_PAGE_TRANSITION_DURATION;
+        new_page.make_ready(() => {
+            this.visible_child = new_page;
+            // The first transition on app startup has duration 0, subsequent ones
+            // are normal.
+            this.transition_duration = Utils.DEFAULT_PAGE_TRANSITION_DURATION;
+
+            if (this.transition_type === Gtk.StackTransitionType.NONE)
+                this._set_busy(false);
+            // Otherwise it will be done at the end of the animation
+        });
     },
 
     _is_page_on_center: function (page) {

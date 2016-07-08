@@ -3,7 +3,6 @@
 /* exported Simple */
 
 const Endless = imports.gi.Endless;
-const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Gio = imports.gi.Gio;
@@ -12,6 +11,7 @@ const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
+const Pages = imports.app.pages;
 const SearchBox = imports.app.modules.navigation.searchBox;
 const Utils = imports.app.utils;
 
@@ -105,42 +105,10 @@ const Simple = new Module.Class({
         HistoryStore.get_default().connect('changed', this._on_history_change.bind(this));
         dispatcher.register((payload) => {
             switch(payload.action_type) {
-                case Actions.HISTORY_BACK_ENABLED_CHANGED:
-                    this._history_buttons.back_button.sensitive = payload.enabled;
-                    break;
-                case Actions.HISTORY_FORWARD_ENABLED_CHANGED:
-                    this._history_buttons.forward_button.sensitive = payload.enabled;
-                    break;
-                case Actions.SEARCH_STARTED:
-                case Actions.SHOW_SET:
-                    this.set_busy(true);
-                    break;
-                case Actions.SEARCH_READY:
-                case Actions.SEARCH_FAILED:
-                case Actions.PAGE_READY:
-                    this.set_busy(false);
-                    break;
                 case Actions.LAUNCHED_FROM_DESKTOP:
                 case Actions.DBUS_LOAD_QUERY_CALLED:
                 case Actions.DBUS_LOAD_ITEM_CALLED:
-                    this._pending_present = true;
-                    this._present_timestamp = payload.timestamp;
-                    break;
-                case Actions.SHOW_BRAND_PAGE:
-                case Actions.SHOW_HOME_PAGE:
-                    this._home_button.sensitive = false;
-                    // Even if we didn't change, this should still count as the
-                    // first transition.
-                    this._update_top_bar_visibility();
-                    this._present_if_needed();
-                    break;
-                case Actions.SHOW_SET_PAGE:
-                case Actions.SHOW_ALL_SETS_PAGE:
-                case Actions.SHOW_SEARCH_PAGE:
-                case Actions.SHOW_ARTICLE_PAGE:
-                    this._home_button.sensitive = true;
-                    this._update_top_bar_visibility();
-                    this._present_if_needed();
+                    this._needs_present(payload.timestamp);
                     break;
             }
         });
@@ -162,51 +130,53 @@ const Simple = new Module.Class({
             }
         }.bind(this));
 
-        this._pager.connect_after('notify::visible-child',
-            this._update_top_bar_visibility.bind(this));
-
         this.get_child().show_all();
     },
 
     _on_history_change: function (history) {
+        this._home_button.sensitive = history.get_current_item().page_type !== Pages.HOME;
         this._history_buttons.back_button.sensitive = history.can_go_back();
         this._history_buttons.forward_button.sensitive = history.can_go_forward();
-    },
 
-    _update_top_bar_visibility: function () {
         let new_page = this._pager.visible_child;
         if (Utils.has_descendant_with_type(new_page, SearchBox.SearchBox)) {
             this._search_stack.visible_child = this._invisible_frame;
         } else {
             this._search_stack.visible_child = this._search_box;
         }
+
+        this._present_if_needed();
+    },
+
+    _needs_present: function (timestamp) {
+        this._pending_present = true;
+        this._present_timestamp = timestamp;
+        if (this._present_ready)
+            this._present();
     },
 
     _present_if_needed: function () {
         if (this._pending_present) {
-            if (this._present_timestamp)
-                this.present_with_time(this._present_timestamp);
-            else
-                this.present();
-            this._pending_present = false;
-            this._present_timestamp = null;
+            this._present();
+        } else {
+            this._present_ready = true;
         }
     },
 
-    make_ready: function (cb=function () {}) {
-        this._pager.make_ready(cb);
+    _present: function () {
+        if (this._present_timestamp)
+            this.present_with_time(this._present_timestamp);
+        else
+            this.present();
+        this._pending_present = false;
+        this._present_timestamp = null;
     },
 
-    set_busy: function (busy) {
-        let gdk_window = this.page_manager.get_window();
-        if (!gdk_window)
-            return;
-
-        let cursor = null;
-        if (busy)
-            cursor = Gdk.Cursor.new_for_display(Gdk.Display.get_default(),
-                Gdk.CursorType.WATCH);
-        gdk_window.cursor = cursor;
+    make_ready: function (cb=function () {}) {
+        this._pager.make_ready(() => {
+            this._present_if_needed();
+            cb();
+        });
     },
 
     vfunc_size_allocate: function (alloc) {

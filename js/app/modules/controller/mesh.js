@@ -2,7 +2,6 @@
 
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 
 const Actions = imports.app.actions;
@@ -33,13 +32,7 @@ const Mesh = new Module.Class({
     Extends: GObject.Object,
     Implements: [Controller.Controller],
 
-    // Overridable in tests. Brand page should be visible for 2 seconds. The
-    // transition is currently hardcoded to a slow fade over 500 ms.
-    BRAND_PAGE_TIME_MS: 1500,
-
     _init: function (props) {
-        this._launched_once = false;
-
         this.parent(props);
 
         let history = new MeshHistoryStore.MeshHistoryStore();
@@ -56,75 +49,31 @@ const Mesh = new Module.Class({
         this._current_search_query = '';
         this._set_cancellable = new Gio.Cancellable();
         this._search_cancellable = new Gio.Cancellable();
-        this._brand_page_timeout_id = 0;
-        this._home_content_loaded = false;
 
         this._window.connect('key-press-event', this._on_key_press_event.bind(this));
         history.connect('changed', this._on_history_change.bind(this));
     },
 
     make_ready: function (cb=function () {}) {
-        this._window.make_ready(() => {
-            this._home_content_loaded = true;
-            this._show_home_if_ready();
-            cb();
-        });
+        this._window.make_ready(cb);
     },
 
     _on_history_change: function () {
         let history = HistoryStore.get_default();
         let item = history.get_current_item();
-        let dispatcher = Dispatcher.get_default();
 
         switch (item.page_type) {
             case Pages.SEARCH:
                 this._update_search_results(item);
-                dispatcher.dispatch({
-                    action_type: Actions.SHOW_SEARCH_PAGE,
-                });
                 break;
             case Pages.SET:
-                this._update_set_results(item, () => {
-                    dispatcher.dispatch({
-                        action_type: Actions.SHOW_SET_PAGE,
-                    });
-                });
+                this._update_set_results(item);
                 break;
             case Pages.ARTICLE:
                 if (this.template_type === 'B')
                     this._update_article_list();
-                dispatcher.dispatch({
-                    action_type: Actions.SHOW_ARTICLE_PAGE,
-                });
-                break;
-            case Pages.HOME:
-                if (history.get_items().length === 1) {
-                    Dispatcher.get_default().dispatch({
-                        action_type: Actions.SHOW_BRAND_PAGE,
-                    });
-                    this._brand_page_timeout_id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, this.BRAND_PAGE_TIME_MS, () => {
-                        this._brand_page_timeout_id = 0;
-                        this._show_home_if_ready();
-                        return GLib.SOURCE_REMOVE;
-                    });
-                } else {
-                    this._show_home_if_ready();
-                }
                 break;
         }
-    },
-
-    _show_home_if_ready: function () {
-        let item = HistoryStore.get_default().get_current_item();
-        if (!item || item.page_type !== Pages.HOME)
-            return;
-        if (!this._home_content_loaded)
-            return;
-        if (this._brand_page_timeout_id)
-            return;
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.SHOW_HOME_PAGE,
-        });
     },
 
     _on_key_press_event: function (widget, event) {
@@ -173,11 +122,6 @@ const Mesh = new Module.Class({
             return;
         }
         this._current_search_query = item.query;
-
-        dispatcher.dispatch({
-            action_type: Actions.SEARCH_STARTED,
-            query: item.query,
-        });
         this._search_cancellable.cancel();
         this._search_cancellable.reset();
         this._more_search_results_query = null;
@@ -205,7 +149,7 @@ const Mesh = new Module.Class({
         });
     },
 
-    _update_set_results: function (item, callback=() => {}) {
+    _update_set_results: function (item) {
         let query_obj = new QueryObject.QueryObject({
             tags_match_any: item.model.child_tags,
             limit: RESULTS_SIZE,
@@ -218,15 +162,9 @@ const Mesh = new Module.Class({
                 action_type: Actions.SET_READY,
                 model: item.model,
             });
-            callback();
             return;
         }
         this._current_set_id = item.model.ekn_id;
-
-        dispatcher.dispatch({
-            action_type: Actions.SHOW_SET,
-            model: item.model,
-        });
         this._set_cancellable.cancel();
         this._set_cancellable.reset();
         this._more_set_results_query = null;
@@ -238,7 +176,6 @@ const Mesh = new Module.Class({
                 if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                     return;
                 logError(error);
-                callback();
                 return;
             }
             this._more_set_results_query = info.more_results;
@@ -246,7 +183,6 @@ const Mesh = new Module.Class({
                 action_type: Actions.SET_READY,
                 model: item.model,
             });
-            callback();
         });
     },
 });

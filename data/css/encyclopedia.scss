@@ -160,9 +160,7 @@ $accent-light-color: #044a80 !default;
     }
 
     .composite & {
-        .results-message-title,
-        .results-message-subtitle,
-        .error-message {
+        .BannerSearch {
             font-size: 17.6px;  /* 15px spec * 88% */
         }
 
@@ -196,15 +194,9 @@ $accent-light-color: #044a80 !default;
         background-repeat: no-repeat;
     }
 
-    .title {
-        &.query {
-            font-weight: normal;
-            color: black;
-        }
-
-        &.error-message {
-            font-weight: bold;
-        }
+    .title.query {
+        font-weight: normal;
+        color: black;
     }
 }
 

@@ -2,7 +2,6 @@
 
 /* exported Buffet */
 
-const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 
 const Actions = imports.app.actions;
@@ -36,11 +35,7 @@ const Buffet = new Module.Class({
     Extends: GObject.Object,
     Implements: [Controller.Controller],
 
-    BRAND_PAGE_TIME_MS: 1500,
-
     _init: function (props={}) {
-        this._launched_once = this._timer_ready = this._content_ready = false;
-
         this.parent(props);
 
         let history = new BuffetHistoryStore.BuffetHistoryStore();
@@ -52,8 +47,6 @@ const Buffet = new Module.Class({
         });
 
         this.load_theme();
-
-        this._brand_page_timeout_id = 0;
 
         history.connect('changed', this._on_history_change.bind(this));
     },
@@ -75,23 +68,12 @@ const Buffet = new Module.Class({
 
             SetMap.init_map_with_models(models);
 
-            this._window.make_ready(() => {
-                this._content_ready = true;
-                this._show_home_if_ready();
-                cb();
-            });
+            this._window.make_ready(cb);
         });
     },
 
     _do_search: function (history_item) {
         let dispatcher = Dispatcher.get_default();
-        dispatcher.dispatch({
-            action_type: Actions.SEARCH_STARTED,
-            query: history_item.query,
-        });
-        dispatcher.dispatch({
-            action_type: Actions.SHOW_SEARCH_PAGE,
-        });
         let query_obj = new QueryObject.QueryObject({
             query: history_item.query,
             limit: RESULTS_SIZE,
@@ -128,39 +110,10 @@ const Buffet = new Module.Class({
     },
 
     _on_history_change: function () {
-        let history = HistoryStore.get_default();
-        let item = history.get_current_item();
+        let item = HistoryStore.get_default().get_current_item();
         let dispatcher = Dispatcher.get_default();
 
         switch (item.page_type) {
-            case Pages.SET:
-                dispatcher.dispatch({
-                    action_type: Actions.SHOW_SET,
-                    model: item.model,
-                });
-                dispatcher.dispatch({
-                    action_type: Actions.SHOW_SET_PAGE,
-                });
-                break;
-            case Pages.HOME:
-                if (history.get_items().length === 1) {
-                    Dispatcher.get_default().dispatch({
-                        action_type: Actions.SHOW_BRAND_PAGE,
-                    });
-                    this._brand_page_timeout_id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, this.BRAND_PAGE_TIME_MS, () => {
-                        this._brand_page_timeout_id = 0;
-                        this._show_home_if_ready();
-                        return GLib.SOURCE_REMOVE;
-                    });
-                } else {
-                    this._show_home_if_ready();
-                }
-                break;
-            case Pages.ALL_SETS:
-                dispatcher.dispatch({
-                    action_type: Actions.SHOW_ALL_SETS_PAGE,
-                });
-                break;
             case Pages.SEARCH:
                 this._do_search(item);
                 break;
@@ -169,26 +122,9 @@ const Buffet = new Module.Class({
                     action_type: Actions.FEATURE_ITEM,
                     model: item.model,
                 });
-                dispatcher.dispatch({
-                    action_type: Actions.SHOW_ARTICLE_PAGE,
-                    context_label: item.context_label,
-                });
 
                 ReadingHistoryModel.get_default().mark_article_read(item.model.ekn_id);
                 break;
         }
-    },
-
-    _show_home_if_ready: function () {
-        let item = HistoryStore.get_default().get_current_item();
-        if (!item || item.page_type !== Pages.HOME)
-            return;
-        if (!this._content_ready)
-            return;
-        if (this._brand_page_timeout_id)
-            return;
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.SHOW_HOME_PAGE,
-        });
     },
 });

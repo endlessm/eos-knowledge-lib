@@ -97,51 +97,8 @@ describe('Controller.Mesh', function () {
             },
         });
         store = HistoryStore.get_default();
-        mesh.BRAND_PAGE_TIME_MS = 0;
         mesh.make_ready();
         spyOn(AppUtils, 'record_search_metric');
-    });
-
-    it('shows the brand page until timeout has expired and sets are loaded', function () {
-        store.set_current_item_from_props({
-            page_type: Pages.HOME,
-        });
-        expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_PAGE)).toBeDefined();
-        expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).not.toBeDefined();
-        Utils.update_gui();
-        expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
-    });
-
-    it('shows the brand page only once', function () {
-        store.set_current_item_from_props({
-            page_type: Pages.HOME,
-            timestamp: 0,
-        });
-        store.set_current_item_from_props({
-            page_type: Pages.HOME,
-            timestamp: 1,
-        });
-        let payloads = dispatcher.payloads_with_type(Actions.SHOW_BRAND_PAGE);
-        expect(payloads.length).toBe(1);
-    });
-
-    it('does not show the brand page on other launch methods', function () {
-        store.set_current_item_from_props({
-            page_type: Pages.ARTICLE,
-            model: new ContentObjectModel.ContentObjectModel(),
-        });
-        expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_PAGE)).not.toBeDefined();
-    });
-
-    it('goes back to the home page when state changes to home page', function () {
-        store.set_current_item_from_props({
-            page_type: Pages.ARTICLE,
-        });
-        expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).not.toBeDefined();
-        store.set_current_item_from_props({
-            page_type: Pages.HOME,
-        });
-        expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
     });
 
     describe('on state change to set page', function () {
@@ -162,16 +119,12 @@ describe('Controller.Mesh', function () {
             });
         });
 
-        it('shows the set page after engine query returns', function () {
+        it('dispatches set-ready after engine query returns', function () {
             dispatcher.reset();
             let callback = engine.get_objects_by_query.calls.mostRecent().args[2];
             callback(engine);
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_SET_PAGE)).toBeDefined();
-        });
-
-        it('shows the set', function () {
-            let payload = dispatcher.last_payload_with_type(Actions.SHOW_SET);
-            expect(payload.model).toBe(set_model);
+            expect(dispatcher.last_payload_with_type(Actions.SET_READY))
+                .toBeDefined();
         });
 
         it('cancels existing set queries', function () {
@@ -212,24 +165,9 @@ describe('Controller.Mesh', function () {
                 jasmine.any(Function));
         });
 
-        it('shows the search page', function () {
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_SEARCH_PAGE)).toBeDefined();
-        });
-
-        it('dispatches search started before showing the search page', function () {
-            let payload_actions = dispatcher.dispatched_payloads.map((payload) => payload.action_type);
-            let started_index = payload_actions.indexOf(Actions.SEARCH_STARTED);
-            let show_page_index = payload_actions.indexOf(Actions.SHOW_SEARCH_PAGE);
-            expect(started_index).not.toBe(-1);
-            expect(show_page_index).not.toBe(-1);
-            expect(started_index).toBeLessThan(show_page_index);
-        });
-
-        it('dispatches search-started and search-ready in order', function () {
-            expect(dispatcher.has_payload_sequence([
-                Actions.SEARCH_STARTED,
-                Actions.SEARCH_READY,
-            ])).toBe(true);
+        it('dispatches search-ready', function () {
+            expect(dispatcher.last_payload_with_type(Actions.SEARCH_READY))
+                .toBeDefined();
         });
     });
 
@@ -258,23 +196,6 @@ describe('Controller.Mesh', function () {
             query: 'bar',
         });
         expect(cancel_spy).toHaveBeenCalled();
-    });
-
-    describe('on state change to article page', function () {
-        let article_model;
-        beforeEach(function () {
-            article_model = new ContentObjectModel.ContentObjectModel({
-                ekn_id: 'ekn://foo/bar',
-            });
-            store.set_current_item_from_props({
-                page_type: Pages.ARTICLE,
-                model: article_model,
-            });
-        });
-
-        it('shows the article page', function () {
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_PAGE)).toBeDefined();
-        });
     });
 
     it('makes queries for set objects with the correct tags', function () {

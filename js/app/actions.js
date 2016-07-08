@@ -27,17 +27,8 @@ const HIDE_ARTICLE_SEARCH = 'hide-article-search';
 const FEATURE_ITEM = 'feature-item';
 
 // FIXME: These actions will be replaces by the Selection API
-const SEARCH_STARTED = 'search-started';
 const SEARCH_READY = 'search-ready';
 const SEARCH_FAILED = 'search-failed';
 
 // FIXME: These actions will be replaced by the HistoryStore API
-const PAGE_READY = 'page-ready';
-const SHOW_SET = 'show-set';
 const SET_READY = 'set-ready';
-const SHOW_BRAND_PAGE = 'show-brand-page';
-const SHOW_HOME_PAGE = 'show-home-page';
-const SHOW_ALL_SETS_PAGE = 'show-all-sets-page';
-const SHOW_SET_PAGE = 'show-set-page';
-const SHOW_SEARCH_PAGE = 'show-search-page';
-const SHOW_ARTICLE_PAGE = 'show-article-page';

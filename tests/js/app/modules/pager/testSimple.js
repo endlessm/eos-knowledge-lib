@@ -3,16 +3,21 @@ Gtk.init(null);
 
 const Actions = imports.app.actions;
 const CssClassMatcher = imports.tests.CssClassMatcher;
+const HistoryStore = imports.app.historyStore;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
+const Pages = imports.app.pages;
 const Simple = imports.app.modules.pager.simple;
+const Utils = imports.tests.utils;
 
 describe('Pager.Simple', function () {
-    let pager, factory, dispatcher;
+    let pager, factory, dispatcher, store;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         dispatcher = MockDispatcher.mock_default();
+        store = new HistoryStore.HistoryStore();
+        HistoryStore.set_default(store);
     });
 
     describe('without brand page', function () {
@@ -35,15 +40,15 @@ describe('Pager.Simple', function () {
             let search_page = factory.get_last_created('search-page');
             let article_page = factory.get_last_created('article-page');
             let all_sets_page = factory.get_last_created('all-sets-page');
-            dispatcher.dispatch({ action_type: Actions.SHOW_HOME_PAGE });
+            store.set_current_item_from_props({ page_type: 'home' });
             expect(pager.visible_child).toBe(home_page);
-            dispatcher.dispatch({ action_type: Actions.SHOW_SET_PAGE });
+            store.set_current_item_from_props({ page_type: 'set' });
             expect(pager.visible_child).toBe(set_page);
-            dispatcher.dispatch({ action_type: Actions.SHOW_SEARCH_PAGE });
+            store.set_current_item_from_props({ page_type: 'search' });
             expect(pager.visible_child).toBe(search_page);
-            dispatcher.dispatch({ action_type: Actions.SHOW_ARTICLE_PAGE });
+            store.set_current_item_from_props({ page_type: 'article' });
             expect(pager.visible_child).toBe(article_page);
-            dispatcher.dispatch({ action_type: Actions.SHOW_ALL_SETS_PAGE });
+            store.set_current_item_from_props({ page_type: 'all-sets' });
             expect(pager.visible_child).toBe(all_sets_page);
         });
 
@@ -71,6 +76,12 @@ describe('Pager.Simple', function () {
             let article_page = factory.get_last_created('article-page');
             expect(pager.visible_child).toBe(article_page);
         });
+
+        it('indicates busy while showing pages', function () {
+            spyOn(pager, '_set_busy');
+            store.set_current_item_from_props({ page_type: 'set' });
+            expect(pager._set_busy).toHaveBeenCalledWith(true);
+        });
     });
 
     describe('with a brand page', function () {
@@ -93,10 +104,47 @@ describe('Pager.Simple', function () {
             expect(pager.visible_child).toBe(brand_page);
         });
 
-        it('switches to the brand page when show-brand-page is dispatched', function () {
+        it('shows the brand page until timeout has expired and home page is ready', function () {
             let brand_page = factory.get_last_created('brand-page');
-            dispatcher.dispatch({ action_type: Actions.SHOW_BRAND_PAGE });
+            let home_page = factory.get_last_created('home-page');
+            let home_page_ready = false;
+            spyOn(home_page, 'make_ready').and.callFake(function (cb) {
+                home_page_ready = true;
+                if (cb) cb();
+            });
+            pager.BRAND_PAGE_TIME_MS = 0;
+            store.set_current_item_from_props({
+                page_type: Pages.HOME,
+            });
             expect(pager.visible_child).toBe(brand_page);
+            Utils.update_gui();
+            expect(pager.visible_child).toBe(home_page);
+            expect(home_page_ready).toBeTruthy();
+        });
+
+        it('shows the brand page only once', function () {
+            store.set_current_item_from_props({
+                page_type: Pages.HOME,
+            });
+            let brand_page = factory.get_last_created('brand-page');
+            expect(pager.visible_child).toBe(brand_page);
+
+            store.set_current_item_from_props({
+                page_type: Pages.ARTICLE,
+            });
+            expect(pager.visible_child).not.toBe(brand_page);
+            store.set_current_item_from_props({
+                page_type: Pages.HOME,
+            });
+            expect(pager.visible_child).not.toBe(brand_page);
+        });
+
+        it('does not show the brand page on other launch methods', function () {
+            store.set_current_item_from_props({
+                page_type: Pages.ARTICLE,
+            });
+            let brand_page = factory.get_last_created('brand-page');
+            expect(pager.visible_child).not.toBe(brand_page);
         });
 
         it('adds the correct CSS classes to all its pages', function () {

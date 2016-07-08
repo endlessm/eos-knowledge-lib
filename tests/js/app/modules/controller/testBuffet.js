@@ -64,118 +64,26 @@ describe('Controller.Buffet', function () {
                 'window': { type: MockView },
             },
         });
-        buffet.BRAND_PAGE_TIME_MS = 0;
         store = HistoryStore.get_default();
         spyOn(AppUtils, 'record_search_metric');
     });
 
-    it('shows the brand page until timeout has expired and content is ready', function () {
-        store.set_current_item_from_props({
-            page_type: Pages.HOME,
+    it('records reading history on state change to article page', function() {
+        let prev_model = new ArticleObjectModel.ArticleObjectModel({
+            ekn_id: 'ekn://test/prev',
         });
-        expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_PAGE)).toBeDefined();
-        expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).not.toBeDefined();
-        buffet.make_ready();
-        Utils.update_gui();
-        expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
-    });
-
-    it('shows the brand page only once', function () {
-        store.set_current_item_from_props({
-            page_type: Pages.HOME,
-            timestamp: 0,
+        let next_model = new ArticleObjectModel.ArticleObjectModel({
+            ekn_id: 'ekn://test/next',
         });
-        store.set_current_item_from_props({
-            page_type: Pages.HOME,
-            timestamp: 1,
-        });
-        let payloads = dispatcher.payloads_with_type(Actions.SHOW_BRAND_PAGE);
-        expect(payloads.length).toBe(1);
-    });
-
-    it('does not show the brand page when launching into other pages', function () {
-        store.set_current_item_from_props({
-            page_type: Pages.ARTICLE,
-            model: new ArticleObjectModel.ArticleObjectModel(),
-        });
-        expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_PAGE)).not.toBeDefined();
-    });
-
-    describe('on state change to set page', function () {
-        beforeEach(function () {
-            dispatcher.dispatch({
-                action_type: Actions.LAUNCHED_FROM_DESKTOP,
-            });
-            buffet.make_ready();
-            store.set_current_item_from_props({
-                page_type: Pages.SET,
-                model: set_models[0],
-            });
-        });
-
-        it('changes to the set page', function () {
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_SET_PAGE))
-                .toBeDefined();
-        });
-
-        it('signals that a set should be loaded', function () {
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_SET).model)
-                .toBe(set_models[0]);
-        });
-    });
-
-    it('goes back to the home page when state changes to home page', function () {
-        buffet.make_ready();
+        engine.get_object_by_id_finish.and.returnValue(article_model);
         store.set_current_item_from_props({
             page_type: Pages.ARTICLE,
             model: article_model,
-        });
-        expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).not.toBeDefined();
-        store.set_current_item_from_props({
-            page_type: Pages.HOME,
-        });
-        expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
-    });
-
-    describe('on state change to article page', function () {
-        let prev_model, next_model;
-
-        beforeEach(function () {
-            prev_model = new ArticleObjectModel.ArticleObjectModel({
-                ekn_id: 'ekn://test/prev',
-            });
-            next_model = new ArticleObjectModel.ArticleObjectModel({
-                ekn_id: 'ekn://test/next',
-            });
-            engine.get_object_by_id_finish.and.returnValue(article_model);
-            store.set_current_item_from_props({
-                page_type: Pages.ARTICLE,
-                model: article_model,
-                context: [prev_model, article_model, next_model],
-                context_label: 'Some Context',
-            });
+            context: [prev_model, article_model, next_model],
+            context_label: 'Some Context',
         });
 
-        it('records reading history', function() {
-            expect(reading_history.mark_article_read).toHaveBeenCalledWith(article_model.ekn_id);
-        });
-
-        it('changes to the article page', function () {
-            let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_PAGE);
-            expect(payload).toBeDefined();
-        });
-
-        it('dispatches show article with a context label', function () {
-            let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_PAGE);
-            expect(payload.context_label).toBe('Some Context');
-        });
-    });
-
-    it('changes to the all sets page on state change', function () {
-        store.set_current_item_from_props({
-            page_type: Pages.ALL_SETS,
-        });
-        expect(dispatcher.last_payload_with_type(Actions.SHOW_ALL_SETS_PAGE)).toBeDefined();
+        expect(reading_history.mark_article_read).toHaveBeenCalledWith(article_model.ekn_id);
     });
 
     describe('on state change to search page', function () {
@@ -205,10 +113,6 @@ describe('Controller.Buffet', function () {
         });
 
         it('launches a search', function () {
-            expect(dispatcher.last_payload_with_type(Actions.SEARCH_STARTED).query)
-                .toEqual('user query');
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_SEARCH_PAGE))
-                .toBeDefined();
             expect(dispatcher.last_payload_with_type(Actions.SEARCH_READY).query)
                 .toEqual('user query');
         });

@@ -83,57 +83,39 @@ describe('Window.Simple', function () {
             expect(view.background_image_uri).toBe(BACKGROUND_URI);
         });
 
-        it('indicates busy during a search', function () {
-            spyOn(view, 'set_busy');
-            dispatcher.dispatch({
-                action_type: Actions.SEARCH_STARTED,
-            });
-            expect(view.set_busy).toHaveBeenCalledWith(true);
-            dispatcher.dispatch({
-                action_type: Actions.SEARCH_READY,
-            });
-            expect(view.set_busy).toHaveBeenCalledWith(false);
-        });
-
-        it('indicates busy during a failed search', function () {
-            spyOn(view, 'set_busy');
-            dispatcher.dispatch({
-                action_type: Actions.SEARCH_STARTED,
-            });
-            expect(view.set_busy).toHaveBeenCalledWith(true);
-            dispatcher.dispatch({
-                action_type: Actions.SEARCH_FAILED,
-            });
-            expect(view.set_busy).toHaveBeenCalledWith(false);
-        });
-
-        it('indicates busy while querying a set', function () {
-            spyOn(view, 'set_busy');
-            dispatcher.dispatch({
-                action_type: Actions.SHOW_SET,
-            });
-            expect(view.set_busy).toHaveBeenCalledWith(true);
-            dispatcher.dispatch({
-                action_type: Actions.PAGE_READY,
-            });
-            expect(view.set_busy).toHaveBeenCalledWith(false);
-        });
-
         function test_launch_action (action, descriptor) {
-            it('presents itself on ' + descriptor + ' after the first page is shown', function () {
-                spyOn(view, 'show_all');  // stub out
-                spyOn(view, 'present');
-                spyOn(view, 'present_with_time');
-                dispatcher.dispatch({
-                    action_type: action,
-                    timestamp: 0,
+            describe('on ' + descriptor, function () {
+                beforeEach(function () {
+                    spyOn(view, 'show_all');  // stub out
+                    spyOn(view, 'present');
+                    spyOn(view, 'present_with_time');
                 });
-                expect(view.present).not.toHaveBeenCalled();
-                expect(view.present_with_time).not.toHaveBeenCalled();
-                dispatcher.dispatch({
-                    action_type: Actions.SHOW_HOME_PAGE,
+
+                it('presents itself after the first page is shown', function () {
+                    dispatcher.dispatch({
+                        action_type: action,
+                        timestamp: 0,
+                    });
+                    expect(view.present).not.toHaveBeenCalled();
+                    expect(view.present_with_time).not.toHaveBeenCalled();
+                    history.set_current_item_from_props({
+                        page_type: Pages.HOME,
+                    });
+                    expect(view.present.calls.any() || view.present_with_time.calls.any()).toBeTruthy();
                 });
-                expect(view.present.calls.any() || view.present_with_time.calls.any()).toBeTruthy();
+
+                it('does not present itself until the action is dispatched', function () {
+                    history.set_current_item_from_props({
+                        page_type: Pages.HOME,
+                    });
+                    expect(view.present).not.toHaveBeenCalled();
+                    expect(view.present_with_time).not.toHaveBeenCalled();
+                    dispatcher.dispatch({
+                        action_type: action,
+                        timestamp: 0,
+                    });
+                    expect(view.present.calls.any() || view.present_with_time.calls.any()).toBeTruthy();
+                });
             });
         }
         test_launch_action(Actions.LAUNCHED_FROM_DESKTOP, 'desktop launch');
@@ -144,34 +126,20 @@ describe('Window.Simple', function () {
 
         it('disables the home button when in the home page', function () {
             expect(view._home_button).toBeDefined();
-            dispatcher.dispatch({ action_type: Actions.SHOW_SET_PAGE });
+            history.set_current_item_from_props({ page_type: Pages.SET });
             expect(view._home_button.sensitive).toBe(true);
-            dispatcher.dispatch({ action_type: Actions.SHOW_HOME_PAGE });
-            expect(view._home_button.sensitive).toBe(false);
-        });
-
-        it('disables the home button when in the brand page', function () {
-            expect(view._home_button).toBeDefined();
-            dispatcher.dispatch({ action_type: Actions.SHOW_SET_PAGE });
-            expect(view._home_button.sensitive).toBe(true);
-            dispatcher.dispatch({ action_type: Actions.SHOW_BRAND_PAGE });
+            history.set_current_item_from_props({ page_type: Pages.HOME });
             expect(view._home_button.sensitive).toBe(false);
         });
 
         it('shows the top bar search box on a page that has no search box', function () {
-            dispatcher.dispatch({
-                action_type: Actions.SHOW_HOME_PAGE,
-            });
-            Utils.update_gui();
+            history.set_current_item_from_props({ page_type: Pages.HOME });
             let search = factory.get_last_created('search');
             expect(search.get_child_visible()).toBeTruthy();
         });
 
         it('hides the top bar search on a page that has a search box', function () {
-            dispatcher.dispatch({
-                action_type: Actions.SHOW_SEARCH_PAGE,
-            });
-            Utils.update_gui();
+            history.set_current_item_from_props({ page_type: Pages.SEARCH });
             let search = factory.get_last_created('search');
             expect(search.get_child_visible()).toBeFalsy();
         });
