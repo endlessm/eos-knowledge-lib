@@ -1,6 +1,5 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 const WebKit2 = imports.gi.WebKit2;
 
@@ -30,8 +29,9 @@ const InArticleSearch = new Knowledge.Class({
         });
         this._search_entry.connect('search-changed',
                                    this.search_changed.bind(this));
-        this._search_entry.connect('key-press-event',
-                                   this.on_key_press_event.bind(this));
+        this._search_entry.connect('next-match', this.search_next.bind(this));
+        this._search_entry.connect('previous-match',
+            this.search_previous.bind(this));
         this._search_entry.connect('stop-search',
             () => this.emit('stop-search'));
 
@@ -101,16 +101,4 @@ const InArticleSearch = new Knowledge.Class({
         this._search_entry.grab_focus();
         this._findController = this._web_view.get_find_controller();
     },
-
-    on_key_press_event: function(widget, event) {
-        let keyval = event.get_keyval()[1];
-        let state = event.get_state()[1];
-
-        if ((state & Gdk.ModifierType.SHIFT_MASK !== 0) &&
-             keyval === Gdk.KEY_Return) {
-            this.search_previous();
-        } else if (keyval === Gdk.KEY_Return) {
-            this.search_next();
-        }
-    }
 });

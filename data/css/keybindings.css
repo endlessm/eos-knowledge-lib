@@ -1,0 +1,13 @@
+/* This must be a regular CSS file, because SCSS doesn't recognize the custom
+keybinding syntax. */
+
+@binding-set article-search {
+    bind "Return" { "next-match" () };
+    bind "KP_Enter" { "next-match" () };
+    bind "<shift>Return" { "previous-match" () };
+    bind "<shift>KP_Enter" { "previous-match" () };
+}
+
+.InArticleSearch__entry {
+    -gtk-key-bindings: article-search;
+}

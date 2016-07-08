@@ -26,6 +26,7 @@
 .sass-cache
 # These css files are made from sass
 /data/css/*.css
+!/data/css/keybindings.css
 /data/templates/css/*.css
 
 # Autotools/Gettext droppings
