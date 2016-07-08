@@ -10,15 +10,12 @@ const ARTICLE_SEARCH_MAX_RESULTS = 200;
 
 const InArticleSearch = new Knowledge.Class({
     Name: 'InArticleSearch',
-    Extends: Gtk.Frame,
-
-    Signals: {
-        'stop-search': {},
-    },
+    Extends: Gtk.SearchBar,
 
     _init: function(web_view) {
         this.parent({
             no_show_all: true,
+            show_close_button: true,
         });
 
         this._web_view = web_view;
@@ -32,12 +29,9 @@ const InArticleSearch = new Knowledge.Class({
         this._search_entry.connect('next-match', this.search_next.bind(this));
         this._search_entry.connect('previous-match',
             this.search_previous.bind(this));
-        this._search_entry.connect('stop-search',
-            () => this.emit('stop-search'));
 
         let entry_class = Utils.get_element_style_class(InArticleSearch, 'entry');
         this._search_entry.get_style_context().add_class(entry_class);
-
 
         let button_class = Utils.get_element_style_class(InArticleSearch, 'button');
         let next_button = new Gtk.Button({
@@ -54,21 +48,17 @@ const InArticleSearch = new Knowledge.Class({
         previous_button.connect('clicked', this.search_previous.bind(this));
         previous_button.get_style_context().add_class(button_class);
 
-        let close_button = new Gtk.Button({
-            image: Gtk.Image.new_from_icon_name('window-close-symbolic',
-                                                Gtk.IconSize.MENU),
-        });
-        close_button.connect('clicked', this.close.bind(this));
-        close_button.get_style_context().add_class(button_class);
-
         let grid = new Gtk.Grid();
         grid.add(this._search_entry);
         grid.add(previous_button);
         grid.add(next_button);
-        grid.add(close_button);
         grid.show_all();
 
         this.add(grid);
+        this.connect_entry(this._search_entry);
+
+        this.connect('notify::search-mode-enabled',
+            this._on_search_mode_changed.bind(this));
     },
 
     search_changed: function() {
@@ -86,19 +76,11 @@ const InArticleSearch = new Knowledge.Class({
         this._findController.search_previous();
     },
 
-    close: function() {
-        if (!this.visible)
-            return;
-
-        this.hide();
-        this._web_view.grab_focus();
-        this._search_entry.set_text('');
-        this._findController.search_finish();
-    },
-
-    open: function() {
-        this.show();
-        this._search_entry.grab_focus();
-        this._findController = this._web_view.get_find_controller();
+    _on_search_mode_changed: function () {
+        this.visible = this.search_mode_enabled;
+        if (this.search_mode_enabled)
+            this._findController = this._web_view.get_find_controller();
+        else
+            this._findController.search_finish();
     },
 });

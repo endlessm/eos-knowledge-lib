@@ -190,13 +190,13 @@ const KnowledgeDocument = new Module.Class({
                 this._content_grid.attach(article_search, 0, 2, 1, 1);
 
                 history.connect('action-state-changed::article-search-visible', (history, name, value) => {
-                    if (value.unpack())
-                        article_search.open();
-                    else
-                        article_search.close();
+                    article_search.search_mode_enabled = value.unpack();
                 });
-                article_search.connect('stop-search', () => {
-                    action.change_state(new GLib.Variant('b', false));
+                article_search.connect('notify::search-mode-enabled', () => {
+                    let state = action.state.unpack();
+                    if (article_search.search_mode_enabled != state)
+                        action.change_state(new GLib.Variant('b',
+                            article_search.search_mode_enabled));
                 });
 
                 this._webview_load_id = this.content_view.connect('load-changed', (view, status) => {

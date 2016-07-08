@@ -116,6 +116,7 @@
         font-size: 13.3px;
         color: #fff;
         caret-color: #fff;
+        min-width: 350px;
 
         border-style: solid;
         border-radius: 50px;
@@ -133,7 +134,8 @@
         }
     }
 
-    &__button {
+    &__button,
+    .close {
         padding: 5px;
         color: #7a7e7f;
 
