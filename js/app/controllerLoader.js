@@ -19,15 +19,11 @@ let create_controller_with_app_json = function (application, app_json, extra_pro
     return factory.create_root_module(extra_props);
 }
 
-function gresource_path_from_app_id (app_id) {
-    return 'resource:///' + app_id.replace(/\./g, '/');
-}
-
 let create_controller = function (application, resource_path) {
     let app_resource = Gio.Resource.load(resource_path);
     app_resource._register();
 
-    let gresource_path = gresource_path_from_app_id(application.application_id);
+    let gresource_path = 'resource:///app/';
     let resource_file = Gio.File.new_for_uri(gresource_path);
     let app_json_file = resource_file.get_child('app.json');
     let app_json = Utils.parse_object_from_file(app_json_file);
@@ -38,8 +34,6 @@ let create_controller = function (application, resource_path) {
         let [success, data] = overrides_css_file.load_contents(null);
         css = data.toString();
     }
-
-    Compat.extract_css_from_v1_description(app_json);
 
     application.image_attribution_file = resource_file.get_child('credits.json');
 
