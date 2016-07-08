@@ -129,6 +129,7 @@ const KnowledgeDocument = new Module.Class({
             this._title_label.bind_property('visible',
                 this._top_title_label, 'visible',
                 GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN | GObject.BindingFlags.BIDIRECTIONAL);
+            this._title_label.visible = this.toc.visible;
         } else {
             this._title_label.visible = this._top_title_label.visible = false;
         }
