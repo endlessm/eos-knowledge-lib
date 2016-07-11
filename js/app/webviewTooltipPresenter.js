@@ -84,17 +84,6 @@ const WebviewTooltipPresenter = new Knowledge.Class({
         });
     },
 
-    show_archive_tooltip: function (tooltip, title) {
-        let builder = this._get_widget_builder();
-        let contents = builder.get_object('archive-tooltip');
-
-        let title_label = builder.get_object('archive-title-label');
-        title_label.label = title;
-
-        tooltip.add(contents);
-        tooltip.show_all();
-    },
-
     show_external_link_tooltip: function (tooltip, uri) {
         let builder = this._get_widget_builder();
         let contents = builder.get_object('external-link-tooltip');
@@ -109,20 +98,6 @@ const WebviewTooltipPresenter = new Knowledge.Class({
     show_license_tooltip: function (tooltip) {
         let builder = this._get_widget_builder();
         let contents = builder.get_object('license-tooltip');
-
-        tooltip.add(contents);
-        tooltip.show_all();
-    },
-
-    show_page_label_tooltip: function (tooltip, title, page_number_string) {
-        let builder = this._get_widget_builder();
-        let contents = builder.get_object('page-label-tooltip');
-
-        let title_label = builder.get_object('page-title-label');
-        title_label.label = title;
-
-        let page_number_label = builder.get_object('page-number-label');
-        page_number_label.label = page_number_string;
 
         tooltip.add(contents);
         tooltip.show_all();
