@@ -7,7 +7,6 @@ const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
-const Compat = imports.app.compat.compat;
 const Knowledge = imports.app.knowledge;
 const Utils = imports.app.utils;
 

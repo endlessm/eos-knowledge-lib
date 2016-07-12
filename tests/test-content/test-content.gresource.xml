@@ -1,7 +1,10 @@
 <?xml version="1.0" ?>
 <gresources>
+    <gresource prefix="/app/assets">
+        <file>titleImage</file>
+        <file>backgroundHome</file>
+    </gresource>
     <gresource prefix="/com/endlessm/thrones">
-        <file>pig1.jpg</file>
         <file compressed="true">joffrey.jpg</file>
         <file compressed="true">kings_landing.jpg</file>
         <file compressed="true">whitewalker.jpg</file>

@@ -20,7 +20,6 @@
 /eos-encyclopedia
 /data/com.endlessm.EknSearchProvider.service
 /data/com.endlessm.EknDownloader.service
-/data/compat/v1-preset-json/*.json
 /data/eos-knowledge-0.pc
 
 # Sass

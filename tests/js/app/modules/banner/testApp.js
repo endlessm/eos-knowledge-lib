@@ -5,6 +5,7 @@ const Gtk = imports.gi.Gtk;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
+Utils.register_test_gresource();
 
 const App = imports.app.modules.banner.app;
 const AppUtils = imports.app.utils;
@@ -12,11 +13,8 @@ const CssClassMatcher = imports.tests.CssClassMatcher;
 
 Gtk.init(null);
 
-const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
-
 describe('Banner.App', function () {
     let app_banner;
-    let pig_uri = Gio.File.new_for_path(TEST_CONTENT_DIR).get_child('pig1.jpg').get_uri();
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
@@ -25,7 +23,6 @@ describe('Banner.App', function () {
             get_description: () => "A Cute Pig",
         });
         app_banner = new App.App({
-            image_uri: pig_uri,
             show_subtitle: true,
         });
     });
@@ -36,9 +33,7 @@ describe('Banner.App', function () {
     });
 
     it('does not displays the subtitle if show subtitle false', function () {
-        app_banner = new App.App({
-            image_uri: pig_uri,
-        });
+        app_banner = new App.App();
         let subtitle_widget = Gtk.test_find_label(app_banner, 'A Cute Pig');
         expect(subtitle_widget).toBeNull();
     });
@@ -58,7 +53,6 @@ describe('Banner.App', function () {
 
         for (let align in expected_justifications) {
             let app_banner = new App.App({
-                image_uri: pig_uri,
                 show_subtitle: true,
                 halign: align,
             });

@@ -24,4 +24,13 @@
             background-position: 100% 50%;
         }
     }
+
+    &--left {
+        background-image: url($primary-background-image);
+    }
+
+    &--center,
+    &--right {
+        background-image: url($secondary-background-image);
+    }
 }

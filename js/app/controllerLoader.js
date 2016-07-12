@@ -1,7 +1,6 @@
 const EvinceDocument = imports.gi.EvinceDocument;
 const Gio = imports.gi.Gio;
 
-const Compat = imports.app.compat.compat;
 const ModuleFactory = imports.app.moduleFactory;
 const Utils = imports.app.utils;
 
@@ -34,8 +33,6 @@ let create_controller = function (application, resource_path) {
         let [success, data] = overrides_css_file.load_contents(null);
         css = data.toString();
     }
-
-    Compat.extract_css_from_v1_description(app_json);
 
     application.image_attribution_file = resource_file.get_child('credits.json');
 
