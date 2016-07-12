@@ -8,7 +8,10 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const Actions = imports.app.actions;
+const HistoryStore = imports.app.historyStore;
+const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Mesh = imports.app.modules.controller.mesh;
+const MeshHistoryStore = imports.app.meshHistoryStore;
 const Knowledge = imports.app.knowledge;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
@@ -56,6 +59,7 @@ describe('Controller.Mesh', function () {
     let mesh, factory, dispatcher, view;
 
     beforeEach(function () {
+        jasmine.addMatchers(InstanceOfMatcher.customMatchers);
         dispatcher = MockDispatcher.mock_default();
 
         let application = new GObject.Object();
@@ -74,6 +78,15 @@ describe('Controller.Mesh', function () {
         });
         mesh.make_ready();
         view = factory.get_last_created('window');
+    });
+
+    it('creates a specific history store', function () {
+        expect(HistoryStore.get_default())
+            .toBeA(MeshHistoryStore.MeshHistoryStore);
+    });
+
+    it('creates a window module', function () {
+        expect(view).toBeDefined();
     });
 
     describe('on state change to set page', function () {
