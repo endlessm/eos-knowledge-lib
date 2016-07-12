@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-06-28 01:50+0000\n"
+"POT-Creation-Date: 2016-07-05 01:52+0000\n"
 "PO-Revision-Date: 2016-06-28 01:51+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/es/)\n"
@@ -27,11 +27,11 @@ msgstr ""
 msgid "PDF"
 msgstr "PDF"
 
-#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:141
+#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:174
 msgid "Next Article"
 msgstr "Próximo Artículo"
 
-#: data/widgets/card/sequence.ui:59 js/app/modules/layout/articleStack.js:124
+#: data/widgets/card/sequence.ui:59 js/app/modules/layout/articleStack.js:157
 msgid "Previous Article"
 msgstr "Artículo Previo"
 
@@ -44,7 +44,7 @@ msgstr "INICIO"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:85
+#: js/app/articleHTMLRenderer.js:80
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
@@ -52,7 +52,7 @@ msgstr "Esta página contiene contenido de {original-link}, disponible bajo una 
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
-#: js/app/articleHTMLRenderer.js:92
+#: js/app/articleHTMLRenderer.js:87
 msgid "http://wikihow.com"
 msgstr "http://es.wikihow.com"
 
@@ -60,18 +60,18 @@ msgstr "http://es.wikihow.com"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:97
+#: js/app/articleHTMLRenderer.js:92
 msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
 msgstr "Ve {wikihow-article-link} para más detalles, videos, fotos y atribuciones. Por cortesía de {wikihow-link}, donde cualquier persona puede fácilmente aprender cómo hacer cualquier cosa."
 
-#: js/app/articleHTMLRenderer.js:156 js/app/articleHTMLRenderer.js:256
+#: js/app/articleHTMLRenderer.js:150 js/app/articleHTMLRenderer.js:274
 msgid "Copy"
 msgstr "Copiar"
 
-#: js/app/articleHTMLRenderer.js:185
+#: js/app/articleHTMLRenderer.js:179
 msgid "Legal Notice and Intellectual Property Policy"
 msgstr "Aviso Legal y Política de Propiedad Intelectual"
 
@@ -79,25 +79,25 @@ msgstr "Aviso Legal y Política de Propiedad Intelectual"
 #. substituted in code. Please make sure to leave the curly
 #. braces around any words that have them, and do not translate
 #. words inside curly braces.
-#: js/app/articleHTMLRenderer.js:191
+#: js/app/articleHTMLRenderer.js:185
 msgid "Read more at {link}"
 msgstr "Leer más en {link}"
 
-#: js/app/articleHTMLRenderer.js:197
+#: js/app/articleHTMLRenderer.js:191
 msgid "DISCLAIMER PLACEHOLDER"
 msgstr "La presente aplicación incluye reportes de noticias de interés que han sido obtenidos automáticamente de sus respectivas fuentes por medio del formato RSS que cada una de ellas ha hecho públicamente disponibles. En cada una se hace constar el titular de los derechos de autor del contenido, incluyendo pero no limitado a las imágenes en ellos incluidas. Las opiniones e información expresadas en las distintas notas, artículos, anuncios o cartas son responsabilidad exclusiva de sus autores. Endless no se hace responsable de la veracidad, del contenido o calidad de la información, ni de los productos, servicios, ofertas, promociones u otras que puedan estar ahí incluidas. El contenido es proporcionado acá de manera gratuita para uso no comercial. El contenido de los mismos y la información ahí expresada es responsabilidad exclusiva de sus autores. No asumimos responsabilidad alguna por el contenido de los mismos ni por cualquier acción u omisión tomada con base en esa información. El contenido puede incluir vínculos a páginas web de terceros que no se encuentran bajo nuestro control. No nos hacemos responsables por el contenido de esas páginas ni la inclusión de la información o de los vínculos constituye aceptación de las mismas, de sus autores o de los medios de comunicación que las han hecho públicas. Nos reservamos el derecho de modificar, suspender o descontinuar cualquier aspecto de esta aplicación y la información acá contenida en cualquier momento."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:294
+#: js/app/articleHTMLRenderer.js:308
 msgid "Content taken from {blog-link}."
 msgstr "Contenido tomado de {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:299
+#: js/app/articleHTMLRenderer.js:313
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "Contenido por cortesía de {blog-link}. Usado con permiso generoso."
 
@@ -105,31 +105,29 @@ msgstr "Contenido por cortesía de {blog-link}. Usado con permiso generoso."
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:307
+#: js/app/articleHTMLRenderer.js:321
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Contenido por cortesía de {blog-link}, bajo la licencia {license-link}."
 
-#: js/app/modules/banner/context.js:39 js/app/modules/banner/context.js:47
+#: js/app/buffetHistoryStore.js:53
+#, javascript-format
+msgid "Results were found for “%s”"
+msgstr "Se encontraron resultados para “%s”"
+
+#: js/app/modules/banner/context.js:38 js/app/modules/banner/context.js:49
 msgid "Highlights"
 msgstr "Destacados"
 
-#: js/app/modules/banner/context.js:50
+#: js/app/modules/banner/context.js:52
 msgid "All Categories"
 msgstr "Todas las Categorías"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep the %s token in your translation.
-#: js/app/modules/banner/context.js:68
+#: js/app/modules/banner/context.js:61
 #, javascript-format
 msgid "Search results for “%s”"
 msgstr "Resultados de la búsqueda “%s”"
-
-#. TRANSLATORS: %s will be replaced with the text the user
-#. searched for. Make sure to keep %s token in your translation.
-#: js/app/modules/banner/context.js:72 js/app/modules/controller/buffet.js:117
-#, javascript-format
-msgid "Results were found for “%s”"
-msgstr "Se encontraron resultados para “%s”"
 
 #. TRANSLATORS: This message is displayed while an app is
 #. searching for results. The %s will be replaced with the term
@@ -164,15 +162,15 @@ msgstr "¡UY!"
 msgid "See more %s"
 msgstr "Más de %s"
 
-#: js/app/modules/contentGroup/search.js:181
+#: js/app/modules/contentGroup/noResultsMessage.js:72
 msgid "Sorry! :-("
 msgstr "Lo sentimos! :-("
 
-#: js/app/modules/contentGroup/search.js:182
+#: js/app/modules/contentGroup/noResultsMessage.js:73
 msgid "There are no results that match your search.\n"
 msgstr "No hemos encontrado resultados que coincidan con tu búsqueda.\n"
 
-#: js/app/modules/contentGroup/search.js:184
+#: js/app/modules/contentGroup/noResultsMessage.js:74
 msgid ""
 "We recommend that you:\n"
 "\n"
@@ -181,7 +179,7 @@ msgid ""
 "  •  Try using more general words"
 msgstr "Te recomendamos que:\n\n• Revises como lo escribiste\n• Pruebes otras palabras similares \n• Pruebes palabras más generales"
 
-#: js/app/modules/contentGroup/search.js:202
+#: js/app/modules/contentGroup/noResultsMessage.js:81
 msgid "There was an error during your search."
 msgstr "Hubo un error durante tu búsqueda. "
 
@@ -189,7 +187,7 @@ msgstr "Hubo un error durante tu búsqueda. "
 msgid "SEE ALL CATEGORIES"
 msgstr "VER TODAS LAS CATEGORÍAS"
 
-#: js/app/modules/navigation/searchBox.js:159
+#: js/app/modules/navigation/searchBox.js:167
 msgid "See more results"
 msgstr "Ver más resultados"
 
@@ -198,10 +196,10 @@ msgstr "Ver más resultados"
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:87
+#: js/app/utils.js:88
 msgid "by {author}"
 msgstr "por {author}"
 
-#: js/app/utils.js:87
+#: js/app/utils.js:88
 msgid "and"
 msgstr "y"

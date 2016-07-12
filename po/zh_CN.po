@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-06-28 01:50+0000\n"
+"POT-Creation-Date: 2016-07-05 01:52+0000\n"
 "PO-Revision-Date: 2016-06-28 01:51+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/zh_CN/)\n"
@@ -24,11 +24,11 @@ msgstr ""
 msgid "PDF"
 msgstr "PDF"
 
-#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:141
+#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:174
 msgid "Next Article"
 msgstr "下一篇"
 
-#: data/widgets/card/sequence.ui:59 js/app/modules/layout/articleStack.js:124
+#: data/widgets/card/sequence.ui:59 js/app/modules/layout/articleStack.js:157
 msgid "Previous Article"
 msgstr "上一篇"
 
@@ -41,7 +41,7 @@ msgstr "主页"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:85
+#: js/app/articleHTMLRenderer.js:80
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
@@ -49,7 +49,7 @@ msgstr "该页存在来源于{original-link}的内容，已获得{license-link}�
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
-#: js/app/articleHTMLRenderer.js:92
+#: js/app/articleHTMLRenderer.js:87
 msgid "http://wikihow.com"
 msgstr "http://wikihow.com"
 
@@ -57,18 +57,18 @@ msgstr "http://wikihow.com"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:97
+#: js/app/articleHTMLRenderer.js:92
 msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
 msgstr "查看更多关于{wikihow-article-link}的细节，视频，图片和来源。内容由{wikihow-link}提供，在此您可以轻松掌握各种技巧。"
 
-#: js/app/articleHTMLRenderer.js:156 js/app/articleHTMLRenderer.js:256
+#: js/app/articleHTMLRenderer.js:150 js/app/articleHTMLRenderer.js:274
 msgid "Copy"
 msgstr "复制"
 
-#: js/app/articleHTMLRenderer.js:185
+#: js/app/articleHTMLRenderer.js:179
 msgid "Legal Notice and Intellectual Property Policy"
 msgstr ""
 
@@ -76,25 +76,25 @@ msgstr ""
 #. substituted in code. Please make sure to leave the curly
 #. braces around any words that have them, and do not translate
 #. words inside curly braces.
-#: js/app/articleHTMLRenderer.js:191
+#: js/app/articleHTMLRenderer.js:185
 msgid "Read more at {link}"
 msgstr ""
 
-#: js/app/articleHTMLRenderer.js:197
+#: js/app/articleHTMLRenderer.js:191
 msgid "DISCLAIMER PLACEHOLDER"
 msgstr ""
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:294
+#: js/app/articleHTMLRenderer.js:308
 msgid "Content taken from {blog-link}."
 msgstr "来源于{blog-link}的内容。"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:299
+#: js/app/articleHTMLRenderer.js:313
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "内容由{blog-link}提供。经授权许可使用。"
 
@@ -102,31 +102,29 @@ msgstr "内容由{blog-link}提供。经授权许可使用。"
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:307
+#: js/app/articleHTMLRenderer.js:321
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "内容由{blog-link}提供，已得到{license-link}许可认证。"
 
-#: js/app/modules/banner/context.js:39 js/app/modules/banner/context.js:47
+#: js/app/buffetHistoryStore.js:53
+#, javascript-format
+msgid "Results were found for “%s”"
+msgstr "已找到“%s”的结果"
+
+#: js/app/modules/banner/context.js:38 js/app/modules/banner/context.js:49
 msgid "Highlights"
 msgstr "强调"
 
-#: js/app/modules/banner/context.js:50
+#: js/app/modules/banner/context.js:52
 msgid "All Categories"
 msgstr "全部类别"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep the %s token in your translation.
-#: js/app/modules/banner/context.js:68
+#: js/app/modules/banner/context.js:61
 #, javascript-format
 msgid "Search results for “%s”"
 msgstr "搜索“%s”的结果"
-
-#. TRANSLATORS: %s will be replaced with the text the user
-#. searched for. Make sure to keep %s token in your translation.
-#: js/app/modules/banner/context.js:72 js/app/modules/controller/buffet.js:117
-#, javascript-format
-msgid "Results were found for “%s”"
-msgstr "已找到“%s”的结果"
 
 #. TRANSLATORS: This message is displayed while an app is
 #. searching for results. The %s will be replaced with the term
@@ -161,15 +159,15 @@ msgstr "哎呀！"
 msgid "See more %s"
 msgstr ""
 
-#: js/app/modules/contentGroup/search.js:181
+#: js/app/modules/contentGroup/noResultsMessage.js:72
 msgid "Sorry! :-("
 msgstr "很抱歉！:-("
 
-#: js/app/modules/contentGroup/search.js:182
+#: js/app/modules/contentGroup/noResultsMessage.js:73
 msgid "There are no results that match your search.\n"
 msgstr "没有符合您搜索的结果。\n"
 
-#: js/app/modules/contentGroup/search.js:184
+#: js/app/modules/contentGroup/noResultsMessage.js:74
 msgid ""
 "We recommend that you:\n"
 "\n"
@@ -178,7 +176,7 @@ msgid ""
 "  •  Try using more general words"
 msgstr "我们建议您：·\n检查您的拼写\n尝试相同意思的其他表述\n使用更普遍的表述"
 
-#: js/app/modules/contentGroup/search.js:202
+#: js/app/modules/contentGroup/noResultsMessage.js:81
 msgid "There was an error during your search."
 msgstr "搜索中出现一个错误。"
 
@@ -186,7 +184,7 @@ msgstr "搜索中出现一个错误。"
 msgid "SEE ALL CATEGORIES"
 msgstr "展示全部类别"
 
-#: js/app/modules/navigation/searchBox.js:159
+#: js/app/modules/navigation/searchBox.js:167
 msgid "See more results"
 msgstr ""
 
@@ -195,10 +193,10 @@ msgstr ""
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:87
+#: js/app/utils.js:88
 msgid "by {author}"
 msgstr "作者：{author}"
 
-#: js/app/utils.js:87
+#: js/app/utils.js:88
 msgid "and"
 msgstr "与"
