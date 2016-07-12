@@ -42,6 +42,8 @@ $display-font-composite: 'Roboto' !default;
 @import 'modules/layout/navigation';
 @import 'modules/layout/sidebar';
 
+@import 'modules/navigation/searchBox';
+
 @import 'modules/pager/parallaxBackground';
 
 @import 'modules/window/simple';
