@@ -78,10 +78,10 @@ defines:
           properties:
             show-titles: false
     sidebar:
-      type: Layout.SearchAndItem
+      type: ContentGroup.ContentGroup
       slots:
-        search: *search-results
-        item: *set-items
+        <<: *sidebar-list-slots
+        selection: Selection.ArticleContext
 
 root:
   shortdef: 'Controller.Mesh(theme: preset_b)'

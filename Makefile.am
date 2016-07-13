@@ -456,7 +456,6 @@ javascript_tests = \
 	tests/js/app/modules/layout/testPaper.js \
 	tests/js/app/modules/layout/testResponsiveMargins.js \
 	tests/js/app/modules/layout/testScrolling.js \
-	tests/js/app/modules/layout/testSearchAndItem.js \
 	tests/js/app/modules/layout/testSidebar.js \
 	tests/js/app/modules/layout/testSideMenu.js \
 	tests/js/app/modules/layout/testTopMenu.js \
@@ -469,6 +468,7 @@ javascript_tests = \
 	tests/js/app/modules/pager/testSimple.js \
 	tests/js/app/modules/selection/testAllHighlights.js \
 	tests/js/app/modules/selection/testAllSets.js \
+	tests/js/app/modules/selection/testArticleContext.js \
 	tests/js/app/modules/selection/testArticlesForSet.js \
 	tests/js/app/modules/selection/testSearch.js \
 	tests/js/app/modules/selection/testArticlesForSetCrossSection.js \
