@@ -62,7 +62,8 @@ function get_flatpak_path () {
 
     try {
         keyfile.load_from_file(path, GLib.KeyFileFlags.NONE);
-    } catch (e if e.matches(GLib.KeyFileError, GLib.KeyFileError.NOT_FOUND)) {
+    } catch (e if (e.matches(GLib.KeyFileError, GLib.KeyFileError.NOT_FOUND) ||
+                   e.matches(GLib.FileError, GLib.FileError.NOENT))) {
         return null;
     }
 
