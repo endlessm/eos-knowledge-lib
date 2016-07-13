@@ -88,6 +88,11 @@ const Controller = new Lang.Interface({
 
     load_theme: function () {
         let provider = new Gtk.CssProvider();
+        provider.load_from_resource(CSS_RESOURCE_PATH + 'keybindings.css');
+        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+            provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+        provider = new Gtk.CssProvider();
         if (this.css) {
             provider.load_from_data(this.css);
         } else if (this.theme) {

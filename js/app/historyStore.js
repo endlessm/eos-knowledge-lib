@@ -1,7 +1,9 @@
 /* exported HistoryStore, get_default, set_default */
 
 const Gdk = imports.gi.Gdk;
-const GObject = imports.gi.GObject;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const Lang = imports.lang;
 
 const ArticleObjectModel = imports.search.articleObjectModel;
 const Actions = imports.app.actions;
@@ -24,8 +26,9 @@ const Direction = {
  * A store containing the history state of the application.
  *
  */
-const HistoryStore = new GObject.Class({
+const HistoryStore = new Lang.Class({
     Name: 'HistoryStore',
+    Extends: Gio.SimpleActionGroup,
 
     Signals: {
         /**
@@ -43,6 +46,18 @@ const HistoryStore = new GObject.Class({
         this._index = -1;
         this._direction = Direction.FORWARDS;
 
+        let article_search_state = new Gio.SimpleAction({
+            name: 'article-search-visible',
+            state: new GLib.Variant('b', false),
+        });
+        this.add_action(article_search_state);
+        article_search_state.connect('change-state', (action, variant) => {
+            let item = this.get_current_item();
+            if (item && item.page_type === Pages.ARTICLE)
+                action.set_state(variant);
+        });
+        this._setup_action_group();
+
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
                 case Actions.HISTORY_BACK_CLICKED:
@@ -53,6 +68,26 @@ const HistoryStore = new GObject.Class({
                     break;
             }
         });
+    },
+
+    _setup_action_group: function () {
+        let app = Gio.Application.get_default();
+        // GApplication is not required, e.g. in tests
+        if (!app)
+            return;
+
+        app.set_accels_for_action('store.article-search-visible',
+            ['<primary>f']);
+        app.get_windows().forEach(win =>
+            win.insert_action_group('store', this));
+        app.connect('window-added', (app, win) =>
+            win.insert_action_group('store', this));
+    },
+
+    // Default signal handler
+    on_changed: function () {
+        this.change_action_state('article-search-visible',
+            new GLib.Variant('b', false));
     },
 
     get_items: function () {

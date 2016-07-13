@@ -1,28 +1,23 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const Actions = imports.app.actions;
+const HistoryStore = imports.app.historyStore;
+const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Mesh = imports.app.modules.controller.mesh;
-const Knowledge = imports.app.knowledge;
-const MockDispatcher = imports.tests.mockDispatcher;
+const MeshHistoryStore = imports.app.meshHistoryStore;
 const MockFactory = imports.tests.mockFactory;
+const Module = imports.app.interfaces.module;
 
 Gtk.init(null);
 
-const MockView = new Knowledge.Class({
+const MockView = new Module.Class({
     Name: 'MockView',
     Extends: GObject.Object,
-    Signals: {
-        'key-press-event': {
-            param_types: [ GObject.TYPE_OBJECT ],
-        },
-    },
 
     _init: function (props) {
         void props;  // Silently ignore properties
@@ -35,28 +30,13 @@ const MockView = new Knowledge.Class({
             return;
         this.parent(signal, handler);
     },
-
-    make_ready: function (cb=function () {}) {
-        cb();
-    },
-
-    get_style_context: function () {
-        return {
-            add_class: function () {},
-        };
-    },
-});
-
-const MockEvent = new GObject.Class({
-    Name: 'MockEvent',
-    Extends: GObject.Object,
 });
 
 describe('Controller.Mesh', function () {
-    let mesh, factory, dispatcher, view;
+    let mesh, factory;
 
     beforeEach(function () {
-        dispatcher = MockDispatcher.mock_default();
+        jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
         let application = new GObject.Object();
         application.application_id = 'foobar';
@@ -73,39 +53,14 @@ describe('Controller.Mesh', function () {
             },
         });
         mesh.make_ready();
-        view = factory.get_last_created('window');
     });
 
-    describe('on state change to set page', function () {
-        beforeEach(function () {
-        });
+    it('creates a specific history store', function () {
+        expect(HistoryStore.get_default())
+            .toBeA(MeshHistoryStore.MeshHistoryStore);
+    });
 
-        it('dispatches hide-article-search after escape key pressed', function () {
-            dispatcher.reset();
-            let event = new MockEvent();
-            event.get_keyval = () => {
-                return [null, Gdk.KEY_Escape];
-            };
-            event.get_state = () => {
-                return [null, null];
-            };
-            view.emit('key-press-event', event)
-            expect(dispatcher.last_payload_with_type(Actions.HIDE_ARTICLE_SEARCH))
-                .toBeDefined();
-        });
-
-        it('dispatches show-article-search after Ctrl+F pressed', function () {
-            dispatcher.reset();
-            let event = new MockEvent();
-            event.get_keyval = () => {
-                return [null, Gdk.KEY_f];
-            };
-            event.get_state = () => {
-                return [null, Gdk.ModifierType.CONTROL_MASK];
-            };
-            view.emit('key-press-event', event);
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_SEARCH))
-                .toBeDefined();
-        });
+    it('creates a window module', function () {
+        expect(factory.get_last_created('window')).toBeDefined();
     });
 });

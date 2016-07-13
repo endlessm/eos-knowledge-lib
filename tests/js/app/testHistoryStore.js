@@ -61,4 +61,18 @@ describe('History Store', function () {
         dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
         expect(history_store.get_current_item().query).toBe('second');
     });
+
+    it('resets the article-search-visible state when changing', function () {
+        history_store.set_current_item_from_props({
+            page_type: 'home',
+        });
+        // Simulate accelerator key combo
+        history_store.activate_action('article-search-visible', null);
+        history_store.set_current_item_from_props({
+            query: 'search',
+            page_type: 'search',
+        });
+        expect(history_store.get_action_state('article-search-visible').unpack())
+            .toBeFalsy();
+    });
 });
