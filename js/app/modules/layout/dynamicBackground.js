@@ -6,8 +6,6 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
-const Actions = imports.app.actions;
-const Dispatcher = imports.app.dispatcher;
 const DominantColor = imports.app.dominantColor;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
@@ -79,6 +77,9 @@ const DynamicBackground = new Module.Class({
     Slots: {
         'content': {},
     },
+    References: {
+        'selection': {},  // type: Selection
+    },
 
     _init: function (props={}) {
         this.parent(props);
@@ -92,12 +93,9 @@ const DynamicBackground = new Module.Class({
         let context = this.get_style_context();
         context.add_provider(this._css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        Dispatcher.get_default().register((payload) => {
-            switch (payload.action_type) {
-                case Actions.FEATURE_ITEM:
-                    this._set_model(payload.model);
-                    break;
-            }
+        this.reference_module('selection', selection => {
+            selection.connect('models-changed',
+                this._on_selection_models_changed.bind(this));
         });
 
         this._idle_id = 0;
@@ -131,7 +129,12 @@ const DynamicBackground = new Module.Class({
         this._css_class = css_class;
     },
 
-    _set_model: function (model) {
+    _on_selection_models_changed: function (selection) {
+        let models = selection.get_models();
+        if (models.length === 0)
+            return;
+        let model = models[0];
+
         // Model should not change when in home mode
         if (this.page_mode === 'home' && this._model)
             return;

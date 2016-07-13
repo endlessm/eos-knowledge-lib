@@ -73,7 +73,6 @@ const Buffet = new Module.Class({
     },
 
     _do_search: function (history_item) {
-        let dispatcher = Dispatcher.get_default();
         let query_obj = new QueryObject.QueryObject({
             query: history_item.query,
             limit: RESULTS_SIZE,
@@ -94,30 +93,16 @@ const Buffet = new Module.Class({
                 return;
             }
             this._get_more_results_query = info.more_results;
-
-            if (results.length > 0) {
-                dispatcher.dispatch({
-                    action_type: Actions.FEATURE_ITEM,
-                    model: results[0],
-                });
-            }
         });
     },
 
     _on_history_change: function () {
         let item = HistoryStore.get_default().get_current_item();
-        let dispatcher = Dispatcher.get_default();
-
         switch (item.page_type) {
             case Pages.SEARCH:
                 this._do_search(item);
                 break;
             case Pages.ARTICLE:
-                dispatcher.dispatch({
-                    action_type: Actions.FEATURE_ITEM,
-                    model: item.model,
-                });
-
                 ReadingHistoryModel.get_default().mark_article_read(item.model.ekn_id);
                 break;
         }
