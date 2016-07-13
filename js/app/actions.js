@@ -25,8 +25,4 @@ const LIGHTBOX_CLOSED = 'lightbox-closed';
 const FEATURE_ITEM = 'feature-item';
 
 // FIXME: These actions will be replaces by the Selection API
-const SEARCH_READY = 'search-ready';
 const SEARCH_FAILED = 'search-failed';
-
-// FIXME: These actions will be replaced by the HistoryStore API
-const SET_READY = 'set-ready';

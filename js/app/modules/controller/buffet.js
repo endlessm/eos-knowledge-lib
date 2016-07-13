@@ -101,11 +101,6 @@ const Buffet = new Module.Class({
                     model: results[0],
                 });
             }
-
-            dispatcher.dispatch({
-                action_type: Actions.SEARCH_READY,
-                query: history_item.query,
-            });
         });
     },
 
