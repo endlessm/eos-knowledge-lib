@@ -48,8 +48,8 @@ const Buffet = new Module.Class({
     },
 
     make_ready: function (cb=function () {}) {
-        // Load all sets, with which to populate the highlights and thematic
-        // pages
+        // Load all sets, with which to populate the set map
+        // FIXME: deduplicate this with Selection.AllSets
         Engine.get_default().get_objects_by_query(new QueryObject.QueryObject({
             limit: -1,
             tags_match_any: ['EknSetObject'],
