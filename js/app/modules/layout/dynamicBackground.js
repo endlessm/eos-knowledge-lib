@@ -32,14 +32,14 @@ const _topImageHeight = {
     search:  {small: 354, medium: 279, big: 279},
 };
 
-const _cssTemplate = 'EknDynamicBackground {\
+const _cssTemplate = '.LayoutDynamicBackground {\
     background-image: linear-gradient(@{bottom}), linear-gradient(alpha(black, 0.3)), linear-gradient(alpha(@{overlay}, 0.4)), url("@{image}");\
     background-position: 0px @{small}px, 0px 0px, 0px 0px, 0px 0px;\
 }\
-EknDynamicBackground.medium {\
+.LayoutDynamicBackground.medium {\
     background-position: 0px @{medium}px, 0px 0px, 0px 0px, 0px 0px;\
 }\
-EknDynamicBackground.big {\
+.LayoutDynamicBackground.big {\
     background-position: 0px @{big}px, 0px 0px, 0px 0px, 0px 0px;\
 }';
 
