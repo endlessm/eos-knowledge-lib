@@ -146,8 +146,10 @@ placerat varius non id dui.',
         data.synopsis = this._SYNOPSIS;
         data.content_type = 'text/html';
         data.source = 'wikipedia';
-        data.get_content_stream = () => { return SearchUtils.string_to_stream('<html><body><p>Some content</p></body></html>'); };
-        return new ArticleObjectModel.ArticleObjectModel(data);        
+        data.license = 'CC-BY-SA 3.0';
+        let article = new ArticleObjectModel.ArticleObjectModel(data);
+        article.get_content_stream = () => { return SearchUtils.string_to_stream('<html><body><p>Some content</p></body></html>'); };
+        return article;
     },
 });
 
