@@ -24,7 +24,7 @@
          */
 
         .ThemeableImage {
-            -gtk-icon-source: image-url('news-arrow-dark.svg');
+            -gtk-icon-source: $arrow-recolored-icon;
             min-height: 14px;
             min-width: 14px;
             margin-left: 5px;
@@ -35,7 +35,7 @@
             color: $accent-dark-color;
 
             .ThemeableImage {
-                -gtk-icon-source: image-url('news-arrow-light.svg');
+                -gtk-icon-source: $arrow-recolored-icon;
             }
         }
     }
