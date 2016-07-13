@@ -112,6 +112,8 @@ const Simple = new Module.Class({
         let animating_class = Utils.get_modifier_style_class(Simple,
             'animating');
 
+        HistoryStore.get_default().animating = this.transition_running;
+
         if (this.transition_running) {
             this.get_style_context().add_class(animating_class);
         } else {

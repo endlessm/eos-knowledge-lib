@@ -3,6 +3,7 @@
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 const ArticleObjectModel = imports.search.articleObjectModel;
@@ -39,9 +40,20 @@ const HistoryStore = new Lang.Class({
         'changed': {},
     },
 
+    Properties: {
+        /**
+         * Property: animating
+         * Whether a page in this app is animating.
+         */
+        'animating': GObject.ParamSpec.boolean('animating',
+            'Animating', 'Whether the app is animating',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, false),
+    },
+
     _init: function (props={}) {
         this.parent(props);
 
+        this._animating = false;
         this._items = [];
         this._index = -1;
         this._direction = Direction.FORWARDS;
@@ -88,6 +100,17 @@ const HistoryStore = new Lang.Class({
     on_changed: function () {
         this.change_action_state('article-search-visible',
             new GLib.Variant('b', false));
+    },
+
+    set animating (v) {
+        if (this._animating === v)
+            return;
+        this._animating = v;
+        this.notify('animating');
+    },
+
+    get animating () {
+        return this._animating;
     },
 
     get_items: function () {

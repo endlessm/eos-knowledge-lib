@@ -7,6 +7,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ContentObjectModel = imports.search.contentObjectModel;
+const HistoryStore = imports.app.historyStore;
 const SetObjectModel = imports.search.setObjectModel;
 const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
@@ -252,6 +253,29 @@ function test_selection_compliance (SelectionClass, setup=function () {}, extra_
             expect(() => {
                 selection.queue_load_more(10);
             }).not.toThrow();
+        });
+
+        it('by emitting models-changed directly when no animation is taking place', function (done) {
+            HistoryStore.get_default().animating = false;
+            selection.connect('models-changed', function () {
+                done();
+            });
+            selection.emit_models_when_not_animating();
+        });
+
+        it('by emitting models-changed only after animation has stopped', function () {
+            let spy = jasmine.createSpy();
+            selection.connect('models-changed', spy);
+
+            HistoryStore.get_default().animating = true;
+            selection.emit_models_when_not_animating();
+            expect(spy).not.toHaveBeenCalled();
+            Utils.update_gui();
+
+            HistoryStore.get_default().animating = false;
+            HistoryStore.get_default().notify('animating');
+            Utils.update_gui();
+            expect(spy).toHaveBeenCalled();
         });
     });
 }

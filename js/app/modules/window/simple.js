@@ -102,7 +102,8 @@ const Simple = new Module.Class({
             dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
         });
 
-        HistoryStore.get_default().connect('changed', this._on_history_change.bind(this));
+        let store = HistoryStore.get_default();
+        store.connect('changed', this._on_history_change.bind(this));
         dispatcher.register((payload) => {
             switch(payload.action_type) {
                 case Actions.LAUNCHED_FROM_DESKTOP:
@@ -117,8 +118,8 @@ const Simple = new Module.Class({
         button_box.show_all();
 
         let focused_widget = null;
-        this._pager.connect('notify::transition-running', function () {
-            if (this._pager.transition_running) {
+        store.connect('notify::animating', () => {
+            if (store.animating) {
                 focused_widget = this.get_focus();
                 Utils.squash_all_window_content_updates_heavy_handedly(this);
             } else {
@@ -128,7 +129,7 @@ const Simple = new Module.Class({
                     focused_widget = null;
                 }
             }
-        }.bind(this));
+        });
 
         this.get_child().show_all();
     },
