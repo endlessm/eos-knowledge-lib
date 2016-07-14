@@ -63,6 +63,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/thumb.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/title.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/contentGroup/noResultsMessage.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/contentGroup/contentGroup.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/hamburgerBasement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/infiniteScrolling.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/paper.ui</file>

@@ -3,12 +3,14 @@
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
 const ContentGroup = imports.app.modules.contentGroup.contentGroup;
 const DynamicBackground = imports.app.modules.layout.dynamicBackground;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
-const Utils = imports.tests.utils;
 
 const TEST_CONTENT_BUILDDIR = Utils.get_test_content_builddir();
 
