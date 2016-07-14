@@ -119,7 +119,7 @@ $title-alt-font: 'Lato Thin' !default;
 
         .ContentGroup__trigger {
             .DecorationThemeableImage {
-                -gtk-icon-source: image-url('title-arrow-dark.svg');
+                -gtk-icon-source: $arrow-recolored-icon;
                 min-height: 10px;
                 min-width: 11px;
                 margin-left: 5px;
@@ -127,7 +127,7 @@ $title-alt-font: 'Lato Thin' !default;
             }
 
             &:hover .DecorationThemeableImage {
-                -gtk-icon-source: image-url('title-arrow-light.svg');
+                -gtk-icon-source: $arrow-recolored-icon;
             }
         }
 
@@ -218,14 +218,15 @@ $title-alt-font: 'Lato Thin' !default;
 .ContentGroup__trigger {
 
     .DecorationThemeableImage {
-        -gtk-icon-source: image-url('title-arrow-dark.svg');
+        -gtk-icon-source: $arrow-recolored-icon;
         min-height: 10px;
         min-width: 11px;
-        margin: 0px 0px 3px 5px;
+        margin-left: 5px;
+        margin-bottom: 5px;
     }
 
     &:hover .DecorationThemeableImage {
-        -gtk-icon-source: image-url('title-arrow-light.svg');
+        -gtk-icon-source: $arrow-recolored-icon;
     }
 }
 
@@ -297,12 +298,14 @@ $title-alt-font: 'Lato Thin' !default;
     }
 
     &.arrow {
-        -gtk-icon-source: image-url('arrow-gray.svg');
+        color: gray;
+        -gtk-icon-source: $arrow-recolored-icon;
         -gtk-icon-transform: rotate(45deg);
 
         &:hover,
         &:active {
-            -gtk-icon-source: image-url('arrow-white.svg');
+            color: white;
+            -gtk-icon-source: $arrow-recolored-icon;
             -gtk-icon-transform: rotate(45deg);
         }
     }

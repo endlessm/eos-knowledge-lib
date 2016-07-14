@@ -19,7 +19,8 @@
         margin: 13px;
 
         &.arrow {
-            -gtk-icon-source: image-url('arrow-white.svg');
+            color: white;
+            -gtk-icon-source: $arrow-recolored-icon;
             -gtk-icon-transform: rotate(45deg);
         }
     }
