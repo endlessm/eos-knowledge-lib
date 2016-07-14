@@ -48,6 +48,7 @@ const MoltresApplication = new Knowledge.Class({
             this._controller = ControllerLoader.create_controller_with_app_json(this, app_json, {
                 css: css,
             });
+            this._controller.make_ready();
         }
         Dispatcher.get_default().dispatch({
             action_type: Actions.LAUNCHED_FROM_DESKTOP,
