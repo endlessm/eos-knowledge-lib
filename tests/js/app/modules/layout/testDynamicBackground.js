@@ -3,26 +3,44 @@
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 
-const Actions = imports.app.actions;
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
+const ContentGroup = imports.app.modules.contentGroup.contentGroup;
 const DynamicBackground = imports.app.modules.layout.dynamicBackground;
 const ContentObjectModel = imports.search.contentObjectModel;
-const MockDispatcher = imports.tests.mockDispatcher;
+const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
-const Utils = imports.tests.utils;
 
 const TEST_CONTENT_BUILDDIR = Utils.get_test_content_builddir();
 
 Gtk.init(null);
 
 describe('Layout.DynamicBackground', function () {
-    let module, dispatcher;
+    let module, factory, selection;
 
     beforeEach(function () {
-        dispatcher = MockDispatcher.mock_default();
-        [module] = MockFactory.setup_tree({
+        [module, factory] = MockFactory.setup_tree({
             type: DynamicBackground.DynamicBackground,
             slots: {
-                'content': { type: null },
+                'content': {
+                    type: ContentGroup.ContentGroup,
+                    slots: {
+                        'selection': {
+                            id: 'selection',
+                            type: Minimal.MinimalSelection,
+                        },
+                        'arrangement': {
+                            type: Minimal.MinimalArrangement,
+                            slots: {
+                                'card': { type: Minimal.MinimalCard },
+                            },
+                        },
+                    },
+                },
+            },
+            references: {
+                'selection': 'selection',
             },
         });
 
@@ -30,6 +48,7 @@ describe('Layout.DynamicBackground', function () {
         resource._register();
 
         spyOn(Gtk.CssProvider.prototype, 'load_from_data');
+        selection = factory.get_created('content.selection')[0];
     });
 
     it('listens to the corresponding event', function () {
@@ -38,11 +57,8 @@ describe('Layout.DynamicBackground', function () {
         let model = new ContentObjectModel.ContentObjectModel({
             thumbnail_uri: image,
         });
-
-        dispatcher.dispatch({
-            action_type: Actions.FEATURE_ITEM,
-            model: model,
-        });
+        selection.add_model(model);
+        selection.emit('models-changed');
         Utils.update_gui();
 
         expect(Gtk.CssProvider.prototype.load_from_data.calls.mostRecent().args[0]).toMatch(color);
@@ -50,11 +66,8 @@ describe('Layout.DynamicBackground', function () {
 
     it('handles models without thumbnail', function () {
         let model = new ContentObjectModel.ContentObjectModel();
-
-        dispatcher.dispatch({
-            action_type: Actions.FEATURE_ITEM,
-            model: model,
-        });
+        selection.add_model(model);
+        selection.emit('models-changed');
         Utils.update_gui();
 
         expect(Gtk.CssProvider.prototype.load_from_data).toHaveBeenCalled();

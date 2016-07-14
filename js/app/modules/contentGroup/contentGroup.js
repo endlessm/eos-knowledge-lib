@@ -91,11 +91,12 @@ const ContentGroup = new Module.Class({
 
         this._no_results = this.create_submodule('no-results');
 
-        this._stack = new Gtk.Stack({
-            visible: true,
-        });
-        let spinner = new Gtk.Spinner();
-        this._stack.add_named(spinner, SPINNER_PAGE_NAME);
+        // FIXME: use a composite template for this. Currently not possible
+        // because Card.ContentGroup must inherit from this class.
+        // https://bugzilla.gnome.org/show_bug.cgi?id=768790
+        let builder = Gtk.Builder.new_from_resource('/com/endlessm/knowledge/data/widgets/contentGroup/contentGroup.ui');
+        this._stack = builder.get_object('stack');
+        let spinner = builder.get_object('spinner');
         this._stack.add_named(this._arrangement, CONTENT_PAGE_NAME);
 
         if (this._no_results)

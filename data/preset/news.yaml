@@ -60,6 +60,8 @@ defines:
       slots:
         content:
           shortdef: 'Layout.DynamicBackground(page-mode: home)'
+          references:
+            selection: highlighted
           slots:
             content:
               type: Layout.ResponsiveMargins
@@ -78,6 +80,7 @@ defines:
                             card: *main-card
                         selection:
                           type: Selection.AllHighlights
+                          id: highlighted
                           slots:
                             filter: *no-sets
                             order: 'Order.PublishedDate(ascending: false)'
@@ -130,6 +133,8 @@ defines:
       slots:
         content:
           shortdef: 'Layout.DynamicBackground(page-mode: set)'
+          references:
+            selection: set-page-subsets
           slots:
             content:
               type: Layout.Box
@@ -226,6 +231,8 @@ defines:
     <<: *menu-slots
     content:
       shortdef: 'Layout.DynamicBackground(page-mode: search)'
+      references:
+        selection: search-results
       slots:
         content:
           shortdef: 'Layout.Box(orientation: vertical)'
@@ -238,6 +245,7 @@ defines:
               slots:
                 selection:
                   type: Selection.Search
+                  id: search-results
                 arrangement:
                   type: Arrangement.ScrollingList
                   slots:

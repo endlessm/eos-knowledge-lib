@@ -8,11 +8,9 @@ Gtk.init(null);
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const Actions = imports.app.actions;
 const AppUtils = imports.app.utils;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const Buffet = imports.app.modules.controller.buffet;
-const ContentObjectModel = imports.search.contentObjectModel;
 const HistoryStore = imports.app.historyStore;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Module = imports.app.interfaces.module;
@@ -84,37 +82,5 @@ describe('Controller.Buffet', function () {
         });
 
         expect(reading_history.mark_article_read).toHaveBeenCalledWith(article_model.ekn_id);
-    });
-
-    describe('on state change to search page', function () {
-        beforeEach(function () {
-            // Simulate batches of results
-            engine.get_objects_by_query.calls.reset();
-            engine.get_objects_by_query_finish.and.callFake(() => {
-                let calls = engine.get_objects_by_query.calls.count();
-                if (calls == 1)
-                    return [
-                        [0, 1, 2, 3, 4].map(() =>
-                            new ContentObjectModel.ContentObjectModel()),
-                        { more_results: 1 },
-                    ];
-                if (calls == 2)
-                    return [
-                        [0, 1].map(() =>
-                            new ContentObjectModel.ContentObjectModel()),
-                        { more_results: null },
-                    ];
-                return [[], { more_results: null }];
-            });
-            store.set_current_item_from_props({
-                page_type: Pages.SEARCH,
-                query: 'user query',
-            });
-        });
-
-        it('launches a search', function () {
-            expect(dispatcher.last_payload_with_type(Actions.SEARCH_READY).query)
-                .toEqual('user query');
-        });
     });
 });

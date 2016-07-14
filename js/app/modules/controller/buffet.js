@@ -4,9 +4,7 @@
 
 const GObject = imports.gi.GObject;
 
-const Actions = imports.app.actions;
 const BuffetHistoryStore = imports.app.buffetHistoryStore;
-const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Controller = imports.app.interfaces.controller;
 const HistoryStore = imports.app.historyStore;
@@ -15,8 +13,6 @@ const Pages = imports.app.pages;
 const ReadingHistoryModel = imports.app.readingHistoryModel;
 const SetMap = imports.app.setMap;
 const QueryObject = imports.search.queryObject;
-
-const RESULTS_SIZE = 15;
 
 /**
  * Class: Buffet
@@ -52,8 +48,8 @@ const Buffet = new Module.Class({
     },
 
     make_ready: function (cb=function () {}) {
-        // Load all sets, with which to populate the highlights and thematic
-        // pages
+        // Load all sets, with which to populate the set map
+        // FIXME: deduplicate this with Selection.AllSets
         Engine.get_default().get_objects_by_query(new QueryObject.QueryObject({
             limit: -1,
             tags_match_any: ['EknSetObject'],
@@ -72,57 +68,10 @@ const Buffet = new Module.Class({
         });
     },
 
-    _do_search: function (history_item) {
-        let dispatcher = Dispatcher.get_default();
-        let query_obj = new QueryObject.QueryObject({
-            query: history_item.query,
-            limit: RESULTS_SIZE,
-            tags_match_any: ['EknArticleObject'],
-        });
-        Engine.get_default().get_objects_by_query(query_obj, null, (engine, task) => {
-            let results, info;
-            try {
-                [results, info] = engine.get_objects_by_query_finish(task);
-            } catch (error) {
-                logError(error);
-                let dispatcher = Dispatcher.get_default();
-                dispatcher.dispatch({
-                    action_type: Actions.SEARCH_FAILED,
-                    query: history_item.query,
-                    error: error,
-                });
-                return;
-            }
-            this._get_more_results_query = info.more_results;
-
-            if (results.length > 0) {
-                dispatcher.dispatch({
-                    action_type: Actions.FEATURE_ITEM,
-                    model: results[0],
-                });
-            }
-
-            dispatcher.dispatch({
-                action_type: Actions.SEARCH_READY,
-                query: history_item.query,
-            });
-        });
-    },
-
     _on_history_change: function () {
         let item = HistoryStore.get_default().get_current_item();
-        let dispatcher = Dispatcher.get_default();
-
         switch (item.page_type) {
-            case Pages.SEARCH:
-                this._do_search(item);
-                break;
             case Pages.ARTICLE:
-                dispatcher.dispatch({
-                    action_type: Actions.FEATURE_ITEM,
-                    model: item.model,
-                });
-
                 ReadingHistoryModel.get_default().mark_article_read(item.model.ekn_id);
                 break;
         }
