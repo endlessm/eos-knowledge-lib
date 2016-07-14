@@ -13,14 +13,19 @@ const SetObjectModel = imports.search.setObjectModel;
 
 Gtk.init(null);
 
-Compliance.test_selection_compliance(ArticlesForSetCrossSection.ArticlesForSetCrossSection, function () {
+function setup() {
     let store = new HistoryStore.HistoryStore();
     HistoryStore.set_default(store);
     store.set_current_item_from_props({
         page_type: 'set',
         model: new SetObjectModel.SetObjectModel(),
     });
-});
+}
+
+Compliance.test_selection_compliance(ArticlesForSetCrossSection.ArticlesForSetCrossSection,
+    setup);
+Compliance.test_xapian_selection_compliance(ArticlesForSetCrossSection.ArticlesForSetCrossSection,
+    setup);
 
 describe('Selection.ArticlesForSet', function () {
     let factory, selection, dispatcher;

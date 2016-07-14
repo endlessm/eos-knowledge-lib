@@ -6,9 +6,7 @@ const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
-const Actions = imports.app.actions;
 const Config = imports.app.config;
-const Dispatcher = imports.app.dispatcher;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 
@@ -49,16 +47,6 @@ const NoResultsMessage = new Module.Class({
 
         this._message_title.justify = this._message_subtitle.justify = this.justify;
         this._message_title.halign = this._message_subtitle.halign = this.halign;
-
-        // FIXME: Should be getting this from history store.
-        Dispatcher.get_default().register((payload) => {
-            switch (payload.action_type) {
-            case Actions.SEARCH_FAILED:
-                this._set_error_message();
-                break;
-            }
-        });
-
         let store = HistoryStore.get_default();
         store.connect('changed', this._on_history_changed.bind(this));
     },
@@ -75,10 +63,5 @@ const NoResultsMessage = new Module.Class({
             "  •  Check your spelling\n" +
             "  •  Try other words that mean the same thing\n" +
             "  •  Try using more general words");
-    },
-
-    _set_error_message: function () {
-        this._message_title.label = _("There was an error during your search.");
-        this._message_subtitle.label = '';
     },
 });

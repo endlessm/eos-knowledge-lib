@@ -12,6 +12,7 @@ const MockFactory = imports.tests.mockFactory;
 Gtk.init(null);
 
 Compliance.test_selection_compliance(AllSets.AllSets);
+Compliance.test_xapian_selection_compliance(AllSets.AllSets);
 
 describe('Selection.AllSets', function () {
     let factory, selection, dispatcher;

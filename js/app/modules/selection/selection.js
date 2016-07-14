@@ -3,6 +3,7 @@
 // Copyright 2016 Endless Mobile, Inc.
 
 const GObject = imports.gi.GObject;
+const Lang = imports.lang;
 
 const ContentObjectModel = imports.search.contentObjectModel;
 const HistoryStore = imports.app.historyStore;
@@ -23,6 +24,10 @@ const Selection = new Module.Class({
         'global': GObject.ParamSpec.boolean('global',
             'Global', 'Whether the selection gets its model from global state or not',
             GObject.ParamFlags.READABLE, true),
+        'in-error-state': GObject.ParamSpec.boolean('in-error-state',
+            'In error state',
+            'Whether the selection encountered an error while loading',
+            GObject.ParamFlags.READABLE, false),
         /**
          * Property: model
          *

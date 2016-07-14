@@ -18,6 +18,3 @@ const DBUS_LOAD_QUERY_CALLED = 'dbus-load-query-called';
 const DBUS_LOAD_ITEM_CALLED = 'dbus-load-item-called';
 const SEARCH_BOX_FOCUSED = 'search-box-focused';
 const LIGHTBOX_CLOSED = 'lightbox-closed';
-
-// FIXME: These actions will be replaces by the Selection API
-const SEARCH_FAILED = 'search-failed';

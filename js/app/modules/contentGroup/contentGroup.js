@@ -18,6 +18,7 @@ const BATCH_SIZE = 10;
 const CONTENT_PAGE_NAME = 'content';
 const SPINNER_PAGE_NAME = 'spinner';
 const NO_RESULTS_PAGE_NAME = 'no-results';
+const ERROR_PAGE_NAME = 'error';
 
 const ContentGroup = new Module.Class({
     Name: 'ContentGroup.ContentGroup',
@@ -113,7 +114,12 @@ const ContentGroup = new Module.Class({
         this._selection.connect('models-changed',
             this._on_models_changed.bind(this));
         this._selection.connect('notify::loading', () => {
-            this._stack.visible_child_name = this._selection.loading ? SPINNER_PAGE_NAME : CONTENT_PAGE_NAME;
+            if (this._selection.loading)
+                this._stack.visible_child_name = SPINNER_PAGE_NAME;
+            else if (this._selection.error)
+                this._stack.visible_child_name = ERROR_PAGE_NAME;
+            else
+                this._stack.visible_child_name = CONTENT_PAGE_NAME;
         });
 
         this.attach(this._stack, 0, 1, 2, 1);
@@ -125,7 +131,8 @@ const ContentGroup = new Module.Class({
                 this.notify('has-more-content');
             });
         });
-
+        this._selection.connect('notify::in-error-state',
+            this._on_selection_error.bind(this));
         HistoryStore.get_default().connect('changed',
             this._on_history_changed.bind(this));
     },
@@ -181,6 +188,12 @@ const ContentGroup = new Module.Class({
         let item = HistoryStore.get_default().get_current_item();
         if (item.query)
             this._arrangement.highlight_string(item.query);
+    },
+
+    _on_selection_error: function () {
+        if (!this._selection.in_error_state)
+            return;
+        this._stack.visible_child_name = ERROR_PAGE_NAME;
     },
 
     load: function () {

@@ -16,6 +16,7 @@ const Xapian = new Module.Class({
         this._can_load_more = true;
         this._get_more = null;
         this._query_index = 0;
+        this._error_state = false;
 
         this.parent(props);
     },
@@ -26,6 +27,10 @@ const Xapian = new Module.Class({
 
     get can_load_more() {
         return this._can_load_more;
+    },
+
+    get in_error_state() {
+        return this._error_state;
     },
 
     construct_query_object: function (limit, query_index) {
@@ -57,10 +62,20 @@ const Xapian = new Module.Class({
             let results, info;
             try {
                 [results, info] = engine.get_objects_by_query_finish(task);
+                this._exception = null;
+                if (this._error_state) {
+                    this._error_state = false;
+                    this.notify('in-error-state');
+                }
             } catch (e) {
                 logError(e, 'Failed to load content from engine');
                 results = [];
                 info = { more_results: null };
+                if (!this._error_state) {
+                    this._error_state = true;
+                    this.notify('in-error-state');
+                }
+                return;
             }
             let more = info.more_results;
 
@@ -88,6 +103,7 @@ const Xapian = new Module.Class({
         this._get_more = null;
         this._query_index = 0;
         this._can_load_more = true;
+        this._error_state = false;
         this.parent();
     },
 });

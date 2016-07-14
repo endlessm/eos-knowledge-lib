@@ -53,6 +53,19 @@
     }
 }
 
+.ContentGroupContentGroup {
+    &__errorPage {
+        padding: 40px 30px;
+        background-color: $primary-dark-color;
+    }
+
+    &__errorMessage {
+        font-size: 24px;
+        font-weight: bold;
+        padding-bottom: 12px;
+    }
+}
+
 .search-results {
     background-color: $background-light-color;
 
