@@ -29,6 +29,13 @@ const MoltresApplication = new Knowledge.Class({
         'app-json-path': GObject.ParamSpec.string('app-json-path',
             'App JSON Path', 'App JSON Path',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
+         * Property: css-path
+         * Path to applications css file.
+         */
+        'css-path': GObject.ParamSpec.string('css-path',
+            'App CSS Path', 'App CSS Path',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 
     _init: function (props={}) {
@@ -42,7 +49,17 @@ const MoltresApplication = new Knowledge.Class({
             let app_json = Utils.parse_object_from_file(Gio.File.new_for_path(this.app_json_path));
 
             MoltresEngine.override_engine();
-            this._controller = ControllerLoader.create_controller_with_app_json(this, app_json);
+
+            let css = '';
+            if (this.css_path) {
+                let css_file = Gio.File.new_for_path(this.css_path);
+                let [success, data] = css_file.load_contents(null);
+                css = data.toString();
+            }
+
+            this._controller = ControllerLoader.create_controller_with_app_json(this, app_json, {
+                css: css,
+            });
             this._controller.make_ready();
         }
         Dispatcher.get_default().dispatch({
