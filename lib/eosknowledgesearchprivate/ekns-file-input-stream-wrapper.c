@@ -2,8 +2,6 @@
 
 /* Copyright 2016 Endless Mobile, Inc. */
 
-/* A complete tire fire workaround for Gio's piece of trash horrible file / stream API. Kill me. */
-
 #include "ekns-file-input-stream-wrapper.h"
 
 struct _EknsFileInputStreamWrapper
