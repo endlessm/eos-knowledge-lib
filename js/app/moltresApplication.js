@@ -42,12 +42,7 @@ const MoltresApplication = new Knowledge.Class({
             let app_json = Utils.parse_object_from_file(Gio.File.new_for_path(this.app_json_path));
 
             MoltresEngine.override_engine();
-            let css_file = Gio.File.new_for_path('data/css/default.css');
-            let [success, data] = css_file.load_contents(null);
-            let css = data.toString();
-            this._controller = ControllerLoader.create_controller_with_app_json(this, app_json, {
-                css: css,
-            });
+            this._controller = ControllerLoader.create_controller_with_app_json(this, app_json);
             this._controller.make_ready();
         }
         Dispatcher.get_default().dispatch({
