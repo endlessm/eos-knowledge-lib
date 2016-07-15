@@ -5,7 +5,7 @@
         min-height: 240px;
     }
 
-    .ContentGroupSet {
+    .ContentGroupContentGroup {
         background-color: black;
     }
 }
@@ -36,8 +36,7 @@
         }
     }
 
-    .ContentGroupItem,
-    .ContentGroup {
+    .ContentGroupContentGroup {
         background-color: transparentize(black, 1 - 0.75);
     }
 
@@ -92,7 +91,7 @@
 
     .set-page,
     .article-page {
-        .ContentGroupItem {
+        .ContentGroupContentGroup {
             background-color: transparentize(black, 1 - 0.8);
         }
     }

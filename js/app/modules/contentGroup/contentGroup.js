@@ -20,7 +20,7 @@ const SPINNER_PAGE_NAME = 'spinner';
 const NO_RESULTS_PAGE_NAME = 'no-results';
 
 const ContentGroup = new Module.Class({
-    Name: 'ContentGroup',
+    Name: 'ContentGroup.ContentGroup',
     Extends: Gtk.Grid,
 
     Slots: {

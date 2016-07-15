@@ -84,7 +84,7 @@ $support-font: 'Fira Sans' !default;
     margin: 50px 0 50px 20px;
     padding: 0 20px 20px 0px;
 
-    .ContentGroup__title {
+    .ContentGroupContentGroup__title {
         font-family: 'Merriweather';
         font-weight: bold;
         font-size: 40px;
@@ -118,11 +118,11 @@ $support-font: 'Fira Sans' !default;
 
 /* Adjust context frame in supplementary article and suggested article cards */
 .supplementary-articles .CardThumb frame:nth-child(2),
-.ContentGroupSuggestedArticles .content-frame {
+.search-page-suggestions .content-frame {
     margin-top: -10px;
 }
 
-.search-page-suggestions .ContentGroup__title {
+.search-page-suggestions .ContentGroupContentGroup__title {
     color: white;
 }
 

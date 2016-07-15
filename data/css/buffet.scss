@@ -102,8 +102,8 @@ $title-alt-font: 'Lato Thin' !default;
     }
 
     /* Selects the nested ContentGroup inside the highlights content group */
-    .ContentGroup {
-        .ContentGroup__title, .ContentGroup__trigger {
+    .ContentGroupContentGroup {
+        &__title, &__trigger {
             color: $accent-light-color;
             font-weight: 200;
 
@@ -113,11 +113,11 @@ $title-alt-font: 'Lato Thin' !default;
         }
 
         /* FIXME can't use em because of .Card base size */
-        .ContentGroup__title {
+        &__title {
             font-size: 29.3px;
         }
 
-        .ContentGroup__trigger {
+        &__trigger {
             .DecorationThemeableImage {
                 -gtk-icon-source: $arrow-recolored-icon;
                 min-height: 10px;
@@ -181,7 +181,7 @@ $title-alt-font: 'Lato Thin' !default;
 .thematic-group {
     padding: 20px;
 
-    .ContentGroup__title, .ContentGroup__trigger {
+    .ContentGroupContentGroup__title, .ContentGroupContentGroup__trigger {
         color: #044a80;
         font-weight: 200;
         &:hover {
@@ -189,11 +189,11 @@ $title-alt-font: 'Lato Thin' !default;
         }
     }
 
-    .ContentGroup__title {
+    .ContentGroupContentGroup__title {
         font-size: 29.3px;
     }
 
-    .ContentGroup__trigger {
+    .ContentGroupContentGroup__trigger {
         font-size: 20px;
     }
 
@@ -203,7 +203,7 @@ $title-alt-font: 'Lato Thin' !default;
         margin: 4px 0px 10px 0px;
     }
 
-    .composite & .ContentGroup__title {
+    .composite & .ContentGroupContentGroup__title {
         font-weight: normal;
     }
     .ArrangementList {
@@ -211,12 +211,11 @@ $title-alt-font: 'Lato Thin' !default;
     }
 }
 
-.ContentGroup__title, .ContentGroup__trigger {
+.ContentGroupContentGroup__title, .ContentGroupContentGroup__trigger {
     margin-bottom: 10px;
 }
 
-.ContentGroup__trigger {
-
+.ContentGroupContentGroup__trigger {
     .DecorationThemeableImage {
         -gtk-icon-source: $arrow-recolored-icon;
         min-height: 10px;
@@ -235,8 +234,8 @@ $title-alt-font: 'Lato Thin' !default;
     padding: 15px 20px;
 
     /* FIXME clean-up ContentGroup theming after refactors */
-    .ContentGroup__title,
-    .ContentGroup__trigger {
+    .ContentGroupContentGroup__title,
+    .ContentGroupContentGroup__trigger {
         color: $accent-light-color;
         font-weight: 200;
         font-size: 1.83em; /* 29.3px * 1/12 * 72/96 */
@@ -246,12 +245,12 @@ $title-alt-font: 'Lato Thin' !default;
         }
     }
 
-    .ContentGroup__trigger {
+    .ContentGroupContentGroup__trigger {
         font-size: 1.25em; /* 20px * 1/12 * 72/96 */
     }
 
-    .composite & .ContentGroup__title,
-    .composite & .ContentGroup__trigger {
+    .composite & .ContentGroupContentGroup__title,
+    .composite & .ContentGroupContentGroup__trigger {
         font-weight: normal;
     }
 }
@@ -263,7 +262,7 @@ $title-alt-font: 'Lato Thin' !default;
         padding: 0 20px 20px 20px;
     }
 
-    .ContentGroup__title {
+    .ContentGroupContentGroup__title {
         color: $accent-light-color;
         font-weight: 200;
         font-size: 1.83em; /* 29.3px * 1/12 * 72/96 */
