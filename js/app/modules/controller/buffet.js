@@ -52,7 +52,7 @@ const Buffet = new Module.Class({
         // FIXME: deduplicate this with Selection.AllSets
         Engine.get_default().get_objects_by_query(new QueryObject.QueryObject({
             limit: -1,
-            tags_match_any: ['EknSetObject'],
+            tags_match_all: ['EknSetObject'],
         }), null, (engine, res) => {
             let models;
             try {

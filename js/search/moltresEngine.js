@@ -59,7 +59,7 @@ const MoltresEngine = new Lang.Class({
             unique_data.ekn_id = data.ekn_id + '#' + this._counter++;
             return unique_data;
         }
-        if (query.tags_match_any.indexOf('EknSetObject') >= 0) {
+        if (query.tags_match_all.indexOf('EknSetObject') >= 0) {
             generation_func = () => {
                 let unique = uniquify(this._SETS[GLib.random_int_range(0, this._SETS.length)]);
                 return this._generate_set_object(unique);
