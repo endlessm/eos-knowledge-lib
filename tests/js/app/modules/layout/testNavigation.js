@@ -2,16 +2,29 @@ const Gtk = imports.gi.Gtk;
 Gtk.init(null);
 
 const HistoryStore = imports.app.historyStore;
+const MockFactory = imports.tests.mockFactory;
 const Navigation = imports.app.modules.layout.navigation;
 const Pages = imports.app.pages;
+const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 describe('Layout.Navigation', function () {
-    let layout, store;
+    let layout, store, factory;
 
     beforeEach(function () {
+        jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
         store = new HistoryStore.HistoryStore();
         HistoryStore.set_default(store);
-        layout = new Navigation.Navigation();
+        [layout, factory] = MockFactory.setup_tree({
+            type: Navigation.Navigation,
+            slots: {
+                'content': { type: null },
+            },
+        });
+    });
+
+    it('packs its content', function () {
+        let content = factory.get_last_created('content');
+        expect(layout).toHaveDescendant(content);
     });
 
     it('starts out with arrows disabled', function () {
