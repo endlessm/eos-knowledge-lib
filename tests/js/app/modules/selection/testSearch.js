@@ -8,11 +8,9 @@ const Compliance = imports.tests.compliance;
 const HistoryStore = imports.app.historyStore;
 const Search = imports.app.modules.selection.search;
 
-function setup() {
+function setup (store) {
     // Selection.Search only works when the global state is aware of a search
     // query
-    let store = new HistoryStore.HistoryStore();
-    HistoryStore.set_default(store);
     store.set_current_item_from_props({
         page_type: 'search',
         query: 'foobar',

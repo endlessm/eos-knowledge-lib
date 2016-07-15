@@ -9,11 +9,9 @@ const SuggestedArticles = imports.app.modules.selection.suggestedArticles;
 
 Gtk.init(null);
 
-function setup() {
+function setup (store) {
     // Selection.SuggestedArticles only works when the global state is aware of a search
     // query
-    let store = new HistoryStore.HistoryStore();
-    HistoryStore.set_default(store);
     store.set_current_item_from_props({
         page_type: 'search',
         query: 'foobar',

@@ -2,7 +2,6 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
-const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
 const Xapian = imports.app.modules.selection.xapian;
@@ -11,24 +10,20 @@ const Search = new Module.Class({
     Name: 'Selection.Search',
     Extends: Xapian.Xapian,
 
-    _init: function (props) {
-        this.parent(props);
-        let store = HistoryStore.get_default();
-        store.connect('changed', this._on_history_changed.bind(this));
-    },
-
-    _on_history_changed: function () {
-        this.clear();
+    // Selection.Xapian implementation
+    on_history_changed: function (history) {
+        let item = history.get_current_item();
+        if (item.query) {
+            this._item = item;
+            this._set_needs_refresh(true);
+        }
     },
 
     construct_query_object: function (limit, query_index) {
         if (query_index > 0)
             return null;
-        let item = HistoryStore.get_default().get_current_item();
-        if (!item)
-            throw new Error('This selection only works when there are search terms');
         return new QueryObject.QueryObject({
-            query: item.query,
+            query: this._item.query,
             limit: limit,
             tags_match_all: ['EknArticleObject'],
         });

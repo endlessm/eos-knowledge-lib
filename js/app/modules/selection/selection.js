@@ -18,6 +18,9 @@ const Selection = new Module.Class({
         'loading': GObject.ParamSpec.boolean('loading', 'Loading',
             'Whether the selection is busy loading',
             GObject.ParamFlags.READABLE, false),
+        'needs-refresh': GObject.ParamSpec.boolean('needs-refresh', 'Needs refresh',
+            'Whether the content of the selection needs to refresh its models based on the current state of the HistoryStore',
+            GObject.ParamFlags.READABLE, false),
         'can-load-more': GObject.ParamSpec.boolean('can-load-more',
             'Can load more', 'Whether the selection has more items to load',
             GObject.ParamFlags.READABLE, true),
@@ -60,15 +63,14 @@ const Selection = new Module.Class({
         this._models_by_id = new Map();
         this._order = this.create_submodule('order');
         this._filter = this.create_submodule('filter');
+        this._needs_refresh = false;
         if (this._filter) {
             this._filter.connect('filter-changed', () => {
-                let models = [...this._models_by_id.values()];
-                models.filter((m) => !this._filter.include(m)).forEach((model) => {
-                    this._models_by_id.delete(model.ekn_id);
-                });
-                this.emit('models-changed');
+                this._set_needs_refresh(true);
             });
         }
+
+        HistoryStore.get_default().connect('changed', this.on_history_changed.bind(this));
     },
 
     get model () {
@@ -78,6 +80,21 @@ const Selection = new Module.Class({
     set model (v) {
         this._model = v;
         this.notify('model');
+    },
+
+    get needs_refresh () {
+        return this._needs_refresh;
+    },
+
+    _set_needs_refresh: function (v) {
+        if (v === this._needs_refresh)
+            return;
+        this._needs_refresh = v;
+        this.notify('needs-refresh');
+    },
+
+    on_history_changed: function () {
+        // Optionally implemented in subclass
     },
 
     queue_load_more: function (num_desired) {

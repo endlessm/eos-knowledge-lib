@@ -44,7 +44,6 @@ const ContentGroup = new Module.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        this._load_callback = null;
 
         this._title = this.create_submodule('title');
         if (this._title) {
@@ -122,6 +121,9 @@ const ContentGroup = new Module.Class({
                 this._stack.visible_child_name = CONTENT_PAGE_NAME;
         });
 
+        this._ensure_synced();
+        this._selection.connect('notify::needs-refresh', this._ensure_synced.bind(this));
+
         this.attach(this._stack, 0, 1, 2, 1);
 
         [[this._selection, 'can-load-more'], [this._arrangement, 'all-visible']].forEach((arr) => {
@@ -137,20 +139,31 @@ const ContentGroup = new Module.Class({
             this._on_history_changed.bind(this));
     },
 
+    _ensure_synced: function () {
+        if (this._selection.needs_refresh) {
+            this.load();
+        }
+    },
+
     get has_more_content () {
         return (!this._arrangement.all_visible || this._selection.can_load_more);
     },
 
     make_ready: function (cb=function () {}) {
-        this._arrangement.clear();
-        this._selection.clear();
-
         [this._title, this._trigger, this._no_results].forEach((module) => {
             if (module)
                 module.make_ready();
         });
-        this._load_callback = cb;
-        this.load();
+        if (!this._selection.loading) {
+            cb();
+        } else {
+            let id = this._selection.connect('notify::loading', () => {
+                if (!this._selection.loading) {
+                    cb();
+                    this._selection.disconnect(id); // only invoke callback once
+                }
+            });
+        }
     },
 
     get_selection: function () {
@@ -171,12 +184,6 @@ const ContentGroup = new Module.Class({
                 this._arrangement.highlight(item.model);
             }
             this._stack.visible_child_name = CONTENT_PAGE_NAME;
-        }
-
-        // If this is the first time models are loaded, invoke the callback
-        if (this._load_callback) {
-            this._load_callback();
-            this._load_callback = null;
         }
 
         if (models.length > 0 && this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
