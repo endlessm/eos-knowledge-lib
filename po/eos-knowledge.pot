@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge 0.4.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2016-07-12 01:45+0000\n"
+"POT-Creation-Date: 2016-07-15 18:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,6 +28,19 @@ msgstr ""
 
 #: data/widgets/card/sequence.ui:59 js/app/modules/layout/articleStack.js:157
 msgid "Previous Article"
+msgstr ""
+
+#: data/widgets/contentGroup/contentGroup.ui:32
+msgid "Oops! There was an error."
+msgstr ""
+
+#: data/widgets/contentGroup/noResultsMessage.ui:50
+msgid ""
+"We recommend that you:\n"
+"\n"
+"  •  Check your spelling\n"
+"  •  Try other words that mean the same thing\n"
+"  •  Try using more general words"
 msgstr ""
 
 #: data/widgets/layout/sideMenu.ui:95
@@ -129,25 +142,12 @@ msgstr ""
 msgid "Results for “%s”"
 msgstr ""
 
-#: js/app/modules/contentGroup/noResultsMessage.js:72
+#: js/app/modules/contentGroup/noResultsMessage.js:52
 msgid "Sorry! :-("
 msgstr ""
 
-#: js/app/modules/contentGroup/noResultsMessage.js:73
+#: js/app/modules/contentGroup/noResultsMessage.js:53
 msgid "There are no results that match your search.\n"
-msgstr ""
-
-#: js/app/modules/contentGroup/noResultsMessage.js:74
-msgid ""
-"We recommend that you:\n"
-"\n"
-"  •  Check your spelling\n"
-"  •  Try other words that mean the same thing\n"
-"  •  Try using more general words"
-msgstr ""
-
-#: js/app/modules/contentGroup/noResultsMessage.js:81
-msgid "There was an error during your search."
 msgstr ""
 
 #: js/app/modules/layout/hamburgerBasement.js:41

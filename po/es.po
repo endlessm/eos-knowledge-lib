@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-07-05 01:52+0000\n"
-"PO-Revision-Date: 2016-06-28 01:51+0000\n"
+"POT-Creation-Date: 2016-07-12 01:45+0000\n"
+"PO-Revision-Date: 2016-07-12 01:46+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -129,38 +129,10 @@ msgstr "Todas las Categorías"
 msgid "Search results for “%s”"
 msgstr "Resultados de la búsqueda “%s”"
 
-#. TRANSLATORS: This message is displayed while an app is
-#. searching for results. The %s will be replaced with the term
-#. that the user searched for. Note, in English, it is
-#. surrounded by Unicode left and right double quotes (U+201C
-#. and U+201D). Make sure to include %s in your translation and
-#. use whatever quote marks are appropriate for your language.
-#: js/app/modules/banner/search.js:48
-#, javascript-format
-msgid "Searching for “%s”"
-msgstr "Buscando \"%s\""
-
-#. TRANSLATORS: This message is displayed when an app is
-#. done searching for results. The %s will be replaced with the
-#. term that the user searched for. Note, in English, it is
-#. surrounded by Unicode left and right double quotes (U+201C
-#. and U+201D). Make sure to include %s in your translation and
-#. use whatever quote marks are appropriate for your language.
-#: js/app/modules/banner/search.js:60
+#: js/app/modules/banner/search.js:45
 #, javascript-format
 msgid "Results for “%s”"
 msgstr "Resultados para \"%s\""
-
-#: js/app/modules/banner/search.js:66
-msgid "OOPS!"
-msgstr "¡UY!"
-
-#. TRANSLATORS: %s will be replaced with the name of the category
-#. that we are offering to show more of.
-#: js/app/modules/contentGroup/cardContainer.js:144
-#, javascript-format
-msgid "See more %s"
-msgstr "Más de %s"
 
 #: js/app/modules/contentGroup/noResultsMessage.js:72
 msgid "Sorry! :-("
