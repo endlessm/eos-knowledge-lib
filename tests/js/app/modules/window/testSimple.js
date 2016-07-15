@@ -78,11 +78,6 @@ describe('Window.Simple', function () {
             view.destroy();
         });
 
-        it('correctly sets background image', function () {
-            view.background_image_uri = BACKGROUND_URI;
-            expect(view.background_image_uri).toBe(BACKGROUND_URI);
-        });
-
         function test_launch_action (action, descriptor) {
             describe('on ' + descriptor, function () {
                 beforeEach(function () {
