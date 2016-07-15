@@ -294,7 +294,7 @@ const EknGFile = new Lang.Class({
     },
 
     vfunc_read_fn: function (cancellable) {
-        return new Ekns.FileInputStreamWrapper({ stream: this._blob.get_stream() });
+        return new Ekns.FileInputStreamWrapper({ stream: this._blob.get_stream(), file: this });
     },
 
     vfunc_query_info: function (attributes, flags, cancellable) {
