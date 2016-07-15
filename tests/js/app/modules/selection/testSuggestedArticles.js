@@ -9,7 +9,7 @@ const SuggestedArticles = imports.app.modules.selection.suggestedArticles;
 
 Gtk.init(null);
 
-Compliance.test_selection_compliance(SuggestedArticles.SuggestedArticles, function () {
+function setup() {
     // Selection.SuggestedArticles only works when the global state is aware of a search
     // query
     let store = new HistoryStore.HistoryStore();
@@ -18,4 +18,9 @@ Compliance.test_selection_compliance(SuggestedArticles.SuggestedArticles, functi
         page_type: 'search',
         query: 'foobar',
     });
-});
+}
+
+Compliance.test_selection_compliance(SuggestedArticles.SuggestedArticles,
+    setup);
+Compliance.test_xapian_selection_compliance(SuggestedArticles.SuggestedArticles,
+    setup);

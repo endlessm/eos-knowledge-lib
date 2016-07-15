@@ -17,5 +17,38 @@
         <property name="name">spinner</property>
       </packing>
     </child>
+    <child>
+      <object class="GtkGrid">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">start</property>
+            <property name="label" translatable="yes">Oops! There was an error.</property>
+            <property name="wrap">True</property>
+            <property name="wrap_mode">word-char</property>
+            <style>
+              <class name="ContentGroupContentGroup__errorMessage"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <style>
+          <class name="ContentGroupContentGroup__errorPage"/>
+        </style>
+      </object>
+      <packing>
+        <property name="name">error</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
   </object>
 </interface>

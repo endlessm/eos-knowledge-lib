@@ -8,8 +8,7 @@ const Compliance = imports.tests.compliance;
 const HistoryStore = imports.app.historyStore;
 const Search = imports.app.modules.selection.search;
 
-
-Compliance.test_selection_compliance(Search.Search, function () {
+function setup() {
     // Selection.Search only works when the global state is aware of a search
     // query
     let store = new HistoryStore.HistoryStore();
@@ -18,4 +17,7 @@ Compliance.test_selection_compliance(Search.Search, function () {
         page_type: 'search',
         query: 'foobar',
     });
-});
+}
+
+Compliance.test_selection_compliance(Search.Search, setup);
+Compliance.test_xapian_selection_compliance(Search.Search, setup);

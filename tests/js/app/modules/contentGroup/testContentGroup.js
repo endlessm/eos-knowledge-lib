@@ -75,4 +75,20 @@ describe('ContentGroup.ContentGroup', function () {
         });
         expect(payload).toEqual(matcher);
     });
+
+    it('displays error message on selection error state', function () {
+        let error_label = Gtk.test_find_label(content_group, '*error*');
+
+        // Implementation detail :-(
+        let stack = error_label.get_ancestor(Gtk.Stack.$gtype);
+        function is_shown(widget, stack) {
+            return (stack.visible_child === widget ||
+                widget.is_ancestor(stack.visible_child));
+        }
+
+        expect(is_shown(error_label, stack)).toBeFalsy();
+        selection.simulate_error();
+        Utils.update_gui();
+        expect(is_shown(error_label, stack)).toBeTruthy();
+    });
 });

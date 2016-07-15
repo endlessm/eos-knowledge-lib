@@ -279,3 +279,36 @@ function test_selection_compliance (SelectionClass, setup=function () {}, extra_
         });
     });
 }
+
+function test_xapian_selection_compliance(SelectionClass, setup=function () {}, slots={}) {
+    describe(SelectionClass.$gtype.name + ' implements Selection.Xapian correctly', function () {
+        let factory, selection, reading_history, engine;
+
+        beforeEach(function () {
+            setup();
+            reading_history = MockReadingHistoryModel.mock_default();
+            jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
+
+            engine = MockEngine.mock_default();
+            engine.get_objects_by_query_finish.and.returnValue([[], {
+                more_results: null,
+            }]);
+
+            [selection, factory] = MockFactory.setup_tree({
+                type: SelectionClass,
+                slots: slots,
+            }, {
+                model: new SetObjectModel.SetObjectModel(),
+            });
+        });
+
+        it('by going into an error state when the engine throws an exception', function () {
+            spyOn(window, 'logError');  // silence console message
+            expect(selection.in_error_state).toBeFalsy();
+            engine.get_objects_by_query_finish.and.throwError('asplode');
+            selection.queue_load_more(1);
+            Utils.update_gui();
+            expect(selection.in_error_state).toBeTruthy();
+        });
+    });
+}

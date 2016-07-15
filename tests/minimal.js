@@ -156,6 +156,11 @@ const MinimalSelection = new Module.Class({
         }
         this.emit('models-changed');
     },
+
+    simulate_error: function () {
+        this.in_error_state = true;
+        this.notify('in-error-state');
+    },
 });
 
 const MinimalOrder = new Module.Class({

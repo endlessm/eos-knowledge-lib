@@ -9,3 +9,4 @@ const Compliance = imports.tests.compliance;
 Gtk.init(null);
 
 Compliance.test_selection_compliance(AllHighlights.AllHighlights);
+Compliance.test_xapian_selection_compliance(AllHighlights.AllHighlights);

@@ -9,3 +9,4 @@ const SupplementaryArticles = imports.app.modules.selection.supplementaryArticle
 Gtk.init(null);
 
 Compliance.test_selection_compliance(SupplementaryArticles.SupplementaryArticles);
+Compliance.test_xapian_selection_compliance(SupplementaryArticles.SupplementaryArticles);

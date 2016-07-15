@@ -11,11 +11,15 @@ const SetObjectModel = imports.search.setObjectModel;
 
 Gtk.init(null);
 
-Compliance.test_selection_compliance(ArticleContext.ArticleContext, function () {
+function setup() {
     let store = new HistoryStore.HistoryStore();
     HistoryStore.set_default(store);
     store.set_current_item_from_props({
         page_type: Pages.SET,
         model: new SetObjectModel.SetObjectModel(),
     });
-});
+}
+
+Compliance.test_selection_compliance(ArticleContext.ArticleContext, setup);
+Compliance.test_xapian_selection_compliance(ArticleContext.ArticleContext,
+    setup);

@@ -1,39 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.3 -->
+<!-- Generated with glade 3.20.0 -->
 <interface domain="eos-knowledge">
   <requires lib="gtk+" version="3.12"/>
   <template class="EknContentGroup_NoResultsMessage" parent="GtkGrid">
-    <property name="orientation">vertical</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="halign">center</property>
     <property name="valign">start</property>
     <property name="hexpand">True</property>
+    <property name="orientation">vertical</property>
     <child>
       <object class="GtkLabel" id="message-title">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="halign">start</property>
-        <property name="valign">fill</property>
         <property name="vexpand">True</property>
         <property name="label">Placeholder</property>
+        <property name="use_markup">True</property>
         <property name="wrap">True</property>
         <property name="wrap_mode">word-char</property>
         <property name="ellipsize">end</property>
         <property name="lines">5</property>
-        <property name="use_markup">True</property>
         <style>
           <class name="ContentGroupNoResultsMessage__title"/>
         </style>
       </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">0</property>
+      </packing>
     </child>
     <child>
       <object class="GtkSeparator" id="separator">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="hexpand">True</property>
-        <property name="halign">fill</property>
       </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">1</property>
+      </packing>
     </child>
     <child>
       <object class="GtkLabel" id="message-subtitle">
@@ -41,16 +47,24 @@
         <property name="can_focus">False</property>
         <property name="halign">center</property>
         <property name="hexpand">True</property>
-        <property name="label">Placeholder</property>
+        <property name="label" translatable="yes">We recommend that you:
+
+  •  Check your spelling
+  •  Try other words that mean the same thing
+  •  Try using more general words</property>
+        <property name="use_markup">True</property>
         <property name="wrap">True</property>
         <property name="wrap_mode">word-char</property>
         <property name="ellipsize">end</property>
         <property name="lines">5</property>
-        <property name="use_markup">True</property>
         <style>
           <class name="ContentGroupNoResultsMessage__subtitle"/>
         </style>
       </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">2</property>
+      </packing>
     </child>
   </template>
 </interface>

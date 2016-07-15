@@ -1,5 +1,7 @@
 data/widgets/card/legacyPolaroid.ui
 data/widgets/card/sequence.ui
+data/widgets/contentGroup/contentGroup.ui
+data/widgets/contentGroup/noResultsMessage.ui
 data/widgets/layout/sideMenu.ui
 js/app/articleHTMLRenderer.js
 js/app/buffetHistoryStore.js
