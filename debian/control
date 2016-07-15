@@ -48,8 +48,6 @@ Depends: libjs-mathjax (>= 2.2),
          gir1.2-glib-2.0,
          gir1.2-gtk-3.0 (>= 3.20),
          gir1.2-webkit2-4.0,
-         python3-polib,
-         python3-yaml,
          xapian-bridge,
          ${misc:Depends}
 Replaces: libeosknowledge-0-0,
@@ -90,14 +88,22 @@ Description: EndlessOS Knowledge Library Private Documentation
  if you want to access the API documentation locally, either in your
  browser or in the Devhelp program.
 
+Package: eos-knowledge-0-bin
+Section: non-free/utils
+Architecture: all
+Depends: eos-knowledge-0 (= ${binary:Version}),
+         ${misc:Depends}
+Description: EndlessOS Knowledge Library Tools package
+
 Package: eos-knowledge-0-dev
 Section: non-free/libdevel
 Architecture: all
-Depends: python3,
+Depends: eos-knowledge-0 (= ${binary:Version}),
+         python3,
          python3-polib,
          python3-yaml,
          pkg-config,
          ruby-compass,
          ruby-sass,
          ${misc:Depends}
-Description: EndlessOS Knowledge Library devel package
+Description: EndlessOS Knowledge Library Devel package

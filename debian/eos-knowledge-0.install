@@ -1,10 +1,6 @@
 usr/bin/ekn-app-runner
 usr/bin/ekn-downloader
 usr/bin/ekn-search-provider
-usr/bin/eminem
-usr/bin/kermit
-usr/bin/moltres
-usr/bin/picard
 usr/lib/eos-knowledge/*
 usr/share/dbus-1/*
 usr/share/eos-knowledge/eos-knowledge.gresource
