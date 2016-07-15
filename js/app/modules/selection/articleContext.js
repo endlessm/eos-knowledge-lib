@@ -44,6 +44,8 @@ const ArticleContext = new Module.Class({
                 tags_match_all: ['EknArticleObject'],
                 tags_match_any: item.model.child_tags,
             });
+        } else {
+            return null;
         }
     },
 });
