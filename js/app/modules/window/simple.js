@@ -139,8 +139,7 @@ const Simple = new Module.Class({
         this._history_buttons.back_button.sensitive = history.can_go_back();
         this._history_buttons.forward_button.sensitive = history.can_go_forward();
 
-        let new_page = this._pager.visible_child;
-        if (Utils.has_descendant_with_type(new_page, SearchBox.SearchBox)) {
+        if (Utils.shows_descendant_with_type(this.page_manager, SearchBox.SearchBox)) {
             this._search_stack.visible_child = this._invisible_frame;
         } else {
             this._search_stack.visible_child = this._search_box;
