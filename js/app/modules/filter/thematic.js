@@ -29,6 +29,13 @@ const Thematic = new Module.Class({
 
     // Filter implementation
     include_impl: function (model) {
-        return (model.featured != HistoryStore.get_default().get_current_item().model.featured);
+        let item = HistoryStore.get_default().get_current_item();
+        // Kind of silly but without this check the filter throws on app startup
+        // because Selection.AllSets always loads its content right away on
+        // init. It will get refiltered properly once a user clicks on a set
+        // object.
+        if (item && item.model)
+            return (model.featured != item.model.featured);
+        return true;
     },
 });
