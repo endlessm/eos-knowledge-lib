@@ -12,6 +12,11 @@ const AllHighlights = new Module.Class({
     Name: 'Selection.AllHighlights',
     Extends: Xapian.Xapian,
 
+    _init: function (props={}) {
+        this.parent(props);
+        this._set_needs_refresh(true);
+    },
+
     construct_query_object: function (limit, query_index) {
         if (query_index > 0)
             return null;

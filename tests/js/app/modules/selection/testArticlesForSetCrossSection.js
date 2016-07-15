@@ -13,9 +13,7 @@ const SetObjectModel = imports.search.setObjectModel;
 
 Gtk.init(null);
 
-function setup() {
-    let store = new HistoryStore.HistoryStore();
-    HistoryStore.set_default(store);
+function setup (store) {
     store.set_current_item_from_props({
         page_type: 'set',
         model: new SetObjectModel.SetObjectModel(),

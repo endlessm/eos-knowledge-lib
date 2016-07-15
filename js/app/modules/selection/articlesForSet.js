@@ -4,7 +4,6 @@
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
-const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
 const SetObjectModel = imports.search.setObjectModel;
@@ -14,24 +13,21 @@ const ArticlesForSet = new Module.Class({
     Name: 'Selection.ArticlesForSet',
     Extends: Xapian.Xapian,
 
-    _init: function (props) {
+    _init: function (props={}) {
         this.parent(props);
-
-        if (this.global) {
-            let item = HistoryStore.get_default().get_current_item();
-            if (item && item.model instanceof SetObjectModel.SetObjectModel)
-                this.model = item.model;
-            HistoryStore.get_default().connect('changed',
-                this._on_history_changed_global.bind(this));
-        }
+        if (!this.global)
+            this._set_needs_refresh(true);
     },
 
-    _on_history_changed_global: function () {
-        let item = HistoryStore.get_default().get_current_item();
+    // Selection.Xapian implementation
+    on_history_changed: function (history) {
+        if (!this.global)
+            return;
+        let item = history.get_current_item();
         if (item.model instanceof SetObjectModel.SetObjectModel &&
             item.model !== this.model) {
-            this.clear();
             this.model = item.model;
+            this._set_needs_refresh(true);
         }
     },
 

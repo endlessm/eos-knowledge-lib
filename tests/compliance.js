@@ -168,17 +168,11 @@ function test_selection_compliance (SelectionClass, setup=function () {}, extra_
         let factory, selection, reading_history;
 
         beforeEach(function () {
-            setup();
-            reading_history = MockReadingHistoryModel.mock_default();
-            jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
-
-            // Not all Selections might use the Xapian engine, but I can't think
-            // of a better place to put this
-            let engine = MockEngine.mock_default();
-            engine.get_objects_by_query_finish.and.returnValue([[], {
-                more_results: null,
-            }]);
-
+            // History store default setting must happen before
+            // we initialize the selection since during init it
+            // will connect to history store's changed signal.
+            let store = new HistoryStore.HistoryStore();
+            HistoryStore.set_default(store);
             [selection, factory] = MockFactory.setup_tree({
                 type: SelectionClass,
                 slots: _merge_slots_into(extra_slots, {
@@ -188,6 +182,20 @@ function test_selection_compliance (SelectionClass, setup=function () {}, extra_
             }, {
                 model: new SetObjectModel.SetObjectModel(),
             });
+
+            // setup must happen after selection has been created so that
+            // selection can listen to any history store changes that
+            // occur during setup()
+            setup(store);
+            reading_history = MockReadingHistoryModel.mock_default();
+            jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
+
+            // Not all Selections might use the Xapian engine, but I can't think
+            // of a better place to put this
+            let engine = MockEngine.mock_default();
+            engine.get_objects_by_query_finish.and.returnValue([[], {
+                more_results: null,
+            }]);
         });
 
         function add_models (c, num) {
@@ -285,7 +293,18 @@ function test_xapian_selection_compliance(SelectionClass, setup=function () {}, 
         let factory, selection, reading_history, engine;
 
         beforeEach(function () {
-            setup();
+            // History store default setting must happen before
+            // we initialize the selection since during init it
+            // will connect to history store's changed signal.
+            let store = new HistoryStore.HistoryStore();
+            HistoryStore.set_default(store);
+            [selection, factory] = MockFactory.setup_tree({
+                type: SelectionClass,
+                slots: slots,
+            }, {
+                model: new SetObjectModel.SetObjectModel(),
+            });
+            setup(store);
             reading_history = MockReadingHistoryModel.mock_default();
             jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
@@ -293,13 +312,6 @@ function test_xapian_selection_compliance(SelectionClass, setup=function () {}, 
             engine.get_objects_by_query_finish.and.returnValue([[], {
                 more_results: null,
             }]);
-
-            [selection, factory] = MockFactory.setup_tree({
-                type: SelectionClass,
-                slots: slots,
-            }, {
-                model: new SetObjectModel.SetObjectModel(),
-            });
         });
 
         it('by going into an error state when the engine throws an exception', function () {
