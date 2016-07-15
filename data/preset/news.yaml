@@ -298,15 +298,15 @@ root:
       type: Window.Simple
       slots:
         search: Navigation.SearchBox
-        lightbox:
+        content:
           type: ContentGroup.MediaLightbox
           slots:
             card: Card.Media
-        pager:
-          type: Pager.Simple
-          slots:
-            brand-page: 'Banner.App(show-subtitle: true)'
-            home-page: *home-page
-            set-page: *set-page
-            search-page: *search-page
-            article-page: *article-page
+            content:
+              type: Pager.Simple
+              slots:
+                brand-page: 'Banner.App(show-subtitle: true)'
+                home-page: *home-page
+                set-page: *set-page
+                search-page: *search-page
+                article-page: *article-page

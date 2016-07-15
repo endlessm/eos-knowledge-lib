@@ -21,6 +21,7 @@ const MediaLightbox = new Module.Class({
         'card': {
             multi: true,
         },
+        'content': {},
     },
 
     _init: function (props={}) {
@@ -30,6 +31,8 @@ const MediaLightbox = new Module.Class({
         this._loading_new_lightbox = false;
         this._current_index = -1;
         this._article_model = null;
+
+        this.add(this.create_submodule('content'));
 
         HistoryStore.get_default().connect('changed',
             this._on_history_changed.bind(this));

@@ -1,6 +1,6 @@
 /* exported dbus_object_path_for_webview, get_css_for_title_and_module,
 get_web_plugin_dbus_name, get_web_plugin_dbus_name_for_webview,
-has_descendant_with_type, record_search_metric, render_border_with_arrow,
+record_search_metric, render_border_with_arrow, shows_descendant_with_type,
 split_out_conditional_knobs, vfunc_draw_background_default */
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
@@ -264,14 +264,20 @@ function get_web_plugin_dbus_name_for_webview (view) {
     return get_web_plugin_dbus_name() + '-' + view.get_page_id();
 }
 
-function has_descendant_with_type (widget, klass) {
+function shows_descendant_with_type (widget, klass) {
     if (widget instanceof klass)
         return true;
+    if (widget instanceof Gtk.Stack)
+        return shows_descendant_with_type(widget.visible_child, klass);
+    if (widget instanceof Gtk.Revealer && !widget.reveal_child)
+        return false;
     if (widget instanceof Gtk.Container) {
         let children = [];
         // Retrieves internal children as well, widget.get_children() does not
         widget.forall(child => children.push(child));
-        return children.some(child => has_descendant_with_type(child, klass));
+        children = children.filter(child =>
+            child.visible && child.get_child_visible());
+        return children.some(child => shows_descendant_with_type(child, klass));
     }
     return false;
 }

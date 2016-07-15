@@ -29,6 +29,7 @@ describe('ContentGroup.MediaLightbox', function () {
             type: MediaLightbox.MediaLightbox,
             slots: {
                 'card': { type: Minimal.MinimalCard },
+                'content': { type: null },
             },
         });
 
@@ -38,6 +39,11 @@ describe('ContentGroup.MediaLightbox', function () {
         article_model = new ArticleObjectModel.ArticleObjectModel({
             resources: ['ekn://foo/bar'],
         });
+    });
+
+    it('packs its content', function () {
+        let content = factory.get_last_created('content');
+        expect(module).toHaveDescendant(content);
     });
 
     it('shows a media object on change to history item with media model', function () {

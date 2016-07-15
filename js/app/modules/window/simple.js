@@ -30,9 +30,7 @@ const Simple = new Module.Class({
     Extends: Endless.Window,
 
     Slots: {
-        'lightbox': {},
-        'navigation': {},  // optional
-        'pager': {},
+        'content': {},
         'search': {},
     },
 
@@ -46,24 +44,6 @@ const Simple = new Module.Class({
         let app_id = Gio.Application.get_default().application_id;
         let app_info = Gio.DesktopAppInfo.new(app_id + '.desktop');
         this.title = (app_info) ? app_info.get_display_name() : app_id;
-
-        // We need to pack a bunch of modules inside each other, but some of
-        // them are optional. "matryoshka" is the innermost widget that needs to
-        // have something packed around it.
-        this._pager = this.create_submodule('pager');
-        let matryoshka = this._pager;
-
-        let navigation = this.create_submodule('navigation');
-        if (navigation) {
-            navigation.add(matryoshka);
-            matryoshka = navigation;
-        }
-
-        let lightbox = this.create_submodule('lightbox');
-        if (lightbox) {
-            lightbox.add(matryoshka);
-            matryoshka = lightbox;
-        }
 
         this._home_button = new Endless.TopbarHomeButton();
         this._history_buttons = new Endless.TopbarNavButton();
@@ -85,7 +65,8 @@ const Simple = new Module.Class({
         button_box.add(this._home_button);
         button_box.add(this._history_buttons);
 
-        this.page_manager.add(matryoshka, {
+        this._content = this.create_submodule('content');
+        this.page_manager.add(this._content, {
             left_topbar_widget: button_box,
             center_topbar_widget: this._search_stack,
         });
@@ -139,8 +120,7 @@ const Simple = new Module.Class({
         this._history_buttons.back_button.sensitive = history.can_go_back();
         this._history_buttons.forward_button.sensitive = history.can_go_forward();
 
-        let new_page = this._pager.visible_child;
-        if (Utils.has_descendant_with_type(new_page, SearchBox.SearchBox)) {
+        if (Utils.shows_descendant_with_type(this._content, SearchBox.SearchBox)) {
             this._search_stack.visible_child = this._invisible_frame;
         } else {
             this._search_stack.visible_child = this._search_box;
@@ -174,7 +154,7 @@ const Simple = new Module.Class({
     },
 
     make_ready: function (cb=function () {}) {
-        this._pager.make_ready(() => {
+        this._content.make_ready(() => {
             this._present_if_needed();
             cb();
         });

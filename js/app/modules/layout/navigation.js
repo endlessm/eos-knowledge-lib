@@ -14,10 +14,16 @@ const Navigation = new Module.Class({
     Name: 'Layout.Navigation',
     Extends: NavButtonOverlay.NavButtonOverlay,
 
+    Slots: {
+        'content': {},
+    },
+
     _init: function (props={}) {
         props.back_visible = props.back_visible || false;
         props.forward_visible = props.forward_visible || false;
         this.parent(props);
+
+        this.add(this.create_submodule('content'));
 
         HistoryStore.get_default().connect('changed',
             this._on_history_changed.bind(this));
