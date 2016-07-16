@@ -133,6 +133,7 @@
     <file>js/app/modules/filter/unread.js</file>
     <file>js/app/modules/layout/articleStack.js</file>
     <file>js/app/modules/layout/box.js</file>
+    <file>js/app/modules/layout/brandPage.js</file>
     <file>js/app/modules/layout/dynamicBackground.js</file>
     <file>js/app/modules/layout/hamburgerBasement.js</file>
     <file>js/app/modules/layout/infiniteScrolling.js</file>

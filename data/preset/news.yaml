@@ -299,14 +299,17 @@ root:
       slots:
         search: Navigation.SearchBox
         content:
-          type: ContentGroup.MediaLightbox
+          type: Layout.BrandPage
           slots:
-            card: Card.Media
+            brand: 'Banner.App(show-subtitle: true)'
             content:
-              type: Pager.Simple
+              type: ContentGroup.MediaLightbox
               slots:
-                brand-page: 'Banner.App(show-subtitle: true)'
-                home-page: *home-page
-                set-page: *set-page
-                search-page: *search-page
-                article-page: *article-page
+                card: Card.Media
+                content:
+                  type: Pager.Simple
+                  slots:
+                    home-page: *home-page
+                    set-page: *set-page
+                    search-page: *search-page
+                    article-page: *article-page
