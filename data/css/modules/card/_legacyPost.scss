@@ -9,19 +9,20 @@ $legacy-post-card-border-color-hover: white;
 
     &:hover {
         border-color: $legacy-post-card-border-color-hover;
-
-        .title {
-            color: $primary-medium-color;
-            background-color: $legacy-post-card-border-color-hover;
-        }
     }
 
-    .thumbnail {
+    &:hover &__title {
+        color: $primary-medium-color;
+        background-color: $legacy-post-card-border-color-hover;
+    }
+
+    &__thumbnail {
         background-size: cover;
     }
 
-    .title {
+    &__title {
         color: $primary-light-color;
+        font-family: $title-font;
         font-size: 1.8em;
         padding: .9em 0em;
         background-color: $legacy-post-card-border-color;

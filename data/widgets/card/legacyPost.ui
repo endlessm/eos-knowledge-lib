@@ -20,7 +20,7 @@
             <property name="vexpand">True</property>
             <property name="label_xalign">0</property>
             <style>
-              <class name="thumbnail"/>
+              <class name="CardLegacyPost__thumbnail"/>
             </style>
           </object>
           <packing>
@@ -40,7 +40,8 @@
             <property name="max_width_chars">1</property>
             <property name="lines">1</property>
             <style>
-              <class name="title"/>
+              <class name="CardLegacyPost__title"/>
+              <class name="Card__title"/>
             </style>
           </object>
           <packing>

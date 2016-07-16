@@ -24,7 +24,8 @@
             <property name="lines">1</property>
             <property name="xalign">0</property>
             <style>
-              <class name="title"/>
+              <class name="CardTitle__title"/>
+              <class name="Card__title"/>
             </style>
           </object>
           <packing>

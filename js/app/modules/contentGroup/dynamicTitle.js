@@ -11,7 +11,6 @@ const Module = imports.app.interfaces.module;
  */
 const DynamicTitle = new Module.Class({
     Name: 'DynamicTitle',
-    CssName: 'EknDynamicTitle',
     Extends: Gtk.Label,
 
     Properties: {

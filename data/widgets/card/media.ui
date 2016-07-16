@@ -25,7 +25,7 @@
             <property name="lines">5</property>
             <property name="xalign">0</property>
             <style>
-              <class name="media-card-caption"/>
+              <class name="CardMedia__caption"/>
             </style>
           </object>
           <packing>
@@ -62,7 +62,7 @@
               </object>
             </child>
             <style>
-              <class name="media-card-attribution-text"/>
+              <class name="CardMedia__attributionText"/>
             </style>
           </object>
           <packing>

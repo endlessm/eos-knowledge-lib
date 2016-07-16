@@ -1,13 +1,13 @@
 .ArrangementSideBySide {
     .CardTitle {
-        label.title {
+        &__title {
             font-family: $title-font;
             color: $white-60-color;
             padding: 13px 0px 3px 0px;
             font-size: 18px;
         }
 
-        &:hover label.title {
+        &:hover .CardTitle__title {
             border-bottom: 1px solid $accent-light-color;
             color: $accent-light-color;
         }
@@ -15,11 +15,11 @@
         &.highlighted {
             background-color: $primary-dark-color;
 
-            label.title {
+            .CardTitle__title {
                 color: white;
             }
 
-            &:hover label.title {
+            &:hover .CardTitle__title {
                 border-bottom: none;
             }
         }

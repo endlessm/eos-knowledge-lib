@@ -25,6 +25,7 @@ $display-font-composite: 'Roboto' !default;
 @import 'typography';
 
 @import 'modules/banner/app';
+@import 'modules/banner/search';
 
 @import 'modules/card/base';
 @import 'modules/card/knowledgeDocument';
@@ -41,6 +42,8 @@ $display-font-composite: 'Roboto' !default;
 @import 'modules/layout/hamburgerBasement';
 @import 'modules/layout/navigation';
 @import 'modules/layout/sidebar';
+
+@import 'modules/navigation/searchBox';
 
 @import 'modules/pager/parallaxBackground';
 
@@ -74,15 +77,14 @@ $display-font-composite: 'Roboto' !default;
 .set-page,
 .search-page {
     .ContentGroupContentGroup__title,
-    .title {
+    .CardTitle__title,
+    .BannerSearch__title {
         font-family: $title-font;
         font-weight: bold;
     }
 }
 
 .ContentGroupContentGroup {
-    background-color: transparentize(black, 1 - 0.25);
-
     .ArrangementScrollingList__grid {
         padding: 0;
     }
@@ -92,21 +94,25 @@ $display-font-composite: 'Roboto' !default;
     background-color: transparent;
 }
 
-.pdf-card-icon {
-    padding-top: 10px;
+.CardLegacyPolaroid {
+    &__icon {
+        padding-top: 10px;
+    }
+
+    &__label {
+        font-size: 0.9em;
+        color: #666666;
+    }
 }
 
-.pdf-card-label {
-    font-size: 0.9em;
-    color: #666666;
-}
+.CardMedia {
+    &__caption {
+        color: #666666;
+    }
 
-.media-card-caption {
-    color: #666666;
-}
-
-.media-card-attribution-text {
-    color: #b2b2b2;
+    &__attributionText {
+        color: #b2b2b2;
+    }
 }
 
 .NavigationSearchBox {
@@ -159,7 +165,7 @@ $display-font-composite: 'Roboto' !default;
     background-color: transparent;
 }
 
-.webview-tooltip label {
+.WebviewTooltip__label {
     font-family: $display-font;
 }
 
@@ -168,7 +174,7 @@ $display-font-composite: 'Roboto' !default;
 .composite {
     font-family: $display-font-composite;
 
-    .title {
+    .Card__title {
         font-family: $title-font-composite;
     }
 

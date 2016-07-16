@@ -136,24 +136,24 @@ $accent-light-color: #044a80 !default;
     .Card {
         padding-bottom: 1.5em;
 
-        .title {
+        &__title {
             font-weight: normal;
             font-size: 1.25em;  /* 15px / 12px/em */
             color: #277090;
             padding: 0 0 0 0;
         }
 
-        .before {
-            -gtk-icon-source: -gtk-icontheme("media-record-symbolic");
-            min-width: 6px;
-            min-height: 6px;
-            color: rgba(145, 145, 145, 0.5);
-            padding-right: 0.6em;
-        }
-
-        &:hover .title {
+        &:hover &__title {
             text-decoration: underline;
         }
+    }
+
+    .CardTitle__before {
+        -gtk-icon-source: -gtk-icontheme("media-record-symbolic");
+        min-width: 6px;
+        min-height: 6px;
+        color: rgba(145, 145, 145, 0.5);
+        padding-right: 0.6em;
     }
 
     .ArrangementScrollingList__grid {
@@ -165,7 +165,7 @@ $accent-light-color: #044a80 !default;
             font-size: 17.6px;  /* 15px spec * 88% */
         }
 
-        .Card .title {
+        .Card__title {
             font-size: 18.8px;  /* 16px spec * 88% */
         }
     }
@@ -211,7 +211,7 @@ scrollbar {
     }
 }
 
-.webview-tooltip label {
+.WebviewTooltip__label {
     font-size: 1.3em; /* 16px / 12px/em */
 }
 
@@ -229,7 +229,7 @@ scrollbar {
 .composite {
     font-family: $display-font-composite;
 
-    .webview-tooltip label {
+    .WebviewTooltip__label {
         font-weight: bold;
         font-size: 18.8px;  /* 16px spec * 88% */
     }

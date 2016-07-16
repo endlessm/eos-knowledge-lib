@@ -20,7 +20,7 @@
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Next Article</property>
             <style>
-              <class name="next-label"/>
+              <class name="CardSequence__nextLabel"/>
             </style>
           </object>
           <packing>
@@ -41,7 +41,8 @@
             <property name="lines">1</property>
             <property name="xalign">0</property>
             <style>
-              <class name="title"/>
+              <class name="CardSequence__title"/>
+              <class name="Card__title"/>
             </style>
           </object>
           <packing>
@@ -58,7 +59,7 @@
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Previous Article</property>
             <style>
-              <class name="previous-label"/>
+              <class name="CardSequence__previousLabel"/>
             </style>
           </object>
           <packing>

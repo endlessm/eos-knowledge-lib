@@ -24,7 +24,7 @@
               <placeholder/>
             </child>
             <style>
-              <class name="thumbnail"/>
+              <class name="CardLegacyPolaroid__thumbnail"/>
             </style>
           </object>
           <packing>
@@ -45,7 +45,8 @@
             <property name="max_width_chars">1</property>
             <property name="lines">2</property>
             <style>
-              <class name="title"/>
+              <class name="CardLegacyPolaroid__title"/>
+              <class name="Card__title"/>
             </style>
           </object>
           <packing>
@@ -68,7 +69,8 @@
             <property name="xalign">0</property>
             <property name="yalign">0</property>
             <style>
-              <class name="card-synopsis"/>
+              <class name="CardLegacyPolaroid__synopsis"/>
+              <class name="Card__synopsis"/>
             </style>
           </object>
           <packing>
@@ -83,7 +85,7 @@
             <property name="no_show_all">True</property>
             <property name="resource">/com/endlessm/knowledge/data/images/pdf_icon.png</property>
             <style>
-              <class name="pdf-card-icon"/>
+              <class name="CardLegacyPolaroid__icon"/>
             </style>
           </object>
           <packing>
@@ -99,7 +101,7 @@
             <property name="label" translatable="yes">PDF</property>
             <property name="xalign">0</property>
             <style>
-              <class name="pdf-card-label"/>
+              <class name="CardLegacyPolaroid__label"/>
             </style>
           </object>
           <packing>

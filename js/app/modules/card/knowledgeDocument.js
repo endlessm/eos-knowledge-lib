@@ -29,8 +29,8 @@ const Utils = imports.app.utils;
  * This widget will handle toggling the <TableOfContents.collapsed> parameter
  * of the table of contents depending on available space. It provides two
  * internal frames with style classes
- * 'document-card-toolbar-frame' and
- * 'document-card-content-frame' for theming purposes.
+ * 'CardKnowledgeDocument__toolbarFrame' and
+ * 'CardKnowledgeDocument__contentFrame' for theming purposes.
  * The toolbar frame surrounds the <title> and <toc> on the right. The
  * content frame surrounds the <webview> on the left.
  */
@@ -370,16 +370,17 @@ const KnowledgeDocument = new Module.Class({
             return;
         }
 
+        let collapsed_class = Utils.get_modifier_style_class('CardKnowledgeDocument__toolbarFrame', 'collapsed');
         // Decide if toolbar should be collapsed
         if (this._should_collapse(alloc.width)) {
             if (!this.toc.collapsed) {
-                this._toolbar_frame.get_style_context().add_class('collapsed');
+                this._toolbar_frame.get_style_context().add_class(collapsed_class);
                 this.toc.collapsed = true;
                 this._title_label.visible = false;
             }
         } else {
             if (this.toc.collapsed) {
-                this._toolbar_frame.get_style_context().remove_class('collapsed');
+                this._toolbar_frame.get_style_context().remove_class(collapsed_class);
                 this.toc.collapsed = false;
             }
             // Needs to be outside the if block because _title_label could have been made invisible by

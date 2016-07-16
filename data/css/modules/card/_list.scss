@@ -4,7 +4,7 @@
     box-shadow: 0 0 5px transparentize(black, 1 - 0.25);
     border-color: transparent;  /* used for the triangle in the corner */
 
-    .title {
+    &__title {
         font-family: $title-font;
         font-weight: bold;
         color: $primary-medium-color;
@@ -15,14 +15,14 @@
         }
     }
 
-    .card-synopsis {
+    &__synopsis {
         font-family: $body-font;
         font-style: italic;
         color: $black-60-color;
         font-size: 16px;
     }
 
-    .card-context {
+    &__context {
         font-family: $context-font;
         font-weight: bold;
         font-style: normal;
@@ -30,48 +30,48 @@
         font-size: 14px;
     }
 
-    &:hover .title {
+    &:hover &__title {
         color: $primary-light-color;
     }
 
-    &.next:hover .title {
+    &.next:hover &__title {
         color: $primary-medium-color;
     }
 
-    &.width-d .title,
-    &.width-d .card-synopsis {
+    &.width-d &__title,
+    &.width-d &__synopsis {
         font-size: 18.7px;
     }
 
-    &.width-e .title,
-    &.width-e .card-synopsis {
+    &.width-e &__title,
+    &.width-e &__synopsis {
         font-size: 18.7px;
     }
 
-    &.width-f .title,
-    &.width-f .card-synopsis {
+    &.width-f &__title,
+    &.width-f &__synopsis {
         font-size: 21.3px;
     }
 
-    &.width-g .title,
-    &.width-h .title {
+    &.width-g &__title,
+    &.width-h &__title {
         font-size: 29.3px;
     }
 
-    &.width-g .card-synopsis,
-    &.width-h .card-synopsis {
+    &.width-g &__synopsis,
+    &.width-h &__synopsis {
         font-size: 24px;
     }
 
-    &.width-e .content-frame,
-    &.width-f .content-frame {
+    &.width-e &__contentFrame,
+    &.width-f &__contentFrame {
         padding: 20px;
     }
 
-    .composite &.width-d .title,
-    .composite &.width-d .card-synopsis,
-    .composite &.width-e .title,
-    .composite &.width-e .card-synopsis {
+    .composite &.width-d &__title,
+    .composite &.width-d &__synopsis,
+    .composite &.width-e &__title,
+    .composite &.width-e &__synopsis {
         font-size: 18.8px;  /* 16px spec * 88% because spec was at 110% scale not 125% */
     }
 }

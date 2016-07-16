@@ -1,15 +1,15 @@
 .Card {
     font-size: 18.7px;
 
-    .title {
+    &__title {
         color: $primary-medium-color;
     }
 
-    &.highlighted .title {
+    &.highlighted &__title {
         color: white;
     }
 
-    .content-frame {
+    &__contentFrame {
         padding: 20px;
     }
 
@@ -32,49 +32,49 @@
         border-width: 0px;
     }
 
-    &.width-c .title,
-    &.width-d.height-c .title,
-    &.width-d.height-b .title {
+    &.width-c &__title,
+    &.width-d.height-c &__title,
+    &.width-d.height-b &__title {
         font-size: 21.3px;
     }
 
-    &.width-d.height-d .title,
-    &.width-e.height-b .title,
-    &.width-e.height-c .title {
+    &.width-d.height-d &__title,
+    &.width-e.height-b &__title,
+    &.width-e.height-c &__title {
         font-size: 30.7px;
     }
 
-    &.width-d .title,
-    &.width-e .title,
-    &.width-f .title,
-    &.width-g .title,
-    &.width-h .title {
+    &.width-d &__title,
+    &.width-e &__title,
+    &.width-f &__title,
+    &.width-g &__title,
+    &.width-h &__title {
         font-size: 49.3px;
     }
 
-    &.width-e .content-frame,
-    &.width-f .content-frame,
-    &.width-g .content-frame,
-    &.width-h .content-frame {
+    &.width-e &__contentFrame,
+    &.width-f &__contentFrame,
+    &.width-g &__contentFrame,
+    &.width-h &__contentFrame {
         padding: 40px;
     }
 
-    &.width-e.height-e .card-context,
-    &.width-f .card-context,
-    &.width-g .card-context,
-    &.width-h .card-context {
+    &.width-e.height-e .Card__context,
+    &.width-f .Card__context,
+    &.width-g .Card__context,
+    &.width-h .Card__context {
         font-size: 18.7px;
     }
 }
 
-.card-synopsis {
+.Card__synopsis {
     font-family: $body-font;
     color: $black-60-color;
     font-size: 18.7px;
     padding-top: 30px;
 }
 
-.card-context {
+.Card__context {
     font-family: $context-font;
     font-size: 16px;
     color: $primary-light-color;

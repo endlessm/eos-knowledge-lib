@@ -261,7 +261,8 @@ defines:
             show-titles: false
             show-toc: false
             custom-css: buffet-custom.css
-        nav-card: Card.Sequence
+        nav-card:
+          shortdef: 'Card.Sequence(halign: center)'
 
 root:
   shortdef: 'Controller.Buffet(theme: buffet)'

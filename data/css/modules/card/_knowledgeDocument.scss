@@ -1,40 +1,17 @@
-.DocumentCard {
-    .CardSequence {
-        background-color: white;
-        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
-        padding: 15px 30px;
-
-        .title {
-            font-size: 21.3px;
-            font-weight: normal;
-            color: $primary-medium-color;
-        }
-
-        .previous-label,
-        .next-label {
-            font-size: 14.7px;
-            color: $primary-light-color;
-        }
-    }
-
-    .SlidingPanel {
-        -EknSlidingPanel-fill-percentage: 0.73;
-        -EknSlidingPanel-shadow-margin: 7;
-    }
-
-    WebKitWebView {
-        background-color: $background-light-color;
+.CardKnowledgeDocument {
+    &__contentFrame {
+        padding: 0;
     }
 }
 
-.webview-tooltip {
+.WebviewTooltip {
     background-color: transparentize(black, 1 - 0.4);
     border-radius: 8px 8px 8px 8px;
     padding: 10px 14px;
 
     label {
         color: white;
-        font-family: $title-font;
+        font-family: $display-font;
         font-size: 1.0em; /* 16px / 12px/em * 72/96 */
         font-weight: bold;
     }

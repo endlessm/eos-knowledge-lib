@@ -24,15 +24,15 @@ describe('Card.Sequence', function () {
         let card = new Sequence.Sequence({
             model: model,
         });
-        expect(card).toHaveDescendantWithCssClass('title');
+        expect(card).toHaveDescendantWithCssClass('CardSequence__title');
     });
 
     it('has a label with previous/next style classes', function () {
         let card = new Sequence.Sequence({
             model: model,
         });
-        expect(card).toHaveDescendantWithCssClass('previous-label');
-        expect(card).toHaveDescendantWithCssClass('next-label');
+        expect(card).toHaveDescendantWithCssClass('CardSequence__previousLabel');
+        expect(card).toHaveDescendantWithCssClass('CardSequence__nextLabel');
     });
 
     it('has title label that understand Pango markup', function () {

@@ -8,7 +8,7 @@
                         background-image 250ms ease-in-out,
                         border 250ms ease-in-out;
 
-            .title {
+            &__title {
                 padding: 0em 0em 0em 1.5em;
                 font-family: $display-font;
                 font-size: 1.125em; /* 18pt * 1/12 * 0.75 DPI correction factor */
@@ -24,7 +24,7 @@
                                                   transparentize(white, 1 - 0.05) 0%,
                                                   transparentize(black, 1 - 0.05) 100%);
 
-                .title {
+                .Card__title {
                     color: $primary-medium-color;
                 }
             }
@@ -35,7 +35,7 @@
                 font-weight: bold;
                 transition-property: none;
 
-                .title {
+                .Card__title {
                     color: $primary-dark-color;
                     transition-property: none;
                 }
@@ -47,7 +47,7 @@
                                                       transparentize(white, 1 - 0.05) 0%,
                                                       transparentize(black, 1 - 0.05) 100%);
 
-                    .title {
+                    .Card__title {
                         color: $primary-dark-color;
                         transition-property: none;
                     }
@@ -60,7 +60,7 @@
         background-image: linear-gradient(-180deg, rgba(0,0,0,0.0) 65%, rgba(0,0,0,0.30) 85%, rgba(0,0,0,0.70) 100%);
     }
 
-    .composite & .sidebar .CardTitle .title {
+    .composite & .sidebar .CardTitle__title {
         font-family: $title-font-composite;
     }
 }

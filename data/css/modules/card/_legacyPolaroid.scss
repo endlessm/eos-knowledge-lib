@@ -3,19 +3,23 @@
     margin: 7px;
     background-color: white;
 
-    .title {
+    &__title {
         padding: 4px 0px;
         color: $accent-dark-color;
         font-family: $title-font, sans-serif;
         font-size: 0.77em;
         font-weight: bold;
+
+        &.highlighted {
+            background-color: $background-dark-color;
+        }
     }
 
-    .thumbnail {
+    &__thumbnail {
         min-height: 133px;
     }
 
-    .card-synopsis {
+    &__synopsis {
         padding: 0px 0px 4px 0px;
         color: #666666;
         font-size: 0.68em;
@@ -26,17 +30,13 @@
         }
     }
 
-    .title.highlighted {
-        background-color: $background-dark-color;
-    }
-
     .composite & {
-        .title {
+        &__title {
             font-weight: 600;
             font-size: 16.4px;  /* Original spec may have been wrong */
         }
 
-        .card-synopsis {
+        &__synopsis {
             color: black;
             font-size: 16.4px;  /* 14px spec * 88% */
             text-shadow: none;

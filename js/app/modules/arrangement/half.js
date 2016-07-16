@@ -130,7 +130,6 @@ const _HalfLayout = new Knowledge.Class({
  */
 const Half = new Module.Class({
     Name: 'Arrangement.Half',
-    CssName: 'EknHalfArrangement',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],
 
