@@ -315,9 +315,7 @@ subst = $(SED) \
 	$(NULL)
 
 subst_files = \
-	data/com.endlessm.EknDownloader.service \
 	data/com.endlessm.EknSearchProvider.service \
-	ekn-downloader \
 	ekn-search-provider \
 	ekn-app-runner \
 	js/app/config.js \
@@ -338,11 +336,9 @@ EXTRA_DIST += $(patsubst %,%.in,$(subst_files))
 servicedir = $(datadir)/dbus-1/services
 service_DATA = \
 	data/com.endlessm.EknSearchProvider.service \
-	data/com.endlessm.EknDownloader.service \
 	$(NULL)
 
 bin_SCRIPTS += \
-	ekn-downloader \
 	ekn-search-provider \
 	ekn-app-runner \
 	autobahn \

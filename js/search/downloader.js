@@ -186,7 +186,9 @@ function load_manifest (file, cancellable) {
 const SubscriptionDownloader = new Lang.Class({
     Name: 'SubscriptionDownloader',
 
-    _init: function () {
+    _init: function (app) {
+        this._app = app;
+
         this._file_downloader = new FileDownloader();
 
         this._subscriptions_dir = Gio.File.new_for_path(GLib.build_filenamev([GLib.get_user_data_dir(), 'com.endlessm.subscriptions']));
@@ -258,6 +260,8 @@ const SubscriptionDownloader = new Lang.Class({
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
 
         task.catch_errors(() => {
+            this._app.hold();
+
             let directory = this._subscriptions_dir.get_child(subscription_id);
             if (!directory.query_exists(cancellable))
                 return task.return_value(false);
@@ -303,6 +307,7 @@ const SubscriptionDownloader = new Lang.Class({
     },
 
     apply_update_finish: function (task) {
+        this._app.release();
         return task.finish();
     },
 
@@ -311,6 +316,8 @@ const SubscriptionDownloader = new Lang.Class({
         task._subscription_id = subscription_id;
 
         task.catch_errors(() => {
+            this._app.hold();
+
             if (this._ongoing_downloads.has(subscription_id)) {
                 task.return_value(false);
                 return;
@@ -355,106 +362,17 @@ const SubscriptionDownloader = new Lang.Class({
     },
 
     fetch_update_finish: function (task) {
+        this._app.release();
         this._ongoing_downloads.delete(task._subscription_id);
         return task.finish();
     },
 });
 
-const DownloaderIface = '\
-<node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd"> \
-  <interface name="com.endlessm.EknDownloader"> \
-    <method name = "ApplyUpdate"> \
-      <arg type="s" name="subscription_id" direction="in" /> \
-      <arg type="b" name="applied_update" direction="out" /> \
-    </method> \
-    <method name = "FetchUpdate"> \
-      <arg type="s" name="subscription_id" direction="in" /> \
-    </method> \
-  </interface> \
-</node>';
-const DownloaderIfaceInfo = Gio.DBusInterfaceInfo.new_for_xml(DownloaderIface);
-
-function return_to_dbus (invocation, finish) {
-    try {
-        let value = finish();
-        if (value === undefined)
-            value = new GLib.Variant('()', []);
-        invocation.return_value(value);
-    } catch (e if e instanceof GLib.Error) {
-        logError(e, "Exception in DBus call");
-        invocation.return_gerror(e);
-    } catch (e) {
-        let name = e.name;
-        if (name.indexOf('.') === -1) {
-            // likely to be a normal JS error
-            name = 'org.gnome.gjs.JSError.' + name;
-        }
-        logError(e, "Exception in DBus call");
-        invocation.return_dbus_error(name, e.message);
+let the_downloader = null;
+let get_default = function () {
+    if (the_downloader === null) {
+        let app = Gio.Application.get_default();
+        the_downloader = new SubscriptionDownloader(app);
     }
-}
-
-const DownloaderService = new Lang.Class({
-    Name: 'DownloaderService',
-
-    _init: function (app) {
-        this._app = app;
-        this._skeleton = Gio.DBusExportedObject.wrapJSObject(DownloaderIfaceInfo, this);
-        this._downloader = new SubscriptionDownloader();
-    },
-
-    register: function (connection, path) {
-        this._skeleton.export(connection, path);
-    },
-
-    unregister: function (connection, path) {
-        this._skeleton.unexport(connection, path);
-    },
-
-    ApplyUpdateAsync: function (params, invocation) {
-        let [subscription_id] = params;
-        this._app.hold();
-        return this._downloader.apply_update(subscription_id, null, (source, task) => {
-            return_to_dbus(invocation, () => {
-                let res = this._downloader.apply_update_finish(task);
-                return new GLib.Variant('(b)', [res]);
-            });
-            this._app.release();
-        });
-    },
-
-    FetchUpdateAsync: function (params, invocation) {
-        let [subscription_id] = params;
-        this._app.hold();
-        return this._downloader.fetch_update(subscription_id, null, (source, task) => {
-            return_to_dbus(invocation, () => {
-                this._downloader.fetch_update_finish(task);
-            });
-            this._app.release();
-        });
-    },
-});
-
-const Application = new Lang.Class({
-    Name: 'EknDownloaderApplication',
-    Extends: Gio.Application,
-
-    _init: function () {
-        this.parent({ application_id: 'com.endlessm.EknDownloader',
-                      flags: Gio.ApplicationFlags.IS_SERVICE,
-                      inactivity_timeout: 12000 });
-
-        this._service = new DownloaderService(this);
-    },
-
-    vfunc_dbus_register: function (connection, path) {
-        this.parent(connection, path);
-        this._service.register(connection, path);
-        return true;
-    },
-
-    vfunc_dbus_unregister: function (connection, path) {
-        this.parent(connection, path);
-        this._service.unregister(connection, path);
-    },
-});
+    return the_downloader;
+};

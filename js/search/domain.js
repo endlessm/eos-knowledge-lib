@@ -11,6 +11,7 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const AsyncTask = imports.search.asyncTask;
 const ContentObjectModel = imports.search.contentObjectModel;
 const datadir = imports.search.datadir;
+const Downloader = imports.search.downloader;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const QueryObject = imports.search.queryObject;
 const SetObjectModel = imports.search.setObjectModel;
@@ -306,20 +307,6 @@ const DomainV2 = new Lang.Class({
     },
 });
 
-const DownloaderIface = '\
-<node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd"> \
-  <interface name="com.endlessm.EknDownloader"> \
-    <method name = "ApplyUpdate"> \
-      <arg type="s" name="subscription_id" direction="in" /> \
-      <arg type="b" name="applied_update" direction="out" /> \
-    </method> \
-    <method name = "FetchUpdate"> \
-      <arg type="s" name="subscription_id" direction="in" /> \
-    </method> \
-  </interface> \
-</node>';
-const DownloaderProxy = Gio.DBusProxy.makeProxyWrapper(DownloaderIface);
-
 const DomainV3 = new Lang.Class({
     Name: 'DomainV3',
     Extends: Domain,
@@ -502,25 +489,29 @@ const DomainV3 = new Lang.Class({
     },
 
     check_for_updates: function () {
-        try {
-            let proxy = new DownloaderProxy(Gio.DBus.session, 'com.endlessm.EknDownloader', '/com/endlessm/EknDownloader');
+        let subscription_entry = this._get_subscription_entry();
+        let id = subscription_entry.id;
+        let disable_updates = !!subscription_entry.disable_updates;
 
-            let subscription_entry = this._get_subscription_entry();
-            let id = subscription_entry.id;
-            let disable_updates = !!subscription_entry.disable_updates;
+        if (disable_updates)
+            return;
 
-            if (disable_updates)
-                return;
+        let downloader = Downloader.get_default();
 
-            // Synchronously apply any update we have.
-            proxy.ApplyUpdateSync(id);
+        // Synchronously apply any update we have.
+        downloader.apply_update(id, null, (downloader, result) => {
+            downloader.apply_update_finish(result);
 
             // Regardless of whether or not we applied an update,
             // let's see about fetching a new one...
-            proxy.FetchUpdateRemote(id);
-        } catch(e) {
-            logError(e, "Could not update domain");
-        }
+            downloader.fetch_update(id, null, (downloader, result) => {
+                try {
+                    downloader.fetch_update_finish(downloader, result);
+                } catch(e) {
+                    logError(e, Format.vprintf("Could not update subscription ID: %s", [id]));
+                }
+            });
+        });
     },
 });
 
