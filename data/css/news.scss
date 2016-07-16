@@ -151,3 +151,18 @@ $support-font: 'Fira Sans' !default;
 .ContentGroupNoResultsMessage__subtitle {
     padding-left: 160px;
 }
+
+/* Make the error message in the top menu's content group really small; the top
+menu isn't really meant to fit an error message */
+.NavigationTopMenu {
+    .ContentGroupContentGroup {
+        &__errorPage {
+            padding: 0;
+        }
+
+        &__errorMessage {
+            font-size: 1px;
+            padding: 0;
+        }
+    }
+}
