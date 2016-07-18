@@ -33,6 +33,7 @@ trap "rm -f $JSON_PATH" EXIT
 
 SCRIPT="const Gio = imports.gi.Gio;
 Gio.Resource.load('%pkgdatadir%/eos-knowledge.gresource')._register();
+Gio.Resource.load('%pkgdatadir%/moltres.gresource')._register();
 imports.searchPath.unshift('resource:///com/endlessm/knowledge/js');
 
 const MoltresApplication = imports.app.moltresApplication;
