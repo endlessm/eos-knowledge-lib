@@ -205,8 +205,12 @@ EXTRA_DIST += $(gresources:.gresource=.gresource.xml) $(gresource_depedencies)
 # glib-compile-resources --generate-dependencies can't be run until all
 # dependencies are present, so we need to build the scss first
 eos-knowledge.gresource.deps: $(scss_targets) $(subst_files)
-pkgdata_DATA += eos-knowledge.gresource
 gresources += eos-knowledge.gresource
+
+data/moltres/moltres.gresource.deps:
+gresources += data/moltres/moltres.gresource
+
+pkgdata_DATA += $(gresources)
 
 # # # MAIN LIBRARY # # #
 
