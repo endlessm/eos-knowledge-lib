@@ -446,6 +446,7 @@ javascript_tests = \
 	tests/js/app/modules/filter/testUnread.js \
 	tests/js/app/modules/layout/testArticleStack.js \
 	tests/js/app/modules/layout/testBox.js \
+	tests/js/app/modules/layout/testBrandPage.js \
 	tests/js/app/modules/layout/testDynamicBackground.js \
 	tests/js/app/modules/layout/testHamburgerBasement.js \
 	tests/js/app/modules/layout/testInfiniteScrolling.js \

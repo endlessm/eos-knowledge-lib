@@ -6,7 +6,6 @@ const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const GLib = imports.gi.GLib;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -40,29 +39,17 @@ const Simple = new Module.Class({
     Slots: {
         'all-sets-page': {},  // optional
         'article-page': {},  // optional
-        'brand-page': {},  // optional
         'home-page': {},
         'search-page': {},  // optional
         'set-page': {},  // optional
     },
-
-    // Overridable in tests. Brand page should be visible for 2 seconds. The
-    // transition is currently hardcoded to a slow fade over 500 ms.
-    BRAND_PAGE_TIME_MS: 1500,
 
     _init: function (props={}) {
         props.transition_duration = 0;
         this.parent(props);
 
         this._home_content_ready = false;
-        this._brand_page_timeout_id = 0;
         this._transitions_style = 'slide-all';
-
-        this._brand_page = this.create_submodule('brand-page');
-        if (this._brand_page) {
-            this._brand_page.get_style_context().add_class('brand-page');
-            this.add(this._brand_page);
-        }
 
         this._home_page = this.create_submodule('home-page');
         this._home_page.get_style_context().add_class('home-page');
@@ -135,25 +122,6 @@ const Simple = new Module.Class({
         gdk_window.cursor = cursor;
     },
 
-    _reveal_home_if_ready: function () {
-        if (!this._home_content_ready || this._brand_page_timeout_id !== 0)
-            return;
-        this._show_page(this._home_page);
-    },
-
-    _start_brand_page: function () {
-        this._show_page(this._brand_page);
-        this._brand_page_timeout_id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, this.BRAND_PAGE_TIME_MS, () => {
-            this._brand_page_timeout_id = 0;
-            this._reveal_home_if_ready();
-            return GLib.SOURCE_REMOVE;
-        });
-        this._home_page.make_ready(() => {
-            this._home_content_ready = true;
-            this._reveal_home_if_ready();
-        });
-    },
-
     _show_page_if_present: function (page) {
         if (page)
             this._show_page(page);
@@ -163,10 +131,7 @@ const Simple = new Module.Class({
         let item = history.get_current_item();
         switch (item.page_type) {
             case Pages.HOME:
-                if (this._brand_page && history.get_items().length === 1)
-                    this._start_brand_page();
-                else
-                    this._show_page(this._home_page);
+                this._show_page(this._home_page);
                 break;
             case Pages.SET:
                 this._show_page_if_present(this._set_page);
@@ -185,10 +150,7 @@ const Simple = new Module.Class({
 
     // Module override
     make_ready: function (cb=function () {}) {
-        this._home_page.make_ready(() => {
-            this._home_content_ready = true;
-            cb();
-        });
+        this._home_page.make_ready(cb);
     },
 
     _show_page: function (new_page) {
@@ -228,7 +190,7 @@ const Simple = new Module.Class({
     },
 
     _is_page_on_left: function (page) {
-        return [this._home_page, this._brand_page].indexOf(page) > -1;
+        return page === this._home_page;
     },
 
     _get_transition: function (new_page, old_page, transitions_style) {
