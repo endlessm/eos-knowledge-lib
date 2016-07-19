@@ -42,13 +42,13 @@ defines:
     title:
       type: ContentGroup.StaticText
       properties:
-        label: "Browse by topic"
+        label: !translate "Browse by topic"
         halign: start
     trigger:
       shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
       slots:
         contents:
-        - shortdef: 'ContentGroup.StaticText(label: "See more categories")'
+        - shortdef: 'ContentGroup.StaticText(label: !translate "See more categories")'
         - type: Decoration.ThemeableImage
           properties:
             valign: end
@@ -124,7 +124,7 @@ defines:
                               shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
                               slots:
                                 contents:
-                                - shortdef: 'ContentGroup.DynamicTitle(format-string: "See more from %s")'
+                                - shortdef: 'ContentGroup.DynamicTitle(format-string: !translate "See more from %s")'
                                 - type: Decoration.ThemeableImage
                                   properties:
                                     valign: end
@@ -183,7 +183,7 @@ defines:
                               shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
                               slots:
                                 contents:
-                                - shortdef: 'ContentGroup.DynamicTitle(format-string: "See more from %s")'
+                                - shortdef: 'ContentGroup.DynamicTitle(format-string: !translate "See more from %s")'
                                 - type: Decoration.ThemeableImage
                                   properties:
                                     valign: end
