@@ -20,13 +20,15 @@ if [ "$RUN_DEBUG" != "" ]; then
 fi
 
 if [ "$#" -lt 1 ]; then
-    echo "Usage: moltres <path_to_app.json_file>"
+    echo "Usage: moltres <path_to_app.json_file> <path_to_theme.css_file>"
     exit 1
 fi
 
 YAML_PATH="$1" && shift
 JSON_PATH="$(mktemp --tmpdir XXXXXX.json)"
 autobahn -o $JSON_PATH $YAML_PATH
+
+CSS_PATH="$1" && shift
 
 # Cleanup the temp JSON file
 trap "rm -f $JSON_PATH" EXIT
@@ -39,6 +41,7 @@ imports.searchPath.unshift('resource:///com/endlessm/knowledge/js');
 const MoltresApplication = imports.app.moltresApplication;
 let application = new MoltresApplication.MoltresApplication({
     app_json_path: '$JSON_PATH',
+    css_path: '$CSS_PATH',
     application_id: 'com.endlessm.moltres',
 });
 application.run(['$0'].concat(ARGV));"
