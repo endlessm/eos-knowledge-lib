@@ -435,6 +435,7 @@ javascript_tests = \
 	tests/js/app/modules/layout/testHamburgerBasement.js \
 	tests/js/app/modules/layout/testInfiniteScrolling.js \
 	tests/js/app/modules/layout/testNavigation.js \
+	tests/js/app/modules/layout/testOverlay.js \
 	tests/js/app/modules/layout/testPaper.js \
 	tests/js/app/modules/layout/testResponsiveMargins.js \
 	tests/js/app/modules/layout/testScrolling.js \
