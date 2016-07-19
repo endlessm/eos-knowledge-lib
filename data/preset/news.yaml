@@ -105,7 +105,7 @@ defines:
                                   shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
                                   slots:
                                     contents:
-                                    - shortdef: 'ContentGroup.DynamicTitle(format-string: "see more from %s")'
+                                    - shortdef: 'ContentGroup.DynamicTitle(format-string: !translate "see more from %s")'
                                     - type: Decoration.ThemeableImage
                                       properties:
                                         valign: end
@@ -191,7 +191,7 @@ defines:
                                       shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
                                       slots:
                                         contents:
-                                        - shortdef: 'ContentGroup.DynamicTitle(format-string: "see more from %s")'
+                                        - shortdef: 'ContentGroup.DynamicTitle(format-string: !translate "see more from %s")'
                                         - type: Decoration.ThemeableImage
                                           properties:
                                             valign: end
@@ -219,7 +219,7 @@ defines:
                           slots:
                             arrangement: *suggestions-arrangement
                             title:
-                              shortdef: 'ContentGroup.StaticText(label: "other news", halign: start)'
+                              shortdef: 'ContentGroup.StaticText(label: !translate "other news", halign: start)'
                               styles:
                                 - content-group-title
                             selection:
@@ -273,7 +273,7 @@ defines:
                                 title:
                                   type: ContentGroup.StaticText
                                   properties:
-                                    label: 'you might be interested in...'
+                                    label: !translate 'you might be interested in...'
                                     halign: start
                                 arrangement: *suggestions-arrangement
                                 selection: Selection.SuggestedArticles
