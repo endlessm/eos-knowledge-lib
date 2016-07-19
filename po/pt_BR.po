@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-07-12 01:45+0000\n"
-"PO-Revision-Date: 2016-07-12 01:46+0000\n"
+"POT-Creation-Date: 2016-07-15 18:23+0000\n"
+"PO-Revision-Date: 2016-07-15 18:23+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -36,6 +36,19 @@ msgstr "Próximo Artigo"
 #: data/widgets/card/sequence.ui:59 js/app/modules/layout/articleStack.js:157
 msgid "Previous Article"
 msgstr "Artigo Anterior"
+
+#: data/widgets/contentGroup/contentGroup.ui:32
+msgid "Oops! There was an error."
+msgstr ""
+
+#: data/widgets/contentGroup/noResultsMessage.ui:50
+msgid ""
+"We recommend that you:\n"
+"\n"
+"  •  Check your spelling\n"
+"  •  Try other words that mean the same thing\n"
+"  •  Try using more general words"
+msgstr "Recomendamos que você:\n\n• Confira se a palavra foi escrita corretamente\n• Tente outras palavras com o mesmo significado\n• Tente usar palavras mais genéricas"
 
 #: data/widgets/layout/sideMenu.ui:95
 #: js/app/modules/layout/hamburgerBasement.js:57
@@ -136,26 +149,13 @@ msgstr "Resultados da pesquisa por “%s”"
 msgid "Results for “%s”"
 msgstr "Resultados para “%s”"
 
-#: js/app/modules/contentGroup/noResultsMessage.js:72
+#: js/app/modules/contentGroup/noResultsMessage.js:52
 msgid "Sorry! :-("
 msgstr "Desculpe! :-("
 
-#: js/app/modules/contentGroup/noResultsMessage.js:73
+#: js/app/modules/contentGroup/noResultsMessage.js:53
 msgid "There are no results that match your search.\n"
 msgstr "Não encontramos nenhum resultado para a sua busca.\n"
-
-#: js/app/modules/contentGroup/noResultsMessage.js:74
-msgid ""
-"We recommend that you:\n"
-"\n"
-"  •  Check your spelling\n"
-"  •  Try other words that mean the same thing\n"
-"  •  Try using more general words"
-msgstr "Recomendamos que você:\n\n• Confira se a palavra foi escrita corretamente\n• Tente outras palavras com o mesmo significado\n• Tente usar palavras mais genéricas"
-
-#: js/app/modules/contentGroup/noResultsMessage.js:81
-msgid "There was an error during your search."
-msgstr "Houve um erro durante a sua pesquisa."
 
 #: js/app/modules/layout/hamburgerBasement.js:41
 msgid "SEE ALL CATEGORIES"

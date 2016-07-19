@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-07-12 01:45+0000\n"
-"PO-Revision-Date: 2016-07-12 01:46+0000\n"
+"POT-Creation-Date: 2016-07-15 18:23+0000\n"
+"PO-Revision-Date: 2016-07-15 18:23+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: French (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -30,6 +30,19 @@ msgstr "Article suivant"
 #: data/widgets/card/sequence.ui:59 js/app/modules/layout/articleStack.js:157
 msgid "Previous Article"
 msgstr "Article précédent"
+
+#: data/widgets/contentGroup/contentGroup.ui:32
+msgid "Oops! There was an error."
+msgstr ""
+
+#: data/widgets/contentGroup/noResultsMessage.ui:50
+msgid ""
+"We recommend that you:\n"
+"\n"
+"  •  Check your spelling\n"
+"  •  Try other words that mean the same thing\n"
+"  •  Try using more general words"
+msgstr "Nous vous recommandons de :\n\n• Vérifier l'orthographe \n• Essayer d'autres mots voulant dire la même chose\n• Essayer d'utiliser des mots plus généraux"
 
 #: data/widgets/layout/sideMenu.ui:95
 #: js/app/modules/layout/hamburgerBasement.js:57
@@ -130,26 +143,13 @@ msgstr "Résultats de recherche pour “%s”"
 msgid "Results for “%s”"
 msgstr "Résultats pour « %s »"
 
-#: js/app/modules/contentGroup/noResultsMessage.js:72
+#: js/app/modules/contentGroup/noResultsMessage.js:52
 msgid "Sorry! :-("
 msgstr "Désolé ! :-("
 
-#: js/app/modules/contentGroup/noResultsMessage.js:73
+#: js/app/modules/contentGroup/noResultsMessage.js:53
 msgid "There are no results that match your search.\n"
 msgstr "Il n'y a pas de résultats correspondant à votre recherche.\n"
-
-#: js/app/modules/contentGroup/noResultsMessage.js:74
-msgid ""
-"We recommend that you:\n"
-"\n"
-"  •  Check your spelling\n"
-"  •  Try other words that mean the same thing\n"
-"  •  Try using more general words"
-msgstr "Nous vous recommandons de :\n\n• Vérifier l'orthographe \n• Essayer d'autres mots voulant dire la même chose\n• Essayer d'utiliser des mots plus généraux"
-
-#: js/app/modules/contentGroup/noResultsMessage.js:81
-msgid "There was an error during your search."
-msgstr "Il y a eu une erreur pendant votre recherche."
 
 #: js/app/modules/layout/hamburgerBasement.js:41
 msgid "SEE ALL CATEGORIES"

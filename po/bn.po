@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-07-12 01:45+0000\n"
-"PO-Revision-Date: 2016-07-12 01:46+0000\n"
+"POT-Creation-Date: 2016-07-15 18:23+0000\n"
+"PO-Revision-Date: 2016-07-15 18:23+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Bengali (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/bn/)\n"
 "MIME-Version: 1.0\n"
@@ -29,6 +29,19 @@ msgstr "পরের রচনা "
 #: data/widgets/card/sequence.ui:59 js/app/modules/layout/articleStack.js:157
 msgid "Previous Article"
 msgstr "আগের রচনা "
+
+#: data/widgets/contentGroup/contentGroup.ui:32
+msgid "Oops! There was an error."
+msgstr ""
+
+#: data/widgets/contentGroup/noResultsMessage.ui:50
+msgid ""
+"We recommend that you:\n"
+"\n"
+"  •  Check your spelling\n"
+"  •  Try other words that mean the same thing\n"
+"  •  Try using more general words"
+msgstr "আমাদের পরামর্শ হল:\n\n• বানান ঠিক কিনা দেখুন\n• একই কথা অন্য শব্দে দেখুন \n• আরও সাধারণ শব্দ দেখুন "
 
 #: data/widgets/layout/sideMenu.ui:95
 #: js/app/modules/layout/hamburgerBasement.js:57
@@ -129,26 +142,13 @@ msgstr "“%s” এর অনুসন্ধান ফলাফল "
 msgid "Results for “%s”"
 msgstr "“%s” এর জন্য ফলাফল "
 
-#: js/app/modules/contentGroup/noResultsMessage.js:72
+#: js/app/modules/contentGroup/noResultsMessage.js:52
 msgid "Sorry! :-("
 msgstr "দুঃখিত :-( "
 
-#: js/app/modules/contentGroup/noResultsMessage.js:73
+#: js/app/modules/contentGroup/noResultsMessage.js:53
 msgid "There are no results that match your search.\n"
 msgstr "আপনার সন্ধানের সাথে মেলে এমন ফলাফল পাওয়া যায় নি। \n"
-
-#: js/app/modules/contentGroup/noResultsMessage.js:74
-msgid ""
-"We recommend that you:\n"
-"\n"
-"  •  Check your spelling\n"
-"  •  Try other words that mean the same thing\n"
-"  •  Try using more general words"
-msgstr "আমাদের পরামর্শ হল:\n\n• বানান ঠিক কিনা দেখুন\n• একই কথা অন্য শব্দে দেখুন \n• আরও সাধারণ শব্দ দেখুন "
-
-#: js/app/modules/contentGroup/noResultsMessage.js:81
-msgid "There was an error during your search."
-msgstr "আপনার অনুসন্ধানের সময়য় ত্রুটি দেখা দিয়েছে। "
 
 #: js/app/modules/layout/hamburgerBasement.js:41
 msgid "SEE ALL CATEGORIES"
