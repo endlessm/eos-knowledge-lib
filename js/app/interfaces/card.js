@@ -13,6 +13,7 @@ const Mainloop = imports.mainloop;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Engine = imports.search.engine;
+const FormattableLabel = imports.app.widgets.formattableLabel;
 const ImageCoverFrame = imports.app.widgets.imageCoverFrame;
 const Module = imports.app.interfaces.module;
 const SearchUtils = imports.search.utils;
@@ -145,30 +146,6 @@ const Card = new Lang.Interface({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ContentObjectModel.ContentObjectModel),
         /**
-         * Property: title-capitalization
-         * Manner in which the card's title is formatted
-         *
-         * This property is a temporary stand-in for achieving this via the CSS
-         * *text-transform* property.
-         */
-        'title-capitalization': GObject.ParamSpec.enum('title-capitalization',
-            'Title capitalization', 'Manner in which the title is formatted',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            EosKnowledgePrivate.TextTransformType,
-            EosKnowledgePrivate.TextTransform.NONE),
-        /**
-         * Property: context-capitalization
-         * Manner in which the card's context label is formatted
-         *
-         * This property is a temporary stand-in for achieving this via the CSS
-         * *text-transform* property.
-         */
-        'context-capitalization': GObject.ParamSpec.enum('context-capitalization',
-            'Title capitalization', 'Manner in which the context is formatted',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            EosKnowledgePrivate.TextTransformType,
-            EosKnowledgePrivate.TextTransform.NONE),
-        /**
          * Property: highlight-string
          * A substring within a card's title or synopsis to get highlighted
          *
@@ -283,16 +260,16 @@ const Card = new Lang.Interface({
         // maximise chances that we can fit two of them on the card.
         let titles = this.get_parent_set_titles().sort((a, b) => a.length - b.length);
         if (titles.length > 0) {
-            let first_tag = new Gtk.Label({
+            let first_tag = new FormattableLabel.FormattableLabel({
                 lines: 1,
-                label: Utils.format_capitals(titles[0], this.context_capitalization),
+                label: titles[0],
             });
             widget.add(first_tag);
 
             if (titles.length > 1) {
-                let second_tag = new Gtk.Label({
+                let second_tag = new FormattableLabel.FormattableLabel({
                     lines: 1,
-                    label: ' | ' + Utils.format_capitals(titles[1], this.context_capitalization),
+                    label: ' | ' + titles[1],
                 });
                 widget.add(second_tag);
             }
@@ -399,8 +376,7 @@ const Card = new Lang.Interface({
      * Sets up a label to show the model's title.
      */
     set_title_label_from_model: function (label) {
-        this.set_label_or_hide(label,
-            Utils.format_capitals(this.model.title, this.title_capitalization));
+        this.set_label_or_hide(label, this.model.title);
         let context = label.get_style_context();
         context.add_class(Utils.get_element_style_class('Card', 'title'));
         context.add_class(Utils.get_element_style_class(this.constructor, 'title'));
@@ -413,8 +389,7 @@ const Card = new Lang.Interface({
      * highlight string in the title.
      */
     set_title_label_with_highlight: function (label) {
-        this.set_label_with_highlight(label,
-            Utils.format_capitals(this.model.title, this.title_capitalization));
+        this.set_label_with_highlight(label, this.model.title);
     },
 
     /**

@@ -35,19 +35,6 @@ const App = new Module.Class({
             'Show Subtitle', 'Show Subtitle',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             false),
-        /**
-         * Property: subtitle-capitalization
-         * Manner in which the app's subtitle is formatted
-         *
-         * This property is a temporary stand-in for achieving this via the CSS
-         * *text-transform* property.
-         */
-        'subtitle-capitalization': GObject.ParamSpec.enum('subtitle-capitalization',
-            'Subtitle capitalization',
-            'Manner in which the subtitle is formatted',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            EosKnowledgePrivate.TextTransformType,
-            EosKnowledgePrivate.TextTransform.NONE),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/banner/app.ui',
@@ -77,7 +64,7 @@ const App = new Module.Class({
             subtitle = app_info.get_description();
         }
         if (this.show_subtitle && subtitle) {
-            this._subtitle_label.label = Utils.format_capitals(subtitle, this.subtitle_capitalization);
+            this._subtitle_label.label = subtitle;
             this._subtitle_label.justify = Utils.alignment_to_justification(this.halign);
         }
         this._subtitle_label.visible = this.show_subtitle;
