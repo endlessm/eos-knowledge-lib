@@ -354,8 +354,8 @@ bin_SCRIPTS += \
 
 dist_pkgdata_DATA = data/downloader.ini
 
-# so we can find our .scss files
-pkgconfigdir = $(datadir)/pkgconfig
+# so clients can find our paths
+pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = data/eos-knowledge-0.pc
 
 # so we can package our .scss files
