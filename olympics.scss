@@ -1,36 +1,80 @@
+$title-font: TheSansRio2016 !default;
+$body-font: TheSansRio2016 !default;
+$display-font: Rio2016 !default;
+$logo-font: Rio2016 !default;
+$context-font: TheSansRio2016 !default;
+$support-font: TheSansRio2016 !default;
+
+
+$primary-light-color: #81d567 !default;
+$primary-medium-color: #4faa33 !default;
+$primary-dark-color: #39961b !default;
+
+$accent-light-color: #fff400 !default;
+$accent-dark-color: #0e65ab !default;
+
+$background-light-color: white !default;
+$background-dark-color: #0e65ab !default;
+
 $shadow-color: transparentize(black, 0.6);
+$card-background-color: transparentize(white, 0.1);
+$card-title-highlight: #cc532b;
 
 @import 'default';
+
+.home-page {
+    .BannerApp .ThemeableImage {
+        min-width: 400px;
+        min-height: 600px;
+    }
+}
 
 .large-menu {
     $menu-background-color: white;
 
-    background: $menu-background-color;
     padding: 30px;
 
     .main-title {
+        padding-top: 100px;
+        padding-bottom: 100px;
         font-family: $display-font;
         color: $primary-dark-color;
         font-size: 96px;
         font-weight: bold;
+
+        $lighten-layer: transparentize(white, 0.15);
+        background-image: linear-gradient(to bottom, $lighten-layer 0%,
+                                                     $lighten-layer 100%),
+                          url('olympiclogo.svg');
+        background-size: cover, 600px 280px;
+        background-position: center;
+        background-repeat: no-repeat;
     }
 
     .NavigationSearchBox {
-        background: darken($menu-background-color, 20%);
+        background: darken($menu-background-color, 10%);
         box-shadow: 0 0 3px $shadow-color inset;
         border-radius: 30px;
         padding: 8px;
         font-size: 18px;
-        margin: 0 100px;
+        margin: 0 200px;
+        color: $accent-dark-color;
+        caret-color: $accent-dark-color;
 
         image:nth-child(1) {
             padding-left: 2px;
             padding-right: 5px;
         }
+
+        image:hover {
+            color: lighten($accent-dark-color, 20%);
+            -gtk-icon-effect: highlight;
+        }
     }
 
     .Arrangement {
         background: transparent;
+        padding-bottom: 50px;
     }
 
     .CardThumb {
@@ -38,55 +82,82 @@ $shadow-color: transparentize(black, 0.6);
         min-height: 200px;
         background: transparent;
         box-shadow: none;
-        border: 10px solid white;
+        border: 10px solid transparent;
         transition: border-width 250ms ease;
 
         &__thumbnail {
             margin: 0 40px;
             border-radius: 999px;
+            box-shadow: 0 2px 4px 2px $shadow-color;
         }
 
         &:hover {
             border-width: 0px;
+
+            .Card__title {
+                color: $card-title-highlight;
+            }
         }
     }
 }
 
 .date-label {
+    color: $accent-dark-color;
     font-family: $body-font;
     font-size: 24px;
     font-weight: bold;
 }
 
+.set-page, .search-page {
+    background-image: url($secondary-background-image);
+}
+
 .search-overlay {
     $rounding: 20px;
+    $box-color: $accent-light-color;
     font-family: $display-font;
     font-size: 18px;
     font-weight: bold;
 
-    background: $accent-dark-color;
+    background: $box-color;
     box-shadow: 2px 2px 2px 1px $shadow-color;
     padding: 10px 20px 10px 10px;
     border-radius: $rounding 0 0 $rounding;
 
+    .search-label {
+        color: $accent-dark-color;
+        font-size: 24px;
+    }
+
     .NavigationSearchBox {
-        background: darken($accent-dark-color, 20%);
+        background: darken($box-color, 10%);
         box-shadow: 0 0 3px $shadow-color inset;
         border-radius: $rounding;
         padding: 8px;
+        color: $accent-dark-color;
+        caret-color: $accent-dark-color;
         font-weight: normal;
 
         image:nth-child(1) {
             padding-left: 2px;
             padding-right: 5px;
         }
+
+        image:hover {
+            color: lighten($accent-dark-color, 20%);
+            -gtk-icon-effect: highlight;
+        }
     }
 }
 
 .menu {
-    $menu-bg: #ccc;
-    background: $menu-bg;
-    padding: 20px 20px 0;
+    $menu-bg: #e4e4e4;
+    background-color: $menu-bg;
+    background-image: url('menu-top.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: top;
+    padding: 300px 20px 0;
     box-shadow: 0 0 10px 5px $shadow-color;
 
     .CardThumb {
@@ -104,13 +175,14 @@ $shadow-color: transparentize(black, 0.6);
         &__thumbnail {
             margin: 0 13px;
             border-radius: 999px;
+            box-shadow: 0 2px 4px 2px $shadow-color;
         }
 
         &:hover {
             border-width: 0px;
 
             .Card__title {
-                color: $primary-light-color;
+                color: $card-title-highlight;
             }
         }
     }
@@ -124,16 +196,23 @@ $shadow-color: transparentize(black, 0.6);
 
 .main-layout {
     .BannerSet {
-        padding: 20px 0 20px 30px;
+        padding: 20px 0 20px 50px;
+
+        .Card__title {
+            color: $primary-light-color;
+            font-family: $display-font;
+            font-size: 72px;
+        }
     }
 
     .BannerSearch {
-        padding: 100px 0 20px 30px;  // for some reason Banner.Set has more
-        color: $primary-dark-color;
+        padding: 100px 0 20px 50px;  // for some reason Banner.Set has more
+        color: $primary-light-color;
+        font-size: 72px;
     }
 
     scrolledwindow {
-        padding: 0 30px;
+        padding: 0 50px;
         background: transparent;
 
         .Arrangement {
@@ -142,6 +221,11 @@ $shadow-color: transparentize(black, 0.6);
 
         .Card {
             margin: 20px;
+            background-color: $card-background-color;
+
+            &:hover .Card__title {
+                color: $card-title-highlight;
+            }
         }
 
         scrollbar {
@@ -162,13 +246,26 @@ $shadow-color: transparentize(black, 0.6);
 
     .no-results-text {
         font-family: $body-font;
-        color: $primary-dark-color;
+        color: white;
         font-size: 24px;
-        padding-bottom: 20px;
+        padding-bottom: 45px;
     }
 
     .Card {
         min-width: 250px;
         min-height: 250px;
     }
+}
+
+.Card__synopsis {
+    font-style: normal;
+}
+
+// tweak
+.CardThumb.height-c.width-f .Card__title {
+    font-size: 30px;
+}
+
+.WebviewTooltip label {
+    font-family: $body-font;
 }
