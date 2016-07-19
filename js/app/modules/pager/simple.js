@@ -160,6 +160,7 @@ const Simple = new Module.Class({
             // first transition.
             this.transition_duration = Utils.DEFAULT_PAGE_TRANSITION_DURATION;
             this._set_busy(false);
+            new_page.make_ready();
             return;
         }
 
