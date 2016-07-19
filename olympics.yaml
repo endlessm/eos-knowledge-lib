@@ -1,0 +1,218 @@
+defines:
+- &search-box
+  type: Navigation.SearchBox
+  properties:
+    focus-on-map: false
+    placeholder-text: "What's your favorite sport?"
+
+- &home-page
+  shortdef: 'Layout.Box(orientation: horizontal, homogeneous: true)'
+  slots:
+    contents:
+    - shortdef: 'Layout.Box(orientation: vertical)'
+      styles: [large-menu]
+      slots:
+        contents:
+        - type: ContentGroup.StaticText
+          styles: [main-title]
+          properties:
+            justify: center
+            label: |-
+              Explore the
+              Olympics!
+        - *search-box
+        - type: ContentGroup.ContentGroup
+          slots:
+            selection: Selection.AllSets
+            arrangement:
+              shortdef: 'Arrangement.Thirties(max-rows: 1, valign: end)'
+              slots:
+                card: Card.Thumb
+    - type: Layout.Box
+      properties:
+        orientation: vertical
+        hexpand: true
+        halign: center
+        valign: center
+      slots:
+        contents:
+        - Banner.App
+        - type: ContentGroup.StaticText
+          styles: [date-label]
+          properties:
+            justify: center
+            label: |-
+              Olympic Games
+              August 5–21
+
+- &search-overlay
+  type: Layout.Box
+  styles: [search-overlay]
+  properties:
+    orientation: vertical
+    halign: end
+    valign: start
+    margin-top: 40  # this makes sure it is aligned the same on each page
+  slots:
+    contents:
+    - type: ContentGroup.StaticText
+      styles: [search-label]
+      properties:
+        use_markup: true
+        justify: center
+        label: |-
+          <span size="small">Search</span>
+          <span size="xx-large">Rio2016</span>
+    - *search-box
+
+- &menu
+  shortdef: 'ContentGroup.ContentGroup(halign: start)'
+  styles: [menu]
+  slots:
+    selection: Selection.AllSets
+    arrangement:
+      shortdef: 'Arrangement.List(orientation: vertical, max-rows: 3, valign: start)'
+      slots:
+        card: 'Card.Thumb(valign: start, halign: start)'
+
+- &main-page
+  shortdef: 'Layout.Box(orientation: horizontal)'
+  slots:
+    contents:
+    - *menu
+    - shortdef: 'Layout.Box(orientation: vertical)'
+      styles: [main-layout]
+      slots:
+        contents:
+        - type: Layout.Overlay
+          slots:
+            content:
+              type: Banner.Set
+              slots:
+                card: Card.Title
+            overlays:
+              - *search-overlay
+        - type: Layout.InfiniteScrolling
+          slots:
+            content:
+              shortdef: 'Layout.Box(orientation: vertical)'
+              slots:
+                contents:
+                - type: ContentGroup.ContentGroup
+                  slots:
+                    selection:
+                      type: Selection.ArticlesForSet
+                      id: featured-articles
+                      slots:
+                        order: Order.Featured
+                    arrangement:
+                      type: Arrangement.Quilt
+                      slots:
+                        card: Card.Thumb
+                - type: ContentGroup.ContentGroup
+                  slots:
+                    selection:
+                      type: Selection.ArticlesForSet
+                      slots:
+                        filter:
+                          type: Filter.OtherGroup
+                          references:
+                            other: featured-articles
+                    arrangement:
+                      type: Arrangement.Half
+                      slots:
+                        card: Card.Thumb
+
+- &no-results
+  shortdef: 'Layout.Box(orientation: vertical)'
+  styles: [no-results]
+  slots:
+    contents:
+    - shortdef: 'ContentGroup.StaticText(label: Nothing found!, halign: start)'
+      styles: [no-results-headline]
+    - type: ContentGroup.StaticText
+      styles: [no-results-text]
+      properties:
+        halign: start
+        justify: left
+        label: |-
+          The important thing is not to win but to take part.
+          Maybe you're interested in one of these:
+    - type: ContentGroup.ContentGroup
+      slots:
+        selection: Selection.SuggestedArticles
+        arrangement:
+          shortdef: 'Arrangement.Overflow(valign: start, orientation: horizontal)'
+          slots:
+            card: Card.Thumb
+
+- &search-page
+  shortdef: 'Layout.Box(orientation: horizontal)'
+  slots:
+    contents:
+    - *menu
+    - shortdef: 'Layout.Box(orientation: vertical)'
+      styles: [main-layout]
+      slots:
+        contents:
+        - type: Layout.Overlay
+          slots:
+            content: Banner.Search
+            overlays:
+              - *search-overlay
+        - type: Layout.InfiniteScrolling
+          slots:
+            content:
+              type: ContentGroup.ContentGroup
+              slots:
+                selection:
+                  type: Selection.Search
+                arrangement:
+                  type: Arrangement.SquareGuys
+                  slots:
+                    card: Card.Text
+                no-results: *no-results
+
+- &document
+  shortdef: 'Layout.Box(orientation: horizontal, homogeneous: false)'
+  slots:
+    contents:
+    - *menu
+    - type: Layout.Overlay
+      slots:
+        content:
+          type: Layout.ArticleStack
+          properties:
+            do-sliding-animation: false
+          slots:
+            card:
+              type: Card.KnowledgeDocument
+              properties:
+                width-request: 1700  # What part of hexpand don't you understand
+                show-toc: false
+                show-titles: false
+                custom-css: buffet-custom.css
+        overlays:
+          - *search-overlay
+
+root:
+  type: Controller.Mesh
+  slots:
+    window:
+      type: Window.Simple
+      slots:
+        search: ContentGroup.StaticText  # blank label!
+        content:
+          type: Layout.BrandPage
+          slots:
+            brand: 'Banner.App(halign: center, valign: center)'
+            content:
+              type: ContentGroup.MediaLightbox
+              slots:
+                content:
+                  type: Pager.Simple
+                  slots:
+                    home-page: *home-page
+                    set-page: *main-page
+                    search-page: *search-page
+                    article-page: *document

@@ -1,0 +1,174 @@
+$shadow-color: transparentize(black, 0.6);
+
+@import 'default';
+
+.large-menu {
+    $menu-background-color: white;
+
+    background: $menu-background-color;
+    padding: 30px;
+
+    .main-title {
+        font-family: $display-font;
+        color: $primary-dark-color;
+        font-size: 96px;
+        font-weight: bold;
+    }
+
+    .NavigationSearchBox {
+        background: darken($menu-background-color, 20%);
+        box-shadow: 0 0 3px $shadow-color inset;
+        border-radius: 30px;
+        padding: 8px;
+        font-size: 18px;
+        margin: 0 100px;
+
+        image:nth-child(1) {
+            padding-left: 2px;
+            padding-right: 5px;
+        }
+    }
+
+    .Arrangement {
+        background: transparent;
+    }
+
+    .CardThumb {
+        min-width: 200px;
+        min-height: 200px;
+        background: transparent;
+        box-shadow: none;
+        border: 10px solid white;
+        transition: border-width 250ms ease;
+
+        &__thumbnail {
+            margin: 0 40px;
+            border-radius: 999px;
+        }
+
+        &:hover {
+            border-width: 0px;
+        }
+    }
+}
+
+.date-label {
+    font-family: $body-font;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.search-overlay {
+    $rounding: 20px;
+    font-family: $display-font;
+    font-size: 18px;
+    font-weight: bold;
+
+    background: $accent-dark-color;
+    box-shadow: 2px 2px 2px 1px $shadow-color;
+    padding: 10px 20px 10px 10px;
+    border-radius: $rounding 0 0 $rounding;
+
+    .NavigationSearchBox {
+        background: darken($accent-dark-color, 20%);
+        box-shadow: 0 0 3px $shadow-color inset;
+        border-radius: $rounding;
+        padding: 8px;
+        font-weight: normal;
+
+        image:nth-child(1) {
+            padding-left: 2px;
+            padding-right: 5px;
+        }
+    }
+}
+
+.menu {
+    $menu-bg: #ccc;
+    background: $menu-bg;
+    padding: 20px 20px 0;
+    box-shadow: 0 0 10px 5px $shadow-color;
+
+    .CardThumb {
+        min-width: 100px;
+        min-height: 220px;
+        background: transparent;
+        box-shadow: none;
+        border: 5px solid $menu-bg;
+        transition: border-width 250ms ease;
+
+        &__contentFrame grid {
+            padding: 0;
+        }
+
+        &__thumbnail {
+            margin: 0 13px;
+            border-radius: 999px;
+        }
+
+        &:hover {
+            border-width: 0px;
+
+            .Card__title {
+                color: $primary-light-color;
+            }
+        }
+    }
+
+    .ContentGroupContentGroup__errorPage,
+    .ContentGroupContentGroup__errorMessage {
+        font-size: 1px;
+        padding: 0;
+    }
+}
+
+.main-layout {
+    .BannerSet {
+        padding: 20px 0 20px 30px;
+    }
+
+    .BannerSearch {
+        padding: 100px 0 20px 30px;  // for some reason Banner.Set has more
+        color: $primary-dark-color;
+    }
+
+    scrolledwindow {
+        padding: 0 30px;
+        background: transparent;
+
+        .Arrangement {
+            margin: -20px -20px 20px -20px;
+        }
+
+        .Card {
+            margin: 20px;
+        }
+
+        scrollbar {
+            margin-left: 10px;
+            background: transparent;
+        }
+    }
+}
+
+.no-results {
+    .no-results-headline {
+        font-family: $display-font;
+        color: $accent-light-color;
+        font-weight: bold;
+        font-size: 48px;
+        padding-bottom: 30px;
+    }
+
+    .no-results-text {
+        font-family: $body-font;
+        color: $primary-dark-color;
+        font-size: 24px;
+        padding-bottom: 20px;
+    }
+
+    .Card {
+        min-width: 250px;
+        min-height: 250px;
+    }
+}

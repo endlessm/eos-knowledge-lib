@@ -1,0 +1,1 @@
+scss -I data/css --compass -E utf-8 --stop-on-error --sourcemap=none $1.scss $1.css
