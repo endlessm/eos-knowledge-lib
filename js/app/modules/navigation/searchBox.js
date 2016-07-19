@@ -62,9 +62,9 @@ const SearchBox = new Module.Class({
         this.connect('changed', () => {
             this._update_link_action();
         });
-        this.connect('text-changed', () => {
-            this._on_text_changed();
-        });
+        // this.connect('text-changed', () => {
+        //     this._on_text_changed();
+        // });
         this.connect('activate', () => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
