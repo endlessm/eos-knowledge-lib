@@ -2,8 +2,6 @@
 
 /* exported Card, MinSize, MaxSize */
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
-const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -12,7 +10,6 @@ const Mainloop = imports.mainloop;
 
 const ContentObjectModel = imports.search.contentObjectModel;
 const FormattableLabel = imports.app.widgets.formattableLabel;
-const ImageCoverFrame = imports.app.widgets.imageCoverFrame;
 const Module = imports.app.interfaces.module;
 const SearchUtils = imports.search.utils;
 const SetMap = imports.app.setMap;
@@ -302,18 +299,18 @@ const Card = new Lang.Interface({
         if (!this.model.thumbnail_uri)
             return;
 
-        let coveredFrame = new ImageCoverFrame.ImageCoverFrame();
-        frame.add(coveredFrame);
-
-        let cancellable = null;
-        let file = Gio.File.new_for_uri(this.model.thumbnail_uri);
-        let stream = file.read(cancellable);
-        coveredFrame.set_content(stream);
-        frame.visible = true;
+        let bg_provider = new Gtk.CssProvider();
+        bg_provider.load_from_data('frame {\
+            background-size: cover;\
+            background-image: url("' + this.model.thumbnail_uri + '");\
+        }');
 
         let context = frame.get_style_context();
         context.add_class(Utils.get_element_style_class('Card', 'thumbnail'));
         context.add_class(Utils.get_element_style_class(this.constructor, 'thumbnail'));
+        context.add_provider(bg_provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        frame.show();
     },
 
     /**
