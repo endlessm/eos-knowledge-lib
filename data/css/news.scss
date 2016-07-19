@@ -172,3 +172,16 @@ $support-font: 'Fira Sans' !default;
 .search-page .LayoutDynamicBackground {
     -EknLayout_DynamicBackground-background-height: 500px;
 }
+
+.CardPost,
+.CardThumb {
+    &__context .FormattableLabel {
+        -EknFormattableLabel-text-transform: 'lowercase';
+    }
+}
+
+.CardTitle {
+    &__title {
+        -EknFormattableLabel-text-transform: 'lowercase';
+    }
+}

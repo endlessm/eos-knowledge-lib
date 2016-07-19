@@ -1,19 +1,12 @@
 ---
 defines:
-# Some props
-- &card-all-uppercase-properties
-  title-capitalization: uppercase
-  context-capitalization: uppercase
-
 # A few small repeated elements
 - &no-sets 'Filter.Sets(invert: true)'
 - &header-card Card.Title
 - &main-card
   type: Card.Thumb
-  properties: *card-all-uppercase-properties
 - &set-card
   type: Card.Deck
-  properties: *card-all-uppercase-properties
 
 - &article-suggestions
   type: ContentGroup.ContentGroup
@@ -75,7 +68,6 @@ defines:
           slots:
             card:
               type: Card.Title
-              properties: *card-all-uppercase-properties
         selection:
           type: Selection.AllSets
           slots:
@@ -104,7 +96,6 @@ defines:
                       slots:
                         card:
                           type: Card.Post
-                          properties: *card-all-uppercase-properties
                     selection:
                       type: Selection.AllHighlights
                 - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
@@ -277,7 +268,6 @@ root:
               type: Banner.App
               properties:
                 show-subtitle: true
-                subtitle-capitalization: uppercase
             content:
               type: ContentGroup.MediaLightbox
               slots:

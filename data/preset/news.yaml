@@ -1,17 +1,8 @@
 ---
 defines:
-- &common-card-properties
-  context-capitalization: lowercase
-  text-halign: start
-- &suggestions-properties
-  show-trigger: false
-  title-capitalization: lowercase
-  valign: end
-
 # Various one-liners
 - &main-card
-  type: Card.Post
-  properties: *common-card-properties
+  shortdef: 'Card.Post(text-halign: start)'
 - &header-card Card.Title
 - &no-sets 'Filter.Sets(invert: true)'
 
@@ -35,7 +26,6 @@ defines:
                     card:
                       type: Card.Title
                       properties:
-                        title-capitalization: lowercase
                         halign: center
                         decorate-on-highlight: true
                 selection:
@@ -47,8 +37,7 @@ defines:
   shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
   slots:
     card:
-      type: Card.Thumb
-      properties: *common-card-properties
+      shortdef: 'Card.Thumb(text-halign: start)'
 
 # Pages
 - &home-page
@@ -143,7 +132,7 @@ defines:
                 contents:
                 - shortdef: 'Banner.Set(halign: center)'
                   slots:
-                    card: 'Card.Title(title-capitalization: lowercase)'
+                    card: Card.Title
                 - Decoration.Separator
                 - shortdef: 'Layout.Box(orientation: vertical)'
                   slots:
