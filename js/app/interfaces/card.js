@@ -10,15 +10,12 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
-const ArticleObjectModel = imports.search.articleObjectModel;
 const ContentObjectModel = imports.search.contentObjectModel;
-const Engine = imports.search.engine;
 const FormattableLabel = imports.app.widgets.formattableLabel;
 const ImageCoverFrame = imports.app.widgets.imageCoverFrame;
 const Module = imports.app.interfaces.module;
 const SearchUtils = imports.search.utils;
 const SetMap = imports.app.setMap;
-const SetObjectModel = imports.search.setObjectModel;
 const SpaceContainer = imports.app.widgets.spaceContainer;
 const Utils = imports.app.utils;
 
@@ -331,7 +328,7 @@ const Card = new Lang.Interface({
     set_label_with_highlight: function (label, str) {
         let title = GLib.markup_escape_text(str, -1);
         label.visible = !!title;
-        if (this.highlight_string.length == 0) {
+        if (this.highlight_string.length === 0) {
             label.label = title;
             return;
         }
@@ -345,7 +342,7 @@ const Card = new Lang.Interface({
             let span = Utils.style_context_to_markup_span(label.get_style_context(), Gtk.StateFlags.NORMAL);
             context.restore();
             label.label = title.replace(regex, span + '$1</span>');
-        }
+        };
         let context = label.get_style_context();
         update_highlight(context);
         label.get_style_context().connect('changed', update_highlight);
