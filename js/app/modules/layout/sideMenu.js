@@ -121,6 +121,11 @@ const SideMenu = new Module.Class({
         return Gdk.EVENT_PROPAGATE;
     },
 
+    vfunc_unmap: function () {
+        this._close_menu();
+        return this.parent();
+    },
+
     _on_home_clicked: function () {
         this._close_menu();
         Dispatcher.get_default().dispatch({
