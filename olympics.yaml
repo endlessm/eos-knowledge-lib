@@ -191,7 +191,7 @@ defines:
                 width-request: 1700  # What part of hexpand don't you understand
                 show-toc: false
                 show-titles: false
-                custom-css: buffet-custom.css
+                custom-css: rio-custom.css
         overlays:
           - *search-overlay
 

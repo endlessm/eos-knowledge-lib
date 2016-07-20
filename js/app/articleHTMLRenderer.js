@@ -109,7 +109,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
             case 'wikipedia':
             case 'wikibooks':
             case 'wikisource':
-                css_files.push('wikimedia.css');
+                css_files.push('rio-custom.css');
                 break;
             case 'wikihow':
                 css_files.push('wikihow.css');
