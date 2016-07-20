@@ -46,14 +46,8 @@ function components_from_ekn_id (ekn_id) {
     return components;
 }
 
-function domain_from_app_id (app_id) {
-    if (app_id.indexOf('-') === -1)
-        return app_id.split('.').slice(-2).join('.');
-    return app_id.split('.').pop();
-}
-
 function object_path_from_app_id (app_id) {
-    return '/' + app_id.replace(/\./g, '/').replace(/-/g, '_');
+    return '/' + app_id.replace(/\./g, '/');
 }
 
 function get_flatpak_path () {

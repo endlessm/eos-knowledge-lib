@@ -24,38 +24,15 @@ const Utils = imports.search.utils;
  *   a *Gio.File* pointing to an app content directory, or *null*.
  */
 function get_data_dir(app_id) {
-    function try_data_dir(domain) {
-        let xdg_dir_paths = GLib.get_system_data_dirs();
+    let xdg_dir_paths = GLib.get_system_data_dirs();
 
-        // We want to make sure we at least always search /endless/share.
-        if (xdg_dir_paths.indexOf('/endless/share') === -1)
-            xdg_dir_paths.push('/endless/share');
-
-        // Check for an EKN database for the given domain at each datadir passed in,
-        // in order of priority. If it is there, return the directory.
-        let found_dir = null;
-        xdg_dir_paths.some((path) => {
-            let ekn_dir = Gio.File.new_for_path(path).get_child('ekn');
-            let database_dir = ekn_dir.get_child('data').get_child(domain);
-            if (database_dir.query_exists(null)) {
-                found_dir = database_dir;
-                return true;
-            }
-            return false;
-        });
-        return found_dir;
+    // Check for an EKN database for the given domain at each datadir passed in,
+    // in order of priority. If it is there, return the directory.
+    for (let path of xdg_dir_paths) {
+        let ekn_dir = Gio.File.new_for_path(path).get_child('ekn');
+        let database_dir = ekn_dir.get_child('data').get_child(app_id);
+        if (database_dir.query_exists(null))
+            return database_dir;
     }
-
-    let data_dir;
-
-    data_dir = try_data_dir(app_id);
-    if (data_dir)
-        return data_dir;
-
-    let domain = Utils.domain_from_app_id(app_id);
-    data_dir = try_data_dir(domain);
-    if (data_dir)
-        return data_dir;
-
     return null;
 }
