@@ -319,7 +319,6 @@ subst = $(SED) \
 	$(NULL)
 
 subst_files = \
-	data/com.endlessm.EknSearchProvider.service \
 	ekn-search-provider \
 	ekn-app-runner \
 	js/app/config.js \
@@ -336,11 +335,6 @@ $(subst_files): %: %.in Makefile
 
 CLEANFILES += $(subst_files)
 EXTRA_DIST += $(patsubst %,%.in,$(subst_files))
-
-servicedir = $(datadir)/dbus-1/services
-service_DATA = \
-	data/com.endlessm.EknSearchProvider.service \
-	$(NULL)
 
 bin_SCRIPTS += \
 	ekn-search-provider \
