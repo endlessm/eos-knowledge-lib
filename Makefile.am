@@ -319,7 +319,6 @@ subst = $(SED) \
 	$(NULL)
 
 subst_files = \
-	ekn-search-provider \
 	ekn-app-runner \
 	js/app/config.js \
 	js/search/config.js \
@@ -337,7 +336,6 @@ CLEANFILES += $(subst_files)
 EXTRA_DIST += $(patsubst %,%.in,$(subst_files))
 
 bin_SCRIPTS += \
-	ekn-search-provider \
 	ekn-app-runner \
 	autobahn \
 	eminem \
