@@ -27,4 +27,11 @@
     .composite &__context {
         color: gray;
     }
+
+    &--pdf &__thumbnail {
+        background-image: url('resource:///com/endlessm/knowledge/data/images/pdf_icon.png');
+        background-repeat: no-repeat;
+        background-position: 20px 20px;
+        background-size: 50px;
+    }
 }
