@@ -113,6 +113,9 @@ const Thumb = new Module.Class({
     _init: function (props={}) {
         this.parent(props);
 
+        if (this.model.content_type === 'application/pdf')
+            this.get_style_context().add_class('pdf');
+
         this.set_title_label_from_model(this._title_label);
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
         this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
