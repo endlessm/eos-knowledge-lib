@@ -201,6 +201,13 @@ const ContentObjectModel = new Lang.Class({
 
         if (json_ld.hasOwnProperty('featured'))
             props.featured = json_ld.featured;
+
+        if (props.ekn_id.contains('3c9b558258cacc63f693eb1d5cff8eab3f8dccea'))
+            props.thumbnail_uri = 'file:///home/jasper/Downloads/olympic-games.jpg';
+        if (props.ekn_id.contains('aef6b6ef0b778d216a3ee9dba26157a3cfc1a833'))
+            props.thumbnail_uri = 'file:///home/jasper/Downloads/sports.jpg';
+        if (props.ekn_id.contains('a536ca0d11801ff1bc8f29893dfaf79d498f6f05'))
+            props.thumbnail_uri = 'file:///home/jasper/Downloads/athletes.jpg';
     },
 
     get_content_stream: function () {
