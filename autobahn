@@ -126,7 +126,8 @@ def translate(loader, node):
     if po is None:
         return node.value
     entry = po.find(node.value)
-    return entry.msgstr if entry.translated() else node.value
+    translated = entry is not None and entry.translated()
+    return entry.msgstr if translated else node.value
 
 
 def import_yaml(loader, node):
