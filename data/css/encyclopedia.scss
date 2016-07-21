@@ -86,20 +86,11 @@ $accent-light-color: #044a80 !default;
 }
 
 .BannerApp {
-    .home-page & {
-        margin-bottom: 42px;
-    }
-
-    .search-page &,
-    .article-page & {
-        margin: 10px 0;
-    }
-
     .search-page & .ThemeableImage,
     .article-page & .ThemeableImage {
         -EknThemeableImage-sizing: "size-min";
-        min-width: 202px;
-        min-height: 72px;
+        min-width: 345px;
+        min-height: 92px;
     }
 }
 
