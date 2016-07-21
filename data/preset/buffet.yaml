@@ -114,7 +114,6 @@ defines:
                     arrangement:
                       type: Arrangement.List
                       properties:
-                        orientation: vertical
                         max-rows: 2
                       slots:
                         card:
@@ -165,7 +164,7 @@ defines:
                     - thematic-group
                   slots:
                     arrangement:
-                      shortdef: 'Arrangement.List(orientation: vertical, homogeneous: false, max-rows: 5)'
+                      shortdef: 'Arrangement.List(homogeneous: false, max-rows: 5)'
                       slots:
                         card:
                           type: Card.ContentGroup
