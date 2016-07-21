@@ -170,6 +170,7 @@ const ThemeableImage = new Knowledge.Class({
         cr.translate(this._image_width / 2, this._image_height / 2);
         let scale = Math.min(this._image_width / this._pixbuf.get_width(),
                              this._image_height / this._pixbuf.get_height());
+        scale = Math.min(1, scale);
         cr.scale(scale, scale);
         cr.translate(-this._pixbuf.get_width() / 2, -this._pixbuf.get_height() / 2);
 
