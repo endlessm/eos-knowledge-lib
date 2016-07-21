@@ -9,11 +9,30 @@ const Gtk = imports.gi.Gtk;
 const Arrangement = imports.app.interfaces.arrangement;
 const Module = imports.app.interfaces.module;
 
+/**
+ * Class: List
+ */
 const List = new Module.Class({
     Name: 'Arrangement.List',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],
     Properties: {
+        /**
+         * Property: orientation
+         * The orientation of the list
+         *
+         * Default:
+         *   Gtk.Orientation.VERTICAL
+         */
+        /* Overrides GtkOrientable default
+         * FIXME: uncomment this once GJS supports overriding properties properly
+         *
+        'orientation': GObject.ParamSpec.enum('orientation', 'Orientation',
+            'The orientation of the list',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            Gtk.Orientation,
+            Gtk.Orientation.VERTICAL),
+         */
         /**
          * Property: max-rows
          * Maximum number of card rows to be displayed
@@ -41,7 +60,13 @@ const List = new Module.Class({
     },
 
     _init: function (props={}) {
+
+        /* Override orientable property default if it was not specified */
+        if (props.orientation === undefined)
+          props.orientation = Gtk.Orientation.VERTICAL;
+
         this.parent(props);
+
         this._size_group = new Gtk.SizeGroup({
             mode: Gtk.SizeGroupMode.BOTH,
         });

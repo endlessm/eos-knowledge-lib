@@ -91,7 +91,6 @@ defines:
                         arrangement:
                           type: Arrangement.List
                           properties:
-                            orientation: vertical
                             max-rows: 2
                           slots:
                             card:
@@ -160,7 +159,6 @@ defines:
                                 card: Card.List
                               properties:
                                 row-spacing: 20
-                                orientation: vertical
                             selection:
                               type: Selection.ArticlesForSet
                               slots:
@@ -178,7 +176,7 @@ defines:
                           - hierarchical-set
                           slots:
                             arrangement:
-                              shortdef: 'Arrangement.List(max-rows: 3, orientation: vertical)'
+                              shortdef: 'Arrangement.List(max-rows: 3)'
                               slots:
                                 card:
                                   type: Card.ContentGroup
