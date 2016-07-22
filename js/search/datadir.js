@@ -11,7 +11,7 @@ const Utils = imports.search.utils;
  */
 
 /**
- * Function: get_data_dir_for_domain
+ * Function: get_data_dir
  * Searches for the EKN manifest for a knowledge engine domain
  *
  * Parameters:
