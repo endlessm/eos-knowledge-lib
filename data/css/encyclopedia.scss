@@ -37,6 +37,7 @@ $accent-light-color: #044a80 !default;
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
+    background-image: url($primary-background-image);
 }
 
 .search-page,
@@ -44,6 +45,7 @@ $accent-light-color: #044a80 !default;
     background-position: top center;
     background-size: cover;
     background-repeat: no-repeat;
+    background-image: url($secondary-background-image);
 }
 
 .PagerSimple {
@@ -191,14 +193,6 @@ scrollbar {
     font-size: 1.3em; /* 16px / 12px/em */
 }
 
-.home-page {
-    background-image: url($primary-background-image);
-}
-
-.article-page,
-.search-page {
-    background-image: url($secondary-background-image);
-}
 
 /* Changes for composite TVs */
 
