@@ -332,8 +332,8 @@ const DomainV3 = new Lang.Class({
     _get_subscription_dir: function () {
         if (this._subscription_dir === undefined) {
             let subscription_id = this._get_subscription_id();
-            let user_data_dir = Gio.File.new_for_path(GLib.get_user_data_dir());
-            this._subscription_dir = user_data_dir.get_child('com.endlessm.subscriptions').get_child(subscription_id);
+            let subscriptions_dir = Utils.get_subscriptions_dir();
+            this._subscription_dir = subscriptions_dir.get_child(subscription_id);
             Utils.ensure_directory(this._subscription_dir);
         }
 

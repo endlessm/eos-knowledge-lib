@@ -151,3 +151,8 @@ function ensure_directory (dir) {
         // Directory already exists, we're good.
     }
 }
+
+function get_subscriptions_dir () {
+    let path = GLib.build_filenamev([GLib.get_user_data_dir(), 'com.endlessm.subscriptions']);
+    return Gio.File.new_for_path(path);
+}

@@ -191,7 +191,7 @@ const SubscriptionDownloader = new Lang.Class({
 
         this._file_downloader = new FileDownloader();
 
-        this._subscriptions_dir = Gio.File.new_for_path(GLib.build_filenamev([GLib.get_user_data_dir(), 'com.endlessm.subscriptions']));
+        this._subscriptions_dir = Utils.get_subscriptions_dir();
         Utils.ensure_directory(this._subscriptions_dir);
 
         this._load_from_config();
