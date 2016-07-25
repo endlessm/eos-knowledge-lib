@@ -148,13 +148,7 @@ const SlidingPanel = new Knowledge.Class({
 
         this.set_visible_child(this._reveal_panel ? this._panel_frame : this._transparent_frame);
 
-        this.connect('notify::transition-running', () => {
-            if (this.transition_running)
-                return;
-            if (!this.reveal_panel && this.hide_when_invisible)
-                this.visible = false;
-            this.notify('panel-revealed');
-        });
+        this.connect('notify::transition-running', this._eval_visibility.bind(this));
     },
 
     get panel_widget () {
@@ -186,5 +180,18 @@ const SlidingPanel = new Knowledge.Class({
             this.visible = true;
         if (this.get_children().length > 0)
             this.set_visible_child(v ? this._panel_frame : this._transparent_frame);
+
+        /* Make sure hide_when_invisible works if GTK animations are disabled */
+        this._eval_visibility();
+    },
+
+    _eval_visibility: function () {
+        if (this.transition_running)
+            return;
+
+        if (!this.reveal_panel && this.hide_when_invisible)
+            this.visible = false;
+
+        this.notify('panel-revealed');
     },
 });
