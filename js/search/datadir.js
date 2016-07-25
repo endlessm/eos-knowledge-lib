@@ -24,14 +24,21 @@ const Utils = imports.search.utils;
  *   a *Gio.File* pointing to an app content directory, or *null*.
  */
 function get_data_dir(app_id) {
+    function database_dir_from_data_dir(path) {
+        let ekn_dir = Gio.File.new_for_path(path).get_child('ekn');
+        let database_dir = ekn_dir.get_child('data').get_child(app_id);
+        if (database_dir.query_exists(null))
+            return database_dir;
+        return null;
+    }
+
     let xdg_dir_paths = GLib.get_system_data_dirs();
 
     // Check for an EKN database for the given domain at each datadir passed in,
     // in order of priority. If it is there, return the directory.
     for (let path of xdg_dir_paths) {
-        let ekn_dir = Gio.File.new_for_path(path).get_child('ekn');
-        let database_dir = ekn_dir.get_child('data').get_child(app_id);
-        if (database_dir.query_exists(null))
+        let database_dir = database_dir_from_data_dir(path);
+        if (database_dir)
             return database_dir;
     }
     return null;
