@@ -1,5 +1,4 @@
 usr/bin/ekn-app-runner
-usr/bin/ekn-downloader
 usr/bin/ekn-search-provider
 usr/lib/eos-knowledge/*
 usr/share/dbus-1/*
