@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-07-15 18:23+0000\n"
-"PO-Revision-Date: 2016-07-15 18:23+0000\n"
+"POT-Creation-Date: 2016-07-19 01:49+0000\n"
+"PO-Revision-Date: 2016-07-19 01:49+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/vi/)\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: data/widgets/card/legacyPolaroid.ui:99
+#: data/widgets/card/legacyPolaroid.ui:101
 msgid "PDF"
 msgstr ""
 
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Next Article"
 msgstr ""
 
-#: data/widgets/card/sequence.ui:59 js/app/modules/layout/articleStack.js:157
+#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:157
 msgid "Previous Article"
 msgstr ""
 
@@ -45,6 +45,10 @@ msgstr ""
 #: data/widgets/layout/sideMenu.ui:95
 #: js/app/modules/layout/hamburgerBasement.js:57
 msgid "HOME"
+msgstr ""
+
+#: data/widgets/tooltips.ui:50
+msgid "View the license in your browser"
 msgstr ""
 
 #. TRANSLATORS: anything inside curly braces '{}' is going

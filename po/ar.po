@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-07-15 18:23+0000\n"
-"PO-Revision-Date: 2016-07-15 18:23+0000\n"
+"POT-Creation-Date: 2016-07-19 01:49+0000\n"
+"PO-Revision-Date: 2016-07-19 01:49+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: data/widgets/card/legacyPolaroid.ui:99
+#: data/widgets/card/legacyPolaroid.ui:101
 msgid "PDF"
 msgstr "صيغة PDF"
 
@@ -26,7 +26,7 @@ msgstr "صيغة PDF"
 msgid "Next Article"
 msgstr "المقالة التالية"
 
-#: data/widgets/card/sequence.ui:59 js/app/modules/layout/articleStack.js:157
+#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:157
 msgid "Previous Article"
 msgstr "المقالة السابقة"
 
@@ -47,6 +47,10 @@ msgstr "ننصحك بالقيام بما يلي:\n\n  •  مراجعة صحة �
 #: js/app/modules/layout/hamburgerBasement.js:57
 msgid "HOME"
 msgstr "الصفحة الرئيسية"
+
+#: data/widgets/tooltips.ui:50
+msgid "View the license in your browser"
+msgstr ""
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
