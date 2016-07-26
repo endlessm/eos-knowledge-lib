@@ -37,6 +37,7 @@ $accent-light-color: #044a80 !default;
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
+    background-image: url($primary-background-image);
 }
 
 .search-page,
@@ -44,45 +45,11 @@ $accent-light-color: #044a80 !default;
     background-position: top center;
     background-size: cover;
     background-repeat: no-repeat;
+    background-image: url($secondary-background-image);
 }
 
 .PagerSimple {
     -EknPager_Simple-transitions-style: 'splash';
-}
-
-.NavigationSearchBox {
-    background: rgba(0,0,0,0.2);
-    padding: 0.5em .3em 0.5em .3em;
-    font-size: 13.3px;
-    color: #fff;
-    caret-color: #fff;
-
-    border-style: solid;
-    border-radius: 50px;
-
-    border-width: 3px;
-    border-top-color: rgba(0, 0, 0, 0.49);
-    border-left-color: rgba(0, 0, 0, 0.49);
-    border-right-color: rgba(0, 0, 0, 0.49);
-    border-bottom-color: rgba(255, 255, 255, 0.14);
-
-    .home-page & {
-        min-width: 450px;
-    }
-
-    image {
-        margin: 0 3px;
-    }
-
-    selection {
-        color: rgba(0, 0, 0, 0.7);
-        background-color: #fff;
-    }
-
-    .composite & {
-        font-size: 21.1px;  /* 18 px spec * 88% because spec was at 110% scale not 125% */
-        background-color: transparentize(black, 1 - 0.8);
-    }
 }
 
 .BannerApp {
@@ -100,6 +67,13 @@ $accent-light-color: #044a80 !default;
         -EknThemeableImage-sizing: "size-min";
         min-width: 202px;
         min-height: 72px;
+    }
+}
+
+.NavigationSearchBox {
+    .search-page &,
+    .article-page & {
+        min-width: 200px;
     }
 }
 
@@ -219,14 +193,6 @@ scrollbar {
     font-size: 1.3em; /* 16px / 12px/em */
 }
 
-.home-page {
-    background-image: url($primary-background-image);
-}
-
-.article-page,
-.search-page {
-    background-image: url($secondary-background-image);
-}
 
 /* Changes for composite TVs */
 
