@@ -39,7 +39,8 @@ Homepage: http://www.endlessm.com
 Package: eos-knowledge-0
 Section: non-free/libs
 Architecture: any
-Depends: libjs-mathjax (>= 2.2),
+Depends: gjs,
+         libjs-mathjax (>= 2.2),
          gir1.2-endless-0,
          gir1.2-eosmetrics-0,
          gir1.2-eos-shard-0,
@@ -102,6 +103,7 @@ Depends: eos-knowledge-0 (= ${binary:Version}),
          python3,
          python3-polib,
          python3-yaml,
+         libglib2.0-bin,
          pkg-config,
          ruby-compass,
          ruby-sass,
