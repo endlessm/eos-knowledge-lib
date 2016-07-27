@@ -73,12 +73,6 @@
         background-color: $primary-dark-color;
     }
 
-    /* This used to be margin on the list cards inside, but ListCard doesn't support
-     * margin properly at the moment. */
-    .ArrangementList {
-        padding: 0 200px;
-    }
-
     .ContentGroupNoResultsMessage__title {
         padding: 50px 80px 30px 160px;
     }
