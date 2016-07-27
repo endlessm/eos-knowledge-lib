@@ -59,7 +59,7 @@ defines:
       type: Layout.Scrolling
       slots:
         content:
-          shortdef: 'Layout.DynamicBackground(page-mode: home)'
+          shortdef: Layout.DynamicBackground
           references:
             selection: highlighted
           slots:
@@ -131,7 +131,7 @@ defines:
       id: theme-scroll
       slots:
         content:
-          shortdef: 'Layout.DynamicBackground(page-mode: set)'
+          shortdef: Layout.DynamicBackground
           references:
             selection: set-page-subsets
           slots:
@@ -228,7 +228,7 @@ defines:
   slots:
     <<: *menu-slots
     content:
-      shortdef: 'Layout.DynamicBackground(page-mode: search)'
+      shortdef: Layout.DynamicBackground
       references:
         selection: search-results
       slots:
