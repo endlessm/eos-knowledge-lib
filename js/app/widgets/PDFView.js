@@ -1,5 +1,6 @@
 const EvinceDocument = imports.gi.EvinceDocument;
 const EvinceView = imports.gi.EvinceView;
+const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 
 const Knowledge = imports.app.knowledge;
@@ -42,6 +43,11 @@ const PDFView = new Knowledge.Class({
             visible: true,
         });
         view.set_model(document_model);
+        view.connect('external-link', (view, link_action) => {
+            if (link_action.type !== EvinceDocument.LinkActionType.EXTERNAL_URI)
+                return;
+            Gtk.show_uri(null, link_action.uri, Gdk.CURRENT_TIME);
+        });
 
         let child = this.get_child();
         if (child !== null)
