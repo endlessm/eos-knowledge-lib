@@ -55,7 +55,7 @@ const SlidingPanel = new Knowledge.Class({
         'hide-direction': GObject.ParamSpec.enum('hide-direction',
             'Hide Direction', 'Hide Direction',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            Gtk.DirectionType, Gtk.PositionType.TOP),
+            Gtk.PositionType, Gtk.PositionType.TOP),
         /**
          * Property: panel-widget
          * The widget that slides in and out.
@@ -140,6 +140,9 @@ const SlidingPanel = new Knowledge.Class({
                 this.add(this._panel_frame);
                 this.add(this._transparent_frame);
                 this.get_style_context().add_class(Gtk.STYLE_CLASS_LEFT);
+                break;
+            default:
+                logError(new Error('Warning: unhandled hide_direction value ' + this.hide_direction));
                 break;
         }
 
