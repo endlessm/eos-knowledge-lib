@@ -151,3 +151,19 @@ $support-font: 'Fira Sans' !default;
 .ContentGroupNoResultsMessage__subtitle {
     padding-left: 160px;
 }
+
+.home-page .LayoutDynamicBackground {
+    -EknLayout_DynamicBackground-background-height: 675px;
+
+    &.small {
+        -EknLayout_DynamicBackground-background-height: 475px;
+    }
+}
+
+.set-page .LayoutDynamicBackground {
+    -EknLayout_DynamicBackground-background-height: 250px;
+}
+
+.search-page .LayoutDynamicBackground {
+    -EknLayout_DynamicBackground-background-height: 175px;
+}
