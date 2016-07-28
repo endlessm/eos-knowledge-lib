@@ -128,6 +128,7 @@ $support-font: 'Fira Sans' !default;
 
 .BannerSearch {
     color: white;
+    margin-bottom: 25px;
 }
 
 .search-page separator {
@@ -148,8 +149,12 @@ $support-font: 'Fira Sans' !default;
     }
 }
 
-.ContentGroupNoResultsMessage__subtitle {
-    padding-left: 160px;
+.ContentGroupNoResultsMessage {
+    background-color: $background-light-color;
+
+    &__subtitle {
+        padding-left: 160px;
+    }
 }
 
 .home-page .LayoutDynamicBackground {
@@ -165,5 +170,5 @@ $support-font: 'Fira Sans' !default;
 }
 
 .search-page .LayoutDynamicBackground {
-    -EknLayout_DynamicBackground-background-height: 175px;
+    -EknLayout_DynamicBackground-background-height: 500px;
 }

@@ -257,7 +257,7 @@ defines:
                         contents:
                         - type: ContentGroup.NoResultsMessage
                           properties:
-                            halign: start
+                            halign: fill
                             justify: left
                         - type: Layout.ResponsiveMargins
                           slots:
