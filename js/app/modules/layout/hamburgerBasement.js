@@ -88,27 +88,29 @@ const HamburgerBasement = new Module.Class({
         this._basement = this.create_submodule('basement');
         this._basement_grid.attach(this._basement, 0, 1, 1, 1);
 
-        let top_panel = this._setup_panel_button(Gtk.PositionType.TOP);
-        let bottom_panel = this._setup_panel_button(Gtk.PositionType.BOTTOM);
+        this._top_panel = this._setup_panel_button(Gtk.PositionType.TOP);
+        this._bottom_panel = this._setup_panel_button(Gtk.PositionType.BOTTOM);
 
-        this._basement_grid.attach(top_panel, 0, 0, 1, 1);
-        this._upper_grid.attach(bottom_panel, 0, 2, 1, 1);
+        this._basement_grid.attach(this._top_panel, 0, 0, 1, 1);
+        this._upper_grid.attach(this._bottom_panel, 0, 2, 1, 1);
 
         this.set_visible_child(this._upper_grid);
-        this.connect('notify::transition-running', () => {
-            if (!this.transition_running) {
-                if (this.get_visible_child() === this._basement_grid) {
-                    top_panel.reveal_panel = true;
-                } else {
-                    bottom_panel.reveal_panel = this.show_upper_button;
-                }
-            }
-        });
+        this.connect('notify::transition-running', this._update_panel_button.bind(this));
 
         this.connect('notify::show-upper-button', () => {
-            bottom_panel.reveal_panel = this.show_upper_button;
+            this._bottom_panel.reveal_panel = this.show_upper_button;
         });
     },
+
+    _update_panel_button: function() {
+        if (this.transition_running)
+            return;
+        if (this.get_visible_child() === this._basement_grid) {
+            this._top_panel.reveal_panel = true;
+        } else {
+            this._bottom_panel.reveal_panel = this.show_upper_button;
+        }
+     },
 
     _setup_panel_button: function (position) {
         let is_bottom = (position === Gtk.PositionType.BOTTOM);
@@ -124,11 +126,12 @@ const HamburgerBasement = new Module.Class({
         });
         button.connect('clicked', () => {
             let next_page = is_bottom ? this._basement_grid : this._upper_grid;
-            panel.reveal_panel = false;
             let id = panel.connect('notify::panel-revealed', () => {
                 this.set_visible_child(next_page);
                 panel.disconnect(id);
+                this._update_panel_button();
             });
+            panel.reveal_panel = false;
         });
         return panel;
     },
