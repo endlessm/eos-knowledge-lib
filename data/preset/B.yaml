@@ -28,7 +28,7 @@ defines:
   - search-results
 
 - &home-page
-  shortdef: 'Layout.Box(orientation: vertical, row-spacing: 30)'
+  shortdef: 'Layout.Box(orientation: vertical)'
   slots:
     contents:
     - shortdef: 'Layout.Box(homogeneous: true, valign: start)'
