@@ -23,7 +23,7 @@ defines:
     title:
       type: ContentGroup.StaticText
       properties:
-        label: 'You might be interested in...'
+        label: !translate 'You might be interested in...'
         halign: start
     arrangement:
       # Note spacing different from all the other arrangements; on purpose?
