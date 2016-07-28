@@ -8,13 +8,6 @@ const Gtk = imports.gi.Gtk;
 const Pango = imports.gi.Pango;
 
 const Knowledge = imports.app.knowledge;
-const Utils = imports.app.utils;
-
-const TEXT_TRANSFORM_OPTIONS = {
-    'uppercase': EosKnowledgePrivate.TextTransform.UPPERCASE,
-    'lowercase': EosKnowledgePrivate.TextTransform.LOWERCASE,
-    'none': EosKnowledgePrivate.TextTransform.NONE,
-};
 
 /**
  * Class: FormattableLabel
@@ -72,12 +65,6 @@ const FormattableLabel = new Knowledge.Class({
     _update_custom_style: function () {
         this._text_transform = EosKnowledgePrivate.style_context_get_custom_string(
             this.get_style_context(), 'text-transform');
-        if (TEXT_TRANSFORM_OPTIONS[this._text_transform] === undefined) {
-            let error = new Error('Unrecognized option style property value for -EknFormattableLabel-text-transform ' +
-                this._text_transform);
-            logError(error);
-            return;
-        }
         this._format_label(this.get_label(), this._text_transform);
     },
 
@@ -89,6 +76,18 @@ const FormattableLabel = new Knowledge.Class({
         return this.get_label();
     },
 
+    _format_capitals: function (text, transform) {
+        switch (transform) {
+            case 'none':
+                return text;
+            case 'uppercase':
+                return text.toLocaleUpperCase();
+            case 'lowercase':
+                return text.toLocaleLowerCase();
+        }
+        throw new RangeError(transform + ' is not a supported value of text-transform');
+    },
+
     _format_label: function (text, transform) {
         if (!text)
             text = '';
@@ -96,8 +95,7 @@ const FormattableLabel = new Knowledge.Class({
             Pango.parse_markup(text, text.length, '0', null, text);
         }
 
-        let transform_enum = TEXT_TRANSFORM_OPTIONS[transform];
-        let formatted_label = Utils.format_capitals(text, transform_enum);
+        let formatted_label = this._format_capitals(text, transform);
         this.set_label(formatted_label);
     },
 });
