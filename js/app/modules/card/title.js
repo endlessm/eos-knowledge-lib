@@ -7,6 +7,7 @@ const Gtk = imports.gi.Gtk;
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
 const NavigationCard = imports.app.interfaces.navigationCard;
+// Make sure included for glade template
 const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
 
@@ -43,7 +44,7 @@ const Title = new Module.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/title.ui',
-    InternalChildren: [ 'grid', 'title-label' ],
+    InternalChildren: [ 'title-label' ],
 
     _init: function (params={}) {
         this.parent(params);
@@ -51,23 +52,6 @@ const Title = new Module.Class({
         Utils.set_hand_cursor_on_widget(this);
         this.set_title_label_from_model(this._title_label);
         this._title_label_text = this._title_label.label;
-
-        let before = new ThemeableImage.ThemeableImage({
-            visible: true,
-            valign: Gtk.Align.CENTER,
-            halign: Gtk.Align.CENTER,
-        });
-        let before_class = Utils.get_element_style_class(Title, 'before');
-        before.get_style_context().add_class(before_class);
-        this._grid.attach(before, 0, 0, 1, 1);
-        let after = new ThemeableImage.ThemeableImage({
-            visible: true,
-            valign: Gtk.Align.CENTER,
-            halign: Gtk.Align.CENTER,
-        });
-        let after_class = Utils.get_element_style_class(Title, 'after');
-        after.get_style_context().add_class(after_class);
-        this._grid.attach(after, 2, 0, 1, 1);
     },
 
     vfunc_draw: function (cr) {

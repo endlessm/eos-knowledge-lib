@@ -12,6 +12,20 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
+          <object class="EknThemeableImage" id="before">
+            <property name="visible">True</property>
+            <property name="valign">center</property>
+            <property name="halign">center</property>
+            <style>
+              <class name="CardTitle__before"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
           <object class="EknFormattableLabel" id="title-label">
             <property name="can_focus">False</property>
             <property name="no_show_all">True</property>
@@ -30,6 +44,20 @@
           </object>
           <packing>
             <property name="left_attach">1</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="EknThemeableImage" id="after">
+            <property name="visible">True</property>
+            <property name="valign">center</property>
+            <property name="halign">center</property>
+            <style>
+              <class name="CardTitle__after"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
             <property name="top_attach">0</property>
           </packing>
         </child>
