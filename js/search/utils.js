@@ -50,42 +50,17 @@ function object_path_from_app_id (app_id) {
     return '/' + app_id.replace(/\./g, '/');
 }
 
-function get_flatpak_path () {
+function get_running_under_flatpak () {
     let path = GLib.build_filenamev([GLib.get_user_runtime_dir(), 'flatpak-info']);
     let keyfile = new GLib.KeyFile();
 
     try {
         keyfile.load_from_file(path, GLib.KeyFileFlags.NONE);
-    } catch (e if (e.matches(GLib.KeyFileError, GLib.KeyFileError.NOT_FOUND) ||
-                   e.matches(GLib.FileError, GLib.FileError.NOENT))) {
-        return null;
-    }
-
-    try {
-        return keyfile.get_string('Application', 'app-path');
     } catch (e) {
-        logError(e, 'Cannot find required information in flatpak-info');
+        return false;
     }
 
-    return null;
-}
-
-function resolve_flatpak_path (path, flatpak_app_path) {
-    let real_path = null;
-    let file = Gio.File.new_for_path(path);
-
-    try {
-        let info = file.query_info(Gio.FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET,
-                                   Gio.FileQueryInfoFlags.NONE, null);
-        real_path = info.get_symlink_target();
-    } catch (e) {
-        // Ignore errors
-    }
-
-    if (!real_path)
-        real_path = path;
-
-    return GLib.build_filenamev([flatpak_app_path, real_path.slice('/app'.length)]);
+    return true;
 }
 
 // String operations
@@ -153,6 +128,16 @@ function ensure_directory (dir) {
 }
 
 function get_subscriptions_dir () {
-    let path = GLib.build_filenamev([GLib.get_user_data_dir(), 'com.endlessm.subscriptions']);
+    let user_data_path;
+    if (get_running_under_flatpak()) {
+        // When running under flatpak, GLib.get_user_data_dir() points to the
+        // private home inside the application, not the real home.
+        // Use the absolute path here instead of the utility function.
+        user_data_path = GLib.build_filenamev([GLib.get_home_dir(), '.local', 'share']);
+    } else {
+        user_data_path = GLib.get_user_data_dir();
+    }
+
+    let path = GLib.build_filenamev([user_data_path, 'com.endlessm.subscriptions']);
     return Gio.File.new_for_path(path);
 }

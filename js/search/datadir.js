@@ -32,11 +32,32 @@ function get_data_dir(app_id) {
         return null;
     }
 
-    let xdg_dir_paths = GLib.get_system_data_dirs();
+    let data_dirs = [];
+
+    // We may be asked for the data dir on behalf of another bundle, in
+    // the search provider case -- so detect if we're under flatpak and
+    // key off the app ID
+    if (Utils.get_running_under_flatpak()) {
+        let flatpak_relative_path = GLib.build_filenamev(['flatpak', 'app', app_id,
+                                                          'current', 'active', 'files', 'share']);
+
+        // Try the user flatpak location first
+        let flatpak_data_dir = GLib.build_filenamev([GLib.get_home_dir(), '.local', 'share',
+                                                     flatpak_relative_path]);
+        data_dirs.push(flatpak_data_dir);
+
+        // Try the system flatpak location next
+        flatpak_data_dir = GLib.build_filenamev(['/var', 'lib',
+                                                 flatpak_relative_path]);
+        data_dirs.push(flatpak_data_dir);
+    }
+
+    // Fall back to the XDG data dirs otherwise
+    data_dirs = data_dirs.concat(GLib.get_system_data_dirs());
 
     // Check for an EKN database for the given domain at each datadir passed in,
     // in order of priority. If it is there, return the directory.
-    for (let path of xdg_dir_paths) {
+    for (let path of data_dirs) {
         let database_dir = database_dir_from_data_dir(path);
         if (database_dir)
             return database_dir;

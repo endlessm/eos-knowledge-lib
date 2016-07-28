@@ -1,3 +1,0 @@
-[D-BUS Service]
-Name=com.endlessm.EknSearchProvider
-Exec=%bindir%/ekn-search-provider

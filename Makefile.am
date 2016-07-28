@@ -319,8 +319,6 @@ subst = $(SED) \
 	$(NULL)
 
 subst_files = \
-	data/com.endlessm.EknSearchProvider.service \
-	ekn-search-provider \
 	ekn-app-runner \
 	js/app/config.js \
 	js/search/config.js \
@@ -337,13 +335,7 @@ $(subst_files): %: %.in Makefile
 CLEANFILES += $(subst_files)
 EXTRA_DIST += $(patsubst %,%.in,$(subst_files))
 
-servicedir = $(datadir)/dbus-1/services
-service_DATA = \
-	data/com.endlessm.EknSearchProvider.service \
-	$(NULL)
-
 bin_SCRIPTS += \
-	ekn-search-provider \
 	ekn-app-runner \
 	autobahn \
 	eminem \
@@ -354,8 +346,8 @@ bin_SCRIPTS += \
 
 dist_pkgdata_DATA = data/downloader.ini
 
-# so we can find our .scss files
-pkgconfigdir = $(datadir)/pkgconfig
+# so clients can find our paths
+pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = data/eos-knowledge-0.pc
 
 # so we can package our .scss files
