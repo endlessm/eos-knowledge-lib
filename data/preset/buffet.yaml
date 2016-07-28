@@ -168,7 +168,7 @@ defines:
                     - thematic-group
                   slots:
                     arrangement:
-                      shortdef: 'Arrangement.List(homogeneous: false, max-rows: 5)'
+                      shortdef: 'Arrangement.List(homogeneous: false)'
                       slots:
                         card:
                           type: Card.ContentGroup
