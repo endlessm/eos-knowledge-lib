@@ -16,6 +16,7 @@ const HistoryStore = imports.app.historyStore;
 const InArticleSearch = imports.app.widgets.inArticleSearch;
 const Module = imports.app.interfaces.module;
 const PDFView = imports.app.widgets.PDFView;
+// Make sure included for glade template
 const SlidingPanelOverlay = imports.app.widgets.slidingPanelOverlay;
 const TableOfContents = imports.app.widgets.tableOfContents;
 const TreeNode = imports.search.treeNode;
@@ -84,7 +85,8 @@ const KnowledgeDocument = new Module.Class({
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/knowledgeDocument.ui',
     InternalChildren: [ 'title-label', 'top-title-label', 'toolbar-frame',
-        'toolbar-grid', 'content-frame', 'content-grid' ],
+        'content-frame', 'content-grid', 'panel-overlay' ],
+    Children: [ 'toc' ],
 
 
     COLLAPSE_TOOLBAR_WIDTH: 800,
@@ -115,14 +117,12 @@ const KnowledgeDocument = new Module.Class({
         this.set_title_label_from_model(this._title_label);
         this.set_title_label_from_model(this._top_title_label);
 
-        this._panel_overlay = new SlidingPanelOverlay.SlidingPanelOverlay();
         if (this.previous_card)
             this._previous_panel = this._panel_overlay.add_panel_widget(this.previous_card,
                                                                         Gtk.PositionType.TOP);
         if (this.next_card)
             this._next_panel = this._panel_overlay.add_panel_widget(this.next_card,
                                                                     Gtk.PositionType.BOTTOM);
-        this._content_grid.attach(this._panel_overlay, 0, 1, 1, 1);
         this.show_all();
 
         this._setup_toc();
@@ -138,16 +138,6 @@ const KnowledgeDocument = new Module.Class({
     },
 
     _setup_toc: function () {
-        // We can't make gjs types through templates right now, so table of
-        // contents and webview must be constructed in code
-        this.toc = new TableOfContents.TableOfContents({
-            visible: true,
-            expand: true,
-            valign: Gtk.Align.CENTER,
-            no_show_all: true,
-        });
-        this._toolbar_grid.add(this.toc);
-
         let _toc_visible = false;
         if (this.model.table_of_contents !== undefined && this.model.content_type !== 'application/pdf') {
             this._mainArticleSections = this._get_toplevel_toc_elements(this.model.table_of_contents);
