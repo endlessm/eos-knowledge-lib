@@ -31,18 +31,6 @@ describe('Utilities:', function () {
         });
     });
 
-    describe('Formatting capitals', function () {
-        it('yields the same for NONE', function () {
-            expect(Utils.format_capitals('fOoBaR',
-                EosKnowledgePrivate.TextTransform.NONE)).toEqual('fOoBaR');
-        });
-
-        it('capitalizes', function () {
-            expect(Utils.format_capitals('fOoBaR',
-                EosKnowledgePrivate.TextTransform.UPPERCASE)).toEqual('FOOBAR');
-        });
-    });
-
     describe('get_bem_style_class', function () {
         it('gets style name from knowledge class', function () {
             expect(Utils.get_bem_style_class(BazClass, 'big', '', '')).toEqual('Baz--big');

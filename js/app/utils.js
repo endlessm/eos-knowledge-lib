@@ -95,18 +95,6 @@ function apply_css_to_widget (css_string, widget) {
     context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
-function format_capitals (string, text_transform) {
-    switch (text_transform) {
-    case EosKnowledgePrivate.TextTransform.NONE:
-        return string;
-    case EosKnowledgePrivate.TextTransform.UPPERCASE:
-        return string.toLocaleUpperCase();
-    case EosKnowledgePrivate.TextTransform.LOWERCASE:
-        return string.toLocaleLowerCase();
-    }
-    throw new RangeError('Not a supported value of TextTransform');
-}
-
 function get_css_for_submodule (name, css_data) {
     let props = Object.keys(css_data).filter((key) => key.startsWith(name));
     return props.reduce((data, prop) => {
