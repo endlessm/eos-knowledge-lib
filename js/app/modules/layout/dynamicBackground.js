@@ -12,6 +12,7 @@ const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
 const DEFAULT_COLOR = '#BBBCB6';
+const DEFAULT_HEIGHT = 100;
 
 const THRESHOLD_SMALL = 960;
 const THRESHOLD_MEDIUM = 1360;
@@ -46,7 +47,7 @@ const DynamicBackground = new Module.Class({
     StyleProperties: {
         'background-height': GObject.ParamSpec.int('background-height',
             'Background height', 'Background height in pixels',
-            GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 100),
+            GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, DEFAULT_HEIGHT),
     },
 
     Slots: {
@@ -60,10 +61,10 @@ const DynamicBackground = new Module.Class({
         this.parent(props);
         this.add(this.create_submodule('content'));
 
-        this._model = null;
         this._css_class = '';
         this._bg_color = null;
         this._color = null;
+        this._background_height = DEFAULT_HEIGHT;
         this._css_provider = new Gtk.CssProvider();
 
         let context = this.get_style_context();
@@ -122,11 +123,15 @@ const DynamicBackground = new Module.Class({
 
     _on_selection_models_changed: function (selection) {
         let models = selection.get_models();
-        if (models.length === 0)
-            return;
-        this._model = models[0];
 
-        DominantColor.get_dominant_color(this._model, null, (helper, task) => {
+        if (models.length === 0) {
+            /* keep previous color if there is one */
+            if (!this._color)
+                this._set_background(DEFAULT_COLOR);
+            return;
+        }
+
+        DominantColor.get_dominant_color(models[0], null, (helper, task) => {
             let color;
             try {
                 color = helper.get_dominant_color_finish(task);
