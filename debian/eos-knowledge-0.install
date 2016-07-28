@@ -1,7 +1,5 @@
 usr/bin/ekn-app-runner
-usr/bin/ekn-search-provider
 usr/lib/eos-knowledge/*
-usr/share/dbus-1/*
 usr/share/eos-knowledge/eos-knowledge.gresource
 usr/share/eos-knowledge/downloader.ini
 usr/share/locale/*
