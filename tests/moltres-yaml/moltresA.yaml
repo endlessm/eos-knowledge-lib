@@ -28,19 +28,36 @@ defines:
           slots:
             card: *card
     basement:
-      shortdef: 'ContentGroup.Set(expand: true)'
-      slots: *main-arrangement-slot
+      type: Layout.InfiniteScrolling
+      references:
+        lazy-load: basement-sets
+      slots:
+        content:
+          shortdef: 'ContentGroup.ContentGroup(expand: true)'
+          slots:
+            <<: *main-arrangement-slot
+            selection:
+              type: Selection.AllSets
+              id: basement-sets
 
 - &set-page
-  shortdef: 'Layout.Box(orientation: vertical)'
+  type: Layout.InfiniteScrolling
+  references:
+    lazy-load: set-articles
   slots:
-    contents:
-    - shortdef: 'Banner.Set(halign: center)'
+    content:
+      type: ContentGroup.ContentGroup
       slots:
-        card: Card.Title
-    - Decoration.Separator
-    - type: ContentGroup.Item
-      slots: *main-arrangement-slot
+        <<: *main-arrangement-slot
+        selection:
+          type: Selection.ArticlesForSet
+          id: set-articles
+        title:
+          type: ContentGroup.DynamicTitle
+          properties:
+            format-string: '%s'
+            halign: center
+            hexpand: true
 
 - &search-page
   shortdef: 'Layout.Box(orientation: vertical)'
@@ -48,13 +65,20 @@ defines:
     contents:
     - 'Banner.Search(halign: center)'
     - Decoration.Separator
-    - type: ContentGroup.ContentGroup
+    - type: Layout.InfiniteScrolling
+      references:
+        lazy-load: search-results
       slots:
-        <<: *main-arrangement-slot
-        selection: Selection.Search
-        no-results: ContentGroup.NoResultsMessage
-      styles:
-      - search-results
+        content:
+          type: ContentGroup.ContentGroup
+          slots:
+            <<: *main-arrangement-slot
+            selection:
+              type: Selection.Search
+              id: search-results
+            no-results: ContentGroup.NoResultsMessage
+          styles:
+          - search-results
 
 - &article-page
   type: Layout.ArticleStack

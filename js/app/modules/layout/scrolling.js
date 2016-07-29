@@ -23,6 +23,8 @@ const Scrolling = new Module.Class({
     },
 
     _init: function (props={}) {
+        if (!('vscrollbar_policy' in props))
+            props.vscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
         this.parent(props);
         this.add(this.create_submodule('content'));
 

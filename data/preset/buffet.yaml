@@ -68,18 +68,21 @@ defines:
     context: Banner.Context
     sidebar:
       # Main menu
-      type: ContentGroup.ContentGroup
+      type: Layout.Scrolling
       slots:
-        arrangement:
-          type: Arrangement.ScrollingList
+        content:
+          type: ContentGroup.ContentGroup
           slots:
-            card:
-              type: Card.Title
-              properties: *card-all-uppercase-properties
-        selection:
-          type: Selection.AllSets
-          slots:
-            filter: Filter.Featured
+            arrangement:
+              shortdef: 'Arrangement.List(orientation: vertical)'
+              slots:
+                card:
+                  type: Card.Title
+                  properties: *card-all-uppercase-properties
+            selection:
+              type: Selection.AllSets
+              slots:
+                filter: Filter.Featured
 
 - &home-page
   <<: *page-with-menu
@@ -150,7 +153,8 @@ defines:
     <<: *page-with-menu-slots
     content:
       type: Layout.InfiniteScrolling
-      id: theme-scroll
+      references:
+        lazy-load: thematic-sets
       slots:
         content:
           type: Layout.ResponsiveMargins
@@ -164,7 +168,7 @@ defines:
                     - thematic-group
                   slots:
                     arrangement:
-                      shortdef: 'Arrangement.List(homogeneous: false, max-rows: 5)'
+                      shortdef: 'Arrangement.List(homogeneous: false)'
                       slots:
                         card:
                           type: Card.ContentGroup
@@ -191,11 +195,10 @@ defines:
                               type: Selection.ArticlesForSetCrossSection
                     selection:
                       type: Selection.AllSets
+                      id: thematic-sets
                       slots:
                         filter:
                           type: Filter.Thematic
-                  references:
-                    scroll-server: theme-scroll
                 - *category-suggestions
 
 - &search-page
@@ -203,27 +206,34 @@ defines:
   slots:
     <<: *page-with-menu-slots
     content:
-      type: ContentGroup.ContentGroup
-      styles:
-      - search-results
-      properties:
-        halign: fill
+      type: Layout.InfiniteScrolling
+      references:
+        lazy-load: search-results
       slots:
-        arrangement:
-          type: Arrangement.ScrollingList
+        content:
+          type: ContentGroup.ContentGroup
+          styles:
+          - search-results
+          properties:
+            halign: fill
           slots:
-            card: Card.List
-        selection: Selection.Search
-        no-results:
-          shortdef: Layout.Scrolling
-          slots:
-            content:
-              shortdef: 'Layout.Box(orientation: vertical)'
+            arrangement:
+              type: Arrangement.List
               slots:
-                contents:
-                - ContentGroup.NoResultsMessage
-                - *article-suggestions
-                - *category-suggestions
+                card: Card.List
+            selection:
+              type: Selection.Search
+              id: search-results
+            no-results:
+              shortdef: Layout.Scrolling
+              slots:
+                content:
+                  shortdef: 'Layout.Box(orientation: vertical)'
+                  slots:
+                    contents:
+                    - ContentGroup.NoResultsMessage
+                    - *article-suggestions
+                    - *category-suggestions
 
 - &all-sets-page
   <<: *page-with-menu
@@ -231,6 +241,8 @@ defines:
     <<: *page-with-menu-slots
     content:
       type: Layout.InfiniteScrolling
+      references:
+        lazy-load: all-sets
       slots:
         content:
           type: Layout.ResponsiveMargins
@@ -242,7 +254,9 @@ defines:
                   type: Arrangement.SquareGuys
                   slots:
                     card: *set-card
-                selection: Selection.AllSets
+                selection:
+                  type: Selection.AllSets
+                  id: all-sets
 
 - &article-page
   <<: *page-with-menu

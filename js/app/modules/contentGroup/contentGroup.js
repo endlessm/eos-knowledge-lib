@@ -8,7 +8,6 @@ const Gtk = imports.gi.Gtk;
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const HistoryStore = imports.app.historyStore;
-const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 const Overflow = imports.app.modules.arrangement.overflow;
 const Utils = imports.app.utils;
@@ -82,13 +81,6 @@ const ContentGroup = new Module.Class({
                 context: this._selection.get_models(),
             });
         });
-
-        if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
-            this._arrangement.connect('need-more-content', () => {
-                if (this._selection.can_load_more)
-                    this._selection.queue_load_more(BATCH_SIZE);
-            });
-        }
 
         this._no_results = this.create_submodule('no-results');
 
@@ -177,10 +169,6 @@ const ContentGroup = new Module.Class({
         if (this._load_callback) {
             this._load_callback();
             this._load_callback = null;
-        }
-
-        if (models.length > 0 && this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
-            this._arrangement.new_content_added();
         }
     },
 
