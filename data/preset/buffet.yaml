@@ -68,21 +68,18 @@ defines:
     context: Banner.Context
     sidebar:
       # Main menu
-      type: Layout.Scrolling
+      type: ContentGroup.ContentGroup
       slots:
-        content:
-          type: ContentGroup.ContentGroup
+        arrangement:
+          type: Arrangement.ScrollingList
           slots:
-            arrangement:
-              shortdef: 'Arrangement.List(orientation: vertical)'
-              slots:
-                card:
-                  type: Card.Title
-                  properties: *card-all-uppercase-properties
-            selection:
-              type: Selection.AllSets
-              slots:
-                filter: Filter.Featured
+            card:
+              type: Card.Title
+              properties: *card-all-uppercase-properties
+        selection:
+          type: Selection.AllSets
+          slots:
+            filter: Filter.Featured
 
 - &home-page
   <<: *page-with-menu
@@ -153,8 +150,7 @@ defines:
     <<: *page-with-menu-slots
     content:
       type: Layout.InfiniteScrolling
-      references:
-        lazy-load: thematic-sets
+      id: theme-scroll
       slots:
         content:
           type: Layout.ResponsiveMargins
@@ -195,10 +191,11 @@ defines:
                               type: Selection.ArticlesForSetCrossSection
                     selection:
                       type: Selection.AllSets
-                      id: thematic-sets
                       slots:
                         filter:
                           type: Filter.Thematic
+                  references:
+                    scroll-server: theme-scroll
                 - *category-suggestions
 
 - &search-page
@@ -206,34 +203,27 @@ defines:
   slots:
     <<: *page-with-menu-slots
     content:
-      type: Layout.InfiniteScrolling
-      references:
-        lazy-load: search-results
+      type: ContentGroup.ContentGroup
+      styles:
+      - search-results
+      properties:
+        halign: fill
       slots:
-        content:
-          type: ContentGroup.ContentGroup
-          styles:
-          - search-results
-          properties:
-            halign: fill
+        arrangement:
+          type: Arrangement.ScrollingList
           slots:
-            arrangement:
-              type: Arrangement.List
+            card: Card.List
+        selection: Selection.Search
+        no-results:
+          shortdef: Layout.Scrolling
+          slots:
+            content:
+              shortdef: 'Layout.Box(orientation: vertical)'
               slots:
-                card: Card.List
-            selection:
-              type: Selection.Search
-              id: search-results
-            no-results:
-              shortdef: Layout.Scrolling
-              slots:
-                content:
-                  shortdef: 'Layout.Box(orientation: vertical)'
-                  slots:
-                    contents:
-                    - ContentGroup.NoResultsMessage
-                    - *article-suggestions
-                    - *category-suggestions
+                contents:
+                - ContentGroup.NoResultsMessage
+                - *article-suggestions
+                - *category-suggestions
 
 - &all-sets-page
   <<: *page-with-menu
@@ -241,8 +231,6 @@ defines:
     <<: *page-with-menu-slots
     content:
       type: Layout.InfiniteScrolling
-      references:
-        lazy-load: all-sets
       slots:
         content:
           type: Layout.ResponsiveMargins
@@ -254,9 +242,7 @@ defines:
                   type: Arrangement.SquareGuys
                   slots:
                     card: *set-card
-                selection:
-                  type: Selection.AllSets
-                  id: all-sets
+                selection: Selection.AllSets
 
 - &article-page
   <<: *page-with-menu
