@@ -4,10 +4,9 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Module = imports.app.interfaces.module;
+// Make sure included for glade template
 const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
-
-const IMAGE_URI = 'resource:///app/assets/titleImage';
 
 /**
  * Class: App
@@ -42,18 +41,6 @@ const App = new Module.Class({
         // forced not to because logo child has expand=true set.
         props.expand = props.expand || false;
         this.parent(props);
-
-        try {
-            let image = new ThemeableImage.ThemeableImage({
-                image_uri: IMAGE_URI,
-                visible: true,
-                expand: true,
-                valign: Gtk.Align.END,
-            });
-            this.attach(image, 0, 0, 1, 1);
-        } catch (error) {
-            logError(error, 'Could not load title image');
-        }
 
         let subtitle = '';
         let app_info = Utils.get_desktop_app_info();
