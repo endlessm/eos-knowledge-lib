@@ -128,8 +128,7 @@ defines:
     <<: *menu-slots
     content:
       type: Layout.InfiniteScrolling
-      references:
-        lazy-load: set-page-subsets
+      id: theme-scroll
       slots:
         content:
           shortdef: 'Layout.DynamicBackground(page-mode: set)'
@@ -238,23 +237,21 @@ defines:
           slots:
             contents:
             - shortdef: 'Banner.Search(halign: center, xalign: 0.5, justify: center)'
-            - type: Layout.InfiniteScrolling
-              references:
-                lazy-load: search-results
+            - type: ContentGroup.ContentGroup
+              styles:
+                - search-results
               slots:
-                content:
-                  type: ContentGroup.ContentGroup
-                  styles:
-                  - search-results
+                selection:
+                  type: Selection.Search
+                  id: search-results
+                arrangement:
+                  type: Arrangement.ScrollingList
                   slots:
-                    selection:
-                      type: Selection.Search
-                      id: search-results
-                    arrangement:
-                      type: Arrangement.List
-                      slots:
-                        card: Card.List
-                    no-results:
+                    card: Card.List
+                no-results:
+                  shortdef: Layout.Scrolling
+                  slots:
+                    content:
                       shortdef: 'Layout.Box(orientation: vertical, valign: start)'
                       slots:
                         contents:

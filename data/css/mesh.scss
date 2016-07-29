@@ -88,6 +88,12 @@ $display-font-composite: 'Roboto' !default;
     }
 }
 
+.ContentGroupContentGroup {
+    .ArrangementScrollingList__grid {
+        padding: 0;
+    }
+}
+
 .results-message-background {
     background-color: transparent;
 }

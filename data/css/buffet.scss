@@ -40,6 +40,7 @@ $title-alt-font: 'Lato Thin' !default;
 @import 'modules/arrangement/half';
 @import 'modules/arrangement/list';
 @import 'modules/arrangement/piano';
+@import 'modules/arrangement/scrollingList';
 @import 'modules/arrangement/squareGuys';
 @import 'modules/arrangement/thirties';
 @import 'modules/arrangement/windshield';
@@ -142,6 +143,10 @@ $title-alt-font: 'Lato Thin' !default;
 .search-results {
     background-color: $background-light-color;
 
+    .ArrangementScrollingList__grid {
+        padding: 0 0px;
+    }
+
     .search-page-suggestions .Card__contentFrame {
         margin-top: -10px;
     }
@@ -153,12 +158,6 @@ $title-alt-font: 'Lato Thin' !default;
 
     separator {
         background-color: $separator-color;
-    }
-
-    /* This used to be margin on the list cards inside, but ListCard doesn't
-     * support margin properly at the moment. */
-    .ArrangementList {
-        padding: 0 200px;
     }
 
     .BannerSearch {
@@ -278,7 +277,7 @@ $title-alt-font: 'Lato Thin' !default;
     color: #999999;
 }
 
-.search-page .ArrangementList {
+.search-page .ArrangementScrollingList {
     margin-top: 20px;
 }
 
