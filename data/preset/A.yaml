@@ -5,7 +5,7 @@ defines:
 
 - &main-arrangement-slot
   arrangement:
-    shortdef: 'Arrangement.Grid(expand: true)'
+    type: Arrangement.Grid
     slots:
       card: *card
 
@@ -35,37 +35,26 @@ defines:
         selection:
           type: Selection.AllSets
     basement:
-      type: Layout.InfiniteScrolling
-      references:
-        lazy-load: basement-sets
+      shortdef: 'ContentGroup.ContentGroup(expand: true)'
       slots:
-        content:
-          shortdef: 'ContentGroup.ContentGroup(expand: true)'
-          slots:
-            <<: *main-arrangement-slot
-            selection:
-              type: Selection.AllSets
-              id: basement-sets
+        <<: *main-arrangement-slot
+        selection: Selection.AllSets
 
 - &set-page
   shortdef: 'Layout.Box(orientation: vertical)'
   slots:
     contents:
-    - shortdef: 'Banner.Set(halign: center)'
+    - shortdef: ContentGroup.ContentGroup
       slots:
-        card: Card.Title
-    - Decoration.Separator
-    - type: Layout.InfiniteScrolling
-      references:
-        lazy-load: set-articles
-      slots:
-        content:
-          type: ContentGroup.ContentGroup
-          slots:
-            <<: *main-arrangement-slot
-            selection:
-              type: Selection.ArticlesForSet
-              id: set-articles
+        <<: *main-arrangement-slot
+        selection:
+          type: Selection.ArticlesForSet
+        title:
+          type: ContentGroup.DynamicTitle
+          properties:
+            format-string: '%s'
+            halign: center
+            hexpand: true
 
 - &search-page
   shortdef: 'Layout.Box(orientation: vertical)'
@@ -73,20 +62,13 @@ defines:
     contents:
     - 'Banner.Search(halign: center)'
     - Decoration.Separator
-    - type: Layout.InfiniteScrolling
-      references:
-        lazy-load: search-results
+    - type: ContentGroup.ContentGroup
       slots:
-        content:
-          type: ContentGroup.ContentGroup
-          slots:
-            <<: *main-arrangement-slot
-            selection:
-              type: Selection.Search
-              id: search-results
-            no-results: ContentGroup.NoResultsMessage
-          styles:
-          - search-results
+        <<: *main-arrangement-slot
+        selection: Selection.Search
+        no-results: ContentGroup.NoResultsMessage
+      styles:
+      - search-results
 
 - &article-page
   type: Layout.ArticleStack

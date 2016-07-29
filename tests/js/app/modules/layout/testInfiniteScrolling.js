@@ -5,11 +5,9 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const ContentGroup = imports.app.modules.contentGroup.contentGroup;
 const HistoryStore = imports.app.historyStore;
 const MockFactory = imports.tests.mockFactory;
 const InfiniteScrolling = imports.app.modules.layout.infiniteScrolling;
-const Minimal = imports.tests.minimal;
 const Pages = imports.app.pages;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
@@ -25,20 +23,8 @@ describe('Layout.InfiniteScrolling', function () {
 
         [template, factory] = MockFactory.setup_tree({
             type: InfiniteScrolling.InfiniteScrolling,
-            references: {
-                'lazy-load': 'selection',
-            },
             slots: {
-                'content': {
-                    type: ContentGroup.ContentGroup,
-                    slots: {
-                        'arrangement': { type: Minimal.MinimalArrangement },
-                        'selection': {
-                            type: Minimal.MinimalSelection,
-                            id: 'selection',
-                        },
-                    },
-                },
+                'content': { type: null },
             },
         });
     });
@@ -64,14 +50,5 @@ describe('Layout.InfiniteScrolling', function () {
         test_show_page(Pages.SET);
         test_show_page(Pages.SEARCH);
         test_show_page(Pages.ARTICLE);
-    });
-
-    it('lazy loads more models when scrolling down', function () {
-        let selection = factory.get_last_created('content.selection');
-        selection.can_load_more = true;
-        spyOn(selection, 'queue_load_more');
-        template.emit('need-more-content');
-        Utils.update_gui();
-        expect(selection.queue_load_more).toHaveBeenCalled();
     });
 });
