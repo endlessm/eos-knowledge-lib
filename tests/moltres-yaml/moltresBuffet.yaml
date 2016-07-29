@@ -4,6 +4,8 @@ defines:
 - &card-all-uppercase-properties
   title-capitalization: uppercase
   context-capitalization: uppercase
+- &arrangement-spacing-properties
+  spacing: 20
 
 # A few small repeated elements
 - &no-sets 'Filter.Sets(invert: true)'
@@ -17,50 +19,30 @@ defines:
 
 - &article-suggestions
   type: ContentGroup.ContentGroup
-  styles:
-    - search-page-suggestions
   slots:
     title:
-      type: ContentGroup.StaticText
+      type: 'ContentGroup.StaticText'
       properties:
         label: 'You might be interested in...'
-        halign: start
     arrangement:
       # Note spacing different from all the other arrangements; on purpose?
-      shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
-      styles:
-      - small-spaced-arrangement
+      shortdef: 'Arrangement.SquareGuys(max-rows: 1, spacing: 10)'
       slots:
         card: *main-card
-    selection: Selection.SuggestedArticles
+    selection:
+      type: 'Selection.SuggestedArticles'
 
 - &category-suggestions
-  type: ContentGroup.ContentGroup
-  styles:
-    - suggested-categories
+  type: ContentGroup.SuggestedCategories
   slots:
-    title:
-      type: ContentGroup.StaticText
-      properties:
-        label: !translate "Browse by topic"
-        halign: start
-    trigger:
-      shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
-      slots:
-        contents:
-        - shortdef: 'ContentGroup.StaticText(label: !translate "See more categories")'
-        - type: Decoration.ThemeableImage
-          properties:
-            valign: end
-            halign: end
     arrangement:
       type: Arrangement.SquareGuys
       properties:
+        <<: *arrangement-spacing-properties
         max-rows: 1
         valign: end
       slots:
         card: *set-card
-    selection: Selection.AllSets
 
 - &page-with-menu
   type: Layout.SideMenu
@@ -74,7 +56,7 @@ defines:
           type: ContentGroup.ContentGroup
           slots:
             arrangement:
-              shortdef: 'Arrangement.List(orientation: vertical)'
+              type: Arrangement.List
               slots:
                 card:
                   type: Card.Title
@@ -98,53 +80,29 @@ defines:
               shortdef: 'Layout.Box(orientation: vertical)'
               slots:
                 contents:
-                - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
-                  styles:
-                    - highlights
+                - shortdef: 'ContentGroup.Highlights(halign: center, support-sets: 2)'
                   slots:
-                    arrangement:
+                    highlight-arrangement:
                       type: Arrangement.Windshield
+                      properties: *arrangement-spacing-properties
                       slots:
                         card:
                           type: Card.Post
                           properties: *card-all-uppercase-properties
-                    selection:
-                      type: Selection.AllHighlights
-                - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
-                  styles:
-                    - highlights
-                  slots:
-                    arrangement:
-                      type: Arrangement.List
-                      properties:
-                        max-rows: 2
+                        filter: *no-sets
+                    support-card:
+                      shortdef: 'Card.SetPreview(show-trigger: false)'
                       slots:
-                        card:
-                          type: Card.ContentGroup
+                        arrangement:
+                          type: Arrangement.SquareGuys
+                          properties:
+                            <<: *arrangement-spacing-properties
+                            max-rows: 2
                           slots:
-                            trigger:
-                              shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
-                              slots:
-                                contents:
-                                - shortdef: 'ContentGroup.DynamicTitle(format-string: !translate "See more from %s")'
-                                - type: Decoration.ThemeableImage
-                                  properties:
-                                    valign: end
-                                    halign: end
-                            title:
-                              type: ContentGroup.DynamicTitle
-                              properties:
-                                halign: start
-                            arrangement:
-                              type: Arrangement.SquareGuys
-                              properties:
-                                max-rows: 2
-                              slots:
-                                card: *main-card
-                            selection:
-                              type: Selection.ArticlesForSet
-                    selection:
-                      type: Selection.AllSets
+                            card: *main-card
+                            filter: *no-sets
+                        header-card: *header-card
+                    sets-filter: 'Filter.Featured(invert: true)'
                 - *category-suggestions
 
 - &set-page
@@ -168,7 +126,7 @@ defines:
                     - thematic-group
                   slots:
                     arrangement:
-                      shortdef: 'Arrangement.List(homogeneous: false)'
+                      shortdef: 'Arrangement.List(orientation: vertical, homogeneous: false, max-rows: 5)'
                       slots:
                         card:
                           type: Card.ContentGroup
@@ -186,7 +144,7 @@ defines:
                               shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
                               slots:
                                 contents:
-                                - shortdef: 'ContentGroup.DynamicTitle(format-string: !translate "See more from %s")'
+                                - shortdef: 'ContentGroup.DynamicTitle(format-string: "See more from %s")'
                                 - type: Decoration.ThemeableImage
                                   properties:
                                     valign: end
@@ -241,22 +199,18 @@ defines:
     <<: *page-with-menu-slots
     content:
       type: Layout.InfiniteScrolling
-      references:
-        lazy-load: all-sets
       slots:
         content:
           type: Layout.ResponsiveMargins
           slots:
             content:
-              type: ContentGroup.ContentGroup
+              type: ContentGroup.Set
               slots:
                 arrangement:
                   type: Arrangement.SquareGuys
+                  properties: *arrangement-spacing-properties
                   slots:
                     card: *set-card
-                selection:
-                  type: Selection.AllSets
-                  id: all-sets
 
 - &article-page
   <<: *page-with-menu
@@ -274,8 +228,7 @@ defines:
             show-titles: false
             show-toc: false
             custom-css: buffet-custom.css
-        nav-card:
-          shortdef: 'Card.Sequence(halign: center)'
+        nav-card: Card.Sequence
 
 root:
   shortdef: 'Controller.Buffet(theme: buffet)'
@@ -284,23 +237,20 @@ root:
       type: Window.Simple
       slots:
         search: Navigation.SearchBox
-        content:
-          type: Layout.BrandPage
+        lightbox:
+          type: ContentGroup.MediaLightbox
           slots:
-            brand:
+            card: Card.Media
+        pager:
+          type: Pager.Simple
+          slots:
+            brand-page:
               type: Banner.App
               properties:
                 show-subtitle: true
                 subtitle-capitalization: uppercase
-            content:
-              type: ContentGroup.MediaLightbox
-              slots:
-                card: Card.Media
-                content:
-                  type: Pager.Simple
-                  slots:
-                    home-page: *home-page
-                    set-page: *set-page
-                    search-page: *search-page
-                    all-sets-page: *all-sets-page
-                    article-page: *article-page
+            home-page: *home-page
+            set-page: *set-page
+            search-page: *search-page
+            all-sets-page: *all-sets-page
+            article-page: *article-page
