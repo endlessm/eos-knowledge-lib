@@ -2,6 +2,7 @@
 
 /* exported DynamicBackground */
 
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -11,34 +12,18 @@ const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
 const DEFAULT_COLOR = '#BBBCB6';
+const DEFAULT_HEIGHT = 100;
+
+const THRESHOLD_SMALL = 960;
+const THRESHOLD_MEDIUM = 1360;
+const THRESHOLD_LARGE = 1600;
 
 // FIXME: Replace for real blurred images
 const _topImage = 'resource:///com/endlessm/knowledge/data/images/background.png';
 
-const _maxWidth = {
-    home:    {small: 1024, medium: 1100},
-    set:     {small: 999, medium: 1499},
-    article: {small: 999, medium: 1499},
-    search:  {small: 999, medium: 1499},
-};
-
-// FIXME: tweak articles heights when the background is visible
-const _topImageHeight = {
-    home:    {small: 510, medium: 510, big: 730},
-    set:     {small: 200, medium: 215, big: 215},
-    article: {small: 140, medium: 180, big: 200},
-    search:  {small: 354, medium: 279, big: 279},
-};
-
 const _cssTemplate = '.LayoutDynamicBackground {\
     background-image: linear-gradient(@{bottom}), linear-gradient(alpha(black, 0.3)), linear-gradient(alpha(@{overlay}, 0.4)), url("@{image}");\
-    background-position: 0px @{small}px, 0px 0px, 0px 0px, 0px 0px;\
-}\
-.LayoutDynamicBackground.medium {\
-    background-position: 0px @{medium}px, 0px 0px, 0px 0px, 0px 0px;\
-}\
-.LayoutDynamicBackground.big {\
-    background-position: 0px @{big}px, 0px 0px, 0px 0px, 0px 0px;\
+    background-position: 0px @{height}px, 0px 0px, 0px 0px, 0px 0px;\
 }';
 
 /**
@@ -59,19 +44,10 @@ const DynamicBackground = new Module.Class({
     Name: 'Layout.DynamicBackground',
     Extends: Gtk.Frame,
 
-    Properties: {
-        /**
-         * Property: page-mode
-         * Mode for setting the height breakpoints of the beige overlay
-         *
-         * A string specifying the mode that sets the height breakpoints of
-         * the beige overlay. Each mode corresponds to a page, either 'set',
-         * 'article', 'home' or 'search'.
-         */
-        'page-mode': GObject.ParamSpec.string('page-mode', 'Page Mode',
-            'Mode for setting beige overlay height breakpoints. Either \'set\', \'article\', \'search\' or \'home\'',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            'article'),
+    StyleProperties: {
+        'background-height': GObject.ParamSpec.int('background-height',
+            'Background height', 'Background height in pixels',
+            GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, DEFAULT_HEIGHT),
     },
 
     Slots: {
@@ -85,9 +61,10 @@ const DynamicBackground = new Module.Class({
         this.parent(props);
         this.add(this.create_submodule('content'));
 
-        this._model = null;
         this._css_class = '';
         this._bg_color = null;
+        this._color = null;
+        this._background_height = DEFAULT_HEIGHT;
         this._css_provider = new Gtk.CssProvider();
 
         let context = this.get_style_context();
@@ -108,15 +85,29 @@ const DynamicBackground = new Module.Class({
                 this._idle_id = 0;
             });
         });
+
+        this.connect('style-set', this._update_custom_style.bind(this));
+        this.connect('style-updated', this._update_custom_style.bind(this));
+    },
+
+    _update_custom_style: function () {
+        let height = EosKnowledgePrivate.style_context_get_custom_int(
+            this.get_style_context(), 'background-height');
+
+        if (this._background_height === height)
+            return;
+
+        this._background_height = height;
+        this._set_background(this._color);
     },
 
     _update_css_class: function () {
-        let css_class = 'big';
+        let css_class = 'large';
         let alloc = this.get_allocation();
 
-        if (alloc.width <= _maxWidth[this.page_mode].small) {
+        if (alloc.width <=  THRESHOLD_SMALL) {
             css_class = 'small';
-        } else if (alloc.width <= _maxWidth[this.page_mode].medium) {
+        } else if (alloc.width <= THRESHOLD_MEDIUM) {
             css_class = 'medium';
         }
 
@@ -127,20 +118,20 @@ const DynamicBackground = new Module.Class({
         context.remove_class(this._css_class);
         context.add_class(css_class);
         this._css_class = css_class;
+        this._update_custom_style();
     },
 
     _on_selection_models_changed: function (selection) {
         let models = selection.get_models();
-        if (models.length === 0)
-            return;
-        let model = models[0];
 
-        // Model should not change when in home mode
-        if (this.page_mode === 'home' && this._model)
+        if (models.length === 0) {
+            /* keep previous color if there is one */
+            if (!this._color)
+                this._set_background(DEFAULT_COLOR);
             return;
-        this._model = model;
+        }
 
-        DominantColor.get_dominant_color(model, null, (helper, task) => {
+        DominantColor.get_dominant_color(models[0], null, (helper, task) => {
             let color;
             try {
                 color = helper.get_dominant_color_finish(task);
@@ -159,12 +150,14 @@ const DynamicBackground = new Module.Class({
             this._bg_color = Utils._rgba_to_markup_color(bg_rgba);
         }
 
-        let css_data = _cssTemplate.replace('@{overlay}', color);
+        if (!color)
+            return;
+        this._color = color;
+
+        let css_data = _cssTemplate.replace('@{overlay}', this._color);
         css_data = css_data.replace('@{bottom}', this._bg_color);
         css_data = css_data.replace('@{image}', _topImage);
-        css_data = css_data.replace('@{small}', _topImageHeight[this.page_mode].small);
-        css_data = css_data.replace('@{medium}', _topImageHeight[this.page_mode].medium);
-        css_data = css_data.replace('@{big}', _topImageHeight[this.page_mode].big);
+        css_data = css_data.replace('@{height}', this._background_height);
         this._css_provider.load_from_data(css_data);
     },
 });
