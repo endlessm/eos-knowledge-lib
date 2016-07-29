@@ -323,8 +323,22 @@ $title-alt-font: 'Lato Thin' !default;
     }
 }
 
+.CardDeck,
+.CardPost,
+.CardThumb,
+.CardTitle {
+    &__title,
+    &__context .FormattableLabel {
+        -EknFormattableLabel-text-transform: 'uppercase';
+    }
+}
+
 .BannerApp {
     color: $banner-color;
+
+    &__subtitle {
+        -EknFormattableLabel-text-transform: 'uppercase';
+    }
 }
 
 .LayoutSideMenu {

@@ -1,9 +1,6 @@
 ---
 defines:
 # Some props
-- &card-all-uppercase-properties
-  title-capitalization: uppercase
-  context-capitalization: uppercase
 - &arrangement-spacing-properties
   spacing: 20
 
@@ -12,10 +9,8 @@ defines:
 - &header-card Card.Title
 - &main-card
   type: Card.Thumb
-  properties: *card-all-uppercase-properties
 - &set-card
   type: Card.Deck
-  properties: *card-all-uppercase-properties
 
 - &article-suggestions
   type: ContentGroup.ContentGroup
@@ -57,7 +52,6 @@ defines:
           slots:
             card:
               type: Card.Title
-              properties: *card-all-uppercase-properties
             filter: Filter.Featured
 
 - &home-page
@@ -82,7 +76,6 @@ defines:
                       slots:
                         card:
                           type: Card.Post
-                          properties: *card-all-uppercase-properties
                         filter: *no-sets
                     support-card:
                       shortdef: 'Card.SetPreview(show-trigger: false)'
@@ -208,7 +201,6 @@ root:
               type: Banner.App
               properties:
                 show-subtitle: true
-                subtitle-capitalization: uppercase
             home-page: *home-page
             set-page: *set-page
             search-page: *search-page

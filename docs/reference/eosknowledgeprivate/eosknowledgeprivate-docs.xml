@@ -23,7 +23,6 @@
     <title>API Index</title>
     <xi:include href="xml/api-index-full.xml"><xi:fallback /></xi:include>
     <xi:include href="xml/api-index-0.2.xml"><xi:fallback /></xi:include>
-    <xi:include href="xml/api-index-0.4.xml"><xi:fallack /></xi:include>
   </index>
 
   <index id="deprecated-api-index" role="deprecated">

@@ -151,3 +151,16 @@ $support-font: 'Fira Sans' !default;
 .ContentGroupNoResultsMessage__subtitle {
     padding-left: 160px;
 }
+
+.CardPost,
+.CardThumb {
+    &__context .FormattableLabel {
+        -EknFormattableLabel-text-transform: 'lowercase';
+    }
+}
+
+.CardTitle {
+    &__title {
+        -EknFormattableLabel-text-transform: 'lowercase';
+    }
+}

@@ -28,7 +28,7 @@
           </packing>
         </child>
         <child type="overlay">
-          <object class="GtkLabel" id="title-label">
+          <object class="EknFormattableLabel" id="title-label">
             <property name="can_focus">False</property>
             <property name="no_show_all">True</property>
             <property name="valign">end</property>
