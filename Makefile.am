@@ -471,6 +471,7 @@ javascript_tests = \
 	tests/js/app/modules/window/testSimple.js \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testBuffetHistoryStore.js \
+	tests/js/app/testBuilder.js \
 	tests/js/app/testDispatcher.js \
 	tests/js/app/testDominantColor.js \
 	tests/js/app/testHistoryItem.js \
