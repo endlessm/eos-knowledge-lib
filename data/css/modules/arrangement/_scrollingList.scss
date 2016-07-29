@@ -1,0 +1,9 @@
+$scrolling-arrangement-spacing: 10px;
+
+.ArrangementScrollingList {
+    margin: $scrolling-arrangement-spacing * -1;
+
+    .Card {
+        margin: $scrolling-arrangement-spacing;
+    }
+}

@@ -27,6 +27,7 @@ $support-font: 'Fira Sans' !default;
 @import 'modules/arrangement/half';
 @import 'modules/arrangement/list';
 @import 'modules/arrangement/piano';
+@import 'modules/arrangement/scrollingList';
 @import 'modules/arrangement/sideBySide';
 @import 'modules/arrangement/squareGuys';
 @import 'modules/arrangement/thirties';
@@ -144,12 +145,6 @@ $support-font: 'Fira Sans' !default;
     background-color: transparent;
     .LayoutScrolling {
         background-color: transparent;
-    }
-
-    /* This used to be margin on the list cards inside, but ListCard doesn't
-     * support margin properly at the moment. */
-    .ArrangementList {
-        padding: 0 200px;
     }
 }
 
