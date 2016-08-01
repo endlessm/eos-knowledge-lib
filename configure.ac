@@ -33,7 +33,7 @@ m4_define([_EKN_VERSION_MACRO],
 AC_INIT([Endless OS Knowledge GUI Library], [_EKN_VERSION_MACRO],
     [], [eos-knowledge], [http://endlessm.com])
 # Verify that the source directory can be found
-AC_CONFIG_SRCDIR([lib/eosknowledgeprivate/eosknowledge.h])
+AC_CONFIG_SRCDIR([lib/eosknowledgeprivate/ekn-util.h])
 # Initialize Automake: enable all warnings and do not insist on GNU standards
 # no-portability suppresses warnings about syntax specific to GNU make
 # parallel-tests specifies that we use the new parallel-running test harness.
