@@ -8,8 +8,6 @@
 #error "Please do not include this header file directly."
 #endif
 
-#include "ekn-enums.h"
-#include "ekn-macros.h"
 #include "ekn-version.h"
 
 /* Shared typedefs for structures */
