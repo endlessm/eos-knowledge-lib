@@ -122,7 +122,7 @@ defines:
         content:
           shortdef: Layout.DynamicBackground
           references:
-            selection: set-page-subsets
+            selection: articles-for-set
           slots:
             content:
               type: Layout.Box
@@ -150,6 +150,7 @@ defines:
                                 row-spacing: 20
                             selection:
                               type: Selection.ArticlesForSet
+                              id: articles-for-set
                               slots:
                                 order: 'Order.PublishedDate(ascending: false)'
                                 filter:
