@@ -211,15 +211,12 @@ pkgdata_DATA += $(gresources)
 
 eosknowledgeprivate_headers = \
 	lib/eosknowledgeprivate/eosknowledge.h \
-	lib/eosknowledgeprivate/ekn-enums.h \
-	lib/eosknowledgeprivate/ekn-macros.h \
 	lib/eosknowledgeprivate/ekn-types.h \
 	lib/eosknowledgeprivate/ekn-util.h \
 	lib/eosknowledgeprivate/ekn-version.h \
 	$(NULL)
 
 eosknowledgeprivate_sources = \
-	lib/eosknowledgeprivate/ekn-enums.c \
 	lib/eosknowledgeprivate/ekn-init.c lib/eosknowledgeprivate/ekn-init-private.h \
 	lib/eosknowledgeprivate/ekn-util.c \
 	$(NULL)
