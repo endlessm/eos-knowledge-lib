@@ -9,8 +9,6 @@
 #error "Please do not include this header file directly."
 #endif
 
-#include "ekn-types.h"
-
 #include <math.h>
 
 #include <gtk/gtk.h>
@@ -19,48 +17,37 @@
 
 G_BEGIN_DECLS
 
-EKN_AVAILABLE_IN_0_0
 GdkWindow *ekn_private_new_input_output_window (GtkWidget *widget);
 
-EKN_AVAILABLE_IN_0_0
 gboolean ekn_param_spec_is_enum (GParamSpec *pspec);
 
-EKN_AVAILABLE_IN_0_0
 gboolean ekn_param_spec_enum_value_from_string (GParamSpecEnum *pspec,
                                                 const gchar *name,
                                                 gint *value);
 
-EKN_AVAILABLE_IN_0_0
 gint ekn_style_context_get_int (GtkStyleContext *context,
                                 const gchar *name,
                                 GtkStateFlags state);
 
-EKN_AVAILABLE_IN_0_0
 gfloat ekn_style_context_get_float (GtkStyleContext *context,
                                     const gchar *name,
                                     GtkStateFlags state);
 
-EKN_AVAILABLE_IN_0_0
 const gchar * ekn_style_context_get_string (GtkStyleContext *context,
                                             const gchar *name,
                                             GtkStateFlags state);
 
-EKN_AVAILABLE_IN_0_0
 gint ekn_style_context_get_custom_int (GtkStyleContext *context,
                                        const gchar *name);
 
-EKN_AVAILABLE_IN_0_0
 gfloat ekn_style_context_get_custom_float (GtkStyleContext *context,
                                            const gchar *name);
 
-EKN_AVAILABLE_IN_0_0
 const gchar * ekn_style_context_get_custom_string (GtkStyleContext *context,
                                                    const gchar *name);
 
-EKN_AVAILABLE_IN_0_4
 gchar* ekn_extract_pixbuf_dominant_color (GdkPixbuf *pixbuf);
 
-EKN_AVAILABLE_IN_0_4
 GParamSpec **ekn_interface_gtype_list_properties(GType     gtype,
                                                  unsigned *n_properties_returned);
 

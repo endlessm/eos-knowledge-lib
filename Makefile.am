@@ -210,10 +210,7 @@ pkgdata_DATA += $(gresources)
 # # # MAIN LIBRARY # # #
 
 eosknowledgeprivate_headers = \
-	lib/eosknowledgeprivate/eosknowledge.h \
-	lib/eosknowledgeprivate/ekn-types.h \
 	lib/eosknowledgeprivate/ekn-util.h \
-	lib/eosknowledgeprivate/ekn-version.h \
 	$(NULL)
 
 eosknowledgeprivate_sources = \
