@@ -197,7 +197,7 @@ const Quilt = new Module.Class({
 
     // Arrangement implementation
     get_max_cards: function () {
-        return this._layout.total_cards_to_show;
+        return CARD_COUNT_LG;
     },
 
     // Arrangement override
