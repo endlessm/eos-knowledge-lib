@@ -27,34 +27,34 @@ describe('Arrangement.SquareGuys', function () {
     describe('maximum rows', function () {
         let msg = 'shows correct number of cards for max_rows = ';
         // At 2000x2000, and unlimited max_rows, all 20 cards should be visible
-        testSizingArrangementForDimensions(msg + 0, 2000, 2000, 0, 20, 399, 300);
+        testSizingArrangementForDimensions(msg + 0, 2000, 2000, 0, 20, 399, 300, true);
 
         // At 2000x2000, and 1 max_row, only four cards should be visible and of size 399x300
-        testSizingArrangementForDimensions(msg + 1, 2000, 2000, 1, 4, 399, 300);
+        testSizingArrangementForDimensions(msg + 1, 2000, 2000, 1, 4, 399, 300, true);
 
         // At 2000x2000, and 2 max_rows, only eight cards should be visible and of size 399x300
-        testSizingArrangementForDimensions(msg + 2, 2000, 2000, 2, 8, 399, 300);
+        testSizingArrangementForDimensions(msg + 2, 2000, 2000, 2, 8, 399, 300, true);
     });
 
     describe('sizing allocation', function () {
         let msg = 'handles arrangement for specified dimensions';
         // At 2000x2000, and 2 max_rows, all eight cards should be visible and of size 399x300
-        testSizingArrangementForDimensions(msg, 2000, 2000, 2, 8, 399, 300);
+        testSizingArrangementForDimensions(msg, 2000, 2000, 2, 8, 399, 300, true);
 
         // At 1200x1200, and 2 max_rows, all eight cards should be visible and of size 300x300
-        testSizingArrangementForDimensions(msg, 1200, 1200, 2, 8, 300, 300);
+        testSizingArrangementForDimensions(msg, 1200, 1200, 2, 8, 300, 300, true);
 
         // At 1000x1000, and 2 max_rows, only first six cards should be visible; all cards of size 333x300
-        testSizingArrangementForDimensions(msg, 1000, 1000, 2, 6, 333, 300);
+        testSizingArrangementForDimensions(msg, 1000, 1000, 2, 6, 333, 300, false);
 
         // At 900x900, and 2 max_rows, only first six cards should be visible; all cards of size 300x300
-        testSizingArrangementForDimensions(msg, 900, 900, 2, 6, 300, 300);
+        testSizingArrangementForDimensions(msg, 900, 900, 2, 6, 300, 300, false);
 
         // At 800x600, and 2 max_rows, only first six cards should be visible; all cards of size 266x200
-        testSizingArrangementForDimensions(msg, 800, 600, 2, 6, 266, 200);
+        testSizingArrangementForDimensions(msg, 800, 600, 2, 6, 266, 200, false);
 
         // At 600x400, and 2 max_rows, only first six cards should be visible; all cards of size 200x200
-        testSizingArrangementForDimensions(msg, 600, 400, 2, 6, 200, 200);
+        testSizingArrangementForDimensions(msg, 600, 400, 2, 6, 200, 200, false);
     });
 
     describe('get_max_cards', function () {
@@ -79,7 +79,7 @@ describe('Arrangement.SquareGuys', function () {
     });
 });
 
-function testSizingArrangementForDimensions(message, arr_width, arr_height, max_rows, visible_children, child_width, child_height) {
+function testSizingArrangementForDimensions(message, arr_width, arr_height, max_rows, visible_children, child_width, child_height, all_visible) {
     it(message + ' (' + arr_width + 'x' + arr_height + ')', function () {
         let [arrangement, factory] = MockFactory.setup_tree({
             type: SquareGuys.SquareGuys,
@@ -102,6 +102,7 @@ function testSizingArrangementForDimensions(message, arr_width, arr_height, max_
 
         win.queue_resize();
         Utils.update_gui();
+        expect(arrangement.all_visible).toBe(all_visible);
 
         let cards = factory.get_created('card');
         cards.forEach((card, i) => {
