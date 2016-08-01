@@ -31,10 +31,6 @@ const _PianoLayout = new Knowledge.Class({
         this.parent(props);
     },
 
-    get_max_cards: function () {
-        return this._support_card_count + 1;
-    },
-
     get compact_mode() {
         return this._compact_mode;
     },
@@ -202,5 +198,9 @@ const Piano = new Module.Class({
 
     get all_visible() {
         return this._layout.all_visible;
+    },
+
+    get_max_cards: function () {
+        return DEFAULT_SUPPORT_CARD_COUNT + 1;
     },
 });
