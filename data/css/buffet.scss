@@ -144,7 +144,7 @@ $title-alt-font: 'Lato Thin' !default;
     background-color: $background-light-color;
 
     .ArrangementScrollingList__grid {
-        padding: 0 0px;
+        padding: 20px 0px;
     }
 
     .search-page-suggestions .Card__contentFrame {
@@ -277,10 +277,6 @@ $title-alt-font: 'Lato Thin' !default;
     color: #999999;
 }
 
-.search-page .ArrangementScrollingList {
-    margin-top: 20px;
-}
-
 .small-spaced-arrangement {
     margin: -5px;
 
@@ -355,7 +351,7 @@ $title-alt-font: 'Lato Thin' !default;
                 color: $accent-light-color;
             }
 
-            &:hover &__title {
+            &:hover .Card__title {
                 color: $menu-hover-color;
             }
         }
@@ -366,22 +362,19 @@ $title-alt-font: 'Lato Thin' !default;
     }
 
     &__closeButton,
-    &__homeButton {
+    &__menuButton {
         color: $banner-label-color;
         &:hover {
             color: $accent-dark-color;
         }
     }
 
-    &__menuButton {
-        color: $accent-light-color;
-        &:hover {
-            color: $menu-hover-color;
-        }
-    }
-
     &__homeButton {
         font-family: $title-alt-font;
+        color: $accent-light-color;
+        &:hover {
+            color: $accent-dark-color;
+        }
     }
 }
 

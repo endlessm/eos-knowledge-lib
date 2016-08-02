@@ -19,14 +19,13 @@
         padding: 10px 10px 5px 10px;
 
         .Card {
-            margin-top: 5px;
             &__title {
                 font-size: 21.3px;
                 font-family: $title-font;
                 color: white;
             }
 
-            &:hover &__title {
+            &:hover .Card__title {
                 color: $accent-light-color;
             }
         }
@@ -37,9 +36,21 @@
             margin-top: 5px;
         }
 
-        scrolledwindow,
+        scrolledwindow {
+            padding-top: 10px;
+            background-color: transparent;
+        }
+
         scrollbar {
             background-color: transparent;
+        }
+
+        /* If there is a content group, make its error message really small; the
+        side menu isn't really meant to fit an error message */
+        .ContentGroupContentGroup__errorPage,
+        .ContentGroupContentGroup__errorMessage {
+            font-size: 1px;
+            padding: 0;
         }
     }
 
@@ -62,7 +73,6 @@
         font-weight: bold;
     }
 
-    .CardTitle,
     &__homeButton,
     &__closeButton {
         padding: 6px 0px;
