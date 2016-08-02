@@ -31,4 +31,9 @@ describe('Formattable Label', function () {
 
         expect(label.label).toBe("FRANGO");
     });
+
+    it('handles string length correctly', function () {
+        label.use_markup = true;
+        label.label = 'ç';
+    });
 });
