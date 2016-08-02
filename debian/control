@@ -15,7 +15,6 @@ Build-Depends: autotools-dev,
                gir1.2-webkit2-4.0,
                gjs,
                gobject-introspection,
-               gtk-doc-tools (>= 1.18),
                jasmine-gjs (>= 2.2.0),
                libevince-dev,
                libgirepository1.0-dev,
@@ -29,9 +28,7 @@ Build-Depends: autotools-dev,
                python3-polib,
                python3-yaml,
                ruby-compass,
-               ruby-sass,
-               yelp-tools,
-               yelp-xsl
+               ruby-sass
 Standards-Version: 3.9.4
 Section: non-free/libs
 Homepage: http://www.endlessm.com
@@ -75,19 +72,6 @@ Depends: eos-knowledge-0 (= ${binary:Version}),
 Description: EndlessOS Knowledge Library Debug package
  Debug symbols for the various C libraries used in eos-knowledge-lib.
  Install if you want to debug in gdb.
-
-Package: eos-knowledge-0-doc
-Section: non-free/doc
-Architecture: all
-Depends: ${misc:Depends}
-Suggests: devhelp
-Replaces: libeosknowledge-0-doc
-Provides: libeosknowledge-0-doc
-Conflicts: libeosknowledge-0-doc
-Description: EndlessOS Knowledge Library Private Documentation
- API documentation for the knowledge private C library. Install this
- if you want to access the API documentation locally, either in your
- browser or in the Devhelp program.
 
 Package: eos-knowledge-0-bin
 Section: non-free/utils
