@@ -14,8 +14,6 @@ describe('Formattable Label', function () {
         });
     });
 
-    it('constructs', function () {});
-
     it('can format label with CSS', function () {
         let cssProvider = new Gtk.CssProvider();
 
@@ -32,5 +30,10 @@ describe('Formattable Label', function () {
         Utils.update_gui();
 
         expect(label.label).toBe("FRANGO");
+    });
+
+    it('handles string length correctly', function () {
+        label.use_markup = true;
+        label.label = 'ç';
     });
 });
