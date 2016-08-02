@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
 "POT-Creation-Date: 2016-07-19 01:49+0000\n"
-"PO-Revision-Date: 2016-07-19 01:49+0000\n"
+"PO-Revision-Date: 2016-08-01 18:56+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: French (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -33,7 +33,7 @@ msgstr "Article précédent"
 
 #: data/widgets/contentGroup/contentGroup.ui:32
 msgid "Oops! There was an error."
-msgstr ""
+msgstr "Oups ! Une erreur est survenue."
 
 #: data/widgets/contentGroup/noResultsMessage.ui:50
 msgid ""
@@ -51,7 +51,7 @@ msgstr "PAGE D'ACCUEIL "
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license in your browser"
-msgstr ""
+msgstr "Consultez la licence dans votre navigateur"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -86,7 +86,7 @@ msgstr "Copier"
 
 #: js/app/articleHTMLRenderer.js:179
 msgid "Legal Notice and Intellectual Property Policy"
-msgstr ""
+msgstr "Avis juridique et politique de propriété intellectuelle"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be
 #. substituted in code. Please make sure to leave the curly
@@ -98,7 +98,7 @@ msgstr "Consulter {link} pour en savoir plus"
 
 #: js/app/articleHTMLRenderer.js:191
 msgid "DISCLAIMER PLACEHOLDER"
-msgstr ""
+msgstr "AVERTISSEMENT FICTIF"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains

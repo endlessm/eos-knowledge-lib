@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
 "POT-Creation-Date: 2016-07-19 01:49+0000\n"
-"PO-Revision-Date: 2016-07-19 01:49+0000\n"
+"PO-Revision-Date: 2016-08-01 23:36+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Indonesian (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/id/)\n"
 "MIME-Version: 1.0\n"
@@ -32,7 +32,7 @@ msgstr "Artikel Sebelumnya"
 
 #: data/widgets/contentGroup/contentGroup.ui:32
 msgid "Oops! There was an error."
-msgstr ""
+msgstr "Ups! Terjadi kesalahan."
 
 #: data/widgets/contentGroup/noResultsMessage.ui:50
 msgid ""
@@ -50,7 +50,7 @@ msgstr "BERANDA"
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license in your browser"
-msgstr ""
+msgstr "Lihat lisensi di peramban Anda"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -97,7 +97,7 @@ msgstr "Selengkapnya di {link}"
 
 #: js/app/articleHTMLRenderer.js:191
 msgid "DISCLAIMER PLACEHOLDER"
-msgstr ""
+msgstr "TEMPAT PENAFIAN"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains

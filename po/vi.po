@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
 "POT-Creation-Date: 2016-07-19 01:49+0000\n"
-"PO-Revision-Date: 2016-07-19 01:49+0000\n"
+"PO-Revision-Date: 2016-08-02 01:30+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/vi/)\n"
 "MIME-Version: 1.0\n"
@@ -23,15 +23,15 @@ msgstr ""
 
 #: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:174
 msgid "Next Article"
-msgstr ""
+msgstr "Bài viết Tiếp theo"
 
 #: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:157
 msgid "Previous Article"
-msgstr ""
+msgstr "Bài Viết Trước"
 
 #: data/widgets/contentGroup/contentGroup.ui:32
 msgid "Oops! There was an error."
-msgstr ""
+msgstr "Ối! Có lỗi xảy ra."
 
 #: data/widgets/contentGroup/noResultsMessage.ui:50
 msgid ""
@@ -45,7 +45,7 @@ msgstr ""
 #: data/widgets/layout/sideMenu.ui:95
 #: js/app/modules/layout/hamburgerBasement.js:57
 msgid "HOME"
-msgstr ""
+msgstr "TRANG CHỦ"
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license in your browser"
@@ -59,13 +59,13 @@ msgstr ""
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
-msgstr ""
+msgstr "Trang này có chứa nội dung từ {original-link}, khả dụng theo giấy phép {license-link}."
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
 #: js/app/articleHTMLRenderer.js:87
 msgid "http://wikihow.com"
-msgstr ""
+msgstr "http://wikihow.com"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -84,7 +84,7 @@ msgstr ""
 
 #: js/app/articleHTMLRenderer.js:179
 msgid "Legal Notice and Intellectual Property Policy"
-msgstr ""
+msgstr "Thông báo Pháp lý và Chính sách Sở hữu Trí tuệ"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be
 #. substituted in code. Please make sure to leave the curly
@@ -110,7 +110,7 @@ msgstr ""
 #. {blog-link} and it is not translated.
 #: js/app/articleHTMLRenderer.js:313
 msgid "Content courtesy of {blog-link}. Used with kind permission."
-msgstr ""
+msgstr "Được quyền sử dụng nội dung từ {blog-link}. Được cho phép sử dụng."
 
 #. TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
 #. is going to be substituted in code. Please make sure that your
@@ -118,16 +118,16 @@ msgstr ""
 #. translated.
 #: js/app/articleHTMLRenderer.js:321
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
-msgstr ""
+msgstr "Được quyền sử dụng nội dung từ {blog-link}, được cấp phép theo {license-link}."
 
 #: js/app/buffetHistoryStore.js:53
 #, javascript-format
 msgid "Results were found for “%s”"
-msgstr ""
+msgstr "Đã tìm thấy kết quả tìm kiếm cho \"%s\""
 
 #: js/app/modules/banner/context.js:38 js/app/modules/banner/context.js:49
 msgid "Highlights"
-msgstr ""
+msgstr "Nổi bật"
 
 #: js/app/modules/banner/context.js:52
 msgid "All Categories"
@@ -138,7 +138,7 @@ msgstr ""
 #: js/app/modules/banner/context.js:61
 #, javascript-format
 msgid "Search results for “%s”"
-msgstr ""
+msgstr "Kết quả tìm kiếm cho \"%s\""
 
 #: js/app/modules/banner/search.js:45
 #, javascript-format
@@ -155,7 +155,7 @@ msgstr ""
 
 #: js/app/modules/layout/hamburgerBasement.js:41
 msgid "SEE ALL CATEGORIES"
-msgstr ""
+msgstr "XEM TẤT CẢ DANH MỤC"
 
 #: js/app/modules/navigation/searchBox.js:167
 msgid "See more results"

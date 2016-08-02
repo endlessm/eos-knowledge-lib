@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
 "POT-Creation-Date: 2016-07-19 01:49+0000\n"
-"PO-Revision-Date: 2016-07-19 01:49+0000\n"
+"PO-Revision-Date: 2016-08-01 20:05+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Thai (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/th/)\n"
 "MIME-Version: 1.0\n"
@@ -19,15 +19,15 @@ msgstr ""
 
 #: data/widgets/card/legacyPolaroid.ui:101
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:174
 msgid "Next Article"
-msgstr ""
+msgstr "บทความถัดไป"
 
 #: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:157
 msgid "Previous Article"
-msgstr ""
+msgstr "บทความก่อนหน้า"
 
 #: data/widgets/contentGroup/contentGroup.ui:32
 msgid "Oops! There was an error."
@@ -40,12 +40,12 @@ msgid ""
 "  •  Check your spelling\n"
 "  •  Try other words that mean the same thing\n"
 "  •  Try using more general words"
-msgstr ""
+msgstr "เราแนะนำให้คุณ:\n\n•  ตรวจสอบการสะกด\n•  ลองใช้คำอื่นๆ ที่มีความหมายเดียวกัน\n•  ลงใช้คำทั่วๆ ไป"
 
 #: data/widgets/layout/sideMenu.ui:95
 #: js/app/modules/layout/hamburgerBasement.js:57
 msgid "HOME"
-msgstr ""
+msgstr "โฮม"
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license in your browser"
@@ -76,7 +76,7 @@ msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
-msgstr ""
+msgstr "ดูรายละเอียด, วิดีโอ, ภาพ, และความเป็นเจ้าของเพิ่มเติมที่ {wikihow-article-link}  ขอขอบคุณ {wikihow-link} ในฐานะพื้นที่ที่ทุกคนสามารถเรียนรู้วิธีทำสิ่งต่างๆ ได้"
 
 #: js/app/articleHTMLRenderer.js:150 js/app/articleHTMLRenderer.js:274
 msgid "Copy"
@@ -84,7 +84,7 @@ msgstr ""
 
 #: js/app/articleHTMLRenderer.js:179
 msgid "Legal Notice and Intellectual Property Policy"
-msgstr ""
+msgstr "ข้อความเตือนและนโยบายทรัพย์สินทางปัญญา"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be
 #. substituted in code. Please make sure to leave the curly
@@ -92,18 +92,18 @@ msgstr ""
 #. words inside curly braces.
 #: js/app/articleHTMLRenderer.js:185
 msgid "Read more at {link}"
-msgstr ""
+msgstr "อ่านเพิ่มเติมที่ {link}"
 
 #: js/app/articleHTMLRenderer.js:191
 msgid "DISCLAIMER PLACEHOLDER"
-msgstr ""
+msgstr "พื้นที่ข้อความสงวนสิทธิ์"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
 #: js/app/articleHTMLRenderer.js:308
 msgid "Content taken from {blog-link}."
-msgstr ""
+msgstr "เนื้อหานำมาจาก {blog-link}"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
@@ -118,12 +118,12 @@ msgstr ""
 #. translated.
 #: js/app/articleHTMLRenderer.js:321
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
-msgstr ""
+msgstr "เนื้อหาจาก {blog-link} สงวนลิขสิทธิ์ภายใต้ {license-link}"
 
 #: js/app/buffetHistoryStore.js:53
 #, javascript-format
 msgid "Results were found for “%s”"
-msgstr ""
+msgstr "ผลลัพธ์ที่พบสำหรับ “%s”"
 
 #: js/app/modules/banner/context.js:38 js/app/modules/banner/context.js:49
 msgid "Highlights"
@@ -138,7 +138,7 @@ msgstr ""
 #: js/app/modules/banner/context.js:61
 #, javascript-format
 msgid "Search results for “%s”"
-msgstr ""
+msgstr "ผลลัพธ์การค้นหาสำหรับ “%s”"
 
 #: js/app/modules/banner/search.js:45
 #, javascript-format
@@ -147,7 +147,7 @@ msgstr ""
 
 #: js/app/modules/contentGroup/noResultsMessage.js:52
 msgid "Sorry! :-("
-msgstr ""
+msgstr "ขออภัย! :-( "
 
 #: js/app/modules/contentGroup/noResultsMessage.js:53
 msgid "There are no results that match your search.\n"
@@ -159,7 +159,7 @@ msgstr ""
 
 #: js/app/modules/navigation/searchBox.js:167
 msgid "See more results"
-msgstr ""
+msgstr "ดูผลลัพธ์เพิ่มเติม"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that
@@ -168,7 +168,7 @@ msgstr ""
 #. example: "Jane Austen and Henry Miller and William Clifford"
 #: js/app/utils.js:88
 msgid "by {author}"
-msgstr ""
+msgstr "โดย {author} "
 
 #: js/app/utils.js:88
 msgid "and"
