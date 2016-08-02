@@ -33,7 +33,7 @@ m4_define([_EKN_VERSION_MACRO],
 AC_INIT([Endless OS Knowledge GUI Library], [_EKN_VERSION_MACRO],
     [], [eos-knowledge], [http://endlessm.com])
 # Verify that the source directory can be found
-AC_CONFIG_SRCDIR([lib/eosknowledgeprivate/eosknowledge.h])
+AC_CONFIG_SRCDIR([lib/eosknowledgeprivate/ekn-util.h])
 # Initialize Automake: enable all warnings and do not insist on GNU standards
 # no-portability suppresses warnings about syntax specific to GNU make
 # parallel-tests specifies that we use the new parallel-running test harness.
@@ -76,18 +76,12 @@ PKG_PROG_PKG_CONFIG
 # Gettext
 AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION([0.18.1])
-# Gtk-doc; 1.18 required for Markdown parsing
-GTK_DOC_CHECK([1.18], [--flavour no-tmpl])
 # GObject Introspection
 GOBJECT_INTROSPECTION_REQUIRE([1.30])
 # Various tools
 AC_PROG_AWK  # needed for TAP driver
 AC_PROG_SED  # needed for finding files for coverage
 AC_REQUIRE_AUX_FILE([tap-driver.sh])
-AC_PATH_PROG([GIRDOCTOOL], [g-ir-doc-tool], [notfound])
-AC_ARG_VAR([GIRDOCTOOL], [Path to g-ir-doc-tool])
-AC_PATH_PROG([YELPBUILD], [yelp-build], [notfound])
-AC_ARG_VAR([YELPBUILD], [Path to yelp-build])
 AC_PATH_PROG([NATURALDOCS], [naturaldocs], [notfound])
 AC_ARG_VAR([NATURALDOCS], [Path to naturaldocs])
 AC_SUBST([GLIB_COMPILE_RESOURCES], [`$PKG_CONFIG --variable glib_compile_resources gio-2.0`])
@@ -141,18 +135,6 @@ AS_CASE([$enable_strict_flags],
     [AC_MSG_ERROR([Invalid option for --enable-strict-flags])])
 AC_SUBST([STRICT_CFLAGS])
 
-# --enable-gir-doc: Build GIR documentation for Javascript. Done automatically
-# during 'make distcheck'.
-AC_ARG_ENABLE([gir-doc],
-    [AS_HELP_STRING([--enable-gir-doc],
-        [Build GIR documentation for Javascript @<:@default=no@:>@])])
-AS_IF([test "x$enable_gir_doc" = "xyes"], [
-    AS_IF([test "x$GIRDOCTOOL" = "xnotfound"],
-        [AC_MSG_ERROR([g-ir-doc-tool must be installed for --enable-gir-doc])])
-    AS_IF([test "x$YELPBUILD" = "xnotfound"],
-        [AC_MSG_ERROR([yelp-build must be installed for --enable-gir-doc])])])
-AM_CONDITIONAL([ENABLE_GIR_DOC], [test "x$enable_gir_doc" = "xyes"])
-
 # --enable-js-doc: Build pure Javascript module documentation.
 AC_ARG_ENABLE([js-doc],
     [AS_HELP_STRING([--enable-js-doc],
@@ -161,16 +143,6 @@ AS_IF([test "x$enable_js_doc" = "xyes"], [
     AS_IF([test "x$NATURALDOCS" = "xnotfound"],
         [AC_MSG_ERROR([NaturalDocs must be installed for --enable-js-doc])])])
 AM_CONDITIONAL([ENABLE_JS_DOC], [test "x$enable_js_doc" = "xyes"])
-
-# For 'make dist' or 'make distcheck', all three of --enable-gtk-doc,
-# --enable-gir-doc, and --enable-js-doc are required
-AC_MSG_CHECKING([whether this configuration allows building distributions])
-can_make_dist=yes
-AM_COND_IF([ENABLE_GTK_DOC], [], [can_make_dist=no])
-AM_COND_IF([ENABLE_GIR_DOC], [], [can_make_dist=no])
-AM_COND_IF([ENABLE_JS_DOC], [], [can_make_dist=no])
-AM_CONDITIONAL([CAN_MAKE_DIST], [test "x$can_make_dist" = "xyes"])
-AC_MSG_RESULT([$can_make_dist])
 
 # --enable-inspector: Allow opening the WebKit inspector in the webviews by
 # right-clicking
@@ -258,7 +230,6 @@ AC_CONFIG_FILES([
     Makefile
     data/eos-knowledge-0.pc
     po/Makefile.in
-    docs/reference/eosknowledgeprivate/Makefile
     js/app/config.js.in
 ])
 AC_CONFIG_HEADERS([config.h])  dnl Header with system-dependent #defines

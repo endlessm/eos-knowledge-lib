@@ -48,7 +48,6 @@ stamp*
 /config.*
 /configure
 /depcomp
-/gtk-doc.make
 /install-sh
 /libtool
 /ltmain.sh
@@ -57,7 +56,6 @@ stamp*
 /m4/gettext.m4
 /m4/glibc2.m4
 /m4/glibc21.m4
-/m4/gtk-doc.m4
 /m4/iconv.m4
 /m4/intdiv0.m4
 /m4/intl.m4
@@ -103,26 +101,6 @@ stamp*
 /po/remove-potcdate.sin
 /tap-driver.sh
 /test-driver
-
-# Gtk-Doc droppings
-/docs/reference/eosknowledgeprivate/*.bak
-/docs/reference/eosknowledgeprivate/eosknowledgeprivate-decl-list.txt
-/docs/reference/eosknowledgeprivate/eosknowledgeprivate-decl.txt
-/docs/reference/eosknowledgeprivate/eosknowledgeprivate-overrides.txt
-/docs/reference/eosknowledgeprivate/eosknowledgeprivate-undeclared.txt
-/docs/reference/eosknowledgeprivate/eosknowledgeprivate-undocumented.txt
-/docs/reference/eosknowledgeprivate/eosknowledgeprivate-unused.txt
-/docs/reference/eosknowledgeprivate/eosknowledgeprivate.args
-/docs/reference/eosknowledgeprivate/eosknowledgeprivate.hierarchy
-/docs/reference/eosknowledgeprivate/eosknowledgeprivate.interfaces
-/docs/reference/eosknowledgeprivate/eosknowledgeprivate.prerequisites
-/docs/reference/eosknowledgeprivate/eosknowledgeprivate.signals
-/docs/reference/eosknowledgeprivate/eosknowledgeprivate.types
-/docs/reference/eosknowledgeprivate/gtkdoc-check.test
-/docs/reference/eosknowledgeprivate/xml/
-
-# GIR Doc droppings
-/docs/reference/eosknowledgeprivate-js/*.page
 
 # NaturalDocs droppings
 /docs/reference/*/Data/

@@ -8,8 +8,7 @@
 ## Please keep this file well-commented.
 
 # Subdirectories where we also want to run make
-# (Make sure that the library is built before the docs)
-SUBDIRS = po . docs/reference/eosknowledgeprivate
+SUBDIRS = po .
 
 # Our Autoconf macros are kept in the m4/ directory
 ACLOCAL_AMFLAGS = -I m4
@@ -27,11 +26,8 @@ pkglib_LTLIBRARIES =
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 AM_CFLAGS = $(STRICT_CFLAGS)
 
-# Make sure to run Gtk-doc tests and build the documentation when doing
-# 'make distcheck'
+# Make sure to build the documentation when doing 'make distcheck'
 AM_DISTCHECK_CONFIGURE_FLAGS = \
-	--enable-gtk-doc \
-	--enable-gir-doc \
 	--enable-js-doc \
 	--enable-strict-flags \
 	$(NULL)
@@ -40,11 +36,10 @@ AM_DISTCHECK_CONFIGURE_FLAGS += --enable-coverage --with-coverage-dir=@EOS_COVER
 endif EOS_ENABLE_COVERAGE
 
 # Make sure that 'make dist' includes documentation
-if !CAN_MAKE_DIST
+if !ENABLE_JS_DOC
 distdir:
 	@echo "***"
-	@echo "*** You must configure with --enable-gtk-doc, --enable-gir-doc, and"
-	@echo "*** --enable-js-doc to run make dist or make distcheck."
+	@echo "*** You must configure with --enable-js-doc to run make dist or make distcheck."
 	@echo "***"
 	@false
 endif
@@ -215,16 +210,10 @@ pkgdata_DATA += $(gresources)
 # # # MAIN LIBRARY # # #
 
 eosknowledgeprivate_headers = \
-	lib/eosknowledgeprivate/eosknowledge.h \
-	lib/eosknowledgeprivate/ekn-enums.h \
-	lib/eosknowledgeprivate/ekn-macros.h \
-	lib/eosknowledgeprivate/ekn-types.h \
 	lib/eosknowledgeprivate/ekn-util.h \
-	lib/eosknowledgeprivate/ekn-version.h \
 	$(NULL)
 
 eosknowledgeprivate_sources = \
-	lib/eosknowledgeprivate/ekn-enums.c \
 	lib/eosknowledgeprivate/ekn-init.c lib/eosknowledgeprivate/ekn-init-private.h \
 	lib/eosknowledgeprivate/ekn-util.c \
 	$(NULL)
@@ -601,33 +590,6 @@ AM_JS_LOG_FLAGS += @EOS_JS_COVERAGE_LOG_FLAGS@
 AM_LDFLAGS = @EOS_C_COVERAGE_LDFLAGS@
 
 # # # DOCUMENTATION # # #
-
-# Regular Gtk-Doc and naturaldocs documentation are built with recursive make
-
-if ENABLE_GIR_DOC
-
-docs/reference/eosknowledgeprivate-js/index.page: $(INTROSPECTION_GIRS)
-	$(MKDIR_P) $(@D)
-	$(GIRDOCTOOL) -o $(@D) -l gjs $<
-
-docs/reference/eosknowledgeprivate-js/html/index.html: docs/reference/eosknowledgeprivate-js/index.page
-	$(MKDIR_P) $(@D)
-	$(YELPBUILD) html -o $(@D) $(<D)
-
-dist_noinst_DATA += docs/reference/eosknowledgeprivate-js/html/index.html
-
-distclean-local::
-	@rm -rf docs/reference/eosknowledgeprivate-js/html
-
-dist-hook::
-	@$(MKDIR_P) $(distdir)/docs/reference/eosknowledgeprivate-js/html
-	@cp -r docs/reference/eosknowledgeprivate-js/html/*.html $(distdir)/docs/reference/eosknowledgeprivate-js/html
-	@cp -r docs/reference/eosknowledgeprivate-js/html/*.css $(distdir)/docs/reference/eosknowledgeprivate-js/html
-	@cp -r docs/reference/eosknowledgeprivate-js/html/*.js $(distdir)/docs/reference/eosknowledgeprivate-js/html
-
-CLEANFILES += docs/reference/eosknowledgeprivate-js/*.page
-
-endif
 
 if ENABLE_JS_DOC
 
