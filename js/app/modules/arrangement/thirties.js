@@ -164,6 +164,8 @@ const Thirties = new Module.Class({
     },
 
     get all_visible() {
+        if (this.max_rows === 0)
+            return true;
         return this.get_card_count() <= COL_COUNT * this.max_rows;
     },
 

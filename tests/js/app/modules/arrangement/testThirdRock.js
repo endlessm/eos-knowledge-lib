@@ -47,6 +47,9 @@ describe('Arrangement.ThirdRock', function () {
                 win.set_size_request(arr_width, arr_height);
                 Utils.update_gui();
 
+                // all_visible is always true for this arrangement since max_cards is fixed
+                // at 3, and any models in excess of that won't even be held on the arrangement.
+                expect(arrangement.all_visible).toBe(true);
                 expect(arrangement.get_allocation().height).toBe(arr_height);
 
                 let all_cards = factory.get_created('card');

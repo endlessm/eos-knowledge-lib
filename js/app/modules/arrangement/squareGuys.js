@@ -26,6 +26,7 @@ const _SquareGuysLayout = new Knowledge.Class({
     _init: function (props={}) {
         this.max_rows = 0;
         this.parent(props);
+        this.all_visible = true;
 
         this._small_mode = false;
         this._three_column_mode = false;
@@ -51,6 +52,7 @@ const _SquareGuysLayout = new Knowledge.Class({
 
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
+        this.all_visible = true;
 
         this._small_mode = alloc.width < CARD_SIZE_BIG * COL_COUNT_MIN;
         this._three_column_mode = alloc.width < CARD_SIZE_BIG * COL_COUNT_MAX;
@@ -89,6 +91,7 @@ const _SquareGuysLayout = new Knowledge.Class({
 
         all_children.slice(visible_children_count, all_children.length).forEach((card) => {
             card.set_child_visible(false);
+            this.all_visible = false;
         });
         Utils.set_container_clip(this);
     },
@@ -152,6 +155,10 @@ const SquareGuys = new Module.Class({
     // Arrangement override
     unpack_card: function (card) {
         this._layout.remove(card);
+    },
+
+    get all_visible () {
+        return this._layout.all_visible;
     },
 
     get max_rows() {
