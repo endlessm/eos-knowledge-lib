@@ -92,7 +92,7 @@ const FormattableLabel = new Knowledge.Class({
         if (!text)
             text = '';
         if (this.use_markup) {
-            Pango.parse_markup(text, text.length, '0', null, text);
+            Pango.parse_markup(text, -1, '0', null, text);
         }
 
         let formatted_label = this._format_capitals(text, transform);
