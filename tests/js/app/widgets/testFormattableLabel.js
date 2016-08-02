@@ -14,8 +14,6 @@ describe('Formattable Label', function () {
         });
     });
 
-    it('constructs', function () {});
-
     it('can format label with CSS', function () {
         let cssProvider = new Gtk.CssProvider();
 
