@@ -37,14 +37,6 @@ const ContentObjectModel = new Lang.Class({
         /**
          * Property: original-uri
          * URI where the original version of this content can be downloaded
-         *
-         * This property is distinct from <source-uri>, which represents the URI
-         * where the article was downloaded from during database build.
-         *
-         * However, on an <ArticleObjectModel> with <source> equal to
-         * "wikipedia", "wikihow", "wikisource", or "wikibooks", it will be
-         * set to the value of <source-uri> if it is not present in the
-         * database, for backwards compatibility reasons.
          */
         'original-uri': GObject.ParamSpec.string('original-uri', 'Original URI',
             'URI where the original version of this content can be downloaded',
@@ -70,17 +62,6 @@ const ContentObjectModel = new Lang.Class({
          * The copyright holder for this content object. Defaults to an empty string.
          */
         'copyright-holder': GObject.ParamSpec.string('copyright-holder', 'Copyright Holder', 'The copyright holder of the object',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
-        /**
-         * Property: source-uri
-         * URI where this content was downloaded from during database build
-         *
-         * TODO Should we check to always have a value for <source-uri>?
-         * Don't use this property for user-visible things.
-         * It is only used internally.
-         */
-        'source-uri': GObject.ParamSpec.string('source-uri', 'Source URL',
-            'URI where this content was downloaded from during database build',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: content-type
@@ -183,9 +164,6 @@ const ContentObjectModel = new Lang.Class({
 
         if (json_ld.hasOwnProperty('copyrightHolder'))
             props.copyright_holder = json_ld.copyrightHolder;
-
-        if (json_ld.hasOwnProperty('sourceURI'))
-            props.source_uri = json_ld.sourceURI;
 
         if (json_ld.hasOwnProperty('synopsis'))
             props.synopsis = json_ld.synopsis;

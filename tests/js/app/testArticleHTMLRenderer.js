@@ -15,7 +15,6 @@ describe('Article HTML Renderer', function () {
 
         renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
         wikihow_model = new ArticleObjectModel.ArticleObjectModel({
-            source_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
             original_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
             content_type: 'text/html',
             source: 'wikihow',
@@ -25,7 +24,6 @@ describe('Article HTML Renderer', function () {
         });
         wikihow_model.get_content_stream = () => { return SearchUtils.string_to_stream('<html><body><p>wikihow html</p></body></html>'); };
         wikibooks_model = new ArticleObjectModel.ArticleObjectModel({
-            source_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
             original_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
             content_type: 'text/html',
             source: 'wikibooks',
@@ -127,7 +125,6 @@ describe('Article HTML Renderer', function () {
 
             SetMap.init_map_with_models(set_models);
             model = new ArticleObjectModel.ArticleObjectModel({
-                source_uri: 'http://www.prensalibre.com/internacional/el-papa-francisco-dice-que-trump-no-puede-proclamarse-cristiano',
                 original_uri: 'http://www.prensalibre.com/internacional/el-papa-francisco-dice-que-trump-no-puede-proclamarse-cristiano',
                 content_type: 'text/html',
                 source: 'prensa-libre',
