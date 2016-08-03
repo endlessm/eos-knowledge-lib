@@ -104,6 +104,7 @@ const Simple = new Module.Class({
                 focused_widget = this.get_focus();
                 Utils.squash_all_window_content_updates_heavy_handedly(this);
             } else {
+                this._show_or_hide_search_box();
                 Utils.unsquash_all_window_content_updates_heavy_handedly(this);
                 if (focused_widget && !this.get_focus()) {
                     focused_widget.grab_focus();
@@ -119,14 +120,16 @@ const Simple = new Module.Class({
         this._home_button.sensitive = history.get_current_item().page_type !== Pages.HOME;
         this._history_buttons.back_button.sensitive = history.can_go_back();
         this._history_buttons.forward_button.sensitive = history.can_go_forward();
+        this._show_or_hide_search_box();
+        this._present_if_needed();
+    },
 
+    _show_or_hide_search_box: function () {
         if (Utils.shows_descendant_with_type(this._content, SearchBox.SearchBox)) {
             this._search_stack.visible_child = this._invisible_frame;
         } else {
             this._search_stack.visible_child = this._search_box;
         }
-
-        this._present_if_needed();
     },
 
     _needs_present: function (timestamp) {
