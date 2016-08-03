@@ -16,7 +16,6 @@ const Utils = imports.app.utils;
 const BATCH_SIZE = 10;
 
 const CONTENT_PAGE_NAME = 'content';
-const SPINNER_PAGE_NAME = 'spinner';
 const NO_RESULTS_PAGE_NAME = 'no-results';
 const ERROR_PAGE_NAME = 'error';
 
@@ -96,26 +95,28 @@ const ContentGroup = new Module.Class({
         // https://bugzilla.gnome.org/show_bug.cgi?id=768790
         let builder = Gtk.Builder.new_from_resource('/com/endlessm/knowledge/data/widgets/contentGroup/contentGroup.ui');
         this._stack = builder.get_object('stack');
-        let spinner = builder.get_object('spinner');
+        let spinner = new Gtk.Spinner({
+            visible: false,
+            no_show_all: true,
+            vexpand: true,
+        });
         this._stack.add_named(this._arrangement, CONTENT_PAGE_NAME);
 
         if (this._no_results)
             this._stack.add_named(this._no_results, NO_RESULTS_PAGE_NAME);
 
-        // When the spinner is not being shown on screen, set it to
-        // be inactive to help with performance.
-        this._stack.connect('notify::visible-child', () => {
-            spinner.active = this._stack.visible_child_name === SPINNER_PAGE_NAME;
-        });
+        // Make sure we begin on the content page.
+        this._stack.visible_child_name = CONTENT_PAGE_NAME;
         this._selection = this.create_submodule('selection', {
             model: this.model || null,
         });
         this._selection.connect('models-changed',
             this._on_models_changed.bind(this));
         this._selection.connect('notify::loading', () => {
-            if (this._selection.loading)
-                this._stack.visible_child_name = SPINNER_PAGE_NAME;
-            else if (this._selection.error)
+            // When the spinner is not being shown on screen, set it to
+            // be inactive to help with performance.
+            spinner.active = spinner.visible = this._selection.loading;
+            if (this._selection.error)
                 this._stack.visible_child_name = ERROR_PAGE_NAME;
             else
                 this._stack.visible_child_name = CONTENT_PAGE_NAME;
@@ -125,6 +126,7 @@ const ContentGroup = new Module.Class({
         this._selection.connect('notify::needs-refresh', this._ensure_synced.bind(this));
 
         this.attach(this._stack, 0, 1, 2, 1);
+        this.attach(spinner, 0, 2, 2, 1);
 
         [[this._selection, 'can-load-more'], [this._arrangement, 'all-visible']].forEach((arr) => {
             let obj = arr[0];
