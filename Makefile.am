@@ -70,7 +70,6 @@ scss_theme_arrangement_partials = \
 	$(srcdir)/data/css/modules/arrangement/_half.scss \
 	$(srcdir)/data/css/modules/arrangement/_list.scss \
 	$(srcdir)/data/css/modules/arrangement/_piano.scss \
-	$(srcdir)/data/css/modules/arrangement/_scrollingList.scss \
 	$(srcdir)/data/css/modules/arrangement/_sideBySide.scss \
 	$(srcdir)/data/css/modules/arrangement/_squareGuys.scss \
 	$(srcdir)/data/css/modules/arrangement/_thirties.scss \
@@ -400,7 +399,6 @@ javascript_tests = \
 	tests/js/app/modules/arrangement/testPiano.js \
 	tests/js/app/modules/arrangement/testQuarter.js \
 	tests/js/app/modules/arrangement/testQuilt.js \
-	tests/js/app/modules/arrangement/testScrollingList.js \
 	tests/js/app/modules/arrangement/testSideBySide.js \
 	tests/js/app/modules/arrangement/testSquareGuys.js \
 	tests/js/app/modules/arrangement/testThirdRock.js \

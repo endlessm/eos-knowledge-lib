@@ -9,6 +9,10 @@
     color: white;
 }
 
+.BannerSet .Card {
+    background: none;
+}
+
 .Card {
     &.highlighted &__title {
         color: $primary-medium-color;
@@ -19,7 +23,7 @@
 .search-page {
     padding: 0 100px;
 
-    .ContentGroupContentGroup__title,
+    .BannerSet .Card__title,
     .BannerSearch__title {
         padding-top: 1.0em;
         padding-bottom: 1.0em;

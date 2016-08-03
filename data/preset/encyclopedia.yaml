@@ -33,21 +33,28 @@ defines:
       - type: Layout.Paper
         slots:
           content:
-            shortdef: 'Layout.Box(orientation: vertical)'
+            type: Layout.InfiniteScrolling
+            references:
+              lazy-load: search-results
             slots:
-              contents:
-              - 'Banner.Search(halign: start)'
-              - Decoration.Separator
-              - shortdef: ContentGroup.ContentGroup
+              content:
+                shortdef: 'Layout.Box(orientation: vertical)'
                 slots:
-                  arrangement:
-                    shortdef: 'Arrangement.ScrollingList(hexpand: true)'
+                  contents:
+                  - 'Banner.Search(halign: start)'
+                  - Decoration.Separator
+                  - shortdef: ContentGroup.ContentGroup
                     slots:
-                      card: Card.Title
-                  selection: Selection.Search
-                  no-results: 'ContentGroup.NoResultsMessage(halign: start)'
-                styles:
-                - search-results
+                      arrangement:
+                        shortdef: 'Arrangement.List(hexpand: true)'
+                        slots:
+                          card: Card.Title
+                      selection:
+                        type: Selection.Search
+                        id: search-results
+                      no-results: 'ContentGroup.NoResultsMessage(halign: start)'
+                    styles:
+                    - search-results
 
   - &article-page
     shortdef: 'Layout.Box(orientation: vertical, vexpand: false)'
