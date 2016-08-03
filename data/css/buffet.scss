@@ -158,7 +158,7 @@ $title-alt-font: 'Lato Thin' !default;
     /* This used to be margin on the list cards inside, but ListCard doesn't
      * support margin properly at the moment. */
     .ArrangementList {
-        padding: 0 200px;
+        padding: 20px 200px;
     }
 
     .BannerSearch {
@@ -276,10 +276,6 @@ $title-alt-font: 'Lato Thin' !default;
     font-weight: 200;
     font-size: 29.3px;
     color: #999999;
-}
-
-.search-page .ArrangementScrollingList {
-    margin-top: 20px;
 }
 
 .small-spaced-arrangement {
