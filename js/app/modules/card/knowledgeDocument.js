@@ -22,6 +22,9 @@ const TableOfContents = imports.app.widgets.tableOfContents;
 const TreeNode = imports.search.treeNode;
 const Utils = imports.app.utils;
 
+const SPINNER_PAGE_NAME = 'spinner';
+const CONTENT_PAGE_NAME = 'content';
+
 /**
  * Class: KnowledgeDocument
  *
@@ -85,7 +88,7 @@ const KnowledgeDocument = new Module.Class({
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/knowledgeDocument.ui',
     InternalChildren: [ 'title-label', 'top-title-label', 'toolbar-frame',
-        'content-frame', 'content-grid', 'panel-overlay' ],
+        'content-frame', 'content-grid', 'panel-overlay', 'spinner', 'stack' ],
     Children: [ 'toc' ],
 
 
@@ -168,6 +171,8 @@ const KnowledgeDocument = new Module.Class({
     },
 
     load_content: function (cancellable, callback) {
+        this._stack.visible_child_name = SPINNER_PAGE_NAME;
+        this._spinner.active = true;
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
             if (this.model.content_type === 'text/html') {
@@ -192,13 +197,16 @@ const KnowledgeDocument = new Module.Class({
                 this._webview_load_id = this.content_view.connect('load-changed', (view, status) => {
                     if (status !== WebKit2.LoadEvent.COMMITTED)
                         return;
+                    this._stack.visible_child_name = CONTENT_PAGE_NAME;
+                    this._spinner.active = false;
                     this.content_view.disconnect(this._webview_load_id);
                     this._webview_load_id = 0;
                     task.return_value();
                 });
 
                 // FIXME: Consider eventually connecting to load-failed and showing
-                // an error page in the view.
+                // an error page in the view. If we do this, make sure to hide spinner
+                // when showing error page :)
 
                 this.content_view.load_uri(this.model.ekn_id);
             } else if (this.model.content_type === 'application/pdf') {
@@ -211,6 +219,8 @@ const KnowledgeDocument = new Module.Class({
                     visible: true,
                 });
                 this.content_view.load_stream(stream, content_type);
+                this._stack.visible_child_name = CONTENT_PAGE_NAME;
+                this._spinner.active = false;
                 task.return_value();
             } else {
                 throw new Error("Unknown article content type: ", this.model.content_type);
