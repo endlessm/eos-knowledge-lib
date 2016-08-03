@@ -6,18 +6,6 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkSpinner" id="spinner">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <style>
-          <class name="ContentGroupContentGroup__spinner"/>
-        </style>
-      </object>
-      <packing>
-        <property name="name">spinner</property>
-      </packing>
-    </child>
-    <child>
       <object class="GtkGrid">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
