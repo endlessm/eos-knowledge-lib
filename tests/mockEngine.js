@@ -66,7 +66,7 @@ const MockEknGFile = new Lang.Class({
     },
 
     vfunc_read_fn: function (cancellable) {
-        return new Ekns.FileInputStreamWrapper({ stream: stream });
+        return new Ekns.FileInputStreamWrapper({ stream: this._stream });
     },
 });
 
