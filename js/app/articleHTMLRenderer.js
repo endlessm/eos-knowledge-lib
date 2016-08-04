@@ -243,7 +243,14 @@ const ArticleHTMLRenderer = new Knowledge.Class({
 
     _get_crosslink_data: function (model) {
         let engine = Engine.get_default();
-        let links = model.outgoing_links.map((link) => engine.test_link(link));
+        let links = model.outgoing_links.map((link) => {
+            if (link.contains('#')) {
+                let [base_link, fragment] = link.split('#');
+                return engine.test_link(base_link) + '#' + fragment;
+            } else {
+                return engine.test_link(link);
+            }
+        });
         return JSON.stringify(links);
     },
 
