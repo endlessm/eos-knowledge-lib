@@ -278,6 +278,8 @@ const DomainV2 = new Lang.Class({
         // will spoil the object for future use.
         let shard_file = this._get_shard_file();
         shard_file.init(null);
+
+        this._setup_link_table();
     },
 
     test_link: function (link) {
