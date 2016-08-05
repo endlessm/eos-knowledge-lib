@@ -6,7 +6,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: tests/autobahn/basic.yaml:68 tests/autobahn/basic.yaml:73
+#: tests/autobahn/basic.yaml:67 tests/autobahn/basic.yaml:72
 msgid "My Awesome App"
 msgstr ""
 

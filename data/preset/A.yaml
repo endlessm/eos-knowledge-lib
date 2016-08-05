@@ -22,7 +22,6 @@ defines:
         source-id: sets-group
         property: has-more-content
   slots:
-    # FIXME remove fractions
     top: Banner.App
     middle: 'Navigation.SearchBox(halign: center, focus-on-map: true)'
     bottom:

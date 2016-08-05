@@ -31,8 +31,6 @@
                   "halign": "center",
                   "margin-bottom": 10,
                   "margin-top": 10,
-                  "max-fraction": 0.2,
-                  "min-fraction": 0.2,
                   "valign": "start",
                   "vexpand": false
                 }
@@ -57,9 +55,7 @@
               "first": {
                 "type": "AppBanner",
                 "properties": {
-                  "margin-bottom": 42,
-                  "max-fraction": 0.5,
-                  "min-fraction": 0.5
+                  "margin-bottom": 42
                 }
               },
               "second": {
@@ -129,8 +125,6 @@
                   "halign": "center",
                   "margin-bottom": 10,
                   "margin-top": 10,
-                  "max-fraction": 0.2,
-                  "min-fraction": 0.2,
                   "valign": "start",
                   "vexpand": false
                 }

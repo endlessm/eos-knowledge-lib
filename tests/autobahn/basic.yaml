@@ -31,7 +31,6 @@ defines:
             title: !translate FAKE VIDEOS
             halign: fill
             valign: start
-            max-fraction: 0.5
             image-uri: resource:///com/endlessm/video-test-en/assets/titleImage.svg
         content:
           shortdef: 'ContentGroup.Item(hexpand: true)'

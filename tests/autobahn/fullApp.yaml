@@ -3,7 +3,7 @@ defines:
   - &home-page
     shortdef: 'TwoPieceTemplate(orientation: vertical, valign: center)'
     slots:
-      first: 'AppBanner(min-fraction: 0.5, max-fraction: 0.5, margin-bottom: 42)'
+      first: 'AppBanner(margin-bottom: 42)'
       # TODO Move margin-bottom to CSS!
       second: 'SearchBox(halign: center)'
 
@@ -13,8 +13,6 @@ defines:
       top-left:
         type: AppBanner
         properties:
-          min-fraction: 0.2
-          max-fraction: 0.2
           margin-top: 10     # FIXME
           margin-bottom: 10  # FIXME
           valign: start
