@@ -54,7 +54,6 @@
                     "properties": {
                       "halign": "fill",
                       "image-uri": "resource:///com/endlessm/video-test-en/assets/titleImage.svg",
-                      "max-fraction": 0.5,
                       "title": "FAKE VIDEOS",
                       "valign": "start"
                     }
