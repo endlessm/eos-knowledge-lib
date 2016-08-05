@@ -18,7 +18,7 @@ const Module = imports.app.interfaces.module;
  * Examples of arrangements: a list, a grid, etc.
  *
  * Slots:
- *   card-type - controls how the card models are converted into cards
+ *   card - controls how the card models are converted into cards
  */
 const Arrangement = new Lang.Interface({
     Name: 'Arrangement',
