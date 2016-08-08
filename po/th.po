@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
 "POT-Creation-Date: 2016-07-19 01:49+0000\n"
-"PO-Revision-Date: 2016-08-01 20:05+0000\n"
+"PO-Revision-Date: 2016-08-03 06:40+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Thai (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/th/)\n"
 "MIME-Version: 1.0\n"
@@ -31,7 +31,7 @@ msgstr "บทความก่อนหน้า"
 
 #: data/widgets/contentGroup/contentGroup.ui:32
 msgid "Oops! There was an error."
-msgstr ""
+msgstr "แย่ล่ะ! เกิดความผิดพลาดขึ้น"
 
 #: data/widgets/contentGroup/noResultsMessage.ui:50
 msgid ""
@@ -49,7 +49,7 @@ msgstr "โฮม"
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license in your browser"
-msgstr ""
+msgstr "ดูลิขสิทธิ์ในเบราว์เซอร์ของคุณ"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -59,13 +59,13 @@ msgstr ""
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
-msgstr ""
+msgstr "หน้านี้ประกอบด้วยเนื้อหาจาก {original-link} ใช้งานได้ภายใต้ลิขสิทธิ์ของ {license-link}"
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
 #: js/app/articleHTMLRenderer.js:87
 msgid "http://wikihow.com"
-msgstr ""
+msgstr "http://wikihow.com"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -80,7 +80,7 @@ msgstr "ดูรายละเอียด, วิดีโอ, ภาพ, แ
 
 #: js/app/articleHTMLRenderer.js:150 js/app/articleHTMLRenderer.js:274
 msgid "Copy"
-msgstr ""
+msgstr "คัดลอก"
 
 #: js/app/articleHTMLRenderer.js:179
 msgid "Legal Notice and Intellectual Property Policy"
@@ -110,7 +110,7 @@ msgstr "เนื้อหานำมาจาก {blog-link}"
 #. {blog-link} and it is not translated.
 #: js/app/articleHTMLRenderer.js:313
 msgid "Content courtesy of {blog-link}. Used with kind permission."
-msgstr ""
+msgstr "เนื้อหาจาก {blog-link}  นำมาใช้งานโดยได้รับอนุญาตแล้ว"
 
 #. TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
 #. is going to be substituted in code. Please make sure that your
@@ -127,11 +127,11 @@ msgstr "ผลลัพธ์ที่พบสำหรับ “%s”"
 
 #: js/app/modules/banner/context.js:38 js/app/modules/banner/context.js:49
 msgid "Highlights"
-msgstr ""
+msgstr "เรื่องเด่น"
 
 #: js/app/modules/banner/context.js:52
 msgid "All Categories"
-msgstr ""
+msgstr "หมวดหมู่ทั้งหมด"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep the %s token in your translation.
@@ -143,7 +143,7 @@ msgstr "ผลลัพธ์การค้นหาสำหรับ “%s”
 #: js/app/modules/banner/search.js:45
 #, javascript-format
 msgid "Results for “%s”"
-msgstr ""
+msgstr "ผลลัพธ์สำหรับ “%s”"
 
 #: js/app/modules/contentGroup/noResultsMessage.js:52
 msgid "Sorry! :-("
@@ -151,11 +151,11 @@ msgstr "ขออภัย! :-( "
 
 #: js/app/modules/contentGroup/noResultsMessage.js:53
 msgid "There are no results that match your search.\n"
-msgstr ""
+msgstr "ไม่พบผลลัพธ์ที่ตรงกับการค้นหาของคุณ\n\n"
 
 #: js/app/modules/layout/hamburgerBasement.js:41
 msgid "SEE ALL CATEGORIES"
-msgstr ""
+msgstr "ดูหมวดหมู่ทั้งหมด"
 
 #: js/app/modules/navigation/searchBox.js:167
 msgid "See more results"
@@ -172,4 +172,4 @@ msgstr "โดย {author} "
 
 #: js/app/utils.js:88
 msgid "and"
-msgstr ""
+msgstr "และ"

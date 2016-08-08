@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the eos-knowledge package.
 # 
 # Translators:
+# e2f_in c7 <e2f_in_c7@outlook.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
 "POT-Creation-Date: 2016-07-19 01:49+0000\n"
-"PO-Revision-Date: 2016-07-19 01:49+0000\n"
-"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
+"PO-Revision-Date: 2016-08-03 13:50+0000\n"
+"Last-Translator: e2f_in c7 <e2f_in_c7@outlook.com>\n"
 "Language-Team: Hindi (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/hi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,19 +20,19 @@ msgstr ""
 
 #: data/widgets/card/legacyPolaroid.ui:101
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:174
 msgid "Next Article"
-msgstr ""
+msgstr "अगला लेख"
 
 #: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:157
 msgid "Previous Article"
-msgstr ""
+msgstr "पिछले लेख"
 
 #: data/widgets/contentGroup/contentGroup.ui:32
 msgid "Oops! There was an error."
-msgstr ""
+msgstr "ओह! कोई त्रुटि हुई."
 
 #: data/widgets/contentGroup/noResultsMessage.ui:50
 msgid ""
@@ -40,16 +41,16 @@ msgid ""
 "  •  Check your spelling\n"
 "  •  Try other words that mean the same thing\n"
 "  •  Try using more general words"
-msgstr ""
+msgstr "हम अनुशंसा करते हैंं कि आप:\n\n  •  अपनी वर्तनी जाँचें\n  •  अन्य शब्दों को आज़माएँ जिनका अर्थ समान हो\n  •  अधिक सामान्य शब्द उपयोग करके देखें"
 
 #: data/widgets/layout/sideMenu.ui:95
 #: js/app/modules/layout/hamburgerBasement.js:57
 msgid "HOME"
-msgstr ""
+msgstr "मुखपृष्ठ"
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license in your browser"
-msgstr ""
+msgstr "अपने ब्राउज़र में लाइसेंस देखें"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -59,13 +60,13 @@ msgstr ""
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
-msgstr ""
+msgstr "इस पृष्ठ में {original-link} की सामग्री होती है, जो {license-link} लाइसेंस के अंतर्गत उपलब्ध होती है."
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
 #: js/app/articleHTMLRenderer.js:87
 msgid "http://wikihow.com"
-msgstr ""
+msgstr "http://wikihow.com"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -76,15 +77,15 @@ msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
-msgstr ""
+msgstr "अधिक विवरण, वीडियो, चित्रों और विशेषता के लिए {wikihow-article-link} देखें. {wikihow-link} को श्रेय, जहाँ कोई भी आसानी से सीख सकता है कि कुछ भी कैसे करना है."
 
 #: js/app/articleHTMLRenderer.js:150 js/app/articleHTMLRenderer.js:274
 msgid "Copy"
-msgstr ""
+msgstr "प्रतिलिपि करें"
 
 #: js/app/articleHTMLRenderer.js:179
 msgid "Legal Notice and Intellectual Property Policy"
-msgstr ""
+msgstr "कानूनी नोटिस और बौद्धिक संपदा नीति"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be
 #. substituted in code. Please make sure to leave the curly
@@ -92,25 +93,25 @@ msgstr ""
 #. words inside curly braces.
 #: js/app/articleHTMLRenderer.js:185
 msgid "Read more at {link}"
-msgstr ""
+msgstr "{link} पर अधिक पढ़ें"
 
 #: js/app/articleHTMLRenderer.js:191
 msgid "DISCLAIMER PLACEHOLDER"
-msgstr ""
+msgstr "अस्वीकरण प्लेसहोल्डर"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
 #: js/app/articleHTMLRenderer.js:308
 msgid "Content taken from {blog-link}."
-msgstr ""
+msgstr "{blog-link} से ली गई सामग्री."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
 #: js/app/articleHTMLRenderer.js:313
 msgid "Content courtesy of {blog-link}. Used with kind permission."
-msgstr ""
+msgstr "{blog-link} के सामग्री सौजन्य से. अनुमति से उपयोग की गई."
 
 #. TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
 #. is going to be substituted in code. Please make sure that your
@@ -118,48 +119,48 @@ msgstr ""
 #. translated.
 #: js/app/articleHTMLRenderer.js:321
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
-msgstr ""
+msgstr "{blog-link} केे सामग्री सौजन्य से, {license-link} के अंतर्गत लाइसेंसीकृत."
 
 #: js/app/buffetHistoryStore.js:53
 #, javascript-format
 msgid "Results were found for “%s”"
-msgstr ""
+msgstr "“%s” के लिए परिणाम प्राप्त हुए"
 
 #: js/app/modules/banner/context.js:38 js/app/modules/banner/context.js:49
 msgid "Highlights"
-msgstr ""
+msgstr "हाइलाइट"
 
 #: js/app/modules/banner/context.js:52
 msgid "All Categories"
-msgstr ""
+msgstr "सभी श्रेणियाँ"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep the %s token in your translation.
 #: js/app/modules/banner/context.js:61
 #, javascript-format
 msgid "Search results for “%s”"
-msgstr ""
+msgstr "“%s” के लिए परिणाम खोजें"
 
 #: js/app/modules/banner/search.js:45
 #, javascript-format
 msgid "Results for “%s”"
-msgstr ""
+msgstr "“%s” के लिए परिणाम"
 
 #: js/app/modules/contentGroup/noResultsMessage.js:52
 msgid "Sorry! :-("
-msgstr ""
+msgstr "क्षमा करें! :-("
 
 #: js/app/modules/contentGroup/noResultsMessage.js:53
 msgid "There are no results that match your search.\n"
-msgstr ""
+msgstr "आपकी खोज से मिलान करने वाले कोई परिणाम नहीं हैं\n"
 
 #: js/app/modules/layout/hamburgerBasement.js:41
 msgid "SEE ALL CATEGORIES"
-msgstr ""
+msgstr "सभी श्रेणियाँ देखें"
 
 #: js/app/modules/navigation/searchBox.js:167
 msgid "See more results"
-msgstr ""
+msgstr "अधिक परिणाम देखें"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that
@@ -168,8 +169,8 @@ msgstr ""
 #. example: "Jane Austen and Henry Miller and William Clifford"
 #: js/app/utils.js:88
 msgid "by {author}"
-msgstr ""
+msgstr "{author} की ओर से"
 
 #: js/app/utils.js:88
 msgid "and"
-msgstr ""
+msgstr "और"

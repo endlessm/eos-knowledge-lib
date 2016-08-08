@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
 "POT-Creation-Date: 2016-07-19 01:49+0000\n"
-"PO-Revision-Date: 2016-08-02 01:30+0000\n"
+"PO-Revision-Date: 2016-08-03 06:41+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/vi/)\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: data/widgets/card/legacyPolaroid.ui:101
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:174
 msgid "Next Article"
@@ -40,7 +40,7 @@ msgid ""
 "  •  Check your spelling\n"
 "  •  Try other words that mean the same thing\n"
 "  •  Try using more general words"
-msgstr ""
+msgstr "Chúng tôi khuyên bạn nên:\n\n  •  Kiểm tra chính tả\n  •  Thử dùng các từ ngữ khác có cùng ý nghĩa\n  •  Thử dùng các từ ngữ chung chung hơn"
 
 #: data/widgets/layout/sideMenu.ui:95
 #: js/app/modules/layout/hamburgerBasement.js:57
@@ -49,7 +49,7 @@ msgstr "TRANG CHỦ"
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license in your browser"
-msgstr ""
+msgstr "Xem cấp phép trong trình duyệt của bạn"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -76,11 +76,11 @@ msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
-msgstr ""
+msgstr "Xem {wikihow-article-link} để biết thêm các thông tin chi tiết, video, ảnh và thuộc tính. Thoải mái vào {wikihow-link}, ở đó bất kỳ ai cũng có thể dễ dàng học cách thực hiện bất kỳ điều gì."
 
 #: js/app/articleHTMLRenderer.js:150 js/app/articleHTMLRenderer.js:274
 msgid "Copy"
-msgstr ""
+msgstr "Sao chép"
 
 #: js/app/articleHTMLRenderer.js:179
 msgid "Legal Notice and Intellectual Property Policy"
@@ -92,18 +92,18 @@ msgstr "Thông báo Pháp lý và Chính sách Sở hữu Trí tuệ"
 #. words inside curly braces.
 #: js/app/articleHTMLRenderer.js:185
 msgid "Read more at {link}"
-msgstr ""
+msgstr "Xem thêm tại {link}"
 
 #: js/app/articleHTMLRenderer.js:191
 msgid "DISCLAIMER PLACEHOLDER"
-msgstr ""
+msgstr "VÙNG TUYÊN BỐ MIỄN TRỪ TRÁCH NHIỆM"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
 #: js/app/articleHTMLRenderer.js:308
 msgid "Content taken from {blog-link}."
-msgstr ""
+msgstr "Nội dung lấy từ {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
@@ -131,7 +131,7 @@ msgstr "Nổi bật"
 
 #: js/app/modules/banner/context.js:52
 msgid "All Categories"
-msgstr ""
+msgstr "Tất cả Danh mục"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep the %s token in your translation.
@@ -143,15 +143,15 @@ msgstr "Kết quả tìm kiếm cho \"%s\""
 #: js/app/modules/banner/search.js:45
 #, javascript-format
 msgid "Results for “%s”"
-msgstr ""
+msgstr "Kết quả đối với “%s”"
 
 #: js/app/modules/contentGroup/noResultsMessage.js:52
 msgid "Sorry! :-("
-msgstr ""
+msgstr "Rất tiếc! :-("
 
 #: js/app/modules/contentGroup/noResultsMessage.js:53
 msgid "There are no results that match your search.\n"
-msgstr ""
+msgstr "Không có kết quả nào phù hợp với tìm kiếm của bạn.\n"
 
 #: js/app/modules/layout/hamburgerBasement.js:41
 msgid "SEE ALL CATEGORIES"
@@ -159,7 +159,7 @@ msgstr "XEM TẤT CẢ DANH MỤC"
 
 #: js/app/modules/navigation/searchBox.js:167
 msgid "See more results"
-msgstr ""
+msgstr "Xem thêm kết quả"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that
@@ -168,8 +168,8 @@ msgstr ""
 #. example: "Jane Austen and Henry Miller and William Clifford"
 #: js/app/utils.js:88
 msgid "by {author}"
-msgstr ""
+msgstr "bởi {author}"
 
 #: js/app/utils.js:88
 msgid "and"
-msgstr ""
+msgstr "và"
