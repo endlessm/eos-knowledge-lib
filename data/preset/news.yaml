@@ -118,7 +118,7 @@ defines:
     content:
       type: Layout.InfiniteScrolling
       references:
-        lazy-load: set-page-subsets
+        lazy-load: subsets-for-set
       slots:
         content:
           shortdef: Layout.DynamicBackground
@@ -194,7 +194,9 @@ defines:
                                       id: set-page-subsets
                                       slots:
                                         order: 'Order.PublishedDate(ascending: false)'
-                            selection: Selection.SubsetsForSet
+                            selection:
+                              type: Selection.SubsetsForSet
+                              id: subsets-for-set
                     - type: Layout.ResponsiveMargins
                       styles:
                         - dark-background
