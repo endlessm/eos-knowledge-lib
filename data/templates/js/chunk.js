@@ -10,7 +10,7 @@ function chunk_init (global_chunk_data) {
             });
 
             var p = document.createElement('p');
-            links.forEach(function (link_elem) {
+            link_elems.forEach(function (link_elem) {
                 p.appendChild(link_elem);
             });
 
