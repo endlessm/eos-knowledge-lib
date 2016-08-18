@@ -4,8 +4,8 @@
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
+const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
-const SetObjectModel = imports.search.setObjectModel;
 const QueryObject = imports.search.queryObject;
 const Xapian = imports.app.modules.selection.xapian;
 
@@ -16,24 +16,18 @@ const ArticlesForSetCrossSection = new Module.Class({
     _init: function (props={}) {
         this.parent(props);
         this._set_needs_refresh(true);
-    },
-
-    // Selection.Xapian implementation
-    on_history_changed: function (history) {
-        let item = history.get_current_item();
-        if (item.model instanceof SetObjectModel.SetObjectModel &&
-            item.model !== this._current_set) {
-            this._current_set = item.model;
+        HistoryStore.get_default().connect('notify::current-set', () => {
             this._set_needs_refresh(true);
-        }
+        });
     },
 
     construct_query_object: function (limit, query_index) {
         if (query_index > 0)
             return null;
         let tags = this.model.child_tags.concat(['EknArticleObject']);
-        if (this._current_set)
-            tags = tags.concat(this._current_set.child_tags);
+        let current_set = HistoryStore.get_default().current_set;
+        if (current_set)
+            tags = tags.concat(current_set.child_tags);
         return new QueryObject.QueryObject({
             limit: limit,
             tags_match_all: tags,
