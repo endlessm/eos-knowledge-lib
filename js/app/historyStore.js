@@ -42,6 +42,20 @@ const HistoryStore = new Lang.Class({
 
     Properties: {
         /**
+         * Property: current-set
+         *
+         * The model for the current set in the history store.
+         */
+        'current-set': GObject.ParamSpec.object('current-set', 'current-set', 'current-set',
+            GObject.ParamFlags.READABLE, SetObjectModel.SetObjectModel),
+        /**
+         * Property: current-query
+         *
+         * The model for the current query in the history store.
+         */
+        'current-query': GObject.ParamSpec.string('current-query', 'current-query', 'current-query',
+            GObject.ParamFlags.READABLE, ''),
+        /**
          * Property: animating
          * Whether a page in this app is animating.
          */
@@ -153,22 +167,45 @@ const HistoryStore = new Lang.Class({
         return item || null;
     },
 
+    get current_query () {
+        let item = this.search_backwards(0, (item) => item.query.length > 0);
+        if (item)
+            return item.query;
+        return '';
+    },
+
+    get current_set () {
+        let item = this.search_backwards(0, (item) => item.page_type === Pages.SET);
+        if (item)
+            return item.model;
+        return null;
+    },
+
+    _update_index: function (delta) {
+        let old_set = this.current_set;
+        let old_query = this.current_query;
+        this._index += delta;
+        this.emit('changed');
+        if (old_query !== this.current_query)
+            this.notify('current-query');
+        if (old_set !== this.current_set)
+            this.notify('current-set');
+    },
+
     // Common helper functions for history stores, not for use from other
     // modules...
     go_back: function () {
         if (!this.can_go_back())
             return;
-        this._index--;
         this._direction = Direction.BACKWARDS;
-        this.emit('changed');
+        this._update_index(-1);
     },
 
     go_forward: function () {
         if (!this.can_go_forward())
             return;
-        this._index++;
         this._direction = Direction.FORWARDS;
-        this.emit('changed');
+        this._update_index(1);
     },
 
     set_current_item: function (item) {

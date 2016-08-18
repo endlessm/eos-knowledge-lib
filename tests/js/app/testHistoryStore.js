@@ -1,6 +1,8 @@
 const Actions = imports.app.actions;
 const HistoryStore = imports.app.historyStore;
 const MockDispatcher = imports.tests.mockDispatcher;
+const Pages = imports.app.pages;
+const SetObjectModel = imports.search.setObjectModel;
 
 describe('History Store', function () {
     let history_store;
@@ -30,6 +32,40 @@ describe('History Store', function () {
             query: 'blah',
         });
         expect(history_store.get_items().length).toBe(1);
+    });
+
+    it('tracks the current query', function () {
+        history_store.set_current_item_from_props({
+            page_type: Pages.SEARCH,
+            query: 'blah',
+        });
+        expect(history_store.current_query).toBe('blah');
+        let spy = jasmine.createSpy();
+        history_store.connect('notify::current-query', spy);
+        history_store.set_current_item_from_props({
+            page_type: Pages.SEARCH,
+            query: 'gah',
+        });
+        expect(history_store.current_query).toBe('gah');
+        expect(spy).toHaveBeenCalled();
+    });
+
+    it('tracks the current set', function () {
+        let set1 = new SetObjectModel.SetObjectModel({ title: 'blah' });
+        let set2 = new SetObjectModel.SetObjectModel({ title: 'gah' });
+        history_store.set_current_item_from_props({
+            page_type: Pages.SET,
+            model: set1,
+        });
+        expect(history_store.current_set).toBe(set1);
+        let spy = jasmine.createSpy();
+        history_store.connect('notify::current-set', spy);
+        history_store.set_current_item_from_props({
+            page_type: Pages.SET,
+            model: set2,
+        });
+        expect(history_store.current_set).toBe(set2);
+        expect(spy).toHaveBeenCalled();
     });
 
     it('can go back', function () {
