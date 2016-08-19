@@ -3,8 +3,20 @@ get_web_plugin_dbus_name, get_web_plugin_dbus_name_for_webview,
 record_search_metric, render_border_with_arrow, shows_descendant_with_type,
 split_out_conditional_knobs, vfunc_draw_background_default */
 
+const MockMetricsModule = {
+    EventRecorder: {
+        get_default: function () {
+            return {
+                record_event: function () {},
+            };
+        },
+    },
+};
+
+const Config = imports.app.config;
+
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
-const EosMetrics = imports.gi.EosMetrics;
+const EosMetrics = Config.metrics_enabled ? imports.gi.EosMetrics : MockMetricsModule;
 const Format = imports.format;
 const Gdk = imports.gi.Gdk;
 const Gettext = imports.gettext;
@@ -12,7 +24,6 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 
-const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Knowledge = imports.app.knowledge;
 

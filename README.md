@@ -51,7 +51,6 @@ jhbuild make check
 
 If not using JHbuild you first need to clone, build, and install these other Endless repositories:
 
- - [eos-metrics]
  - [eos-sdk]
  - [eos-shard]
  - [xapian-glib]
@@ -187,7 +186,6 @@ More and better documentation on all of this is incoming.
 For the next release, we may split this repository up into smaller units.
 
 [JHbuild]: https://developer.gnome.org/jhbuild/stable/
-[eos-metrics]: https://github.com/endlessm/eos-metrics
 [eos-sdk]: https://github.com/endlessm/eos-sdk
 [eos-shard]: https://github.com/endlessm/eos-shard
 [xapian-glib]: https://github.com/endlessm/xapian-glib

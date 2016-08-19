@@ -165,11 +165,6 @@ use the latest stable release branch from GNOME if you prefer that.
     <pkg-config>sqlite3.pc</pkg-config>
   </systemmodule>
 
-  <systemmodule id="uuid">
-    <branch repo="system"/>
-    <pkg-config>uuid.pc</pkg-config>
-  </systemmodule>
-
   <systemmodule id="mathjax">
     <branch repo="system"/>
     <systemdependencies>
@@ -179,14 +174,13 @@ use the latest stable release branch from GNOME if you prefer that.
 
   <!-- OFFLINE CONTENT PLATFORM -->
 
-  <autotools id="eos-sdk" autogenargs="--enable-strict-flags --enable-gtk-doc --enable-gir-doc --enable-js-doc">
+  <autotools id="eos-sdk" autogenargs="--enable-strict-flags --enable-gtk-doc --enable-gir-doc --enable-js-doc --disable-metrics">
     <branch/>
     <dependencies>
       <dep package="gobject-introspection"/>
       <dep package="naturaldocs"/>
       <dep package="webkit2gtk"/>
       <dep package="dbusmock"/>
-      <dep package="eos-metrics"/>
       <dep package="json-glib"/>
       <dep package="gjs"/>
       <dep package="glib"/>
@@ -195,11 +189,10 @@ use the latest stable release branch from GNOME if you prefer that.
     </dependencies>
   </autotools>
 
-  <autotools id="eos-knowledge-lib" autogenargs="--enable-strict-flags --enable-js-doc">
+  <autotools id="eos-knowledge-lib" autogenargs="--enable-strict-flags --enable-js-doc --disable-metrics">
     <branch/>
     <dependencies>
       <dep package="eos-sdk"/>
-      <dep package="eos-metrics"/>
       <dep package="xapian-bridge"/>
       <dep package="libevince"/>
       <dep package="webkit2gtk"/>
@@ -224,17 +217,6 @@ use the latest stable release branch from GNOME if you prefer that.
     <dependencies>
       <dep package="gjs"/>
     </dependencies>
-  </autotools>
-
-  <autotools id="eos-metrics" autogenargs="--enable-strict-flags --enable-gtk-doc --enable-gir-doc">
-    <branch/>
-    <dependencies>
-      <dep package="uuid"/>
-    </dependencies>
-    <after>
-      <dep package="glib"/>
-      <dep package="libsoup"/>
-    </after>
   </autotools>
 
   <autotools id="eos-shard" autogen-sh="autoreconf">

@@ -151,6 +151,13 @@ AC_ARG_ENABLE([inspector], AS_HELP_STRING([--enable-inspector],
 AS_IF([test "x$enable_inspector" != "xyes"], [inspector=false], [inspector=true])
 AC_SUBST([inspector])
 
+# --disable-metrics: Don't send metrics to Endless, and don't require the
+# optional eos-metrics dependency
+AC_ARG_ENABLE([metrics], AS_HELP_STRING([--disable-metrics],
+    [Sending metrics requires eos-metrics dependency (default=yes)]))
+AS_IF([test "x$enable_metrics" != "xno"], [metrics=true], [metrics=false])
+AC_SUBST([metrics])
+
 # --with-mathjax-dir: Use mathjax from a location besides the default /usr/share
 AC_ARG_WITH([mathjax-dir], AS_HELP_STRING([--with-mathjax-dir],
     [Use mathjax from a location besides the default /usr/share]),
