@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-07-19 01:49+0000\n"
+"POT-Creation-Date: 2016-08-16 02:03+0000\n"
 "PO-Revision-Date: 2016-07-27 16:33+0000\n"
 "Last-Translator: Nuritzi Sanchez <ns@endlessm.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/es/)\n"
@@ -36,7 +36,7 @@ msgstr "Próximo Artículo"
 msgid "Previous Article"
 msgstr "Artículo Previo"
 
-#: data/widgets/contentGroup/contentGroup.ui:32
+#: data/widgets/contentGroup/contentGroup.ui:20
 msgid "Oops! There was an error."
 msgstr "¡Lo sentimos! Hubo un error."
 
