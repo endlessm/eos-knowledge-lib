@@ -343,13 +343,16 @@ const DomainV3 = new Lang.Class({
 
     _clean_up_old_symlinks: function (subscription_dir, cancellable) {
         let file_enum = subscription_dir.enumerate_children('standard::name,standard::type',
-                                                            Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
+                                                            Gio.FileQueryInfoFlags.NONE, cancellable);
 
         let info;
         while ((info = file_enum.next_file(cancellable))) {
-            let file = file_enum.get_child(info);
-            if (!file.query_exists(cancellable))
+            // Since we normally follow symlinks, if we see a symlink here,
+            // that means it's a broken / unfollowable symlink.
+            if (info.get_file_type() == Gio.FileType.SYMBOLIC_LINK) {
+                let file = file_enum.get_child(info);
                 file.delete(cancellable);
+            }
         }
     },
 
