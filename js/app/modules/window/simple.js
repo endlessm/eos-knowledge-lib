@@ -125,6 +125,8 @@ const Simple = new Module.Class({
     },
 
     _show_or_hide_search_box: function () {
+        if (!this._search_box)
+            return;
         if (Utils.shows_descendant_with_type(this._content, SearchBox.SearchBox)) {
             this._search_stack.visible_child = this._invisible_frame;
         } else {
