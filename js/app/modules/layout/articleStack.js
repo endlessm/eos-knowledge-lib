@@ -130,24 +130,21 @@ const ArticleStack = new Module.Class({
         return Gtk.StackTransitionType.SLIDE_LEFT;
     },
 
-    _on_history_changed: function () {
-        let item = HistoryStore.get_default().get_current_item();
-        if (item.page_type !== Pages.ARTICLE)
-            return;
+    _load_article_model: function (model, context) {
         if (this.visible_child &&
-            this.visible_child.model.ekn_id === item.model.ekn_id)
+            this.visible_child.model.ekn_id === model.ekn_id)
             return;
 
         let document_card_props = {
-            model: item.model,
+            model: model,
         };
         let previous_model, next_model;
-        if (item.context) {
-            let index = item.context.indexOf(item.model);
+        if (context) {
+            let index = context.indexOf(model);
             if (index > 0)
-                previous_model = item.context[index - 1];
-            if (index < item.context.length - 1)
-                next_model = item.context[index + 1];
+                previous_model = context[index - 1];
+            if (index < context.length - 1)
+                next_model = context[index + 1];
         }
         if (previous_model &&
             (this.allow_navigation === Navigation.PREVIOUS || this.allow_navigation === Navigation.BOTH)) {
@@ -217,6 +214,14 @@ const ArticleStack = new Module.Class({
         }
         if (document_card.content_view instanceof WebKit2.WebView)
             this._webview_tooltip_presenter.set_document_card(document_card);
+        
+    },
+
+    _on_history_changed: function () {
+        let item = HistoryStore.get_default().get_current_item();
+        if (item.page_type !== Pages.ARTICLE)
+            return;
+        this._load_article_model(item.model, item.context);
     },
 
     _on_show_tooltip: function (tooltip_presenter, tooltip, uri) {
