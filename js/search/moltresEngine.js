@@ -28,7 +28,7 @@ const MoltresEngine = new Lang.Class({
         // remove the nonce and compare the ekn_id to those
         // fixed ekn_ids we have defined below in _ARTICLES/_SETS.
         let model_props = this._ARTICLES.concat(this._SETS).filter((data) => {
-            return data.ekn_id == ekn_id.split('#')[0];
+            return data.ekn_id == ekn_id.split('$')[0];
         })[0];
 
         // We only want to modify the ekn_id for this specific
@@ -56,7 +56,7 @@ const MoltresEngine = new Lang.Class({
             // for all future models.
             let unique_data = JSON.parse(JSON.stringify(data));
             // Ensure we have unique ids for each object
-            unique_data.ekn_id = data.ekn_id + '#' + this._counter++;
+            unique_data.ekn_id = data.ekn_id + '$' + this._counter++;
             return unique_data;
         }
         if (query.tags_match_all.indexOf('EknSetObject') >= 0) {
