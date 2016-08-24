@@ -7,6 +7,8 @@ const Actions = imports.app.actions;
 const AppUtils = imports.app.utils;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticleStack = imports.app.modules.layout.articleStack;
+const Box = imports.app.modules.layout.box;
+const ContentGroup = imports.app.modules.contentGroup.contentGroup;
 const HistoryStore = imports.app.historyStore;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Minimal = imports.tests.minimal;
@@ -18,7 +20,7 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 Gtk.init(null);
 
 describe('Layout.ArticleStack', function () {
-    let module, card, dispatcher, article_model, previous_model, next_model;
+    let module, card, selection, root, factory, dispatcher, article_model, previous_model, next_model;
     let store;
 
     beforeEach(function () {
@@ -28,15 +30,40 @@ describe('Layout.ArticleStack', function () {
         store = new HistoryStore.HistoryStore();
         HistoryStore.set_default(store);
 
-        let factory;
-        [module, factory] = new MockFactory.setup_tree({
-            type: ArticleStack.ArticleStack,
+        [root, factory] = new MockFactory.setup_tree({
+            type: Box.Box,
             slots: {
-                'card': { type: Minimal.MinimalDocumentCard },
-                'nav-card': { type: Minimal.MinimalNavigationCard },
-            },
+                contents: [
+                {
+                    type: ArticleStack.ArticleStack,
+                    references: {
+                        'selection': 'selection',
+                    },
+                    slots: {
+                        'card': { type: Minimal.MinimalDocumentCard },
+                        'nav-card': { type: Minimal.MinimalNavigationCard },
+                    },
+                },
+                {
+                    type: ContentGroup.ContentGroup,
+                    slots: {
+                        'arrangement': {
+                            type: Minimal.MinimalArrangement,
+                            slots: {
+                                'card': { type: Minimal.MinimalCard },
+                            },
+                        },
+                        'selection': {
+                            type: Minimal.MinimalSelection,
+                            id: 'selection',
+                        },
+                    },
+                }
+                ],
+            }
         });
 
+        module = factory.get_created('contents')[0];
         spyOn(AppUtils, 'get_web_plugin_dbus_name').and.returnValue('test0');
 
         article_model = new ArticleObjectModel.ArticleObjectModel();
@@ -52,7 +79,8 @@ describe('Layout.ArticleStack', function () {
             context: [previous_model, article_model, next_model],
         });
 
-        card = factory.get_last_created('card');
+        selection = factory.get_last_created('contents.selection');
+        card = factory.get_last_created('contents.card.2');
     });
 
     it('transitions in new content when state changes to article page', function () {
@@ -85,5 +113,27 @@ describe('Layout.ArticleStack', function () {
         card.next_card.emit('clicked');
         let payload = dispatcher.last_payload_with_type(Actions.NEXT_DOCUMENT_CLICKED);
         expect(payload.model).toBe(next_model);
+    });
+
+    it('loads a new article when selection changes', function () {
+        spyOn(selection, 'get_models');
+        let different_article_model = new ArticleObjectModel.ArticleObjectModel();
+        selection.get_models.and.returnValue([different_article_model]);
+        selection.emit('models-changed');
+        Utils.update_gui();
+        let new_card = factory.get_created('contents.card.3')[0];
+        expect(new_card).toBeDefined();
+        expect(module).toHaveDescendant(new_card);
+    });
+
+    it('still works without a selection reference', function () {
+        [module, factory] = new MockFactory.setup_tree({
+            type: ArticleStack.ArticleStack,
+            slots: {
+                'card': { type: Minimal.MinimalDocumentCard },
+                'nav-card': { type: Minimal.MinimalNavigationCard },
+            },
+        });
+        expect(module).toBeDefined();
     });
 });
