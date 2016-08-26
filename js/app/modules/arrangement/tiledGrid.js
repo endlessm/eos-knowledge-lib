@@ -28,8 +28,8 @@ const TiledGrid = new Module.Class({
         this.get_children().forEach(this.remove, this);
         // The card to be packed is already in this array:
         let cards = this.get_cards();
-
-        let columns = Math.ceil(this.get_card_count() / 2);
+        let count = this.get_card_count();
+        let columns = count < 4 ? count : Math.ceil(count / 2);
         let i = 0;
         for (let card of cards) {
             let col = i % columns;
