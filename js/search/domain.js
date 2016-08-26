@@ -494,7 +494,7 @@ const DomainV3 = new Lang.Class({
             // let's see about fetching a new one...
             downloader.fetch_update(id, null, (downloader, result) => {
                 try {
-                    downloader.fetch_update_finish(downloader, result);
+                    downloader.fetch_update_finish(result);
                 } catch(e) {
                     logError(e, Format.vprintf("Could not update subscription ID: %s", [id]));
                 }
