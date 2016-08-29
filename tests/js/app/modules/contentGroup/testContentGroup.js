@@ -35,7 +35,6 @@ describe('ContentGroup.ContentGroup', function () {
                 'selection': {
                     type: Minimal.MinimalSelection,
                 },
-                'no-results': { type: null },
             },
         });
         arrangement = factory.get_last_created('arrangement');
@@ -60,6 +59,7 @@ describe('ContentGroup.ContentGroup', function () {
     it('adds cards created by selection to the arrangement', function () {
         selection.queue_load_more(5);
         expect(arrangement.get_count()).toBe(5);
+        expect(content_group.visible).toBe(true);
         expect(factory.get_created('arrangement.card').length).toBe(5);
     });
 
@@ -82,6 +82,12 @@ describe('ContentGroup.ContentGroup', function () {
         expect(arrangement.get_count()).not.toBe(0);
         selection.clear();
         expect(arrangement.get_count()).toBe(0);
+    });
+
+    it('hides itself when no content available', function () {
+        selection.get_models.and.returnValue([]);
+        selection.queue_load_more(0);
+        expect(content_group.visible).toBe(false);
     });
 
     it('displays error message on selection error state', function () {

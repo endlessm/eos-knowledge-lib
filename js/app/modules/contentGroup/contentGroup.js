@@ -166,9 +166,14 @@ const ContentGroup = new Module.Class({
 
     _on_models_changed: function () {
         let models = this._selection.get_models();
-        if (models.length === 0 && this._no_results) {
+        this.visible = true;
+        if (models.length === 0) {
             this._arrangement.set_models([]);
-            this._stack.visible_child_name = NO_RESULTS_PAGE_NAME;
+            if (this._no_results) {
+                this._stack.visible_child_name = NO_RESULTS_PAGE_NAME;
+            } else {
+                this.visible = false;
+            }
         } else {
             let max_cards = this._arrangement.get_max_cards();
             if (max_cards > -1)
