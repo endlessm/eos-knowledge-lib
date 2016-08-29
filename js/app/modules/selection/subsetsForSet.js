@@ -31,6 +31,7 @@ const SubsetsForSet = new Module.Class({
             limit: limit,
             tags_match_any: this.model.child_tags,
             tags_match_all: ['EknSetObject'],
+            sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
         });
     },
 });

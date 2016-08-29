@@ -41,6 +41,7 @@ const ArticlesForSet = new Module.Class({
             limit: limit,
             tags_match_any: this.model.child_tags,
             tags_match_all: ['EknArticleObject'],
+            sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
         });
     },
 
