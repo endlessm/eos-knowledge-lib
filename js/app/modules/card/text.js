@@ -55,6 +55,16 @@ const Text = new Module.Class({
             this.get_style_context().add_class(klass);
         }
 
+        // Sometimes cards need to have their halign set to fill to fill up all
+        // their allocated space in the arrangement. But in this case, we do not
+        // want the title to also fill - we want it to remain at its default (start).
+        // Making it fill would consequently make it justify to the center, which
+        // is not desired.
+        if (this.halign !== Gtk.Align.FILL) {
+            this._title_label.halign = this.halign;
+        }
+
+        this._title_label.justify = Utils.alignment_to_justification(this._title_label.halign);
         Utils.set_hand_cursor_on_widget(this);
 
         this._idle_id = 0;
