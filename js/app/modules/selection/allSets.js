@@ -23,6 +23,7 @@ const AllSets = new Module.Class({
         return new QueryObject.QueryObject({
             limit: limit,
             tags_match_all: ['EknSetObject'],
+            sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
         });
     },
 
