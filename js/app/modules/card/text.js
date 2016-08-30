@@ -96,7 +96,7 @@ const Text = new Module.Class({
         }
 
         if (height <= Card.MaxSize.B) {
-            valign = Gtk.Align.CENTER;
+            valign = Gtk.Align.START;
         }
 
         this._title_label.lines = lines;
