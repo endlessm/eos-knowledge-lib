@@ -240,7 +240,7 @@ function dumb_hash (str) {
 function get_web_plugin_dbus_name () {
     let app_id = Gio.Application.get_default().application_id;
     let pid = new Gio.Credentials().get_unix_pid();
-    return app_id + pid;
+    return app_id + '.id' + pid;
 }
 
 const DBUS_WEBVIEW_EXPORT_PATH = '/com/endlessm/webview/';
