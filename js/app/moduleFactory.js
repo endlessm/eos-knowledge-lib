@@ -277,7 +277,7 @@ const ModuleFactory = new Knowledge.Class({
         if (!(reference_slot in parent_module.constructor.__references__))
             throw new Error('No referenced slot named ' + reference_slot);
         let description = this._path_to_description.get(parent_module.factory_path);
-        if (!(reference_slot in description['references']))
+        if (!('references' in description) || !(reference_slot in description['references']))
             return null;
         return description['references'][reference_slot];
     },
