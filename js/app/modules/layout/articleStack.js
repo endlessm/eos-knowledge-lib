@@ -81,6 +81,10 @@ const ArticleStack = new Module.Class({
         },
     },
 
+    References: {
+        'selection': {},  // type: Selection
+    },
+
     CONTENT_TRANSITION_DURATION: 500,
 
     _init: function (props={}) {
@@ -94,6 +98,17 @@ const ArticleStack = new Module.Class({
 
         HistoryStore.get_default().connect('changed',
             this._on_history_changed.bind(this));
+
+        this.reference_module('selection', selection => {
+            this._selection = selection;
+            if (this._selection) {
+                this._selection.connect('models-changed', () => {
+                    let models = this._selection.get_models();
+                    if (models.length > 0)
+                        this._load_article_model(models[0]);
+                });
+            }
+        });
 
         // Clear old views from the stack when its not animating.
         this.connect('notify::transition-running', () => {
