@@ -155,10 +155,7 @@ defines:
                               slots:
                                 order: 'Order.PublishedDate(ascending: false)'
                                 filter:
-                                  type: Filter.OtherGroup
-                                  references:
-                                    other: set-page-subsets
-
+                                  type: Filter.CurrentSet
                     - type: Layout.ResponsiveMargins
                       slots:
                         content:
@@ -191,7 +188,6 @@ defines:
                                         card: *main-card
                                     selection:
                                       type: Selection.ArticlesForSet
-                                      id: set-page-subsets
                                       slots:
                                         order: 'Order.PublishedDate(ascending: false)'
                             selection:
