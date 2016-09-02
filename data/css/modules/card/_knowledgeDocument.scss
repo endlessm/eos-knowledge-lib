@@ -4,6 +4,17 @@
     }
 }
 
+.Webview {
+    decoration {
+        background-color: transparentize(black, 1 - 0.7);
+        border-radius: 8px;
+    }
+
+    menu {
+        padding: 8px 0px;
+    }
+}
+
 .WebviewTooltip {
     background-color: transparentize(black, 1 - 0.4);
     border-radius: 8px 8px 8px 8px;
