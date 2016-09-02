@@ -179,6 +179,8 @@ defines:
                       slots:
                         content:
                           shortdef: 'ContentGroup.ContentGroup(halign: center)'
+                          styles:
+                          - hierarchical-articles
                           slots:
                             arrangement:
                               type: Arrangement.List
