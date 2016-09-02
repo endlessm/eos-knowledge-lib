@@ -142,24 +142,6 @@ defines:
                       slots:
                         content:
                           shortdef: 'ContentGroup.ContentGroup(halign: center)'
-                          slots:
-                            arrangement:
-                              type: Arrangement.List
-                              slots:
-                                card: Card.List
-                              properties:
-                                row-spacing: 20
-                            selection:
-                              type: Selection.ArticlesForSet
-                              id: articles-for-set
-                              slots:
-                                order: 'Order.PublishedDate(ascending: false)'
-                                filter:
-                                  type: Filter.CurrentSet
-                    - type: Layout.ResponsiveMargins
-                      slots:
-                        content:
-                          shortdef: 'ContentGroup.ContentGroup(halign: center)'
                           styles:
                           - hierarchical-set
                           slots:
@@ -193,6 +175,24 @@ defines:
                             selection:
                               type: Selection.SubsetsForSet
                               id: subsets-for-set
+                    - type: Layout.ResponsiveMargins
+                      slots:
+                        content:
+                          shortdef: 'ContentGroup.ContentGroup(halign: center)'
+                          slots:
+                            arrangement:
+                              type: Arrangement.List
+                              slots:
+                                card: Card.List
+                              properties:
+                                row-spacing: 20
+                            selection:
+                              type: Selection.ArticlesForSet
+                              id: articles-for-set
+                              slots:
+                                order: 'Order.PublishedDate(ascending: false)'
+                                filter:
+                                  type: Filter.CurrentSet
                     - type: Layout.ResponsiveMargins
                       styles:
                         - dark-background
