@@ -118,7 +118,7 @@ defines:
     content:
       type: Layout.InfiniteScrolling
       references:
-        lazy-load: subsets-for-set
+        lazy-load: articles-for-set
       slots:
         content:
           shortdef: Layout.DynamicBackground
@@ -174,7 +174,6 @@ defines:
                                         order: 'Order.PublishedDate(ascending: false)'
                             selection:
                               type: Selection.SubsetsForSet
-                              id: subsets-for-set
                     - type: Layout.ResponsiveMargins
                       slots:
                         content:
