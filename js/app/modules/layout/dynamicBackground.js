@@ -8,6 +8,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const DominantColor = imports.app.dominantColor;
+const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
@@ -132,11 +133,17 @@ const DynamicBackground = new Module.Class({
     _on_selection_models_changed: function (selection) {
         let models = selection.get_models();
 
-        if (models.length === 0 || this._model === models[0]) {
+        if (models.length === 0) {
+            let item = HistoryStore.get_default().get_current_item();
+            if (!item || !item.model)
+                return;
+            this._model = item.model;
+        } else if (this._model === models[0]) {
             return;
+        } else {
+            this._model = models[0];
         }
 
-        this._model = models[0];
         DominantColor.get_dominant_color(this._model, null, (helper, task) => {
             try {
                 this._overlay_color = helper.get_dominant_color_finish(task);
