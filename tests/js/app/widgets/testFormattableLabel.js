@@ -36,4 +36,23 @@ describe('Formattable Label', function () {
         label.use_markup = true;
         label.label = 'ç';
     });
+
+    it('handles entities in markup strings correctly', function () {
+        let cssProvider = new Gtk.CssProvider();
+
+        cssProvider.load_from_data ("* { \
+            -EknFormattableLabel-text-transform: 'uppercase';\
+        }");
+
+        let win = new Gtk.OffscreenWindow();
+        win.add(label);
+        win.show_all();
+        label.get_style_context().add_provider(cssProvider,
+                                                Gtk.StyleProvider.PRIORITY_APPLICATION + 10);
+
+        Utils.update_gui();
+        label.use_markup = true;
+        label.label = "Custer&apos;s Last Stand";
+        expect(label.label).toBe("CUSTER'S LAST STAND");
+    });
 });
