@@ -28,7 +28,7 @@
         padding-top: 1.0em;
         padding-bottom: 1.0em;
 
-        font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
+        font-size: 36px;
     }
 
     separator {
@@ -42,7 +42,7 @@
     }
 }
 
-.set-page  flowbox {
+.set-page flowbox, .search-page flowbox {
     margin-top: 20px;
 }
 
