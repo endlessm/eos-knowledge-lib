@@ -218,21 +218,21 @@ defines:
   slots:
     <<: *menu-slots
     content:
-      shortdef: Layout.DynamicBackground
+      type: Layout.InfiniteScrolling
       references:
-        selection: search-results
+        lazy-load: search-results
       slots:
         content:
-          shortdef: 'Layout.Box(orientation: vertical)'
+          shortdef: Layout.DynamicBackground
+          references:
+            selection: search-results
           slots:
-            contents:
-            - shortdef: 'Banner.Search(halign: center, xalign: 0.5, justify: center)'
-            - type: Layout.InfiniteScrolling
-              references:
-                lazy-load: search-results
+            content:
+              shortdef: 'Layout.Box(orientation: vertical)'
               slots:
-                content:
-                  type: ContentGroup.ContentGroup
+                contents:
+                - shortdef: 'Banner.Search(halign: center, xalign: 0.5, justify: center)'
+                - type: ContentGroup.ContentGroup
                   styles:
                   - search-results
                   slots:
