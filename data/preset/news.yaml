@@ -118,7 +118,7 @@ defines:
     content:
       type: Layout.InfiniteScrolling
       references:
-        lazy-load: subsets-for-set
+        lazy-load: articles-for-set
       slots:
         content:
           shortdef: Layout.DynamicBackground
@@ -138,24 +138,6 @@ defines:
                 - shortdef: 'Layout.Box(orientation: vertical)'
                   slots:
                     contents:
-                    - type: Layout.ResponsiveMargins
-                      slots:
-                        content:
-                          shortdef: 'ContentGroup.ContentGroup(halign: center)'
-                          slots:
-                            arrangement:
-                              type: Arrangement.List
-                              slots:
-                                card: Card.List
-                              properties:
-                                row-spacing: 20
-                            selection:
-                              type: Selection.ArticlesForSet
-                              id: articles-for-set
-                              slots:
-                                order: 'Order.PublishedDate(ascending: false)'
-                                filter:
-                                  type: Filter.CurrentSet
                     - type: Layout.ResponsiveMargins
                       slots:
                         content:
@@ -192,7 +174,26 @@ defines:
                                         order: 'Order.PublishedDate(ascending: false)'
                             selection:
                               type: Selection.SubsetsForSet
-                              id: subsets-for-set
+                    - type: Layout.ResponsiveMargins
+                      slots:
+                        content:
+                          shortdef: 'ContentGroup.ContentGroup(halign: center)'
+                          styles:
+                          - hierarchical-articles
+                          slots:
+                            arrangement:
+                              type: Arrangement.List
+                              slots:
+                                card: Card.List
+                              properties:
+                                row-spacing: 20
+                            selection:
+                              type: Selection.ArticlesForSet
+                              id: articles-for-set
+                              slots:
+                                order: 'Order.PublishedDate(ascending: false)'
+                                filter:
+                                  type: Filter.CurrentSet
                     - type: Layout.ResponsiveMargins
                       styles:
                         - dark-background
