@@ -401,3 +401,11 @@ $title-alt-font: 'Lato Thin' !default;
         font-family: $title-font;
     }
 }
+
+.article-page {
+    background-color: $background-light-color;
+
+    spinner {
+        color: $accent-dark-color;
+    }
+}
