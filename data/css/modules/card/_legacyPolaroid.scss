@@ -15,6 +15,10 @@
         }
     }
 
+     &.highlighted &__title {
+        color: $accent-dark-color;
+     }
+
     &__thumbnail {
         min-height: 133px;
     }
