@@ -13,12 +13,6 @@
     background: none;
 }
 
-.Card {
-    &.highlighted &__title {
-        color: $primary-medium-color;
-    }
-}
-
 .set-page,
 .search-page {
     padding: 0 100px;
