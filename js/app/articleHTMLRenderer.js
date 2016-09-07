@@ -1,5 +1,6 @@
 const Endless = imports.gi.Endless;
 const Gettext = imports.gettext;
+const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Engine = imports.search.engine;
@@ -71,8 +72,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
             case 'wikibooks':
             case 'wikisource':
                 let original_link = _to_link(model.original_uri, model.source_name);
-                let license_link = _to_link(Endless.get_license_file(model.license).get_uri(),
-                    Endless.get_license_display_name(model.license));
+                let license_link = _to_license_link(model.license);
                 // TRANSLATORS: anything inside curly braces '{}' is going
                 // to be substituted in code. Please make sure to leave the
                 // curly braces around any words that have them and DO NOT
@@ -296,6 +296,11 @@ function _to_link(uri, text) {
     return '<a class="eos-show-link" href="' + uri + '">' + Mustache.escape(text) + '</a>';
 }
 
+function _to_license_link (license) {
+    return _to_link('license://' + GLib.uri_escape_string(license, null, false),
+        Endless.get_license_display_name(license));
+}
+
 function _to_modal_link(text) {
     return '<a class="eos-modal-link" href="#modal">' + Mustache.escape(text) + '</a>';
 }
@@ -312,8 +317,7 @@ function _get_display_string_for_license(license) {
         // {blog-link} and it is not translated.
         return _("Content courtesy of {blog-link}. Used with kind permission.");
 
-    let license_link = _to_link(Endless.get_license_file(license).get_uri(),
-        Endless.get_license_display_name(license));
+    let license_link = _to_license_link(license);
     // TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
     // is going to be substituted in code. Please make sure that your
     // translation contains both {blog-link} and {license-link} and they are not
