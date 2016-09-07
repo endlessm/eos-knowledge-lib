@@ -31,22 +31,43 @@ function test_card_highlight_string_compliance(CardClass) {
                 highlight_string: 'hippo',
             });
         });
+
+        // Sadly, only works on ASCII text because Pango.Attribute indices are
+        // bytes, not characters
+        function get_spans(label) {
+            let layout = label.get_layout();
+            let attr_list = layout.get_attributes();
+            let text = layout.get_text();
+            let spans = [];
+            attr_list.filter(attr => {
+                spans.push(text.slice(attr.start_index, attr.end_index));
+                return false;
+            });
+            return spans;
+            // May return more than one element with the same text, because
+            // multiple attributes may be applied to the same span of text
+        }
+
         it('by highlighting a search string when constructed', function () {
-            expect(Gtk.test_find_label(card, '*!!!*').label).toMatch(/<span.*>hippo<\/span>/i);
-            expect(Gtk.test_find_label(card, '*@@@*').label).toMatch(/<span.*>hippo<\/span>/i);
+            expect(get_spans(Gtk.test_find_label(card, '*!!!*'))
+                .every(elem => elem === 'hippo')).toBeTruthy();
+            expect(get_spans(Gtk.test_find_label(card, '*@@@*'))
+                .every(elem => elem === 'hippo')).toBeTruthy();
         });
 
         it('by de-highlighting a search string', function () {
             card.highlight_string = '';
-            expect(Gtk.test_find_label(card, '*!!!*').label).toMatch(/ hippo$/i);
-            expect(Gtk.test_find_label(card, '*@@@*').label).toMatch(/ hippo$/i);
+            expect(get_spans(Gtk.test_find_label(card, '*!!!*'))).toEqual([]);
+            expect(get_spans(Gtk.test_find_label(card, '*@@@*'))).toEqual([]);
         });
 
         it('by highlighting a search string', function () {
             card = new CardClass({ model: model });
             card.highlight_string = 'hippo';
-            expect(Gtk.test_find_label(card, '*!!!*').label).toMatch(/<span.*>hippo<\/span>/i);
-            expect(Gtk.test_find_label(card, '*@@@*').label).toMatch(/<span.*>hippo<\/span>/i);
+            expect(get_spans(Gtk.test_find_label(card, '*!!!*'))
+                .every(elem => elem === 'hippo')).toBeTruthy();
+            expect(get_spans(Gtk.test_find_label(card, '*@@@*'))
+                .every(elem => elem === 'hippo')).toBeTruthy();
         });
     });
 }
