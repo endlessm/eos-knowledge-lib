@@ -91,13 +91,15 @@ const FormattableLabel = new Knowledge.Class({
     _format_label: function (text, transform) {
         if (!text)
             text = '';
+        let attrs = null;
         if (this.use_markup) {
             // Pango.parse_markup returns an array where the third
             // element is the result of the parsing.
-            text = Pango.parse_markup(text, -1, '0', null, text)[2];
+            [, attrs, text] = Pango.parse_markup(text, -1, '\0', null);
         }
 
         let formatted_label = this._format_capitals(text, transform);
         this.set_label(formatted_label);
+        this.set_attributes(attrs);
     },
 });
