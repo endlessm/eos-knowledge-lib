@@ -1,3 +1,4 @@
+const Endless = imports.gi.Endless;
 const ByteArray = imports.byteArray;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
@@ -58,6 +59,7 @@ const EknWebview = new Knowledge.Class({
         'http',
         'https',
         'file',
+        'license',
     ],
 
     _init: function (params) {
@@ -171,6 +173,11 @@ const EknWebview = new Knowledge.Class({
             let uri = decision.request.uri;
             let scheme = GLib.uri_parse_scheme(uri);
             if (scheme !== null && this.EXTERNALLY_HANDLED_SCHEMES.indexOf(scheme) !== -1) {
+                if (scheme === 'license') {
+                    let license = GLib.uri_unescape_string(uri.replace('license://', ''), null);
+                    uri = Endless.get_license_file(license).get_uri();
+                }
+
                 Gtk.show_uri(null, uri, Gdk.CURRENT_TIME);
                 decision.ignore();
                 return true; // handled
