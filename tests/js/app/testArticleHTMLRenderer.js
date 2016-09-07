@@ -56,7 +56,7 @@ describe('Article HTML Renderer', function () {
 
     it('links to creative commons license on wikimedia pages', function () {
         let html = renderer.render(wikibooks_model);
-        expect(html).toMatch('creativecommons');
+        expect(html).toMatch('license://CC-BY-SA%203.0');
     });
 
     it('links to original wikihow articles', function () {
