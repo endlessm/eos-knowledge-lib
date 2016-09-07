@@ -71,8 +71,9 @@ const ArticleHTMLRenderer = new Knowledge.Class({
             case 'wikibooks':
             case 'wikisource':
                 let original_link = _to_link(model.original_uri, model.source_name);
-                let license_link = _to_link(Endless.get_license_file(model.license).get_uri(),
-                    Endless.get_license_display_name(model.license));
+                let license_link = _to_link(_get_license_uri(Endless.get_license_file(model.license).get_uri()),
+                 Endless.get_license_display_name(model.license));
+
                 // TRANSLATORS: anything inside curly braces '{}' is going
                 // to be substituted in code. Please make sure to leave the
                 // curly braces around any words that have them and DO NOT
@@ -312,7 +313,7 @@ function _get_display_string_for_license(license) {
         // {blog-link} and it is not translated.
         return _("Content courtesy of {blog-link}. Used with kind permission.");
 
-    let license_link = _to_link(Endless.get_license_file(license).get_uri(),
+    let license_link = _to_link(_get_license_uri(Endless.get_license_file(license).get_uri()),
         Endless.get_license_display_name(license));
     // TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
     // is going to be substituted in code. Please make sure that your
@@ -320,4 +321,10 @@ function _get_display_string_for_license(license) {
     // translated.
     return _("Content courtesy of {blog-link}, licensed under {license-link}.")
         .replace('{license-link}', license_link);
+}
+
+function _get_license_uri(original_uri) {
+    // XXX replace the uri scheme with a custom license scheme
+    // to avoid having issues with recent changes in WebKit.
+    return original_uri.replace('file\:', 'license\:');
 }

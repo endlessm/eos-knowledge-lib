@@ -58,6 +58,7 @@ const EknWebview = new Knowledge.Class({
         'http',
         'https',
         'file',
+        'license',
     ],
 
     _init: function (params) {
@@ -171,6 +172,12 @@ const EknWebview = new Knowledge.Class({
             let uri = decision.request.uri;
             let scheme = GLib.uri_parse_scheme(uri);
             if (scheme !== null && this.EXTERNALLY_HANDLED_SCHEMES.indexOf(scheme) !== -1) {
+
+                // XXX restore the original scheme for the license
+                // uri now that we already passed checks in WebKit.
+                if (scheme === 'license')
+                    uri = uri.replace('license\:', 'file\:');
+
                 Gtk.show_uri(null, uri, Gdk.CURRENT_TIME);
                 decision.ignore();
                 return true; // handled
