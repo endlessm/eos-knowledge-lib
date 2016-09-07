@@ -53,6 +53,6 @@ describe('Formattable Label', function () {
         Utils.update_gui();
         label.use_markup = true;
         label.label = "Custer&apos;s Last Stand";
-        expect(label.label).toBe("CUSTER'S LAST STAND");
+        expect(label.label).toBe("CUSTER&apos;S LAST STAND");
     });
 });
