@@ -5,6 +5,7 @@
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
+const GLib = imports.gi.GLib;
 const Pango = imports.gi.Pango;
 
 const Knowledge = imports.app.knowledge;
@@ -99,6 +100,7 @@ const FormattableLabel = new Knowledge.Class({
         }
 
         let formatted_label = this._format_capitals(text, transform);
+        formatted_label = GLib.markup_escape_text(formatted_label, -1);
         this.set_label(formatted_label);
         this.set_attributes(attrs);
     },
