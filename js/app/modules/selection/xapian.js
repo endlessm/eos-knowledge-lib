@@ -2,6 +2,7 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
+const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const Selection = imports.app.modules.selection.selection;
@@ -54,10 +55,12 @@ const Xapian = new Module.Class({
         }
 
         this._loading = true;
+        Dispatcher.get_default().pause();
         this.notify('loading');
         engine.get_objects_by_query(query, null, (engine, task) => {
             this._loading = false;
             this._set_needs_refresh(false);
+            Dispatcher.get_default().resume();
             this.notify('loading');
 
             let results, info;
