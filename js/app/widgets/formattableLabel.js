@@ -100,7 +100,8 @@ const FormattableLabel = new Knowledge.Class({
         }
 
         let formatted_label = this._format_capitals(text, transform);
-        formatted_label = GLib.markup_escape_text(formatted_label, -1);
+        if (this.use_markup)
+            formatted_label = GLib.markup_escape_text(formatted_label, -1);
         this.set_label(formatted_label);
         this.set_attributes(attrs);
     },
