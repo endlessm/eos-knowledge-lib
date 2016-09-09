@@ -4,7 +4,6 @@
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
-const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const SetObjectModel = imports.search.setObjectModel;
 const QueryObject = imports.search.queryObject;
@@ -32,14 +31,6 @@ const ArticlesForSetCrossSection = new Module.Class({
     construct_query_object: function (limit, query_index) {
         if (query_index > 0)
             return null;
-
-        // XXX update current set if we missed the change for some reason
-        if (!this._current_set) {
-            let item = HistoryStore.get_default().get_current_item();
-            if (item.model instanceof SetObjectModel.SetObjectModel)
-                this._current_set = item.model;
-        }
-
         let tags = this.model.child_tags.concat(['EknArticleObject']);
         if (this._current_set)
             tags = tags.concat(this._current_set.child_tags);
