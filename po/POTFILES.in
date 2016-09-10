@@ -4,6 +4,7 @@ data/widgets/contentGroup/contentGroup.ui
 data/widgets/contentGroup/noResultsMessage.ui
 data/widgets/layout/sideMenu.ui
 data/widgets/tooltips.ui
+js/app/application.js
 js/app/articleHTMLRenderer.js
 js/app/buffetHistoryStore.js
 js/app/modules/banner/context.js

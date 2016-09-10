@@ -396,8 +396,16 @@ const DomainV3 = new Lang.Class({
             if (!manifest_file.query_exists(cancellable)) {
                 let bundle_dir = this._get_bundle_dir();
                 let bundle_manifest_file = bundle_dir.get_child('manifest.json');
-                if (bundle_manifest_file.query_exists(cancellable))
+                if (bundle_manifest_file.query_exists(cancellable)) {
                     manifest_file.make_symbolic_link(bundle_manifest_file.get_path(), cancellable);
+                } else {
+                    throw new Gio.IOErrorEnum({
+                        message: 'You have no manifest.json and are not ' +
+                            'running from a Flatpak bundle. You must download' +
+                            ' a content update.',
+                        code: Gio.IOErrorEnum.NOT_FOUND,
+                    });
+                }
             }
 
             this._make_bundle_symlinks(cancellable);
