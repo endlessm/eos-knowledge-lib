@@ -8,11 +8,15 @@
     .ContentGroupContentGroup {
         background-color: black;
     }
+
+    .NavigationSearchBox {
+        min-width: 300px;
+    }
 }
 
 .set-page,
 .search-page {
-    .Card__title {
+    .content .Card__title {
         font-size: 4.5em; /* 72pt * 1/12 * 0.75 DPI correction factor */
         padding: 0.9em 0em 0.9em 1.2em;
         color: white;
@@ -60,7 +64,7 @@
 .window-small {
     .set-page,
     .search-page {
-        .Card__title {
+        .content .Card__title {
             font-size: 3.5em; /* 56pt * 1/12 * 0.75 DPI correction factor */
             padding: 0.9em 0em 0.9em 1.2em;
             color: white;
