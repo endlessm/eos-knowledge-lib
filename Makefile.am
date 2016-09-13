@@ -44,8 +44,6 @@ distdir:
 	@false
 endif
 
-# # # GRESOURCES # # #
-
 scss_verbose = $(scss_verbose_@AM_V@)
 scss_verbose_ = $(scss_verbose_@AM_DEFAULT_V@)
 scss_verbose_0 = @echo "  SCSS     $@";
@@ -169,6 +167,7 @@ CLEANFILES += $(scss_targets)
 clean-local::
 	rm -rf .sass-cache
 
+# # # GRESOURCES # # #
 resource_deps_verbose = $(resource_deps_verbose_@AM_V@)
 resource_deps_verbose_ = $(resource_deps_verbose_@AM_DEFAULT_V@)
 resource_deps_verbose_0 = @echo "  RESDEPS  $@";
@@ -190,6 +189,11 @@ resource_verbose_0 = @echo "  RES      $@";
 	$(GLIB_COMPILE_RESOURCES) --target=$@ \
 		--sourcedir=$(srcdir)/$(*D) --sourcedir=$(builddir)/$(*D) $<
 
+%.c: %.gresource.xml
+	$(resource_verbose) $(MKDIR_P) $(dir $@) && \
+	$(GLIB_COMPILE_RESOURCES) --target=$@ --generate-source \
+		--sourcedir=$(srcdir)/$(*D) --sourcedir=$(builddir)/$(*D) $<
+
 gresources =
 gresource_depedencies =
 -include $(gresources:.gresource=.gresource.deps)
@@ -207,6 +211,18 @@ gresources += data/moltres/moltres.gresource
 pkgdata_DATA += $(gresources)
 
 # # # MAIN LIBRARY # # #
+BUILT_SOURCES = \
+	lib/eosknowledgeprivate/ekn-resources.c \
+	$(NULL)
+
+lib/eosknowledgeprivate/ekn-resources.c: $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies --sourcedir=$(srcdir)/lib/eosknowledgeprivate/ $(srcdir)/lib/eosknowledgeprivate/ekn-resources.gresource.xml)
+
+CLEANFILES += $(BUILT_SOURCES)
+
+EXTRA_DIST += \
+	lib/eosknowledgeprivate/ekn-resources.gresource.xml \
+	lib/eosknowledgeprivate/EknRuntimeDocumentViewer.ui \
+	$(NULL)
 
 eosknowledgeprivate_headers = \
 	lib/eosknowledgeprivate/ekn-util.h \
@@ -215,6 +231,9 @@ eosknowledgeprivate_headers = \
 eosknowledgeprivate_sources = \
 	lib/eosknowledgeprivate/ekn-init.c lib/eosknowledgeprivate/ekn-init-private.h \
 	lib/eosknowledgeprivate/ekn-util.c \
+	lib/eosknowledgeprivate/ekn-resources.c \
+	lib/eosknowledgeprivate/ekn-runtime-document-viewer.h \
+	lib/eosknowledgeprivate/ekn-runtime-document-viewer.c \
 	$(NULL)
 
 # Endless Knowledge Apps GUI library
