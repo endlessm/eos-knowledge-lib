@@ -119,6 +119,9 @@ To deploy it in a test system, use:
 
 ```
 $ cd endless-content-factory/src/eos-lambda-services
+$ # Prerequisites
+$ sudo apt-get install npm
+$ sudo npm install
 $ npm run mock-server -- -f
 ```
 
