@@ -29,6 +29,10 @@
 !/data/css/keybindings.css
 /data/templates/css/*.css
 
+# Knowledge private lib
+lib/eosknowledgeprivate/ekn-resources.h
+lib/eosknowledgeprivate/ekn-resources.c
+
 # Autotools/Gettext droppings
 .deps
 .libs
