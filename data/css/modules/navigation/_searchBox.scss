@@ -1,4 +1,11 @@
 .NavigationSearchBox {
+    .WindowSimple & {
+        selection {
+            color: black;
+            background-color: white;
+        }
+    }
+
     .PagerSimple & {
         box-shadow: inset 0em 0.16em 0.16em transparentize(black, 1 - 0.14);
         background-image: linear-gradient(-179deg, transparentize(black, 1 - 0.17) 0%,
