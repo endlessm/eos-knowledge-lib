@@ -46,9 +46,10 @@ defines:
                   - shortdef: ContentGroup.ContentGroup
                     slots:
                       arrangement:
-                        shortdef: 'Arrangement.List(hexpand: true)'
+                        shortdef: 'Arrangement.List(hexpand: true, homogeneous: false)'
                         slots:
-                          card: Card.Title
+                          card:
+                            shortdef: 'Card.Title(halign: start)'
                       selection:
                         type: Selection.Search
                         id: search-results
