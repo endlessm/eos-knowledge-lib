@@ -94,6 +94,8 @@ The first microservice is `db-build`.
 To build and install our build scripts for `db-build`, I use:
 
 ```
+$ # Prerequisites
+$ sudo apt-get install python-setuptools gobject-introspection python-gi python-xapian gir1.2-xapian-1.0
 $ cd endless-content-factory/src/eos-knowledge-db-build
 $ python setup.py install --user
 ```
