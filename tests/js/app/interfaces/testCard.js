@@ -117,7 +117,6 @@ describe('Card interface', function () {
             highlight_string: 'title',
         });
         let label = new Gtk.Label();
-        label.get_style_context().add_class('highlighted');
         let provider = new Gtk.CssProvider();
         provider.load_from_data(css);
         label.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
@@ -126,10 +125,18 @@ describe('Card interface', function () {
     });
 
     it('updates the highlight string', function () {
-        card = new Minimal.MinimalCard({ model: model });
-        spyOn(card, 'update_highlight_string');
-        card.highlight_string = 'title';
-        expect(card.update_highlight_string).toHaveBeenCalled();
+        let css = '.highlighted{background-color:#ff0000;}';
+        card = new Minimal.MinimalCard({
+            model: model,
+            highlight_string: 'title',
+        });
+        let label = new Gtk.Label();
+        let provider = new Gtk.CssProvider();
+        provider.load_from_data(css);
+        label.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        card.set_title_label_with_highlight(label);
+        card.highlight_string = 'ti';
+        expect(label.label.match(/<span .*bgcolor="#ff0000.*">ti<\/span>/)).not.toBeNull();
     });
 
     it('sets a thumbnail frame visible if model has a thumbnail uri', function () {

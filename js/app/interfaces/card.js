@@ -199,7 +199,6 @@ const Card = new Lang.Interface({
         if (this._highlight_string === value)
             return;
         this._highlight_string = value;
-        this.update_highlight_string();
         this.notify('highlight-string');
     },
 
@@ -328,43 +327,30 @@ const Card = new Lang.Interface({
     set_label_with_highlight: function (label, str) {
         let title = GLib.markup_escape_text(str, -1);
         label.visible = !!title;
+        let update = () => {
+            this._update_highlight_for_label(label, title);
+        };
+        label.get_style_context().connect('changed', update);
+        this.connect('notify::highlight-string', update);
+        update();
+    },
+
+    _update_highlight_for_label: function (label, title) {
         if (this.highlight_string.length === 0) {
             label.label = title;
             return;
         }
+
+        let context = label.get_style_context();
         // parenthesize the targeted string so we can reference it later on in
         // the replace step using '$1'. This is so we can preserve case
         // sensitivity when doing the replacement.
         let regex = new RegExp('(' + this.highlight_string + ')', 'gi');
-        let update_highlight = function (context) {
-            context.save();
-            context.add_class('highlighted');
-            let span = Utils.style_context_to_markup_span(label.get_style_context(), Gtk.StateFlags.NORMAL);
-            context.restore();
-            label.label = title.replace(regex, span + '$1</span>');
-        };
-        let context = label.get_style_context();
-        update_highlight(context);
-        label.get_style_context().connect('changed', update_highlight);
-    },
-
-    /**
-     * Method: update_highlight_string
-     * Implement for highlighting card titles and synopses
-     *
-     * Implement this method in order to allow highlighting search terms on
-     * card titles and synopses.
-     * If not overridden, then setting <highlight-string> will have no effect.
-     *
-     * Note that this may be called early in the construct phase of your object,
-     * so make sure that you check whether any widgets you access exist.
-     * Also, make sure to call it after chaining up in your constructor.
-     *
-     * There is no need to chain up when overriding this method, since it has no
-     * effect by default.
-     */
-    update_highlight_string: function () {
-        // no-op unless overridden, but not mandatory to override
+        context.save();
+        context.add_class('highlighted');
+        let span = Utils.style_context_to_markup_span(label.get_style_context(), Gtk.StateFlags.NORMAL);
+        context.restore();
+        label.label = title.replace(regex, span + '$1</span>');
     },
 
     /**

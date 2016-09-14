@@ -36,7 +36,10 @@ const List = new Module.Class({
     _init: function (props={}) {
         this.parent(props);
 
-        this.update_highlight_string();
+        if (this._title_label)
+            this.set_title_label_with_highlight(this._title_label);
+        if (this._synopsis_label)
+            this.set_label_with_highlight(this._synopsis_label, this.model.synopsis);
         if (this.navigation_context)
             this.set_label_or_hide(this._navigation_context_label, this.navigation_context);
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
@@ -45,14 +48,6 @@ const List = new Module.Class({
         this._synopsis_label.visible = this.show_synopsis;
 
         Utils.set_hand_cursor_on_widget(this);
-    },
-
-    // Card override
-    update_highlight_string: function () {
-        if (this._title_label)
-            this.set_title_label_with_highlight(this._title_label);
-        if (this._synopsis_label)
-            this.set_label_with_highlight(this._synopsis_label, this.model.synopsis);
     },
 
     _TEXT_SIZE_RATIO: 0.64,
