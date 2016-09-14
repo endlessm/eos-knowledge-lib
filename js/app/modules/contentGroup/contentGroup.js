@@ -87,6 +87,24 @@ const ContentGroup = new Module.Class({
         // https://bugzilla.gnome.org/show_bug.cgi?id=768790
         let builder = Gtk.Builder.new_from_resource('/com/endlessm/knowledge/data/widgets/contentGroup/contentGroup.ui');
         this._stack = builder.get_object('stack');
+
+        // FIXME: extend the stack clip to cover its children clip.
+        // https://bugzilla.gnome.org/show_bug.cgi?id=771436
+        this._stack.connect('size-allocate', (stack, stack_alloc) => {
+            let child = stack.get_visible_child();
+            if (!child)
+                return;
+
+            let child_clip = child.get_clip();
+            // translate to the stack's allocation coordinates space
+            child_clip.x += stack_alloc.x;
+            child_clip.y += stack_alloc.y;
+
+            let stack_clip = stack.get_clip();
+            stack_clip = stack_clip.union(child_clip);
+            stack.set_clip(stack_clip);
+        });
+
         let spinner = new Gtk.Spinner({
             visible: false,
             no_show_all: true,
