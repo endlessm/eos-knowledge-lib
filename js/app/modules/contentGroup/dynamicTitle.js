@@ -4,6 +4,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const ContentGroup = imports.app.modules.contentGroup.contentGroup;
+const FormattableLabel = imports.app.widgets.formattableLabel;
 const Module = imports.app.interfaces.module;
 
 /**
@@ -11,7 +12,7 @@ const Module = imports.app.interfaces.module;
  */
 const DynamicTitle = new Module.Class({
     Name: 'DynamicTitle',
-    Extends: Gtk.Label,
+    Extends: FormattableLabel.FormattableLabel,
 
     Properties: {
         /**
