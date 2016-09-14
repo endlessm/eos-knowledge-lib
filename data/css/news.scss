@@ -90,7 +90,7 @@ $support-font: 'Fira Sans' !default;
     padding: 0 20px 20px 0px;
 
     .ContentGroupContentGroup__title {
-        font-family: 'Merriweather';
+        font-family: $display-font;
         font-weight: bold;
         font-size: 40px;
         padding-bottom: 30px;
@@ -99,7 +99,7 @@ $support-font: 'Fira Sans' !default;
 }
 
 .dark-background {
-    background-color: #0f1b3c;
+    background-color: $background-dark-color;
 }
 
 .ArrangementSideBySide {
