@@ -74,14 +74,6 @@ const LegacyPolaroid = new Module.Class({
         }
     },
 
-    // Card override
-    update_highlight_string: function () {
-        if (this._title_label)
-            this.set_title_label_with_highlight(this._title_label);
-        if (this._synopsis_label && this._synopsis_label.visible)
-            this.set_label_with_highlight(this._synopsis_label, this.model.synopsis);
-    },
-
     _draw_cache_surface: function (cr) {
         // We will cache the scaled up version of the card to use when
         // transitioning, it leads to the nicest looking transition.
