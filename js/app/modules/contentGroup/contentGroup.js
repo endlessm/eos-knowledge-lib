@@ -192,8 +192,7 @@ const ContentGroup = new Module.Class({
         let item = HistoryStore.get_default().get_current_item();
         if (item.model)
             this._arrangement.highlight(item.model);
-        if (item.query)
-            this._arrangement.highlight_string(item.query);
+        this._arrangement.highlight_string(item.query);
     },
 
     _on_selection_error: function () {
