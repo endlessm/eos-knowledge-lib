@@ -13,8 +13,6 @@ let create_controller_with_app_json = function (application, app_json, extra_pro
     });
 
     extra_props.application = application;
-    // v2 app.jsons have no templateType key
-    extra_props.template_type = app_json['templateType'] || '';
     return factory.create_root_module(extra_props);
 }
 
