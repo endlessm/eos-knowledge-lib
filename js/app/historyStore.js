@@ -236,12 +236,21 @@ const HistoryStore = new Lang.Class({
         Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
             try {
                 let model = engine.get_object_by_id_finish(task);
-                this.set_current_item_from_props({
-                    page_type: Pages.ARTICLE,
-                    model: model,
-                    query: query,
-                    timestamp: timestamp || Gdk.CURRENT_TIME,
-                });
+                if (model instanceof ArticleObjectModel.ArticleObjectModel) {
+                    this.set_current_item_from_props({
+                        page_type: Pages.ARTICLE,
+                        model: model,
+                        query: query,
+                        timestamp: timestamp || Gdk.CURRENT_TIME,
+                    });
+                } else if (model instanceof SetObjectModel.SetObjectModel) {
+                    this.set_current_item_from_props({
+                        page_type: Pages.SET,
+                        model: model,
+                        context_label: model.title,
+                        timestamp: timestamp || Gdk.CURRENT_TIME,
+                    });
+                }
             } catch (error) {
                 logError(error);
             }
