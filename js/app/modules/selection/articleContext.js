@@ -44,6 +44,7 @@ const ArticleContext = new Module.Class({
                 limit: limit,
                 tags_match_all: ['EknArticleObject'],
                 tags_match_any: this._item.model.child_tags,
+                sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
             });
         } else {
             return null;
