@@ -67,7 +67,6 @@
     <file>js/app/articleHTMLRenderer.js</file>
     <file>js/app/buffetHistoryStore.js</file>
     <file>js/app/config.js</file>
-    <file>js/app/controllerLoader.js</file>
     <file>js/app/dispatcher.js</file>
     <file>js/app/dominantColor.js</file>
     <file>js/app/historyItem.js</file>

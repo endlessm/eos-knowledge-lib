@@ -1,6 +1,7 @@
 imports.gi.versions.WebKit2 = '4.0';
 
 const Endless = imports.gi.Endless;
+const EvinceDocument = imports.gi.EvinceDocument;
 const Gdk = imports.gi.Gdk;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
@@ -13,7 +14,8 @@ const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Knowledge = imports.app.knowledge;
-const ControllerLoader = imports.app.controllerLoader;
+const ModuleFactory = imports.app.moduleFactory;
+const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -125,7 +127,34 @@ const Application = new Knowledge.Class({
     // To be overridden in subclass
     ensure_controller: function () {
         if (this._controller === null) {
-            this._controller = ControllerLoader.create_controller(this, this.resource_path);
+            // Initialize libraries
+            EvinceDocument.init();
+
+            let app_resource = Gio.Resource.load(this.resource_path);
+            app_resource._register();
+
+            let gresource_path = 'resource:///app/';
+            let resource_file = Gio.File.new_for_uri(gresource_path);
+            let app_json_file = resource_file.get_child('app.json');
+            let app_json = Utils.parse_object_from_file(app_json_file);
+            let overrides_css_file = resource_file.get_child('overrides.css');
+
+            let css = '';
+            if (overrides_css_file.query_exists(null)) {
+                let [success, data] = overrides_css_file.load_contents(null);
+                css = data.toString();
+            }
+
+            this.image_attribution_file = resource_file.get_child('credits.json');
+
+            let factory = new ModuleFactory.ModuleFactory({
+                app_json: app_json,
+            });
+
+            this._controller = factory.create_root_module({
+                application: this,
+                css: css,
+            });
             this._controller.make_ready();
         }
     },
