@@ -2,16 +2,20 @@ imports.gi.versions.WebKit2 = '4.0';
 
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
+const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
+const Gtk = imports.gi.Gtk;
 
 const Actions = imports.app.actions;
+const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Knowledge = imports.app.knowledge;
 const ControllerLoader = imports.app.controllerLoader;
-const Utils = imports.search.utils;
+
+let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const KnowledgeSearchIface = '\
 <node> \
@@ -76,7 +80,18 @@ const Application = new Knowledge.Class({
 
     vfunc_startup: function () {
         this.parent();
-        Engine.get_default().update_and_preload_default_domain();
+        try {
+            Engine.get_default().update_and_preload_default_domain();
+        } catch (e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND)) {
+            let dialog = new Gtk.MessageDialog({
+                message_type: Gtk.MessageType.ERROR,
+                text: _("Oops! No content."),
+                secondary_text: _("If you have an internet connection, we are downloading more content right now. Try again in a few minutes after this message disappears."),
+                urgency_hint: true,
+            });
+            dialog.show();
+            this._controller = {};  // i.e. don't load the real controller
+        }
     },
 
     LoadItem: function (ekn_id, query, timestamp) {
