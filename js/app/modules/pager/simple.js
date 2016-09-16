@@ -48,7 +48,6 @@ const Simple = new Module.Class({
         props.transition_duration = 0;
         this.parent(props);
 
-        this._home_content_ready = false;
         this._transitions_style = 'slide-all';
 
         this._home_page = this.create_submodule('home-page');
