@@ -82,16 +82,6 @@ const Simple = new Module.Class({
         this.connect('notify::transition-running',
             this._on_notify_transition_running.bind(this));
 
-        Dispatcher.get_default().register(payload => {
-            switch (payload.action_type) {
-                case Actions.DBUS_LOAD_ITEM_CALLED:
-                    // Show an empty article page, bypassing the navigation
-                    // history, while waiting for the item to load
-                    if (this._article_page)
-                        this._show_page(this._article_page);
-                    break;
-            }
-        });
         HistoryStore.get_default().connect('changed', this._on_history_change.bind(this));
     },
 
@@ -154,11 +144,16 @@ const Simple = new Module.Class({
     },
 
     _show_page: function (new_page) {
+        if (this.transition_duration === 0) {
+            this.visible_child = new_page;
+            this.transition_duration = Utils.DEFAULT_PAGE_TRANSITION_DURATION;
+            this._set_busy(false);
+            new_page.make_ready();
+            return;
+        }
+
         let old_page = this.visible_child;
         if (old_page === new_page) {
-            // Even though we didn't change, this should still count as the
-            // first transition.
-            this.transition_duration = Utils.DEFAULT_PAGE_TRANSITION_DURATION;
             this._set_busy(false);
             new_page.make_ready();
             return;
@@ -176,10 +171,6 @@ const Simple = new Module.Class({
 
         new_page.make_ready(() => {
             this.visible_child = new_page;
-            // The first transition on app startup has duration 0, subsequent ones
-            // are normal.
-            this.transition_duration = Utils.DEFAULT_PAGE_TRANSITION_DURATION;
-
             if (this.transition_type === Gtk.StackTransitionType.NONE)
                 this._set_busy(false);
             // Otherwise it will be done at the end of the animation
