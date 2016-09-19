@@ -137,7 +137,7 @@ apps. Let's build a single app, and to save time, don't download any
 media (images, sounds, videos), and only include 10 articles.
 
 ```
-$ sudo apt-get install autoconf autopoint libtool ruby-compass ruby-sass eos-knowledge-0-dev
+$ sudo apt-get install autoconf autopoint libtool ruby-compass ruby-sass eos-knowledge-0-dev libxml2-utils
 $ APP_ID=com.endlessm.animals-en NUM_ARTICLES=10 ./autogen.sh --enable-database=no-media
 checking for blah...
 $ DB_BUILD_USE_MOCK=1 make -j5
