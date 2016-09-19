@@ -69,8 +69,6 @@ const Selection = new Module.Class({
                 this._set_needs_refresh(true);
             });
         }
-
-        HistoryStore.get_default().connect('changed', this.on_history_changed.bind(this));
     },
 
     get model () {
@@ -91,10 +89,6 @@ const Selection = new Module.Class({
             return;
         this._needs_refresh = v;
         this.notify('needs-refresh');
-    },
-
-    on_history_changed: function () {
-        // Optionally implemented in subclass
     },
 
     queue_load_more: function (num_desired) {

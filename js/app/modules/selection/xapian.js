@@ -51,6 +51,10 @@ const Xapian = new Module.Class({
             if (this._filter)
                 limit *= 3;  // FIXME: Find a better heuristic for compensating for models lost to filter
             query = this.construct_query_object(limit, this._query_index);
+            if (!query) {
+                this._set_needs_refresh(false);
+                return;
+            }
         }
 
         this._loading = true;

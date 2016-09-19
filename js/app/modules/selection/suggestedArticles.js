@@ -4,6 +4,7 @@
 
 const GLib = imports.gi.GLib;
 
+const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
 const Utils = imports.app.utils;
@@ -16,22 +17,17 @@ const SuggestedArticles = new Module.Class({
     _init: function (props) {
         this.parent(props);
         this._hash = 0;
-    },
-
-    // Selection.Xapian implementation
-    on_history_changed: function (history) {
-        let item = history.get_current_item();
-        if (item.query) {
-            this._item = item;
+        HistoryStore.get_default().connect('notify::current-query', () => {
             this._set_needs_refresh(true);
-        }
+        });
     },
 
     _TOTAL_ARTICLES: 50,
     construct_query_object: function (limit, query_index) {
-        if (query_index > 0)
+        let query = HistoryStore.get_default().current_query;
+        if (query_index > 0 || query.length === 0)
             return null;
-        this._hash = Utils.dumb_hash(this._item.query);
+        this._hash = Utils.dumb_hash(query);
         // FIXME: We still need a better way to issue a query for
         // 'random' articles. This just gets a random offset and then
         // requests articles (in order) starting from that point.
