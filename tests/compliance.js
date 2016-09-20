@@ -343,5 +343,13 @@ function test_xapian_selection_compliance(SelectionClass, setup=function () {}, 
             Utils.update_gui();
             expect(selection.in_error_state).toBeTruthy();
         });
+
+        it('saves the exception that was thrown', function () {
+            spyOn(window, 'logError');  // silence console message
+            engine.get_objects_by_query_finish.and.throwError('asplode');
+            selection.queue_load_more(1);
+            Utils.update_gui();
+            expect(selection.get_error().message).toEqual('asplode');
+        });
     });
 }

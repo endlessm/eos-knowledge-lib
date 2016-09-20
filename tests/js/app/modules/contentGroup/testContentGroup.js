@@ -1,3 +1,5 @@
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 
 const Utils = imports.tests.utils;
@@ -90,19 +92,55 @@ describe('ContentGroup.ContentGroup', function () {
         expect(content_group.visible).toBe(false);
     });
 
-    it('displays error message on selection error state', function () {
-        let error_label = Gtk.test_find_label(content_group, '*error*');
-
-        // Implementation detail :-(
-        let stack = error_label.get_ancestor(Gtk.Stack.$gtype);
+    describe('on selection error state', function () {
+        let error_label, log_button, stack;
         function is_shown(widget, stack) {
             return (stack.visible_child === widget ||
                 widget.is_ancestor(stack.visible_child));
         }
 
-        expect(is_shown(error_label, stack)).toBeFalsy();
-        selection.simulate_error();
-        Utils.update_gui();
-        expect(is_shown(error_label, stack)).toBeTruthy();
+        beforeEach(function () {
+            error_label = Gtk.test_find_label(content_group, '*error*');
+            log_button = Gtk.test_find_widget(content_group,
+                'Download support info', Gtk.Button.$gtype);
+
+            // Implementation detail :-(
+            stack = error_label.get_ancestor(Gtk.Stack.$gtype);
+        });
+
+        it('displays error message and log download button', function () {
+            expect(is_shown(error_label, stack)).toBeFalsy();
+            expect(is_shown(log_button, stack)).toBeFalsy();
+            selection.simulate_error();
+            Utils.update_gui();
+            expect(is_shown(error_label, stack)).toBeTruthy();
+            expect(is_shown(log_button, stack)).toBeTruthy();
+        });
+
+        it('writes out a log file when the log button is clicked', function () {
+            let datastream = {
+                put_string: jasmine.createSpy('put_string'),
+            };
+            let file = {
+                get_uri: jasmine.createSpy('get_uri')
+                    .and.returnValue('the log file uri'),
+            };
+            let stream = { output_stream: {} };
+            spyOn(Gio.File, 'new_tmp').and.returnValue([file, stream]);
+            spyOn(Gio, 'DataOutputStream').and.returnValue(datastream);
+            spyOn(Gtk, 'show_uri');
+
+            selection.simulate_error();
+            log_button.clicked();
+            Utils.update_gui();
+            expect(Gio.File.new_tmp)
+                .toHaveBeenCalledWith(jasmine.stringMatching(/eos-knowledge-lib log .*\.txt/));
+            expect(datastream.put_string.calls.mostRecent().args[0])
+                .toMatch('this string should show up in the backtrace');
+            expect(Gtk.show_uri).toHaveBeenCalledWith(
+                jasmine.any(Object),
+                'the log file uri',
+                jasmine.any(Number));
+        });
     });
 });

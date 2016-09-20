@@ -2,6 +2,9 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
+const Gdk = imports.gi.Gdk;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
@@ -87,6 +90,7 @@ const ContentGroup = new Module.Class({
         // https://bugzilla.gnome.org/show_bug.cgi?id=768790
         let builder = Gtk.Builder.new_from_resource('/com/endlessm/knowledge/data/widgets/contentGroup/contentGroup.ui');
         this._stack = builder.get_object('stack');
+        this._log_button = builder.get_object('log-button');
 
         // FIXME: extend the stack clip to cover its children clip.
         // https://bugzilla.gnome.org/show_bug.cgi?id=771436
@@ -147,6 +151,8 @@ const ContentGroup = new Module.Class({
         });
         this._selection.connect('notify::in-error-state',
             this._on_selection_error.bind(this));
+        this._log_button.connect('clicked',
+            this._on_log_button_click.bind(this));
         HistoryStore.get_default().connect('changed',
             this._on_history_changed.bind(this));
     },
@@ -217,6 +223,32 @@ const ContentGroup = new Module.Class({
         if (!this._selection.in_error_state)
             return;
         this._stack.visible_child_name = ERROR_PAGE_NAME;
+    },
+
+    _on_log_button_click: function () {
+        let timestamp = new Date(Date.now());
+        let stamp = 'eos-knowledge-lib log ' + timestamp.toISOString() +
+            ' XXXXXX.txt';
+        let [log_file, stream] = Gio.File.new_tmp(stamp);
+        let exception = this._selection.get_error();
+        let app = Gio.Application.get_default();
+        let log = [
+            'Log file for Xapian failure',
+            '===========================',
+            'Endless customer support: Please report to Apps team on Phabricator',
+            'App ID: ' + (app ? app.application_id : 'unknown'),
+            'Module path: ' + this.factory_path,
+            'Timestamp: ' + timestamp.toISOString(),
+            'Error message: ' + (exception ? exception.message : 'none'),
+            '',
+        ].join('\n');
+        log += exception.stack;
+        let os = new Gio.DataOutputStream({
+            base_stream: stream.output_stream,
+        });
+        os.put_string(log, null);
+        Gtk.show_uri(Gdk.Screen.get_default(), log_file.get_uri(),
+            Gdk.CURRENT_TIME);
     },
 
     load: function () {
