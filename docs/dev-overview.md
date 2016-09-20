@@ -163,7 +163,7 @@ network, or connected to it via VPN for the proxy to work).
 ## Useful tools for development
 
 # kermit
-`kermit` is a tool to explore shard files and extract metadata from them.
+`kermit` is a tool to explore shard files and extract metadata from them. You can find this tool in `eos-knowledge-0-bin` package.
 
 ```
 $ kermit grep ~/install/share/ekn/data/animals-en/media.shard Elephant
