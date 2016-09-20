@@ -198,7 +198,7 @@ describe('MeshHistoryStore', function () {
     describe('when desktop search result opened', function () {
         let model;
 
-        beforeEach(function () {
+        it('loads an item', function () {
             model = new ArticleObjectModel.ArticleObjectModel({
                 ekn_id: 'ekn:///foo',
             });
@@ -208,16 +208,38 @@ describe('MeshHistoryStore', function () {
                 query: 'foo',
                 ekn_id: 'ekn:///foo',
             });
-        });
 
-        it('loads an item', function () {
             expect(engine.get_object_by_id).toHaveBeenCalled();
             expect(engine.get_object_by_id.calls.mostRecent().args[0])
                 .toBe('ekn:///foo');
         });
 
-        it('goes to the article page', function () {
+        it('goes to the article page if an article was opened', function () {
+            model = new ArticleObjectModel.ArticleObjectModel({
+                ekn_id: 'ekn:///foo',
+            });
+            engine.get_object_by_id_finish.and.returnValue(model);
+            dispatcher.dispatch({
+                action_type: Actions.DBUS_LOAD_ITEM_CALLED,
+                query: 'foo',
+                ekn_id: 'ekn:///foo',
+            });
+
             expect(store.get_current_item().page_type).toBe(Pages.ARTICLE);
+        });
+
+        it('goes to the set page if an article was opened', function () {
+            model = new SetObjectModel.SetObjectModel({
+                ekn_id: 'ekn:///foo',
+            });
+            engine.get_object_by_id_finish.and.returnValue(model);
+            dispatcher.dispatch({
+                action_type: Actions.DBUS_LOAD_ITEM_CALLED,
+                query: 'foo',
+                ekn_id: 'ekn:///foo',
+            });
+
+            expect(store.get_current_item().page_type).toBe(Pages.SET);
         });
     });
 });

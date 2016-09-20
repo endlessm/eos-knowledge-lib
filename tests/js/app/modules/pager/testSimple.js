@@ -46,9 +46,12 @@ describe('Pager.Simple', function () {
         expect(pager.visible_child).toBe(all_sets_page);
     });
 
-    it('starts on home page', function () {
-        let home_page = factory.get_last_created('home-page');
-        expect(pager.visible_child).toBe(home_page);
+    it('shows the first page in history immediately', function () {
+        expect(pager.transition_duration).toBe(0);
+        store.set_current_item_from_props({ page_type: 'home' });
+        expect(pager.transition_duration).not.toBe(0);
+        spyOn(pager, '_set_busy');
+        expect(pager._set_busy).not.toHaveBeenCalledWith(true);
     });
 
     it('makes its home page ready', function () {
@@ -65,13 +68,9 @@ describe('Pager.Simple', function () {
         expect(pager).not.toHaveCssClass('PagerSimple--animating');
     });
 
-    it('pre-shows the article page when desktop search result opened', function () {
-        dispatcher.dispatch({ action_type: Actions.DBUS_LOAD_ITEM_CALLED });
-        let article_page = factory.get_last_created('article-page');
-        expect(pager.visible_child).toBe(article_page);
-    });
-
     it('indicates busy while showing pages', function () {
+        // First page will show immediately and not set busy
+        store.set_current_item_from_props({ page_type: 'home' });
         spyOn(pager, '_set_busy');
         store.set_current_item_from_props({ page_type: 'set' });
         expect(pager._set_busy).toHaveBeenCalledWith(true);
