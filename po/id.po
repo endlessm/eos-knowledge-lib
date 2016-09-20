@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-08-16 02:03+0000\n"
-"PO-Revision-Date: 2016-08-03 06:04+0000\n"
-"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
+"POT-Creation-Date: 2016-09-13 01:47+0000\n"
+"PO-Revision-Date: 2016-08-31 21:39+0000\n"
+"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
 "Language-Team: Indonesian (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,11 +22,11 @@ msgstr ""
 msgid "PDF"
 msgstr "PDF"
 
-#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:174
+#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:186
 msgid "Next Article"
 msgstr "Artikel Selanjutnya"
 
-#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:157
+#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:169
 msgid "Previous Article"
 msgstr "Artikel Sebelumnya"
 
@@ -102,14 +102,14 @@ msgstr "TEMPAT PENAFIAN"
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:308
+#: js/app/articleHTMLRenderer.js:313
 msgid "Content taken from {blog-link}."
 msgstr "Konten diambil dari {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:313
+#: js/app/articleHTMLRenderer.js:318
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "Konten adalah hak milik {blog-link}. Digunakan dengan izin."
 
@@ -117,7 +117,7 @@ msgstr "Konten adalah hak milik {blog-link}. Digunakan dengan izin."
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:321
+#: js/app/articleHTMLRenderer.js:325
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Konten adalah hak milik {blog-link}, berlisensi di bawah {license-link}."
 

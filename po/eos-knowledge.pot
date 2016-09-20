@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge 0.4.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2016-08-23 01:44+0000\n"
+"POT-Creation-Date: 2016-09-20 01:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,11 +22,11 @@ msgstr ""
 msgid "PDF"
 msgstr ""
 
-#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:174
+#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:186
 msgid "Next Article"
 msgstr ""
 
-#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:157
+#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:169
 msgid "Previous Article"
 msgstr ""
 
@@ -50,6 +50,16 @@ msgstr ""
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license in your browser"
+msgstr ""
+
+#: js/app/application.js:88
+msgid "Oops! No content."
+msgstr ""
+
+#: js/app/application.js:89
+msgid ""
+"If you have an internet connection, we are downloading more content right "
+"now. Try again in a few minutes after this message disappears."
 msgstr ""
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
@@ -102,14 +112,14 @@ msgstr ""
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:308
+#: js/app/articleHTMLRenderer.js:313
 msgid "Content taken from {blog-link}."
 msgstr ""
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:313
+#: js/app/articleHTMLRenderer.js:318
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr ""
 
@@ -117,7 +127,7 @@ msgstr ""
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:321
+#: js/app/articleHTMLRenderer.js:325
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr ""
 
