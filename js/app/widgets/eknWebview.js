@@ -12,6 +12,7 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const AsyncTask = imports.search.asyncTask;
 const Config = imports.app.config;
 const Engine = imports.search.engine;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Knowledge = imports.app.knowledge;
 const SearchUtils = imports.search.utils;
 const Utils = imports.app.utils;
@@ -95,6 +96,13 @@ const EknWebview = new Knowledge.Class({
             GObject.signal_stop_emission_by_name(this, 'query-tooltip');
             return false;
         });
+        this.connect('unmap', () => {
+            // Destroy License viewer when the view gets hidden
+            if (this._license_view) {
+                this._license_view.destroy();
+                delete this._license_view;
+            }
+        });
         gtk_settings.connect('notify::gtk-xft-dpi', this._updateFontSizeFromGtkSettings.bind(this));
     },
 
@@ -174,11 +182,19 @@ const EknWebview = new Knowledge.Class({
             let scheme = GLib.uri_parse_scheme(uri);
             if (scheme !== null && this.EXTERNALLY_HANDLED_SCHEMES.indexOf(scheme) !== -1) {
                 if (scheme === 'license') {
-                    let license = GLib.uri_unescape_string(uri.replace('license://', ''), null);
-                    uri = Endless.get_license_file(license).get_uri();
-                }
+                    // Create a license viewer
+                    if (!this._license_view) {
+                        this._license_view = new EosKnowledgePrivate.RuntimeDocumentViewer({
+                            transient_for: this.get_toplevel(),
+                        });
+                        this._license_view.maximize();
+                    }
 
-                Gtk.show_uri(null, uri, Gdk.CURRENT_TIME);
+                    let license = GLib.uri_unescape_string(uri.replace('license://', ''), null);
+                    this._license_view.index_uri = Endless.get_license_file(license).get_uri(); 
+                } else {
+                    Gtk.show_uri(null, uri, Gdk.CURRENT_TIME);
+                }
                 decision.ignore();
                 return true; // handled
             }
