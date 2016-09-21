@@ -522,13 +522,10 @@ function get_ekn_version (app_id) {
     }
 
     let ekn_version_file = dir.get_child('EKN_VERSION');
-    try {
-        let [success, contents, _] = ekn_version_file.load_contents(null);
-        let version_string = contents.toString();
-        return parseInt(version_string);
-    } catch (e) {
-        return 1;
-    }
+    let [success, contents, _] = ekn_version_file.load_contents(null);
+    let version_string = contents.toString();
+
+    return parseInt(version_string);
 }
 
 function get_domain_impl (app_id, xapian_bridge) {
