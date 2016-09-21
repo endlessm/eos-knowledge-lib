@@ -47,7 +47,7 @@
       <object class="GtkLabel" id="license-label">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">View the license in your browser</property>
+        <property name="label" translatable="yes">View the license</property>
         <style>
           <class name="WebviewTooltip__label"/>
         </style>
