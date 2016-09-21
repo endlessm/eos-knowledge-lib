@@ -515,14 +515,17 @@ const DomainV3 = new Lang.Class({
    no EKN_VERSION file is found. This function does synchronous file I/O. */
 function get_ekn_version (app_id) {
     let dir = datadir.get_data_dir(app_id);
-    let ekn_version_file = dir.get_child('EKN_VERSION');
-    try {
-        let [success, contents, _] = ekn_version_file.load_contents(null);
-        let version_string = contents.toString();
-        return parseInt(version_string);
-    } catch (e) {
-        return 1;
+
+    // Sanity check
+    if (!dir) {
+        throw new Error(Format.vprintf('Could not find data dir for app ID %s', [app_id]));
     }
+
+    let ekn_version_file = dir.get_child('EKN_VERSION');
+    let [success, contents, _] = ekn_version_file.load_contents(null);
+    let version_string = contents.toString();
+
+    return parseInt(version_string);
 }
 
 function get_domain_impl (app_id, xapian_bridge) {

@@ -2,6 +2,7 @@ const Gio = imports.gi.Gio;
 
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ContentObjectModel = imports.search.contentObjectModel;
+const Datadir = imports.search.datadir;
 const Domain = imports.search.domain;
 const Engine = imports.search.engine;
 const QueryObject = imports.search.queryObject;
@@ -117,6 +118,18 @@ function create_mock_shard_with_link_table (link_table_hash) {
 
     return mock_shard_file;
 }
+
+describe('Domain', function () {
+    describe('get_ekn_version', function () {
+        it('should throw an exception when datadir can\'t be found', function () {
+            spyOn(Datadir, 'get_data_dir').and.returnValue(undefined);
+
+            let expectedError = new Error("Could not find data dir for app ID abc");
+
+            expect(() => Domain.get_ekn_version("abc")).toThrow(expectedError);
+        });
+    });
+});
 
 describe('DomainV2', function () {
     let domain, mock_shard_file, mock_shard_record, mock_data, mock_metadata;
