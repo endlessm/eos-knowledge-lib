@@ -38,29 +38,17 @@
         color: $primary-medium-color;
     }
 
-    &.width-d &__title,
-    &.width-d &__synopsis {
-        font-size: 18.7px;
+
+    &.width-e &__title {
+        font-size: 18px;
     }
 
-    &.width-e &__title,
-    &.width-e &__synopsis {
-        font-size: 18.7px;
+    &.width-f &__title {
+        font-size: 23px;
     }
 
-    &.width-f &__title,
-    &.width-f &__synopsis {
-        font-size: 21.3px;
-    }
-
-    &.width-g &__title,
-    &.width-h &__title {
-        font-size: 29.3px;
-    }
-
-    &.width-g &__synopsis,
-    &.width-h &__synopsis {
-        font-size: 24px;
+    &.width-g &__title {
+        font-size: 35px;
     }
 
     &.width-e &__contentFrame,
