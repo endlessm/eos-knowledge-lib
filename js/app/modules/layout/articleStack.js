@@ -111,16 +111,25 @@ const ArticleStack = new Module.Class({
         });
 
         // Clear old views from the stack when its not animating.
-        this.connect('notify::transition-running', () => {
-            if (!this.transition_running) {
-                for (let child of this.get_children()) {
-                    if (child !== this.visible_child) {
-                        [child.previous_card, child.next_card, child].forEach(this.drop_submodule, this);
-                        this.remove(child);
-                    }
-                }
+        this.connect('notify::transition-running', this._clear_old_views.bind(this));
+    },
+
+    _clear_old_views: function () {
+        if (this.transition_running)
+            return;
+
+        for (let child of this.get_children()) {
+            if (child !== this.visible_child) {
+                [child.previous_card, child.next_card, child].forEach(this.drop_submodule, this);
+                this.remove(child);
             }
-        });
+        }
+    },
+
+    _set_document_card: function (document) {
+        this.visible_child = document;
+        document.content_view.grab_focus();
+        this._clear_old_views();
     },
 
     _get_transition_type: function () {
@@ -212,10 +221,8 @@ const ArticleStack = new Module.Class({
                 document_card.load_content_finish(task);
                 if (document_card.get_parent() === null)
                     return;
-                if (this.transition_type !== Gtk.StackTransitionType.NONE) {
-                    this.visible_child = document_card;
-                    document_card.content_view.grab_focus();
-                }
+                if (this.transition_type !== Gtk.StackTransitionType.NONE)
+                    this._set_document_card(document_card);
             } catch (error) {
                 logError(error);
             }
@@ -223,10 +230,8 @@ const ArticleStack = new Module.Class({
 
         // Don't wait for WebKit to signal load-committed if we don't have a
         // loading animation; instead, cut right to the unfinished page
-        if (this.transition_type === Gtk.StackTransitionType.NONE) {
-            this.visible_child = document_card;
-            document_card.content_view.grab_focus();
-        }
+        if (this.transition_type === Gtk.StackTransitionType.NONE)
+            this._set_document_card(document_card);
         if (document_card.content_view instanceof WebKit2.WebView)
             this._webview_tooltip_presenter.set_document_card(document_card);
         
