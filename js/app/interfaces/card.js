@@ -407,6 +407,7 @@ const Card = new Lang.Interface({
         let context = this.get_style_context();
         if (!context.has_class(width_class)) {
             Object.keys(WIDTH_STYLE_CLASSES)
+                .map(name => WIDTH_STYLE_CLASSES[name])
                 .filter(klass => klass !== width_class)
                 .forEach(klass => context.remove_class(klass));
             context.add_class(width_class);
@@ -414,6 +415,7 @@ const Card = new Lang.Interface({
 
         if (!context.has_class(height_class)) {
             Object.keys(HEIGHT_STYLE_CLASSES)
+                .map(name => HEIGHT_STYLE_CLASSES[name])
                 .filter(klass => klass !== height_class)
                 .forEach(klass => context.remove_class(klass));
             context.add_class(height_class);
