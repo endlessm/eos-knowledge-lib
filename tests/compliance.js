@@ -7,6 +7,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ContentObjectModel = imports.search.contentObjectModel;
+const CssClassMatcher = imports.tests.CssClassMatcher;
 const HistoryStore = imports.app.historyStore;
 const SetObjectModel = imports.search.setObjectModel;
 const Minimal = imports.tests.minimal;
@@ -18,6 +19,33 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 const Utils = imports.tests.utils;
 
 function test_card_compliance(CardClass) {
+    describe(CardClass.$gtype.name + ' implements Card correctly', function () {
+        beforeEach(function () {
+            jasmine.addMatchers(CssClassMatcher.customMatchers);
+        });
+
+        it('by having a theming class for PDF records', function () {
+            let card = new CardClass({
+                model: new ContentObjectModel.ContentObjectModel({
+                    title: 'The Joy Of Cooking, Pirated Copy',
+                    content_type: 'application/pdf',
+                }),
+            });
+            let pretty_name = CardClass.$gtype.name.slice('Ekn'.length)
+                .replace(/_/, '', 'g');
+            expect(card).toHaveCssClass('Card--pdf');
+            expect(card).toHaveCssClass(pretty_name + '--pdf');
+            card = new CardClass({
+                model: new ContentObjectModel.ContentObjectModel({
+                    title: 'Autoconf Manual',
+                    content_type: 'text/html',
+                }),
+            });
+            expect(card).not.toHaveCssClass('Card--pdf');
+            expect(card).not.toHaveCssClass(pretty_name + '--pdf');
+        });
+    });
+
     describe(CardClass.$gtype.name + ' implements the highlighting part of Card', function () {
         let model, card, synopsis_label;
 
