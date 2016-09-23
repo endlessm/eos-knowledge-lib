@@ -3,17 +3,12 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const Thumb = imports.app.modules.card.thumb;
 const ContentObjectModel = imports.search.contentObjectModel;
-const CssClassMatcher = imports.tests.CssClassMatcher;
+const Thumb = imports.app.modules.card.thumb;
 
 Gtk.init(null);
 
 describe('Card.Thumb', function () {
-    beforeEach(function () {
-        jasmine.addMatchers(CssClassMatcher.customMatchers);
-    });
-
     it('has labels that understand Pango markup', function () {
         let card = new Thumb.Thumb({
             model: new ContentObjectModel.ContentObjectModel({
