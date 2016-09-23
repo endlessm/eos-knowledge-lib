@@ -3,6 +3,7 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
+const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Thumb = imports.app.modules.card.thumb;
 
@@ -20,3 +21,5 @@ describe('Card.Thumb', function () {
         expect(Gtk.test_find_label(card, '*@@@*').use_markup).toBeTruthy();
     });
 });
+
+Compliance.test_card_compliance(Thumb.Thumb);

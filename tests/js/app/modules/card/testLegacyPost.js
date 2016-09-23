@@ -3,6 +3,7 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
+const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const LegacyPost = imports.app.modules.card.legacyPost;
 
@@ -18,3 +19,5 @@ describe('Card.LegacyPost', function () {
         expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
     });
 });
+
+Compliance.test_card_compliance(LegacyPost.LegacyPost);

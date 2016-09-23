@@ -42,4 +42,4 @@ describe('Card.LegacyPolaroid', function () {
     });
 });
 
-Compliance.test_card_highlight_string_compliance(LegacyPolaroid.LegacyPolaroid);
+Compliance.test_card_compliance(LegacyPolaroid.LegacyPolaroid);

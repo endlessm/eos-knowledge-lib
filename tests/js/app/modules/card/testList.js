@@ -24,4 +24,4 @@ describe('Card.List', function () {
     });
 });
 
-Compliance.test_card_highlight_string_compliance(List.List);
+Compliance.test_card_compliance(List.List);
