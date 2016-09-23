@@ -42,14 +42,16 @@ function get_data_dir(app_id) {
                                                           'current', 'active', 'files', 'share']);
 
         // Try the user flatpak location first
-        let flatpak_data_dir = GLib.build_filenamev([GLib.get_home_dir(), '.local', 'share',
-                                                     flatpak_relative_path]);
-        data_dirs.push(flatpak_data_dir);
+        data_dirs.push(GLib.build_filenamev([GLib.get_home_dir(), '.local', 'share',
+                                                flatpak_relative_path]));
 
         // Try the system flatpak location next
-        flatpak_data_dir = GLib.build_filenamev(['/var', 'lib',
-                                                 flatpak_relative_path]);
-        data_dirs.push(flatpak_data_dir);
+        data_dirs.push(GLib.build_filenamev(['/var', 'lib',
+                                                flatpak_relative_path]));
+
+        // Try the split layout system flatpak location next
+        data_dirs.push(GLib.build_filenamev(['/var', 'endless-extra',
+                                                flatpak_relative_path]));
     }
 
     // Fall back to the XDG data dirs otherwise
