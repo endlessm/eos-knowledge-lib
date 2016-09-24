@@ -80,17 +80,23 @@ const Application = new Knowledge.Class({
 
     vfunc_startup: function () {
         this.parent();
+        let engine = Engine.get_default();
         try {
-            Engine.get_default().update_and_preload_default_domain();
+            engine.update_and_preload_default_domain();
         } catch (e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND)) {
-            let dialog = new Gtk.MessageDialog({
-                message_type: Gtk.MessageType.ERROR,
-                text: _("Oops! No content."),
-                secondary_text: _("If you have an internet connection, we are downloading more content right now. Try again in a few minutes after this message disappears."),
-                urgency_hint: true,
-            });
-            dialog.show();
-            this._controller = {};  // i.e. don't load the real controller
+            // No content. If updates are pending then show a nice dialog
+            let subs = engine.get_default_domain().get_subscription_entries();
+            if (subs.some(entry => !entry.disable_updates)) {
+                let dialog = new Gtk.MessageDialog({
+                    message_type: Gtk.MessageType.ERROR,
+                    text: _("Oops! No content."),
+                    secondary_text: _("If you have an internet connection, we are downloading more content right now. Try again in a few minutes after this message disappears."),
+                    urgency_hint: true,
+                });
+                dialog.show();
+                this._controller = {};  // i.e. don't load the real controller
+            }
+            // if no updates pending, then proceed and let Xapian queries fail
         }
     },
 
