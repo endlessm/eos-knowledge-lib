@@ -68,6 +68,9 @@ const Application = new Knowledge.Class({
 
         this.add_main_option('data-path', 0, GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Optional argument to set the default data path', null);
+        this.add_main_option('resource-path', 0, GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
+                             'Path to a different gresource to use with the application', null);
+
     },
 
     vfunc_handle_local_options: function (options) {
@@ -80,6 +83,12 @@ const Application = new Knowledge.Class({
 
         if (has_option('data-path'))
             Engine.get_default().default_data_path = get_option_string('data-path');
+
+        if (has_option('resource-path'))
+            this.resource_path = get_option_string('resource-path');
+        let app_resource = Gio.Resource.load(this.resource_path);
+        app_resource._register();
+
         return -1;
     },
 
@@ -141,9 +150,6 @@ const Application = new Knowledge.Class({
     // To be overridden in subclass
     ensure_controller: function () {
         if (this._controller === null) {
-            let app_resource = Gio.Resource.load(this.resource_path);
-            app_resource._register();
-
             let app_json_file = Gio.File.new_for_uri(APP_JSON_URI);
             let app_json = Utils.parse_object_from_file(app_json_file);
             let overrides_css_file = Gio.File.new_for_uri(OVERRIDES_CSS_URI);
