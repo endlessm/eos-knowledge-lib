@@ -37,6 +37,10 @@ const KnowledgeSearchIface = '\
   </interface> \
 </node>';
 
+const CREDITS_URI = 'resource:///app/credits.json';
+const APP_JSON_URI = 'resource:///app/app.json';
+const OVERRIDES_CSS_URI = 'resource:///app/overrides.css';
+
 /**
  * Class: Application
  */
@@ -133,11 +137,9 @@ const Application = new Knowledge.Class({
             let app_resource = Gio.Resource.load(this.resource_path);
             app_resource._register();
 
-            let gresource_path = 'resource:///app/';
-            let resource_file = Gio.File.new_for_uri(gresource_path);
-            let app_json_file = resource_file.get_child('app.json');
+            let app_json_file = Gio.File.new_for_uri(APP_JSON_URI);
             let app_json = Utils.parse_object_from_file(app_json_file);
-            let overrides_css_file = resource_file.get_child('overrides.css');
+            let overrides_css_file = Gio.File.new_for_uri(OVERRIDES_CSS_URI);
 
             let css = '';
             if (overrides_css_file.query_exists(null)) {
@@ -145,7 +147,7 @@ const Application = new Knowledge.Class({
                 css = data.toString();
             }
 
-            this.image_attribution_file = resource_file.get_child('credits.json');
+            this.image_attribution_file = Gio.File.new_for_uri(CREDITS_URI);
 
             let factory = new ModuleFactory.ModuleFactory({
                 app_json: app_json,
