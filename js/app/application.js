@@ -71,9 +71,15 @@ const Application = new Knowledge.Class({
     },
 
     vfunc_handle_local_options: function (options) {
-        let path = options.lookup_value('data-path', null);
-        if (path)
-            Engine.get_default().default_data_path = path.deep_unpack().toString();
+        function has_option (option) {
+            return options.lookup_value(option, null) !== null;
+        }
+        function get_option_string (option) {
+            return options.lookup_value(option, null).deep_unpack().toString();
+        }
+
+        if (has_option('data-path'))
+            Engine.get_default().default_data_path = get_option_string('data-path');
         return -1;
     },
 
