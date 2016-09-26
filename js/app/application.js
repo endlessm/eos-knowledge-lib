@@ -120,7 +120,7 @@ const Application = new Knowledge.Class({
     },
 
     LoadItem: function (ekn_id, query, timestamp) {
-        this.ensure_controller();
+        this._ensure_controller();
         Dispatcher.get_default().dispatch({
             action_type: Actions.DBUS_LOAD_ITEM_CALLED,
             ekn_id: ekn_id,
@@ -130,7 +130,7 @@ const Application = new Knowledge.Class({
     },
 
     LoadQuery: function (query, timestamp) {
-        this.ensure_controller();
+        this._ensure_controller();
         Dispatcher.get_default().dispatch({
             action_type: Actions.DBUS_LOAD_QUERY_CALLED,
             query: query,
@@ -140,15 +140,14 @@ const Application = new Knowledge.Class({
 
     vfunc_activate: function () {
         this.parent();
-        this.ensure_controller();
+        this._ensure_controller();
         Dispatcher.get_default().dispatch({
             action_type: Actions.LAUNCHED_FROM_DESKTOP,
             timestamp: Gdk.CURRENT_TIME,
         });
     },
 
-    // To be overridden in subclass
-    ensure_controller: function () {
+    _ensure_controller: function () {
         if (this._controller === null) {
             let app_json_file = Gio.File.new_for_uri(APP_JSON_URI);
             let app_json = Utils.parse_object_from_file(app_json_file);
