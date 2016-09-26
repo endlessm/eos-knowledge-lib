@@ -66,6 +66,10 @@ const Application = new Knowledge.Class({
 
         Engine.get_default().default_app_id = this.application_id;
 
+        this.add_main_option('theme-name', 0, GLib.OptionFlags.NONE, GLib.OptionArg.STRING,
+                             'Use a stock theme with given name instead of any application theme overrides', null);
+        this.add_main_option('default-theme', 0, GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
+                             'Same as --theme-name=default', null);
         this.add_main_option('data-path', 0, GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Optional argument to set the default data path', null);
         this.add_main_option('resource-path', 0, GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
@@ -88,6 +92,13 @@ const Application = new Knowledge.Class({
             this.resource_path = get_option_string('resource-path');
         let app_resource = Gio.Resource.load(this.resource_path);
         app_resource._register();
+
+        if (has_option('default-theme'))
+            this._theme = 'default';
+        if (has_option('theme-name'))
+            this._theme = get_option_string('theme-name');
+        if (has_option('default-theme') && has_option('theme-name'))
+            logError(new Error('Both --default-theme and --theme-name set; using theme ' + this._theme));
 
         return -1;
     },
@@ -163,10 +174,14 @@ const Application = new Knowledge.Class({
                 app_json: app_json,
             });
 
-            this._controller = factory.create_root_module({
+            let controller_props = {
                 application: this,
-                css: css,
-            });
+            };
+            if (this._theme)
+                controller_props.theme = this._theme;
+            else
+                controller_props.css = css;
+            this._controller = factory.create_root_module(controller_props);
             this._controller.make_ready();
         }
     },
