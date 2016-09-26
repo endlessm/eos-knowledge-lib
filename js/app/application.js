@@ -62,6 +62,7 @@ const Application = new Knowledge.Class({
         this.parent(props);
         this._controller = null;
         this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
+        this.image_attribution_file = Gio.File.new_for_uri(CREDITS_URI);
 
         Engine.get_default().default_app_id = this.application_id;
 
@@ -146,8 +147,6 @@ const Application = new Knowledge.Class({
                 let [success, data] = overrides_css_file.load_contents(null);
                 css = data.toString();
             }
-
-            this.image_attribution_file = Gio.File.new_for_uri(CREDITS_URI);
 
             let factory = new ModuleFactory.ModuleFactory({
                 app_json: app_json,
