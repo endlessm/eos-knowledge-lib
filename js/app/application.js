@@ -19,6 +19,9 @@ const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
+// Initialize libraries
+EvinceDocument.init();
+
 const KnowledgeSearchIface = '\
 <node> \
   <interface name="com.endlessm.KnowledgeSearch"> \
@@ -127,9 +130,6 @@ const Application = new Knowledge.Class({
     // To be overridden in subclass
     ensure_controller: function () {
         if (this._controller === null) {
-            // Initialize libraries
-            EvinceDocument.init();
-
             let app_resource = Gio.Resource.load(this.resource_path);
             app_resource._register();
 
