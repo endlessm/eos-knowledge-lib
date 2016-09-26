@@ -70,23 +70,23 @@ const Application = new Knowledge.Class({
 
         Engine.get_default().default_app_id = this.application_id;
 
-        this.add_main_option('theme-name', 0, GLib.OptionFlags.NONE, GLib.OptionArg.STRING,
+        this.add_main_option('theme-name', 't'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.STRING,
                              'Use a stock theme with given name instead of any application theme overrides', null);
-        this.add_main_option('default-theme', 0, GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
+        this.add_main_option('default-theme', 'd'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
                              'Same as --theme-name=default', null);
-        this.add_main_option('recompile-theme-overrides', 0, GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
+        this.add_main_option('recompile-theme-overrides', 'o'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
                              'Recompile the applications overrides.css file from the source scss', null);
-        this.add_main_option('recompile-app-json', 0, GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
+        this.add_main_option('recompile-app-json', 'j'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
                              'Recompile the app json file from the source yaml', null);
-        this.add_main_option('recompile-all', 0, GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
+        this.add_main_option('recompile-all', 'r'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
                              'Same as --recompile-overrides --recompile-app-json', null);
-        this.add_main_option('data-path', 0, GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
+        this.add_main_option('data-path', 'D'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Path to the default data directory for finding content', null);
-        this.add_main_option('resource-path', 0, GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
+        this.add_main_option('resource-path', 'R'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Path to a different gresource to use with the application', null);
-        this.add_main_option('theme-overrides-path', 0, GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
+        this.add_main_option('theme-overrides-path', 'O'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Path to a overrides scss or css file to theme the application', null);
-        this.add_main_option('app-json-path', 0, GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
+        this.add_main_option('app-json-path', 'J'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Path to a yaml or json file to use as a preset', null);
     },
 
