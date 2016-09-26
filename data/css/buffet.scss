@@ -155,12 +155,6 @@ $title-alt-font: 'Lato Thin' !default;
         background-color: $separator-color;
     }
 
-    /* This used to be margin on the list cards inside, but ListCard doesn't
-     * support margin properly at the moment. */
-    .ArrangementList {
-        padding: 20px 200px;
-    }
-
     .BannerSearch {
         color: $primary-medium-color;
         padding: 20px 60px 0px 60px;
