@@ -149,12 +149,6 @@ $support-font: 'Fira Sans' !default;
 
 .search-results {
     background-color: transparent;
-
-    /* This used to be margin on the list cards inside, but ListCard doesn't
-     * support margin properly at the moment. */
-    .ArrangementList {
-        padding: 0 200px;
-    }
 }
 
 .ContentGroupNoResultsMessage {

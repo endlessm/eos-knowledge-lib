@@ -227,41 +227,44 @@ defines:
               slots:
                 contents:
                 - shortdef: 'Banner.Search(halign: center, xalign: 0.5, justify: center)'
-                - type: ContentGroup.ContentGroup
-                  styles:
-                  - search-results
+                - type: Layout.ResponsiveMargins
                   slots:
-                    selection:
-                      type: Selection.Search
-                      id: search-results
-                    arrangement:
-                      type: Arrangement.List
+                    content:
+                      type: ContentGroup.ContentGroup
+                      styles:
+                      - search-results
                       slots:
-                        card: Card.List
-                    no-results:
-                      shortdef: 'Layout.Box(orientation: vertical, valign: start)'
-                      slots:
-                        contents:
-                        - type: ContentGroup.NoResultsMessage
-                          properties:
-                            halign: fill
-                            justify: left
-                        - type: Layout.ResponsiveMargins
+                        selection:
+                          type: Selection.Search
+                          id: search-results
+                        arrangement:
+                          type: Arrangement.List
                           slots:
-                            content:
-                              type: ContentGroup.ContentGroup
-                              styles:
-                                - search-page-suggestions
+                            card: Card.List
+                        no-results:
+                          shortdef: 'Layout.Box(orientation: vertical, valign: start)'
+                          slots:
+                            contents:
+                            - type: ContentGroup.NoResultsMessage
                               properties:
-                                valign: end
+                                halign: fill
+                                justify: left
+                            - type: Layout.ResponsiveMargins
                               slots:
-                                title:
-                                  type: ContentGroup.StaticText
+                                content:
+                                  type: ContentGroup.ContentGroup
+                                  styles:
+                                    - search-page-suggestions
                                   properties:
-                                    label: !translate 'you might be interested in...'
-                                    halign: start
-                                arrangement: *suggestions-arrangement
-                                selection: Selection.SuggestedArticles
+                                    valign: end
+                                  slots:
+                                    title:
+                                      type: ContentGroup.StaticText
+                                      properties:
+                                        label: !translate 'you might be interested in...'
+                                        halign: start
+                                    arrangement: *suggestions-arrangement
+                                    selection: Selection.SuggestedArticles
 
 - &article-page
   <<: *menu
