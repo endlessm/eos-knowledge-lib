@@ -4,6 +4,10 @@
     padding: 9px 0px;
 }
 
+.home-page .ArrangementOverflow {
+    margin-top: 40px;
+}
+
 .CardTitle__title,
 .CardKnowledgeDocument__title {
     color: white;
@@ -76,8 +80,17 @@
 }
 
 .composite {
+    .BannerApp .ThemeableImage {
+        min-height: 50px;
+    }
+
+    .home-page .ArrangementOverflow {
+        margin-top: 0px;
+    }
+
     .set-page,
     .search-page {
+        padding: 0px;
         .ContentGroupContentGroup__title,
         .BannerSearch__title {
             font-size: 16.4px;  /* 14px spec * 88% */
