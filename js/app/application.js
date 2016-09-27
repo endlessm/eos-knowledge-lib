@@ -15,7 +15,6 @@ const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Knowledge = imports.app.knowledge;
 const ModuleFactory = imports.app.moduleFactory;
-const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -71,10 +70,13 @@ const Application = new Knowledge.Class({
         this.add_main_option('default-theme', 0, GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
                              'Same as --theme-name=default', null);
         this.add_main_option('data-path', 0, GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
-                             'Optional argument to set the default data path', null);
+                             'Path to the default data directory for finding content', null);
         this.add_main_option('resource-path', 0, GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Path to a different gresource to use with the application', null);
-
+        this.add_main_option('theme-overrides-path', 0, GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
+                             'Path to a overrides scss or css file to theme the application', null);
+        this.add_main_option('app-json-path', 0, GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
+                             'Path to a yaml or json file to use as a preset', null);
     },
 
     vfunc_handle_local_options: function (options) {
@@ -99,6 +101,14 @@ const Application = new Knowledge.Class({
             this._theme = get_option_string('theme-name');
         if (has_option('default-theme') && has_option('theme-name'))
             logError(new Error('Both --default-theme and --theme-name set; using theme ' + this._theme));
+
+        this._overrides_uri = OVERRIDES_CSS_URI;
+        if (has_option('theme-overrides-path'))
+            this._overrides_uri = 'file://' + get_option_string('theme-overrides-path');
+
+        this._app_json_uri = APP_JSON_URI;
+        if (has_option('app-json-path'))
+            this._app_json_uri = 'file://' + get_option_string('app-json-path');
 
         return -1;
     },
@@ -160,18 +170,8 @@ const Application = new Knowledge.Class({
 
     _ensure_controller: function () {
         if (this._controller === null) {
-            let app_json_file = Gio.File.new_for_uri(APP_JSON_URI);
-            let app_json = Utils.parse_object_from_file(app_json_file);
-            let overrides_css_file = Gio.File.new_for_uri(OVERRIDES_CSS_URI);
-
-            let css = '';
-            if (overrides_css_file.query_exists(null)) {
-                let [success, data] = overrides_css_file.load_contents(null);
-                css = data.toString();
-            }
-
             let factory = new ModuleFactory.ModuleFactory({
-                app_json: app_json,
+                app_json: JSON.parse(this._get_app_json()),
             });
 
             let controller_props = {
@@ -180,10 +180,27 @@ const Application = new Knowledge.Class({
             if (this._theme)
                 controller_props.theme = this._theme;
             else
-                controller_props.css = css;
+                controller_props.css = this._get_overrides_css();
             this._controller = factory.create_root_module(controller_props);
             this._controller.make_ready();
         }
+    },
+
+    _get_overrides_css: function () {
+        try {
+            let theme_file = Gio.File.new_for_uri(this._overrides_uri);
+            let [, contents] = theme_file.load_contents(null);
+            return contents.toString();
+        } catch (error if error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND)) {
+            // No overrides, fallback to stock theme
+            return '';
+        }
+    },
+
+    _get_app_json: function () {
+        let app_json_file = Gio.File.new_for_uri(this._app_json_uri);
+        let [, contents] = app_json_file.load_contents(null);
+        return contents.toString();
     },
 
     vfunc_shutdown: function () {
