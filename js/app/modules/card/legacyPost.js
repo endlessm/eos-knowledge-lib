@@ -1,6 +1,8 @@
 // Copyright 2016 Endless Mobile, Inc.
 
+const Endless = imports.gi.Endless;
 const Gtk = imports.gi.Gtk;
+const Pango = imports.gi.Pango;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
@@ -26,5 +28,11 @@ const LegacyPost = new Module.Class({
 
         this.set_title_label_from_model(this._title_label);
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
+
+        if (Endless.is_composite_tv_screen(null)) {
+            this._title_label.lines = 1;
+            this._title_label.wrap = false;
+            this._title_label.ellipsize = Pango.EllipsizeMode.END;
+        }
     }
 });
