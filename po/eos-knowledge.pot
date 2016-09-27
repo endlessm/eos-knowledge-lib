@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge 0.4.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2016-09-20 01:43+0000\n"
+"POT-Creation-Date: 2016-09-27 01:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,7 +49,7 @@ msgid "HOME"
 msgstr ""
 
 #: data/widgets/tooltips.ui:50
-msgid "View the license in your browser"
+msgid "View the license"
 msgstr ""
 
 #: js/app/application.js:88
