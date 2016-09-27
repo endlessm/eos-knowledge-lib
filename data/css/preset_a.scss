@@ -80,6 +80,14 @@
 }
 
 .composite {
+    .BannerApp .ThemeableImage {
+        min-height: 50px;
+    }
+
+    .home-page .ArrangementOverflow {
+        margin-top: 0px;
+    }
+
     .set-page,
     .search-page {
         .ContentGroupContentGroup__title,
