@@ -38,7 +38,12 @@ const KnowledgeSearchIface = '\
 
 const CREDITS_URI = 'resource:///app/credits.json';
 const APP_JSON_URI = 'resource:///app/app.json';
+const APP_YAML_URI = 'resource:///app/app.yaml';
 const OVERRIDES_CSS_URI = 'resource:///app/overrides.css';
+const OVERRIDES_SCSS_URI = 'resource:///app/overrides.scss';
+
+const AUTOBAHN_COMMAND = 'autobahn -I ' + Config.YAML_PRESET_DIR + ' ';
+const SCSS_COMMAND = 'scss --compass -E utf-8 --stop-on-error --sourcemap=none -I ' + Config.TOP_THEME_DIR + ' ';
 
 /**
  * Class: Application
@@ -69,6 +74,12 @@ const Application = new Knowledge.Class({
                              'Use a stock theme with given name instead of any application theme overrides', null);
         this.add_main_option('default-theme', 0, GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
                              'Same as --theme-name=default', null);
+        this.add_main_option('recompile-theme-overrides', 0, GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
+                             'Recompile the applications overrides.css file from the source scss', null);
+        this.add_main_option('recompile-app-json', 0, GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
+                             'Recompile the app json file from the source yaml', null);
+        this.add_main_option('recompile-all', 0, GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
+                             'Same as --recompile-overrides --recompile-app-json', null);
         this.add_main_option('data-path', 0, GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Path to the default data directory for finding content', null);
         this.add_main_option('resource-path', 0, GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
@@ -102,11 +113,14 @@ const Application = new Knowledge.Class({
         if (has_option('default-theme') && has_option('theme-name'))
             logError(new Error('Both --default-theme and --theme-name set; using theme ' + this._theme));
 
-        this._overrides_uri = OVERRIDES_CSS_URI;
+        let recompile_overrides = has_option('recompile-all') || has_option('recompile-theme-overrides');
+        let recompile_app_json = has_option('recompile-all') || has_option('recompile-app-json');
+
+        this._overrides_uri = recompile_overrides ? OVERRIDES_SCSS_URI : OVERRIDES_CSS_URI;
         if (has_option('theme-overrides-path'))
             this._overrides_uri = 'file://' + get_option_string('theme-overrides-path');
 
-        this._app_json_uri = APP_JSON_URI;
+        this._app_json_uri = recompile_app_json ? APP_YAML_URI : APP_JSON_URI;
         if (has_option('app-json-path'))
             this._app_json_uri = 'file://' + get_option_string('app-json-path');
 
@@ -187,20 +201,41 @@ const Application = new Knowledge.Class({
     },
 
     _get_overrides_css: function () {
+        let contents, theme_file;
         try {
-            let theme_file = Gio.File.new_for_uri(this._overrides_uri);
-            let [, contents] = theme_file.load_contents(null);
-            return contents.toString();
+            theme_file = Gio.File.new_for_uri(this._overrides_uri);
+            [, contents] = theme_file.load_contents(null);
+            contents = contents.toString();
         } catch (error if error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND)) {
             // No overrides, fallback to stock theme
             return '';
         }
+        if (!this._overrides_uri.endsWith('.scss'))
+            return contents;
+        // This uri might be a gresource, and the scss command cannot read
+        // from a gresource, so save the file contents to a tmp file.
+        [theme_file,] = Gio.File.new_tmp(null);
+        theme_file.replace_contents(contents, null, false, 0, null);
+        let [, stdout, stderr, status] = GLib.spawn_command_line_sync(SCSS_COMMAND + theme_file.get_path());
+        if (status !== 0)
+            throw new Error(stderr.toString());
+        return stdout.toString();
     },
 
     _get_app_json: function () {
         let app_json_file = Gio.File.new_for_uri(this._app_json_uri);
         let [, contents] = app_json_file.load_contents(null);
-        return contents.toString();
+        contents = contents.toString();
+        if (!this._app_json_uri.endsWith('.yaml'))
+            return contents;
+        // This uri might be a gresource, and the autobahn command cannot read
+        // from a gresource, so save the file contents to a tmp file.
+        [app_json_file,] = Gio.File.new_tmp(null);
+        app_json_file.replace_contents(contents, null, false, 0, null);
+        let [, stdout, stderr, status] = GLib.spawn_command_line_sync(AUTOBAHN_COMMAND + app_json_file.get_path());
+        if (status !== 0)
+            throw new Error(stderr.toString());
+        return stdout.toString();
     },
 
     vfunc_shutdown: function () {
