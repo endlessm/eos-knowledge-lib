@@ -202,23 +202,23 @@ defines:
         lazy-load: search-results
       slots:
         content:
-          type: ContentGroup.ContentGroup
-          styles:
-          - search-results
-          properties:
-            halign: fill
+          type: Layout.ResponsiveMargins
           slots:
-            arrangement:
-              type: Arrangement.List
+            content:
+              type: ContentGroup.ContentGroup
+              styles:
+              - search-results
+              properties:
+                halign: fill
               slots:
-                card: Card.List
-            selection:
-              type: Selection.Search
-              id: search-results
-            no-results:
-              shortdef: Layout.Scrolling
-              slots:
-                content:
+                arrangement:
+                  type: Arrangement.List
+                  slots:
+                    card: Card.List
+                selection:
+                  type: Selection.Search
+                  id: search-results
+                no-results:
                   shortdef: 'Layout.Box(orientation: vertical)'
                   slots:
                     contents:
