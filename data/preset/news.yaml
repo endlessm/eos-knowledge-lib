@@ -33,6 +33,17 @@ defines:
                   slots:
                     filter: Filter.Featured
 
+- &see-more-trigger
+  shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
+  slots:
+    contents:
+    - type: ContentGroup.DynamicTitle
+      properties:
+        format-string: !translate "see more from %s"
+        ellipsize: end
+        hexpand: true
+    - shortdef: 'Decoration.ThemeableImage(valign: end, halign: end)'
+
 - &suggestions-arrangement
   shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
   slots:
@@ -89,15 +100,7 @@ defines:
                                   type: ContentGroup.DynamicTitle
                                   properties:
                                     halign: start
-                                trigger:
-                                  shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
-                                  slots:
-                                    contents:
-                                    - shortdef: 'ContentGroup.DynamicTitle(format-string: !translate "see more from %s")'
-                                    - type: Decoration.ThemeableImage
-                                      properties:
-                                        valign: end
-                                        halign: end
+                                trigger: *see-more-trigger
                                 arrangement:
                                   shortdef: 'Arrangement.Thirties(max-rows: 1)'
                                   slots:
@@ -155,15 +158,7 @@ defines:
                                       type: ContentGroup.DynamicTitle
                                       properties:
                                         halign: start
-                                    trigger:
-                                      shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
-                                      slots:
-                                        contents:
-                                        - shortdef: 'ContentGroup.DynamicTitle(format-string: !translate "see more from %s")'
-                                        - type: Decoration.ThemeableImage
-                                          properties:
-                                            valign: end
-                                            halign: end
+                                    trigger: *see-more-trigger
                                     arrangement:
                                       shortdef: 'Arrangement.Thirties(max-rows: 1)'
                                       slots:
