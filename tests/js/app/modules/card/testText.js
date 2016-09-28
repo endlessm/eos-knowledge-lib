@@ -5,6 +5,7 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const Card = imports.app.interfaces.card;
+const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const Text = imports.app.modules.card.text;
@@ -79,3 +80,5 @@ describe('Card.Text', function () {
         });
     });
 });
+
+Compliance.test_card_compliance(Text.Text);

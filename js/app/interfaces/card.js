@@ -117,6 +117,9 @@ const MaxSize = {
  *
  * Requires:
  *   Gtk.Widget
+ *
+ * CSS classes:
+ *   Card--pdf, <class>--pdf - Added when the card is displaying a PDF record
  */
 const Card = new Lang.Interface({
     Name: 'Card',
@@ -171,6 +174,16 @@ const Card = new Lang.Interface({
         'sequence': GObject.ParamSpec.uint('sequence', 'Sequence', 'Sequence',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, Object.keys(Sequence).length, Sequence.NONE),
+    },
+
+    _interface_init: function () {
+        // null check on this.model: we don't really support null but it is
+        // often convenient for testing.
+        if (this.model && this.model.content_type === 'application/pdf') {
+            let context = this.get_style_context();
+            context.add_class(Utils.get_modifier_style_class('Card', 'pdf'));
+            context.add_class(Utils.get_modifier_style_class(this.constructor, 'pdf'));
+        }
     },
 
     set css (v) {

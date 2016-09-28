@@ -6,15 +6,10 @@ Utils.register_gresource();
 const LegacyPolaroid = imports.app.modules.card.legacyPolaroid;
 const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
-const CssClassMatcher = imports.tests.CssClassMatcher;
 
 Gtk.init(null);
 
 describe('Card.LegacyPolaroid', function () {
-    beforeEach(function () {
-        jasmine.addMatchers(CssClassMatcher.customMatchers);
-    });
-
     it('has a fixed size', function () {
         let card1 = new LegacyPolaroid.LegacyPolaroid({
             model: new ContentObjectModel.ContentObjectModel({
@@ -47,4 +42,4 @@ describe('Card.LegacyPolaroid', function () {
     });
 });
 
-Compliance.test_card_highlight_string_compliance(LegacyPolaroid.LegacyPolaroid);
+Compliance.test_card_compliance(LegacyPolaroid.LegacyPolaroid);

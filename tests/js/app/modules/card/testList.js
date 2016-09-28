@@ -5,16 +5,11 @@ Utils.register_gresource();
 
 const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
-const CssClassMatcher = imports.tests.CssClassMatcher;
 const List = imports.app.modules.card.list;
 
 Gtk.init(null);
 
 describe('Card.List', function () {
-    beforeEach(function () {
-        jasmine.addMatchers(CssClassMatcher.customMatchers);
-    });
-
     it('has labels that understand Pango markup', function () {
         let card = new List.List({
             model: new ContentObjectModel.ContentObjectModel({
@@ -29,4 +24,4 @@ describe('Card.List', function () {
     });
 });
 
-Compliance.test_card_highlight_string_compliance(List.List);
+Compliance.test_card_compliance(List.List);

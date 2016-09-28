@@ -3,6 +3,7 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
+const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const Deck = imports.app.modules.card.deck;
@@ -31,3 +32,5 @@ describe('Card.Deck', function () {
         expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
     });
 });
+
+Compliance.test_card_compliance(Deck.Deck);

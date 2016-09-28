@@ -1,12 +1,13 @@
 // Copyright 2016 Endless Mobile, Inc.
 
 /* exported test_arrangement_compliance, test_arrangement_fade_in_compliance,
-test_card_container_fade_in_compliance, test_card_highlight_string_compliance */
+test_card_compliance, test_card_container_fade_in_compliance */
 
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ContentObjectModel = imports.search.contentObjectModel;
+const CssClassMatcher = imports.tests.CssClassMatcher;
 const HistoryStore = imports.app.historyStore;
 const SetObjectModel = imports.search.setObjectModel;
 const Minimal = imports.tests.minimal;
@@ -17,9 +18,36 @@ const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 const Utils = imports.tests.utils;
 
-function test_card_highlight_string_compliance(CardClass) {
-    describe(CardClass.$gtype.name + ' implements the optional highlighting part of Card', function () {
-        let model, card;
+function test_card_compliance(CardClass) {
+    describe(CardClass.$gtype.name + ' implements Card correctly', function () {
+        beforeEach(function () {
+            jasmine.addMatchers(CssClassMatcher.customMatchers);
+        });
+
+        it('by having a theming class for PDF records', function () {
+            let card = new CardClass({
+                model: new ContentObjectModel.ContentObjectModel({
+                    title: 'The Joy Of Cooking, Pirated Copy',
+                    content_type: 'application/pdf',
+                }),
+            });
+            let pretty_name = CardClass.$gtype.name.slice('Ekn'.length)
+                .replace(/_/, '', 'g');
+            expect(card).toHaveCssClass('Card--pdf');
+            expect(card).toHaveCssClass(pretty_name + '--pdf');
+            card = new CardClass({
+                model: new ContentObjectModel.ContentObjectModel({
+                    title: 'Autoconf Manual',
+                    content_type: 'text/html',
+                }),
+            });
+            expect(card).not.toHaveCssClass('Card--pdf');
+            expect(card).not.toHaveCssClass(pretty_name + '--pdf');
+        });
+    });
+
+    describe(CardClass.$gtype.name + ' implements the highlighting part of Card', function () {
+        let model, card, synopsis_label;
 
         beforeEach(function () {
             model = new ContentObjectModel.ContentObjectModel({
@@ -30,6 +58,7 @@ function test_card_highlight_string_compliance(CardClass) {
                 model: model,
                 highlight_string: 'hippo',
             });
+            synopsis_label = Gtk.test_find_label(card, '*@@@*');
         });
 
         // Sadly, only works on ASCII text because Pango.Attribute indices are
@@ -51,14 +80,16 @@ function test_card_highlight_string_compliance(CardClass) {
         it('by highlighting a search string when constructed', function () {
             expect(get_spans(Gtk.test_find_label(card, '*!!!*'))
                 .every(elem => elem === 'hippo')).toBeTruthy();
-            expect(get_spans(Gtk.test_find_label(card, '*@@@*'))
-                .every(elem => elem === 'hippo')).toBeTruthy();
+            if (synopsis_label)
+                expect(get_spans(synopsis_label)
+                    .every(elem => elem === 'hippo')).toBeTruthy();
         });
 
         it('by de-highlighting a search string', function () {
             card.highlight_string = '';
             expect(get_spans(Gtk.test_find_label(card, '*!!!*'))).toEqual([]);
-            expect(get_spans(Gtk.test_find_label(card, '*@@@*'))).toEqual([]);
+            if (synopsis_label)
+                expect(get_spans(synopsis_label)).toEqual([]);
         });
 
         it('by highlighting a search string', function () {
@@ -66,8 +97,9 @@ function test_card_highlight_string_compliance(CardClass) {
             card.highlight_string = 'hippo';
             expect(get_spans(Gtk.test_find_label(card, '*!!!*'))
                 .every(elem => elem === 'hippo')).toBeTruthy();
-            expect(get_spans(Gtk.test_find_label(card, '*@@@*'))
-                .every(elem => elem === 'hippo')).toBeTruthy();
+            if (synopsis_label)
+                expect(get_spans(synopsis_label)
+                    .every(elem => elem === 'hippo')).toBeTruthy();
         });
     });
 }
