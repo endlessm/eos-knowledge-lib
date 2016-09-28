@@ -8,6 +8,17 @@ defines:
 - &set-card
   type: Card.Deck
 
+- &see-more-trigger
+  shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
+  slots:
+    contents:
+    - type: ContentGroup.DynamicTitle
+      properties:
+        format-string: !translate "See more from %s"
+        ellipsize: end
+        hexpand: true
+    - shortdef: 'Decoration.ThemeableImage(valign: end, halign: end)'
+
 - &article-suggestions
   type: ContentGroup.ContentGroup
   styles:
@@ -113,15 +124,7 @@ defines:
                         card:
                           type: Card.ContentGroup
                           slots:
-                            trigger:
-                              shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
-                              slots:
-                                contents:
-                                - shortdef: 'ContentGroup.DynamicTitle(format-string: !translate "See more from %s")'
-                                - type: Decoration.ThemeableImage
-                                  properties:
-                                    valign: end
-                                    halign: end
+                            trigger: *see-more-trigger
                             title:
                               type: ContentGroup.DynamicTitle
                               properties:
@@ -173,15 +176,7 @@ defines:
                               properties:
                                 format-string: '%s'
                                 halign: start
-                            trigger:
-                              shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
-                              slots:
-                                contents:
-                                - shortdef: 'ContentGroup.DynamicTitle(format-string: !translate "See more from %s")'
-                                - type: Decoration.ThemeableImage
-                                  properties:
-                                    valign: end
-                                    halign: end
+                            trigger: *see-more-trigger
                             selection:
                               type: Selection.ArticlesForSetCrossSection
                     selection:
