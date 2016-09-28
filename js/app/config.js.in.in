@@ -1,6 +1,7 @@
 // Private module for configure-time constants
 const GETTEXT_PACKAGE = '@GETTEXT_PACKAGE@';
 const inspector_enabled = @inspector@;
+const metrics_enabled = @metrics@;
 const mathjax_path = '@MATHJAXDIR@';
 // Substituted at make time rather than configure time
 const PKGDATADIR = '%pkgdatadir%';
