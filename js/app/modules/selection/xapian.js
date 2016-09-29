@@ -17,6 +17,7 @@ const Xapian = new Module.Class({
         this._get_more = null;
         this._query_index = 0;
         this._error_state = false;
+        this._exception = null;
 
         this.parent(props);
     },
@@ -76,6 +77,7 @@ const Xapian = new Module.Class({
                 logError(e, 'Failed to load content from engine');
                 results = [];
                 info = { more_results: null };
+                this._exception = e;
                 if (!this._error_state) {
                     this._error_state = true;
                     this.notify('in-error-state');
@@ -109,6 +111,11 @@ const Xapian = new Module.Class({
         this._query_index = 0;
         this._can_load_more = true;
         this._error_state = false;
+        this._exception = null;
         this.parent();
+    },
+
+    get_error: function () {
+        return this._exception;
     },
 });

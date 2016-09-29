@@ -139,4 +139,12 @@ const Selection = new Module.Class({
             });
         }
     },
+
+    /**
+     * Method: get_error
+     * Retrieve exception object from last encountered error
+     *
+     * This will return null if the selection is not in an error state.
+     */
+    get_error: Lang.UNIMPLEMENTED,
 });

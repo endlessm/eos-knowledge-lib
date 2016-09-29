@@ -233,6 +233,14 @@ const Domain = new Lang.Class({
     check_for_updates: function () {
         // By default, do nothing.
     },
+
+    /**
+     * Method: get_subscription_entries
+     * Return the entries from
+     */
+    get_subscription_entries: function () {
+        return [];
+    },
 });
 
 // XXX Note that DomainV2 apps are no longer going to be generated in
@@ -306,13 +314,10 @@ const DomainV3 = new Lang.Class({
 
     _get_subscription_entry: function () {
         if (this._subscription_entry === undefined) {
-            let file = this._get_content_dir().get_child('subscriptions.json');
-            let [success, data] = file.load_contents(null);
-            let subscriptions = JSON.parse(data);
+            let entries = this.get_subscription_entries();
 
             // XXX: For now, we only support the first subscription.
-            let subscription_entry = subscriptions.subscriptions[0];
-            this._subscription_entry = subscription_entry;
+            this._subscription_entry = entries[0];
         }
 
         return this._subscription_entry;
@@ -320,6 +325,13 @@ const DomainV3 = new Lang.Class({
 
     _get_subscription_id: function () {
         return this._get_subscription_entry().id;
+    },
+
+    get_subscription_entries: function () {
+        let file = this._get_content_dir().get_child('subscriptions.json');
+        let [, data] = file.load_contents(null);
+        let subscriptions = JSON.parse(data);
+        return subscriptions.subscriptions.slice();
     },
 
     _get_subscription_dir: function () {

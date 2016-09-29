@@ -161,6 +161,10 @@ const MinimalSelection = new Module.Class({
         this.in_error_state = true;
         this.notify('in-error-state');
     },
+
+    get_error: function () {
+        return new Error('this string should show up in the backtrace');
+    },
 });
 
 const MinimalOrder = new Module.Class({

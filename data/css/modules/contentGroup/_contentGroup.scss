@@ -64,6 +64,36 @@
         font-weight: bold;
         padding-bottom: 12px;
     }
+
+    &__logButton {
+        padding: 10px;
+        border: 1px solid $accent-dark-color;
+        border-radius: 5px;
+
+        transition: all 250ms ease;
+        background-image: linear-gradient(to bottom,
+                                          $accent-dark-color,
+                                          darken($accent-light-color, 10%));
+
+        color: white;
+        text-shadow: 0 1px transparentize(black, 0.4);
+        -gtk-icon-shadow: 0 1px transparentize(black, 0.4);
+
+        &:hover {
+            background-image: linear-gradient(to bottom,
+                                              lighten($accent-light-color, 5%),
+                                              darken($accent-light-color, 5%));
+        }
+
+        &:active {
+            background-image: linear-gradient(to bottom,
+                                              darken($accent-dark-color, 20%),
+                                              darken($accent-dark-color, 10%));
+            transition-duration: 50ms;
+            text-shadow: none;
+            -gtk-icon-shadow: none;
+        }
+    }
 }
 
 .search-results {
