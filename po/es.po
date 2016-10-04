@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-09-20 01:43+0000\n"
-"PO-Revision-Date: 2016-09-20 01:44+0000\n"
+"POT-Creation-Date: 2016-09-27 01:47+0000\n"
+"PO-Revision-Date: 2016-09-27 01:47+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -55,8 +55,8 @@ msgid "HOME"
 msgstr "INICIO"
 
 #: data/widgets/tooltips.ui:50
-msgid "View the license in your browser"
-msgstr "Ve la licencia en tu navegador"
+msgid "View the license"
+msgstr ""
 
 #: js/app/application.js:88
 msgid "Oops! No content."
