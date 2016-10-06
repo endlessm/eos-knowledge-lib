@@ -7,3 +7,5 @@ const mathjax_path = '@MATHJAXDIR@';
 const PKGDATADIR = '%pkgdatadir%';
 const DATADIR = '%datadir%';
 const WEB_EXTENSION_DIR = '%webextensiondir%';
+const YAML_PRESET_DIR = '%yamlpresetdir%';
+const TOP_THEME_DIR = '%themetopdir%';

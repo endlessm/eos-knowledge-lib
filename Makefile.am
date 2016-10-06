@@ -323,6 +323,8 @@ subst = $(SED) \
 	-e 's,%pkglibdir%,$(pkglibdir),g' \
 	-e 's,%typelibdir%,$(typelibdir),g' \
 	-e 's,%webextensiondir%,$(webextensiondir),g' \
+	-e 's,%yamlpresetdir%,$(yamlpresetdir),g' \
+	-e 's,%themetopdir%,$(themetopdir),g' \
 	$(NULL)
 
 subst_files = \
