@@ -3,6 +3,7 @@
     <gresource prefix="/app/assets">
         <file>titleImage</file>
         <file>backgroundHome</file>
+        <file>logo</file>
     </gresource>
     <gresource prefix="/com/endlessm/thrones">
         <file compressed="true">joffrey.jpg</file>
