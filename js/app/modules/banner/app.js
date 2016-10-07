@@ -2,11 +2,15 @@
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
+const Gio = imports.gi.Gio;
 
 const Module = imports.app.interfaces.module;
-// Make sure included for glade template
+const DynamicLogo = imports.app.widgets.dynamicLogo;
 const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
+
+const IMAGE_URI = 'resource:///app/assets/logo';
+const COMPAT_IMAGE_URI = 'resource:///app/assets/titleImage';
 
 /**
  * Class: App
@@ -41,6 +45,19 @@ const App = new Module.Class({
         // forced not to because logo child has expand=true set.
         props.expand = props.expand || false;
         this.parent(props);
+
+        let file = Gio.File.new_for_uri(COMPAT_IMAGE_URI);
+        if (file.query_exists(null)) {
+            this._image = new ThemeableImage.ThemeableImage({image_uri: COMPAT_IMAGE_URI});
+            this._image.get_style_context().add_class('BannerApp__image');
+        } else {
+            this._image = new DynamicLogo.DynamicLogo({image_uri: IMAGE_URI});
+        }
+        this._image.visible = true;
+        this._image.can_focus = false;
+        this._image.valign = Gtk.Align.END;
+        this._image.expand = true;
+        this.attach(this._image, 0, 0, 1, 1);
 
         let subtitle = '';
         let app_info = Utils.get_desktop_app_info();

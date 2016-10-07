@@ -59,6 +59,13 @@ $accent-light-color: #044a80 !default;
         min-width: 345px;
         min-height: 92px;
     }
+
+    .search-page & .DynamicLogo,
+    .article-page & .DynamicLogo {
+        -EknDynamicLogo-sizing: "size-min";
+        min-width: 345px;
+        min-height: 92px;
+    }
 }
 
 .NavigationSearchBox {
