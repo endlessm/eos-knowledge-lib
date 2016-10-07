@@ -75,8 +75,7 @@ We provide SCSS modules that your SCSS code can import; see `data/css/`.
 
 The **content** is in the form of a shard file; see [eos-shard] for more information.
 We are working on tools that allow you to build shard files easily on your own machine.
-For now, we include a testing tool called Moltres that will run your app with sample content.
-To try it out, run it on one of the app description YAML files in `data/preset/`: e.g. `moltres data/preset/buffet.yaml`.
+For now, you can include the --dummy-content option when running an app and it will load with sample content.
 
 Finding your way around
 -----------------------
@@ -85,7 +84,6 @@ Here's an overview of what's in each directory:
 - `data/`
   - `css/` - themes and parts of themes for UI modules
   - `images/` - miscellaneous UI assets
-  - `moltres/` - sample assets for the Moltres app runner tool
   - `preset/` - pre-built YAML UI description files
   - `templates/` - code for rendering HTML content; more or less deprecated
   - `widgets/` - GtkBuilder XML files for UI modules in `js/app/modules/`

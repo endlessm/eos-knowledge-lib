@@ -15,6 +15,7 @@ const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Knowledge = imports.app.knowledge;
 const ModuleFactory = imports.app.moduleFactory;
+const MoltresEngine = imports.search.moltresEngine;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -88,6 +89,8 @@ const Application = new Knowledge.Class({
                              'Path to a overrides scss or css file to theme the application', null);
         this.add_main_option('app-json-path', 'J'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Path to a yaml or json file to use as a preset', null);
+        this.add_main_option('dummy-content', 'C'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
+                             'Whether to use dummy content from Moltres', null);
     },
 
     vfunc_handle_local_options: function (options) {
@@ -119,10 +122,12 @@ const Application = new Knowledge.Class({
         this._overrides_uri = recompile_overrides ? OVERRIDES_SCSS_URI : OVERRIDES_CSS_URI;
         if (has_option('theme-overrides-path'))
             this._overrides_uri = 'file://' + get_option_string('theme-overrides-path');
-
         this._app_json_uri = recompile_app_json ? APP_YAML_URI : APP_JSON_URI;
         if (has_option('app-json-path'))
             this._app_json_uri = 'file://' + get_option_string('app-json-path');
+
+        if (has_option('dummy-content'))
+            MoltresEngine.override_engine();
 
         return -1;
     },
@@ -138,9 +143,11 @@ const Application = new Knowledge.Class({
         this._knowledge_search_impl.unexport_from_connection(connection);
     },
 
-    vfunc_startup: function () {
-        this.parent();
+    _check_for_content: function () {
         let engine = Engine.get_default();
+        if (engine instanceof MoltresEngine.MoltresEngine)
+            return;
+
         try {
             engine.update_and_preload_default_domain();
         } catch (e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND)) {
@@ -158,6 +165,11 @@ const Application = new Knowledge.Class({
             }
             // if no updates pending, then proceed and let Xapian queries fail
         }
+    },
+
+    vfunc_startup: function () {
+        this.parent();
+        this._check_for_content();
     },
 
     LoadItem: function (ekn_id, query, timestamp) {

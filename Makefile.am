@@ -205,9 +205,6 @@ EXTRA_DIST += $(gresources:.gresource=.gresource.xml) $(gresource_depedencies)
 eos-knowledge.gresource.deps: $(scss_targets) $(subst_files)
 gresources += eos-knowledge.gresource
 
-data/moltres/moltres.gresource.deps:
-gresources += data/moltres/moltres.gresource
-
 pkgdata_DATA += $(gresources)
 
 # # # MAIN LIBRARY # # #
@@ -333,7 +330,6 @@ subst_files = \
 	js/search/config.js \
 	eminem \
 	kermit \
-	moltres \
 	picard \
 	$(NULL)
 
@@ -349,7 +345,6 @@ bin_SCRIPTS += \
 	autobahn \
 	eminem \
 	kermit \
-	moltres \
 	picard \
 	$(NULL)
 
