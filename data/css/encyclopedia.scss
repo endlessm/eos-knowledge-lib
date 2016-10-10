@@ -14,6 +14,7 @@ $accent-light-color: #044a80 !default;
 @import 'typography';
 
 @import 'modules/banner/app';
+@import 'modules/banner/dynamic';
 @import 'modules/banner/search';
 
 @import 'modules/card/knowledgeDocument';
@@ -56,6 +57,15 @@ $accent-light-color: #044a80 !default;
     .search-page & .ThemeableImage,
     .article-page & .ThemeableImage {
         -EknThemeableImage-sizing: "size-min";
+        min-width: 345px;
+        min-height: 92px;
+    }
+}
+
+.BannerDynamic {
+    .search-page &__logo,
+    .article-page &__logo, {
+        -EknDynamicLogo-sizing: "size-min";
         min-width: 345px;
         min-height: 92px;
     }

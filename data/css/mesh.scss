@@ -25,6 +25,7 @@ $display-font-composite: 'Roboto' !default;
 @import 'typography';
 
 @import 'modules/banner/app';
+@import 'modules/banner/dynamic';
 @import 'modules/banner/search';
 
 @import 'modules/card/base';
