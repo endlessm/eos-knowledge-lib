@@ -75,6 +75,7 @@ scss_theme_arrangement_partials = \
 	$(NULL)
 scss_theme_banner_partials = \
 	$(srcdir)/data/css/modules/banner/_app.scss \
+	$(srcdir)/data/css/modules/banner/_dynamic.scss \
 	$(srcdir)/data/css/modules/banner/_context.scss \
 	$(srcdir)/data/css/modules/banner/_search.scss \
 	$(srcdir)/data/css/modules/banner/_set.scss \
@@ -431,6 +432,7 @@ javascript_tests = \
 	tests/js/app/modules/arrangement/testWindshield.js \
 	tests/js/app/modules/banner/testApp.js \
 	tests/js/app/modules/banner/testContext.js \
+	tests/js/app/modules/banner/testDynamic.js \
 	tests/js/app/modules/banner/testSearch.js \
 	tests/js/app/modules/banner/testSet.js \
 	tests/js/app/modules/card/testDeck.js \

@@ -1,0 +1,22 @@
+.BannerDynamic {
+    font-size: 1.19em; /* 19px / 12px/em * 72/96 */
+
+    &__subtitle {
+        font-family: $support-font;
+        color: $primary-light-color;
+        letter-spacing: 0.74px;
+        margin-top: 70px;
+    }
+
+    &__logo {
+        -EknDynamicLogo-sizing: "auto";
+        -EknDynamicLogo-text-transform: "none";
+        font-family: $logo-font;
+        font-weight: bold;
+        color: white;
+    }
+
+    .composite & {
+        font-size: 22.3px;  /* 19px spec * 88% */
+    }
+}
