@@ -170,6 +170,7 @@
     <file>js/app/utils.js</file>
     <file>js/app/warehouse.js</file>
     <file>js/app/webviewTooltipPresenter.js</file>
+    <file>js/app/widgets/dynamicLogo.js</file>
     <file>js/app/widgets/eknWebview.js</file>
     <file>js/app/widgets/formattableLabel.js</file>
     <file>js/app/widgets/imageCoverFrame.js</file>
