@@ -225,7 +225,7 @@ const Application = new Knowledge.Class({
         try {
             [, contents] = theme_file.load_contents(null);
             contents = contents.toString();
-        } catch (error if error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND)) {
+        } catch (error if !this._overrides_path && error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND)) {
             // No overrides, fallback to stock theme
             return '';
         }
