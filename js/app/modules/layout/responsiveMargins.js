@@ -124,6 +124,8 @@ const ResponsiveMargins = new Module.Class({
         let margins = this._get_responsive_margins();
         let [min_size, nat_size] = this.get_preferred_size();
         let base_min_width = min_size.width - margins.tiny.left - margins.tiny.right;
+        if (this.get_request_mode() === Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH)
+            min_size.height = nat_size.height;
         let base_min_height = min_size.height - margins.tiny.top - margins.tiny.bottom;
         let margin = margins.tiny;
         ['small', 'medium', 'large', 'xlarge'].forEach((modifier) => {
