@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-09-27 01:47+0000\n"
-"PO-Revision-Date: 2016-09-27 01:47+0000\n"
+"POT-Creation-Date: 2016-10-04 01:55+0000\n"
+"PO-Revision-Date: 2016-10-04 01:55+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -28,17 +28,27 @@ msgstr ""
 msgid "PDF"
 msgstr "PDF"
 
-#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:186
+#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:195
 msgid "Next Article"
 msgstr "Próximo Artículo"
 
-#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:169
+#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:178
 msgid "Previous Article"
 msgstr "Artículo Previo"
 
-#: data/widgets/contentGroup/contentGroup.ui:20
+#: data/widgets/contentGroup/contentGroup.ui:25
 msgid "Oops! There was an error."
 msgstr "¡Lo sentimos! Hubo un error."
+
+#: data/widgets/contentGroup/contentGroup.ui:39
+msgid "Download support info"
+msgstr ""
+
+#: data/widgets/contentGroup/contentGroup.ui:43
+msgid ""
+"Click here to download a file with information that will help us track down "
+"the problem."
+msgstr ""
 
 #: data/widgets/contentGroup/noResultsMessage.ui:50
 msgid ""
@@ -58,11 +68,11 @@ msgstr "INICIO"
 msgid "View the license"
 msgstr ""
 
-#: js/app/application.js:88
+#: js/app/application.js:92
 msgid "Oops! No content."
 msgstr ""
 
-#: js/app/application.js:89
+#: js/app/application.js:93
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -183,10 +193,10 @@ msgstr "Ver más resultados"
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:88
+#: js/app/utils.js:99
 msgid "by {author}"
 msgstr "por {author}"
 
-#: js/app/utils.js:88
+#: js/app/utils.js:99
 msgid "and"
 msgstr "y"
