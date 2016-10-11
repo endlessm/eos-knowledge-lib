@@ -1,7 +1,5 @@
 usr/bin/autobahn
-usr/bin/moltres
 usr/bin/picard
 usr/lib/pkgconfig/*
-usr/share/eos-knowledge/moltres.gresource
 usr/share/eos-knowledge/theme/*
 usr/share/eos-knowledge/preset/*
