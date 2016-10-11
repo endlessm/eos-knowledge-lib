@@ -10,6 +10,7 @@ const USAGE = [
     '       kermit list <shard path>',
     '       kermit dump <shard path> <ekn id> <data|metadata|another blob name>',
     '       kermit query <app_id> "<querystring>"',
+    '       kermit stat <shard path>',
     '',
     'kermit is a shard inspection utility for Knowledge Apps.',
 ].join('\n');
@@ -32,6 +33,8 @@ function main () {
         dump(argv[0], argv[1], argv[2]);
     else if (action === 'query' && argv.length === 2)
         query(argv[0], argv[1]);
+    else if (action === 'stat' && argv.length === 1)
+        stat(argv[0]);
     else
         fail_with_message(USAGE);
 }
@@ -71,6 +74,112 @@ function grep (path, pattern) {
         if (i%1000 === 0)
             imports.system.gc();
     });
+}
+
+function fmt_size (size_bytes) {
+    if (size_bytes < 1e3) {
+        return size_bytes.toPrecision(4) + ' Bytes';
+    } else if (size_bytes >= 1e3 && size_bytes < 1e6) {
+        let size_kbytes = size_bytes / 1e3;
+        return size_kbytes.toPrecision(4) + ' KB';
+    } else {
+        let size_mbytes = size_bytes / 1e6;
+        return size_mbytes.toPrecision(4) + ' MB';
+    }
+}
+
+function stat (path) {
+    let shard = get_shard_for_path(path);
+    let records = shard.list_records();
+
+    /**
+     * To calculate the sum of all spaces between blobs (i.e. wasted space),
+     * we only keep track of the first and last offsets (along with the total
+     * blob length), effectively squashing all blobs but the last one together.
+     * In general, this shard
+     *
+     *   [ block 1 ]      // offset 1
+     *   empty space 1
+     *   [ block 2 ]      // offset 2
+     *   empty space 2
+     *   ...
+     *   [ block N-1 ]    // offset N-1
+     *   empty space N-1
+     *   [ block N ]      // offset N
+     *
+     * would become
+     *
+     *   [ block 1 ]      // offset 1
+     *   [ block 2 ]
+     *   ...
+     *   [ block N-1 ]
+     *   empty space 1
+     *   empty space 2
+     *   ...
+     *   empty space N-1
+     *   [ block N ]      // offset N
+     *
+     * Then we just subtract the megablock's offset and length from the last
+     * block's offset to get the total empty space.
+     */
+    let first_offset = Infinity, last_offset = 0;
+    let length_sum = 0, last_length = 0;
+    let content_type_sizes = {};
+    function tallyBlob (blob) {
+        let offset = blob.get_offset();
+        let length = blob.get_packed_size();
+        let content_type = blob.get_content_type();
+
+        if (offset > last_offset) {
+            last_offset = offset;
+            last_length = length;
+        }
+        if (offset < first_offset) {
+            first_offset = offset;
+        }
+
+        length_sum += length;
+
+        if (!content_type_sizes.hasOwnProperty(content_type)) {
+            content_type_sizes[content_type] = [];
+        }
+        content_type_sizes[content_type].push(length);
+    }
+
+    records.forEach(function (record, i) {
+        let data = record.data;
+        let metadata = record.metadata;
+
+        if (data) {
+            tallyBlob(data);
+        }
+        if (metadata) {
+            tallyBlob(metadata);
+        }
+
+        // Unfortunately, Spidermonkey isn't able to effectively track the
+        // memory footprint of native objects like GBytes very well, so we
+        // have to nudge it in the right direction every now and then.
+        if (i%1000 === 0)
+            imports.system.gc();
+    });
+
+    let empty_bytes = last_offset - (first_offset + length_sum - last_length);
+    print('Wasted space between blobs:', fmt_size(empty_bytes));
+
+    for (let content_type in content_type_sizes) {
+        let max_bytes = 0, avg_bytes = 0;
+        for (let size_bytes of content_type_sizes[content_type]) {
+            avg_bytes += size_bytes;
+            if (size_bytes > max_bytes)
+                max_bytes = size_bytes;
+        }
+        avg_bytes /= content_type_sizes[content_type].length;
+
+        let str = 'Average size for ' + content_type + ': ' + fmt_size(avg_bytes);
+        str += ' (max ' + fmt_size(max_bytes) + ')';
+        print(str);
+    }
 }
 
 function query (app_id, query_string) {
