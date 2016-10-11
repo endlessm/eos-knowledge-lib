@@ -116,15 +116,13 @@ const Application = new Knowledge.Class({
         if (has_option('default-theme') && has_option('theme-name'))
             logError(new Error('Both --default-theme and --theme-name set; using theme ' + this._theme));
 
-        let recompile_overrides = has_option('recompile-all') || has_option('recompile-theme-overrides');
-        let recompile_app_json = has_option('recompile-all') || has_option('recompile-app-json');
+        this._recompile_overrides = has_option('recompile-all') || has_option('recompile-theme-overrides');
+        this._recompile_app_json = has_option('recompile-all') || has_option('recompile-app-json');
 
-        this._overrides_uri = recompile_overrides ? OVERRIDES_SCSS_URI : OVERRIDES_CSS_URI;
         if (has_option('theme-overrides-path'))
-            this._overrides_uri = 'file://' + get_option_string('theme-overrides-path');
-        this._app_json_uri = recompile_app_json ? APP_YAML_URI : APP_JSON_URI;
+            this._overrides_path = get_option_string('theme-overrides-path');
         if (has_option('app-json-path'))
-            this._app_json_uri = 'file://' + get_option_string('app-json-path');
+            this._app_json_path = get_option_string('app-json-path');
 
         if (has_option('dummy-content'))
             MoltresEngine.override_engine();
@@ -220,15 +218,18 @@ const Application = new Knowledge.Class({
 
     _get_overrides_css: function () {
         let contents, theme_file;
+        if (this._overrides_path)
+            theme_file = Gio.File.new_for_path(this._overrides_path);
+        else
+            theme_file = Gio.File.new_for_uri(this._recompile_overrides ? OVERRIDES_SCSS_URI : OVERRIDES_CSS_URI);
         try {
-            theme_file = Gio.File.new_for_uri(this._overrides_uri);
             [, contents] = theme_file.load_contents(null);
             contents = contents.toString();
         } catch (error if error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND)) {
             // No overrides, fallback to stock theme
             return '';
         }
-        if (!this._overrides_uri.endsWith('.scss'))
+        if (!theme_file.get_uri().endsWith('.scss'))
             return contents;
         // This uri might be a gresource, and the scss command cannot read
         // from a gresource, so save the file contents to a tmp file.
@@ -241,10 +242,14 @@ const Application = new Knowledge.Class({
     },
 
     _get_app_json: function () {
-        let app_json_file = Gio.File.new_for_uri(this._app_json_uri);
-        let [, contents] = app_json_file.load_contents(null);
+        let contents, app_json_file;
+        if (this._app_json_path)
+            app_json_file = Gio.File.new_for_path(this._app_json_path);
+        else
+            app_json_file = Gio.File.new_for_uri(this._recompile_app_json ? APP_YAML_URI : APP_JSON_URI);
+        [, contents] = app_json_file.load_contents(null);
         contents = contents.toString();
-        if (!this._app_json_uri.endsWith('.yaml'))
+        if (!app_json_file.get_uri().endsWith('.yaml'))
             return contents;
         // This uri might be a gresource, and the autobahn command cannot read
         // from a gresource, so save the file contents to a tmp file.
