@@ -161,7 +161,6 @@
     <file>js/app/modules/selection/supplementaryArticles.js</file>
     <file>js/app/modules/selection/xapian.js</file>
     <file>js/app/modules/window/simple.js</file>
-    <file>js/app/moltresApplication.js</file>
     <file>js/app/pages.js</file>
     <file>js/app/readingHistoryModel.js</file>
     <file>js/app/setMap.js</file>
