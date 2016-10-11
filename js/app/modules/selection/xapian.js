@@ -109,7 +109,12 @@ const Xapian = new Module.Class({
     clear: function () {
         this._get_more = null;
         this._query_index = 0;
+
+        let old_value = this._can_load_more;
         this._can_load_more = true;
+        if (old_value !== this._can_load_more) {
+            this.notify('can-load-more');
+        }
         this._error_state = false;
         this._exception = null;
         this.parent();

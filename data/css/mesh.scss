@@ -41,6 +41,7 @@ $display-font-composite: 'Roboto' !default;
 
 @import 'modules/layout/hamburgerBasement';
 @import 'modules/layout/navigation';
+@import 'modules/layout/paginatedScrolling';
 @import 'modules/layout/sidebar';
 
 @import 'modules/navigation/searchBox';

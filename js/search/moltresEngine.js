@@ -4,6 +4,7 @@ const Lang = imports.lang;
 
 const ArticleObjectModel = imports.search.articleObjectModel;
 const Engine = imports.search.engine;
+const QueryObject = imports.search.queryObject;
 const SearchUtils = imports.search.utils;
 const SetObjectModel = imports.search.setObjectModel;
 
@@ -72,6 +73,7 @@ const MoltresEngine = new Lang.Class({
         }
 
         this._to_return = [];
+        this._info = {};
 
         let matching_strings = this._ARTICLES.concat(this._SETS)
                                              .reduce((arr, obj) => {
@@ -86,13 +88,25 @@ const MoltresEngine = new Lang.Class({
             for (let i = 0; i < Math.min(10, query.limit); i++) {
                 this._to_return.push(generation_func());
             }
+            let more_results_query;
+            if (query.offset === 0) {
+                more_results_query = QueryObject.QueryObject.new_from_object(query, {
+                    offset: 11,
+                });
+            } else {
+                more_results_query = null;
+            }
+            this._info = {
+                more_results: more_results_query,
+                upper_bound: 20,
+            };
         }
 
         callback(this);
     },
 
     get_objects_by_query_finish: function () {
-        return [this._to_return, {}];
+        return [this._to_return, this._info];
     },
 
     _ARTICLES: [
