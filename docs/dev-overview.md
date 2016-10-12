@@ -143,8 +143,8 @@ $ ./autogen.sh
 To run tests after building:
 
 ```
-$ # install jasmine - procedure to do so is TBD
-$ #
+$ # Install Jasmine
+$ sudo apt-get isntall jasmine-gjs
 $ # Many tests require a display so if you're connecting over SSH, export the DISPLAY variable
 $ export DISPLAY=:0.0
 $ make check
