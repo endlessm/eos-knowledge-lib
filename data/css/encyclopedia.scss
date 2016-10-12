@@ -112,7 +112,7 @@ $accent-light-color: #044a80 !default;
             padding: 0 0 0 0;
         }
 
-        &:hover &__title {
+        &:hover .Card__title {
             text-decoration: underline;
         }
     }
