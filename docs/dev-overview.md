@@ -128,6 +128,28 @@ $ npm run mock-server -- -f
 This will install all of our requirements and then start up a server that
 `db-build` can talk to.
 
+## eos-knowledge-lib
+
+This repo contains the building blocks of all eos-knowledge-apps including the UI, Xapian
+interfaces, and any other common items between the apps
+
+To build the eos-knowledge-lib:
+
+```
+$ sudo apt-get install autoconf autogen autopoint libtool gobject-introspection libgirepository1.0-dev libgtk-3-dev libwebkit2gtk-4.0-dev libxml2-utils
+$ ./autogen.sh
+```
+
+To run tests after building:
+
+```
+$ # install jasmine - procedure to do so is TBD
+$ #
+$ # Many tests require a display so if you're connecting over SSH, export the DISPLAY variable
+$ export DISPLAY=:0.0
+$ make check
+```
+
 ## eos-knowledge-apps
 
 This repo contains a bunch of Makefile scripts and magic that use this
