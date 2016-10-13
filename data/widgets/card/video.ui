@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <template class="EknCard_Video" parent="GtkGrid">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="EknFormattableLabel" id="title-label">
+        <property name="can_focus">False</property>
+        <property name="no_show_all">True</property>
+        <property name="hexpand">True</property>
+        <property name="use_markup">True</property>
+        <property name="wrap">False</property>
+        <property name="wrap_mode">word-char</property>
+        <property name="max_width_chars">25</property>
+        <property name="ellipsize">end</property>
+        <property name="width_chars">1</property>
+        <property name="lines">1</property>
+        <property name="xalign">0</property>
+        <style>
+          <class name="CardTitle__title"/>
+          <class name="Card__title"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">0</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="EknFormattableLabel" id="synopsis-label">
+        <property name="can_focus">False</property>
+        <property name="hexpand">True</property>
+        <property name="use_markup">True</property>
+        <property name="wrap">True</property>
+        <property name="wrap_mode">word-char</property>
+        <property name="max_width_chars">25</property>
+        <property name="ellipsize">end</property>
+        <property name="width_chars">1</property>
+        <property name="lines">5</property>
+        <property name="xalign">0</property>
+        <style>
+          <class name="Card__synopsis"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">1</property>
+        <property name="width">1</property>
+      </packing>
+    </child>
+  </template>
+</interface>
