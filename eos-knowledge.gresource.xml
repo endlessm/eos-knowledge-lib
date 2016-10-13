@@ -84,6 +84,7 @@
     <file>js/app/libs/mustache.js</file>
     <file>js/app/meshHistoryStore.js</file>
     <file>js/app/moduleFactory.js</file>
+    <file>js/app/modules/arrangement/accordion.js</file>
     <file>js/app/modules/arrangement/grid.js</file>
     <file>js/app/modules/arrangement/half.js</file>
     <file>js/app/modules/arrangement/list.js</file>

@@ -416,6 +416,7 @@ javascript_tests = \
 	tests/js/app/interfaces/testCard.js \
 	tests/js/app/interfaces/testModule.js \
 	tests/js/app/interfaces/testOrder.js \
+	tests/js/app/modules/arrangement/testAccordion.js \
 	tests/js/app/modules/arrangement/testGrid.js \
 	tests/js/app/modules/arrangement/testHalf.js \
 	tests/js/app/modules/arrangement/testList.js \
