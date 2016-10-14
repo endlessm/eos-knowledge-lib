@@ -11,6 +11,7 @@ const USAGE = [
     '       kermit dump <shard path> <ekn id> <data|metadata|another blob name>',
     '       kermit query <app_id> "<querystring>"',
     '       kermit stat <shard path>',
+    '       kermit crosslink <shard path> <url>',
     '',
     'kermit is a shard inspection utility for Knowledge Apps.',
 ].join('\n');
@@ -35,6 +36,8 @@ function main () {
         query(argv[0], argv[1]);
     else if (action === 'stat' && argv.length === 1)
         stat(argv[0]);
+    else if (action === 'crosslink' && argv.length === 2)
+        crosslink(argv[0], argv[1]);
     else
         fail_with_message(USAGE);
 }
@@ -76,6 +79,27 @@ function grep (path, pattern) {
     });
 }
 
+// This hash is derived from sha1('link-table'), and for now is the hardcoded
+// location of link tables for all shards.
+const LINK_TABLE_ID = '4dba9091495e8f277893e0d400e9e092f9f6f551';
+function crosslink (path, url) {
+    let shard = get_shard_for_path(path);
+    let table_record = shard.find_record_by_hex_name(LINK_TABLE_ID);
+    let dictionary;
+    if (table_record) {
+        dictionary = table_record.data.load_as_dictionary();
+    } else {
+        fail_with_message('No dictionary record found in this shard!');
+    }
+
+    let ekn_id = dictionary.lookup_key(url);
+    if (ekn_id) {
+        let hash = ekn_id.split('/').pop();
+        print(hash);
+    } else {
+        print('No record found for url "' + url + '"');
+    }
+}
 
 function stat (path) {
     let shard_file = Gio.File.new_for_path(path);
