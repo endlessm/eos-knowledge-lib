@@ -18,11 +18,21 @@ const AllHighlights = new Module.Class({
     },
 
     construct_query_object: function (limit, query_index) {
-        if (query_index > 0)
-            return null;
-        return new QueryObject.QueryObject({
-            limit: limit,
-            tags_match_any: ['EknArticleObject'], // FIXME: Should be getting featured articles only
-        });
+        if (query_index == 0) {
+            return new QueryObject.QueryObject({
+                limit: limit,
+                tags_match_all: ['EknArticleObject', 'EknFeaturedTag'],
+                excluded_tags: [],
+            });
+        } else if (query_index == 1) {
+            return new QueryObject.QueryObject({
+                limit: limit,
+                tags_match_all: ['EknArticleObject'],
+                excluded_tags: ['EknFeaturedTag'],
+            });
+        }
+
+        // All other indexes (>= 2) should return null
+        return null;
     },
 });
