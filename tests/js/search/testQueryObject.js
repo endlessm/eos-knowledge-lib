@@ -234,6 +234,22 @@ describe('QueryObject', function () {
             expect(result).toMatch('tag:"cat zombies"');
         });
 
+        it('filters unwanted tags and ids', function () {
+            let query_obj = new QueryObject.QueryObject({
+                query: 'tyrion wins',
+                excluded_ids: [
+                    'ekn://fake-domain/cleganebowlfever',
+                    'ekn://fake-domain/errybodygethyped'
+                ],
+                excluded_tags: ['chicken', 'shop'],
+            });
+            let result = query_obj.get_query_parser_string(query_obj);
+            expect(result).toMatch('NOT id:cleganebowlfever');
+            expect(result).toMatch('NOT id:errybodygethyped');
+            expect(result).toMatch('NOT tag:"chicken"');
+            expect(result).toMatch('NOT tag:"shop"');
+        });
+
         it('should handle large queries', function () {
             let long_query = 'q'.repeat(300);
             let query_obj = new QueryObject.QueryObject({
