@@ -10,7 +10,7 @@ const USAGE = [
     '       kermit list <shard path>',
     '       kermit dump <shard path> <ekn id> <data|metadata|another blob name>',
     '       kermit query <app_id> "<querystring>"',
-    '       kermit stat <shard path>',
+    '       kermit stat <shard path> [ekn id] [-v|--verbose]',
     '       kermit crosslink <shard path> <url>',
     '',
     'kermit is a shard inspection utility for Knowledge Apps.',
@@ -25,6 +25,7 @@ const BATCH_SIZE = 10;
 function main () {
     let argv = ARGV.slice();
     let action = argv.shift();
+    let is_verbose = get_verbose_opt(argv);
 
     if (action === 'grep' && argv.length === 2)
         grep(argv[0], argv[1]);
@@ -35,11 +36,28 @@ function main () {
     else if (action === 'query' && argv.length === 2)
         query(argv[0], argv[1]);
     else if (action === 'stat' && argv.length === 1)
-        stat(argv[0]);
+        stat_shard(argv[0]);
+    else if (action === 'stat' && argv.length === 2)
+        stat_record(argv[0], argv[1], is_verbose);
     else if (action === 'crosslink' && argv.length === 2)
         crosslink(argv[0], argv[1]);
     else
         fail_with_message(USAGE);
+}
+
+// XXX this is horrible, we should use getopt or something more sane
+function get_verbose_opt (argv) {
+    let verbose_idx = argv.indexOf('-v');
+    if (verbose_idx === -1) {
+        verbose_idx = argv.indexOf('--verbose');
+    }
+    if (verbose_idx === -1) {
+        return false;
+    } else {
+        // remove the arg
+        argv.splice(verbose_idx, 1);
+        return true;
+    }
 }
 
 function grep (path, pattern) {
@@ -94,14 +112,124 @@ function crosslink (path, url) {
 
     let ekn_id = dictionary.lookup_key(url);
     if (ekn_id) {
-        let hash = ekn_id.split('/').pop();
+        let hash = normalize_ekn_id(ekn_id);
         print(hash);
     } else {
         print('No record found for url "' + url + '"');
     }
 }
 
-function stat (path) {
+function stat_record (path, id, is_verbose) {
+    let shard = get_shard_for_path(path);
+    let record = shard.find_record_by_hex_name(id);
+
+    if (record === null) {
+        fail_with_message('Could not find shard entry for id', id);
+    }
+
+    if (!record.metadata) {
+        fail_with_message('Could not find metadata for id', id);
+    }
+
+    let total_blob_bytes = 0;
+    let blob_table = record.list_blobs().map((blob) => {
+        total_blob_bytes += blob.get_packed_content_size();
+        return {
+            'Content type': blob.get_content_type(),
+            'Size': fmt_size(blob.get_packed_content_size()),
+        };
+    });
+
+    let metadata_text = record.metadata.load_contents().get_data().toString();
+    let metadata = JSON.parse(metadata_text);
+
+    print('Record info:');
+    print('Hash:', id);
+    print('Title:', metadata.title || 'N/A');
+    print('Last modified date:', metadata.lastModifiedDate || 'N/A');
+    print('Ekn type:', metadata['@type']);
+    print('Total blob size:', fmt_size(total_blob_bytes));
+    print();
+    print('Record blob info:');
+    _pretty_print_table(blob_table);
+    _print_tree_info(shard, metadata.resources, total_blob_bytes, is_verbose);
+    _print_crosslink_info(shard, metadata.outgoingLinks, is_verbose);
+}
+
+function _print_tree_info (shard, ekn_resources, parent_size_bytes, is_verbose) {
+    if (!ekn_resources || ekn_resources.length === 0)
+        return;
+
+    function table_entry (hash, mimetype, size_str) {
+        return {
+            'Hash': hash,
+            'Content type (data blob)': mimetype,
+            'Size (all blobs)': size_str,
+        };
+    }
+
+    let total_tree_bytes = parent_size_bytes;
+    let resource_table = ekn_resources.map((id) => {
+        let hash = normalize_ekn_id(id);
+        let record = shard.find_record_by_hex_name(hash);
+        if (!record)
+            return table_entry(hash, 'N/A', 'N/A');
+        let total_blob_bytes = record.list_blobs().reduce((sum, a) => sum + a.get_packed_content_size(), 0);
+        total_tree_bytes += total_blob_bytes;
+        return table_entry(hash, record.data.get_content_type(), fmt_size(total_blob_bytes));
+    });
+
+    print();
+    print('Record tree info:');
+    print('Total tree size:', fmt_size(total_tree_bytes));
+    print('Number of children:', ekn_resources.length);
+    if (is_verbose) {
+        _pretty_print_table(resource_table);
+    }
+}
+
+function _uniqueify (arr) {
+    let dict = {};
+    arr.forEach((e) => dict[e] = 1);
+    return Object.keys(dict);
+}
+
+// TODO allow user to specify multiple shards to crosslink from
+function _print_crosslink_info (shard, links, is_verbose) {
+    if (!links || links.length === 0)
+        return;
+
+    // dedupe and sort links
+    links = _uniqueify(links);
+    links.sort();
+
+    // load crosslink table
+    let table_record = shard.find_record_by_hex_name(LINK_TABLE_ID);
+    if (!table_record) {
+        print('No dictionary record found in this shard!');
+    }
+    let dictionary = table_record.data.load_as_dictionary();
+
+    let crosslink_table = links.map((url) => {
+        let ekn_id = dictionary.lookup_key(url);
+        if (!ekn_id)
+            return null;
+        return {
+            'URL': url,
+            'Linked object': normalize_ekn_id(ekn_id),
+        };
+    }).filter((entry) => entry !== null);
+
+    print();
+    print('Crosslink info:');
+    print('Num unique outgoing links:', links.length);
+    print('Num crosslinks:', crosslink_table.length);
+    if (is_verbose && crosslink_table.length > 0) {
+        _pretty_print_table(crosslink_table);
+    }
+}
+
+function stat_shard (path) {
     let shard_file = Gio.File.new_for_path(path);
     let shard_info = shard_file.query_info('standard::size', Gio.FileQueryInfoFlags.NONE, null);
     let total_shard_bytes = shard_info.get_size();
