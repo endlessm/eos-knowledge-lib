@@ -346,7 +346,7 @@ function perform_query (engine, query_obj) {
         try {
             let [results, info] = engine.get_objects_by_query_finish(task);
             results.forEach(function (result) {
-                let id = result.ekn_id.split('/').pop();
+                let id = normalize_ekn_id(result.ekn_id);
                 print_result(id, result.content_type, result.title);
             });
 
@@ -379,6 +379,8 @@ function print_result (id, content_type, title, offset) {
 }
 
 function dump (path, id, blob_name) {
+    id = normalize_ekn_id(id);
+
     let shard = get_shard_for_path(path);
     let record = shard.find_record_by_hex_name(id);
 
@@ -429,4 +431,11 @@ function fail_with_error (e) {
     var args = Array.prototype.slice.call(arguments, 1);
     logError(e, e + ' ' + args.join(' '));
     System.exit(1);
+}
+
+function normalize_ekn_id (ekn_id) {
+    if (ekn_id.startsWith('ekn://')) {
+        return ekn_id.split('/').pop();
+    }
+    return ekn_id;
 }
