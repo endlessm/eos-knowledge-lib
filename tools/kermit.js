@@ -36,7 +36,7 @@ function main () {
     else if (action === 'query' && argv.length === 2)
         query(argv[0], argv[1]);
     else if (action === 'stat' && argv.length === 1)
-        stat_shard(argv[0]);
+        stat_shard(argv[0], is_verbose);
     else if (action === 'stat' && argv.length === 2)
         stat_record(argv[0], argv[1], is_verbose);
     else if (action === 'crosslink' && argv.length === 2)
@@ -229,7 +229,7 @@ function _print_crosslink_info (shard, links, is_verbose) {
     }
 }
 
-function stat_shard (path) {
+function stat_shard (path, is_verbose) {
     let shard_file = Gio.File.new_for_path(path);
     let shard_info = shard_file.query_info('standard::size', Gio.FileQueryInfoFlags.NONE, null);
     let total_shard_bytes = shard_info.get_size();
@@ -304,22 +304,18 @@ function stat_shard (path) {
             imports.system.gc();
     });
 
-    // Print summary
+    let empty_bytes = last_offset - (first_offset + total_blob_bytes - last_blob_bytes);
+    let wasted_pct = (empty_bytes / total_shard_bytes) * 100;
+    let wasted_str = fmt_size(empty_bytes) + ' (' + wasted_pct.toPrecision(4) + '% wasted';
+    wasted_str += ', average ' + fmt_size(empty_bytes/n_blobs) + ' per blob)';
 
     print('Number of records:', records.length);
     print('Number of blobs:', n_blobs);
-
-    let empty_bytes = last_offset - (first_offset + total_blob_bytes - last_blob_bytes);
-    let wasted_pct = (empty_bytes / total_shard_bytes) * 100;
-    let wasted_str = 'Wasted space between blobs: ' + fmt_size(empty_bytes);
-    wasted_str += ' (' + wasted_pct.toPrecision(4) + '% wasted';
-    wasted_str += ', average ' + fmt_size(empty_bytes/n_blobs) + ' per blob)';
-    print(wasted_str);
-
-    print();
+    print('Wasted space between blobs:', wasted_str);
     _print_shard_layout_summary(content_type_sizes, total_shard_bytes);
-    print();
-    _print_shard_layout_details(content_type_sizes, total_shard_bytes);
+    if (is_verbose) {
+        _print_shard_layout_details(content_type_sizes, total_shard_bytes);
+    }
 }
 
 function fmt_size (size_bytes) {
@@ -338,8 +334,6 @@ function fmt_size (size_bytes) {
 }
 
 function _print_shard_layout_summary (content_type_sizes, total_shard_bytes) {
-    print('Shard layout summary:');
-
     // create a mapping of summary categories to the total size of their blobs
     let pattern_map = {
         'image/.*': 'Images',
@@ -389,11 +383,13 @@ function _print_shard_layout_summary (content_type_sizes, total_shard_bytes) {
         let e2_pct = parseFloat(e2['Pct of shard'].slice(0, -1));
         return e1_pct > e2_pct ? -1 : 1;
     });
+
+    print();
+    print('Shard layout summary:');
     _pretty_print_table(category_sizes);
 }
 
 function _print_shard_layout_details(content_type_sizes, total_shard_bytes) {
-    print('Shard layout details:');
     let detail_elements = [];
     for (let content_type in content_type_sizes) {
         let max_bytes = 0, total_bytes = 0;
@@ -421,6 +417,8 @@ function _print_shard_layout_details(content_type_sizes, total_shard_bytes) {
         return e1_pct > e2_pct ? -1 : 1;
     });
 
+    print();
+    print('Shard layout details:');
     _pretty_print_table(detail_elements);
 }
 
@@ -444,16 +442,19 @@ function _pretty_print_table (elements) {
         let spaces = ' '.repeat(width - column.length);
         return str + column + spaces + ' ';
     }, '');
-    print(header_str);
-    elements.forEach((element) => {
+
+    let rows = elements.map((element) => {
         let row = columns.reduce((str, column, i) => {
             let width = column_widths[i];
             let value = element[column].toString();
             let spaces = ' '.repeat(width - value.length);
             return str + value + spaces + ' ';
         }, '');
-        print(row);
+        return row;
     });
+
+    print(header_str);
+    rows.forEach(row => print(row));
 }
 
 function query (app_id, query_string) {
