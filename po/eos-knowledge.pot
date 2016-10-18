@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge 0.4.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2016-10-11 01:49+0000\n"
+"POT-Creation-Date: 2016-10-18 01:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,6 +53,10 @@ msgid ""
 "  •  Try using more general words"
 msgstr ""
 
+#: data/widgets/layout/paginatedScrolling.ui:19
+msgid "SEE MORE"
+msgstr ""
+
 #: data/widgets/layout/sideMenu.ui:95
 #: js/app/modules/layout/hamburgerBasement.js:57
 msgid "HOME"
@@ -62,11 +66,11 @@ msgstr ""
 msgid "View the license"
 msgstr ""
 
-#: js/app/application.js:152
+#: js/app/application.js:157
 msgid "Oops! No content."
 msgstr ""
 
-#: js/app/application.js:153
+#: js/app/application.js:158
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
