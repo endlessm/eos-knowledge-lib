@@ -39,6 +39,9 @@ let application = new Application.Application({
     application_id: '$APP_ID',
     resource_path: '$RESOURCE_PATH',
 });
-application.run(['$0'].concat(ARGV));"
+application.run(ARGV);"
 
-exec $DEBUG_COMMAND gjs -c "$SCRIPT" "$@"
+# $APP_ID will become ARGV[0], when passed to application.run, the real argv[0]
+# is stripped by gjs. This also prevents gjs from eating any arguments intended
+# for the application such as --help
+exec $DEBUG_COMMAND gjs -c "$SCRIPT" "$APP_ID" "$@"
