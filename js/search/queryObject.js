@@ -373,9 +373,21 @@ const QueryObject = Lang.Class({
         return id_clauses.join(_XAPIAN_OP_OR);
     },
 
+    _exclusion_clause: function () {
+        let prefixed_tags = this.excluded_tags.map(Utils.quote).map((tag) => {
+            return _XAPIAN_OP_NOT + _XAPIAN_PREFIX_TAG + tag;
+        });
+
+        let excluded_ids = this.excluded_ids.map(this._uri_to_xapian_id.bind(this)).map((id) => {
+            return _XAPIAN_OP_NOT + id;
+        });
+        return prefixed_tags.concat(excluded_ids).join(_XAPIAN_OP_AND);
+    },
+
     get_query_parser_string: function () {
         let clauses = [];
         clauses.push(this._query_clause());
+        clauses.push(this._exclusion_clause());
         clauses.push(this._tags_clause(this.tags_match_any, _XAPIAN_OP_OR));
         clauses.push(this._tags_clause(this.tags_match_all, _XAPIAN_OP_AND));
         clauses.push(this._ids_clause());
