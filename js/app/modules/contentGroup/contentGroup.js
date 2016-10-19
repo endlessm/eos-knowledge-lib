@@ -242,7 +242,7 @@ const ContentGroup = new Module.Class({
             'Error message: ' + (exception ? exception.message : 'none'),
             '',
         ].join('\n');
-        log += exception.stack;
+        log += exception ? exception.stack : '';
         let os = new Gio.DataOutputStream({
             base_stream: stream.output_stream,
         });
