@@ -42,6 +42,7 @@
     <file compressed="true">data/templates/js/jquery-min.js</file>
     <file compressed="true">data/templates/js/scroll-manager.js</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/app.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/dynamic.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/search.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/deck.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/knowledgeDocument.ui</file>
@@ -101,6 +102,7 @@
     <file>js/app/modules/arrangement/windshield.js</file>
     <file>js/app/modules/banner/app.js</file>
     <file>js/app/modules/banner/context.js</file>
+    <file>js/app/modules/banner/dynamic.js</file>
     <file>js/app/modules/banner/search.js</file>
     <file>js/app/modules/banner/set.js</file>
     <file>js/app/modules/card/contentGroup.js</file>
@@ -171,6 +173,7 @@
     <file>js/app/utils.js</file>
     <file>js/app/warehouse.js</file>
     <file>js/app/webviewTooltipPresenter.js</file>
+    <file>js/app/widgets/dynamicLogo.js</file>
     <file>js/app/widgets/eknWebview.js</file>
     <file>js/app/widgets/formattableLabel.js</file>
     <file>js/app/widgets/imageCoverFrame.js</file>

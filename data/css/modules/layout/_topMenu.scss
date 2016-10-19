@@ -10,6 +10,12 @@
             min-height: 30px;
         }
 
+        .BannerDynamic__logo {
+            -EknDynamicLogo-sizing: "size-min";
+            min-width: 146px;
+            min-height: 30px;
+        }
+
         /* If there is a content group, make its error message really small; the
         top menu isn't really meant to fit an error message */
         .ContentGroupContentGroup__errorPage,
