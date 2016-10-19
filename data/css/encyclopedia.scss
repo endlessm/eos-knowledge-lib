@@ -8,26 +8,7 @@ $title-font: 'Lato' !default;
 $background-light-color: #f5f5f5 !default;
 $accent-light-color: #044a80 !default;
 
-@import 'assets';
-@import 'colors';
-@import 'typography';
-
-@import 'modules/banner/app';
-@import 'modules/banner/dynamic';
-@import 'modules/banner/search';
-
-@import 'modules/card/knowledgeDocument';
-@import 'modules/card/media';
-
-@import 'modules/contentGroup/contentGroup';
-@import 'modules/contentGroup/mediaLightbox';
-@import 'modules/contentGroup/noResultsMessage';
-
-@import 'modules/layout/paper';
-
-@import 'modules/navigation/searchBox';
-
-@import 'modules/window/simple';
+@import "base";
 
 .WindowSimple {
     font-size: 8pt;
