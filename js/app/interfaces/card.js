@@ -3,7 +3,9 @@
 /* exported Card, MinSize, MaxSize */
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const Format = imports.format;
 const GdkPixbuf = imports.gi.GdkPixbuf;
+const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -11,14 +13,21 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
+const Config = imports.app.config;
 const ContentObjectModel = imports.search.contentObjectModel;
+const Engine = imports.search.engine;
 const FormattableLabel = imports.app.widgets.formattableLabel;
 const ImageCoverFrame = imports.app.widgets.imageCoverFrame;
 const Module = imports.app.interfaces.module;
+const QueryObject = imports.search.queryObject;
 const SearchUtils = imports.search.utils;
 const SetMap = imports.app.setMap;
+const SetObjectModel = imports.search.setObjectModel;
 const SpaceContainer = imports.app.widgets.spaceContainer;
 const Utils = imports.app.utils;
+
+String.prototype.format = Format.format;
+let _ = Gettext.dngettext.bind(null, Config.GETTEXT_PACKAGE);
 
 /**
  * Enum: Sequence
@@ -192,6 +201,7 @@ const Card = new Lang.Interface({
     },
 
     _interface_init: function () {
+        this._child_count = 0;
         // null check on this.model: we don't really support null but it is
         // often convenient for testing.
         if (this.model && this.model.content_type === 'application/pdf') {
@@ -263,19 +273,7 @@ const Card = new Lang.Interface({
         label.visible = !!text;
     },
 
-    /**
-     * Method: create_context_widget_from_model
-     *
-     * Sets the text on a context label. The context is the list of tags
-     * associated with this article. Tags are also incidentally the same
-     * as set titles.
-     *
-     * According to designs (and based on what fits on screen), we only want
-     * to show a maximum of two set titles in the context label.
-     * Moreover, we want to exclude the 'Ekn'-prefixed tags which won't mean
-     * anything to the user.
-     */
-    create_context_widget_from_model: function () {
+    _create_contextual_tag_widget: function () {
         let widget = new SpaceContainer.SpaceContainer({
             orientation: Gtk.Orientation.HORIZONTAL,
         });
@@ -297,6 +295,69 @@ const Card = new Lang.Interface({
                 });
                 widget.add(second_tag);
             }
+        }
+        return widget;
+    },
+
+    // O promises, where art thou?
+    _count_set: function (set_obj, callback) {
+        let query = new QueryObject.QueryObject({
+            tags_match_any: set_obj.child_tags,
+            limit: -1,
+        });
+        Engine.get_default().get_objects_by_query(query, null, (engine, task) => {
+            let results, info;
+            try {
+                [results, info] = engine.get_objects_by_query_finish(task);
+                let reached_bottom = true;
+                results.forEach((obj) => {
+                    if (obj instanceof SetObjectModel.SetObjectModel) {
+                        reached_bottom = false;
+                        this._count_set(obj, callback);
+                    } else {
+                        this._child_count += 1;
+                    }
+                });
+                if (reached_bottom) {
+                    callback(this._child_count);
+                }
+            } catch (e) {
+                logError(e, 'Failed to load content from engine');
+                results = [];
+                info = { more_results: null };
+                return;
+            }
+        });
+    },
+
+    _create_inventory_widget: function () {
+        this._child_count = 0;
+        let label = new FormattableLabel.FormattableLabel();
+
+        this._count_set(this.model, (count) => {
+            label.label = _("%d item", "%d items", count).format(count);
+        });
+        return label;
+    },
+
+    /**
+     * Method: create_context_widget_from_model
+     *
+     * Sets the text on a context label. The context is the list of tags
+     * associated with this article. Tags are also incidentally the same
+     * as set titles.
+     *
+     * According to designs (and based on what fits on screen), we only want
+     * to show a maximum of two set titles in the context label.
+     * Moreover, we want to exclude the 'Ekn'-prefixed tags which won't mean
+     * anything to the user.
+     */
+    create_context_widget_from_model: function () {
+        let widget;
+        if (this.model instanceof SetObjectModel.SetObjectModel) {
+            widget = this._create_inventory_widget();
+        } else {
+            widget = this._create_contextual_tag_widget();
         }
 
         let context = widget.get_style_context();
