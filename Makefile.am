@@ -108,7 +108,6 @@ scss_theme_layout_partials = \
 	$(srcdir)/data/css/modules/layout/_hamburgerBasement.scss \
 	$(srcdir)/data/css/modules/layout/_infiniteScrolling.scss \
 	$(srcdir)/data/css/modules/layout/_navigation.scss \
-	$(srcdir)/data/css/modules/layout/_paginatedScrolling.scss \
 	$(srcdir)/data/css/modules/layout/_paper.scss \
 	$(srcdir)/data/css/modules/layout/_responsiveMargins.scss \
 	$(srcdir)/data/css/modules/layout/_scrolling.scss \
@@ -122,9 +121,6 @@ scss_theme_navigation_partials = \
 scss_theme_pager_partials = \
 	$(srcdir)/data/css/modules/pager/_parallaxBackground.scss \
 	$(srcdir)/data/css/modules/pager/_simple.scss \
-	$(NULL)
-scss_theme_widgets_partials = \
-	$(srcdir)/data/css/widgets/_tabButton.scss \
 	$(NULL)
 scss_theme_window_partials = \
 	$(srcdir)/data/css/modules/window/_simple.scss \
@@ -140,7 +136,6 @@ scss_theme_partials = \
 	$(scss_theme_layout_partials) \
 	$(scss_theme_navigation_partials) \
 	$(scss_theme_pager_partials) \
-	$(scss_theme_widgets_partials) \
 	$(scss_theme_window_partials) \
 	$(NULL)
 
@@ -409,9 +404,6 @@ dist_themenavigation_DATA = $(scss_theme_navigation_partials)
 themepagerdir = $(thememodulesdir)/pager
 dist_themepager_DATA = $(scss_theme_pager_partials)
 
-themewidgetsdir = $(themetopdir)/widgets
-dist_themewidgets_DATA = $(scss_theme_widgets_partials)
-
 themewindowdir = $(thememodulesdir)/window
 dist_themewindow_DATA = $(scss_theme_window_partials)
 
@@ -483,7 +475,6 @@ javascript_tests = \
 	tests/js/app/modules/layout/testInfiniteScrolling.js \
 	tests/js/app/modules/layout/testNavigation.js \
 	tests/js/app/modules/layout/testOverlay.js \
-	tests/js/app/modules/layout/testPaginatedScrolling.js \
 	tests/js/app/modules/layout/testPaper.js \
 	tests/js/app/modules/layout/testResponsiveMargins.js \
 	tests/js/app/modules/layout/testScrolling.js \

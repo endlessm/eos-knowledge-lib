@@ -1,1 +1,50 @@
-@import '../../widgets/tabButton';
+$tab-button-gradient-light: $tab-button-background;
+$tab-button-gradient-dark: mix($tab-button-background, black, 65%);
+$tab-button-gradient-active-light: $tab-button-gradient-light;
+$tab-button-gradient-active-dark: $tab-button-gradient-dark;
+$tab-button-gradient-hover-light: mix($tab-button-background, black, 95%);
+$tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
+
+.TabButton {
+    color: white;
+    padding: 1.0em 1.8em 0.9em 2.4em;
+    border-style: solid;
+    font-weight: bold;
+    font-size: 0.75em;  /* 12pt * 1/12 * 0.75 DPI correction factor */
+    text-shadow: 0px -1px 0px transparentize(black, 1 - 0.40);
+    -gtk-icon-shadow: 0px -1px 1px transparentize(black, 1 - 0.44);
+    background: linear-gradient(to bottom,
+                                $tab-button-gradient-light,
+                                $tab-button-gradient-dark);
+    box-shadow: inset 0px 1px 4px 0px transparentize(white, 1 - 0.19);
+
+    &:dir(ltr) image {
+        padding-left: 15px;
+    }
+
+    &:dir(rtl) image {
+        padding-right: 15px;
+    }
+
+    &:hover {
+        background: linear-gradient(to bottom,
+                                    $tab-button-gradient-hover-light,
+                                    $tab-button-gradient-hover-dark);
+    }
+
+    &:active {
+        background: linear-gradient(to bottom,
+                                    $tab-button-gradient-active-dark,
+                                    $tab-button-gradient-active-light);
+    }
+
+    &.bottom {
+        border-top-left-radius: 1.7em;
+        border-top-right-radius: 1.7em;
+    }
+
+    &.top {
+        border-bottom-left-radius: 1.7em;
+        border-bottom-right-radius: 1.7em;
+    }
+}
