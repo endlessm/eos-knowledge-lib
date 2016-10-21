@@ -209,6 +209,8 @@ const ContentGroup = new Module.Class({
             this._on_log_button_click.bind(this));
         HistoryStore.get_default().connect('changed',
             this._on_history_changed.bind(this));
+        HistoryStore.get_default().connect('notify::current-subset',
+            this._on_subset_changed.bind(this));
     },
 
     _ensure_synced: function () {
@@ -264,6 +266,12 @@ const ContentGroup = new Module.Class({
             this._stack.visible_child_name = CONTENT_PAGE_NAME;
         }
 
+    },
+
+    _on_subset_changed: function () {
+        let subset = HistoryStore.get_default().current_subset;
+        if (subset)
+            this._arrangement.highlight(subset);
     },
 
     _on_history_changed: function () {

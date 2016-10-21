@@ -49,6 +49,13 @@ const HistoryStore = new Lang.Class({
         'current-set': GObject.ParamSpec.object('current-set', 'current-set', 'current-set',
             GObject.ParamFlags.READABLE, SetObjectModel.SetObjectModel),
         /**
+         * Property: current-subset
+         *
+         * The model for the current subset in the history store.
+         */
+        'current-subset': GObject.ParamSpec.object('current-subset', 'current-subset', 'current-subset',
+            GObject.ParamFlags.READABLE, SetObjectModel.SetObjectModel),
+        /**
          * Property: current-query
          *
          * The model for the current query in the history store.
@@ -165,6 +172,21 @@ const HistoryStore = new Lang.Class({
             item = this._items[index--];
         } while (item && !match_fn(item));
         return item || null;
+    },
+
+    get current_subset () {
+        if (this._current_subset)
+            return this._current_subset;
+        return null;
+    },
+
+    set_current_subset: function (model) {
+        if (!model)
+            return;
+        if (!this._current_subset || (this._current_subset.ekn_id !== model.ekn_id)) {
+            this._current_subset = model;
+            this.notify('current-subset');
+        }
     },
 
     get current_query () {
