@@ -6,6 +6,7 @@ const Gtk = imports.gi.Gtk;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Module = imports.app.interfaces.module;
+const Utils = imports.app.utils;
 
 const TRANSITION_DURATION = 500;
 
@@ -29,9 +30,13 @@ const Accordion = new Module.Class({
 
     // Arrangement override
     pack_card: function (card) {
-        let label = new Gtk.Button({
+        let button = new Gtk.Button();
+        let label = new Gtk.Label({
             label: card.model.title,
+            halign: Gtk.Align.START,
         });
+        button.add(label);
+        button.get_style_context().add_class(Utils.get_element_style_class(Accordion, 'title'));
 
         let revealer = new Gtk.Revealer({
             transition_duration: TRANSITION_DURATION,
@@ -39,13 +44,13 @@ const Accordion = new Module.Class({
         });
         revealer.add(card);
 
-        label.connect('clicked', () => {
+        button.connect('clicked', () => {
             revealer.reveal_child = !revealer.child_revealed;
         });
         let grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
         });
-        grid.add(label);
+        grid.add(button);
         grid.add(revealer);
         grid.show_all();
         this.add(grid);
