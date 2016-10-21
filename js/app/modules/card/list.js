@@ -30,6 +30,21 @@ const List = new Module.Class({
             true),
     },
 
+
+    StyleProperties: {
+        /**
+         * This property determines how we scale the thumbnail image. It uses a
+         * similar vocabulary as web css' background-size property: 'cover' and
+         * 'center'. 'cover' means we will reposition and rescale the image to
+         * cover the entire thumbnail space. 'center' means we will maintain the
+         * image's original dimensions and center it in the thumbnail space.
+         */
+        'thumbnail-background-size': GObject.ParamSpec.string('thumbnail-background-size',
+            'Thumbnail background size', 'The background size of the thumbnail image',
+            GObject.ParamFlags.READWRITE,
+            'cover'),
+    },
+
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/list.ui',
     InternalChildren: [ 'thumbnail-frame', 'content-frame', 'title-label', 'synopsis-label', 'navigation-context-label'],
 

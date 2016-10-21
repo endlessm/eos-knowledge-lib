@@ -1,7 +1,9 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Card = imports.app.interfaces.card;
@@ -110,11 +112,24 @@ const Thumb = new Module.Class({
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/thumb.ui',
     InternalChildren: [ 'thumbnail-frame', 'inner-grid', 'content-frame', 'title-label', 'synopsis-label' ],
 
+    StyleProperties: {
+        /**
+         * This property determines how we scale the thumbnail image. It uses a
+         * similar vocabulary as web css' background-size property: 'cover' and
+         * 'center'. 'cover' means we will reposition and rescale the image to
+         * cover the entire thumbnail space. 'center' means we will maintain the
+         * image's original dimensions and center it in the thumbnail space.
+         */
+        'thumbnail-background-size': GObject.ParamSpec.string('thumbnail-background-size',
+            'Thumbnail background size', 'The background size of the thumbnail image',
+            GObject.ParamFlags.READWRITE,
+            ''),
+    },
+
     _init: function (props={}) {
         this.parent(props);
 
         this.set_title_label_from_model(this._title_label);
-        this.set_thumbnail_frame_from_model(this._thumbnail_frame);
         this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
         this._context_widget = this.create_context_widget_from_model();
         this._inner_grid.add(this._context_widget);
@@ -125,7 +140,17 @@ const Thumb = new Module.Class({
         });
         this.add(this._layout);
 
+
+        this.connect('style-set', this._update_custom_style.bind(this));
+
         Utils.set_hand_cursor_on_widget(this);
+    },
+
+    _update_custom_style: function () {
+        let context = this.get_style_context();
+        let thumb_background_size = EosKnowledgePrivate.style_context_get_custom_string(
+            context, 'thumbnail-background-size');
+        this.set_thumbnail_frame_from_model(this._thumbnail_frame, thumb_background_size);
     },
 
     vfunc_size_allocate: function (alloc) {

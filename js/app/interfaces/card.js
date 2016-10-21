@@ -377,18 +377,25 @@ const Card = new Lang.Interface({
      *
      * Sets up a frame to show the model's thumbnail uri.
      */
-    set_thumbnail_frame_from_model: function (frame) {
+    set_thumbnail_frame_from_model: function (frame, background_size='cover') {
         frame.visible = false;
         if (!this.model.thumbnail_uri)
             return;
+        if (background_size === 'center') {
+            let image = new Gtk.Image({
+                file: this.model.thumbnail_uri,
+                visible: true,
+            });
+            frame.add(image);
+        } else {
+            let coveredFrame = new ImageCoverFrame.ImageCoverFrame();
+            let cancellable = null;
+            let file = Gio.File.new_for_uri(this.model.thumbnail_uri);
+            let stream = file.read(cancellable);
+            coveredFrame.set_content(stream);
+            frame.add(coveredFrame);
+        }
 
-        let coveredFrame = new ImageCoverFrame.ImageCoverFrame();
-        frame.add(coveredFrame);
-
-        let cancellable = null;
-        let file = Gio.File.new_for_uri(this.model.thumbnail_uri);
-        let stream = file.read(cancellable);
-        coveredFrame.set_content(stream);
         frame.visible = true;
 
         let context = frame.get_style_context();
