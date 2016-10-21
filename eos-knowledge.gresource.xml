@@ -60,7 +60,6 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/contentGroup/contentGroup.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/hamburgerBasement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/infiniteScrolling.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/paginatedScrolling.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/paper.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/sideMenu.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/topMenu.ui</file>
@@ -142,7 +141,6 @@
     <file>js/app/modules/layout/infiniteScrolling.js</file>
     <file>js/app/modules/layout/navigation.js</file>
     <file>js/app/modules/layout/overlay.js</file>
-    <file>js/app/modules/layout/paginatedScrolling.js</file>
     <file>js/app/modules/layout/paper.js</file>
     <file>js/app/modules/layout/responsiveMargins.js</file>
     <file>js/app/modules/layout/scrolling.js</file>
