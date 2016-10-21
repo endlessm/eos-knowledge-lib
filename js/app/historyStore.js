@@ -13,6 +13,7 @@ const Dispatcher = imports.app.dispatcher;
 const HistoryItem = imports.app.historyItem;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Pages = imports.app.pages;
+const SetMap = imports.app.setMap;
 const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.app.utils;
 
@@ -47,6 +48,13 @@ const HistoryStore = new Lang.Class({
          * The model for the current set in the history store.
          */
         'current-set': GObject.ParamSpec.object('current-set', 'current-set', 'current-set',
+            GObject.ParamFlags.READABLE, SetObjectModel.SetObjectModel),
+        /**
+         * Property: current-top-level-set
+         *
+         * The model for the current top level set in the history store.
+         */
+        'current-top-level-set': GObject.ParamSpec.object('current-top-level-set', 'current-top-level-set', 'current-top-level-set',
             GObject.ParamFlags.READABLE, SetObjectModel.SetObjectModel),
         /**
          * Property: current-query
@@ -167,6 +175,17 @@ const HistoryStore = new Lang.Class({
         return item || null;
     },
 
+    get current_top_level_set () {
+        let top_level_set = this.current_set;
+        while (top_level_set !== null) {
+            let parent = SetMap.get_parent_set(top_level_set);
+            if (!parent)
+                break;
+            top_level_set = parent;
+        }
+        return top_level_set;
+    },
+
     get current_query () {
         let item = this.search_backwards(0, (item) => item.query.length > 0);
         if (item)
@@ -184,12 +203,15 @@ const HistoryStore = new Lang.Class({
     _update_index: function (delta) {
         let old_set = this.current_set;
         let old_query = this.current_query;
+        let old_top_level_set = this.current_top_level_set;
         this._index += delta;
         this.emit('changed');
         if (old_query !== this.current_query)
             this.notify('current-query');
         if (old_set !== this.current_set)
             this.notify('current-set');
+        if (old_top_level_set !== this.current_top_level_set)
+            this.notify('current-top-level-set');
     },
 
     // Common helper functions for history stores, not for use from other
