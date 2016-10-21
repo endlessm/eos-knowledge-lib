@@ -80,6 +80,7 @@ scss_theme_banner_partials = \
 	$(srcdir)/data/css/modules/banner/_context.scss \
 	$(srcdir)/data/css/modules/banner/_search.scss \
 	$(srcdir)/data/css/modules/banner/_set.scss \
+	$(srcdir)/data/css/modules/banner/_title.scss \
 	$(NULL)
 scss_theme_card_partials = \
 	$(srcdir)/data/css/modules/card/_base.scss \

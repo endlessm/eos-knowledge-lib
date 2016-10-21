@@ -44,6 +44,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/app.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/dynamic.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/search.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/title.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/deck.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/knowledgeDocument.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/legacyPolaroid.ui</file>
@@ -104,6 +105,7 @@
     <file>js/app/modules/banner/dynamic.js</file>
     <file>js/app/modules/banner/search.js</file>
     <file>js/app/modules/banner/set.js</file>
+    <file>js/app/modules/banner/title.js</file>
     <file>js/app/modules/card/contentGroup.js</file>
     <file>js/app/modules/card/deck.js</file>
     <file>js/app/modules/card/knowledgeDocument.js</file>

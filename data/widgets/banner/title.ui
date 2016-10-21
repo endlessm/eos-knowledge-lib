@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <template class="EknBanner_Title" parent="GtkGrid">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="expand">True</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkLabel" id="title-label">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <style>
+          <class name="BannerTitle__title"/>
+        </style>
+      </object>
+    </child>
+    <child>
+      <object class="GtkLabel" id="subtitle-label">
+        <property name="no_show_all">True</property>
+        <property name="can_focus">False</property>
+        <property name="use_markup">True</property>
+        <property name="wrap">True</property>
+        <style>
+          <class name="BannerTitle__subtitle"/>
+        </style>
+      </object>
+    </child>
+  </template>
+</interface>
