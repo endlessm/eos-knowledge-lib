@@ -3,19 +3,21 @@
 // Copyright 2016 Endless Mobile, Inc.
 
 const Gdk = imports.gi.Gdk;
+const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Actions = imports.app.actions;
+const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const Overflow = imports.app.modules.arrangement.overflow;
 const Utils = imports.app.utils;
 
-const BATCH_SIZE = 10;
+let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const CONTENT_PAGE_NAME = 'content';
 const NO_RESULTS_PAGE_NAME = 'no-results';
@@ -41,6 +43,28 @@ const ContentGroup = new Module.Class({
         'has-more-content': GObject.ParamSpec.boolean('has-more-content',
             'Has more content', 'Has more content',
             GObject.ParamFlags.READABLE),
+        /**
+         * Property: paginate
+         * Whether this content group should paginate content
+         *
+         * Use this property to turn on pagination. If this property is set,
+         * a 'See more' button will appear at the bottom of the content group,
+         * which will allow user to page in more results manually. The number
+         * of results that get paged in on each click is determined by
+         * cards-per-page
+         */
+        'paginate': GObject.ParamSpec.boolean('paginate',
+            'Paginate', 'Whether to paginate content',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
+        /**
+         * Property: cards-per-page
+         * Number of cards to be displayed per page
+         */
+        'cards-per-page': GObject.ParamSpec.uint('cards-per-page', 'Cards per page',
+            'The number of cards to be displayed per page.',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            1, GLib.MAXUINT16, 10),
     },
 
     _init: function (props={}) {
@@ -115,16 +139,43 @@ const ContentGroup = new Module.Class({
             no_show_all: true,
             vexpand: true,
         });
-        this._stack.add_named(this._arrangement, CONTENT_PAGE_NAME);
+
+        let content_grid = new Gtk.Grid({
+            orientation: Gtk.Orientation.VERTICAL,
+            visible: true,
+        });
+        content_grid.add(this._arrangement);
+
+        this._selection = this.create_submodule('selection', {
+            model: this.model || null,
+        });
+
+        if (this.paginate) {
+            let see_more_button = new Gtk.Button({
+                halign: Gtk.Align.CENTER,
+                label: _('See more'),
+                no_show_all: true,
+                visible: this.paginate,
+            });
+
+            see_more_button.get_style_context().add_class(Utils.get_element_style_class(ContentGroup, 'paginate'));
+            see_more_button.connect('clicked', () => {
+                if (this._selection.can_load_more && this.paginate)
+                    this._selection.queue_load_more(this.cards_per_page);
+            });
+            this._selection.connect('notify::can-load-more', () => {
+                see_more_button.visible = this._selection.can_load_more;
+            });
+            content_grid.add(see_more_button);
+        }
+
+        this._stack.add_named(content_grid, CONTENT_PAGE_NAME);
 
         if (this._no_results)
             this._stack.add_named(this._no_results, NO_RESULTS_PAGE_NAME);
 
         // Make sure we begin on the content page.
         this._stack.visible_child_name = CONTENT_PAGE_NAME;
-        this._selection = this.create_submodule('selection', {
-            model: this.model || null,
-        });
         this._selection.connect('models-changed',
             this._on_models_changed.bind(this));
         this._selection.connect('notify::loading', () => {
@@ -151,6 +202,7 @@ const ContentGroup = new Module.Class({
                 this.notify('has-more-content');
             });
         });
+
         this._selection.connect('notify::in-error-state',
             this._on_selection_error.bind(this));
         this._log_button.connect('clicked',
@@ -256,7 +308,7 @@ const ContentGroup = new Module.Class({
 
     load: function () {
         this._selection.clear();
-        let cards_to_load = BATCH_SIZE;
+        let cards_to_load = this.cards_per_page;
         let max_cards = this._arrangement.get_max_cards();
         if (max_cards > -1)
             cards_to_load = max_cards;
