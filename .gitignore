@@ -17,6 +17,7 @@
 /ekn-downloader
 /ekn-search-provider
 /eos-encyclopedia
+/eos-player
 /data/com.endlessm.EknSearchProvider.service
 /data/com.endlessm.EknDownloader.service
 /data/eos-knowledge-0.pc

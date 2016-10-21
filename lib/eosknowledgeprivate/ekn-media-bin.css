@@ -1,0 +1,56 @@
+/*
+ * ekn-media-bin.css
+ *
+ * Copyright (C) 2016 Endless Mobile, Inc.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ * Author: Juan Pablo Ugarte <ugarte@endlessm.com>
+ *
+ */
+
+ekn-media-bin box.overlay-bar {
+  background: rgba(0%,0%,0%,0.32);
+}
+
+ekn-media-bin > image {
+  background: black;
+}
+
+/* Setup key bindings */
+@binding-set emb-binding-set {
+  bind "space"     { "toggle" ("playback") };
+  bind "f"         { "toggle" ("fullscreen") };
+  bind "i"         { "toggle" ("show-stream-info") };
+  bind "Right"     { "seek" (5) };
+  bind "Left"      { "seek" (-5) };
+  bind "Up"        { "seek" (60) };
+  bind "Down"      { "seek" (-60) };
+  bind "Page_Up"   { "seek" (300) };
+  bind "Page_Down" { "seek" (-300) };
+  bind "Home"      { "seek" (0) };
+}
+
+@binding-set emb-fullscreen-binding-set {
+  bind "Escape" { "toggle" ("fullscreen") };
+}
+
+ekn-media-bin {
+  -gtk-key-bindings: emb-binding-set;
+}
+
+ekn-media-bin.fullscreen {
+  -gtk-key-bindings: emb-binding-set, emb-fullscreen-binding-set;
+}

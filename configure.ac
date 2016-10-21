@@ -190,6 +190,7 @@ PKG_CHECK_MODULES([EOS_KNOWLEDGE_PRIVATE], [
     gio-2.0
     gtk+-3.0 >= 3.12
     webkit2gtk-4.0
+    gstreamer-1.0 >= 1.8.2
 ])
 PKG_CHECK_MODULES([GRESOURCE_PLUGIN], [
     gio-2.0
@@ -223,6 +224,40 @@ EOS_CHECK_GJS_GIR([Gtk], [3.0])
 EOS_CHECK_GJS_GIR([Pango], [1.0])
 EOS_CHECK_GJS_GIR([WebKit2], [4.0])
 EOS_CHECK_GJS_GIR_API([Gdk], [Rectangle])
+
+# GStreamer plugins needed for EknMediaBin widget
+m4_pattern_allow([AM_GST_ELEMENT_CHECK])
+m4_ifndef([GST_ELEMENT_CHECK], [
+  AC_MSG_ERROR([GST_ELEMENT_CHECK not found. Install the development package
+for GStreamer 1.0 and rerun autogen.sh.])
+])
+have_all_elements=yes
+m4_map_args_w([
+		playbin
+		gtksink
+		gtkglsink
+		giosrc
+		giostreamsrc
+		audioconvert
+		videoconvert
+		volume
+		vorbisdec
+		opusdec
+		theoradec
+		matroskademux
+		matroskaparse
+		vp8dec
+		vp9dec
+		v4l2src
+		oggdemux
+		oggparse
+		pulsesink],
+		[GST_ELEMENT_CHECK(], [, [1.8.2], [], [have_all_elements=no])])
+			AS_IF([test "x$have_all_elements" = "xno"],
+				[AC_MSG_ERROR([One or more required GStreamer elements were not found.
+You will have to install your system's "base", "good", and "bad" plugins
+packages. Try looking for names such as: gstreamer1.0-plugins-base,
+gstreamer1.0-plugins-good, gstreamer1.0-plugins-bad])])
 
 # Code Coverage
 # -------------

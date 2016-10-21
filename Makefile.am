@@ -225,6 +225,8 @@ CLEANFILES += $(BUILT_SOURCES)
 EXTRA_DIST += \
 	lib/eosknowledgeprivate/ekn-resources.gresource.xml \
 	lib/eosknowledgeprivate/EknRuntimeDocumentViewer.ui \
+	lib/eosknowledgeprivate/EknMediaBin.ui \
+	lib/eosknowledgeprivate/ekn-media-bin.css \
 	$(NULL)
 
 eosknowledgeprivate_headers = \
@@ -237,6 +239,8 @@ eosknowledgeprivate_sources = \
 	lib/eosknowledgeprivate/ekn-resources.c \
 	lib/eosknowledgeprivate/ekn-runtime-document-viewer.h \
 	lib/eosknowledgeprivate/ekn-runtime-document-viewer.c \
+	lib/eosknowledgeprivate/ekn-media-bin.h \
+	lib/eosknowledgeprivate/ekn-media-bin.c \
 	$(NULL)
 
 # Endless Knowledge Apps GUI library
@@ -314,6 +318,20 @@ libscrollplugin_la_CPPFLAGS = \
 	$(NULL)
 libscrollplugin_la_LIBADD = $(SCROLL_PLUGIN_LIBS)
 libscrollplugin_la_LDFLAGS = -module -avoid-version -no-undefined
+
+# # # EXAMPLES # # #
+
+noinst_PROGRAMS = eos-player
+
+eos_player_SOURCES = examples/eos-player.c
+eos_player_CPPFLAGS = \
+	$(EOS_KNOWLEDGE_PRIVATE_CFLAGS) \
+	-I$(top_srcdir)/lib/eosknowledgeprivate/ \
+	$(NULL)
+eos_player_LDADD = \
+	$(EOS_KNOWLEDGE_PRIVATE_LIBS) \
+	$(top_builddir)/libeosknowledgeprivate.la \
+	$(NULL)
 
 # # # SUBSTITUTED FILES # # #
 # These files need to be filled in with make variables

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/com/endlessm/knowledge-private">
+
+    <!-- Do not compress files that will be frequently used.
+         Since we are linking staticly with this resource the compressed data
+         would end up in the text area of the executable and the uncompressed
+         one in the heap and we rather waste some disk space instead of memory.
+      -->
     <file preprocess="xml-stripblanks">EknRuntimeDocumentViewer.ui</file>
+    <file preprocess="xml-stripblanks">EknMediaBin.ui</file>
+    <file>ekn-media-bin.css</file>
   </gresource>
 </gresources>
