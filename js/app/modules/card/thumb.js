@@ -166,7 +166,7 @@ const Thumb = new Module.Class({
             this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
             this._title_label.valign = Gtk.Align.END;
         } else {
-            this._title_label.valign = Gtk.Align.CENTER;
+            this._title_label.valign = Gtk.Align.START;
             this._synopsis_label.hide();
         }
 
