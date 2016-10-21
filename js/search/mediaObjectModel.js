@@ -97,10 +97,10 @@ const VideoObjectModel = Lang.Class({
          * The duration of the video in ISO 8601 format. Defaults to empty
          * string
          */
-        'duration': GObject.ParamSpec.string('duration',
-            'Duration', 'The duration of the video in ISO 8601 format',
+        'duration': GObject.ParamSpec.uint('duration',
+            'Duration', 'The duration of the video',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            ''),
+            0, GLib.MAXUINT32, 0),
 
         /**
          * Property: transcript
