@@ -2,6 +2,8 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
+const GObject = imports.gi.GObject;
+
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
@@ -10,13 +12,28 @@ const Xapian = imports.app.modules.selection.xapian;
 const SubsetsForSet = new Module.Class({
     Name: 'Selection.SubsetsForSet',
     Extends: Xapian.Xapian,
+    Properties: {
+        /**
+         * Property: track-subset
+         * Whether this content group should track changes in subset as
+         * opposed to top level set.
+         */
+        'track-subset': GObject.ParamSpec.boolean('track-subset',
+            'Track subset', 'Only refresh when subset changes',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
+    },
 
     _init: function (props={}) {
         this.parent(props);
         if (this.global) {
-            this.model = HistoryStore.get_default().current_set;
-            HistoryStore.get_default().connect('notify::current-set', () => {
-                this.model = HistoryStore.get_default().current_set;
+            let property_name = 'current-set';
+            if (this.track_subset) {
+                property_name = 'current-subset';
+            }
+            this.model = HistoryStore.get_default()[property_name.replace('-', '_', 'g')];
+            HistoryStore.get_default().connect('notify::' + property_name, () => {
+                this.model = HistoryStore.get_default()[property_name.replace('-', '_', 'g')];
                 this._set_needs_refresh(true);
             });
         }
