@@ -94,6 +94,17 @@
             -gtk-icon-shadow: none;
         }
     }
+
+    &__paginate {
+        background-color: $brand-color;
+        color: white;
+        font-size: 1.5em;
+        box-shadow: 4px 0px 20px 0px rgba(0, 0, 0, 0.4);
+        font-family: $support-font;
+        border-radius: 22px;
+        padding: 7px 35px;
+        margin: 30px 0px 40px 0px;
+    }
 }
 
 .search-results {

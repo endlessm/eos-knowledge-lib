@@ -50,6 +50,7 @@ scss_verbose_0 = @echo "  SCSS     $@";
 
 scss_theme_toplevels = \
 	$(srcdir)/data/css/buffet.scss \
+	$(srcdir)/data/css/course.scss \
 	$(srcdir)/data/css/default.scss \
 	$(srcdir)/data/css/encyclopedia.scss \
 	$(srcdir)/data/css/news.scss \
@@ -414,6 +415,7 @@ dist_yamlpreset_DATA = \
 	data/preset/A.yaml \
 	data/preset/B.yaml \
 	data/preset/buffet.yaml \
+	data/preset/course.yaml \
 	data/preset/encyclopedia.yaml \
 	data/preset/news.yaml \
 	$(NULL)

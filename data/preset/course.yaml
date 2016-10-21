@@ -1,0 +1,130 @@
+---
+defines:
+- &home-page
+  shortdef: Layout.Scrolling
+  slots:
+    content:
+      shortdef: 'Layout.Box(orientation: vertical)'
+      slots:
+        contents:
+        - shortdef: Layout.Overlay
+          styles:
+            - landing
+          slots:
+            content:
+              shortdef: Layout.Box
+              styles:
+                - background
+            overlays:
+            - shortdef: 'Layout.Box(orientation: vertical, halign: start)'
+              styles:
+                - intro
+              slots:
+                contents:
+                - shortdef: 'Banner.App'
+                - shortdef: 'ContentGroup.StaticText(wrap: true, wrap-mode: word-char, ellipsize: end, max-width-chars: 34, lines: 8,label: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vehicula diam id quam ornare, eu mattis ex vulputate. Integer egestas, nisi vel tincidunt congue, mauris elit pharetra mi, sit amet accumsan urna ex eu erat. ")'
+            - shortdef: 'Banner.Title(show-subtitle: true, halign: end, valign: center)'
+        - shortdef: 'ContentGroup.ContentGroup(expand: true)'
+          slots:
+            title:
+              shortdef: 'ContentGroup.StaticText(halign: start, label: "Technology courses")'
+            arrangement:
+              type: Arrangement.Grid
+              properties:
+                homogeneous: true
+                max-children-per-line: 3
+                min-children-per-line: 3
+              slots:
+                card:
+                  shortdef: 'Card.Thumb(collection-name: "lessons")'
+            selection:
+              type: Selection.AllSets
+              slots:
+                filter: Filter.Featured
+        - shortdef: 'Layout.Box(orientation: vertical, halign: fill, hexpand: true)'
+          styles:
+            - footer
+          slots:
+            contents:
+            - shortdef: 'ContentGroup.StaticText(lines: 1, label: "More courses soon.")'
+            - shortdef: 'ContentGroup.StaticText(lines: 1, label: "See more useful courses at capacitateparaelempleo.org")'
+            - shortdef: 'Decoration.ThemeableImage(halign: fill, hexpand: true, valign: end, vexpand: true, image-uri: "resource:///app/assets/titleImageDark")'
+
+- &set-page
+  shortdef: Layout.Scrolling
+  slots:
+    content:
+      shortdef: 'Layout.Box(orientation: vertical)'
+      slots:
+        contents:
+        - shortdef: 'Layout.Box(orientation: vertical, halign: center)'
+          styles:
+            - playlist
+          slots:
+            contents:
+            - shortdef: 'ContentGroup.ContentGroup()'
+              styles:
+                - levels
+              slots:
+                arrangement:
+                  shortdef: 'Arrangement.SideBySide(halign: center)'
+                  slots:
+                    card: Card.Title
+                selection:
+                  shortdef: 'Selection.SubsetsForSet(top-level-only: true)'
+            - shortdef: 'ContentGroup.ContentGroup(expand: true)'
+              slots:
+                arrangement:
+                  type: Arrangement.Accordion
+                  slots:
+                    card:
+                      type: Card.ContentGroup
+                      slots:
+                        arrangement:
+                          type: Arrangement.List
+                          slots:
+                            card: Card.List
+                        selection: Selection.AllHighlights
+                selection: Selection.SubsetsForSet
+        - shortdef: 'ContentGroup.ContentGroup(paginate: true, cards-per-page: 3)'
+          styles:
+            - see-more
+          slots:
+            title:
+              shortdef: 'ContentGroup.StaticText(label: "More courses about Technology", expand: true)'
+            arrangement:
+              type: Arrangement.Grid
+              properties:
+                homogeneous: true
+                max-children-per-line: 3
+                min-children-per-line: 3
+              slots:
+                card:
+                  shortdef: 'Card.Thumb(collection-name: "lessons")'
+            selection:
+              type: Selection.AllSets
+              id: all-sets
+              slots:
+                filter: Filter.Featured
+
+          references:
+            paginated-load: all-sets
+
+root:
+  shortdef: 'Controller.Course(theme: course)'
+  slots:
+    window:
+      type: Window.Simple
+      slots:
+        content:
+          type: ContentGroup.MediaLightbox
+          slots:
+            card: Card.Media
+            content:
+              type: Layout.Navigation
+              slots:
+                content:
+                  type: Pager.ParallaxBackground
+                  slots:
+                    home-page: *home-page
+                    set-page: *set-page
