@@ -3,6 +3,7 @@
 /* exported Card, MinSize, MaxSize */
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -174,6 +175,20 @@ const Card = new Lang.Interface({
         'sequence': GObject.ParamSpec.uint('sequence', 'Sequence', 'Sequence',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, Object.keys(Sequence).length, Sequence.NONE),
+        /**
+         * Property: background-size
+         * How to scale the background thumbnail image.
+         *
+         * This property determines how we scale the thumbnail image. It uses a
+         * similar vocabulary as web css' background-size property: 'cover' and
+         * 'center'. 'cover' means we will reposition and rescale the image to
+         * cover the entire thumbnail space. 'center' means we will maintain the
+         * image's original dimensions and center it in the thumbnail space.
+         */
+        'background-size': GObject.ParamSpec.string('background-size',
+            'Background size', 'How to scale the background thumbnail image.',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            'cover'),
     },
 
     _interface_init: function () {
@@ -314,14 +329,22 @@ const Card = new Lang.Interface({
         frame.visible = false;
         if (!this.model.thumbnail_uri)
             return;
-
-        let coveredFrame = new ImageCoverFrame.ImageCoverFrame();
-        frame.add(coveredFrame);
-
-        let cancellable = null;
         let file = Gio.File.new_for_uri(this.model.thumbnail_uri);
+        let cancellable = null;
         let stream = file.read(cancellable);
-        coveredFrame.set_content(stream);
+        if (this.background_size === 'center') {
+            let pixbuf = GdkPixbuf.Pixbuf.new_from_stream(stream, null);
+            let image = new Gtk.Image({
+                visible: true,
+                pixbuf: pixbuf,
+            });
+            frame.add(image);
+        } else {
+            let coveredFrame = new ImageCoverFrame.ImageCoverFrame();
+            coveredFrame.set_content(stream);
+            frame.add(coveredFrame);
+        }
+
         frame.visible = true;
 
         let context = frame.get_style_context();

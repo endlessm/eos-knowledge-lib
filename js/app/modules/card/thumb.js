@@ -114,7 +114,6 @@ const Thumb = new Module.Class({
         this.parent(props);
 
         this.set_title_label_from_model(this._title_label);
-        this.set_thumbnail_frame_from_model(this._thumbnail_frame);
         this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
         this._context_widget = this.create_context_widget_from_model();
         this._inner_grid.add(this._context_widget);
@@ -124,6 +123,7 @@ const Thumb = new Module.Class({
             visible: true,
         });
         this.add(this._layout);
+        this.set_thumbnail_frame_from_model(this._thumbnail_frame);
 
         Utils.set_hand_cursor_on_widget(this);
     },
