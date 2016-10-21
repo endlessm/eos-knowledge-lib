@@ -146,7 +146,7 @@ function stat (path) {
     let content_type_sizes = {};
     function tallyBlob (blob) {
         let offset = blob.get_offset();
-        let length = blob.get_blob_size();
+        let length = blob.get_packed_content_size();
         let content_type = blob.get_content_type();
 
         if (offset > last_offset) {
