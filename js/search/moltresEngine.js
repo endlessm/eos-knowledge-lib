@@ -88,16 +88,7 @@ const MoltresEngine = new Lang.Class({
             for (let i = 0; i < Math.min(10, query.limit); i++) {
                 this._to_return.push(generation_func());
             }
-            let more_results_query;
-            if (query.offset === 0) {
-                more_results_query = QueryObject.QueryObject.new_from_object(query, {
-                    offset: 11,
-                });
-            } else {
-                more_results_query = null;
-            }
             this._info = {
-                more_results: more_results_query,
                 upper_bound: 20,
             };
         }

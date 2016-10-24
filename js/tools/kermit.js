@@ -355,7 +355,10 @@ function perform_query (engine, query_obj) {
             if (results.length < BATCH_SIZE) {
                 System.exit(0);
             } else {
-                perform_query(engine, info.more_results);
+                let more_results_query = QueryObject.QueryObject.new_from_object(query_obj, {
+                    offset: query_obj.offset + results.length,
+                });
+                perform_query(engine, more_results_query);
             }
         } catch (e) {
             fail_with_error(e);

@@ -152,18 +152,6 @@ const Engine = Lang.Class({
                         return;
                     }
 
-                    let more_results_query;
-                    if (results.length < query_obj.limit) {
-                        more_results_query = null;
-                    } else {
-                        more_results_query = QueryObject.QueryObject.new_from_object(query_obj, {
-                            offset: results.length + query_obj.offset,
-                        });
-                    }
-                    Object.defineProperty(info, 'more_results', {
-                        value: more_results_query,
-                    });
-
                     task.return_value([results, info]);
                 }));
             };

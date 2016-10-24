@@ -363,8 +363,30 @@ function test_xapian_selection_compliance(SelectionClass, setup=function () {}, 
 
             engine = MockEngine.mock_default();
             engine.get_objects_by_query_finish.and.returnValue([[], {
-                more_results: null,
+                info: {upper_bound: 0},
             }]);
+        });
+
+        it('continues the query based on how many results were added', function () {
+            spyOn(selection, 'add_model').and.callThrough();
+            let models = [];
+            for (let ix = 0; ix < 10; ix++) {
+                let model = new ContentObjectModel.ContentObjectModel();
+                models.push(model);
+            }
+            engine.get_objects_by_query_finish.and.returnValue([models, {
+                info: {upper_bound: 10},
+            }]);
+            selection.queue_load_more(3);
+            let first_query = engine.get_objects_by_query.calls.mostRecent().args[0];
+            // Since we requested 3, we should only add three models to the
+            // selection, regardless of how many actually came back.
+            expect(selection.add_model.calls.count()).toBe(3);
+            selection.queue_load_more(10);
+            // When we request more models, we should start the offset from
+            // where we left off
+            let second_query = engine.get_objects_by_query.calls.mostRecent().args[0];
+            expect(second_query.offset).toEqual(first_query.offset + 3);
         });
 
         it('by going into an error state when the engine throws an exception', function () {
