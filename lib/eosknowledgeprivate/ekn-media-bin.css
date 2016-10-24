@@ -21,12 +21,151 @@
  *
  */
 
-ekn-media-bin box.overlay-bar {
-  background: rgba(0%,0%,0%,0.32);
+@define-color transparent-light rgba (1,1,1,.32);
+@define-color transparent-dark  rgba (.11,.11,.11,.64);
+@define-color bright-green      #8cc63f;
+
+/* hiden/shown  */
+ekn-media-bin *.hide {
+  transition: opacity .32s;
+  opacity: 0;
+}
+
+ekn-media-bin *.show {
+  transition: opacity .32s;
+  opacity: 1;
 }
 
 ekn-media-bin > image {
   background: black;
+}
+
+ekn-media-bin overlay label,
+ekn-media-bin overlay scale value {
+  color: white;
+}
+
+ekn-media-bin overlay label:backdrop,
+ekn-media-bin overlay scale value:backdrop {
+  color: darker(white);
+}
+
+ekn-media-bin box.overlay-bar {
+  background: @transparent-dark;
+}
+
+ekn-media-bin box.overlay-bar.top {
+  padding: 12px;
+}
+
+ekn-media-bin label.title {
+  font: 18px Sans;
+}
+
+ekn-media-bin box.overlay-bar.bottom button {
+  border: 0px;
+  border-radius: 0px;
+  box-shadow: none;
+  outline: 0px;
+  background: none;
+  padding: 8px;
+}
+
+ekn-media-bin box.overlay-bar.bottom button:hover {
+  box-shadow: none;
+  background: darker(@transparent-dark);
+}
+
+/* Main play button */
+ekn-media-bin > overlay > box {
+  font-size: 18px;
+  border: 0px;
+  border-radius: 2em;
+  padding: .7em 1em;
+  box-shadow: none;
+  background: @transparent-dark;
+}
+
+ekn-media-bin > overlay > box > label {
+  padding-left: .64em;
+}
+
+/* Style media playback scale */
+ekn-media-bin overlay scale {
+  margin-top: .5em;
+  padding: 0px;
+}
+
+ekn-media-bin overlay scale trough {
+  border: 0px;
+  border-radius: 0px;
+  padding: 1px;
+  background: @transparent-light;
+}
+
+ekn-media-bin overlay scale slider {
+  margin: -16px;
+  padding: 9px;
+  border: 0px;
+  border-radius: 0px;
+  box-shadow: none;
+  background: none;
+}
+
+ekn-media-bin overlay scale highlight {
+  border: 0px;
+  padding: 0px;
+  border-radius: 0px 2px 2px 0px;
+  background: @bright-green;
+}
+
+ekn-media-bin overlay scale value {
+  padding: 2px 0px;
+  border-radius: 1em;
+  background: @transparent-dark;
+}
+
+/* Volume popover */
+popover.ekn-media-bin {
+  border: 0px;
+  border-radius: 0px;
+  box-shadow: none;
+  background: none;
+}
+
+popover.ekn-media-bin scale {
+  border-radius: 18px;
+  padding: 6px;
+  background: @transparent-dark;
+}
+
+popover.ekn-media-bin scale trough {
+  outline: 0px;
+  border: 0px;
+  border-radius: 3px;
+  padding: 1px;
+  background: #555;
+}
+
+popover.ekn-media-bin scale highlight {
+  border: 0px;
+  padding: 0px;
+  border-radius: 3px;
+  background: @bright-green;
+}
+
+popover.ekn-media-bin scale slider {
+  min-height: 6px;
+  min-width: 6px;
+  margin: -1px;
+  border: 0px;
+  border-radius: 4px;
+  box-shadow: none;
+  background: none;
+}
+
+popover.ekn-media-bin scale:hover slider {
+  background: white;
 }
 
 /* Setup key bindings */
