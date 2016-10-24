@@ -36,12 +36,14 @@ const CourseHistoryStore = new GObject.Class({
                     });
                     break;
                 case Actions.ITEM_CLICKED: {
-                    let props = { model: payload.model };
-                    props['page_type'] = Pages.SET;
-                    this.set_current_item_from_props(props);
                     if (payload.model instanceof SetObjectModel.SetObjectModel) {
                         if (!SetMap.get_parent_set(payload.model)) {
+                            let props = { model: payload.model };
+                            props['page_type'] = Pages.SET;
+                            this.set_current_item_from_props(props);
                             this._load_first_subset(payload.model);
+                        } else {
+                            this.set_current_subset(payload.model);
                         }
                     }
                 }
@@ -86,11 +88,7 @@ const CourseHistoryStore = new GObject.Class({
                 return;
             }
             if (results.length > 0) {
-                this.set_current_item_from_props({
-                    page_type: Pages.SET,
-                    model: results[0],
-                    context_label: model.title,
-                });
+                this.set_current_subset(results[0]);
             }
         });
     },

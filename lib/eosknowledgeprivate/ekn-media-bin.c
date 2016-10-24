@@ -671,7 +671,6 @@ ekn_media_bin_init (EknMediaBin *self)
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
   GtkWidget *popup;
   gint i;
-
   gtk_widget_init_template (GTK_WIDGET (self));
 
   priv->state = GST_STATE_VOID_PENDING;

@@ -60,10 +60,10 @@ $support-font: 'Montserrat' !default;
       opacity: 0.6;
       color: $accent-light-color;
       font-family: $support-font;
-      padding: 50px;
+      padding: 0px;
 
       .BannerApp {
-        margin-bottom: 50px;
+        margin-bottom: 0px;
       }
     }
   }
@@ -100,6 +100,40 @@ $support-font: 'Montserrat' !default;
 
   .playlist {
     margin: 40px 0px;
+  }
+
+  .intro-video {
+    margin: 250px 60px 20px 60px;
+    .CardVideo {
+      &__player {
+        box-shadow: 4px 0px 20px 0px rgba(0, 0, 0, 0.5);
+      }
+      .Card__synopsis {
+        margin-right: 20px;
+        padding: 0px;
+        font-size: 1.5em;
+        color: $primary-medium-color;
+      }
+    }
+  }
+
+  .background {
+    min-height: 700px;
+    background-image: url('resource:///app/assets/graphy_bg.png');
+    background-repeat: repeat;
+    background-color: white;
+  }
+
+  .header {
+    background-image: url($secondary-background-image);
+    background-repeat: no-repeat;
+    .BannerSet {
+      margin: 40px 0px 0px 30px;
+      .CardTitle__title {
+        font-size: 2.1em;
+        color: $accent-light-color;
+      }
+    }
   }
 
   .ArrangementAccordion {

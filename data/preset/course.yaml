@@ -57,6 +57,32 @@ defines:
       shortdef: 'Layout.Box(orientation: vertical)'
       slots:
         contents:
+        - shortdef: 'Layout.Overlay'
+          slots:
+            content:
+              shortdef: 'Layout.Box'
+              styles:
+                - background
+            overlays:
+            - shortdef: 'Layout.Box'
+              styles:
+                - header
+              slots:
+                contents:
+                - shortdef: 'Banner.Set'
+                  slots:
+                    card: Card.Title
+                - shortdef: 'Banner.App(halign: end)'
+            - shortdef: 'ContentGroup.ContentGroup(valign: center)'
+              styles:
+                - intro-video
+              slots:
+                selection: Selection.ContentForSet
+                arrangement:
+                  shortdef: 'Arrangement.List(max-rows: 1)'
+                  slots:
+                    card:
+                      shortdef: 'Card.Video(show-title: false)'
         - shortdef: 'Layout.Box(orientation: vertical, halign: center)'
           styles:
             - playlist
@@ -71,7 +97,7 @@ defines:
                   slots:
                     card: Card.Title
                 selection:
-                  shortdef: 'Selection.SubsetsForSet(top-level-only: true)'
+                  shortdef: 'Selection.SubsetsForSet()'
             - shortdef: 'ContentGroup.ContentGroup(expand: true)'
               slots:
                 arrangement:
@@ -81,11 +107,13 @@ defines:
                       type: Card.ContentGroup
                       slots:
                         arrangement:
-                          type: Arrangement.List
+                          shortdef: 'Arrangement.List(hexpand: true)'
                           slots:
-                            card: Card.List
+                            card:
+                              shortdef: 'Card.List(hexpand: true)'
                         selection: Selection.AllHighlights
-                selection: Selection.SubsetsForSet
+                selection:
+                  shortdef: 'Selection.SubsetsForSet(track-subset: true)'
         - shortdef: 'ContentGroup.ContentGroup(paginate: true, cards-per-page: 3)'
           styles:
             - see-more

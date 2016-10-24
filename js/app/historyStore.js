@@ -50,11 +50,11 @@ const HistoryStore = new Lang.Class({
         'current-set': GObject.ParamSpec.object('current-set', 'current-set', 'current-set',
             GObject.ParamFlags.READABLE, SetObjectModel.SetObjectModel),
         /**
-         * Property: current-top-level-set
+         * Property: current-subset
          *
-         * The model for the current top level set in the history store.
+         * The model for the current subset in the history store.
          */
-        'current-top-level-set': GObject.ParamSpec.object('current-top-level-set', 'current-top-level-set', 'current-top-level-set',
+        'current-subset': GObject.ParamSpec.object('current-subset', 'current-subset', 'current-subset',
             GObject.ParamFlags.READABLE, SetObjectModel.SetObjectModel),
         /**
          * Property: current-query
@@ -175,15 +175,19 @@ const HistoryStore = new Lang.Class({
         return item || null;
     },
 
-    get current_top_level_set () {
-        let top_level_set = this.current_set;
-        while (top_level_set !== null) {
-            let parent = SetMap.get_parent_set(top_level_set);
-            if (!parent)
-                break;
-            top_level_set = parent;
+    get current_subset () {
+        if (this._current_subset)
+            return this._current_subset;
+        return null;
+    },
+
+    set_current_subset: function (model) {
+        if (!model)
+            return;
+        if (!this._current_subset || (this._current_subset.ekn_id !== model.ekn_id)) {
+            this._current_subset = model;
+            this.notify('current-subset');
         }
-        return top_level_set;
     },
 
     get current_query () {
@@ -203,15 +207,12 @@ const HistoryStore = new Lang.Class({
     _update_index: function (delta) {
         let old_set = this.current_set;
         let old_query = this.current_query;
-        let old_top_level_set = this.current_top_level_set;
         this._index += delta;
         this.emit('changed');
         if (old_query !== this.current_query)
             this.notify('current-query');
         if (old_set !== this.current_set)
             this.notify('current-set');
-        if (old_top_level_set !== this.current_top_level_set)
-            this.notify('current-top-level-set');
     },
 
     // Common helper functions for history stores, not for use from other

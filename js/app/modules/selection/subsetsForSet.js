@@ -15,10 +15,11 @@ const SubsetsForSet = new Module.Class({
     Properties: {
         /**
          * Property: top-level-only
-         * Whether this content group has more content to show
+         * Whether this content group should track changes in subset as
+         * opposed to top level set.
          */
-        'top-level-only': GObject.ParamSpec.boolean('top-level-only',
-            'Top level only', 'Only refresh when top level set changes',
+        'track-subset': GObject.ParamSpec.boolean('track-subset',
+            'Track subset', 'Only refresh when subset changes',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             false),
     },
@@ -27,8 +28,8 @@ const SubsetsForSet = new Module.Class({
         this.parent(props);
         if (this.global) {
             let property_name = 'current-set';
-            if (this.top_level_only) {
-                property_name = 'current-top-level-set';
+            if (this.track_subset) {
+                property_name = 'current-subset';
             }
             this.model = HistoryStore.get_default()[property_name.replace('-', '_', 'g')];
             HistoryStore.get_default().connect('notify::' + property_name, () => {

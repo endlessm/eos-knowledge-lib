@@ -30,7 +30,9 @@ const Accordion = new Module.Class({
 
     // Arrangement override
     pack_card: function (card) {
-        let button = new Gtk.Button();
+        let button = new Gtk.Button({
+            hexpand: true,
+        });
         let label = new Gtk.Label({
             label: card.model.title,
             halign: Gtk.Align.START,
