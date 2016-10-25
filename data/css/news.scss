@@ -18,6 +18,11 @@ $support-font: 'Fira Sans' !default;
 
 @import "base";
 
+.LayoutScrolling,
+.LayoutInfiniteScrolling {
+    background-color: $background-light-color;
+}
+
 /* === Modules (Overrides) === */
 
 /* The home page consists of two 'highlights' modules. We want to

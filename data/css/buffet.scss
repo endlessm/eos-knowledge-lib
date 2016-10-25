@@ -31,6 +31,11 @@ $title-alt-font: 'Lato Thin' !default;
 
 @import "base";
 
+.LayoutScrolling,
+.LayoutInfiniteScrolling {
+    background-color: $background-light-color;
+}
+
 /* === Modules (Overrides) === */
 
 .Card {
