@@ -28,8 +28,8 @@ const ContentGroup = new Module.Class({
     Slots: {
         'arrangement': {},
         'selection': {},
-        'title': {},
-        'trigger': {},
+        'title': {}, // optional
+        'trigger': {}, // optional
         'no-results': {},  // optional
     },
 
