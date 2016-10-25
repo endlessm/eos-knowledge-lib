@@ -64,13 +64,20 @@ function add_label (text) {
 }
 
 function add_file_chooser (globs) {
+    let inner_grid = new Gtk.Grid();
     let filter = new Gtk.FileFilter();
     globs.forEach(glob => filter.add_pattern(glob));
     let file_chooser = new Gtk.FileChooserButton({
         filter: filter,
         halign: Gtk.Align.START,
     });
-    grid.add(file_chooser);
+    let clear_button = Gtk.Button.new_from_icon_name('edit-delete-symbolic', Gtk.IconSize.BUTTON);
+    clear_button.no_show_all = true;
+    file_chooser.connect('selection-changed', () => clear_button.visible = !!file_chooser.get_filename());
+    clear_button.connect('clicked', () => file_chooser.unselect_all());
+    inner_grid.add(file_chooser);
+    inner_grid.add(clear_button);
+    grid.add(inner_grid);
     return file_chooser;
 }
 
@@ -127,7 +134,7 @@ add_label('Choose a stock theme (overrides application theme):');
 let stock_theme_chooser = new Gtk.ComboBoxText({
     halign: Gtk.Align.START,
 });
-['default', 'encyclopedia', 'news', 'buffet', 'preset_a', 'preset_b'].forEach((item) => {
+['', 'default', 'encyclopedia', 'news', 'buffet', 'preset_a', 'preset_b'].forEach((item) => {
     stock_theme_chooser.append(item, item);
 });
 grid.add(stock_theme_chooser);
