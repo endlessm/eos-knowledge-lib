@@ -184,7 +184,6 @@ done_button.connect('clicked', () => {
         win.set_sensitive(true);
         if (!GLib.spawn_check_exit_status(status))
             show_message('Something went wrong :(. Ask a developer.');
-        Gtk.main_quit();
     });
 });
 
