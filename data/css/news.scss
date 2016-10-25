@@ -104,9 +104,13 @@ $support-font: 'Fira Sans' !default;
 }
 
 .BannerSet {
+    margin-top: 40px;
     margin-bottom: 15px;
+
     .Card__title {
         color: white;
+        font-weight: bold;
+        padding-top: 50px;
     }
 }
 
