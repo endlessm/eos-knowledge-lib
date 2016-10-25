@@ -170,9 +170,11 @@ done_button.connect('clicked', () => {
     if (dummy_content_switch.get_active())
         args.push(' --dummy-content');
     win.get_window().cursor = Gdk.Cursor.new_for_display(Gdk.Display.get_default(), Gdk.CursorType.WATCH);
+    win.set_sensitive(false);
     let [, pid] = GLib.spawn_async(null, args, null, GLib.SpawnFlags.DO_NOT_REAP_CHILD, null, null);
     GLib.child_watch_add(GLib.PRIORITY_HIGH, pid, (pid, status) => {
         win.get_window().cursor = null;
+        win.set_sensitive(true);
         if (!GLib.spawn_check_exit_status(status))
             show_message('Something went wrong :(. Ask a developer.');
         Gtk.main_quit();
