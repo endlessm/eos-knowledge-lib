@@ -67,7 +67,7 @@ defines:
           content:
             shortdef: 'Layout.ArticleStack(do-sliding-animation: false)'
             slots:
-              card: Card.KnowledgeDocument
+              card: 'Card.KnowledgeDocument(show-titles: false)'
 
 root:
   shortdef: 'Controller.Mesh(theme: encyclopedia)'
