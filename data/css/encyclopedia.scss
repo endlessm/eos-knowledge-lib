@@ -82,10 +82,10 @@ $accent-light-color: #044a80 !default;
     .ContentGroupNoResultsMessage__title,
     .ContentGroupNoResultsMessage__subtitle {
         color: $black-60-color;
-        font-size: 1.25em;  /* 15px / 12px/em */
+        font-size: 15px;  /* 15px / 12px/em */
         font-style: normal;
         font-weight: normal;
-        padding: 2.0em 0 0 0;
+        padding: 24px 0 0 0;
     }
 
     .results-message-background {
@@ -93,11 +93,11 @@ $accent-light-color: #044a80 !default;
     }
 
     .Card {
-        padding-bottom: 1.5em;
+        padding-bottom: 18px;
 
         &__title {
             font-weight: normal;
-            font-size: 1.25em;  /* 15px / 12px/em */
+            font-size: 15px;
             color: #277090;
             padding: 0 0 0 0;
         }
@@ -112,7 +112,7 @@ $accent-light-color: #044a80 !default;
         min-width: 6px;
         min-height: 6px;
         color: rgba(145, 145, 145, 0.5);
-        padding-right: 0.6em;
+        padding-right: 7px;
     }
 
     .ArrangementList {
@@ -133,7 +133,7 @@ $accent-light-color: #044a80 !default;
 .BannerSearch {
     .search-page & {
         font-weight: 300;
-        font-size: 2em; /* 24px / 12px/em */
+        font-size: 24px;
         color: #7e7e7e;
         padding: 40px 0 20px;
     }
@@ -171,7 +171,7 @@ scrollbar {
 }
 
 .WebviewTooltip__label {
-    font-size: 1.3em; /* 16px / 12px/em */
+    font-size: 16px;
 }
 
 
