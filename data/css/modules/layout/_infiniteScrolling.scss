@@ -1,7 +1,5 @@
-scrollbar.vertical slider {
-    min-height: 100px;
-}
-
 .LayoutInfiniteScrolling {
-    background-color: $background-light-color;
+    scrollbar.vertical slider {
+        min-height: 100px;
+    }
 }

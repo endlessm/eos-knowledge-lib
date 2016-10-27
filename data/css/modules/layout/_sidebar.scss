@@ -1,6 +1,11 @@
 .LayoutSidebar {
     .sidebar {
+        .ArrangementList {
+            margin: 0px;
+        }
+
         .CardTitle {
+            margin: 0px;
             padding: 6px;
             border: 2px solid transparentize(white, 1);
             background-color: transparentize(white, 1);

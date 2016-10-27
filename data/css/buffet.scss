@@ -29,50 +29,12 @@ $logo-font: Lato !default;
 
 $title-alt-font: 'Lato Thin' !default;
 
-/* === Colors and Fonts === */
+@import "base";
 
-@import 'assets';
-@import 'colors';
-@import 'typography';
-
-/* === Modules === */
-
-@import 'modules/arrangement/half';
-@import 'modules/arrangement/list';
-@import 'modules/arrangement/piano';
-@import 'modules/arrangement/squareGuys';
-@import 'modules/arrangement/thirties';
-@import 'modules/arrangement/windshield';
-
-@import 'modules/banner/app';
-@import 'modules/banner/dynamic';
-@import 'modules/banner/context';
-
-@import 'modules/card/base';
-@import 'modules/card/deck';
-@import 'modules/card/knowledgeDocument';
-@import 'modules/card/list';
-@import 'modules/card/media';
-@import 'modules/card/post';
-@import 'modules/card/sequence';
-@import 'modules/card/thumb';
-@import 'modules/card/title';
-
-@import 'modules/contentGroup/contentGroup';
-@import 'modules/contentGroup/mediaLightbox';
-@import 'modules/contentGroup/noResultsMessage';
-
-@import 'modules/layout/infiniteScrolling';
-@import 'modules/layout/paginatedScrolling';
-@import 'modules/layout/responsiveMargins';
-@import 'modules/layout/scrolling';
-@import 'modules/layout/sideMenu';
-
-@import 'modules/navigation/searchBox';
-
-@import 'modules/pager/simple';
-
-@import 'modules/window/simple';
+.LayoutScrolling,
+.LayoutInfiniteScrolling {
+    background-color: $background-light-color;
+}
 
 /* === Modules (Overrides) === */
 

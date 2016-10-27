@@ -58,11 +58,12 @@ scss_theme_toplevels = \
 	$(srcdir)/data/css/preset_b.scss \
 	$(NULL)
 scss_theme_base_partials = \
+	$(srcdir)/data/css/_base.scss \
 	$(srcdir)/data/css/_assets.scss \
 	$(srcdir)/data/css/_project-setup.scss \
 	$(srcdir)/data/css/_colors.scss \
 	$(srcdir)/data/css/_typography.scss \
-	$(srcdir)/data/css/mesh.scss \
+	$(srcdir)/data/css/_mesh.scss \
 	$(NULL)
 scss_theme_arrangement_partials = \
 	$(srcdir)/data/css/modules/arrangement/_half.scss \

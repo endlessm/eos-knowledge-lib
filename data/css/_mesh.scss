@@ -1,6 +1,3 @@
-@import "project-setup";
-@import "compass";
-
 $primary-light-color: #eeccf8 !default;
 $primary-medium-color: #d64970 !default;
 $primary-dark-color: #2e3436 !default;
@@ -16,40 +13,10 @@ $legacy-post-card-border-color-hover: white !default;
 
 $body-font: 'Lato' !default;
 $title-font: 'Montserrat' !default;
-$title-font-composite: 'Roboto' !default;
 $display-font: 'Lato' !default;
 $display-font-composite: 'Roboto' !default;
 
-@import 'assets';
-@import 'colors';
-@import 'typography';
-
-@import 'modules/banner/app';
-@import 'modules/banner/dynamic';
-@import 'modules/banner/search';
-
-@import 'modules/card/base';
-@import 'modules/card/knowledgeDocument';
-@import 'modules/card/legacyPolaroid';
-@import 'modules/card/legacyPost';
-@import 'modules/card/media';
-
-@import 'modules/contentGroup/contentGroup';
-@import 'modules/contentGroup/mediaLightbox';
-@import 'modules/contentGroup/noResultsMessage';
-
-@import 'modules/documentCard/base';
-
-@import 'modules/layout/hamburgerBasement';
-@import 'modules/layout/navigation';
-@import 'modules/layout/paginatedScrolling';
-@import 'modules/layout/sidebar';
-
-@import 'modules/navigation/searchBox';
-
-@import 'modules/pager/parallaxBackground';
-
-@import 'modules/window/simple';
+@import "base";
 
 .WindowSimple {
     /* Changed color here so scrollbars are visible. Only affects smoke tests all
