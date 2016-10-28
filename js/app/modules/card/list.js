@@ -46,7 +46,7 @@ const List = new Module.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/list.ui',
-    InternalChildren: [ 'thumbnail-frame', 'content-frame', 'title-label', 'synopsis-label', 'navigation-context-label'],
+    InternalChildren: [ 'thumbnail-frame', 'inner-content-grid', 'title-label', 'synopsis-label', 'navigation-context-label'],
 
     _init: function (props={}) {
         this.parent(props);
@@ -58,37 +58,19 @@ const List = new Module.Class({
         if (this.navigation_context)
             this.set_label_or_hide(this._navigation_context_label, this.navigation_context);
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
-        this.set_size_request(Card.MinSize.D, Card.MinSize.A);
         this.update_card_sizing_classes(Card.MinSize.A, Card.MinSize.D);
         this._synopsis_label.visible = this.show_synopsis;
 
         Utils.set_hand_cursor_on_widget(this);
     },
 
-    _TEXT_SIZE_RATIO: 0.64,
     _IMAGE_WIDTH_RATIO: 1.5,
 
-    vfunc_size_allocate: function (alloc) {
-        let text_width = alloc.width * this._TEXT_SIZE_RATIO;
-        let image_width = alloc.height * this._IMAGE_WIDTH_RATIO;
-        let total_width, margin;
-        if (alloc.width > text_width + image_width) {
-            total_width = text_width + image_width;
-            margin = (alloc.width - total_width) / 2;
-        } else {
-            total_width = alloc.width;
-            margin = 0;
-        }
+    vfunc_get_request_mode: function () {
+        return Gtk.SizeRequestMode.WIDTH_FOR_HEIGHT;
+    },
 
-        let card_alloc = new Gdk.Rectangle({
-            x: alloc.x + margin,
-            y: alloc.y,
-            width: total_width,
-            height: alloc.height,
-        });
-
-        this.parent(card_alloc);
-
+    _get_margins: function () {
         let context = this.get_style_context();
         let flags = this.get_state_flags();
 
@@ -96,23 +78,50 @@ const List = new Module.Class({
         context.set_state(flags);
         let card_margins = context.get_margin(context.get_state());
         context.restore();
+        return card_margins;
+    },
+
+    vfunc_get_preferred_width_for_height: function (height) {
+        let card_margins = this._get_margins();
+        let image_height = height - (card_margins.top + card_margins.bottom);
+        let image_width = image_height * this._IMAGE_WIDTH_RATIO;
+
+        let [text_min, text_nat] = this._inner_content_grid.get_preferred_width();
+        return [text_min + image_width, text_nat + image_width];
+    },
+
+    vfunc_size_allocate: function (alloc) {
+        let card_margins = this._get_margins();
+
+        let image_height = alloc.height - (card_margins.top + card_margins.bottom);
+        let image_width = image_height * this._IMAGE_WIDTH_RATIO;
+        let total_content_width = alloc.width - (card_margins.left + card_margins.right);
+        let text_width = total_content_width -  image_width;
+
+        let card_alloc = new Gdk.Rectangle({
+            x: alloc.x,
+            y: alloc.y,
+            width: alloc.width,
+            height: alloc.height,
+        });
+
+        this.parent(card_alloc);
 
         let image_alloc = new Gdk.Rectangle({
-            x: alloc.x + margin + card_margins.left,
+            x: alloc.x + card_margins.left,
             y: alloc.y + card_margins.top,
-            width: image_width - (card_margins.left + card_margins.right),
-            height: alloc.height - (card_margins.top + card_margins.bottom),
+            width: image_width,
+            height: image_height,
         });
         this._thumbnail_frame.size_allocate(image_alloc);
 
         let text_alloc = new Gdk.Rectangle({
-            x: alloc.x + margin + image_width + card_margins.left,
+            x: alloc.x + image_width + card_margins.left,
             y: alloc.y + card_margins.top,
-            width: text_width - (card_margins.left + card_margins.right),
-            height: alloc.height - (card_margins.top + card_margins.bottom),
+            width: text_width,
+            height: image_height,
         });
-        this._content_frame.size_allocate(text_alloc);
-
+        this._inner_content_grid.size_allocate(text_alloc);
         this.update_card_sizing_classes(card_alloc.height, card_alloc.width);
     },
 
