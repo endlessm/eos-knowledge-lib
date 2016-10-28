@@ -1,0 +1,194 @@
+#!/usr/bin/env gjs
+
+const Gdk = imports.gi.Gdk;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const Gtk = imports.gi.Gtk;
+
+Gtk.init(null, 0);
+
+let CSS = '\
+#main-grid {\
+    padding: 10px;\
+}\
+#main-grid > * {\
+    margin: 2px 0px;\
+}\
+#main-grid > label {\
+    font-size: 18px;\
+}\
+#main-grid > separator {\
+    background-color: #777;\
+}\
+.header {\
+    padding-top: 20px; \
+    font-weight: bold; \
+}\
+';
+
+let provider = new Gtk.CssProvider();
+provider.load_from_data(CSS);
+let screen = Gdk.Screen.get_default();
+Gtk.StyleContext.add_provider_for_screen(screen, provider, 1000);
+
+let win = new Gtk.Window({
+    title: 'KA Customizer',
+    type_hint: Gdk.WindowTypeHint.DIALOG,
+    resizable: false,
+});
+win.connect('destroy', () => {
+    Gtk.main_quit();
+});
+
+let grid = new Gtk.Grid({
+    orientation: Gtk.Orientation.VERTICAL,
+    name: 'main-grid',
+});
+win.add(grid);
+
+// Helpers
+function add_header (text) {
+    let label = new Gtk.Label({
+        label: text,
+    });
+    label.get_style_context().add_class('header');
+    grid.add(label);
+    grid.add(new Gtk.Separator());
+}
+
+function add_label (text) {
+    grid.add(new Gtk.Label({
+        halign: Gtk.Align.START,
+        label: text,
+    }));
+}
+
+function add_file_chooser (globs) {
+    let inner_grid = new Gtk.Grid();
+    let filter = new Gtk.FileFilter();
+    globs.forEach(glob => filter.add_pattern(glob));
+    let file_chooser = new Gtk.FileChooserButton({
+        filter: filter,
+        halign: Gtk.Align.START,
+    });
+    let clear_button = Gtk.Button.new_from_icon_name('edit-delete-symbolic', Gtk.IconSize.BUTTON);
+    clear_button.no_show_all = true;
+    file_chooser.connect('selection-changed', () => clear_button.visible = !!file_chooser.get_filename());
+    clear_button.connect('clicked', () => file_chooser.unselect_all());
+    inner_grid.add(file_chooser);
+    inner_grid.add(clear_button);
+    grid.add(inner_grid);
+    return file_chooser;
+}
+
+function show_message (text) {
+    let dialog = new Gtk.MessageDialog({
+        message_type: Gtk.MessageType.ERROR,
+        text: text,
+        urgency_hint: true,
+        transient_for: win,
+        buttons: Gtk.ButtonsType.OK,
+    });
+    dialog.run();
+    dialog.destroy();
+}
+
+// App
+add_label('Choose a knowledge app:');
+let app_chooser = new Gtk.AppChooserButton({
+    halign: Gtk.Align.START,
+    show_default_item: true,
+});
+let selected_app_id = '';
+for (let app of Gio.app_info_get_all()) {
+    let app_id = app.get_id().split('.desktop')[0];
+    let match = app_id.match(/com\.endlessm\..+\.(.+)/);
+    if (match === null)
+        continue;
+    let locale = match[1];
+    // Check if knowledge app by looking for ekn directory
+    let eknDir = Gio.File.new_for_path('/var/lib/flatpak/app/' + app_id +
+                                       '/current/active/files/share/ekn');
+    if (!eknDir.query_exists(null))
+        continue;
+    app_chooser.append_custom_item(app_id,
+                                   app.get_name() + ' (' + locale + ')',
+                                   app.get_icon());
+}
+app_chooser.connect('custom-item-activated', (chooser, app_id) => {
+    selected_app_id = app_id;
+});
+grid.add(app_chooser);
+add_label('Update:');
+let update_switch = new Gtk.Switch({
+    halign: Gtk.Align.START,
+    active: true,
+});
+grid.add(update_switch);
+
+// Modules
+add_header('Modules');
+add_label('Choose a custom app json file (.yaml or .json):');
+let app_json_file_chooser = add_file_chooser(['*.json', '*.yaml']);
+
+// Theme
+add_header('Theme');
+add_label('Choose a stock theme (overrides application theme):');
+let stock_theme_chooser = new Gtk.ComboBoxText({
+    halign: Gtk.Align.START,
+});
+['', 'default', 'encyclopedia', 'news', 'buffet', 'preset_a', 'preset_b'].forEach((item) => {
+    stock_theme_chooser.append(item, item);
+});
+grid.add(stock_theme_chooser);
+add_label('OR choose a custom theme file (.scss or .css):');
+let theme_file_chooser = add_file_chooser(['*.css', '*.scss']);
+
+// Content
+add_header('Content');
+add_label('Use dummy content:');
+let dummy_content_switch = new Gtk.Switch({
+    halign: Gtk.Align.START,
+});
+grid.add(dummy_content_switch);
+
+// Runner
+let done_button = new Gtk.Button({
+    label: 'Done',
+    halign: Gtk.Align.END,
+});
+done_button.get_style_context().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+grid.add(done_button);
+done_button.connect('clicked', () => {
+    if (!selected_app_id) {
+        show_message('Choose an app!');
+        return;
+    }
+
+    let args = ['./ka-customizer-runner'];
+    if (update_switch.get_active()) {
+        show_message('Updating app and libraries, this may take a while...');
+        args.push('update');
+    }
+    args.push(selected_app_id);
+    if (app_json_file_chooser.get_filename())
+        args.push('--app-json-path', app_json_file_chooser.get_filename());
+    if (theme_file_chooser.get_filename())
+        args.push('--theme-overrides-path', theme_file_chooser.get_filename());
+    if (stock_theme_chooser.get_active_text())
+        args.push('--theme-name', stock_theme_chooser.get_active_text());
+    if (dummy_content_switch.get_active())
+        args.push(' --dummy-content');
+    win.get_window().cursor = Gdk.Cursor.new_for_display(Gdk.Display.get_default(), Gdk.CursorType.WATCH);
+    win.set_sensitive(false);
+    let [, pid] = GLib.spawn_async(null, args, null, GLib.SpawnFlags.DO_NOT_REAP_CHILD, null, null);
+    GLib.child_watch_add(GLib.PRIORITY_HIGH, pid, (pid, status) => {
+        win.get_window().cursor = null;
+        win.set_sensitive(true);
+        if (!GLib.spawn_check_exit_status(status))
+            show_message('Something went wrong :(. Ask a developer.');
+    });
+});
+
+win.show_all();
+Gtk.main();
