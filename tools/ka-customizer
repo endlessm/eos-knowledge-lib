@@ -105,12 +105,15 @@ for (let app of Gio.app_info_get_all()) {
     let match = app_id.match(/com\.endlessm\..+\.(.+)/);
     if (match === null)
         continue;
-    // Really bad heuristic for knowledge app detection. Check app id looks like
-    // com.endless.*.* and the last bit looks like a locale
     let locale = match[1];
-    if (locale.split('_')[0].length !== 2)
+    // Check if knowledge app by looking for ekn directory
+    let eknDir = Gio.File.new_for_path('/var/lib/flatpak/app/' + app_id +
+                                       '/current/active/files/share/ekn');
+    if (!eknDir.query_exists(null))
         continue;
-    app_chooser.append_custom_item(app_id, app.get_name() + ' (' + locale + ')', app.get_icon());
+    app_chooser.append_custom_item(app_id,
+                                   app.get_name() + ' (' + locale + ')',
+                                   app.get_icon());
 }
 app_chooser.connect('custom-item-activated', (chooser, app_id) => {
     selected_app_id = app_id;
