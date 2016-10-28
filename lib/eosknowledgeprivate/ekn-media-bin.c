@@ -31,10 +31,10 @@
 
 #define EMB_ICON_SIZE            GTK_ICON_SIZE_BUTTON
 
-#define EMB_ICON_NAME_PLAY       "gtk-media-play"
-#define EMB_ICON_NAME_PAUSE      "gtk-media-pause"
-#define EMB_ICON_NAME_FULLSCREEN "view-fullscreen"
-#define EMB_ICON_NAME_RESTORE    "view-restore"
+#define EMB_ICON_NAME_PLAY       "ekn-media-bin-play"
+#define EMB_ICON_NAME_PAUSE      "ekn-media-bin-pause"
+#define EMB_ICON_NAME_FULLSCREEN "ekn-media-bin-fullscreen"
+#define EMB_ICON_NAME_RESTORE    "ekn-media-bin-restore"
 
 GST_DEBUG_CATEGORY_STATIC (ekn_media_bin_debug);
 #define GST_CAT_DEFAULT ekn_media_bin_debug
@@ -63,6 +63,7 @@ typedef struct
 
   /* Internal Widgets */
   GtkWidget      *overlay;
+  GtkWidget      *play_box;
   GtkButton      *playback_button;
   GtkImage       *playback_image;
   GtkScaleButton *volume_button;
@@ -372,8 +373,8 @@ on_progress_scale_format_value (GtkScale    *scale,
                                 gdouble      value,
                                 EknMediaBin *self)
 {
-  /* Pad it with spaces, since CSS padding does not work properly in scale value gadget */
-  return g_strdup_printf (" %s ", format_time (value));
+  /* FIXME: CSS padding does not work as expected, add some padding here */
+  return g_strdup_printf ("  %s  ", format_time (value));
 }
 
 static void
@@ -643,6 +644,12 @@ ekn_media_bin_init (EknMediaBin *self)
   popup = gtk_scale_button_get_popup (GTK_SCALE_BUTTON (priv->volume_button));
   g_signal_connect (popup, "show", G_CALLBACK (on_volume_popup_show), self);
   g_signal_connect (popup, "hide", G_CALLBACK (on_volume_popup_hide), self);
+
+  gtk_style_context_add_class (gtk_widget_get_style_context (popup), "ekn-media-bin");
+
+  /* Hide volume popup buttons */
+  gtk_widget_hide (gtk_scale_button_get_plus_button (GTK_SCALE_BUTTON (priv->volume_button)));
+  gtk_widget_hide (gtk_scale_button_get_minus_button (GTK_SCALE_BUTTON (priv->volume_button)));
 }
 
 static void
@@ -872,6 +879,7 @@ ekn_media_bin_class_init (EknMediaBinClass *klass)
   gtk_widget_class_set_template_from_resource (widget_class, "/com/endlessm/knowledge-private/EknMediaBin.ui");
 
   gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, overlay);
+  gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, play_box);
   gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, playback_button);
   gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, playback_image);
   gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, playback_adjustment);
@@ -902,6 +910,10 @@ ekn_media_bin_class_init (EknMediaBinClass *klass)
   if (gdk_screen_get_default ())
     {
       GtkCssProvider *css_provider = gtk_css_provider_new ();
+
+      /* Add custom icons to default theme */
+      gtk_icon_theme_add_resource_path (gtk_icon_theme_get_default (), "/com/endlessm/knowledge-private");
+
       gtk_css_provider_load_from_resource (css_provider, "/com/endlessm/knowledge-private/ekn-media-bin.css");
       gtk_style_context_add_provider_for_screen (gdk_screen_get_default (),
                                                  GTK_STYLE_PROVIDER (css_provider),
@@ -911,7 +923,7 @@ ekn_media_bin_class_init (EknMediaBinClass *klass)
 
   /* Init GStreamer */
   gst_init_check (NULL, NULL, NULL);
-  GST_DEBUG_CATEGORY_INIT (ekn_media_bin_debug,"EknMediaBin", 0, "EknMediaBin audio/video widget");
+  GST_DEBUG_CATEGORY_INIT (ekn_media_bin_debug, "EknMediaBin", 0, "EknMediaBin audio/video widget");
 }
 
 /*************************** Fullscreen Window Type ***************************/
@@ -981,6 +993,42 @@ format_time (gint time)
                 TIME_SECONDS (time));
 
   return (const gchar *) buffer;
+}
+
+static void
+on_widget_style_updated (GtkWidget *widget, gpointer data)
+{
+  gboolean visible = GPOINTER_TO_INT (data);
+  gdouble opacity;
+
+  gtk_style_context_get (gtk_widget_get_style_context (widget),
+                         gtk_widget_get_state_flags (widget),
+                         "opacity", &opacity, NULL);
+
+  if ((visible && opacity >= 1.0) || (!visible && opacity == 0.0))
+    {
+      gtk_widget_set_visible (widget, visible);
+      g_signal_handlers_disconnect_by_func (widget, on_widget_style_updated, data);
+    }
+}
+
+static void
+widget_set_visible (GtkWidget *widget, gboolean visible)
+{
+  GtkStyleContext *context = gtk_widget_get_style_context (widget);
+
+  g_signal_handlers_disconnect_by_func (widget, on_widget_style_updated, GINT_TO_POINTER (TRUE));
+  g_signal_handlers_disconnect_by_func (widget, on_widget_style_updated, GINT_TO_POINTER (FALSE));
+
+  gtk_style_context_remove_class (context, visible ? "hide" : "show");
+  gtk_style_context_add_class (context, visible ? "show" : "hide");
+
+  if (visible)
+    gtk_widget_show (widget);
+
+  g_signal_connect (widget, "style-updated",
+                    G_CALLBACK (on_widget_style_updated),
+                    GINT_TO_POINTER (visible));
 }
 
 /* The following macros are used to define generic getters and setters */
@@ -1115,11 +1163,13 @@ ekn_media_bin_handle_msg_state_changed (EknMediaBin *self, GstMessage *msg)
   /* Update UI */
   if (new_state == GST_STATE_PAUSED)
     {
+      widget_set_visible (priv->play_box, TRUE);
       gtk_image_set_from_icon_name (priv->playback_image, EMB_ICON_NAME_PLAY, EMB_ICON_SIZE);
       ekn_media_bin_update_duration (self);
     }
   else if (new_state == GST_STATE_PLAYING)
     {
+      widget_set_visible (priv->play_box, FALSE);
       gtk_image_set_from_icon_name (priv->playback_image, EMB_ICON_NAME_PAUSE, EMB_ICON_SIZE);
       priv->tick_id = gtk_widget_add_tick_callback (GTK_WIDGET (self),
                                                     ekn_media_bin_tick_callback,
