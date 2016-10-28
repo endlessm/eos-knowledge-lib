@@ -116,6 +116,11 @@ $support-font: 'Fira Sans' !default;
 
 .search-results {
     background-color: transparent;
+    .CardList {
+        &__thumbnail {
+            min-height: 200px;
+        }
+    }
 }
 
 .ContentGroupNoResultsMessage {
@@ -140,6 +145,15 @@ $support-font: 'Fira Sans' !default;
 
 .search-page .LayoutDynamicBackground {
     -EknLayout_DynamicBackground-background-height: 250px;
+}
+
+.article-page {
+    .CardList {
+        margin: 0 100px 10px 100px;
+        &__thumbnail {
+            min-height: 135px;
+        }
+    }
 }
 
 .CardPost,
