@@ -124,19 +124,14 @@ const ResponsiveMargins = new Module.Class({
         let margins = this._get_responsive_margins();
         let [min_size, nat_size] = this.get_preferred_size();
         let base_min_width = min_size.width - margins.tiny.left - margins.tiny.right;
-        let base_min_height = min_size.height - margins.tiny.top - margins.tiny.bottom;
         let margin = margins.tiny;
         ['small', 'medium', 'large', 'xlarge'].forEach((modifier) => {
             let min_width = margins[modifier].left + margins[modifier].right + base_min_width;
-            let min_height = margins[modifier].top + margins[modifier].bottom + base_min_height;
-            if (alloc.width >= Math.max(min_width, this._thresholds[modifier]) &&
-                alloc.height >= min_height)
+            if (alloc.width >= Math.max(min_width, this._thresholds[modifier]))
                 margin = margins[modifier];
         });
         alloc.x += margin.left;
-        alloc.y += margin.top;
         alloc.width -= margin.left + margin.right;
-        alloc.height -= margin.top + margin.bottom;
         this.get_child().size_allocate(alloc);
         Utils.set_container_clip(this);
     },
