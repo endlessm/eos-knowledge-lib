@@ -8,6 +8,7 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
+const System = imports.system;
 
 const Actions = imports.app.actions;
 const Config = imports.app.config;
@@ -236,8 +237,10 @@ const Application = new Knowledge.Class({
         [theme_file,] = Gio.File.new_tmp(null);
         theme_file.replace_contents(contents, null, false, 0, null);
         let [, stdout, stderr, status] = GLib.spawn_command_line_sync(SCSS_COMMAND + theme_file.get_path());
-        if (status !== 0)
-            throw new Error(stderr.toString());
+        if (status !== 0) {
+            printerr(new Error(stderr.toString()));
+            System.exit(1);
+        }
         return stdout.toString();
     },
 
@@ -256,8 +259,10 @@ const Application = new Knowledge.Class({
         [app_json_file,] = Gio.File.new_tmp(null);
         app_json_file.replace_contents(contents, null, false, 0, null);
         let [, stdout, stderr, status] = GLib.spawn_command_line_sync(AUTOBAHN_COMMAND + app_json_file.get_path());
-        if (status !== 0)
-            throw new Error(stderr.toString());
+        if (status !== 0) {
+            printerr(new Error(stderr.toString()));
+            System.exit(1);
+        }
         return stdout.toString();
     },
 
