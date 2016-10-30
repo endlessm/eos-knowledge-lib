@@ -1,6 +1,5 @@
 #!/bin/bash
 
-export GJS_PATH="%jsdir%${GJS_PATH:+:$GJS_PATH}"
 export GI_TYPELIB_PATH="%typelibdir%${GI_TYPELIB_PATH:+:$GI_TYPELIB_PATH}"
 export LD_LIBRARY_PATH="%pkglibdir%${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 
@@ -20,8 +19,9 @@ fi
 SCRIPT="const Gio = imports.gi.Gio;
 Gio.Resource.load('%pkgdatadir%/eos-knowledge.gresource')._register();
 imports.searchPath.unshift('resource:///com/endlessm/knowledge/js');
+imports.searchPath.unshift('resource:///com/endlessm/knowledge/tools');
 
-const Eminem = imports.tools.eminem;
-Eminem.main();"
+const Picard = imports.picard;
+Picard.main();"
 
 exec $DEBUG_COMMAND gjs -c "$SCRIPT" "$@"

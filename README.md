@@ -98,7 +98,6 @@ Here's an overview of what's in each directory:
     - `modules/` - the modular UI blocks (see below)
     - `widgets/` - some GTK widgets for UI code that are not modular UI blocks
   - `search/` - library for accessing databases of offline content
-  - `tools/` - various testing and development tools
 - `lib/` - C library code
   - `eosknowledgeprivate/` - introspectable C wrappers for `js/app/`
   - `eosknowledgesearchprivate/` - introspectable C wrappers for `js/search/`
@@ -110,6 +109,7 @@ Here's an overview of what's in each directory:
   - `autobahn/` - integration tests for the Autobahn YAML processor
   - `js/` - unit tests for the `js/app` and `js/search` libraries
   - `test-content/` - sample content for some tests
+- `tools/` - various testing and development tools
 
 Modular UI blocks
 -----------------

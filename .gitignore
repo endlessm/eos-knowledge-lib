@@ -12,9 +12,9 @@
 /js/app/config.js.in
 /js/search/config.js
 /ekn-app-runner
-/eminem
-/kermit
-/picard
+tools/eminem
+tools/kermit
+tools/picard
 /ekn-downloader
 /ekn-search-provider
 /eos-encyclopedia

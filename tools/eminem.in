@@ -19,8 +19,9 @@ fi
 SCRIPT="const Gio = imports.gi.Gio;
 Gio.Resource.load('%pkgdatadir%/eos-knowledge.gresource')._register();
 imports.searchPath.unshift('resource:///com/endlessm/knowledge/js');
+imports.searchPath.unshift('resource:///com/endlessm/knowledge/tools');
 
-const Kermit = imports.tools.kermit;
-Kermit.main();"
+const Eminem = imports.eminem;
+Eminem.main();"
 
 exec $DEBUG_COMMAND gjs -c "$SCRIPT" "$@"

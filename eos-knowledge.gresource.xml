@@ -207,8 +207,8 @@
     <file>js/search/treeNode.js</file>
     <file>js/search/utils.js</file>
     <file>js/search/xapianBridge.js</file>
-    <file>js/tools/eminem.js</file>
-    <file>js/tools/kermit.js</file>
-    <file>js/tools/picard.js</file>
+    <file>tools/eminem.js</file>
+    <file>tools/kermit.js</file>
+    <file>tools/picard.js</file>
   </gresource>
 </gresources>
