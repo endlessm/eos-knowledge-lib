@@ -23,3 +23,23 @@ be able to run this tool, so download some from the app store first.
 
 The only required thing to select in the KA Customizer dialog is the knowledge
 app to run. Other than that, only tweak what you need to tweak!
+
+Kermit
+------
+Kermit is a shard inspection utility for Knowledge Apps. It is included in the
+com.endless.Platform flatpak runtime.
+
+Eminem
+------
+Eminem is a subscription inspection utility for Knowledge Apps. It is included
+in the com.endless.Platform flatpak runtime.
+
+Autobahn
+--------
+Autobahn is a utility for compiling yaml preset descriptions to json. It is
+included in the com.endlessm.Sdk flatpak runtime.
+
+Picard
+------
+Picard is a tool for previewing card types and arrangements. It is included in
+the com.endlessm.Sdk flatpak runtime.

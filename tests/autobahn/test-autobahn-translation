@@ -3,4 +3,4 @@
 input="$G_TEST_SRCDIR/autobahn/basic.yaml"
 expected=${input/.yaml/-translated.json}
 po=${input/.yaml/.po}
-"$G_TEST_SRCDIR/../autobahn" "$input" --translations "$po" | diff -u "$expected" -
+"$G_TEST_SRCDIR/../tools/autobahn" "$input" --translations "$po" | diff -u "$expected" -

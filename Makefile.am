@@ -353,9 +353,9 @@ subst_files = \
 	ekn-app-runner \
 	js/app/config.js \
 	js/search/config.js \
-	eminem \
-	kermit \
-	picard \
+	tools/eminem \
+	tools/kermit \
+	tools/picard \
 	$(NULL)
 
 $(subst_files): %: %.in Makefile
@@ -367,10 +367,10 @@ EXTRA_DIST += $(patsubst %,%.in,$(subst_files))
 
 bin_SCRIPTS += \
 	ekn-app-runner \
-	autobahn \
-	eminem \
-	kermit \
-	picard \
+	tools/autobahn \
+	tools/eminem \
+	tools/kermit \
+	tools/picard \
 	$(NULL)
 
 dist_pkgdata_DATA = data/downloader.ini
@@ -426,7 +426,7 @@ dist_yamlpreset_DATA = \
 	$(NULL)
 
 EXTRA_DIST += \
-	autobahn \
+	tools/autobahn \
 	data/eos-knowledge-0.pc.in
 
 # # # TESTS # # #
