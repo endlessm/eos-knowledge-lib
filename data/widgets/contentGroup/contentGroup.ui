@@ -11,8 +11,9 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkGrid">
-        <property name="visible">True</property>
+      <object class="GtkGrid" id="error-page">
+        <property name="visible">False</property>
+        <property name="no_show_all">True</property>
         <property name="can_focus">False</property>
         <property name="hexpand">True</property>
         <property name="vexpand">True</property>

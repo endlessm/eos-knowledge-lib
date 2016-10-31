@@ -9,6 +9,7 @@ defines:
     properties:
       halign: center
       valign: start
+      vexpand: true
       max-children-per-line: 7
       min-children-per-line: 3
     slots:
