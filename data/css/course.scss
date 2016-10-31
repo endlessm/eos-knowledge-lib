@@ -100,6 +100,21 @@ $support-font: 'Montserrat' !default;
 
   .playlist {
     margin: 40px 0px;
+    min-width: 975px;
+    .CardList {
+      background-color: $background-color;
+      box-shadow: none;
+      margin: 0px 0px 2px 0px;
+      &__title {
+        font-size: 1.5em;
+        color: $primary-medium-color;
+        font-weight: normal;
+      }
+
+      &__thumbnail {
+          min-height: 150px;
+      }
+    }
   }
 
   .intro-video {

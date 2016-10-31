@@ -1,9 +1,16 @@
+const Gdk = imports.gi.Gdk;
+
 const Actions = imports.app.actions;
+const ContentObjectModel = imports.search.contentObjectModel;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryStore = imports.app.historyStore;
 const Lightbox = imports.app.widgets.lightbox;
+const MediaObjectModel = imports.search.mediaObjectModel;
 const Module = imports.app.interfaces.module;
+const PDFView = imports.app.widgets.PDFView;
+
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 
 /**
  * Class: MediaLightbox
@@ -30,7 +37,7 @@ const MediaLightbox = new Module.Class({
         // Lock to ensure we're only loading one lightbox media object at a time
         this._loading_new_lightbox = false;
         this._current_index = -1;
-        this._article_model = null;
+        this._context = null;
 
         this.add(this.create_submodule('content'));
 
@@ -44,7 +51,8 @@ const MediaLightbox = new Module.Class({
     _on_history_changed: function () {
         let item = HistoryStore.get_default().get_current_item();
         if (item.media_model) {
-            this._article_model = item.model;
+            this._context = item.context;
+            // this._article_model = item.model;
             this._preview_media_object(item.media_model);
         } else {
             this.reveal_overlays = false;
@@ -66,44 +74,80 @@ const MediaLightbox = new Module.Class({
     },
 
     _lightbox_shift_image: function (delta) {
-        if (this._article_model === null)
+        if (this._context === null)
             return;
         if (this._loading_new_lightbox)
             return;
 
         this._loading_new_lightbox = true;
         let new_index = this._current_index + delta;
-        let resource_id = this._article_model.resources[new_index];
-        Engine.get_default().get_object_by_id(resource_id, null, (engine, task) => {
+        let resource = this._context[new_index];
+        if (resource instanceof ContentObjectModel.ContentObjectModel) {
+            this._preview_media_object(resource);
             this._loading_new_lightbox = false;
-            let media_object;
-            try {
-                media_object = engine.get_object_by_id_finish(task);
-            } catch (error) {
-                logError(error);
-                return;
-            }
+        } else {
+            Engine.get_default().get_object_by_id(resource, null, (engine, task) => {
+                this._loading_new_lightbox = false;
+                let media_object;
+                try {
+                    media_object = engine.get_object_by_id_finish(task);
+                } catch (error) {
+                    logError(error);
+                    return;
+                }
 
-            // If the next object is not the last, the forward arrow should be displayed.
-            this._preview_media_object(media_object);
-            this._loading_new_lightbox = false;
-        });
+                // If the next object is not the last, the forward arrow should be displayed.
+                this._preview_media_object(media_object);
+                this._loading_new_lightbox = false;
+            });
+        }
     },
 
     _preview_media_object: function (media_object) {
-        if (this._article_model === null)
+        if (this._context === null)
             return;
-        let resources = this._article_model.resources;
-        this._current_index = resources.indexOf(media_object.ekn_id);
+        let resources = this._context;
+
+        this._current_index = resources.map((item) => {
+            if (item instanceof ContentObjectModel.ContentObjectModel) {
+                return item.ekn_id;
+            }
+            return item;
+        }).indexOf(media_object.ekn_id);
+
         if (this._current_index === -1)
             return;
 
         if (this.lightbox_widget)
             this.drop_submodule(this.lightbox_widget);
-        let card = this.create_submodule('card', {
+
+        let widget = this.create_submodule('card', {
             model: media_object
         });
-        this.lightbox_widget = card;
+
+        // Lightboxes may need to show a variety of different content, in which
+        // case a single card type may not fit all needs. If no card type is
+        // specified, try to determine content type and show it accordingly.
+        let content_type = media_object.content_type;
+        if (widget === null) {
+            if (media_object instanceof MediaObjectModel.VideoObjectModel) {
+                widget = new EosKnowledgePrivate.MediaBin();
+                widget.set_uri('file:///home/endless/checkout/eos-knowledge-lib/YUaYs_7vGAI.mp4')
+            } else if (content_type === 'application/pdf') {
+                let stream = media_object.get_content_stream();
+                widget = new PDFView.PDFView({
+                    expand: true,
+                    // FIXME: Is this gross? Any way to make it less gross?
+                    height_request: Gdk.Screen.get_default().get_height(),
+                    visible: true,
+                });
+                widget.load_stream(stream, content_type);
+            } else {
+                printerr("Lightbox does not support this content type " + content_type);
+                return;
+            }
+        }
+        this.lightbox_widget = widget;
         this.reveal_overlays = true;
         this.has_back_button = this._current_index > 0;
         this.has_forward_button = this._current_index < resources.length - 1;

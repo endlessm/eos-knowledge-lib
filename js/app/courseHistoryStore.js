@@ -10,6 +10,7 @@ const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryItem = imports.app.historyItem;
 const HistoryStore = imports.app.historyStore;
+const MediaObjectModel = imports.search.mediaObjectModel;
 const Pages = imports.app.pages;
 const QueryObject = imports.search.queryObject;
 const SetMap = imports.app.setMap;
@@ -45,6 +46,11 @@ const CourseHistoryStore = new GObject.Class({
                         } else {
                             this.set_current_subset(payload.model);
                         }
+                    } else {
+                        this.set_current_item_from_props({
+                            media_model: payload.model,
+                            context: payload.context,
+                        });
                     }
                 }
                     break;

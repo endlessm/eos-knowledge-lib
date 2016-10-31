@@ -111,7 +111,7 @@ defines:
                           slots:
                             card:
                               shortdef: 'Card.List(hexpand: true)'
-                        selection: Selection.AllHighlights
+                        selection: Selection.ContentForSet
                 selection:
                   shortdef: 'Selection.SubsetsForSet(track-subset: true)'
         - shortdef: 'ContentGroup.ContentGroup(paginate: true, cards-per-page: 3)'
@@ -147,7 +147,6 @@ root:
         content:
           type: ContentGroup.MediaLightbox
           slots:
-            card: Card.Media
             content:
               type: Layout.Navigation
               slots:
