@@ -115,6 +115,7 @@ const ContentGroup = new Module.Class({
         let builder = Gtk.Builder.new_from_resource('/com/endlessm/knowledge/data/widgets/contentGroup/contentGroup.ui');
         this._stack = builder.get_object('stack');
         this._log_button = builder.get_object('log-button');
+        this._error_page = builder.get_object('error-page');
 
         // FIXME: extend the stack clip to cover its children clip.
         // https://bugzilla.gnome.org/show_bug.cgi?id=771436
@@ -170,6 +171,7 @@ const ContentGroup = new Module.Class({
             // When the spinner is not being shown on screen, set it to
             // be inactive to help with performance.
             spinner.active = spinner.visible = this._selection.loading;
+            this._error_page.visible = !!this._selection.error;
             if (this._selection.error)
                 this._stack.visible_child_name = ERROR_PAGE_NAME;
             else
