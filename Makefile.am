@@ -466,6 +466,7 @@ javascript_tests = \
 	tests/js/app/modules/card/testText.js \
 	tests/js/app/modules/card/testThumb.js \
 	tests/js/app/modules/card/testTitle.js \
+	tests/js/app/modules/card/testVideo.js \
 	tests/js/app/modules/contentGroup/testContentGroup.js \
 	tests/js/app/modules/contentGroup/testMediaLightbox.js \
 	tests/js/app/modules/controller/testBuffet.js \
