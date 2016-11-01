@@ -227,9 +227,6 @@ CLEANFILES += $(BUILT_SOURCES)
 
 EXTRA_DIST += \
 	lib/eosknowledgeprivate/ekn-resources.gresource.xml \
-	lib/eosknowledgeprivate/EknRuntimeDocumentViewer.ui \
-	lib/eosknowledgeprivate/EknMediaBin.ui \
-	lib/eosknowledgeprivate/ekn-media-bin.css \
 	$(private_resource_deps) \
 	$(NULL)
 
