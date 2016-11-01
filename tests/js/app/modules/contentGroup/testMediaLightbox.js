@@ -49,7 +49,7 @@ describe('ContentGroup.MediaLightbox', function () {
     it('shows a media object on change to history item with media model', function () {
         store.set_current_item_from_props({
             page_type: Pages.ARTICLE,
-            model: article_model,
+            context: article_model.resources,
             media_model: media_model,
         });
         expect(module.reveal_overlays).toBeTruthy();
@@ -59,7 +59,7 @@ describe('ContentGroup.MediaLightbox', function () {
     it('loads media into lightbox if and only if it is a member of article\'s resource array', function () {
         store.set_current_item_from_props({
             page_type: Pages.ARTICLE,
-            model: article_model,
+            context: article_model.resources,
             media_model: media_model,
         });
         expect(factory.get_created('card').length).toBe(1);
@@ -69,7 +69,7 @@ describe('ContentGroup.MediaLightbox', function () {
         });
         store.set_current_item_from_props({
             page_type: Pages.ARTICLE,
-            model: article_model,
+            context: article_model.resources,
             media_model: nonexistent_media_object,
         });
         expect(factory.get_created('card').length).toBe(1);
@@ -78,7 +78,7 @@ describe('ContentGroup.MediaLightbox', function () {
     it('closes the lightbox on history item without media model', function () {
         store.set_current_item_from_props({
             page_type: Pages.ARTICLE,
-            model: article_model,
+            context: article_model.resources,
             media_model: media_model,
         });
         expect(module.reveal_overlays).toBeTruthy();
