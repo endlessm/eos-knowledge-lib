@@ -263,6 +263,7 @@ const HistoryStore = new Lang.Class({
                 this.set_current_item_from_props({
                     page_type: old_item.page_type,
                     model: old_item.model,
+                    context: old_item.model ? old_item.model.resources : [],
                     media_model: model,
                 });
             }
