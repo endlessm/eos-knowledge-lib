@@ -219,15 +219,15 @@ BUILT_SOURCES = \
 	lib/eosknowledgeprivate/ekn-resources.c \
 	$(NULL)
 
-lib/eosknowledgeprivate/ekn-resources.c: $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies --sourcedir=$(srcdir)/lib/eosknowledgeprivate/ $(srcdir)/lib/eosknowledgeprivate/ekn-resources.gresource.xml)
+private_resource_deps := $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies --sourcedir=$(srcdir)/lib/eosknowledgeprivate/ $(srcdir)/lib/eosknowledgeprivate/ekn-resources.gresource.xml)
+
+lib/eosknowledgeprivate/ekn-resources.c: $(private_resource_deps)
 
 CLEANFILES += $(BUILT_SOURCES)
 
 EXTRA_DIST += \
 	lib/eosknowledgeprivate/ekn-resources.gresource.xml \
-	lib/eosknowledgeprivate/EknRuntimeDocumentViewer.ui \
-	lib/eosknowledgeprivate/EknMediaBin.ui \
-	lib/eosknowledgeprivate/ekn-media-bin.css \
+	$(private_resource_deps) \
 	$(NULL)
 
 eosknowledgeprivate_headers = \
