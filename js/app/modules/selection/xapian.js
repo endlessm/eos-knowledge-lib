@@ -135,20 +135,23 @@ const Xapian = new Module.Class({
                 });
             }
 
+            let new_query = false;
             if (!more_results_query) {
                 this._query_index++;
+                new_query = true;
                 more_results_query = this.construct_query_object(num_desired, this._query_index);
             }
 
             this._next_query = more_results_query;
-            let can_load_more = !!more_results_query && (info.upper_bound > results.length);
+            let can_load_more = !!more_results_query && (info.upper_bound > results.length || new_query);
             if (can_load_more !== this._can_load_more) {
                 this._can_load_more = can_load_more;
                 this.notify('can-load-more');
             }
 
-            if (num_results_added < num_desired && this._can_load_more)
+            if (num_results_added < num_desired && this._can_load_more) {
                 this.queue_load_more(num_desired - num_results_added);
+            }
 
             this.emit_models_when_not_animating();
         });
