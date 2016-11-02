@@ -430,22 +430,27 @@ static inline GtkWidget *
 ekn_media_bin_video_image_new (EknMediaBin *self)
 {
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
-  GtkWidget *retval;
-  GdkPixbuf *scaled;
-  gint width, height, w, h;
-  gdouble scale;
+  GtkWidget *retval, *video_widget;
+  GdkPixbuf *pixbuf;
+  gint w, h;
+  cairo_t *cr;
+  cairo_surface_t *surface;
 
-  if (!ekn_media_bin_get_sample_size (self, NULL, &w, &h))
-    return gtk_image_new ();
+  video_widget = gtk_bin_get_child (GTK_BIN (priv->overlay));
+  w = gtk_widget_get_allocated_width (video_widget);
+  h = gtk_widget_get_allocated_height (video_widget);
 
-  width  = gtk_widget_get_allocated_width (priv->overlay);
-  height = gtk_widget_get_allocated_height (priv->overlay);
-  scale  = MIN (width / (gdouble)w, height / (gdouble)h);
+  surface = cairo_image_surface_create (CAIRO_FORMAT_RGB24, w, h);
+  cr = cairo_create (surface);
+  gtk_widget_draw (video_widget, cr);
 
-  scaled = ekn_media_bin_screenshot (self, w*scale, h*scale);
-  retval = gtk_image_new_from_pixbuf (scaled);
+  pixbuf = gdk_pixbuf_get_from_surface (surface, 0, 0, w, h);
+  retval = gtk_image_new_from_pixbuf (pixbuf);
   g_object_set (retval, "expand", TRUE, NULL);
-  g_object_unref (scaled);
+
+  cairo_destroy (cr);
+  cairo_surface_destroy (surface);
+  g_object_unref (pixbuf);
 
   return retval;
 }
@@ -1759,6 +1764,7 @@ ekn_media_bin_screenshot (EknMediaBin *self, gint width, gint height)
 
   if (!sample || !ekn_media_bin_get_sample_size (self, sample, &width, &height))
     {
+      /* FIXME: gst does not suport converting from video/x-raw(memory:GLMemory) */
       g_warning ("Could not get video sample");
       return NULL;
     }
