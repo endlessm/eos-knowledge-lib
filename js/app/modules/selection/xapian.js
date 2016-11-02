@@ -30,7 +30,7 @@ const Xapian = new Module.Class({
     _init: function (props={}) {
         this._loading = false;
         this._can_load_more = true;
-        this._get_more = null;
+        this._next_query = null;
         this._query_index = 0;
         this._error_state = false;
         this._exception = null;
@@ -61,7 +61,7 @@ const Xapian = new Module.Class({
             return;
 
         let engine = Engine.get_default();
-        let query = this._get_more;
+        let query = this._next_query;
 
         if (!query) {
             let limit = num_desired;
@@ -140,7 +140,7 @@ const Xapian = new Module.Class({
                 more_results_query = this.construct_query_object(num_desired, this._query_index);
             }
 
-            this._get_more = more_results_query;
+            this._next_query = more_results_query;
             let can_load_more = !!more_results_query && (info.upper_bound > results.length);
             if (can_load_more !== this._can_load_more) {
                 this._can_load_more = can_load_more;
@@ -155,7 +155,7 @@ const Xapian = new Module.Class({
     },
 
     clear: function () {
-        this._get_more = null;
+        this._next_query = null;
         this._query_index = 0;
 
         let old_value = this._can_load_more;
