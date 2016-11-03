@@ -30,7 +30,7 @@ const Xapian = new Module.Class({
     _init: function (props={}) {
         this._loading = false;
         this._can_load_more = true;
-        this._get_more = null;
+        this._next_query = null;
         this._query_index = 0;
         this._error_state = false;
         this._exception = null;
@@ -61,7 +61,7 @@ const Xapian = new Module.Class({
             return;
 
         let engine = Engine.get_default();
-        let query = this._get_more;
+        let query = this._next_query;
 
         if (!query) {
             let limit = num_desired;
@@ -135,27 +135,30 @@ const Xapian = new Module.Class({
                 });
             }
 
+            let new_query = false;
             if (!more_results_query) {
                 this._query_index++;
+                new_query = true;
                 more_results_query = this.construct_query_object(num_desired, this._query_index);
             }
 
-            this._get_more = more_results_query;
-            let can_load_more = !!more_results_query && (info.upper_bound > results.length);
+            this._next_query = more_results_query;
+            let can_load_more = !!more_results_query && (info.upper_bound > results.length || new_query);
             if (can_load_more !== this._can_load_more) {
                 this._can_load_more = can_load_more;
                 this.notify('can-load-more');
             }
 
-            if (num_results_added < num_desired && this._can_load_more)
+            if (num_results_added < num_desired && this._can_load_more) {
                 this.queue_load_more(num_desired - num_results_added);
+            }
 
             this.emit_models_when_not_animating();
         });
     },
 
     clear: function () {
-        this._get_more = null;
+        this._next_query = null;
         this._query_index = 0;
 
         let old_value = this._can_load_more;
