@@ -241,6 +241,13 @@ use the latest stable release branch from GNOME if you prefer that.
     </dependencies>
   </autotools>
 
+  <autotools id="emeus">
+    <branch repo="github" module="ebassi/emeus"/>
+    <dependencies>
+      <dep package="gtk+"/>
+    </dependencies>
+  </autotools>
+
   <!-- GNOME DEPENDENCIES -->
 
   <autotools id="glib" autogenargs="--enable-installed-tests">
