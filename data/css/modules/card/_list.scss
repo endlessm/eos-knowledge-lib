@@ -30,6 +30,10 @@
         font-size: 14px;
     }
 
+    &__content_grid {
+        padding: 20px;
+    }
+
     &:hover &__title {
         color: $primary-light-color;
     }
@@ -51,9 +55,8 @@
         font-size: 35px;
     }
 
-    &.width-e &__contentFrame,
-    &.width-f &__contentFrame {
-        padding: 20px;
+    &.width-h &__title {
+        font-size: 35px;
     }
 
     .composite &.width-d &__title,
