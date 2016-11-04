@@ -41,5 +41,17 @@ included in the com.endlessm.Sdk flatpak runtime.
 
 Picard
 ------
-Picard is a tool for previewing card types and arrangements. It is included in
-the com.endlessm.Sdk flatpak runtime.
+Picard is a tool for previewing card types and arrangements. Content within our
+knowledge apps is displayed in ContentGroups. Each content group has an
+`arrangement` slot and each arrangement has a `card` slot. The arrangement +
+card combo determine how content is displayed on a page.
+
+Picard allows you to experiment with different combinations of arrangements
+and card types to see what works best for your application.
+
+#### Using
+
+Simply enter `picard` into the terminal and hit enter. A GUI will appear,
+allowing you to select both arrangement and card types at ease. There are also
+convenience buttons for resizing the window, so you can see how your
+arrangement will look at different resolutions.
