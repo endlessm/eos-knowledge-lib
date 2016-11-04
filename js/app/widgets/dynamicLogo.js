@@ -203,6 +203,8 @@ const DynamicLogo = new Knowledge.Class({
     },
 
     vfunc_draw: function (cr) {
+        let style = this.get_style_context();
+
         let alloc = this.get_allocation();
         let margin = this._get_margin();
         let translate_x = margin.left;
@@ -210,6 +212,11 @@ const DynamicLogo = new Knowledge.Class({
 
         alloc.width -= (margin.left + margin.right);
         alloc.height -= (margin.top + margin.bottom);
+
+        // Draw background
+        Gtk.render_background(style, cr, 0, 0, alloc.width, alloc.height);
+        Gtk.render_frame(style, cr, 0, 0, alloc.width, alloc.height);
+        Gtk.render_focus(style, cr, 0, 0, alloc.width, alloc.height);
 
         let max_width = alloc.width;
         let max_height = alloc.height;
