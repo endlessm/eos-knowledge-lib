@@ -2,7 +2,6 @@
 
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 
 Gtk.init(null, 0);
@@ -89,6 +88,60 @@ function show_message (text) {
         transient_for: win,
         buttons: Gtk.ButtonsType.OK,
     });
+    dialog.run();
+    dialog.destroy();
+}
+
+function read_sream (stream) {
+    let output = '', buffer;
+    do {
+        buffer = stream.read_bytes(1024 * 8, null);
+        output += buffer.get_data().toString();
+    } while (buffer.get_size() !== 0);
+    return output;
+}
+
+function show_output_dialog (output) {
+    let text_view = new Gtk.TextView({
+        editable: false,
+        monospace: true,
+        buffer: new Gtk.TextBuffer({ text: output }),
+        visible: true,
+    });
+    let scroll = new Gtk.ScrolledWindow({
+        expand: true,
+        width_request: 1000,
+        height_request: 400,
+    });
+
+    let display_button = new Gtk.Button({
+        label: 'Show application output',
+        visible: true,
+    });
+    display_button.connect('clicked', () => scroll.show());
+    let copy_button = new Gtk.Button({
+        label: 'Copy output to clipboard',
+        visible: true,
+    });
+    let clipboard = Gtk.Clipboard.get_default(Gdk.Display.get_default());
+    copy_button.connect('clicked', () => clipboard.set_text(output, -1));
+    scroll.add(text_view);
+
+    let grid = new Gtk.Grid({
+        visible: true,
+    });
+    grid.attach(display_button, 0, 1, 1, 1);
+    grid.attach(copy_button, 1, 1, 1, 1);
+    grid.attach(scroll, 0, 2, 2, 1);
+
+    let dialog = new Gtk.Dialog({
+        urgency_hint: true,
+        transient_for: win,
+        modal: true,
+        use_header_bar: true,
+        title: 'Something went wrong :(',
+    });
+    dialog.get_content_area().add(grid);
     dialog.run();
     dialog.destroy();
 }
@@ -181,12 +234,14 @@ done_button.connect('clicked', () => {
         args.push(' --dummy-content');
     win.get_window().cursor = Gdk.Cursor.new_for_display(Gdk.Display.get_default(), Gdk.CursorType.WATCH);
     win.set_sensitive(false);
-    let [, pid] = GLib.spawn_async(null, args, null, GLib.SpawnFlags.DO_NOT_REAP_CHILD, null, null);
-    GLib.child_watch_add(GLib.PRIORITY_HIGH, pid, (pid, status) => {
+    let app_process = Gio.Subprocess.new(args, Gio.SubprocessFlags.STDOUT_PIPE | Gio.SubprocessFlags.STDERR_MERGE);
+    app_process.wait_async(null, (app_process, result)  => {
+        app_process.wait_finish(result);
         win.get_window().cursor = null;
         win.set_sensitive(true);
-        if (!GLib.spawn_check_exit_status(status))
-            show_message('Something went wrong :(. Ask a developer.');
+        if (app_process.get_if_exited() && app_process.get_exit_status() === 0)
+            return;
+        show_output_dialog(read_sream(app_process.get_stdout_pipe()));
     });
 });
 
