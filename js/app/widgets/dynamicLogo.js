@@ -91,12 +91,14 @@ const DynamicLogo = new Knowledge.Class({
         this._layout = null;
         this._image = null;
 
-        try {
-            let file = Gio.File.new_for_uri(this.image_uri);
-            let stream = file.read(null);
-            this._image = Rsvg.Handle.new_from_stream_sync(stream, file, 0, null);
-        } catch (e) {
-            logError(e, 'Could not read image data');
+        if (this._mode !== 'text') {
+            try {
+                let file = Gio.File.new_for_uri(this.image_uri);
+                let stream = file.read(null);
+                this._image = Rsvg.Handle.new_from_stream_sync(stream, file, 0, null);
+            } catch (e) {
+                logError(e, 'Could not read image data');
+            }
         }
         this._layout = this.create_pango_layout(this._text);
 
