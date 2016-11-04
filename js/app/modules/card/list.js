@@ -7,6 +7,7 @@ const Gtk = imports.gi.Gtk;
 const Card = imports.app.interfaces.card;
 const NavigationCard = imports.app.interfaces.navigationCard;
 const Module = imports.app.interfaces.module;
+const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
 
 /**
@@ -31,7 +32,8 @@ const List = new Module.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/list.ui',
-    InternalChildren: [ 'thumbnail-frame', 'inner-content-grid', 'title-label', 'synopsis-label', 'navigation-context-label'],
+    InternalChildren: [ 'thumbnail-frame', 'inner-content-grid', 'title-label',
+    'synopsis-label', 'navigation-context-label', 'checkmark'],
 
     _init: function (props={}) {
         this.parent(props);
@@ -45,7 +47,9 @@ const List = new Module.Class({
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
         this.update_card_sizing_classes(Card.MinSize.A, Card.MinSize.D);
         this._synopsis_label.visible = this.show_synopsis;
-
+        this._title_label.vexpand = !this.show_synopsis;
+        this.model.bind_property('read', this._checkmark, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
         Utils.set_hand_cursor_on_widget(this);
     },
 
@@ -72,7 +76,8 @@ const List = new Module.Class({
         let image_width = image_height * this._IMAGE_WIDTH_RATIO;
 
         let [text_min, text_nat] = this._inner_content_grid.get_preferred_width();
-        return [text_min + image_width, text_nat + image_width];
+        let [checkmark_min, checkmark_nat] = this._checkmark.get_preferred_width();
+        return [text_min + image_width + checkmark_min, text_nat + image_width + checkmark_nat];
     },
 
     vfunc_size_allocate: function (alloc) {
@@ -81,7 +86,8 @@ const List = new Module.Class({
         let image_height = alloc.height - (card_margins.top + card_margins.bottom);
         let image_width = image_height * this._IMAGE_WIDTH_RATIO;
         let total_content_width = alloc.width - (card_margins.left + card_margins.right);
-        let text_width = total_content_width -  image_width;
+        let checkmark_width = this._checkmark.get_preferred_width()[1];
+        let text_width = total_content_width -  image_width - checkmark_width;
 
         this.parent(alloc);
 
@@ -100,6 +106,17 @@ const List = new Module.Class({
             height: image_height,
         });
         this._inner_content_grid.size_allocate(text_alloc);
+
+        if (this._checkmark.visible) {
+            let checkmark_alloc = new Gdk.Rectangle({
+                x: alloc.x + image_width + card_margins.left + text_width,
+                y: alloc.y + card_margins.top,
+                width: checkmark_width,
+                height: image_height,
+            });
+            this._checkmark.size_allocate(checkmark_alloc);
+        }
+
         this.update_card_sizing_classes(alloc.height, alloc.width);
     },
 
