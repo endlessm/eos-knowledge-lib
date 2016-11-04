@@ -131,7 +131,7 @@ const MediaLightbox = new Module.Class({
         if (widget === null) {
             if (media_object instanceof MediaObjectModel.VideoObjectModel) {
                 widget = new EosKnowledgePrivate.MediaBin();
-                widget.set_uri(media_object.ekn_id);
+                widget.set_uri('file:///home/endless/checkout/eos-knowledge-lib/YUaYs_7vGAI.mp4')
             } else if (content_type === 'application/pdf') {
                 let stream = media_object.get_content_stream();
                 widget = new PDFView.PDFView({

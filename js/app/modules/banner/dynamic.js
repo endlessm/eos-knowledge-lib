@@ -56,14 +56,14 @@ const Dynamic = new Module.Class({
         let text = '';
         let app_info = Utils.get_desktop_app_info();
         if (app_info && app_info.get_name()) {
-            text = app_info.get_name();
+            text = 'Servicio al Cliente'//app_info.get_name();
         }
         this._logo.text = text;
 
         let subtitle = '';
         let app_info = Utils.get_desktop_app_info();
         if (app_info) {
-            subtitle = app_info.get_description();
+            subtitle = 'Lorem ipsum dolor'//app_info.get_description();
         }
         if (this.show_subtitle && subtitle) {
             this._subtitle_label.label = subtitle;

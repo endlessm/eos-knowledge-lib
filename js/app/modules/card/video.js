@@ -45,7 +45,7 @@ const Video = new Module.Class({
         this._title_label.visible = this.show_title;
         let video_player = new EosKnowledgePrivate.MediaBin();
         video_player.get_style_context().add_class(Utils.get_element_style_class(Video, 'player'));
-        video_player.set_uri(this.model.ekn_id)
+        video_player.set_uri('file:///home/endless/checkout/eos-knowledge-lib/YUaYs_7vGAI.mp4')
         this.attach(video_player, 1, 1, 1, 1);
     },
 });
