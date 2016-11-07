@@ -136,7 +136,7 @@ interfaces, and any other common items between the apps
 To build the eos-knowledge-lib:
 
 ```
-$ sudo apt-get install autoconf autogen autopoint libtool gobject-introspection libgirepository1.0-dev libgtk-3-dev libwebkit2gtk-4.0-dev libxml2-utils
+$ sudo apt-get build-dep eos-knowledge-0
 $ ./autogen.sh
 ```
 
@@ -159,7 +159,7 @@ apps. Let's build a single app, and to save time, don't download any
 media (images, sounds, videos), and only include 10 articles.
 
 ```
-$ sudo apt-get install autoconf autopoint libtool ruby-compass ruby-sass eos-knowledge-0-dev libxml2-utils
+$ sudo apt-get build-dep eos-knowledge-0
 $ APP_ID=com.endlessm.animals-en NUM_ARTICLES=10 ./autogen.sh --enable-database=no-media
 checking for blah...
 $ DB_BUILD_USE_MOCK=1 make -j5
