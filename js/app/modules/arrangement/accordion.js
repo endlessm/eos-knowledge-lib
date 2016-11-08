@@ -40,9 +40,11 @@ const Accordion = new Module.Class({
         button.add(label);
         button.get_style_context().add_class(Utils.get_element_style_class(Accordion, 'title'));
 
+        let is_first = this.get_children().length === 0;
         let revealer = new Gtk.Revealer({
             transition_duration: TRANSITION_DURATION,
             transition_type: Gtk.RevealerTransitionType.SLIDE_UP,
+            reveal_child: is_first,
         });
         revealer.add(card);
 
