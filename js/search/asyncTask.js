@@ -130,7 +130,7 @@ const AsyncTask = Lang.Class({
 
     _callback_in_idle: function () {
         this._done = true;
-        Mainloop.idle_add(() => {
+        GLib.idle_add(GLib.PRIORITY_HIGH, () => {
             this._callback(this._source, this);
             return GLib.SOURCE_REMOVE;
         });
