@@ -81,8 +81,11 @@ const ReadingHistoryModel= new Knowledge.Class({
     },
 
     mark_article_read: function (article_id) {
+        if (this.is_read_article(article_id))
+            return false;
         this._read_articles.add(article_id);
         this._save_reading_history_file();
+        return true;
     },
 
     is_read_article: function (article_id) {

@@ -36,6 +36,7 @@ const Course = new Module.Class({
         });
 
         this.load_theme();
+        history.connect('changed', this._on_history_change.bind(this));
     },
 
     make_ready: function (cb=function () {}) {
@@ -57,5 +58,12 @@ const Course = new Module.Class({
 
             this._window.make_ready(cb);
         });
+    },
+
+    _on_history_change: function () {
+        let item = HistoryStore.get_default().get_current_item();
+        if (item.media_model) {
+            item.media_model.read = true;
+        }
     },
 });
