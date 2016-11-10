@@ -26,13 +26,38 @@ app to run. Other than that, only tweak what you need to tweak!
 
 Kermit
 ------
-Kermit is a shard inspection utility for Knowledge Apps. It is included in the
-com.endless.Platform flatpak runtime.
+Shards are our atomic unit for content delivery in Knowledge Apps. The `kermit` tool
+inspects shards files. It is included in the com.endless.Platform flatpak runtime.
+
+To list all records in a shard, use `kermit list <path_to_shard_file>`.
+
+To retrieve a blob in a record, use `kermit dump <path_to_shard_file> <record_id> <blob_name>`,
+where `<blob_name>` is commonly "data" or "metadata" to fetch those blobs for a given record.
+
+To do a basic search over a shard, use `kermit grep <path_to_shard_file> <regex>` to
+find any records that have metadata that matches that regex.
+
+To get basic statistics and makeup of a shard file, use `kermit stat <path_to_shard_file>`.
 
 Eminem
 ------
-Eminem is a subscription inspection utility for Knowledge Apps. It is included
-in the com.endless.Platform flatpak runtime.
+Subscriptions are our mechanism for updating content in Knowledge Apps. A subscription
+consists of multiple shards. The `eminem` tool inspects and manipulates subscriptions.
+It is included in the com.endless.Platform flatpak runtime.
+
+To retrieve the subscription ID(s) for a given app ID, use `eminem inspect-app-id <app_id>`.
+
+After that, you can use `eminem freeze` and `eminem unfreeze` to marshal the state of
+the subscription to a file that can be passed around for debugging. If you're seeing
+bizarre content in a subscription and are afraid of the article "being lost" before you
+can investigate, you can use `freeze` and `unfreeze` to capture the state of a subscription
+and allow you to restore it for later.
+
+Subscriptions work through a `manifest.json` file that contains the shards that make up
+the current state of the subscription. While normally these manifest files are generated
+by SOMA, if you are trying to build shards locally, it can be helpful to just be able to
+drop an additional shard into a directory and regenerate the `manifest.json` file to include
+the new shard. `eminem regenerate <directory>` allows you to do that.
 
 Autobahn
 --------
