@@ -20,64 +20,57 @@
           </object>
         </child>
         <child>
-          <object class="GtkFrame" id="content-frame">
+          <object class="GtkGrid" id="inner-content-grid">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <style>
+              <class name="CardList__content_grid"/>
+            </style>
             <child>
-              <object class="GtkGrid" id="inner-content-grid">
-                <property name="visible">True</property>
-                <property name="orientation">vertical</property>
-                <child>
-                  <object class="GtkLabel" id="navigation-context-label">
-                    <property name="can_focus">False</property>
-                    <property name="use_markup">True</property>
-                    <property name="wrap">True</property>
-                    <property name="wrap_mode">word-char</property>
-                    <property name="ellipsize">end</property>
-                    <property name="lines">1</property>
-                    <property name="xalign">0</property>
-                    <style>
-                      <class name="CardList__context"/>
-                      <class name="Card__context"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="EknFormattableLabel" id="title-label">
-                    <property name="can_focus">False</property>
-                    <property name="use_markup">True</property>
-                    <property name="wrap">True</property>
-                    <property name="wrap_mode">word-char</property>
-                    <property name="ellipsize">end</property>
-                    <property name="lines">1</property>
-                    <property name="xalign">0</property>
-                    <style>
-                      <class name="CardList__title"/>
-                      <class name="Card__title"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="synopsis-label">
-                    <property name="can_focus">False</property>
-                    <property name="use_markup">True</property>
-                    <property name="wrap">True</property>
-                    <property name="wrap_mode">word-char</property>
-                    <property name="ellipsize">end</property>
-                    <property name="lines">2</property>
-                    <property name="xalign">0</property>
-                    <style>
-                      <class name="CardList__synopsis"/>
-                      <class name="Card__synopsis"/>
-                    </style>
-                  </object>
-                </child>
+              <object class="GtkLabel" id="navigation-context-label">
+                <property name="can_focus">False</property>
+                <property name="use_markup">True</property>
+                <property name="wrap">True</property>
+                <property name="wrap_mode">word-char</property>
+                <property name="ellipsize">end</property>
+                <property name="lines">1</property>
+                <property name="xalign">0</property>
+                <style>
+                  <class name="CardList__context"/>
+                  <class name="Card__context"/>
+                </style>
               </object>
             </child>
-            <style>
-              <class name="CardList__contentFrame"/>
-              <class name="Card__contentFrame"/>
-            </style>
+            <child>
+              <object class="EknFormattableLabel" id="title-label">
+                <property name="can_focus">False</property>
+                <property name="use_markup">True</property>
+                <property name="wrap">True</property>
+                <property name="wrap_mode">word-char</property>
+                <property name="ellipsize">end</property>
+                <property name="lines">1</property>
+                <property name="xalign">0</property>
+                <style>
+                  <class name="CardList__title"/>
+                  <class name="Card__title"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="synopsis-label">
+                <property name="can_focus">False</property>
+                <property name="use_markup">True</property>
+                <property name="wrap">True</property>
+                <property name="wrap_mode">word-char</property>
+                <property name="ellipsize">end</property>
+                <property name="lines">2</property>
+                <property name="xalign">0</property>
+                <style>
+                  <class name="CardList__synopsis"/>
+                  <class name="Card__synopsis"/>
+                </style>
+              </object>
+            </child>
           </object>
         </child>
       </object>

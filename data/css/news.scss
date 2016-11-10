@@ -114,8 +114,16 @@ $support-font: 'Fira Sans' !default;
     }
 }
 
-.search-results {
+.search-results, .set-page {
     background-color: transparent;
+    .CardList {
+        &__thumbnail {
+            min-height: 200px;
+        }
+        .composite &__thumbnail {
+            min-height: 120px;
+        }
+    }
 }
 
 .ContentGroupNoResultsMessage {
@@ -140,6 +148,18 @@ $support-font: 'Fira Sans' !default;
 
 .search-page .LayoutDynamicBackground {
     -EknLayout_DynamicBackground-background-height: 250px;
+}
+
+.article-page {
+    .CardList {
+        margin: 0 100px 10px 100px;
+        &__thumbnail {
+            min-height: 135px;
+        }
+        .composite &__thumbnail {
+            min-height: 100px;
+        }
+    }
 }
 
 .CardPost,
