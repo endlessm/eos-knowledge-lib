@@ -192,6 +192,7 @@ PKG_CHECK_MODULES([EOS_KNOWLEDGE_PRIVATE], [
     gtk+-3.0 >= 3.12
     webkit2gtk-4.0
     gstreamer-1.0 >= 1.8.2
+    epoxy
 ])
 PKG_CHECK_MODULES([GRESOURCE_PLUGIN], [
     gio-2.0
@@ -235,6 +236,7 @@ for GStreamer 1.0 and rerun autogen.sh.])
 have_all_elements=yes
 m4_map_args_w([
 		playbin
+		glsinkbin
 		gtksink
 		gtkglsink
 		giosrc
