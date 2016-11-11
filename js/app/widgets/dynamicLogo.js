@@ -42,7 +42,7 @@ const DynamicLogo = new Knowledge.Class({
          * A URI to the image displayed in the logo.
          */
         'image-uri': GObject.ParamSpec.string('image-uri', 'image-uri', 'image-uri',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+            GObject.ParamFlags.READWRITE, ''),
          /**
          * Property: text
          *
@@ -84,6 +84,7 @@ const DynamicLogo = new Knowledge.Class({
     _init: function (props={}) {
         this.parent(props);
         this.set_has_window(false);
+        this._image_uri = '';
         this._mode = 'text';
         this._text = '';
         this._sizing = 'auto';
@@ -91,19 +92,20 @@ const DynamicLogo = new Knowledge.Class({
         this._layout = null;
         this._image = null;
 
-        if (this._mode !== 'text') {
-            try {
-                let file = Gio.File.new_for_uri(this.image_uri);
-                let stream = file.read(null);
-                this._image = Rsvg.Handle.new_from_stream_sync(stream, file, 0, null);
-            } catch (e) {
-                logError(e, 'Could not read image data');
-            }
-        }
-        this._layout = this.create_pango_layout(this._text);
-
         this.connect('style-set', () => this._update_custom_style());
         this.connect('style-updated', () => this._update_custom_style());
+    },
+
+    set image_uri (value) {
+        if (this._image_uri === value)
+            return;
+        this._image_uri = value;
+        this._load_image();
+        this.queue_draw();
+    },
+
+    get image_uri () {
+        return this._image_uri;
     },
 
     set mode(value) {
@@ -144,6 +146,16 @@ const DynamicLogo = new Knowledge.Class({
         this._update_text();
      },
 
+    _load_image: function () {
+        try {
+            let file = Gio.File.new_for_uri(this._image_uri);
+            let stream = file.read(null);
+            this._image = Rsvg.Handle.new_from_stream_sync(stream, file, 0, null);
+        } catch (e) {
+            logError(e, 'Could not read image data');
+        }
+    },
+
     _update_text: function () {
         let transformed;
         switch (this._text_transform) {
@@ -156,6 +168,8 @@ const DynamicLogo = new Knowledge.Class({
             default:
                 transformed = this._text;
         }
+        if (!this._layout)
+            this._layout = this.create_pango_layout(null);
         this._layout.set_text(transformed, -1);
     },
 
