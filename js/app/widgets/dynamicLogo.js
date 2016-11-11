@@ -174,6 +174,13 @@ const DynamicLogo = new Knowledge.Class({
         return margin;
     },
 
+    _get_padding: function () {
+        let context = this._get_fresh_state_context();
+        let padding = context.get_padding(context.get_state());
+        context.restore();
+        return padding;
+    },
+
     vfunc_get_preferred_width: function () {
         let min_width = EosKnowledgePrivate.style_context_get_int(this.get_style_context(),
                                                                   'min-width',
@@ -183,7 +190,8 @@ const DynamicLogo = new Knowledge.Class({
         let nat_width = this._sizing === 'size-min' ? min_width : Width.MAX;
 
         let margin = this._get_margin();
-        let extra = margin.left + margin.right;
+        let padding = this._get_padding();
+        let extra = margin.left + margin.right + padding.left + padding.right;
 
         return [min_width + extra, nat_width + extra];
     },
@@ -197,7 +205,8 @@ const DynamicLogo = new Knowledge.Class({
         let nat_height = this._sizing === 'size-min' ? min_height : Height.MAX;
 
         let margin = this._get_margin();
-        let extra = margin.top + margin.bottom;
+        let padding = this._get_padding();
+        let extra = margin.top + margin.bottom + padding.top + padding.bottom;
 
         return [min_height + extra, nat_height + extra];
     },
@@ -207,16 +216,12 @@ const DynamicLogo = new Knowledge.Class({
 
         let alloc = this.get_allocation();
         let margin = this._get_margin();
-        let translate_x = margin.left;
-        let translate_y = margin.top;
+        let padding = this._get_padding();
+        let translate_x = margin.left + padding.left;
+        let translate_y = margin.top + padding.top;
 
-        alloc.width -= (margin.left + margin.right);
-        alloc.height -= (margin.top + margin.bottom);
-
-        // Draw background
-        Gtk.render_background(style, cr, 0, 0, alloc.width, alloc.height);
-        Gtk.render_frame(style, cr, 0, 0, alloc.width, alloc.height);
-        Gtk.render_focus(style, cr, 0, 0, alloc.width, alloc.height);
+        alloc.width -= (margin.left + margin.right + padding.left + padding.right);
+        alloc.height -= (margin.top + margin.bottom + padding.top + padding.bottom);
 
         let max_width = alloc.width;
         let max_height = alloc.height;
@@ -229,6 +234,15 @@ const DynamicLogo = new Knowledge.Class({
             max_height = Height.MAX;
             translate_y += (alloc.height - Height.MAX) / 2;
         }
+
+        // Draw background with padding
+        let padding_x = translate_x - padding.left;
+        let padding_y = translate_y - padding.top;
+        let padding_width = max_width + padding.left + padding.right;
+        let padding_height = max_height + padding.top + padding.bottom;
+        Gtk.render_background(style, cr, padding_x, padding_y, padding_width, padding_height);
+        Gtk.render_frame(style, cr, padding_x, padding_y, padding_width, padding_height);
+        Gtk.render_focus(style, cr, padding_x, padding_y, padding_width, padding_height);
 
         cr.translate(translate_x, translate_y);
 
