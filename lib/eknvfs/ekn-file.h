@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 /*
- * ekn-file-input-stream-wrapper.h
+ * ekn-file.h
  *
  * Copyright (C) 2016 Endless Mobile, Inc.
  *
@@ -18,14 +18,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
+ * Author: Juan Pablo Ugarte <ugarte@endlessm.com>
+ *
  */
 
 #pragma once
 
 #include <gio/gio.h>
+#include "eos-shard/eos-shard-blob.h"
 
-#define EKN_TYPE_FILE_INPUT_STREAM_WRAPPER (ekn_file_input_stream_wrapper_get_type ())
-G_DECLARE_FINAL_TYPE (EknFileInputStreamWrapper, ekn_file_input_stream_wrapper, EKN, FILE_INPUT_STREAM_WRAPPER, GFileInputStream)
+G_BEGIN_DECLS
 
-GFileInputStream *_ekn_file_input_stream_wrapper_new (GFile        *file,
-                                                      GInputStream *stream);
+#define EKN_TYPE_FILE (ekn_file_get_type ())
+G_DECLARE_FINAL_TYPE (EknFile, ekn_file, EKN, FILE, GObject)
+
+GFile *_ekn_file_new (const gchar *uri, EosShardBlob *blob);
+
+G_END_DECLS

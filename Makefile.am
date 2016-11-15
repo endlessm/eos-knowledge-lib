@@ -268,17 +268,48 @@ libeosknowledgeprivate_la_LDFLAGS = \
 	-avoid-version \
 	$(NULL)
 
+# # # EKN VFS LIBRARY # # #
+
+giomodule_LTLIBRARIES = libeknvfs.la
+giomoduledir = $(libdir)/gio/modules
+
+libeknvfs_la_SOURCES = \
+	lib/eknvfs/ekn-file-input-stream-wrapper.c \
+	lib/eknvfs/ekn-file-input-stream-wrapper.h \
+	lib/eknvfs/ekn-file.h \
+	lib/eknvfs/ekn-file.c \
+	lib/eknvfs/ekn-vfs.c \
+	$(NULL)
+libeknvfs_la_CPPFLAGS = \
+	@EKN_VFS_CFLAGS@ \
+	-DG_LOG_DOMAIN=\"EknVfs\" \
+	$(NULL)
+libeknvfs_la_CFLAGS = $(AM_CFLAGS)
+libeknvfs_la_LIBADD  = @EKN_VFS_LIBS@
+libeknvfs_la_LDFLAGS = \
+	-export-symbols-regex "^g_io_module_(load|unload|query)" \
+	-avoid-version \
+	$(NULL)
+
+uninstall-hook:
+	if test -z "$(DESTDIR)"; then \
+	  $(GIO_QUERYMODULES) $(giomoduledir);  \
+	fi
+
+install-data-hook:
+	if test -z "$(DESTDIR)"; then \
+	  $(GIO_QUERYMODULES) $(giomoduledir);  \
+	fi
+
 # # # SEARCH LIBRARY # # #
 
 pkglib_LTLIBRARIES += libeosknowledgesearchprivate.la
 libeosknowledgesearchprivate_la_SOURCES = \
-        lib/eosknowledgesearchprivate/ekns-subtree-dispatcher.c \
-        lib/eosknowledgesearchprivate/ekns-subtree-dispatcher.h \
-        lib/eosknowledgesearchprivate/ekns-file-input-stream-wrapper.c \
-        lib/eosknowledgesearchprivate/ekns-file-input-stream-wrapper.h \
-        lib/eosknowledgesearchprivate/ekns-utils.c \
-        lib/eosknowledgesearchprivate/ekns-utils.h \
-        $(NULL)
+	lib/eosknowledgesearchprivate/ekns-subtree-dispatcher.c \
+	lib/eosknowledgesearchprivate/ekns-subtree-dispatcher.h \
+	lib/eosknowledgesearchprivate/ekns-utils.c \
+	lib/eosknowledgesearchprivate/ekns-utils.h \
+	$(NULL)
 
 libeosknowledgesearchprivate_la_CPPFLAGS = @EOS_KNOWLEDGE_PRIVATE_CFLAGS@
 libeosknowledgesearchprivate_la_CFLAGS = $(AM_CFLAGS)
@@ -699,6 +730,7 @@ introspection_sources = \
 
 EosKnowledgePrivate-1.0.gir: libeosknowledgeprivate.la
 EosKnowledgePrivate_1_0_gir_INCLUDES = \
+	EosShard-0 \
 	GLib-2.0 \
 	GObject-2.0 \
 	WebKit2-4.0 \
