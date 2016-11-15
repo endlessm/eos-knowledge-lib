@@ -2,7 +2,6 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
-const Mainloop = imports.mainloop;
 
 /**
  * Class: AsyncTask
@@ -26,12 +25,13 @@ const AsyncTask = Lang.Class({
     GTypeName: 'EknAsyncTask',
     Extends: GObject.Object,
 
-    _init: function (source, cancellable, callback) {
+    _init: function (source, cancellable, callback, priority=GLib.PRIORITY_DEFAULT) {
         this.parent();
 
         this._source = source;
         this._callback = callback;
         this._done = false;
+        this._priority = priority;
 
         if (cancellable) {
             let handle_cancel = () => {
@@ -130,7 +130,7 @@ const AsyncTask = Lang.Class({
 
     _callback_in_idle: function () {
         this._done = true;
-        Mainloop.idle_add(() => {
+        GLib.idle_add(this._priority, () => {
             this._callback(this._source, this);
             return GLib.SOURCE_REMOVE;
         });
