@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-10-18 01:45+0000\n"
+"POT-Creation-Date: 2016-11-08 02:49+0000\n"
 "PO-Revision-Date: 2016-10-19 21:55+0000\n"
 "Last-Translator: Mariana Barbosa <mariana@endlessm.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/pt_BR/)\n"
@@ -38,15 +38,15 @@ msgstr "Próximo Artigo"
 msgid "Previous Article"
 msgstr "Artigo Anterior"
 
-#: data/widgets/contentGroup/contentGroup.ui:25
+#: data/widgets/contentGroup/contentGroup.ui:26
 msgid "Oops! There was an error."
 msgstr "Opa! Ocorreu um erro."
 
-#: data/widgets/contentGroup/contentGroup.ui:39
+#: data/widgets/contentGroup/contentGroup.ui:40
 msgid "Download support info"
 msgstr "Baixar informação de suporte"
 
-#: data/widgets/contentGroup/contentGroup.ui:43
+#: data/widgets/contentGroup/contentGroup.ui:44
 msgid ""
 "Click here to download a file with information that will help us track down "
 "the problem."
@@ -74,11 +74,11 @@ msgstr "PÁGINA PRINCIPAL"
 msgid "View the license"
 msgstr "Veja a licença"
 
-#: js/app/application.js:157
+#: js/app/application.js:158
 msgid "Oops! No content."
 msgstr "Opa! Sem conteúdo."
 
-#: js/app/application.js:158
+#: js/app/application.js:159
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
