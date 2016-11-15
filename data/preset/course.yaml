@@ -1,0 +1,150 @@
+---
+defines:
+
+- &main-arrangement-slot
+  arrangement:
+    type: Arrangement.Grid
+    properties:
+      homogeneous: true
+      max-children-per-line: 3
+      min-children-per-line: 3
+    slots:
+      card:
+        shortdef: 'Card.Thumb(background-size: "center")'
+
+- &home-page
+  shortdef: Layout.Scrolling
+  slots:
+    content:
+      shortdef: 'Layout.Box(orientation: vertical)'
+      slots:
+        contents:
+        - shortdef: Layout.Overlay
+          styles:
+            - landing
+          slots:
+            content:
+              shortdef: Layout.Box
+              styles:
+                - background
+            overlays:
+            - shortdef: 'Layout.Box(orientation: vertical, halign: start)'
+              styles:
+                - intro
+              slots:
+                contents:
+                - shortdef: 'Banner.App'
+                - shortdef: 'ContentGroup.StaticText(wrap: true, wrap-mode: word-char, ellipsize: end, max-width-chars: 34, lines: 8,label: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vehicula diam id quam ornare, eu mattis ex vulputate. Integer egestas, nisi vel tincidunt congue, mauris elit pharetra mi, sit amet accumsan urna ex eu erat. ")'
+            - shortdef: 'Banner.Dynamic(show-subtitle: true, mode: text, halign: end, valign: center)'
+        - shortdef: 'ContentGroup.ContentGroup(expand: true)'
+          slots:
+            <<: *main-arrangement-slot
+            title:
+              shortdef: 'Banner.Dynamic(halign: start, format-string: !translate "Courses from %s")'
+            selection:
+              type: Selection.AllSets
+              slots:
+                filter: Filter.Featured
+        - shortdef: 'Layout.Box(orientation: vertical, halign: fill, hexpand: true)'
+          styles:
+            - footer
+          slots:
+            contents:
+            - shortdef: 'ContentGroup.StaticText(lines: 1, label: !translate "More courses soon.")'
+            - shortdef: 'ContentGroup.StaticText(lines: 1, label: !translate "See more useful courses at capacitateparaelempleo.org")'
+            - shortdef: 'Decoration.ThemeableImage(halign: fill, hexpand: true, valign: end, vexpand: true, image-uri: "resource:///app/assets/titleImageDark")'
+
+- &set-page
+  shortdef: Layout.Scrolling
+  slots:
+    content:
+      shortdef: 'Layout.Box(orientation: vertical)'
+      slots:
+        contents:
+        - shortdef: 'Layout.Overlay'
+          slots:
+            content:
+              shortdef: 'Layout.Box'
+              styles:
+                - background
+            overlays:
+            - shortdef: 'Layout.Box'
+              styles:
+                - header
+              slots:
+                contents:
+                - shortdef: 'Banner.Set'
+                  slots:
+                    card: Card.Title
+                - shortdef: 'Banner.App(halign: end)'
+            - shortdef: 'ContentGroup.ContentGroup(valign: center)'
+              styles:
+                - intro-video
+              slots:
+                selection: Selection.ContentForSet
+                arrangement:
+                  shortdef: 'Arrangement.List(max-rows: 1)'
+                  slots:
+                    card:
+                      shortdef: 'Card.Video(show-title: false)'
+        - shortdef: 'Layout.Box(orientation: vertical, halign: center)'
+          styles:
+            - playlist
+          slots:
+            contents:
+            - shortdef: 'ContentGroup.ContentGroup()'
+              styles:
+                - levels
+              slots:
+                arrangement:
+                  shortdef: 'Arrangement.SideBySide(halign: center)'
+                  slots:
+                    card: Card.Title
+                selection:
+                  shortdef: 'Selection.SubsetsForSet()'
+            - shortdef: 'ContentGroup.ContentGroup(expand: true)'
+              slots:
+                arrangement:
+                  type: Arrangement.Accordion
+                  slots:
+                    card:
+                      type: Card.ContentGroup
+                      slots:
+                        arrangement:
+                          shortdef: 'Arrangement.List(hexpand: true)'
+                          slots:
+                            card:
+                              shortdef: 'Card.List(hexpand: true, show-synopsis: false)'
+                        selection: Selection.ContentForSet
+                selection:
+                  shortdef: 'Selection.SubsetsForSet(track-subset: true)'
+        - shortdef: 'ContentGroup.ContentGroup(paginate: true, cards-per-page: 3)'
+          styles:
+            - see-more
+          slots:
+            <<: *main-arrangement-slot
+            title:
+              shortdef: 'Banner.Dynamic(expand: true, format-string: !translate "More courses from %s")'
+            selection:
+              type: Selection.AllSets
+              id: all-sets
+              slots:
+                filter: Filter.Featured
+
+          references:
+            paginated-load: all-sets
+
+root:
+  shortdef: 'Controller.Course(theme: course)'
+  slots:
+    window:
+      type: Window.Simple
+      slots:
+        content:
+          type: ContentGroup.MediaLightbox
+          slots:
+            content:
+              type: Pager.ParallaxBackground
+              slots:
+                home-page: *home-page
+                set-page: *set-page

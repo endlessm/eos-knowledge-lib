@@ -1,0 +1,249 @@
+@import "project-setup";
+@import "compass";
+
+/* === Colors and Fonts (Overrides) === */
+
+$primary-dark-color: #005a71 !default;
+$primary-medium-color: #12282e !default;
+$primary-light-color: #cc532b !default;
+
+$accent-light-color: #f6f6f6 !default;
+$accent-medium-color: #ebb010 !default;
+$accent-dark-color: #5b700e  !default;
+$highlight-color: #f5d888  !default;
+
+$background-color: #e9e9e3 !default;
+
+$base-color: #0e82c5 !default;
+$base-color-shade: #0f6b9f !default;
+
+$body-font: Roboto !default;
+$title-font: Roboto !default;
+$display-font: Roboto !default;
+$context-font: Roboto !default;
+$support-font: 'Montserrat' !default;
+
+@import "base";
+
+.home-page {
+  .landing {
+    .background {
+      background-image: url($primary-background-image);
+      background-repeat: no-repeat;
+      min-height: 546px;
+    }
+
+    .BannerDynamic {
+      margin-right: 10px;
+      &__logo {
+        padding: 10px 100px;
+        background-color: $base-color;
+        margin-right: 150px;
+        margin-bottom: -20px;
+        opacity: 0.9;
+        -EknDynamicLogo-sizing: "size-min";
+        color: $accent-light-color;
+        min-height: 120px;
+        min-width: 400px;
+        font-weight: normal;
+        font-family: $title-font;
+      }
+      &__subtitle {
+        color: $primary-medium-color;
+        padding: 25px 40px;
+        margin-top: -20px;
+        font-size: 1.75em;
+        background-color: $accent-medium-color;
+        margin-left: 120px;
+        box-shadow: 4px 0px 20px 0px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    .LayoutBox.intro {
+      background-color: $primary-dark-color;
+      opacity: 0.6;
+      color: $accent-light-color;
+      font-family: $support-font;
+      padding: 0 30px;
+
+      .BannerApp {
+        margin-bottom: 0px;
+      }
+    }
+  }
+
+  .footer {
+    background-color: $background-dark-color;
+    min-height: 270px;
+    color: $primary-medium-color;
+    font-size: 1.25em;
+    font-family: $body-font;
+    .StaticText:first-child {
+      margin-top: 60px;
+    }
+    .DecorationThemeableImage {
+      margin-bottom: 60px;
+    }
+  }
+
+  .ContentGroupContentGroup {
+    background-image: url('resource:///app/assets/graphy_bg.png');
+    background-repeat: repeat;
+    background-color: white;
+    padding: 20px;
+
+    &__title {
+      .BannerDynamic__logo {
+        font-size: 30px;
+        color: $primary-dark-color;
+        font-weight: normal;
+      }
+    }
+  }
+}
+
+.CardVideo {
+  &__player {
+    box-shadow: 4px 0px 20px 0px rgba(0, 0, 0, 0.5);
+  }
+  .Card__synopsis {
+    margin-right: 20px;
+    padding: 0px;
+    font-size: 1.5em;
+    color: $primary-medium-color;
+  }
+}
+
+.ArrangementSideBySide {
+  .CardTitle {
+    &__title {
+      color: white;
+      font-size: 1.5em;
+      font-family: $support-font;
+    }
+    &:hover .CardTitle__title {
+        border-bottom: none;
+    }
+    &.highlighted {
+        background-color: transparent;
+        .CardTitle__title {
+            color: $highlight-color;
+        }
+    }
+  }
+}
+
+.CardList {
+  &__checkmark {
+    margin-right: 20px;
+    min-width: 39px;
+    min-height: 38px;
+    -gtk-icon-source: url("resource:///com/endlessm/knowledge/data/images/checkmark.png");
+  }
+}
+
+.set-page {
+  background-color: white;
+
+  .playlist {
+    margin: 40px 0px;
+    min-width: 900px;
+
+    .ArrangementList {
+      margin: 0;
+      .CardList {
+        &__title {
+          font-size: 1.2em;
+          color: $primary-medium-color;
+          font-weight: normal;
+        }
+
+        &__thumbnail {
+          min-height: 150px;
+        }
+
+        padding-right: 20px;
+        background-color: $background-color;
+        box-shadow: none;
+        margin: 0px 0px 2px 0px;
+      }
+    }
+  }
+
+  .intro-video {
+    margin: 250px 60px 20px 60px;
+  }
+
+  .background {
+    min-height: 700px;
+    background-image: url('resource:///app/assets/graphy_bg.png');
+    background-repeat: repeat;
+    background-color: white;
+  }
+
+  .header {
+    background-image: url($secondary-background-image);
+    background-repeat: no-repeat;
+    .BannerSet {
+      margin: 40px 0px 0px 30px;
+      .CardTitle__title {
+        font-size: 2.1em;
+        color: $accent-light-color;
+      }
+    }
+  }
+
+  .ArrangementAccordion {
+    &__title {
+      background-color: $base-color;
+      color: white;
+      font-size: 1.5em;
+      font-family: $support-font;
+      border-bottom: 2px solid white;
+      padding: 15px 0px 15px 30px;
+    }
+  }
+
+  .levels {
+    background-color: $base-color-shade;
+    padding: 20px 0px;
+  }
+
+  .see-more {
+    background-color: $background-dark-color;
+    min-height: 426px;
+    .BannerDynamic__logo {
+      -EknDynamicLogo-sizing: "size-min";
+      color: $primary-dark-color;
+      font-size: 1.75em;
+      font-family: $title-font;
+      font-weight: normal;
+      margin-top: 5px;
+    }
+  }
+}
+
+.ArrangementGrid {
+  padding: 10px;
+  .CardThumb {
+    margin: 10px;
+    &__title {
+      font-weight: normal;
+      font-size: 1.5em;
+    }
+    &.highlighted {
+        .CardThumb__title {
+          color: $primary-medium-color;
+        }
+    }
+    &__context {
+      font-size: 1em;
+      -EknFormattableLabel-text-transform: 'uppercase';
+      font-weight: normal;
+      color: $accent-dark-color;
+    }
+    &__thumbnail {
+      background-color: $base-color;
+    }
+  }
+}

@@ -10,6 +10,7 @@
     <file compressed="true">data/css/preset_b.css</file>
     <file compressed="true">data/css/keybindings.css</file>
     <file>data/images/background.png</file>
+    <file>data/images/checkmark.png</file>
     <file>data/images/pdf-background.png</file>
     <file>data/images/pdf_icon.png</file>
     <file>data/images/tools/food.jpg</file>
@@ -69,6 +70,7 @@
     <file>js/app/articleHTMLRenderer.js</file>
     <file>js/app/buffetHistoryStore.js</file>
     <file>js/app/config.js</file>
+    <file>js/app/courseHistoryStore.js</file>
     <file>js/app/dispatcher.js</file>
     <file>js/app/dominantColor.js</file>
     <file>js/app/historyItem.js</file>
@@ -124,6 +126,7 @@
     <file>js/app/modules/contentGroup/noResultsMessage.js</file>
     <file>js/app/modules/contentGroup/staticText.js</file>
     <file>js/app/modules/controller/buffet.js</file>
+    <file>js/app/modules/controller/course.js</file>
     <file>js/app/modules/controller/mesh.js</file>
     <file>js/app/modules/decoration/separator.js</file>
     <file>js/app/modules/decoration/themeableImage.js</file>
