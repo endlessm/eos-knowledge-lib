@@ -118,7 +118,7 @@ const XapianBridge = new Lang.Class({
     // Queues a SoupMessage for *uri* to the current http session. Calls
     // *callback* on any errors encountered and the parsed JSON.
     _send_json_ld_request: function (uri, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback, GLib.PRIORITY_HIGH);
         task.catch_errors(() => {
             let request = new Soup.Message({
                 method: 'GET',
