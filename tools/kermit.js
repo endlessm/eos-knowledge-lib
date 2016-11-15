@@ -62,8 +62,8 @@ function get_verbose_opt (argv) {
 
 function grep (path, pattern) {
     let shard = get_shard_for_path(path);
-    let records = shard.list_records();
-    records.forEach(function (record, i) {
+    let i = 0;
+    shard.records_foreach((record) => {
         let regex = new RegExp(pattern);
         let id = record.get_hex_name();
         let offset, content_type;
@@ -94,6 +94,7 @@ function grep (path, pattern) {
         // have to nudge it in the right direction every now and then.
         if (i%1000 === 0)
             imports.system.gc();
+        i++;
     });
 }
 
