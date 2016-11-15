@@ -40,6 +40,13 @@ const Dynamic = new Module.Class({
          */
         'mode': GObject.ParamSpec.string('mode', 'mode', 'mode',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, 'text'),
+        /**
+         * Property: format-string
+         * The format string for this title. Defaults to an empty string.
+         */
+        'format-string': GObject.ParamSpec.string('format-string', 'Format string',
+            'The format string for this title',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, '%s'),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/banner/dynamic.ui',
@@ -58,7 +65,7 @@ const Dynamic = new Module.Class({
         let text = '';
         let app_info = Utils.get_desktop_app_info();
         if (app_info && app_info.get_name()) {
-            text = app_info.get_name();
+            text = this.format_string.format(app_info.get_name());
         }
         this._logo.text = text;
 
