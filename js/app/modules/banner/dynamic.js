@@ -52,6 +52,8 @@ const Dynamic = new Module.Class({
         this.parent(props);
 
         this._logo.mode = this.mode;
+        if (this.mode !== 'text')
+            this._logo.image_uri = 'resource:///app/assets/logo';
 
         let text = '';
         let app_info = Utils.get_desktop_app_info();
