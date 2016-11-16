@@ -16,6 +16,7 @@ const MOCK_VIDEO_DATA = {
     'duration': 'P666S',
     'height': '666',
     'width': '666',
+    'poster-uri': 'ekn://rick/poster',
 };
 
 describe ('Image Object Model', function () {
@@ -79,6 +80,7 @@ describe ('Video Object Model', function () {
             expect(videoObject.height).toBeDefined();
             expect(videoObject.duration).toBeDefined();
             expect(videoObject.transcript).toBeDefined();
+            expect(videoObject.poster_uri).toBeDefined();
         });
     });
 });
