@@ -310,23 +310,32 @@ const DynamicLogo = new Knowledge.Class({
             text_height = max_height * (1 / 4);
         }
 
-        let image_size = this._image.get_dimensions();
-        let image_scale = Math.min(image_width / image_size.width, image_height / image_size.height);
-        let [text_size_width, text_size_height] = this._layout.get_pixel_size();
-        let text_scale = Math.min(text_width / text_size_width, text_height / text_size_height);
+        let image_scale, text_scale, text_size, image_size, ink_size;
+        if (is_horizontal) {
+            [ink_size, text_size] = this._layout.get_pixel_extents();
+            text_scale = Math.min(text_width / text_size.width, text_height / text_size.height);
+            image_size = this._image.get_dimensions();
+            // XXX this is a cheaper way to keep image and text equal in height
+            image_scale = ((ink_size.height * text_scale) / image_size.height);
+        } else {
+            image_size = this._image.get_dimensions();
+            image_scale = Math.min(image_width / image_size.width, image_height / image_size.height);
+            [ ,text_size] = this._layout.get_pixel_extents();
+            text_scale = Math.min(text_width / text_size.width, text_height / text_size.height);
+        }
 
         let image_translate_x, image_translate_y, text_translate_x, text_translate_y;
         if (is_horizontal) {
-            let complete_width = (image_size.width * image_scale) + (text_size_width * text_scale);
+            let complete_width = (image_size.width * image_scale) + (text_size.width * text_scale);
             image_translate_x = (max_width / 2) - (complete_width / 2);
             image_translate_y = (max_height / 2) - ((image_size.height * image_scale) / 2);
             text_translate_x = image_translate_x + (image_size.width * image_scale);
-            text_translate_y = (max_height / 2) - ((text_size_height * text_scale) / 2);
+            text_translate_y = (max_height / 2) - ((text_size.height * text_scale) / 2);
         } else {
-            let complete_height = (image_size.height * image_scale) + (text_size_height * text_scale);
+            let complete_height = (image_size.height * image_scale) + (text_size.height * text_scale);
             image_translate_x = (max_width / 2) - ((image_size.width * image_scale) / 2);
             image_translate_y = (max_height / 2) - (complete_height / 2);
-            text_translate_x = (max_width / 2) - ((text_size_width * text_scale) / 2);
+            text_translate_x = (max_width / 2) - ((text_size.width * text_scale) / 2);
             text_translate_y = image_translate_y + (image_size.height * image_scale);
         }
 
