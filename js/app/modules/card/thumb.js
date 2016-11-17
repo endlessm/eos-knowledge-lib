@@ -134,7 +134,10 @@ const Thumb = new Module.Class({
         if (orientation === Gtk.Orientation.HORIZONTAL) {
             this.text_halign = Gtk.Align.START;
             this._title_label.lines = 3;
+        } else {
+            this._title_label.lines = 1;
         }
+
         this._title_label.halign = this._synopsis_label.halign = this._context_widget.halign = this.text_halign;
         this._title_label.justify = Utils.alignment_to_justification(this.text_halign);
         this._title_label.xalign = Utils.alignment_to_xalign(this.text_halign);
