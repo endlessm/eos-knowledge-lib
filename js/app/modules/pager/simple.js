@@ -12,6 +12,7 @@ const Dispatcher = imports.app.dispatcher;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const Pages = imports.app.pages;
+const SetMap = imports.app.setMap;
 const Utils = imports.app.utils;
 
 /**
@@ -42,6 +43,7 @@ const Simple = new Module.Class({
         'home-page': {},
         'search-page': {},  // optional
         'set-page': {},  // optional
+        'subset-page': {},  // optional
     },
 
     _init: function (props={}) {
@@ -76,6 +78,12 @@ const Simple = new Module.Class({
         if (this._all_sets_page) {
             this._all_sets_page.get_style_context().add_class('all-sets-page');
             this.add(this._all_sets_page);
+        }
+
+        this._subset_page = this.create_submodule('subset-page');
+        if (this._subset_page) {
+            this._subset_page.get_style_context().add_class('subset-page');
+            this.add(this._subset_page);
         }
 
         this.connect('notify::transition-running',
@@ -123,7 +131,11 @@ const Simple = new Module.Class({
                 this._show_page(this._home_page);
                 break;
             case Pages.SET:
-                this._show_page_if_present(this._set_page);
+                if (SetMap.get_parent_set(item.model) && this._subset_page) {
+                    this._show_page_if_present(this._subset_page);
+                } else {
+                    this._show_page_if_present(this._set_page);
+                }
                 break;
             case Pages.ALL_SETS:
                 this._show_page_if_present(this._all_sets_page);
