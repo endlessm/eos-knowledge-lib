@@ -26,6 +26,15 @@
 #include <gst/gst.h>
 #include <epoxy/gl.h>
 
+#ifdef DEBUG
+
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/syscall.h>
+#define WARN_IF_NOT_MAIN_THREAD if (getpid () != syscall (SYS_gettid)) g_warning ("%s %d not in main thread", __func__, __LINE__);
+
+#endif
+
 #define AUTOHIDE_TIMEOUT_DEFAULT 2  /* Controls autohide timeout in seconds */
 
 #define INFO_N_COLUMNS           6  /* Number of info columns labels */
@@ -156,6 +165,15 @@ ekn_media_bin_get_position (EknMediaBin *self)
   return position;
 }
 
+static GstStateChangeReturn
+ekn_media_bin_set_state (EknMediaBin *self, GstState state)
+{
+  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
+
+  priv->state = state;
+  return gst_element_set_state (priv->play, state);
+}
+
 /* Action handlers */
 static void
 ekn_media_bin_toggle_playback (EknMediaBin *self)
@@ -231,6 +249,8 @@ static void
 ekn_media_bin_action_toggle (EknMediaBin *self, const gchar *action)
 {
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
+
+  g_return_if_fail (action != NULL);
 
   if (g_str_equal (action, "playback"))
     ekn_media_bin_toggle_playback (self);
@@ -391,7 +411,6 @@ on_volume_popup_hide (GtkWidget *popup, EknMediaBin *self)
   ekn_media_bin_revealer_timeout (self, TRUE);
 }
 
-/* This function will make playbin show up the first video frame */
 static inline void
 ekn_media_bin_update_state (EknMediaBin *self)
 {
@@ -683,8 +702,7 @@ ekn_media_bin_init (EknMediaBin *self)
 
   gtk_widget_init_template (GTK_WIDGET (self));
 
-  /* We want the initial state to be paused to show the first frame */
-  priv->state = GST_STATE_PAUSED;
+  priv->state = GST_STATE_READY;
   priv->autohide_timeout = AUTOHIDE_TIMEOUT_DEFAULT;
   priv->pressed_button_type = GDK_NOTHING;
 
@@ -722,6 +740,7 @@ ekn_media_bin_finalize (GObject *object)
   gst_element_set_state (priv->play, GST_STATE_NULL);
 
   /* Stop bus watch */
+  gst_bus_set_flushing (priv->bus, TRUE);
   gst_bus_remove_watch (priv->bus);
   g_clear_object (&priv->bus);
 
@@ -771,36 +790,36 @@ ekn_media_bin_set_property (GObject      *object,
 
   switch (prop_id)
     {
-      case PROP_URI:
-        ekn_media_bin_set_uri (EKN_MEDIA_BIN (object),
+    case PROP_URI:
+      ekn_media_bin_set_uri (EKN_MEDIA_BIN (object),
+                             g_value_get_string (value));
+      break;
+    case PROP_VOLUME:
+      ekn_media_bin_set_volume (EKN_MEDIA_BIN (object),
+                                g_value_get_double (value));
+      break;
+    case PROP_AUTOHIDE_TIMEOUT:
+      ekn_media_bin_set_autohide_timeout (EKN_MEDIA_BIN (object),
+                                          g_value_get_int (value));
+      break;
+    case PROP_FULLSCREEN:
+      ekn_media_bin_set_fullscreen (EKN_MEDIA_BIN (object),
+                                    g_value_get_boolean (value));
+      break;
+    case PROP_SHOW_STREAM_INFO:
+      ekn_media_bin_set_show_stream_info (EKN_MEDIA_BIN (object),
+                                          g_value_get_boolean (value));
+      break;
+    case PROP_TITLE:
+      ekn_media_bin_set_title (EKN_MEDIA_BIN (object),
                                g_value_get_string (value));
       break;
-      case PROP_VOLUME:
-        ekn_media_bin_set_volume (EKN_MEDIA_BIN (object),
-                                  g_value_get_double (value));
+    case PROP_DESCRIPTION:
+      ekn_media_bin_set_description (EKN_MEDIA_BIN (object),
+                                     g_value_get_string (value));
       break;
-      case PROP_AUTOHIDE_TIMEOUT:
-        ekn_media_bin_set_autohide_timeout (EKN_MEDIA_BIN (object),
-                                            g_value_get_int (value));
-      break;
-      case PROP_FULLSCREEN:
-        ekn_media_bin_set_fullscreen (EKN_MEDIA_BIN (object),
-                                      g_value_get_boolean (value));
-      break;
-      case PROP_SHOW_STREAM_INFO:
-        ekn_media_bin_set_show_stream_info (EKN_MEDIA_BIN (object),
-                                            g_value_get_boolean (value));
-      break;
-      case PROP_TITLE:
-        ekn_media_bin_set_title (EKN_MEDIA_BIN (object),
-                                 g_value_get_string (value));
-      break;
-      case PROP_DESCRIPTION:
-        ekn_media_bin_set_description (EKN_MEDIA_BIN (object),
-                                       g_value_get_string (value));
-      break;
-      default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -818,29 +837,29 @@ ekn_media_bin_get_property (GObject    *object,
 
   switch (prop_id)
     {
-      case PROP_URI:
-        g_value_set_string (value, priv->uri);
+    case PROP_URI:
+      g_value_set_string (value, priv->uri);
       break;
-      case PROP_VOLUME:
-        g_value_set_double (value, gtk_scale_button_get_value (priv->volume_button));
+    case PROP_VOLUME:
+      g_value_set_double (value, gtk_scale_button_get_value (priv->volume_button));
       break;
-      case PROP_AUTOHIDE_TIMEOUT:
-        g_value_set_int (value, priv->autohide_timeout);
+    case PROP_AUTOHIDE_TIMEOUT:
+      g_value_set_int (value, priv->autohide_timeout);
       break;
-      case PROP_FULLSCREEN:
-        g_value_set_boolean (value, priv->fullscreen);
+    case PROP_FULLSCREEN:
+      g_value_set_boolean (value, priv->fullscreen);
       break;
-      case PROP_SHOW_STREAM_INFO:
-        g_value_set_boolean (value, priv->show_stream_info);
+    case PROP_SHOW_STREAM_INFO:
+      g_value_set_boolean (value, priv->show_stream_info);
       break;
-      case PROP_TITLE:
-        g_value_set_string (value, priv->title);
+    case PROP_TITLE:
+      g_value_set_string (value, priv->title);
       break;
-      case PROP_DESCRIPTION:
-        g_value_set_string (value, priv->description);
+    case PROP_DESCRIPTION:
+      g_value_set_string (value, priv->description);
       break;
-      default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -1172,9 +1191,8 @@ ekn_media_bin_update_duration (EknMediaBin *self)
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
   gint64 duration;
 
-  gst_element_query_duration (priv->play, GST_FORMAT_TIME, &duration);
-
-  if (priv->duration == duration)
+  if (!gst_element_query_duration (priv->play, GST_FORMAT_TIME, &duration)
+      || priv->duration == duration)
     return;
 
   priv->duration = duration;
@@ -1185,7 +1203,7 @@ ekn_media_bin_update_duration (EknMediaBin *self)
 }
 
 static inline void
-ekn_media_update_position (EknMediaBin *self)
+ekn_media_bin_update_position (EknMediaBin *self)
 {
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
   gint position = GST_TIME_AS_SECONDS (ekn_media_bin_get_position (self));
@@ -1204,7 +1222,7 @@ ekn_media_bin_tick_callback (GtkWidget     *widget,
                              GdkFrameClock *frame_clock,
                              gpointer       user_data)
 {
-  ekn_media_update_position ((EknMediaBin *)widget);
+  ekn_media_bin_update_position ((EknMediaBin *)widget);
 
   return G_SOURCE_CONTINUE;
 }
@@ -1221,11 +1239,15 @@ ekn_media_bin_handle_msg_state_changed (EknMediaBin *self, GstMessage *msg)
       GST_MESSAGE_SRC (msg) != GST_OBJECT (priv->play))
     return;
 
+  GST_DEBUG ("State changed from %s to %s",
+             gst_element_state_get_name (old_state),
+             gst_element_state_get_name (new_state));
+
   /* Update UI */
-  if (new_state == GST_STATE_PAUSED)
+  if (old_state == GST_STATE_READY && new_state == GST_STATE_PAUSED)
     {
-      widget_set_visible (priv->play_box, TRUE);
       gtk_image_set_from_icon_name (priv->playback_image, EMB_ICON_NAME_PLAY, EMB_ICON_SIZE);
+      widget_set_visible (priv->play_box, TRUE);
       ekn_media_bin_update_duration (self);
     }
   else if (new_state == GST_STATE_PLAYING)
@@ -1239,6 +1261,7 @@ ekn_media_bin_handle_msg_state_changed (EknMediaBin *self, GstMessage *msg)
   else
     {
       gtk_image_set_from_icon_name (priv->playback_image, EMB_ICON_NAME_PLAY, EMB_ICON_SIZE);
+      widget_set_visible (priv->play_box, TRUE);
       priv->position = 0;
       gtk_widget_remove_tick_callback (GTK_WIDGET (self), priv->tick_id);
       priv->tick_id = 0;
@@ -1369,6 +1392,13 @@ ekn_media_bin_handle_msg_application (EknMediaBin *self, GstMessage *msg)
     }
 }
 
+static inline void
+ekn_media_bin_handle_msg_eos (EknMediaBin *self, GstMessage *msg)
+{
+  ekn_media_bin_set_state (self, GST_STATE_READY);
+  ekn_media_bin_update_position (self);
+}
+
 static gboolean
 ekn_media_bin_bus_watch (GstBus *bus, GstMessage *msg, gpointer data)
 {
@@ -1376,19 +1406,21 @@ ekn_media_bin_bus_watch (GstBus *bus, GstMessage *msg, gpointer data)
 
   switch (GST_MESSAGE_TYPE (msg))
     {
-      case GST_MESSAGE_ERROR:
-        return ekn_media_bin_handle_msg_error (self, msg);
-      case GST_MESSAGE_STATE_CHANGED:
-        ekn_media_bin_handle_msg_state_changed (self, msg);
+    case GST_MESSAGE_ERROR:
+      return ekn_media_bin_handle_msg_error (self, msg);
+    case GST_MESSAGE_STATE_CHANGED:
+      ekn_media_bin_handle_msg_state_changed (self, msg);
       break;
-      case GST_MESSAGE_DURATION_CHANGED:
-        ekn_media_bin_update_duration (self);
+    case GST_MESSAGE_DURATION_CHANGED:
+      ekn_media_bin_update_duration (self);
       break;
-      case GST_MESSAGE_APPLICATION:
-        ekn_media_bin_handle_msg_application (self, msg);
+    case GST_MESSAGE_APPLICATION:
+      ekn_media_bin_handle_msg_application (self, msg);
       break;
-
-      default:
+    case GST_MESSAGE_EOS:
+      ekn_media_bin_handle_msg_eos (self, msg);
+      break;
+    default:
       break;
     }
 
@@ -1676,8 +1708,7 @@ ekn_media_bin_play (EknMediaBin *self)
 
   g_object_set (priv->play, "uri", priv->uri, NULL);
 
-  priv->state = GST_STATE_PLAYING;
-  gst_element_set_state (priv->play, GST_STATE_PLAYING);
+  ekn_media_bin_set_state (self, GST_STATE_PLAYING);
 }
 
 /**
@@ -1689,13 +1720,8 @@ ekn_media_bin_play (EknMediaBin *self)
 void
 ekn_media_bin_pause (EknMediaBin *self)
 {
-  EknMediaBinPrivate *priv;
-
   g_return_if_fail (EKN_IS_MEDIA_BIN (self));
-  priv = EMB_PRIVATE (self);
-
-  priv->state = GST_STATE_PAUSED;
-  gst_element_set_state (priv->play, GST_STATE_PAUSED);
+  ekn_media_bin_set_state (self, GST_STATE_PAUSED);
 }
 
 /**
@@ -1707,13 +1733,8 @@ ekn_media_bin_pause (EknMediaBin *self)
 void
 ekn_media_bin_stop (EknMediaBin *self)
 {
-  EknMediaBinPrivate *priv;
-
   g_return_if_fail (EKN_IS_MEDIA_BIN (self));
-  priv = EMB_PRIVATE (self);
-
-  priv->state = GST_STATE_NULL;
-  gst_element_set_state (priv->play, GST_STATE_NULL);
+  ekn_media_bin_set_state (self, GST_STATE_NULL);
 }
 
 static void
