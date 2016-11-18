@@ -4,7 +4,8 @@ if [ "$1" = "update" ]; then
     shift
     flatpak update com.endlessm.Platform master
     flatpak update com.endlessm.Sdk master
-    flatpak update $1
+    flatpak update "$1"
 fi
+
 # Host fs for files, use master runtime, --devel for scss and yaml tools
-flatpak run --devel --filesystem=host --runtime='//master' $@
+flatpak run --devel --filesystem=host --runtime='//master' "$@"
