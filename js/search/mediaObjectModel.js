@@ -83,7 +83,7 @@ const ImageObjectModel = Lang.Class({
 
 /**
  * Class: VideoObjectModel
- * The model class for media objects. A media obejct has the same 
+ * The model class for media objects. A media obejct has the same
  * properties as a <MediaObjectModel>, plus <duration> and <transcript>
  * properties
  */
@@ -110,6 +110,16 @@ const VideoObjectModel = Lang.Class({
             'Transcript', 'Transcript of the video',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
+
+        /**
+         * Property:poster-uri
+         * URI of the the video's poster image
+         *
+         * The EKN ID of an <ImageObjectModel>.
+         */
+        'poster-uri': GObject.ParamSpec.string('poster-uri',
+            'Poster URI', 'URI of the poster image',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 
     _init: function (props={}, json_ld=null) {
@@ -125,5 +135,8 @@ const VideoObjectModel = Lang.Class({
 
         if (json_ld.hasOwnProperty('transcript'))
             props.transcript = json_ld.transcript;
+
+        if (json_ld.hasOwnProperty('poster'))
+            props.poster_uri = json_ld.poster;
     },
 });
