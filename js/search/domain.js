@@ -400,7 +400,7 @@ const DomainV3 = new Lang.Class({
     },
 
     _load_shards: function (cancellable) {
-        if (this._shards === undefined) {
+        if (this.shards === undefined) {
             let manifest_file = this._get_manifest_file();
 
             // If the manifest.json doesn't exist, and we have a manifest in the bundle, symlink
@@ -426,7 +426,7 @@ const DomainV3 = new Lang.Class({
             let manifest = JSON.parse(data);
 
             let subscription_dir = this._get_subscription_dir();
-            this._shards = manifest.shards.map(function(shard_entry) {
+            this.shards = manifest.shards.map(function(shard_entry) {
                 let file = subscription_dir.get_child(shard_entry.path);
                 return new EosShard.ShardFile({
                     path: file.get_path(),
@@ -434,7 +434,7 @@ const DomainV3 = new Lang.Class({
             });
         }
 
-        return this._shards;
+        return this.shards;
     },
 
     test_link: function (link) {
@@ -454,7 +454,7 @@ const DomainV3 = new Lang.Class({
         if (this._link_tables !== undefined)
             return;
 
-        let tables = this._shards.map((shard) => {
+        let tables = this.shards.map((shard) => {
             let table_record = shard.find_record_by_hex_name(LINK_TABLE_ID);
             if (table_record) {
                 return table_record.data.load_as_dictionary();
@@ -471,7 +471,7 @@ const DomainV3 = new Lang.Class({
         this._load_shards(null);
         // Don't allow init() to be cancelled; otherwise,
         // cancellation will spoil the object for future use.
-        Ekns.utils_parallel_init(this._shards, 0, null);
+        Ekns.utils_parallel_init(this.shards, 0, null);
 
         // Fetch the link table dictionaries from each shard for link lookups
         this._setup_link_tables();
@@ -486,8 +486,8 @@ const DomainV3 = new Lang.Class({
     load_record_from_hash_sync: function (hash) {
         this.load_sync();
 
-        for (let i = 0; i < this._shards.length; i++) {
-            let shard_file = this._shards[i];
+        for (let i = 0; i < this.shards.length; i++) {
+            let shard_file = this.shards[i];
             let record = shard_file.find_record_by_hex_name(hash);
             if (record)
                 return record;
