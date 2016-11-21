@@ -455,6 +455,7 @@ dist_yamlpreset_DATA = \
 	data/preset/buffet.yaml \
 	data/preset/course.yaml \
 	data/preset/encyclopedia.yaml \
+	data/preset/library-list.yaml \
 	data/preset/news.yaml \
 	$(NULL)
 
