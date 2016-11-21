@@ -242,12 +242,13 @@ const Engine = Lang.Class({
 });
 
 let the_engine = null;
-let get_default = function () {
+let get_default = function (app_id='') {
     if (the_engine === null) {
         // try to create an engine configured with the current locale
         var language = Utils.get_current_language();
         the_engine = new Engine({
             language: language,
+            default_app_id: app_id,
         });
     }
     return the_engine;

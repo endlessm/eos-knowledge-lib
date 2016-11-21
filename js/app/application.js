@@ -70,7 +70,7 @@ const Application = new Knowledge.Class({
         this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
         this.image_attribution_file = Gio.File.new_for_uri(CREDITS_URI);
 
-        Engine.get_default().default_app_id = this.application_id;
+        Engine.get_default(this.application_id);
 
         this.add_main_option('theme-name', 't'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.STRING,
                              'Use a stock theme with given name instead of any application theme overrides', null);
