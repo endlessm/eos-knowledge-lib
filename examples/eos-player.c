@@ -12,6 +12,7 @@ int
 main (int argc, char **argv)
 {
   GtkWidget *window, *bin;
+  gchar *title;
 
   gst_init (&argc, &argv);
   gtk_init (&argc, &argv);
@@ -42,6 +43,10 @@ main (int argc, char **argv)
 
   /* Update window title */
   g_signal_connect (bin, "notify::title", G_CALLBACK (on_title_notify), window);
+
+  title = g_path_get_basename (argv[1]);
+  ekn_media_bin_set_title (EKN_MEDIA_BIN (bin), title);
+  g_free (title);
 
   gtk_widget_show_all (window);
 
