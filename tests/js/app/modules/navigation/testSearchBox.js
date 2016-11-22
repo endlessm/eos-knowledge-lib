@@ -10,15 +10,17 @@ const ContentObjectModel = imports.search.contentObjectModel;
 const HistoryStore = imports.app.historyStore;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
+const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const Pages = imports.app.pages;
 const SearchBox = imports.app.modules.navigation.searchBox;
 
 describe('Navigation.SearchBox', function () {
-    let box, engine, dispatcher, store;
+    let box, engine, dispatcher, store, reading_history;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         engine = MockEngine.mock_default();
+        reading_history = MockReadingHistoryModel.mock_default();
         dispatcher = MockDispatcher.mock_default();
         store = new HistoryStore.HistoryStore();
         HistoryStore.set_default(store);
