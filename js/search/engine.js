@@ -1,6 +1,5 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
@@ -76,14 +75,6 @@ const Engine = Lang.Class({
         this._xapian_bridge = new XapianBridge.XapianBridge({ language: this.language });
 
         this._domain_cache = {};
-
-        let domain = this.get_default_domain();
-
-        /* Load shards */
-        domain.load_sync ();
-
-        /* Setup shards in default EknVfs for ekn:// uri to work */
-        EosKnowledgePrivate.vfs_set_shards (domain.shards);
     },
 
     /**
@@ -144,7 +135,7 @@ const Engine = Lang.Class({
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
             if (query_obj.app_id === '')
-                query_obj = QueryObject.QueryObject.new_from_object(query_obj, { app_id: this.default_app_id });
+                query_obj = QueryObject.QueryObject.new_from_object(query_obj, { app_id: this._default_app_id });
 
             let domain_obj = this._get_domain(query_obj.app_id);
 
@@ -200,7 +191,7 @@ const Engine = Lang.Class({
         if (this._domain_cache[app_id] === undefined) {
             let domain_obj = Domain.get_domain_impl(app_id, this._xapian_bridge);
 
-            if (app_id === this.default_app_id && this.default_data_path)
+            if (app_id === this._default_app_id && this.default_data_path)
                 domain_obj._content_path = this.default_data_path;
 
             this._domain_cache[app_id] = domain_obj;
@@ -210,7 +201,7 @@ const Engine = Lang.Class({
     },
 
     get_default_domain: function () {
-        return this._get_domain(this.default_app_id);
+        return this._get_domain(this._default_app_id);
     },
 
     /**
@@ -230,6 +221,17 @@ const Engine = Lang.Class({
     test_link: function (link) {
         return this.get_default_domain().test_link(link);
     },
+
+    set default_app_id (id) {
+        if (this._default_app_id !== id) {
+            this._default_app_id = id;
+            this.notify('default-app-id');
+        }
+    },
+
+    get default_app_id () {
+        return this._default_app_id;
+    },
 });
 
 let the_engine = null;
@@ -239,6 +241,14 @@ let get_default = function () {
         var language = Utils.get_current_language();
         the_engine = new Engine({
             language: language,
+        });
+
+        // Tell EknVfs which one is the default domain
+        the_engine.connect('notify::default-app-id', function () {
+            let vfs = Gio.Vfs.get_default();
+
+            if (GObject.type_name (vfs.constructor.$gtype) === "EknVfs")
+                vfs.default_domain = the_engine.default_app_id;
         });
     }
     return the_engine;
