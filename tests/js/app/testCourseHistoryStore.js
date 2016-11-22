@@ -1,24 +1,42 @@
 const Actions = imports.app.actions;
 const AppUtils = imports.app.utils;
 const ArticleObjectModel = imports.search.articleObjectModel;
-const BuffetHistoryStore = imports.app.buffetHistoryStore;
+const CourseHistoryStore = imports.app.courseHistoryStore;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const Pages = imports.app.pages;
+const SetMap = imports.app.setMap;
 const SetObjectModel = imports.search.setObjectModel;
 
-describe('BuffetHistoryStore', function () {
+describe('CourseHistoryStore', function () {
     let store, dispatcher, engine, reading_history;
 
     beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
         reading_history = MockReadingHistoryModel.mock_default();
         engine = MockEngine.mock_default();
-        store = new BuffetHistoryStore.BuffetHistoryStore();
+        store = new CourseHistoryStore.CourseHistoryStore();
         store.set_current_item_from_props({ page_type: Pages.HOME });
         spyOn(AppUtils, 'record_search_metric');
+        let data = [
+            {
+                ekn_id: '1',
+                title: 'Foo',
+                child_tags: ['foo'],
+            },
+            {
+                ekn_id: '2',
+                title: 'Bar',
+                child_tags: ['bar'],
+            },
+        ];
+        let sets = data.map((obj) => new SetObjectModel.SetObjectModel(obj));
+        engine.get_objects_by_query_finish.and.returnValue([sets, {
+            more_results: null,
+        }]);
+        SetMap.init_map_with_models(sets);
     });
 
     it('goes back to the home page when home button is clicked', function () {
@@ -35,13 +53,6 @@ describe('BuffetHistoryStore', function () {
         expect(store.get_current_item().page_type).toBe(Pages.HOME);
     });
 
-    it('shows the all-sets page when all-sets clicked', function () {
-        dispatcher.dispatch({
-            action_type: Actions.ALL_SETS_CLICKED,
-        });
-        expect(store.get_current_item().page_type).toBe(Pages.ALL_SETS);
-    });
-
     it('shows the set page when a set model is clicked', function () {
         let model = new SetObjectModel.SetObjectModel({
             ekn_id: 'ekn://foo/set',
@@ -51,6 +62,19 @@ describe('BuffetHistoryStore', function () {
             model: model,
         });
         expect(store.get_current_item().page_type).toBe(Pages.SET);
+    });
+
+    it('updates current-subset when a subset model is clicked', function () {
+        spyOn(store, 'set_current_subset');
+        let model = new SetObjectModel.SetObjectModel({
+            ekn_id: 'ekn://foo/set',
+            tags: ['foo'],
+        });
+        dispatcher.dispatch({
+            action_type: Actions.ITEM_CLICKED,
+            model: model,
+        });
+        expect(store.set_current_subset).toHaveBeenCalled();
     });
 
     function test_close_lightbox (action, descriptor) {
@@ -75,57 +99,10 @@ describe('BuffetHistoryStore', function () {
     test_close_lightbox(Actions.LIGHTBOX_CLOSED, 'lightbox close clicked');
     test_close_lightbox(Actions.SEARCH_BOX_FOCUSED, 'search box focused');
 
-    function test_search_action (action, descriptor) {
-        describe('when ' + descriptor, function () {
-            beforeEach(function () {
-                dispatcher.dispatch({
-                    action_type: action,
-                    query: 'foo',
-                });
-            });
-
-            it('goes to the search page', function () {
-                expect(store.get_current_item().page_type).toBe(Pages.SEARCH);
-            });
-
-            it('records a metric', function () {
-                expect(AppUtils.record_search_metric).toHaveBeenCalled();
-            });
-        });
-    }
-    test_search_action(Actions.SEARCH_TEXT_ENTERED, 'search text entered');
-    test_search_action(Actions.DBUS_LOAD_QUERY_CALLED, 'desktop search opened');
-
-    describe('when link in article clicked', function () {
-        it('goes to article page', function () {
-            let model = new ArticleObjectModel.ArticleObjectModel({
-                ekn_id: 'ekn://foo/bar',
-            });
-            engine.get_object_by_id_finish.and.returnValue(model);
-            dispatcher.dispatch({
-                action_type: Actions.ARTICLE_LINK_CLICKED,
-                ekn_id: 'ekn://foo/bar',
-            });
-            expect(store.get_current_item().page_type).toBe(Pages.ARTICLE);
-        });
-
-        it('shows lightbox if link was media', function () {
-            let model = new MediaObjectModel.MediaObjectModel({
-                ekn_id: 'ekn://foo/pix',
-            });
-            engine.get_object_by_id_finish.and.returnValue(model);
-            dispatcher.dispatch({
-                action_type: Actions.ARTICLE_LINK_CLICKED,
-                ekn_id: 'ekn://foo/pix',
-            });
-            expect(store.get_current_item().media_model).toBe(model);
-        });
-    });
-
     describe('when an article card is clicked', function () {
-        let prev_model, next_model;
+        let prev_model, next_model, model;
         beforeEach(function () {
-            let model = new ArticleObjectModel.ArticleObjectModel({
+            model = new ArticleObjectModel.ArticleObjectModel({
                 ekn_id: 'ekn://test/article',
             });
             prev_model = new ArticleObjectModel.ArticleObjectModel({
@@ -143,29 +120,8 @@ describe('BuffetHistoryStore', function () {
             });
         });
 
-        it('goes to article page', function () {
-            let item = store.get_current_item();
-            expect(item.page_type).toBe(Pages.ARTICLE);
-        });
-
-        it('handles previous card click', function () {
-            dispatcher.dispatch({
-                action_type: Actions.PREVIOUS_DOCUMENT_CLICKED,
-                model: prev_model,
-            });
-            let item = store.get_current_item();
-            expect(item.page_type).toBe(Pages.ARTICLE);
-            expect(item.model).toBe(prev_model);
-        });
-
-        it('handles next card click', function () {
-            dispatcher.dispatch({
-                action_type: Actions.NEXT_DOCUMENT_CLICKED,
-                model: next_model,
-            });
-            let item = store.get_current_item();
-            expect(item.page_type).toBe(Pages.ARTICLE);
-            expect(item.model).toBe(next_model);
+        it('shows it in lightbox', function () {
+            expect(store.get_current_item().media_model).toBe(model);
         });
     });
 

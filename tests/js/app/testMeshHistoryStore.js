@@ -5,15 +5,17 @@ const MediaObjectModel = imports.search.mediaObjectModel;
 const MeshHistoryStore = imports.app.meshHistoryStore;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
+const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const Pages = imports.app.pages;
 const SetObjectModel = imports.search.setObjectModel;
 
 describe('MeshHistoryStore', function () {
-    let store, dispatcher, engine;
+    let store, dispatcher, engine, reading_history;
 
     beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
         engine = MockEngine.mock_default();
+        reading_history = MockReadingHistoryModel.mock_default();
         store = new MeshHistoryStore.MeshHistoryStore();
         store.set_current_item_from_props({ page_type: Pages.HOME });
         spyOn(AppUtils, 'record_search_metric');

@@ -1,4 +1,5 @@
 const Actions = imports.app.actions;
+const ContentObjectModel = imports.search.contentObjectModel;
 const HistoryStore = imports.app.historyStore;
 const MockDispatcher = imports.tests.mockDispatcher;
 const Pages = imports.app.pages;
@@ -96,6 +97,17 @@ describe('History Store', function () {
 
         dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
         expect(history_store.get_current_item().query).toBe('second');
+    });
+
+    it('marks items as read', function () {
+        let item = new ContentObjectModel.ContentObjectModel({ title: 'blah' });
+        spyOn(item, 'mark_read');
+
+        dispatcher.dispatch({
+            action_type: Actions.ITEM_CLICKED,
+            model: item,
+        });
+        expect(item.mark_read).toHaveBeenCalled();
     });
 
     it('resets the article-search-visible state when changing', function () {

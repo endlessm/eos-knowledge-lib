@@ -1,4 +1,4 @@
-// Copyright 2015 Endless Mobile, Inc.
+// Copyright 2016 Endless Mobile, Inc.
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -8,7 +8,7 @@ Gtk.init(null);
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const Buffet = imports.app.modules.controller.buffet;
+const Course = imports.app.modules.controller.course;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const MockEngine = imports.tests.mockEngine;
@@ -17,7 +17,7 @@ const SetMap = imports.app.setMap;
 const SetObjectModel = imports.search.setObjectModel;
 
 const MockView = new Module.Class({
-    Name: 'testBuffetController_MockView',
+    Name: 'testCourseController_MockView',
     Extends: Gtk.Window,
     Implements: [ Module.Module ],
 
@@ -27,8 +27,8 @@ const MockView = new Module.Class({
     },
 });
 
-describe('Controller.Buffet', function () {
-    let buffet, engine, factory, set_models, store;
+describe('Controller.Course', function () {
+    let course, engine, factory, set_models, store;
 
     beforeEach(function () {
 
@@ -45,8 +45,8 @@ describe('Controller.Buffet', function () {
             more_results: null,
         }]);
 
-        [buffet, factory] = MockFactory.setup_tree({
-            type: Buffet.Buffet,
+        [course, factory] = MockFactory.setup_tree({
+            type: Course.Course,
             properties: {
                 'theme': '',
             },
@@ -58,7 +58,7 @@ describe('Controller.Buffet', function () {
     });
 
     it('initializes set map', function(done) {
-        buffet.make_ready(function () {
+        course.make_ready(function () {
             let child_set = set_models[0];
             expect(SetMap.get_parent_set(child_set)).toBeDefined();
             done();
