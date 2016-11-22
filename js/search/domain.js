@@ -1,6 +1,7 @@
 // Copyright 2016 Endless Mobile, Inc.
 
 const Ekns = imports.gi.EosKnowledgeSearchPrivate;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EosShard = imports.gi.EosShard;
 const Format = imports.format;
 const GLib = imports.gi.GLib;
@@ -78,6 +79,10 @@ const Domain = new Lang.Class({
 
         this._load_sync_internal();
         this._shard_inited = true;
+
+        /* Append shards to default EknVfs for ekn:// uri to work */
+        if (this._app_id && this._shards)
+            EosKnowledgePrivate.default_vfs_register_domain_shards (this._app_id, this._shards);
     },
 
     /**
