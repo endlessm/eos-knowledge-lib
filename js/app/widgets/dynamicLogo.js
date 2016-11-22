@@ -305,9 +305,9 @@ const DynamicLogo = new Knowledge.Class({
             text_height = max_height;
         } else {
             image_width = max_width;
-            image_height = max_height * (3 / 4);
+            image_height = max_height * (3 / 5);
             text_width = max_width;
-            text_height = max_height * (1 / 4);
+            text_height = max_height * (2 / 5);
         }
 
         let image_scale, text_scale, text_size, image_size, ink_size;
