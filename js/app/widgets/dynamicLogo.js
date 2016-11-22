@@ -11,6 +11,7 @@ const Rsvg = imports.gi.Rsvg;
 const Knowledge = imports.app.knowledge;
 
 const HEIGHT_WIDTH_RATIO = 1.5;
+const DEFAULT_SPACING_RATIO = 1.15;
 
 const Width = {
     MIN: 50,
@@ -326,10 +327,10 @@ const DynamicLogo = new Knowledge.Class({
 
         let image_translate_x, image_translate_y, text_translate_x, text_translate_y;
         if (is_horizontal) {
-            let complete_width = (image_size.width * image_scale) + (text_size.width * text_scale);
+            let complete_width = (image_size.width * image_scale * DEFAULT_SPACING_RATIO) + (text_size.width * text_scale);
             image_translate_x = (max_width / 2) - (complete_width / 2);
             image_translate_y = (max_height / 2) - ((image_size.height * image_scale) / 2);
-            text_translate_x = image_translate_x + (image_size.width * image_scale);
+            text_translate_x =  image_translate_x + (image_size.width * image_scale * DEFAULT_SPACING_RATIO);
             text_translate_y = (max_height / 2) - ((text_size.height * text_scale) / 2);
         } else {
             let complete_height = (image_size.height * image_scale) + (text_size.height * text_scale);
