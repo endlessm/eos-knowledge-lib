@@ -71,11 +71,19 @@ const Engine = Lang.Class({
     },
 
     _init: function (params) {
-        this._domain_cache = {};
-
         this.parent(params);
 
         this._xapian_bridge = new XapianBridge.XapianBridge({ language: this.language });
+
+        this._domain_cache = {};
+
+        let domain = this.get_default_domain();
+
+        /* Load shards */
+        domain.load_sync ();
+
+        /* Setup shards in default EknVfs for ekn:// uri to work */
+        EosKnowledgePrivate.vfs_set_shards (domain.shards);
     },
 
     /**
@@ -136,7 +144,7 @@ const Engine = Lang.Class({
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
             if (query_obj.app_id === '')
-                query_obj = QueryObject.QueryObject.new_from_object(query_obj, { app_id: this._default_app_id });
+                query_obj = QueryObject.QueryObject.new_from_object(query_obj, { app_id: this.default_app_id });
 
             let domain_obj = this._get_domain(query_obj.app_id);
 
@@ -192,7 +200,7 @@ const Engine = Lang.Class({
         if (this._domain_cache[app_id] === undefined) {
             let domain_obj = Domain.get_domain_impl(app_id, this._xapian_bridge);
 
-            if (app_id === this._default_app_id && this.default_data_path)
+            if (app_id === this.default_app_id && this.default_data_path)
                 domain_obj._content_path = this.default_data_path;
 
             this._domain_cache[app_id] = domain_obj;
@@ -202,7 +210,7 @@ const Engine = Lang.Class({
     },
 
     get_default_domain: function () {
-        return this._get_domain(this._default_app_id);
+        return this._get_domain(this.default_app_id);
     },
 
     /**
@@ -221,23 +229,6 @@ const Engine = Lang.Class({
 
     test_link: function (link) {
         return this.get_default_domain().test_link(link);
-    },
-
-    set default_app_id (id) {
-        let domain = this._get_domain(id);
-
-        this._default_app_id = id;
-
-        if (domain) {
-            /* Load shards */
-            domain.load_sync();
-            /* Setup shards in default EknVfs for ekn:// uri to work */
-            EosKnowledgePrivate.vfs_set_shards(domain.shards);
-        }
-    },
-
-    get default_app_id () {
-        return this._default_app_id;
     },
 });
 
