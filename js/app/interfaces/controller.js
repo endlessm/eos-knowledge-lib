@@ -5,7 +5,10 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
+const QueryObject = imports.search.queryObject;
+const SetMap = imports.app.setMap;
 
 const CSS_RESOURCE_PATH = '/com/endlessm/knowledge/data/css/';
 
@@ -84,6 +87,27 @@ const Controller = new Lang.Interface({
 
     Slots: {
         'window': {},
+    },
+
+    initialize_set_map: function (cb) {
+        // Load all sets, with which to populate the set map
+        // FIXME: deduplicate this with Selection.AllSets
+        Engine.get_default().get_objects_by_query(new QueryObject.QueryObject({
+            limit: -1,
+            tags_match_all: ['EknSetObject'],
+        }), null, (engine, res) => {
+            let models;
+            try {
+                [models] = engine.get_objects_by_query_finish(res);
+            } catch (e) {
+                logError(e, 'Failed to load sets from database');
+                return;
+            }
+
+            SetMap.init_map_with_models(models);
+
+            this._window.make_ready(cb);
+        });
     },
 
     load_theme: function () {

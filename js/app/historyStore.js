@@ -99,6 +99,9 @@ const HistoryStore = new Lang.Class({
                 case Actions.HISTORY_FORWARD_CLICKED:
                     this.go_forward();
                     break;
+                case Actions.ITEM_CLICKED:
+                    payload.model.mark_read();
+                    break;
             }
         });
     },

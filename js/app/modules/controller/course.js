@@ -1,35 +1,28 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported Buffet */
+/* exported Course */
 
 const GObject = imports.gi.GObject;
 
-const BuffetHistoryStore = imports.app.buffetHistoryStore;
+const CourseHistoryStore = imports.app.courseHistoryStore;
 const Controller = imports.app.interfaces.controller;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 
 /**
- * Class: Buffet
- * Controller that presents all the content and lets the user choose
+ * Class: Course
+ * Controller that presents content as a course to be consumed.
  *
- * For the Travel app, we serve up all the content at once.
- * The various presentation modules (e.g. <Highlights>) sort it, and the
- * arrangements (e.g. <WindshieldArrangement>) present it in attractive ways.
- * The user can pass along the buffet table, choosing what looks nice.
- *
- * Implements:
- *    <Module>, <Controller>
  */
-const Buffet = new Module.Class({
-    Name: 'Controller.Buffet',
+const Course = new Module.Class({
+    Name: 'Controller.Course',
     Extends: GObject.Object,
     Implements: [Controller.Controller],
 
     _init: function (props={}) {
         this.parent(props);
 
-        let history = new BuffetHistoryStore.BuffetHistoryStore();
+        let history = new CourseHistoryStore.CourseHistoryStore();
         HistoryStore.set_default(history);
 
         this._window = this.create_submodule('window', {
