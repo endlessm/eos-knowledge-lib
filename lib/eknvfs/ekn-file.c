@@ -290,13 +290,17 @@ ekn_file_class_init (EknFileClass *klass)
                          "URI",
                          "EOS Knowledge URI",
                          NULL,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+                         G_PARAM_READWRITE |
+                         G_PARAM_CONSTRUCT_ONLY |
+                         G_PARAM_STATIC_STRINGS);
 
   properties[PROP_BLOB] =
     g_param_spec_pointer ("blob",
                           "Blob",
                           "EosShardBlob for uri",
-                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+                          G_PARAM_READWRITE |
+                          G_PARAM_CONSTRUCT_ONLY |
+                          G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 }

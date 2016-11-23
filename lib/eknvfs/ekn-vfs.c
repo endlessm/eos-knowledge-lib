@@ -346,7 +346,7 @@ ekn_vfs_class_init (EknVfsClass *klass)
                          "Default domain",
                          "Default shard domain to look up ekn uris",
                          NULL,
-                         G_PARAM_READWRITE);
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 
