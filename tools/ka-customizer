@@ -231,7 +231,7 @@ done_button.connect('clicked', () => {
     if (stock_theme_chooser.get_active_text())
         args.push('--theme-name', stock_theme_chooser.get_active_text());
     if (dummy_content_switch.get_active())
-        args.push(' --dummy-content');
+        args.push('--dummy-content');
     win.get_window().cursor = Gdk.Cursor.new_for_display(Gdk.Display.get_default(), Gdk.CursorType.WATCH);
     win.set_sensitive(false);
     let app_process = Gio.Subprocess.new(args, Gio.SubprocessFlags.STDOUT_PIPE | Gio.SubprocessFlags.STDERR_MERGE);
