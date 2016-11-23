@@ -223,11 +223,14 @@ done_button.connect('clicked', () => {
         show_message('Updating app and libraries, this may take a while...');
         args.push('update');
     }
+    let escape_spaces = function (name) {
+        return name.replace(' ', '\\ ', 'g');
+    }
     args.push(selected_app_id);
     if (app_json_file_chooser.get_filename())
-        args.push('--app-json-path', app_json_file_chooser.get_filename());
+        args.push('--app-json-path', escape_spaces(app_json_file_chooser.get_filename()));
     if (theme_file_chooser.get_filename())
-        args.push('--theme-overrides-path', theme_file_chooser.get_filename());
+        args.push('--theme-overrides-path', escape_spaces(theme_file_chooser.get_filename()));
     if (stock_theme_chooser.get_active_text())
         args.push('--theme-name', stock_theme_chooser.get_active_text());
     if (dummy_content_switch.get_active())
