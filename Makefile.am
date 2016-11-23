@@ -127,6 +127,10 @@ scss_theme_window_partials = \
 	$(srcdir)/data/css/modules/window/_simple.scss \
 	$(NULL)
 
+scss_theme_widgets_partials = \
+	$(srcdir)/data/css/widgets/_eknMediaBin.scss \
+	$(NULL)
+
 scss_theme_partials = \
 	$(scss_theme_base_partials) \
 	$(scss_theme_arrangement_partials) \
@@ -138,6 +142,7 @@ scss_theme_partials = \
 	$(scss_theme_navigation_partials) \
 	$(scss_theme_pager_partials) \
 	$(scss_theme_window_partials) \
+	$(scss_theme_widgets_partials) \
 	$(NULL)
 
 scss_template_toplevels = \
@@ -438,6 +443,9 @@ dist_themepager_DATA = $(scss_theme_pager_partials)
 
 themewindowdir = $(thememodulesdir)/window
 dist_themewindow_DATA = $(scss_theme_window_partials)
+
+themewidgetsdir = $(themetopdir)/widgets
+dist_themewidgets_DATA = $(scss_theme_widgets_partials)
 
 # so we can package our .yaml files
 yamlpresetdir = $(pkgdatadir)/preset

@@ -21,9 +21,9 @@
  *
  */
 
-@define-color transparent-light rgba (1,1,1,.32);
-@define-color transparent-dark  rgba (.11,.11,.11,.64);
-@define-color bright-green      #8cc63f;
+@define-color transparent-light rgba (1,1,1,.1);
+@define-color transparent-dark  rgba (.11,.11,.11,.8);
+@define-color highlight-color   #ff6835;
 
 /* hiden/shown  */
 ekn-media-bin *.hide {
@@ -73,7 +73,7 @@ ekn-media-bin box.overlay-bar.bottom button {
 
 ekn-media-bin box.overlay-bar.bottom button:hover {
   box-shadow: none;
-  background: darker(@transparent-dark);
+  background: rgba (0,0,0,.6);
 }
 
 /* Main play button */
@@ -93,21 +93,23 @@ ekn-media-bin > overlay > box > label {
 /* Style media playback scale */
 ekn-media-bin overlay scale {
   margin-top: .5em;
-  padding: 0px;
+  padding: 3px 0px;
+  background-image: linear-gradient(to top, @transparent-dark 3px, transparent 3px);
 }
 
 ekn-media-bin overlay scale trough {
-  border: 0px;
+  border: 0;
   border-radius: 0px;
   padding: 1px;
   background: @transparent-light;
 }
 
 ekn-media-bin overlay scale slider {
-  margin: -16px;
-  padding: 9px;
+  min-height: 12px;
+  min-width: 12px;
+  margin: -4px;
   border: 0px;
-  border-radius: 0px;
+  border-radius: 6px;
   box-shadow: none;
   background: none;
 }
@@ -115,14 +117,18 @@ ekn-media-bin overlay scale slider {
 ekn-media-bin overlay scale highlight {
   border: 0px;
   padding: 0px;
-  border-radius: 0px 2px 2px 0px;
-  background: @bright-green;
+  border-radius: 0px 4px 4px 0px;
+  background: @highlight-color;
 }
 
 ekn-media-bin overlay scale value {
   padding: 2px 0px;
   border-radius: 1em;
   background: @transparent-dark;
+}
+
+ekn-media-bin overlay scale:hover slider {
+  background: white;
 }
 
 /* Volume popover */
@@ -144,22 +150,22 @@ popover.ekn-media-bin scale trough {
   border: 0px;
   border-radius: 3px;
   padding: 1px;
-  background: #555;
+  background: @transparent-light;
 }
 
 popover.ekn-media-bin scale highlight {
   border: 0px;
   padding: 0px;
-  border-radius: 3px;
-  background: @bright-green;
+  border-radius: 4px;
+  background: @highlight-color;
 }
 
 popover.ekn-media-bin scale slider {
-  min-height: 6px;
-  min-width: 6px;
-  margin: -1px;
+  min-height: 12px;
+  min-width: 12px;
+  margin: -3px;
   border: 0px;
-  border-radius: 4px;
+  border-radius: 6px;
   box-shadow: none;
   background: none;
 }
