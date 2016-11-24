@@ -1,6 +1,5 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
@@ -71,11 +70,11 @@ const Engine = Lang.Class({
     },
 
     _init: function (params) {
-        this._domain_cache = {};
-
         this.parent(params);
 
         this._xapian_bridge = new XapianBridge.XapianBridge({ language: this.language });
+
+        this._domain_cache = {};
     },
 
     /**
@@ -224,15 +223,9 @@ const Engine = Lang.Class({
     },
 
     set default_app_id (id) {
-        let domain = this._get_domain(id);
-
-        this._default_app_id = id;
-
-        if (domain) {
-            /* Load shards */
-            domain.load_sync();
-            /* Setup shards in default EknVfs for ekn:// uri to work */
-            EosKnowledgePrivate.vfs_set_shards(domain.shards);
+        if (this._default_app_id !== id) {
+            this._default_app_id = id;
+            this.notify('default-app-id');
         }
     },
 
@@ -248,6 +241,14 @@ let get_default = function () {
         var language = Utils.get_current_language();
         the_engine = new Engine({
             language: language,
+        });
+
+        // Tell EknVfs which one is the default domain
+        the_engine.connect('notify::default-app-id', function () {
+            let vfs = Gio.Vfs.get_default();
+
+            if (GObject.type_name (vfs.constructor.$gtype) === "EknVfs")
+                vfs.default_domain = the_engine.default_app_id;
         });
     }
     return the_engine;

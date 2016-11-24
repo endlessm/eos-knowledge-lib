@@ -318,22 +318,23 @@ ekn_interface_gtype_list_properties(GType     gtype,
 }
 
 /**
- * ekn_vfs_set_shards:
+ * ekn_default_vfs_register_domain_shards:
+ * @domain: the shards domain
  * @shards: (type GSList(EosShardShardFile)): a list of shard objects
  *
  * Set a list of shards in the default GVfs extension point where to lookup
- * ekn:// uris resources.
+ * ekn:// uris resources for @domain.
  *
  * Returns: TRUE on success, FALSE if an error occurred
  */
 gboolean
-ekn_vfs_set_shards (GSList *shards)
+ekn_default_vfs_register_domain_shards (const gchar *domain, GSList *shards)
 {
   GType shard_type = EOS_SHARD_TYPE_SHARD_FILE;
   GVfs *vfs = g_vfs_get_default ();
   GSList *l;
 
-  if (g_strcmp0 (G_OBJECT_TYPE_NAME (vfs), "EknVfs"))
+  if (g_strcmp0 (G_OBJECT_TYPE_NAME (vfs), "EknVfs") != 0)
     {
       g_warning ("Default VFS is not a EknVfs, ekn:// uri wont be supported");
       return FALSE;
@@ -349,7 +350,7 @@ ekn_vfs_set_shards (GSList *shards)
 
     }
 
-  g_object_set (vfs, "shards", shards, NULL);
+  g_signal_emit_by_name (vfs, "register-domain-shards", domain, shards);
 
   return TRUE;
 }

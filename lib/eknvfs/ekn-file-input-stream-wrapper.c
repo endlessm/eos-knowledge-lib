@@ -98,6 +98,17 @@ ekn_file_input_stream_wrapper_get_property (GObject    *object,
     }
 }
 
+#define return_error_if_fail(expr,code,msg,val) \
+if (!(expr)) \
+  { \
+    g_warning ("%s "#expr" failed", __func__); \
+    g_set_error_literal (error, G_IO_ERROR, code, msg); \
+    return val;\
+  }\
+
+#define return_error_if_no_stream(val) \
+  return_error_if_fail (self->stream, G_IO_ERROR_FAILED, "No input stream to wrap", val)
+
 static gssize
 ekn_file_input_stream_wrapper_read (GInputStream  *stream,
                                     void          *buffer,
@@ -106,6 +117,9 @@ ekn_file_input_stream_wrapper_read (GInputStream  *stream,
                                     GError       **error)
 {
   EknFileInputStreamWrapper *self = EKN_FILE_INPUT_STREAM_WRAPPER (stream);
+
+  return_error_if_no_stream (-1);
+
   return g_input_stream_read (self->stream, buffer, count, cancellable, error);
 }
 
@@ -115,6 +129,14 @@ ekn_file_input_stream_wrapper_close (GInputStream  *stream,
                                      GError       **error)
 {
   EknFileInputStreamWrapper *self = EKN_FILE_INPUT_STREAM_WRAPPER (stream);
+
+  /* This happens on dispose */
+  if (!self->stream)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_CLOSED, "Stream already closed");
+      return FALSE;
+    }
+
   return g_input_stream_close (self->stream, cancellable, error);
 }
 
@@ -125,6 +147,9 @@ ekn_file_input_stream_wrapper_skip (GInputStream  *stream,
                                     GError       **error)
 {
   EknFileInputStreamWrapper *self = EKN_FILE_INPUT_STREAM_WRAPPER (stream);
+
+  return_error_if_no_stream (-1);
+
   return g_input_stream_skip (self->stream, count, cancellable, error);
 }
 
@@ -132,6 +157,8 @@ static goffset
 ekn_file_input_stream_wrapper_tell (GFileInputStream *stream)
 {
   EknFileInputStreamWrapper *self = EKN_FILE_INPUT_STREAM_WRAPPER (stream);
+
+  g_return_val_if_fail (self->stream, 0);
 
   if (!G_IS_SEEKABLE (self->stream))
     return 0;
@@ -143,6 +170,9 @@ static gboolean
 ekn_file_input_stream_wrapper_can_seek (GFileInputStream *stream)
 {
   EknFileInputStreamWrapper *self = EKN_FILE_INPUT_STREAM_WRAPPER (stream);
+
+  g_return_val_if_fail (self->stream, FALSE);
+
   return G_IS_SEEKABLE (self->stream) && g_seekable_can_seek (G_SEEKABLE (self->stream));
 }
 
@@ -155,12 +185,9 @@ ekn_file_input_stream_wrapper_seek (GFileInputStream *stream,
 {
   EknFileInputStreamWrapper *self = EKN_FILE_INPUT_STREAM_WRAPPER (stream);
 
-  if (!G_IS_SEEKABLE (self->stream))
-    {
-      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-			   "Input stream doesn't implement seek");
-      return FALSE;
-    }
+  return_error_if_no_stream (FALSE);
+  return_error_if_fail (G_IS_SEEKABLE (self->stream), G_IO_ERROR_NOT_SUPPORTED,
+                        "Input stream doesn't implement seek", FALSE);
 
   return g_seekable_seek (G_SEEKABLE (self->stream), offset, type, cancellable, error);
 }
@@ -172,6 +199,8 @@ ekn_file_input_stream_wrapper_query_info (GFileInputStream  *stream,
                                           GError           **error)
 {
   EknFileInputStreamWrapper *self = EKN_FILE_INPUT_STREAM_WRAPPER (stream);
+
+  return_error_if_fail (self->file, G_IO_ERROR_FAILED, "No GFile to wrap", NULL);
 
   return g_file_query_info (self->file, attributes, 0, cancellable, error);
 }
@@ -221,6 +250,9 @@ ekn_file_input_stream_wrapper_init (EknFileInputStreamWrapper *wrapper)
 GFileInputStream *
 _ekn_file_input_stream_wrapper_new (GFile *file, GInputStream *stream)
 {
+  g_return_val_if_fail (G_IS_FILE (file), NULL);
+  g_return_val_if_fail (G_IS_INPUT_STREAM (stream), NULL);
+
   return g_object_new (EKN_TYPE_FILE_INPUT_STREAM_WRAPPER,
                        "file", file,
                        "stream", stream,

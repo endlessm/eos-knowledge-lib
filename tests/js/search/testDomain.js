@@ -323,7 +323,7 @@ describe('DomainV3', () => {
     describe('test_link', function () {
         function mock_ekn_link_tables (link_table_hashes) {
             let shards = link_table_hashes.map(create_mock_shard_with_link_table);
-            domain.shards = shards;
+            domain._shards = shards;
             domain._setup_link_tables();
         }
 
