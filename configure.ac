@@ -93,9 +93,6 @@ AC_MSG_CHECKING([whether SCSS compiler supports compass])
 AS_IF([scss --compass], [AC_MSG_RESULT([yes])],
     [AC_MSG_ERROR([SCSS compiler does not have Compass support.
 Try installing the "compass" Ruby gem or its equivalent package.])])
-AC_PATH_PROG([GIO_QUERYMODULES], [gio-querymodules], [notfound])
-AS_IF([test x$GIO_QUERYMODULES = xnotfound], [AC_MSG_ERROR([gio-querymodules not found.
-Try installing "glib" package.])])
 
 AC_CACHE_SAVE
 
@@ -197,11 +194,6 @@ PKG_CHECK_MODULES([EOS_KNOWLEDGE_PRIVATE], [
     gstreamer-1.0 >= 1.8.2
     epoxy
 ])
-PKG_CHECK_MODULES([EKN_VFS], [
-    gio-2.0
-    gmodule-2.0
-    eos-shard-0
-])
 PKG_CHECK_MODULES([GRESOURCE_PLUGIN], [
     gio-2.0
     glib-2.0
@@ -291,5 +283,9 @@ AC_CONFIG_HEADERS([config.h])  dnl Header with system-dependent #defines
 AC_CONFIG_LINKS([
     docs/reference/js/eos.css:docs/reference/js/eos.css
 ])
+
+# Call ekncontent ./configure
+AC_CONFIG_SUBDIRS([ekncontent])
+
 # Do the output
 AC_OUTPUT
