@@ -240,10 +240,11 @@ const Arrangement = new Lang.Interface({
     },
 
     highlight: function (highlight_model) {
-        this.clear_highlight();
         let card = this.get_card_for_model(highlight_model);
-        if (card)
+        if (card) {
+            this.clear_highlight();
             card.get_style_context().add_class('highlighted');
+        }
     },
 
     clear_highlight: function () {
