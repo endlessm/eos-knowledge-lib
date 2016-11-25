@@ -73,10 +73,10 @@ defines:
                 - header
               slots:
                 contents:
-                - shortdef: 'Banner.Set'
+                - shortdef: 'Banner.Set(valign: start, hexpand: true)'
                   slots:
-                    card: Card.Title
-                - shortdef: 'Banner.App(halign: end)'
+                    card: 'Card.List(background-size: center, show-synopsis: false)'
+                - shortdef: 'Banner.App(halign: end, hexpand: true, valign: start)'
             - shortdef: 'ContentGroup.ContentGroup(valign: center)'
               styles:
                 - intro-video

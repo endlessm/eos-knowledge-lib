@@ -143,6 +143,38 @@ $support-font: 'Montserrat' !default;
   }
 }
 
+
+
+.CardList {
+  &:hover &__title {
+      color: $accent-light-color;
+  }
+}
+
+.BannerSet {
+  margin: 40px 0px 0px 0px;
+  .CardList {
+    min-height: 20px;
+    min-width: 20px;
+    background-color: rgba(255, 255, 255, 0.0);
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    &.width-d .Card__title, &.width-e .Card__title {
+      font-size: 2.1em;
+    }
+    &__title {
+      font-weight: normal;
+      color: $accent-light-color;
+    }
+    &__checkmark {
+      margin: 0px;
+      min-width: 0px;
+      min-height: 0px;
+    }
+  }
+}
+
 .set-page {
   background-color: white;
 
@@ -185,13 +217,6 @@ $support-font: 'Montserrat' !default;
   .header {
     background-image: url($secondary-background-image);
     background-repeat: no-repeat;
-    .BannerSet {
-      margin: 40px 0px 0px 30px;
-      .CardTitle__title {
-        font-size: 2.1em;
-        color: $accent-light-color;
-      }
-    }
   }
 
   .ArrangementAccordion {
