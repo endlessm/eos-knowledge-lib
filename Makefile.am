@@ -688,7 +688,6 @@ introspection_sources = \
 
 EosKnowledgePrivate-1.0.gir: libeosknowledgeprivate.la
 EosKnowledgePrivate_1_0_gir_INCLUDES = \
-	EosShard-0 \
 	GLib-2.0 \
 	GObject-2.0 \
 	WebKit2-4.0 \

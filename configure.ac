@@ -185,7 +185,6 @@ AC_SUBST([JASMINE_REPORT_ARGUMENT])
 # ------------------
 # Update these whenever you use a function that requires a certain API version
 PKG_CHECK_MODULES([EOS_KNOWLEDGE_PRIVATE], [
-    eos-shard-0 >= 0.1.2
     glib-2.0
     gobject-2.0
     gio-2.0

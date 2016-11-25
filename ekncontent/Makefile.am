@@ -76,7 +76,11 @@ INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all $(EOS_KNOWL
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
 EosKnowledgeSearchPrivate-1.0.gir: libeosknowledgesearchprivate.la
-EosKnowledgeSearchPrivate_1_0_gir_INCLUDES = Gio-2.0
+EosKnowledgeSearchPrivate_1_0_gir_INCLUDES = \
+	EosShard-0 \
+	Gio-2.0 \
+	GLib-2.0 \
+	GObject-2.0
 EosKnowledgeSearchPrivate_1_0_gir_SCANNERFLAGS = --warn-all --warn-error --identifier-prefix=Ekns --symbol-prefix=ekns
 EosKnowledgeSearchPrivate_1_0_gir_LIBS = libeosknowledgesearchprivate.la
 EosKnowledgeSearchPrivate_1_0_gir_FILES = $(libeosknowledgesearchprivate_la_SOURCES)

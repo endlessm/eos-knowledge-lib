@@ -11,3 +11,7 @@ ekns_utils_parallel_init (GSList        *initables,
                           int            io_priority,
                           GCancellable  *cancellable,
                           GError       **error);
+
+gboolean
+ekns_default_vfs_register_domain_shards (const gchar *domain,
+                                         GSList *shards);
