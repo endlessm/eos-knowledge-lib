@@ -133,6 +133,7 @@
     <file>js/app/modules/filter/currentSet.js</file>
     <file>js/app/modules/filter/featured.js</file>
     <file>js/app/modules/filter/otherGroup.js</file>
+    <file>js/app/modules/filter/seeMore.js</file>
     <file>js/app/modules/filter/sets.js</file>
     <file>js/app/modules/filter/thematic.js</file>
     <file>js/app/modules/filter/unread.js</file>
