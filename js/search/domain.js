@@ -1,6 +1,6 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const Ekns = imports.gi.EosKnowledgeSearchPrivate;
+const Eknc = imports.gi.EosKnowledgeContent;
 const EosShard = imports.gi.EosShard;
 const Format = imports.format;
 const GLib = imports.gi.GLib;
@@ -81,7 +81,7 @@ const Domain = new Lang.Class({
 
         /* Append shards to default EknVfs for ekn:// uri to work */
         if (this._app_id && this._shards)
-            Ekns.default_vfs_register_domain_shards (this._app_id, this._shards);
+            Eknc.default_vfs_register_domain_shards (this._app_id, this._shards);
     },
 
     /**
@@ -475,7 +475,7 @@ const DomainV3 = new Lang.Class({
         this._load_shards(null);
         // Don't allow init() to be cancelled; otherwise,
         // cancellation will spoil the object for future use.
-        Ekns.utils_parallel_init(this._shards, 0, null);
+        Eknc.utils_parallel_init(this._shards, 0, null);
 
         // Fetch the link table dictionaries from each shard for link lookups
         this._setup_link_tables();

@@ -2,7 +2,7 @@
 
 /* Copyright 2015 Endless Mobile, Inc. */
 
-#include "ekns-utils.h"
+#include "eknc-utils.h"
 
 #include <eos-shard/eos-shard-shard-file.h>
 
@@ -49,7 +49,7 @@ user_cancelled (GCancellable *cancellable,
 }
 
 /**
- * ekns_utils_parallel_init:
+ * eknc_utils_parallel_init:
  * @initables: (element-type GAsyncInitable)
  * @io_priority: The IO priority to init at.
  * @cancellable: A #GCancellable
@@ -58,7 +58,7 @@ user_cancelled (GCancellable *cancellable,
  * Synchronously initializes a list of #GAsyncInitables in parallel.
  */
 gboolean
-ekns_utils_parallel_init (GSList        *initables,
+eknc_utils_parallel_init (GSList        *initables,
                           int            io_priority,
                           GCancellable  *cancellable,
                           GError       **error)
@@ -101,7 +101,7 @@ ekns_utils_parallel_init (GSList        *initables,
 }
 
 /**
- * ekns_default_vfs_register_domain_shards:
+ * eknc_default_vfs_register_domain_shards:
  * @domain: the shards domain
  * @shards: (type GSList(EosShardShardFile)): a list of shard objects
  *
@@ -111,7 +111,7 @@ ekns_utils_parallel_init (GSList        *initables,
  * Returns: TRUE on success, FALSE if an error occurred
  */
 gboolean
-ekns_default_vfs_register_domain_shards (const gchar *domain, GSList *shards)
+eknc_default_vfs_register_domain_shards (const gchar *domain, GSList *shards)
 {
   GType shard_type = EOS_SHARD_TYPE_SHARD_FILE;
   GVfs *vfs = g_vfs_get_default ();

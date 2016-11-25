@@ -32,7 +32,7 @@ m4_define([_EKN_CONTENT_VERSION_MACRO],
 AC_INIT([Endless OS Knowledge Content Library], [_EKN_CONTENT_VERSION_MACRO],
     [], [eos-knowledge-content], [http://endlessm.com])
 # Verify that the source directory can be found
-AC_CONFIG_SRCDIR([lib/eosknowledgesearchprivate/ekns-utils.h])
+AC_CONFIG_SRCDIR([lib/ekncontent/eknc-utils.h])
 # Initialize Automake: enable all warnings and do not insist on GNU standards
 # no-portability suppresses warnings about syntax specific to GNU make
 # parallel-tests specifies that we use the new parallel-running test harness.
@@ -77,7 +77,7 @@ AX_COMPILER_FLAGS
 
 # ------------------
 # Update these whenever you use a function that requires a certain API version
-PKG_CHECK_MODULES([EOS_KNOWLEDGE_SEARCH_PRIVATE], [
+PKG_CHECK_MODULES([EKN_CONTENT], [
     eos-shard-0 >= 0.1.2
     gio-2.0
     glib-2.0

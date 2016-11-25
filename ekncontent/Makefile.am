@@ -55,36 +55,36 @@ install-data-hook:
 
 # TMP: keep installing to eos-knowledge pkglibdir until we make this public
 knowledgelibdir = $(libdir)/eos-knowledge
-knowledgelib_LTLIBRARIES = libeosknowledgesearchprivate.la
-libeosknowledgesearchprivate_la_SOURCES = \
-       lib/eosknowledgesearchprivate/ekns-subtree-dispatcher.c \
-       lib/eosknowledgesearchprivate/ekns-subtree-dispatcher.h \
-       lib/eosknowledgesearchprivate/ekns-utils.c \
-       lib/eosknowledgesearchprivate/ekns-utils.h \
+knowledgelib_LTLIBRARIES = libeosknowledgecontent.la
+libeosknowledgecontent_la_SOURCES = \
+       lib/ekncontent/eknc-subtree-dispatcher.c \
+       lib/ekncontent/eknc-subtree-dispatcher.h \
+       lib/ekncontent/eknc-utils.c \
+       lib/ekncontent/eknc-utils.h \
        $(NULL)
 
-libeosknowledgesearchprivate_la_CPPFLAGS = @EOS_KNOWLEDGE_SEARCH_PRIVATE_CFLAGS@
-libeosknowledgesearchprivate_la_CFLAGS = $(AM_CFLAGS)
-libeosknowledgesearchprivate_la_LIBADD = @EOS_KNOWLEDGE_SEARCH_PRIVATE_LIBS@
-libeosknowledgesearchprivate_la_LDFLAGS = -avoid-version
+libeosknowledgecontent_la_CPPFLAGS = @EKN_CONTENT_CFLAGS@
+libeosknowledgecontent_la_CFLAGS = $(AM_CFLAGS)
+libeosknowledgecontent_la_LIBADD = @EKN_CONTENT_LIBS@
+libeosknowledgecontent_la_LDFLAGS = -avoid-version
 
 # # # INTROSPECTION # # #
 
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
-INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all $(EOS_KNOWLEDGE_SEARCH_PRIVATE_CFLAGS)
+INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all $(EKN_CONTENT_CFLAGS)
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
-EosKnowledgeSearchPrivate-1.0.gir: libeosknowledgesearchprivate.la
-EosKnowledgeSearchPrivate_1_0_gir_INCLUDES = \
+EosKnowledgeContent-1.0.gir: libeosknowledgecontent.la
+EosKnowledgeContent_1_0_gir_INCLUDES = \
 	EosShard-0 \
 	Gio-2.0 \
 	GLib-2.0 \
 	GObject-2.0
-EosKnowledgeSearchPrivate_1_0_gir_SCANNERFLAGS = --warn-all --warn-error --identifier-prefix=Ekns --symbol-prefix=ekns
-EosKnowledgeSearchPrivate_1_0_gir_LIBS = libeosknowledgesearchprivate.la
-EosKnowledgeSearchPrivate_1_0_gir_FILES = $(libeosknowledgesearchprivate_la_SOURCES)
-INTROSPECTION_GIRS += EosKnowledgeSearchPrivate-1.0.gir
+EosKnowledgeContent_1_0_gir_SCANNERFLAGS = --warn-all --warn-error --identifier-prefix=Eknc --symbol-prefix=eknc
+EosKnowledgeContent_1_0_gir_LIBS = libeosknowledgecontent.la
+EosKnowledgeContent_1_0_gir_FILES = $(libeosknowledgecontent_la_SOURCES)
+INTROSPECTION_GIRS += EosKnowledgeContent-1.0.gir
 
 typelibdir = $(knowledgelibdir)/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)

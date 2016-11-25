@@ -1,5 +1,5 @@
 
-const Ekns = imports.gi.EosKnowledgeSearchPrivate;
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -227,7 +227,7 @@ const GlobalSearchProvider = new Lang.Class({
     Name: 'EknGlobalSearchProvider',
 
     _init: function() {
-        this._dispatcher = new Ekns.SubtreeDispatcher({ interface_info: SearchIfaceInfo });
+        this._dispatcher = new Eknc.SubtreeDispatcher({ interface_info: SearchIfaceInfo });
         this._dispatcher.connect('dispatch-subtree', Lang.bind(this, this._dispatchSubtree));
         this._appSearchProviders = {};
     },
