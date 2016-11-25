@@ -104,6 +104,7 @@ $support-font: 'Montserrat' !default;
 
 .CardVideo {
   &__player {
+    min-height: 300px;
     box-shadow: 4px 0px 20px 0px rgba(0, 0, 0, 0.5);
   }
   .Card__synopsis {
