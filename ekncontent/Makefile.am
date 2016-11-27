@@ -103,6 +103,37 @@ pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = @EKN_CONTENT_API_NAME@.pc
 DISTCLEANFILES += @EKN_CONTENT_API_NAME@.pc
 
+# # # TESTS # # #
+javascript_tests = \
+	tests/ekncontent/testUtils.js \
+	$(NULL)
+
+EXTRA_DIST += \
+	$(javascript_tests) \
+	$(NULL)
+
+# Run tests when running 'make check'
+TESTS = \
+	$(javascript_tests) \
+	$(NULL)
+LOG_COMPILER = gtester
+AM_LOG_FLAGS = -k --verbose
+
+TEST_EXTENSIONS = .js
+
+JS_LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) $(top_srcdir)/tap-driver.sh
+JS_LOG_DRIVER_FLAGS = --comments
+JS_LOG_COMPILER = jasmine
+AM_JS_LOG_FLAGS = --tap --no-config @JASMINE_REPORT_ARGUMENT@
+
+AM_TESTS_ENVIRONMENT = \
+	export GI_TYPELIB_PATH="$(top_builddir)$${GI_TYPELIB_PATH:+:$$GI_TYPELIB_PATH}"; \
+	export LD_LIBRARY_PATH="$(top_builddir)/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
+	export G_TEST_SRCDIR="$(abs_srcdir)/tests"; \
+	export G_TEST_BUILDDIR="$(abs_builddir)/tests"; \
+	export LC_ALL=C; \
+	$(NULL)
+
 # # # INTROSPECTION # # #
 
 -include $(INTROSPECTION_MAKEFILE)

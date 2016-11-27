@@ -104,6 +104,16 @@ AS_IF([test "x$ac_cv_prog_cc_c99" = "xno"], [AC_MSG_ERROR([C99 is required.])])
 
 AX_COMPILER_FLAGS
 
+# JASMINE_JUNIT_REPORTS_DIR: Where to put test reports
+AC_MSG_CHECKING([where to put test reports])
+AC_ARG_VAR([JASMINE_JUNIT_REPORTS_DIR], [Where to put test reports])
+AS_IF([test -n "$JASMINE_JUNIT_REPORTS_DIR"],
+    [JASMINE_REPORT_ARGUMENT="--junit $JASMINE_JUNIT_REPORTS_DIR/\$\${log/%.log/.js.xml}"
+    AC_MSG_RESULT([in $JASMINE_JUNIT_REPORTS_DIR])],
+    [JASMINE_REPORT_ARGUMENT=
+    AC_MSG_RESULT([nowhere])])
+AC_SUBST([JASMINE_REPORT_ARGUMENT])
+
 # ------------------
 # These go into the pkg-config file as Requires: and Requires.private:
 # (Generally, use Requires.private: instead of Requires:)
