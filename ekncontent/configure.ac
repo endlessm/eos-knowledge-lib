@@ -51,6 +51,31 @@ AC_CONFIG_MACRO_DIR([m4])
 
 AC_CACHE_SAVE
 
+# Variables to define
+# -------------------
+# Version numbers and macros
+EKN_CONTENT_API_VERSION=_EKN_CONTENT_API_VERSION_MACRO
+AC_SUBST(EKN_CONTENT_API_VERSION)
+EKN_CONTENT_API_NAME="eos-knowledge-content-$EKN_CONTENT_API_VERSION"
+AC_SUBST(EKN_CONTENT_API_NAME)
+EKN_CONTENT_INTERFACE_AGE=_EKN_CONTENT_INTERFACE_AGE_MACRO
+AC_SUBST([EKN_CONTENT_MAJOR_VERSION], [_EKN_CONTENT_API_VERSION_MACRO])
+AC_SUBST([EKN_CONTENT_MINOR_VERSION], [_EKN_CONTENT_MINOR_VERSION_MACRO])
+AC_SUBST([EKN_CONTENT_MICRO_VERSION], [_EKN_CONTENT_MICRO_VERSION_MACRO])
+AC_DEFINE([EKN_CONTENT_VERSION], [_EKN_CONTENT_VERSION_MACRO], [Full version number])
+
+# Before making a release, the EKN_CONTENT_LT_VERSION_INFO string should be modified. The
+# string is of the form c:r:a. Follow these instructions sequentially:
+#   1. If the library source code has changed at all since the last update, then
+#      increment revision (‘c:r:a’ becomes ‘c:r+1:a’).
+#   2. If any interfaces have been added, removed, or changed since the last
+#      update, increment current, and set revision to 0.
+#   3. If any interfaces have been added since the last public release, then
+#      increment age.
+#   4. If any interfaces have been removed or changed since the last public
+#      release, then set age to 0.
+AC_SUBST([EKN_CONTENT_LT_VERSION_INFO],[0:0:0])
+
 # Required build tools
 # --------------------
 # Make sure we can create directory hierarchies
@@ -58,6 +83,8 @@ AC_PROG_MKDIR_P
 # C compiler
 AC_PROG_CC
 AC_PROG_CC_C99
+# Library configuration tool
+PKG_PROG_PKG_CONFIG
 # GObject Introspection
 GOBJECT_INTROSPECTION_REQUIRE([1.30])
 # Various tools
@@ -75,14 +102,20 @@ AS_IF([test "x$ac_cv_prog_cc_c99" = "xno"], [AC_MSG_ERROR([C99 is required.])])
 
 AX_COMPILER_FLAGS
 
+
 # ------------------
+# These go into the pkg-config file as Requires: and Requires.private:
+# (Generally, use Requires.private: instead of Requires:)
 # Update these whenever you use a function that requires a certain API version
+EKN_CONTENT_REQUIRED_MODULES=
+EKN_CONTENT_REQUIRED_MODULES_PRIVATE="eos-shard-0 >= 0.1.2 gio-2.0 glib-2.0 gobject-2.0"
+AC_SUBST(EKN_CONTENT_REQUIRED_MODULES)
+AC_SUBST(EKN_CONTENT_REQUIRED_MODULES_PRIVATE)
 PKG_CHECK_MODULES([EKN_CONTENT], [
-    eos-shard-0 >= 0.1.2
-    gio-2.0
-    glib-2.0
-    gobject-2.0
+    $EKN_CONTENT_REQUIRED_MODULES
+    $EKN_CONTENT_REQUIRED_MODULES_PRIVATE
 ])
+
 PKG_CHECK_MODULES([EKN_VFS], [
     eos-shard-0
     gio-2.0
@@ -100,6 +133,7 @@ AC_CACHE_SAVE
 # List files here that the configure script should output
 AC_CONFIG_FILES([
     Makefile
+    $EKN_CONTENT_API_NAME.pc:eos-knowledge-content.pc.in
 ])
 
 # Do the output

@@ -1,4 +1,5 @@
 # Build products
+/eos-knowledge-content-0.pc
 *.la
 *.o
 *.lo
