@@ -24,11 +24,11 @@ giomodule_LTLIBRARIES = libeknvfs.la
 giomoduledir = $(libdir)/gio/modules
 
 libeknvfs_la_SOURCES = \
-	lib/eknvfs/ekn-file-input-stream-wrapper.c \
-	lib/eknvfs/ekn-file-input-stream-wrapper.h \
-	lib/eknvfs/ekn-file.h \
-	lib/eknvfs/ekn-file.c \
-	lib/eknvfs/ekn-vfs.c \
+	eknvfs/ekn-file-input-stream-wrapper.c \
+	eknvfs/ekn-file-input-stream-wrapper.h \
+	eknvfs/ekn-file.h \
+	eknvfs/ekn-file.c \
+	eknvfs/ekn-vfs.c \
 	$(NULL)
 libeknvfs_la_CPPFLAGS = \
 	@EKN_VFS_CFLAGS@ \
@@ -57,10 +57,10 @@ install-data-hook:
 knowledgelibdir = $(libdir)/eos-knowledge
 knowledgelib_LTLIBRARIES = libeosknowledgecontent.la
 libeosknowledgecontent_la_SOURCES = \
-       lib/ekncontent/eknc-subtree-dispatcher.c \
-       lib/ekncontent/eknc-subtree-dispatcher.h \
-       lib/ekncontent/eknc-utils.c \
-       lib/ekncontent/eknc-utils.h \
+       ekncontent/eknc-subtree-dispatcher.c \
+       ekncontent/eknc-subtree-dispatcher.h \
+       ekncontent/eknc-utils.c \
+       ekncontent/eknc-utils.h \
        $(NULL)
 
 libeosknowledgecontent_la_CPPFLAGS = @EKN_CONTENT_CFLAGS@
