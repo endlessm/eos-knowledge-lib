@@ -1,0 +1,29 @@
+/* Copyright 2016 Endless Mobile, Inc. */
+
+#pragma once
+
+#if !(defined(_EKN_CONTENT_INSIDE_EOSKNOWLEDGECONTENT_H) || defined(COMPILING_EKN_CONTENT))
+#error "Please do not include this header file directly."
+#endif
+
+/**
+ * EKNC_MAJOR_VERSION:
+ *
+ * Major version number (API level) of the Endless Knowledge Content library.
+ * For example, this is 0 for version 0.6.1.
+ */
+#define EKNC_MAJOR_VERSION (@EKN_CONTENT_MAJOR_VERSION@)
+/**
+ * EKNC_MINOR_VERSION:
+ *
+ * Minor version number of the Endless Knowledge Content library.
+ * For example, this is 6 for version 0.6.1.
+ */
+#define EKNC_MINOR_VERSION (@EKN_CONTENT_MINOR_VERSION@)
+/**
+ * EKNC_MICRO_VERSION:
+ *
+ * Micro version number of the Endless Knowledge Content library.
+ * For example, this is 1 for version 0.6.1.
+ */
+#define EKNC_MICRO_VERSION (@EKN_CONTENT_MICRO_VERSION@)

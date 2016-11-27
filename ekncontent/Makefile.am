@@ -57,6 +57,7 @@ ekncontent_public_installed_headers = ekncontent/eos-knowledge-content.h
 ekncontent_private_installed_headers = \
 	ekncontent/eknc-subtree-dispatcher.h \
 	ekncontent/eknc-utils.h \
+	ekncontent/eknc-version.h \
 	$(NULL)
 ekncontent_sources = \
 	ekncontent/eknc-subtree-dispatcher.c \

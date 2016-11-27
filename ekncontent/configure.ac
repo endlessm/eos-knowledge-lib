@@ -133,6 +133,7 @@ AC_CACHE_SAVE
 # List files here that the configure script should output
 AC_CONFIG_FILES([
     Makefile
+    ekncontent/eknc-version.h
     $EKN_CONTENT_API_NAME.pc:eos-knowledge-content.pc.in
 ])
 
