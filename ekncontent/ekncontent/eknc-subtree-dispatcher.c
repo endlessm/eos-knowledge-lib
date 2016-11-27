@@ -4,6 +4,15 @@
 
 #include "eknc-subtree-dispatcher.h"
 
+/**
+ * SECTION:subtree-dispatcher
+ * @title: Subtree Dispatcher
+ * @short_description: Endless Knowledge Content Subtree Dispatcher
+ *
+ * The #EkncSubtreeDispatcher is for use with the knowledge content global
+ * search provider in eos-knowledge-serivces.
+ */
+
 struct _EkncSubtreeDispatcherPrivate
 {
   GDBusConnection *connection;
@@ -109,8 +118,10 @@ eknc_subtree_dispatcher_class_init (EkncSubtreeDispatcherClass *klass)
 
   /**
    * EkncSubtreeDispatcher::dispatch-subtree:
-   * @dispatcher:
+   * @dispatcher: the dispatcher
    * @object_path: The object path to dispatch for.
+   *
+   * The dispatch-subtree signal.
    *
    * Returns: (transfer none): A #GDBusInterfaceSkeleton that implements
    * the object you want.
@@ -191,6 +202,14 @@ const GDBusSubtreeVTable subtree_vtable = {
   .dispatch   = subtree_dispatch,
 };
 
+/**
+ * eknc_subtree_dispatcher_register:
+ * @dispatcher: the subtree dispatcher
+ * @connection: the dbus connection
+ * @subtree_path: a subtree path to register with
+ *
+ * Register the dispatcher.
+ */
 void
 eknc_subtree_dispatcher_register (EkncSubtreeDispatcher *dispatcher,
                                   GDBusConnection       *connection,
@@ -216,6 +235,12 @@ eknc_subtree_dispatcher_register (EkncSubtreeDispatcher *dispatcher,
     }
 }
 
+/**
+ * eknc_subtree_dispatcher_unregister:
+ * @dispatcher: the subtree dispatcher
+ *
+ * Unregister the dispatcher.
+ */
 void
 eknc_subtree_dispatcher_unregister (EkncSubtreeDispatcher *dispatcher)
 {

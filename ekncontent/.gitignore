@@ -82,5 +82,9 @@ stamp*
 /tap-driver.sh
 /test-driver
 
+# Gtk-doc
+/gtk-doc.make
+/m4/gtk-doc.m4
+
 # Unit test / coverage reports
 Endless OS Knowledge Content Library-0.0.0-coverage*

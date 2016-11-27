@@ -6,6 +6,14 @@
 
 #include <eos-shard/eos-shard-shard-file.h>
 
+/**
+ * SECTION:utils
+ * @title: Utils
+ * @short_description: Library utility functions
+ *
+ * Utility functions for the Endless Knowledge Content library.
+ */
+
 struct parallel_init_data {
   int n_left;
   GError *error;

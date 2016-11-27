@@ -7,6 +7,14 @@
 #endif
 
 /**
+ * SECTION:version-information
+ * @title: Version Information
+ * @short_description: Variables and functions to check the library version
+ *
+ * Some macros to check the version of the content library.
+ */
+
+/**
  * EKNC_MAJOR_VERSION:
  *
  * Major version number (API level) of the Endless Knowledge Content library.

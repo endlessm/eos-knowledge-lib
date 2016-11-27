@@ -17,6 +17,11 @@
 typedef struct _EkncSubtreeDispatcher        EkncSubtreeDispatcher;
 typedef struct _EkncSubtreeDispatcherClass   EkncSubtreeDispatcherClass;
 
+/**
+ * EkncSubtreeDispatcher:
+ *
+ * This class structure contains no public members.
+ */
 struct _EkncSubtreeDispatcher
 {
   GObject parent;

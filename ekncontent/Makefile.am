@@ -7,6 +7,10 @@
 ## -----------
 ## Please keep this file well-commented.
 
+# Subdirectories where we also want to run make
+# (Make sure that the library is built before the docs)
+SUBDIRS = . docs/reference/ekncontent
+
 # Our Autoconf macros are kept in the m4/ directory
 ACLOCAL_AMFLAGS = -I m4
 

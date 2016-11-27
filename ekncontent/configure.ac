@@ -85,6 +85,8 @@ AC_PROG_CC
 AC_PROG_CC_C99
 # Library configuration tool
 PKG_PROG_PKG_CONFIG
+# Gtk-doc; 0.18 required for Markdown parsing
+GTK_DOC_CHECK([1.18])
 # GObject Introspection
 GOBJECT_INTROSPECTION_REQUIRE([1.30])
 # Various tools
@@ -101,7 +103,6 @@ AC_CACHE_SAVE
 AS_IF([test "x$ac_cv_prog_cc_c99" = "xno"], [AC_MSG_ERROR([C99 is required.])])
 
 AX_COMPILER_FLAGS
-
 
 # ------------------
 # These go into the pkg-config file as Requires: and Requires.private:
@@ -135,6 +136,8 @@ AC_CONFIG_FILES([
     Makefile
     ekncontent/eknc-version.h
     $EKN_CONTENT_API_NAME.pc:eos-knowledge-content.pc.in
+    docs/reference/ekncontent/Makefile
+    docs/reference/ekncontent/version.xml
 ])
 
 # Do the output

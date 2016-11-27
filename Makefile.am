@@ -30,6 +30,7 @@ AM_CFLAGS = $(STRICT_CFLAGS)
 AM_DISTCHECK_CONFIGURE_FLAGS = \
 	--enable-js-doc \
 	--enable-strict-flags \
+	--enable-gtk-doc \
 	$(NULL)
 if EOS_ENABLE_COVERAGE
 AM_DISTCHECK_CONFIGURE_FLAGS += --enable-coverage --with-coverage-dir=@EOS_COVERAGE_DIR@
