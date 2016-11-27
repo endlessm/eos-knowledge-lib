@@ -18,7 +18,7 @@ override_dh_install:
 
 # Build our documentation as well
 override_dh_auto_configure:
-	dh_auto_configure -- --enable-js-doc
+	dh_auto_configure -- --enable-js-doc --enable-gtk-doc
 
 # Build a dbg package
 .PHONY: override_dh_strip

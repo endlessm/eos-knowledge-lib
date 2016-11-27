@@ -1,0 +1,4 @@
+usr/include/eos-knowledge-content*/*
+usr/lib/pkgconfig/eos-knowledge-content*.pc
+usr/lib/libeos-knowledge-content*.so
+usr/share/gir-1.0/EosKnowledgeContent*.gir
