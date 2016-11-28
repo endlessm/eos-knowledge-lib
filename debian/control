@@ -112,7 +112,7 @@ Section: non-free/libs
 Architecture: any
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-         libglib2.0-0,
+         libglib2.0-bin,
          libeos-shard-0-0 (>= 0.1.2),
          gvfs
 Description: Endless Knowledge Content library
