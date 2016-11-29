@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-11-15 02:52+0000\n"
-"PO-Revision-Date: 2016-10-18 01:46+0000\n"
+"POT-Creation-Date: 2016-11-22 02:49+0000\n"
+"PO-Revision-Date: 2016-11-22 02:50+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -54,10 +54,6 @@ msgid ""
 "  •  Try other words that mean the same thing\n"
 "  •  Try using more general words"
 msgstr "我们建议您：·\n检查您的拼写\n尝试相同意思的其他表述\n使用更普遍的表述"
-
-#: data/widgets/layout/paginatedScrolling.ui:19
-msgid "SEE MORE"
-msgstr ""
 
 #: data/widgets/layout/sideMenu.ui:95
 #: js/app/modules/layout/hamburgerBasement.js:57
@@ -151,6 +147,12 @@ msgstr "内容由{blog-link}提供，已得到{license-link}许可认证。"
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "已找到“%s”的结果"
+
+#: js/app/interfaces/card.js:338
+#, javascript-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] ""
 
 #: js/app/modules/banner/context.js:38 js/app/modules/banner/context.js:49
 msgid "Highlights"

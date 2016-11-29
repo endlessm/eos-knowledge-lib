@@ -16,9 +16,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-11-15 02:52+0000\n"
-"PO-Revision-Date: 2016-10-19 21:55+0000\n"
-"Last-Translator: Mariana Barbosa <mariana@endlessm.com>\n"
+"POT-Creation-Date: 2016-11-22 02:49+0000\n"
+"PO-Revision-Date: 2016-11-22 02:50+0000\n"
+"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -60,10 +60,6 @@ msgid ""
 "  •  Try other words that mean the same thing\n"
 "  •  Try using more general words"
 msgstr "Recomendamos que você:\n\n• Confira se a palavra foi escrita corretamente\n• Tente outras palavras com o mesmo significado\n• Tente usar palavras mais genéricas"
-
-#: data/widgets/layout/paginatedScrolling.ui:19
-msgid "SEE MORE"
-msgstr "VER MAIS"
 
 #: data/widgets/layout/sideMenu.ui:95
 #: js/app/modules/layout/hamburgerBasement.js:57
@@ -157,6 +153,13 @@ msgstr "Cortesia de conteúdo de {blog-link}, licenciado sob {license-link}."
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "Foram encontrados resultados para “%s”"
+
+#: js/app/interfaces/card.js:338
+#, javascript-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/app/modules/banner/context.js:38 js/app/modules/banner/context.js:49
 msgid "Highlights"
