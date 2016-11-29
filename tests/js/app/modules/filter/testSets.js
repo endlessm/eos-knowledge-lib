@@ -1,6 +1,7 @@
 // Copyright 2016 Endless Mobile, Inc.
 
 const ContentObjectModel = imports.search.contentObjectModel;
+const MockFactory = imports.tests.mockFactory;
 const SetObjectModel = imports.search.setObjectModel;
 const Sets = imports.app.modules.filter.sets;
 
@@ -17,7 +18,9 @@ describe('Filter.Sets', function () {
 
     describe('normal mode', function () {
         beforeEach(function () {
-            filter = new Sets.Sets();
+            [filter, factory] = MockFactory.setup_tree({
+                type: Sets.Sets,
+            });
         });
 
         it('is the default', function () {
@@ -32,8 +35,11 @@ describe('Filter.Sets', function () {
 
     describe('inverse mode', function () {
         beforeEach(function () {
-            filter = new Sets.Sets({
-                invert: true,
+            [filter, factory] = MockFactory.setup_tree({
+                type: Sets.Sets,
+                properties: {
+                    invert: true,
+                }
             });
         });
 

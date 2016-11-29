@@ -3,6 +3,7 @@
 const ContentObjectModel = imports.search.contentObjectModel;
 const CurrentSet = imports.app.modules.filter.currentSet;
 const HistoryStore = imports.app.historyStore;
+const MockFactory = imports.tests.mockFactory;
 const Pages = imports.app.pages;
 const SetMap = imports.app.setMap;
 const SetObjectModel = imports.search.setObjectModel;
@@ -46,8 +47,11 @@ describe('Filter.CurrentSet', function () {
                 store = new HistoryStore.HistoryStore();
                 HistoryStore.set_default(store);
 
-                filter = new CurrentSet.CurrentSet({
-                    invert: mode,
+                [filter, factory] = MockFactory.setup_tree({
+                    type: CurrentSet.CurrentSet,
+                    properties: {
+                        invert: mode,
+                    }
                 });
             });
 
