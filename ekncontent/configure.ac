@@ -114,24 +114,10 @@ AS_IF([test -n "$JASMINE_JUNIT_REPORTS_DIR"],
     AC_MSG_RESULT([nowhere])])
 AC_SUBST([JASMINE_REPORT_ARGUMENT])
 
-# ------------------
-# These go into the pkg-config file as Requires: and Requires.private:
-# (Generally, use Requires.private: instead of Requires:)
+# Package dependencies
 # Update these whenever you use a function that requires a certain API version
-EKN_CONTENT_REQUIRED_MODULES=
-EKN_CONTENT_REQUIRED_MODULES_PRIVATE="eos-shard-0 >= 0.1.2 gio-2.0 glib-2.0 gobject-2.0"
-AC_SUBST(EKN_CONTENT_REQUIRED_MODULES)
-AC_SUBST(EKN_CONTENT_REQUIRED_MODULES_PRIVATE)
-PKG_CHECK_MODULES([EKN_CONTENT], [
-    $EKN_CONTENT_REQUIRED_MODULES
-    $EKN_CONTENT_REQUIRED_MODULES_PRIVATE
-])
-
-PKG_CHECK_MODULES([EKN_VFS], [
-    eos-shard-0
-    gio-2.0
-    gmodule-2.0
-])
+AX_PKG_CHECK_MODULES([EKN_CONTENT], [glib-2.0 gio-2.0 gobject-2.0], [eos-shard-0 >= 0.1.2])
+AX_PKG_CHECK_MODULES([EKN_VFS], [], [eos-shard-0 gio-2.0 gmodule-2.0])
 
 # Code Coverage
 # -------------
