@@ -16,6 +16,9 @@ override_dh_install:
 	find debian/tmp/usr/lib -name '*.la' -delete
 	dh_install
 
+debian/%.postinst: debian/%.postinst.in
+	sed 's/@DEB_HOST_MULTIARCH@/$(DEB_HOST_MULTIARCH)/g' $< > $@
+
 # Build our documentation as well
 override_dh_auto_configure:
 	dh_auto_configure -- --enable-js-doc --enable-gtk-doc

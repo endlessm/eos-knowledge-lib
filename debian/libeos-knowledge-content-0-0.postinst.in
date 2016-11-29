@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+
+gio-querymodules /usr/lib/@DEB_HOST_MULTIARCH@/gio/modules
