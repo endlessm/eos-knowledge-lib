@@ -4,8 +4,6 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const ReadingHistoryModel = imports.app.readingHistoryModel;
-
 /**
  * Class: ContentObjectModel
  * This is the base class for all content objects in the knowledge app.
@@ -119,13 +117,6 @@ const ContentObjectModel = new Lang.Class({
             'Whether this content should be given priority in the UI',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             false),
-        /**
-         * Property: read
-         * Whether this content has already been read/consumed by current user
-         */
-        'read': GObject.ParamSpec.boolean('read', 'Read',
-            'Whether this content has already been read/consumed by current user',
-            GObject.ParamFlags.READABLE),
     },
 
     _init: function (props={}, json_ld=null) {
@@ -162,19 +153,6 @@ const ContentObjectModel = new Lang.Class({
             props.ekn_id = 'ekn:///' + GLib.compute_checksum_for_string(GLib.ChecksumType.SHA1, this.toString(), -1);
         }
         this.parent(props);
-    },
-
-    get read () {
-        return ReadingHistoryModel.get_default().is_read_article(this.ekn_id);
-    },
-
-    // Note: ReadingHistoryModel does not yet expose API to mark an article
-    // 'unread' after it has been read.
-    mark_read: function () {
-        if (this.read)
-            return;
-        ReadingHistoryModel.get_default().mark_article_read(this.ekn_id);
-        this.notify('read');
     },
 
     _content_props_from_json_ld: function (props, json_ld) {

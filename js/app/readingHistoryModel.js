@@ -38,6 +38,15 @@ const ReadingHistoryModel= new Knowledge.Class({
             GObject.Object.$gtype),
     },
 
+    Signals: {
+        /**
+         * Event: changed
+         *
+         * Emitted when the history item changes.
+         */
+        'changed': {},
+    },
+
     _init: function (props={}) {
         this.parent(props);
 
@@ -65,6 +74,8 @@ const ReadingHistoryModel= new Knowledge.Class({
 
         try {
             this._read_articles = new Set(JSON.parse(json_contents));
+            if (this._read_articles)
+                this.emit('changed');
         } catch (error) {
             logError(error, 'Unexpected contents in reading history file');
         }
@@ -83,6 +94,7 @@ const ReadingHistoryModel= new Knowledge.Class({
     mark_article_read: function (article_id) {
         this._read_articles.add(article_id);
         this._save_reading_history_file();
+        this.emit('changed');
     },
 
     is_read_article: function (article_id) {

@@ -13,6 +13,7 @@ const Dispatcher = imports.app.dispatcher;
 const HistoryItem = imports.app.historyItem;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Pages = imports.app.pages;
+const ReadingHistoryModel = imports.app.readingHistoryModel;
 const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.app.utils;
 
@@ -100,7 +101,7 @@ const HistoryStore = new Lang.Class({
                     this.go_forward();
                     break;
                 case Actions.ITEM_CLICKED:
-                    payload.model.mark_read();
+                    ReadingHistoryModel.get_default().mark_article_read(payload.model.ekn_id);
                     break;
             }
         });

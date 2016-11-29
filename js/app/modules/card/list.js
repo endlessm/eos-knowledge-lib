@@ -7,6 +7,7 @@ const Gtk = imports.gi.Gtk;
 const Card = imports.app.interfaces.card;
 const NavigationCard = imports.app.interfaces.navigationCard;
 const Module = imports.app.interfaces.module;
+const ReadingHistoryModel = imports.app.readingHistoryModel;
 const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
 
@@ -48,9 +49,13 @@ const List = new Module.Class({
         this.update_card_sizing_classes(Card.MinSize.A, Card.MinSize.D);
         this._synopsis_label.visible = this.show_synopsis;
         this._title_label.vexpand = !this.show_synopsis;
-        this.model.bind_property('read', this._checkmark, 'visible',
-            GObject.BindingFlags.SYNC_CREATE);
+        this._sync_checkmark_state();
+        ReadingHistoryModel.get_default().connect('changed', this._sync_checkmark_state.bind(this));
         Utils.set_hand_cursor_on_widget(this);
+    },
+
+    _sync_checkmark_state: function () {
+        this._checkmark.visible = ReadingHistoryModel.get_default().is_read_article(this.model.ekn_id);
     },
 
     _IMAGE_WIDTH_RATIO: 1.5,
