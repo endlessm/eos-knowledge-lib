@@ -51,8 +51,6 @@ gchar* ekn_extract_pixbuf_dominant_color (GdkPixbuf *pixbuf);
 GParamSpec **ekn_interface_gtype_list_properties(GType     gtype,
                                                  unsigned *n_properties_returned);
 
-gboolean ekn_default_vfs_register_domain_shards (const gchar *domain, GSList *shards);
-
 G_END_DECLS
 
 #endif /* EKN_UTIL_H */

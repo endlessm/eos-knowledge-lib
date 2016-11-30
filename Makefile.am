@@ -8,7 +8,7 @@
 ## Please keep this file well-commented.
 
 # Subdirectories where we also want to run make
-SUBDIRS = po .
+SUBDIRS = @subdirs@ po .
 
 # Our Autoconf macros are kept in the m4/ directory
 ACLOCAL_AMFLAGS = -I m4
@@ -30,6 +30,7 @@ AM_CFLAGS = $(STRICT_CFLAGS)
 AM_DISTCHECK_CONFIGURE_FLAGS = \
 	--enable-js-doc \
 	--enable-strict-flags \
+	--enable-gtk-doc \
 	$(NULL)
 if EOS_ENABLE_COVERAGE
 AM_DISTCHECK_CONFIGURE_FLAGS += --enable-coverage --with-coverage-dir=@EOS_COVERAGE_DIR@
@@ -268,54 +269,6 @@ libeosknowledgeprivate_la_LDFLAGS = \
 	-export-symbols-regex "^ekn_" \
 	-avoid-version \
 	$(NULL)
-
-# # # EKN VFS LIBRARY # # #
-
-giomodule_LTLIBRARIES = libeknvfs.la
-giomoduledir = $(libdir)/gio/modules
-
-libeknvfs_la_SOURCES = \
-	lib/eknvfs/ekn-file-input-stream-wrapper.c \
-	lib/eknvfs/ekn-file-input-stream-wrapper.h \
-	lib/eknvfs/ekn-file.h \
-	lib/eknvfs/ekn-file.c \
-	lib/eknvfs/ekn-vfs.c \
-	$(NULL)
-libeknvfs_la_CPPFLAGS = \
-	@EKN_VFS_CFLAGS@ \
-	-DG_LOG_DOMAIN=\"EknVfs\" \
-	$(NULL)
-libeknvfs_la_CFLAGS = $(AM_CFLAGS)
-libeknvfs_la_LIBADD  = @EKN_VFS_LIBS@
-libeknvfs_la_LDFLAGS = \
-	-export-symbols-regex "^g_io_module_(load|unload|query)" \
-	-avoid-version \
-	$(NULL)
-
-uninstall-hook:
-	if test -z "$(DESTDIR)"; then \
-	  $(GIO_QUERYMODULES) $(giomoduledir);  \
-	fi
-
-install-data-hook:
-	if test -z "$(DESTDIR)"; then \
-	  $(GIO_QUERYMODULES) $(giomoduledir);  \
-	fi
-
-# # # SEARCH LIBRARY # # #
-
-pkglib_LTLIBRARIES += libeosknowledgesearchprivate.la
-libeosknowledgesearchprivate_la_SOURCES = \
-	lib/eosknowledgesearchprivate/ekns-subtree-dispatcher.c \
-	lib/eosknowledgesearchprivate/ekns-subtree-dispatcher.h \
-	lib/eosknowledgesearchprivate/ekns-utils.c \
-	lib/eosknowledgesearchprivate/ekns-utils.h \
-	$(NULL)
-
-libeosknowledgesearchprivate_la_CPPFLAGS = @EOS_KNOWLEDGE_PRIVATE_CFLAGS@
-libeosknowledgesearchprivate_la_CFLAGS = $(AM_CFLAGS)
-libeosknowledgesearchprivate_la_LIBADD = @EOS_KNOWLEDGE_PRIVATE_LIBS@
-libeosknowledgesearchprivate_la_LDFLAGS = -avoid-version
 
 # # # WEBKIT EXTENSION LIBRARIES # # #
 
@@ -652,9 +605,9 @@ YAML_LOG_COMPILER = $(top_srcdir)/tests/autobahn/testautobahn.sh
 # (May need to change to AM_TESTS_ENVIRONMENT in a later version of Automake)
 TESTS_ENVIRONMENT = \
 	export GJS_PATH="$(top_srcdir):$(top_srcdir)/js:$(top_builddir)/js"; \
-	export GI_TYPELIB_PATH="$(top_builddir)$${GI_TYPELIB_PATH:+:$$GI_TYPELIB_PATH}"; \
-	export LD_LIBRARY_PATH="$(top_builddir)/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
-	export GIO_EXTRA_MODULES="$(top_builddir)/.libs"; \
+	export GI_TYPELIB_PATH="$(top_builddir):$(top_builddir)/ekncontent$${GI_TYPELIB_PATH:+:$$GI_TYPELIB_PATH}"; \
+	export LD_LIBRARY_PATH="$(top_builddir)/.libs:$(top_builddir)/ekncontent/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
+	export GIO_EXTRA_MODULES="$(top_builddir)/ekncontent/.libs"; \
 	export G_TEST_SRCDIR="$(abs_srcdir)/tests"; \
 	export G_TEST_BUILDDIR="$(abs_builddir)/tests"; \
 	export LC_ALL=C; \
@@ -736,7 +689,6 @@ introspection_sources = \
 
 EosKnowledgePrivate-1.0.gir: libeosknowledgeprivate.la
 EosKnowledgePrivate_1_0_gir_INCLUDES = \
-	EosShard-0 \
 	GLib-2.0 \
 	GObject-2.0 \
 	WebKit2-4.0 \
@@ -750,13 +702,6 @@ EosKnowledgePrivate_1_0_gir_SCANNERFLAGS = \
 EosKnowledgePrivate_1_0_gir_LIBS = libeosknowledgeprivate.la
 EosKnowledgePrivate_1_0_gir_FILES = $(introspection_sources)
 INTROSPECTION_GIRS += EosKnowledgePrivate-1.0.gir
-
-EosKnowledgeSearchPrivate-1.0.gir: libeosknowledgesearchprivate.la
-EosKnowledgeSearchPrivate_1_0_gir_INCLUDES = Gio-2.0
-EosKnowledgeSearchPrivate_1_0_gir_SCANNERFLAGS = --warn-all --warn-error --identifier-prefix=Ekns --symbol-prefix=ekns
-EosKnowledgeSearchPrivate_1_0_gir_LIBS = libeosknowledgesearchprivate.la
-EosKnowledgeSearchPrivate_1_0_gir_FILES = $(libeosknowledgesearchprivate_la_SOURCES)
-INTROSPECTION_GIRS += EosKnowledgeSearchPrivate-1.0.gir
 
 typelibdir = $(pkglibdir)/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
