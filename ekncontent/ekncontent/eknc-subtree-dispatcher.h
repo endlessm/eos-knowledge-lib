@@ -25,10 +25,10 @@ struct _EkncSubtreeDispatcherClass
   GObjectClass parent_class;
 };
 
-void eknc_subtree_dispatcher_register (EkncSubtreeDispatcher *dispatcher,
+void eknc_subtree_dispatcher_register (EkncSubtreeDispatcher *self,
                                        GDBusConnection        *connection,
                                        const char             *subtree_path);
 
-void eknc_subtree_dispatcher_unregister (EkncSubtreeDispatcher *dispatcher);
+void eknc_subtree_dispatcher_unregister (EkncSubtreeDispatcher *self);
 
 #endif /* EKNC_SUBTREE_DISPATCHER_H */

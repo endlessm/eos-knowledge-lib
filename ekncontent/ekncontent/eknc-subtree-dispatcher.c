@@ -35,7 +35,7 @@ enum {
 };
 static guint signals[NUM_SIGNALS];
 
-G_DEFINE_TYPE_WITH_PRIVATE (EkncSubtreeDispatcher, eknc_subtree_dispatcher, G_TYPE_OBJECT);
+G_DEFINE_TYPE (EkncSubtreeDispatcher, eknc_subtree_dispatcher, G_TYPE_OBJECT);
 
 static void
 eknc_subtree_dispatcher_get_property (GObject    *object,
@@ -43,8 +43,8 @@ eknc_subtree_dispatcher_get_property (GObject    *object,
                                         GValue     *value,
                                         GParamSpec *pspec)
 {
-  EkncSubtreeDispatcher *dispatcher = EKNC_SUBTREE_DISPATCHER (object);
-  EkncSubtreeDispatcherPrivate *priv = eknc_subtree_dispatcher_get_instance_private (dispatcher);
+  EkncSubtreeDispatcher *self = EKNC_SUBTREE_DISPATCHER (object);
+  EkncSubtreeDispatcherPrivate *priv = eknc_subtree_dispatcher_get_instance_private (self);
 
   switch (prop_id)
     {
@@ -63,8 +63,8 @@ eknc_subtree_dispatcher_set_property (GObject      *object,
                                         const GValue *value,
                                         GParamSpec   *pspec)
 {
-  EkncSubtreeDispatcher *dispatcher = EKNC_SUBTREE_DISPATCHER (object);
-  EkncSubtreeDispatcherPrivate *priv = eknc_subtree_dispatcher_get_instance_private (dispatcher);
+  EkncSubtreeDispatcher *self = EKNC_SUBTREE_DISPATCHER (object);
+  EkncSubtreeDispatcherPrivate *priv = eknc_subtree_dispatcher_get_instance_private (self);
 
   switch (prop_id)
     {
@@ -80,8 +80,8 @@ eknc_subtree_dispatcher_set_property (GObject      *object,
 static void
 eknc_subtree_dispatcher_dispose (GObject *object)
 {
-  EkncSubtreeDispatcher *dispatcher = EKNC_SUBTREE_DISPATCHER (object);
-  EkncSubtreeDispatcherPrivate *priv = eknc_subtree_dispatcher_get_instance_private (dispatcher);
+  EkncSubtreeDispatcher *self = EKNC_SUBTREE_DISPATCHER (object);
+  EkncSubtreeDispatcherPrivate *priv = eknc_subtree_dispatcher_get_instance_private (self);
 
   G_OBJECT_CLASS (eknc_subtree_dispatcher_parent_class)->dispose (object);
 
@@ -89,7 +89,7 @@ eknc_subtree_dispatcher_dispose (GObject *object)
 
   if (priv->registration_id > 0)
     {
-      eknc_subtree_dispatcher_unregister (dispatcher);
+      eknc_subtree_dispatcher_unregister (self);
       g_warning ("EkncSubtreeDispatcher was disposed while it was registered");
     }
 }
@@ -136,7 +136,7 @@ eknc_subtree_dispatcher_class_init (EkncSubtreeDispatcherClass *klass)
 }
 
 static void
-eknc_subtree_dispatcher_init (EkncSubtreeDispatcher *dispatcher)
+eknc_subtree_dispatcher_init (EkncSubtreeDispatcher *self)
 {
 }
 
@@ -158,8 +158,8 @@ subtree_introspect (GDBusConnection *connection,
                     const char      *node,
                     gpointer         user_data)
 {
-  EkncSubtreeDispatcher *dispatcher = EKNC_SUBTREE_DISPATCHER (user_data);
-  EkncSubtreeDispatcherPrivate *priv = eknc_subtree_dispatcher_get_instance_private (dispatcher);
+  EkncSubtreeDispatcher *self = EKNC_SUBTREE_DISPATCHER (user_data);
+  EkncSubtreeDispatcherPrivate *priv = eknc_subtree_dispatcher_get_instance_private (self);
 
   /* Root has no interfaces. */
   if (node == NULL)
@@ -180,10 +180,10 @@ subtree_dispatch (GDBusConnection *connection,
                   gpointer        *out_user_data,
                   gpointer         user_data)
 {
-  EkncSubtreeDispatcher *dispatcher = EKNC_SUBTREE_DISPATCHER (user_data);
+  EkncSubtreeDispatcher *self = EKNC_SUBTREE_DISPATCHER (user_data);
   GDBusInterfaceSkeleton *skeleton;
 
-  g_signal_emit (dispatcher, signals[DISPATCH_SUBTREE], 0, node, &skeleton);
+  g_signal_emit (self, signals[DISPATCH_SUBTREE], 0, node, &skeleton);
 
   if (!G_IS_DBUS_INTERFACE_SKELETON (skeleton))
     {
@@ -204,18 +204,18 @@ const GDBusSubtreeVTable subtree_vtable = {
 
 /**
  * eknc_subtree_dispatcher_register:
- * @dispatcher: the subtree dispatcher
+ * @self: the subtree dispatcher
  * @connection: the dbus connection
  * @subtree_path: a subtree path to register with
  *
  * Register the dispatcher.
  */
 void
-eknc_subtree_dispatcher_register (EkncSubtreeDispatcher *dispatcher,
+eknc_subtree_dispatcher_register (EkncSubtreeDispatcher *self,
                                   GDBusConnection       *connection,
                                   const char            *subtree_path)
 {
-  EkncSubtreeDispatcherPrivate *priv = eknc_subtree_dispatcher_get_instance_private (dispatcher);
+  EkncSubtreeDispatcherPrivate *priv = eknc_subtree_dispatcher_get_instance_private (self);
 
   if (priv->registration_id == 0)
     {
@@ -223,7 +223,7 @@ eknc_subtree_dispatcher_register (EkncSubtreeDispatcher *dispatcher,
 
       priv->registration_id = g_dbus_connection_register_subtree (connection, subtree_path, &subtree_vtable,
                                                                   G_DBUS_SUBTREE_FLAGS_DISPATCH_TO_UNENUMERATED_NODES,
-                                                                  dispatcher, NULL, &error);
+                                                                  self, NULL, &error);
       if (error != NULL)
         {
           g_warning ("Eknc failed to register subtree: %s\n", error->message);
@@ -237,14 +237,14 @@ eknc_subtree_dispatcher_register (EkncSubtreeDispatcher *dispatcher,
 
 /**
  * eknc_subtree_dispatcher_unregister:
- * @dispatcher: the subtree dispatcher
+ * @self: the subtree dispatcher
  *
  * Unregister the dispatcher.
  */
 void
-eknc_subtree_dispatcher_unregister (EkncSubtreeDispatcher *dispatcher)
+eknc_subtree_dispatcher_unregister (EkncSubtreeDispatcher *self)
 {
-  EkncSubtreeDispatcherPrivate *priv = eknc_subtree_dispatcher_get_instance_private (dispatcher);
+  EkncSubtreeDispatcherPrivate *priv = eknc_subtree_dispatcher_get_instance_private (self);
 
   if (priv->registration_id > 0)
     {
