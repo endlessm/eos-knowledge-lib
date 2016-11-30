@@ -18,7 +18,7 @@ defines:
         source-id: sets-group
         property: has-more-content
   slots:
-    top: Banner.App
+    top: 'Banner.Dynamic(mode: full)'
     middle: 'Navigation.SearchBox(halign: center, focus-on-map: true)'
     bottom:
       type: ContentGroup.ContentGroup
@@ -172,7 +172,7 @@ root:
               type: Layout.Navigation
               slots:
                 content:
-                  type: Pager.Simple
+                  type: Pager.ParallaxBackground
                   slots:
                     home-page: *home-page
                     set-page: *set-page
