@@ -6,6 +6,20 @@ EKNC_MICRO_VERSION
 </SECTION>
 
 <SECTION>
+<FILE>content-object-model</FILE>
+eknc_content_object_model_get_content_stream
+eknc_content_object_model_get_resources
+eknc_content_object_model_get_tags
+eknc_content_object_model_new_from_json_node
+<SUBSECTION Standard>
+EkncContentObjectModel
+EkncContentObjectModelClass
+EKNC_TYPE_CONTENT_OBJECT_MODEL
+<SUBSECTION Private>
+eknc_content_object_model_add_json_to_params
+</SECTION>
+
+<SECTION>
 <FILE>utils</FILE>
 eknc_utils_parallel_init
 eknc_default_vfs_set_shards
