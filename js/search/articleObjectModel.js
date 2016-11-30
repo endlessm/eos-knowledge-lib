@@ -1,12 +1,9 @@
 // Copyright 2014 Endless Mobile, Inc.
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
-const Soup = imports.gi.Soup;
 
 const ContentObjectModel = imports.search.contentObjectModel;
-const TreeNode = imports.search.treeNode;
 
 /**
  * Class: ArticleObjectModel
@@ -51,17 +48,6 @@ const ArticleObjectModel = new Lang.Class({
             0, GLib.MAXUINT32, 0),
 
         /**
-         * Property: table-of-contents
-         * A GtkTreeStore representing the article's hierarchical
-         * table of contents
-         */
-        'table-of-contents': GObject.ParamSpec.object('table-of-contents',
-             'Table of Contents',
-             'Tree representing the article\'s table of contents',
-             GObject.ParamFlags.READWRITE,
-             Gtk.TreeStore),
-
-        /**
          * Property: published
          * The date this article was published. It treats dates
          * according to the ISO8601 standard.
@@ -103,9 +89,19 @@ const ArticleObjectModel = new Lang.Class({
                 value: props.outgoing_links ? props.outgoing_links.slice(0) : [],
                 writable: false,
             },
+            /**
+             * Property: table-of-contents
+             * A json array representing the article's hierarchical table of
+             * contents
+             */
+            'table_of_contents': {
+                value: props.table_of_contents ? props.table_of_contents.slice(0) : [],
+                writable: false,
+            },
         });
         delete props.authors;
         delete props.outgoing_links;
+        delete props.table_of_contents;
 
         this.parent(props, json_ld);
     },
@@ -122,7 +118,7 @@ const ArticleObjectModel = new Lang.Class({
             props.word_count = parseInt(json_ld.wordCount);
 
         if (json_ld.hasOwnProperty('tableOfContents'))
-            props.table_of_contents = TreeNode.tree_model_from_tree_node(json_ld);
+            props.table_of_contents = json_ld.tableOfContents;
 
         if (json_ld.hasOwnProperty('source'))
             props.source = json_ld.source;

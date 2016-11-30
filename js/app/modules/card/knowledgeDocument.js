@@ -19,7 +19,6 @@ const PDFView = imports.app.widgets.PDFView;
 // Make sure included for glade template
 const SlidingPanelOverlay = imports.app.widgets.slidingPanelOverlay;
 const TableOfContents = imports.app.widgets.tableOfContents;
-const TreeNode = imports.search.treeNode;
 const Utils = imports.app.utils;
 
 const SPINNER_PAGE_NAME = 'spinner';
@@ -143,10 +142,12 @@ const KnowledgeDocument = new Module.Class({
     _setup_toc: function () {
         let _toc_visible = false;
         if (this.model.table_of_contents !== undefined && this.model.content_type !== 'application/pdf') {
-            this._mainArticleSections = this._get_toplevel_toc_elements(this.model.table_of_contents);
+            this._mainArticleSections = this.model.table_of_contents
+                .filter(item => !item.hasParent)
+                .sort((a, b) => a.hasIndex - b.hasIndex);
             if (this._mainArticleSections.length > 1) {
                 this.toc.section_list = this._mainArticleSections.map(function (section) {
-                    return section.label;
+                    return section.hasLabel;
                 });
                 _toc_visible = true;
             }
@@ -239,31 +240,11 @@ const KnowledgeDocument = new Module.Class({
         this.content_view = null;
     },
 
-    _get_toplevel_toc_elements: function (tree) {
-        // ToC is flat, so just get the toplevel table of contents entries
-        let [success, child_iter] = tree.get_iter_first();
-        let toplevel_elements = [];
-        while (success) {
-            let label = tree.get_value(child_iter, TreeNode.TreeNodeColumn.LABEL);
-            let indexLabel = tree.get_value(child_iter, TreeNode.TreeNodeColumn.INDEX_LABEL);
-            let content = tree.get_value(child_iter, TreeNode.TreeNodeColumn.CONTENT);
-            toplevel_elements.push({
-                'label': label,
-                'indexLabel': indexLabel,
-                'content': content,
-            });
-
-            success = tree.iter_next(child_iter);
-        }
-
-        return toplevel_elements;
-    },
-
     _scroll_to_section: function (index) {
         if (this.content_view.is_loading)
             return;
         // tells the webkit webview directly to scroll to a ToC entry
-        let location = this._mainArticleSections[index].content;
+        let location = this._mainArticleSections[index].hasContent;
         let script = 'scrollTo(' + location.toSource() + ', ' + this._SCROLL_DURATION + ');';
         this.toc.target_section = index;
         this.content_view.run_javascript(script, null, null);
@@ -319,7 +300,7 @@ const KnowledgeDocument = new Module.Class({
                     let sectionIndex = -1;
                     // Find the index corresponding to this section
                     for (let index in this._mainArticleSections) {
-                        let thisName = this._mainArticleSections[index].content.split("#")[1];
+                        let thisName = this._mainArticleSections[index].hasContent.split("#")[1];
                         if (thisName === sectionName)
                             sectionIndex = index;
                     }

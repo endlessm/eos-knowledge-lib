@@ -34,8 +34,8 @@ describe ('Article Object Model', function () {
             expect(articleObject.resources).toBeDefined();
         });
 
-        it ('should marshal a GtkTreeStore from JSON-LD TreeNodes', function () {
-            expect(articleObject.table_of_contents).toBeA(Gtk.TreeStore);
+        it ('should read in a table of contents', function () {
+            expect(articleObject.table_of_contents[0].hasLabel).toBe('History');
         });
 
         it('marshals an authors array', function () {

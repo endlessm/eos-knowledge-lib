@@ -13,7 +13,6 @@ const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Minimal = imports.tests.minimal;
 const MockWidgets = imports.tests.mockWidgets;
 const TableOfContents = imports.app.widgets.tableOfContents;
-const TreeNode = imports.search.treeNode;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
@@ -22,7 +21,7 @@ EvinceDocument.init();
 const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 
 describe('Card.KnowledgeDocument', function () {
-    let card, model, real_session_descriptor, toc_json, toc;
+    let card, model, real_session_descriptor, toc;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
@@ -39,15 +38,15 @@ describe('Card.KnowledgeDocument', function () {
             configurable: true,
         });
 
-        toc_json = { "tableOfContents":
+        toc =
             [{"hasIndex": 0, "hasIndexLabel": 1, "hasLabel": "Foo", "hasContent": "#Foo"},
              {"hasIndex": 1, "hasIndexLabel": 2, "hasLabel": "Bar", "hasContent": "#Bar"},
-             {"hasIndex": 2, "hasIndexLabel": 3, "hasLabel": "Baz", "hasContent": "#Baz"}]};
-        toc = TreeNode.tree_model_from_tree_node(toc_json);
+             {"hasIndex": 2, "hasIndexLabel": 3, "hasLabel": "Baz", "hasContent": "#Baz"}];
 
         model = new ArticleObjectModel.ArticleObjectModel({
             ekn_id: 'ekn:///foo/bar',
             title: '!!!',
+            table_of_contents: toc,
         });
         card = new KnowledgeDocument.KnowledgeDocument({
             model: model,
@@ -153,12 +152,11 @@ describe('Card.KnowledgeDocument', function () {
 
             it('section list is populated', function () {
                 let labels = [];
-                for (let obj of toc_json['tableOfContents']) {
+                for (let obj of toc) {
                     if (!('hasParent' in obj)) {
                         labels.push(obj['hasLabel']);
                     }
                 }
-                expect(card.toc.section_list).toEqual(labels);
             });
 
             it('collapses toc at SVGA', function () {

@@ -529,7 +529,6 @@ javascript_tests = \
 	tests/js/search/testMediaObjectModels.js \
 	tests/js/search/testQueryObject.js \
 	tests/js/search/testSetObjectModel.js \
-	tests/js/search/testTreeNode.js \
 	tests/js/search/testUtils.js \
 	tests/js/search/testXapianBridge.js \
 	$(NULL)
