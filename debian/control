@@ -44,10 +44,12 @@ Homepage: http://www.endlessm.com
 Package: eos-knowledge-0
 Section: non-free/libs
 Architecture: any
+Multi-Arch: same
 Depends: gjs,
          libjs-mathjax (>= 2.2),
          gir1.2-endless-0,
          gir1.2-eosmetrics-0,
+         gir1.2-eos-knowledge-content-0,
          gir1.2-eos-shard-0,
          gir1.2-evince-3.0,
          gir1.2-gdkpixbuf-2.0,
@@ -79,6 +81,7 @@ Package: eos-knowledge-0-dbg
 Section: debug
 Priority: extra
 Architecture: any
+Multi-Arch: same
 Depends: eos-knowledge-0 (= ${binary:Version}),
          ${misc:Depends}
 Description: EndlessOS Knowledge Library Debug package
@@ -88,13 +91,15 @@ Description: EndlessOS Knowledge Library Debug package
 Package: eos-knowledge-0-bin
 Section: non-free/utils
 Architecture: all
+Multi-Arch: foreign
 Depends: eos-knowledge-0 (= ${binary:Version}),
          ${misc:Depends}
 Description: EndlessOS Knowledge Library Tools package
 
 Package: eos-knowledge-0-dev
 Section: non-free/libdevel
-Architecture: all
+Architecture: any
+Multi-Arch: same
 Depends: eos-knowledge-0 (= ${binary:Version}),
          python3,
          python3-polib,
@@ -105,3 +110,56 @@ Depends: eos-knowledge-0 (= ${binary:Version}),
          ruby-sass,
          ${misc:Depends}
 Description: EndlessOS Knowledge Library Devel package
+
+Package: libeos-knowledge-content-0-0
+Section: non-free/libs
+Architecture: any
+Multi-Arch: same
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         libglib2.0-bin,
+         libeos-shard-0-0 (>= 0.1.2),
+         gvfs
+Description: Endless Knowledge Content library
+ A library for serving up knowledge application offline content.
+
+Package: libeos-knowledge-content-0-dbg
+Section: non-free/debug
+Architecture: any
+Multi-Arch: same
+Depends: ${misc:Depends},
+         libeos-knowledge-content-0-0 (= ${binary:Version})
+Description: Endless Knowledge Content library debugging symbols
+ Debugging symbols for the Endless Knowledge Content library
+
+Package: libeos-knowledge-content-0-dev
+Section: non-free/libdevel
+Architecture: any
+Multi-Arch: same
+Depends: ${misc:Depends},
+         libglib2.0-dev,
+         libeos-knowledge-content-0-0 (= ${binary:Version})
+Description: Endless Knowledge Content development files
+ Package config and headers for the Endless Knowledge Content library
+
+Package: libeos-knowledge-content-0-doc
+Section: non-free/doc
+Architecture: all
+Multi-Arch: foreign
+Depends: ${misc:Depends}
+Suggests: devhelp
+Description: Endless Knowledge Content library documentation
+ HTML documentation for the Endless Knowledge Content library
+
+Package: gir1.2-eosknowledgecontent-0
+Section: non-free/introspection
+Architecture: any
+Multi-Arch: same
+Depends: ${gir:Depends},
+         ${misc:Depends},
+         gir1.2-glib-2.0,
+         gir1.2-eos-shard-0,
+         libeos-knowledge-content-0-0 (= ${binary:Version})
+Description: Endless Knowledge Content introspection files
+  Files needed to use the Endless Knowledge Content library through
+  introspection
