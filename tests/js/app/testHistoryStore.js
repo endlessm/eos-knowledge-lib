@@ -2,15 +2,17 @@ const Actions = imports.app.actions;
 const ContentObjectModel = imports.search.contentObjectModel;
 const HistoryStore = imports.app.historyStore;
 const MockDispatcher = imports.tests.mockDispatcher;
+const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const Pages = imports.app.pages;
 const SetObjectModel = imports.search.setObjectModel;
 
 describe('History Store', function () {
     let history_store;
-    let dispatcher;
+    let dispatcher, reading_history;
 
     beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
+        reading_history = MockReadingHistoryModel.mock_default();
 
         history_store = new HistoryStore.HistoryStore();
     });
@@ -100,14 +102,14 @@ describe('History Store', function () {
     });
 
     it('marks items as read', function () {
-        let item = new ContentObjectModel.ContentObjectModel({ title: 'blah' });
-        spyOn(item, 'mark_read');
+        let item = new ContentObjectModel.ContentObjectModel({ ekn_id: 'foo', title: 'blah' });
+        spyOn(reading_history, 'mark_article_read');
 
         dispatcher.dispatch({
             action_type: Actions.ITEM_CLICKED,
             model: item,
         });
-        expect(item.mark_read).toHaveBeenCalled();
+        expect(reading_history.mark_article_read).toHaveBeenCalledWith('foo');
     });
 
     it('resets the article-search-visible state when changing', function () {

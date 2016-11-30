@@ -9,12 +9,17 @@ const MockReadingHistoryModel = new Knowledge.Class({
     Name: 'MockReadingHistoryModel',
     Extends: GObject.Object,
 
+    Signals: {
+        'changed': {},
+    },
+
     _init: function (props={}) {
         this.parent(props);
         this._read_articles = new Set();
     },
 
     mark_article_read: function (article_id) {
+        this.emit('changed');
         this._read_articles.add(article_id);
     },
 
