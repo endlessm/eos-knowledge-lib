@@ -6,7 +6,7 @@
 
 #include <gio/gio.h>
 
-#define EKNC_TYPE_SUBTREE_DISPATCHER my_app_window_get_type ()
+#define EKNC_TYPE_SUBTREE_DISPATCHER eknc_subtree_dispatcher_get_type ()
 G_DECLARE_FINAL_TYPE(EkncSubtreeDispatcher, eknc_subtree_dispatcher, EKNC, SUBTREE_DISPATCHER, GObject)
 
 /**
