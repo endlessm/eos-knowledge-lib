@@ -2,12 +2,11 @@
 
 /* Copyright 2015 Endless Mobile, Inc. */
 
-#ifndef EKNC_SUBTREE_DISPATCHER_H
-#define EKNC_SUBTREE_DISPATCHER_H
+#pragma once
 
 #include <gio/gio.h>
 
-#define EKNC_TYPE_SUBTREE_DISPATCHER my_app_window_get_type ()
+#define EKNC_TYPE_SUBTREE_DISPATCHER eknc_subtree_dispatcher_get_type ()
 G_DECLARE_FINAL_TYPE(EkncSubtreeDispatcher, eknc_subtree_dispatcher, EKNC, SUBTREE_DISPATCHER, GObject)
 
 /**
@@ -30,5 +29,3 @@ void eknc_subtree_dispatcher_register (EkncSubtreeDispatcher *self,
                                        const char             *subtree_path);
 
 void eknc_subtree_dispatcher_unregister (EkncSubtreeDispatcher *self);
-
-#endif /* EKNC_SUBTREE_DISPATCHER_H */
