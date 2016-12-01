@@ -35,7 +35,7 @@ enum {
 };
 static guint signals[NUM_SIGNALS];
 
-G_DEFINE_TYPE (EkncSubtreeDispatcher, eknc_subtree_dispatcher, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (EkncSubtreeDispatcher, eknc_subtree_dispatcher, G_TYPE_OBJECT);
 
 static void
 eknc_subtree_dispatcher_get_property (GObject    *object,
