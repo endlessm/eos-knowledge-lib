@@ -1,5 +1,5 @@
 usr/bin/autobahn
 usr/bin/picard
-usr/lib/*/pkgconfig/*
+usr/lib/*/pkgconfig/eos-knowledge-0.pc
 usr/share/eos-knowledge/theme/*
 usr/share/eos-knowledge/preset/*
