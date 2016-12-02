@@ -3,8 +3,10 @@
 /* Copyright 2015 Endless Mobile, Inc. */
 
 #include "eknc-utils.h"
+#include "eknc-utils-private.h"
 
 #include <eos-shard/eos-shard-shard-file.h>
+#include <stdlib.h>
 
 /**
  * SECTION:utils
@@ -13,6 +15,97 @@
  *
  * Utility functions for the Endless Knowledge Content library.
  */
+
+GQuark
+eknc_content_object_error_quark (void)
+{
+  return g_quark_from_static_string("eknc-content-object-error-quark");
+}
+
+/**
+ * eknc_utils_append_gparam_from_json_node:
+ *
+ * For use instantiating a GObject from json data. Marshals the contents
+ * of a JsonNode into a GParameter matching the GParamSpec pspec. Appends
+ * that GParameter to a GArray, for eventual use with g_object_newv.
+ */
+void
+eknc_utils_append_gparam_from_json_node (JsonNode *node,
+                                         GParamSpec *pspec,
+                                         GArray *params)
+{
+  g_autoptr(GError) error = NULL;
+  GParameter param = { NULL, { 0, }};
+
+  if (!node)
+    return;
+
+  param.name = pspec->name;
+  g_value_init (&param.value, pspec->value_type);
+
+  if (G_IS_PARAM_SPEC_VARIANT (pspec))
+    {
+      GVariantType *type = G_PARAM_SPEC_VARIANT (pspec)->type;
+      GVariant *variant = json_gvariant_deserialize (node,
+                                                     g_variant_type_peek_string (type),
+                                                     &error);
+      g_value_set_variant (&param.value, variant);
+    }
+  else if (JSON_NODE_HOLDS_VALUE (node))
+    {
+      GValue value = { 0, };
+      GType type = json_node_get_value_type (node);
+
+      // Most of our integer properties are stored in json as strings.
+      // ImageObject for example was originally trying to follow
+      // https://schema.org/ImageObject for its width and height properties,
+      // though in practice it is always a string. May be worth a future cleanup,
+      // but for now try to parse if we hit this case.
+      if (type == G_TYPE_STRING && (pspec->value_type == G_TYPE_INT ||
+                                    pspec->value_type == G_TYPE_UINT))
+        {
+          g_value_init (&value, G_TYPE_INT);
+          g_value_set_int (&value, atoi (json_node_get_string (node)));
+        }
+      else
+        {
+          json_node_get_value (node, &value);
+        }
+
+      if (g_value_type_transformable (pspec->value_type, type))
+        g_value_transform (&value, &param.value);
+      else
+        g_set_error (&error, EKNC_CONTENT_OBJECT_ERROR, EKNC_CONTENT_OBJECT_ERROR_BAD_FORMAT,
+                     "Unexpected type %s", g_type_name (type));
+    }
+  else
+    {
+      g_set_error (&error, EKNC_CONTENT_OBJECT_ERROR, EKNC_CONTENT_OBJECT_ERROR_BAD_FORMAT,
+                   "Unexpected json value");
+    }
+
+  if (error)
+    g_critical ("Error parsing model property %s: %s",
+                pspec->name,
+                error->message);
+  else
+    g_array_append_val (params, param);
+}
+
+/**
+ * eknc_utils_free_gparam_array:
+ *
+ * Frees a GArray of GParameters.
+ */
+void
+eknc_utils_free_gparam_array (GArray *params)
+{
+  for (gint i = 0; i < params->len; i++) {
+    GParameter *param = &g_array_index (params, GParameter, i);
+    g_value_unset (&param->value);
+  }
+  g_array_free (params, TRUE);
+}
 
 struct parallel_init_data {
   int n_left;

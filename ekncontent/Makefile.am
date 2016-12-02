@@ -65,6 +65,7 @@ ekncontent_private_installed_headers = \
 	$(NULL)
 ekncontent_sources = \
 	ekncontent/eknc-subtree-dispatcher.c \
+	ekncontent/eknc-utils-private.h \
 	ekncontent/eknc-utils.c \
 	$(NULL)
 

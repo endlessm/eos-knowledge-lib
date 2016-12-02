@@ -9,6 +9,13 @@ EKNC_MICRO_VERSION
 <FILE>utils</FILE>
 eknc_utils_parallel_init
 eknc_default_vfs_set_shards
+EkncContentObjectError
+<SUBSECTION Standard>
+EKNC_CONTENT_OBJECT_ERROR
+<SUBSECTION Private>
+eknc_content_object_error_quark
+eknc_utils_append_gparam_from_json_node
+eknc_utils_free_gparam_array
 </SECTION>
 
 <SECTION>
