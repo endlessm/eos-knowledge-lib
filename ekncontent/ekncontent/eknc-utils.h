@@ -6,6 +6,8 @@
 
 #include <gio/gio.h>
 
+G_BEGIN_DECLS
+
 gboolean
 eknc_utils_parallel_init (GSList        *initables,
                           int            io_priority,
@@ -15,3 +17,5 @@ eknc_utils_parallel_init (GSList        *initables,
 gboolean
 eknc_default_vfs_register_domain_shards (const gchar *domain,
                                          GSList *shards);
+
+G_END_DECLS

@@ -6,6 +6,8 @@
 
 #include <gio/gio.h>
 
+G_BEGIN_DECLS
+
 #define EKNC_TYPE_SUBTREE_DISPATCHER eknc_subtree_dispatcher_get_type ()
 G_DECLARE_FINAL_TYPE(EkncSubtreeDispatcher, eknc_subtree_dispatcher, EKNC, SUBTREE_DISPATCHER, GObject)
 
@@ -29,3 +31,5 @@ void eknc_subtree_dispatcher_register (EkncSubtreeDispatcher *self,
                                        const char             *subtree_path);
 
 void eknc_subtree_dispatcher_unregister (EkncSubtreeDispatcher *self);
+
+G_END_DECLS
