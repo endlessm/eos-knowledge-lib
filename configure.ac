@@ -190,7 +190,9 @@ PKG_CHECK_MODULES([EOS_KNOWLEDGE_PRIVATE], [
     gio-2.0
     gtk+-3.0 >= 3.12
     webkit2gtk-4.0
-    gstreamer-1.0 >= 1.8.2
+    gstreamer-1.0 >= 1.10
+    gstreamer-audio-1.0 >= 1.10
+    gstreamer-video-1.0 >= 1.10
     epoxy
 ])
 PKG_CHECK_MODULES([GRESOURCE_PLUGIN], [
