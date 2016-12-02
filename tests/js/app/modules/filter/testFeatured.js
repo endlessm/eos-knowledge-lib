@@ -2,6 +2,7 @@
 
 const ContentObjectModel = imports.search.contentObjectModel;
 const Featured = imports.app.modules.filter.featured;
+const MockFactory = imports.tests.mockFactory;
 
 describe('Filter.Featured', function () {
     const MODELS = [true, false].map(featured =>
@@ -12,7 +13,9 @@ describe('Filter.Featured', function () {
 
     describe('normal mode', function () {
         beforeEach(function () {
-            filter = new Featured.Featured();
+            [filter, factory] = MockFactory.setup_tree({
+                type: Featured.Featured,
+            });
         });
 
         it('is the default', function () {
@@ -27,8 +30,11 @@ describe('Filter.Featured', function () {
 
     describe('inverse mode', function () {
         beforeEach(function () {
-            filter = new Featured.Featured({
-                invert: true,
+            [filter, factory] = MockFactory.setup_tree({
+                type: Featured.Featured,
+                properties: {
+                    invert: true,
+                }
             });
         });
 

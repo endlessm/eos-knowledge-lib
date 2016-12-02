@@ -129,7 +129,10 @@ defines:
               type: Selection.AllSets
               id: all-sets
               slots:
-                filter: Filter.Featured
+                filter:
+                  type: Filter.Featured
+                  slots:
+                    sub-filter: Filter.SeeMore
 
           references:
             paginated-load: all-sets

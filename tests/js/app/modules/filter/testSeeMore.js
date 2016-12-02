@@ -3,6 +3,7 @@
 const ContentObjectModel = imports.search.contentObjectModel;
 const SeeMore = imports.app.modules.filter.seeMore;
 const HistoryStore = imports.app.historyStore;
+const MockFactory = imports.tests.mockFactory;
 const Pages = imports.app.pages;
 const SetObjectModel = imports.search.setObjectModel;
 
@@ -26,8 +27,11 @@ describe('Filter.SeeMore', function () {
                 store = new HistoryStore.HistoryStore();
                 HistoryStore.set_default(store);
 
-                filter = new SeeMore.SeeMore({
-                    invert: mode,
+                [filter, factory] = MockFactory.setup_tree({
+                    type: SeeMore.SeeMore,
+                    properties: {
+                        invert: mode,
+                    }
                 });
             });
 

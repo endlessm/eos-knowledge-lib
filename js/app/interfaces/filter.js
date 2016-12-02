@@ -48,6 +48,14 @@ const Filter = new Lang.Interface({
         'filter-changed': {},
     },
 
+    Slots: {
+        'sub-filter': {},
+    },
+
+    _interface_init: function () {
+        this._sub_filter = this.create_submodule('sub-filter');
+    },
+
     /**
      * Method: include
      * Determine whether an arrangement should show a model as a card
@@ -60,7 +68,10 @@ const Filter = new Lang.Interface({
      */
     include: function (model) {
         let retval = this.include_impl(model);
-        return this.invert ? !retval : retval;
+        let to_include = this.invert ? !retval : retval;
+        if (to_include && this._sub_filter)
+            return this._sub_filter.include(model);
+        return to_include;
     },
 
     /**

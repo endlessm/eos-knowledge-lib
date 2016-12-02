@@ -421,6 +421,7 @@ EXTRA_DIST += \
 javascript_tests = \
 	tests/js/app/interfaces/testArrangement.js \
 	tests/js/app/interfaces/testCard.js \
+	tests/js/app/interfaces/testFilter.js \
 	tests/js/app/interfaces/testModule.js \
 	tests/js/app/interfaces/testOrder.js \
 	tests/js/app/modules/arrangement/testAccordion.js \

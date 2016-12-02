@@ -5,6 +5,7 @@ const Lang = imports.lang;
 
 const ContentObjectModel = imports.search.contentObjectModel;
 const Unread = imports.app.modules.filter.unread;
+const MockFactory = imports.tests.mockFactory;
 const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 
 describe('Filter.Unread', function () {
@@ -23,7 +24,9 @@ describe('Filter.Unread', function () {
 
     describe('normal mode', function () {
         beforeEach(function () {
-            filter = new Unread.Unread();
+            [filter, factory] = MockFactory.setup_tree({
+                type: Unread.Unread,
+            });
         });
 
         it('is the default', function () {
@@ -38,8 +41,11 @@ describe('Filter.Unread', function () {
 
     describe('inverse mode', function () {
         beforeEach(function () {
-            filter = new Unread.Unread({
-                invert: true,
+            [filter, factory] = MockFactory.setup_tree({
+                type: Unread.Unread,
+                properties: {
+                    invert: true,
+                }
             });
         });
 
