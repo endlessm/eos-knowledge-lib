@@ -1,10 +1,11 @@
 {
-    "include_paths": [".", "js"],
-    "spec_files": ["tests/eosknowledgeprivate", "tests/js"],
+    "spec_files": ["tests/js"],
     "options": "--verbose",
     "environment": {
-        "GI_TYPELIB_PATH": ".",
-        "LD_LIBRARY_PATH": ".libs",
+        "GJS_PATH": ".:js",
+        "GI_TYPELIB_PATH": ".:ekncontent",
+        "LD_LIBRARY_PATH": ".libs:ekncontent/.libs",
+        "GIO_EXTRA_MODULES": "ekncontent/.libs",
         "LC_ALL": "C"
     }
 }
