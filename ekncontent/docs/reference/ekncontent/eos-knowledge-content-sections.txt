@@ -20,6 +20,17 @@ eknc_content_object_model_add_json_to_params
 </SECTION>
 
 <SECTION>
+<FILE>media-object-model</FILE>
+eknc_media_object_model_new_from_json_node
+<SUBSECTION Standard>
+EkncMediaObjectModel
+EkncMediaObjectModelClass
+EKNC_TYPE_MEDIA_OBJECT_MODEL
+<SUBSECTION Private>
+eknc_media_object_model_add_json_to_params
+</SECTION>
+
+<SECTION>
 <FILE>utils</FILE>
 eknc_utils_parallel_init
 eknc_default_vfs_set_shards
