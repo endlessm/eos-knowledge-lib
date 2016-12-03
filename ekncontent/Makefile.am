@@ -22,7 +22,7 @@ lib_LTLIBRARIES =
 
 @CODE_COVERAGE_RULES@
 
-# # # EKN VFS LIBRARY # # #
+# # # VFS LIBRARY # # #
 
 giomodule_LTLIBRARIES = libeknvfs.la
 giomoduledir = $(libdir)/gio/modules
@@ -55,7 +55,7 @@ install-data-hook:
 	  $(GIO_QUERYMODULES) $(giomoduledir);  \
 	fi
 
-# # # SEARCH PRIVATE LIBRARY # # #
+# # # CONTENT LIBRARY # # #
 
 ekncontent_public_installed_headers = ekncontent/eos-knowledge-content.h
 ekncontent_private_installed_headers = \
@@ -104,6 +104,7 @@ pkgconfig_DATA = @EKN_CONTENT_API_NAME@.pc
 DISTCLEANFILES += @EKN_CONTENT_API_NAME@.pc
 
 # # # TESTS # # #
+
 javascript_tests = \
 	tests/ekncontent/testUtils.js \
 	$(NULL)
