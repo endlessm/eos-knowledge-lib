@@ -64,6 +64,7 @@ ekncontent_private_installed_headers = \
 	ekncontent/eknc-subtree-dispatcher.h \
 	ekncontent/eknc-utils.h \
 	ekncontent/eknc-version.h \
+	ekncontent/eknc-video-object-model.h \
 	$(NULL)
 ekncontent_sources = \
 	ekncontent/eknc-content-object-model-private.h \
@@ -73,6 +74,7 @@ ekncontent_sources = \
 	ekncontent/eknc-subtree-dispatcher.c \
 	ekncontent/eknc-utils-private.h \
 	ekncontent/eknc-utils.c \
+	ekncontent/eknc-video-object-model.c \
 	$(NULL)
 
 lib_LTLIBRARIES += libeos-knowledge-content-@EKN_CONTENT_API_VERSION@.la

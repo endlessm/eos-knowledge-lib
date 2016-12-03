@@ -14,6 +14,7 @@ G_BEGIN_DECLS
 #include "eknc-subtree-dispatcher.h"
 #include "eknc-utils.h"
 #include "eknc-version.h"
+#include "eknc-video-object-model.h"
 
 #undef _EKN_CONTENT_INSIDE_EOSKNOWLEDGECONTENT_H
 
