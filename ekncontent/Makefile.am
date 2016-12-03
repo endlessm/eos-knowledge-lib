@@ -118,11 +118,13 @@ DISTCLEANFILES += @EKN_CONTENT_API_NAME@.pc
 
 javascript_tests = \
 	tests/ekncontent/testContentObjectModel.js \
+	tests/ekncontent/testMediaObjectModels.js \
 	tests/ekncontent/testUtils.js \
 	$(NULL)
 
 EXTRA_DIST += \
 	$(javascript_tests) \
+	tests/InstanceOfMatcher.js \
 	$(NULL)
 
 # Run tests when running 'make check'
@@ -140,6 +142,7 @@ JS_LOG_COMPILER = jasmine
 AM_JS_LOG_FLAGS = --tap --no-config @JASMINE_REPORT_ARGUMENT@
 
 AM_TESTS_ENVIRONMENT = \
+	export GJS_PATH="$(top_srcdir):$(top_builddir)"; \
 	export GI_TYPELIB_PATH="$(top_builddir)$${GI_TYPELIB_PATH:+:$$GI_TYPELIB_PATH}"; \
 	export LD_LIBRARY_PATH="$(top_builddir)/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
 	export G_TEST_SRCDIR="$(abs_srcdir)/tests"; \

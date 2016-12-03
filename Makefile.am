@@ -526,7 +526,6 @@ javascript_tests = \
 	tests/js/search/testDatadir.js \
 	tests/js/search/testDomain.js \
 	tests/js/search/testEngine.js \
-	tests/js/search/testMediaObjectModels.js \
 	tests/js/search/testQueryObject.js \
 	tests/js/search/testSetObjectModel.js \
 	tests/js/search/testUtils.js \

@@ -1,5 +1,7 @@
+const Eknc = imports.gi.EosKnowledgeContent;
+const Json = imports.gi.Json;
+
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
-const MediaObjectModel = imports.search.mediaObjectModel;
 
 const MOCK_IMAGE_DATA = {
     '@id': 'ekn://rick/astley',
@@ -24,16 +26,17 @@ describe ('Image Object Model', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        imageObject = new MediaObjectModel.ImageObjectModel({}, MOCK_IMAGE_DATA);
+        let json_node = Json.from_string(JSON.stringify(MOCK_IMAGE_DATA));
+        imageObject = Eknc.ImageObjectModel.new_from_json_node(json_node);
     });
 
     describe ('type', function () {
         it ('should be an ImageObjectModel', function () {
-            expect(imageObject).toBeA(MediaObjectModel.ImageObjectModel);
+            expect(imageObject).toBeA(Eknc.ImageObjectModel);
         });
 
         it ('should be an MediaObjectModel', function () {
-            expect(imageObject).toBeA(MediaObjectModel.MediaObjectModel);
+            expect(imageObject).toBeA(Eknc.MediaObjectModel);
         });
     });
 
@@ -56,16 +59,17 @@ describe ('Video Object Model', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        videoObject = new MediaObjectModel.VideoObjectModel({}, MOCK_VIDEO_DATA);
+        let json_node = Json.from_string(JSON.stringify(MOCK_VIDEO_DATA));
+        videoObject = Eknc.VideoObjectModel.new_from_json_node(json_node);
     });
 
     describe ('type', function () {
         it ('should be an VideoObjectModel', function () {
-            expect(videoObject).toBeA(MediaObjectModel.VideoObjectModel);
+            expect(videoObject).toBeA(Eknc.VideoObjectModel);
         });
 
         it ('should be an MediaObjectModel', function () {
-            expect(videoObject).toBeA(MediaObjectModel.MediaObjectModel);
+            expect(videoObject).toBeA(Eknc.MediaObjectModel);
         });
     });
 
