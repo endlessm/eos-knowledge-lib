@@ -40,6 +40,15 @@ EKNC_TYPE_VIDEO_OBJECT_MODEL
 </SECTION>
 
 <SECTION>
+<FILE>image-object-model</FILE>
+eknc_image_object_model_new_from_json_node
+<SUBSECTION Standard>
+EkncImageObjectModel
+EkncImageObjectModelClass
+EKNC_TYPE_IMAGE_OBJECT_MODEL
+</SECTION>
+
+<SECTION>
 <FILE>utils</FILE>
 eknc_utils_parallel_init
 eknc_default_vfs_set_shards

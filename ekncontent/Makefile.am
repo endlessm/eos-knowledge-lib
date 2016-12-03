@@ -60,6 +60,7 @@ install-data-hook:
 ekncontent_public_installed_headers = ekncontent/eos-knowledge-content.h
 ekncontent_private_installed_headers = \
 	ekncontent/eknc-content-object-model.h \
+	ekncontent/eknc-image-object-model.h \
 	ekncontent/eknc-media-object-model.h \
 	ekncontent/eknc-subtree-dispatcher.h \
 	ekncontent/eknc-utils.h \
@@ -69,6 +70,7 @@ ekncontent_private_installed_headers = \
 ekncontent_sources = \
 	ekncontent/eknc-content-object-model-private.h \
 	ekncontent/eknc-content-object-model.c \
+	ekncontent/eknc-image-object-model.c \
 	ekncontent/eknc-media-object-model-private.h \
 	ekncontent/eknc-media-object-model.c \
 	ekncontent/eknc-subtree-dispatcher.c \
