@@ -26,6 +26,7 @@ github_username:  endlessm
 # Build settings
 markdown: kramdown
 theme: minima
+highlighter: rouge
 gems:
   - jekyll-feed
 exclude:
