@@ -1,9 +1,7 @@
 const Eknc = imports.gi.EosKnowledgeContent;
-const Json = imports.gi.Json;
 
 describe('Set object model', function () {
     let model, jsonld;
-    let json_node;
 
     beforeEach(function () {
         jsonld = {
@@ -16,18 +14,17 @@ describe('Set object model', function () {
             childTags: ['Astrophysics'],
             featured: true,
         };
-        json_node = Json.from_string(JSON.stringify(jsonld));
-        model = Eknc.SetObjectModel.new_from_json_node(json_node);
+        model = Eknc.SetObjectModel.new_from_json(jsonld);
     });
 
     it('inherits properties set from parent model', function () {
         expect(model.title).toEqual(jsonld['title']);
-        expect(model.tags.deep_unpack()).toEqual(jasmine.arrayContaining(jsonld['tags']));
+        expect(model.tags).toEqual(jasmine.arrayContaining(jsonld['tags']));
         expect(model.featured).toBeTruthy();
         expect(model.thumbnail_uri).toEqual(jsonld['thumbnail']);
     });
 
     it('marshals a child_tags property', function () {
-        expect(model.child_tags.deep_unpack()).toEqual(jasmine.arrayContaining(jsonld['childTags']));
+        expect(model.child_tags).toEqual(jasmine.arrayContaining(jsonld['childTags']));
     });
 });

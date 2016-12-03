@@ -196,4 +196,8 @@ gir_DATA = $(INTROSPECTION_GIRS)
 typelibdir = $(libdir)/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
+overridesdir = $(datadir)/gjs-1.0/overrides
+overrides_DATA = overrides/EosKnowledgeContent.js
+EXTRA_DIST += overrides/EosKnowledgeContent.js
+
 CLEANFILES += $(INTROSPECTION_GIRS) $(typelib_DATA)

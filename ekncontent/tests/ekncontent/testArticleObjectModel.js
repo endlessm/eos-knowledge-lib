@@ -1,11 +1,9 @@
 const Eknc = imports.gi.EosKnowledgeContent;
-const Json = imports.gi.Json;
 
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 
 describe ('Article Object Model', function () {
     let articleObject, jsonld;
-    let json_node;
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
@@ -25,8 +23,7 @@ describe ('Article Object Model', function () {
                 },
             ],
         };
-        json_node = Json.from_string(JSON.stringify(jsonld));
-        articleObject = Eknc.ArticleObjectModel.new_from_json_node(json_node);
+        articleObject = Eknc.ArticleObjectModel.new_from_json(jsonld);
     });
 
     describe ('JSON-LD marshaler', function () {
@@ -37,11 +34,11 @@ describe ('Article Object Model', function () {
         });
 
         it ('should read in a table of contents', function () {
-            expect(articleObject.table_of_contents.deep_unpack()[0].hasLabel.deep_unpack()).toBe('History');
+            expect(articleObject.table_of_contents[0].hasLabel).toBe('History');
         });
 
         it('marshals an authors array', function () {
-            expect(articleObject.authors.deep_unpack()).toEqual(jsonld['authors']);
+            expect(articleObject.authors).toEqual(jsonld['authors']);
         });
 
         it('makes a deep copy of the authors array', function () {

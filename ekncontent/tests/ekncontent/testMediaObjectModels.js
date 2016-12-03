@@ -1,5 +1,4 @@
 const Eknc = imports.gi.EosKnowledgeContent;
-const Json = imports.gi.Json;
 
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 
@@ -26,8 +25,7 @@ describe ('Image Object Model', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        let json_node = Json.from_string(JSON.stringify(MOCK_IMAGE_DATA));
-        imageObject = Eknc.ImageObjectModel.new_from_json_node(json_node);
+        imageObject = Eknc.ImageObjectModel.new_from_json(MOCK_IMAGE_DATA);
     });
 
     describe ('type', function () {
@@ -59,8 +57,7 @@ describe ('Video Object Model', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        let json_node = Json.from_string(JSON.stringify(MOCK_VIDEO_DATA));
-        videoObject = Eknc.VideoObjectModel.new_from_json_node(json_node);
+        videoObject = Eknc.VideoObjectModel.new_from_json(MOCK_VIDEO_DATA);
     });
 
     describe ('type', function () {
