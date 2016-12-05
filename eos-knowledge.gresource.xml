@@ -194,19 +194,15 @@
     <file>js/app/widgets/tableOfContents.js</file>
     <file>js/app/widgets/themeableImage.js</file>
     <file>js/app/widgetSurfaceCache.js</file>
-    <file>js/search/articleObjectModel.js</file>
     <file>js/search/asyncTask.js</file>
     <file>js/search/config.js</file>
-    <file>js/search/contentObjectModel.js</file>
     <file>js/search/datadir.js</file>
     <file>js/search/domain.js</file>
     <file>js/search/downloader.js</file>
     <file>js/search/engine.js</file>
-    <file>js/search/mediaObjectModel.js</file>
     <file>js/search/moltresEngine.js</file>
     <file>js/search/queryObject.js</file>
     <file>js/search/searchProvider.js</file>
-    <file>js/search/setObjectModel.js</file>
     <file>js/search/utils.js</file>
     <file>js/search/xapianBridge.js</file>
     <file>tools/eminem.js</file>
