@@ -63,6 +63,7 @@ ekncontent_private_installed_headers = \
 	ekncontent/eknc-content-object-model.h \
 	ekncontent/eknc-image-object-model.h \
 	ekncontent/eknc-media-object-model.h \
+	ekncontent/eknc-set-object-model.h \
 	ekncontent/eknc-subtree-dispatcher.h \
 	ekncontent/eknc-utils.h \
 	ekncontent/eknc-version.h \
@@ -75,6 +76,7 @@ ekncontent_sources = \
 	ekncontent/eknc-image-object-model.c \
 	ekncontent/eknc-media-object-model-private.h \
 	ekncontent/eknc-media-object-model.c \
+	ekncontent/eknc-set-object-model.c \
 	ekncontent/eknc-subtree-dispatcher.c \
 	ekncontent/eknc-utils-private.h \
 	ekncontent/eknc-utils.c \
@@ -122,6 +124,7 @@ javascript_tests = \
 	tests/ekncontent/testArticleObjectModel.js \
 	tests/ekncontent/testContentObjectModel.js \
 	tests/ekncontent/testMediaObjectModels.js \
+	tests/ekncontent/testSetObjectModel.js \
 	tests/ekncontent/testUtils.js \
 	$(NULL)
 
