@@ -83,9 +83,10 @@ ekn_vfs_extension_points_init (EknVfs *self)
     return;
 
   /* Iterate over the list of Gvfs extension points */
-  for (l = g_io_extension_point_get_extensions (epoint); l; l = g_list_next (l))
+  for (l = g_io_extension_point_get_extensions (epoint); l && l->data; l = g_list_next (l))
     {
-      GType type = g_io_extension_get_type (l->data);
+      GIOExtension *extension = l->data;
+      GType type = g_io_extension_get_type (extension);
       gchar **schemes;
       GVfs *vfs;
       gint i;
@@ -97,8 +98,11 @@ ekn_vfs_extension_points_init (EknVfs *self)
       /* Get all the native schemes suported by the extension point */
       schemes = (gchar **) (* G_VFS_GET_CLASS (vfs)->get_supported_uri_schemes) (vfs);
 
+      if (g_strcmp0 (g_io_extension_get_name (extension), "local") == 0)
+        priv->local = vfs;
+
       /* Add them in out hash table */
-      for (i = 0; schemes[i]; i++)
+      for (i = 0; schemes && schemes[i]; i++)
         {
           if (!g_hash_table_lookup (priv->extensions, schemes[i]))
             g_hash_table_insert (priv->extensions, schemes[i], g_object_ref (vfs));
@@ -137,9 +141,6 @@ ekn_vfs_init (EknVfs *self)
   /* And append our custom scheme at the end */
   priv->schemes[length]   = EKN_URI;
   priv->schemes[++length] = NULL;
-
-  /* Get local vfs */
-  priv->local = g_vfs_get_local ();
 }
 
 static void
