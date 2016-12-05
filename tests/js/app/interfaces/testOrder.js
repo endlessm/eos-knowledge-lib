@@ -1,4 +1,5 @@
-const ContentObjectModel = imports.search.contentObjectModel;
+const Eknc = imports.gi.EosKnowledgeContent;
+
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 
@@ -35,7 +36,7 @@ describe('Order interface', function () {
         });
         order = factory.create_root_module();
         models = UNSORTED.map(properties =>
-            new ContentObjectModel.ContentObjectModel(properties));
+            Eknc.ContentObjectModel.new_from_props(properties));
     });
 
     it('sorts models correctly', function () {

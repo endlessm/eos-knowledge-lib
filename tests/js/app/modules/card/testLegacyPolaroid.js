@@ -1,3 +1,4 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gtk = imports.gi.Gtk;
 
 const Utils = imports.tests.utils;
@@ -5,19 +6,18 @@ Utils.register_gresource();
 
 const LegacyPolaroid = imports.app.modules.card.legacyPolaroid;
 const Compliance = imports.tests.compliance;
-const ContentObjectModel = imports.search.contentObjectModel;
 
 Gtk.init(null);
 
 describe('Card.LegacyPolaroid', function () {
     it('has a fixed size', function () {
         let card1 = new LegacyPolaroid.LegacyPolaroid({
-            model: new ContentObjectModel.ContentObjectModel({
+            model: Eknc.ContentObjectModel.new_from_props({
                 title: 'short',
             }),
         });
         let card2 = new LegacyPolaroid.LegacyPolaroid({
-            model: new ContentObjectModel.ContentObjectModel({
+            model: Eknc.ContentObjectModel.new_from_props({
                 title: 'Really really really really really really really ' +
                     'really really really really really really really really ' +
                     'really long title',
@@ -32,7 +32,7 @@ describe('Card.LegacyPolaroid', function () {
 
     it('has labels that understand Pango markup', function () {
         let card = new LegacyPolaroid.LegacyPolaroid({
-            model: new ContentObjectModel.ContentObjectModel({
+            model: Eknc.ContentObjectModel.new_from_props({
                 title: '!!!',
                 synopsis: '@@@',
             }),

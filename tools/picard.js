@@ -1,3 +1,4 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -5,8 +6,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Card = imports.app.interfaces.card;
-const ArticleObjectModel = imports.search.articleObjectModel;
-const SetObjectModel = imports.search.setObjectModel;
 const Knowledge = imports.app.knowledge;
 const Module = imports.app.interfaces.module;
 const ModuleFactory = imports.app.moduleFactory;
@@ -355,11 +354,11 @@ function connect_signals () {
             child_tags: ['House Lannister'],
         },
     ];
-    let sets = data.map((obj) => new SetObjectModel.SetObjectModel(obj));
+    let sets = data.map((obj) => Eknc.SetObjectModel.new_from_props(obj));
     SetMap.init_map_with_models(sets);
 
     widgets.add_box.connect('clicked', () => {
-        let model = new ArticleObjectModel.ArticleObjectModel({
+        let model = Eknc.ArticleObjectModel.new_from_props({
             title: ARTICLE_TITLE,
             synopsis: ARTICLE_SYNOPSIS,
             thumbnail_uri: IMAGES_DIR + ARTICLE_IMAGES[GLib.random_int_range(0, ARTICLE_IMAGES.length)],

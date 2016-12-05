@@ -2,6 +2,7 @@
 
 /* exported CourseHistoryStore */
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 
@@ -13,7 +14,6 @@ const HistoryStore = imports.app.historyStore;
 const Pages = imports.app.pages;
 const QueryObject = imports.search.queryObject;
 const SetMap = imports.app.setMap;
-const SetObjectModel = imports.search.setObjectModel;
 
 /**
  * Class: CourseHistoryStore
@@ -36,7 +36,7 @@ const CourseHistoryStore = new GObject.Class({
                     });
                     break;
                 case Actions.ITEM_CLICKED: {
-                    if (payload.model instanceof SetObjectModel.SetObjectModel) {
+                    if (payload.model instanceof Eknc.SetObjectModel) {
                         if (!SetMap.get_parent_set(payload.model)) {
                             let props = { model: payload.model };
                             props['page_type'] = Pages.SET;

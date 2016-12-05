@@ -1,4 +1,3 @@
-const ContentObjectModel = imports.search.contentObjectModel;
 const Domain = imports.search.domain;
 const Engine = imports.search.engine;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;

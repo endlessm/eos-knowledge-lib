@@ -2,6 +2,7 @@
 
 /* exported BuffetHistoryStore */
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gdk = imports.gi.Gdk;
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
@@ -11,7 +12,6 @@ const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const HistoryStore = imports.app.historyStore;
 const Pages = imports.app.pages;
-const SetObjectModel = imports.search.setObjectModel;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -41,7 +41,7 @@ const BuffetHistoryStore = new GObject.Class({
                     });
                     break;
                 case Actions.ITEM_CLICKED:
-                    if (payload.model instanceof SetObjectModel.SetObjectModel) {
+                    if (payload.model instanceof Eknc.SetObjectModel) {
                         this.set_current_item_from_props({
                             page_type: Pages.SET,
                             model: payload.model,

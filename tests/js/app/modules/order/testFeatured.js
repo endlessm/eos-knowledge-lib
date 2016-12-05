@@ -1,6 +1,7 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const ContentObjectModel = imports.search.contentObjectModel;
+const Eknc = imports.gi.EosKnowledgeContent;
+
 const Featured = imports.app.modules.order.featured;
 const MockFactory = imports.tests.mockFactory;
 
@@ -23,7 +24,7 @@ describe('Order.Featured', function () {
 
     beforeEach(function () {
         models = UNSORTED.map(featured =>
-            new ContentObjectModel.ContentObjectModel({
+            Eknc.ContentObjectModel.new_from_props({
                 featured: featured,
         }));
     });

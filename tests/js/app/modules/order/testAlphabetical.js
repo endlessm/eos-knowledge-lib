@@ -1,7 +1,8 @@
 // Copyright 2016 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
+
 const Alphabetical = imports.app.modules.order.alphabetical;
-const ContentObjectModel = imports.search.contentObjectModel;
 const MockFactory = imports.tests.mockFactory;
 
 describe('Order.Alphabetical', function () {
@@ -15,7 +16,7 @@ describe('Order.Alphabetical', function () {
 
     beforeEach(function () {
         models = UNSORTED_TITLES.map(title =>
-            new ContentObjectModel.ContentObjectModel({ title: title }));
+            Eknc.ContentObjectModel.new_from_props({ title: title }));
         factory = new MockFactory.MockFactory({
             type: Alphabetical.Alphabetical,
         });

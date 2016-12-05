@@ -1,5 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const Lang = imports.lang;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -10,14 +11,11 @@ const Mainloop = imports.mainloop;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const ArticleObjectModel = imports.search.articleObjectModel;
 const Card = imports.app.interfaces.card;
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const MediaObjectModel = imports.search.mediaObjectModel;
 const Minimal = imports.tests.minimal;
 const MockEngine = imports.tests.mockEngine;
 const SetMap = imports.app.setMap;
-const SetObjectModel = imports.search.setObjectModel;
 
 Gtk.init(null);
 
@@ -39,9 +37,9 @@ describe('Card interface', function () {
                 child_tags: ['bar'],
             },
         ];
-        let sets = data.map((obj) => new SetObjectModel.SetObjectModel(obj));
+        let sets = data.map((obj) => Eknc.SetObjectModel.new_from_props(obj));
         SetMap.init_map_with_models(sets);
-        model = new ArticleObjectModel.ArticleObjectModel({
+        model = Eknc.ArticleObjectModel.new_from_props({
             title: 'record title &',
             thumbnail_uri: 'ekn://foo/bar',
             authors: ['record author &'],

@@ -1,10 +1,9 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
-const ArticleObjectModel = imports.search.articleObjectModel;
 const Utils = imports.tests.utils;
 const SearchUtils = imports.search.utils;
 const SetMap = imports.app.setMap;
-const SetObjectModel = imports.search.setObjectModel;
 
 describe('Article HTML Renderer', function () {
     let wikihow_model, wikibooks_model;
@@ -14,7 +13,7 @@ describe('Article HTML Renderer', function () {
         Utils.register_gresource();
 
         renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
-        wikihow_model = new ArticleObjectModel.ArticleObjectModel({
+        wikihow_model = Eknc.ArticleObjectModel.new_from_props({
             source_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
             original_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
             content_type: 'text/html',
@@ -24,7 +23,7 @@ describe('Article HTML Renderer', function () {
             title: 'Wikihow & title',
         });
         wikihow_model.get_content_stream = () => { return SearchUtils.string_to_stream('<html><body><p>wikihow html</p></body></html>'); };
-        wikibooks_model = new ArticleObjectModel.ArticleObjectModel({
+        wikibooks_model = Eknc.ArticleObjectModel.new_from_props({
             source_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
             original_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
             content_type: 'text/html',
@@ -109,14 +108,14 @@ describe('Article HTML Renderer', function () {
 
         beforeEach(function () {
             set_models = [
-                new SetObjectModel.SetObjectModel({
+                Eknc.SetObjectModel.new_from_props({
                     tags: ['EknHomePageTag', 'EknSetObject'],
                     title: 'Guatemala',
                     child_tags: ['guatemala'],
                     featured: true,
                     ekn_id: 'ekn://prensalibre/1',
                 }),
-                new SetObjectModel.SetObjectModel({
+                Eknc.SetObjectModel.new_from_props({
                     tags: ['guatemala', 'EknSetObject'],
                     title: 'Comunitario',
                     child_tags: ['guatemala/comunitario'],
@@ -126,7 +125,7 @@ describe('Article HTML Renderer', function () {
             ];
 
             SetMap.init_map_with_models(set_models);
-            model = new ArticleObjectModel.ArticleObjectModel({
+            model = Eknc.ArticleObjectModel.new_from_props({
                 source_uri: 'http://www.prensalibre.com/internacional/el-papa-francisco-dice-que-trump-no-puede-proclamarse-cristiano',
                 original_uri: 'http://www.prensalibre.com/internacional/el-papa-francisco-dice-que-trump-no-puede-proclamarse-cristiano',
                 content_type: 'text/html',
@@ -170,7 +169,7 @@ describe('Article HTML Renderer', function () {
         let server_templated_model, html;
 
         beforeEach(function() {
-            server_templated_model = new ArticleObjectModel.ArticleObjectModel({
+            server_templated_model = Eknc.ArticleObjectModel.new_from_props({
                 content_type: 'text/html',
                 is_server_templated: true,
                 title: 'Some good server templated content',

@@ -4,13 +4,13 @@
 MinimalDocumentCard, MinimalHomePage, MinimalModule, MinimalNavigationCard,
 MinimalOrder, TitleFilter */
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
-const ContentObjectModel = imports.search.contentObjectModel;
 const DocumentCard = imports.app.interfaces.documentCard;
 const Filter = imports.app.interfaces.filter;
 const Module = imports.app.interfaces.module;
@@ -151,7 +151,7 @@ const MinimalSelection = new Module.Class({
 
     queue_load_more: function (num_desired=5) {
         for (let i = 0; i < num_desired; i++) {
-            let model = new ContentObjectModel.ContentObjectModel();
+            let model = Eknc.ContentObjectModel.new_from_props();
             this.add_model(model);
         }
         this.emit('models-changed');
@@ -196,7 +196,7 @@ const TitleFilter = new Module.Class({
 function add_cards(arrangement, ncards) {
     let models = [];
     for (let i = 0; i < ncards; i++)
-        models.push(new ContentObjectModel.ContentObjectModel());
+        models.push(Eknc.ContentObjectModel.new_from_props());
     arrangement.set_models(arrangement.get_models().concat(models));
     return models;
 }

@@ -1,20 +1,18 @@
 /* exported HistoryStore, get_default, set_default */
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const ArticleObjectModel = imports.search.articleObjectModel;
 const Actions = imports.app.actions;
 const Engine = imports.search.engine;
 const Dispatcher = imports.app.dispatcher;
 const HistoryItem = imports.app.historyItem;
-const MediaObjectModel = imports.search.mediaObjectModel;
 const Pages = imports.app.pages;
 const ReadingHistoryModel = imports.app.readingHistoryModel;
-const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.app.utils;
 
 const Direction = {
@@ -48,14 +46,14 @@ const HistoryStore = new Lang.Class({
          * The model for the current set in the history store.
          */
         'current-set': GObject.ParamSpec.object('current-set', 'current-set', 'current-set',
-            GObject.ParamFlags.READABLE, SetObjectModel.SetObjectModel),
+            GObject.ParamFlags.READABLE, Eknc.SetObjectModel),
         /**
          * Property: current-subset
          *
          * The model for the current subset in the history store.
          */
         'current-subset': GObject.ParamSpec.object('current-subset', 'current-subset', 'current-subset',
-            GObject.ParamFlags.READABLE, SetObjectModel.SetObjectModel),
+            GObject.ParamFlags.READABLE, Eknc.SetObjectModel),
         /**
          * Property: current-query
          *
@@ -273,18 +271,18 @@ const HistoryStore = new Lang.Class({
                 return;
             }
 
-            if (model instanceof ArticleObjectModel.ArticleObjectModel) {
+            if (model instanceof Eknc.ArticleObjectModel) {
                 this.set_current_item_from_props({
                     page_type: Pages.ARTICLE,
                     model: model,
                 });
-            } else if (model instanceof SetObjectModel.SetObjectModel) {
+            } else if (model instanceof Eknc.SetObjectModel) {
                 this.set_current_item_from_props({
                     page_type: Pages.SET,
                     model: model,
                     context_label: model.title,
                 });
-            } else if (model instanceof MediaObjectModel.MediaObjectModel) {
+            } else if (model instanceof Eknc.MediaObjectModel) {
                 let old_item = this.get_current_item();
                 this.set_current_item_from_props({
                     page_type: old_item.page_type,
@@ -300,14 +298,14 @@ const HistoryStore = new Lang.Class({
         Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
             try {
                 let model = engine.get_object_by_id_finish(task);
-                if (model instanceof ArticleObjectModel.ArticleObjectModel) {
+                if (model instanceof Eknc.ArticleObjectModel) {
                     this.set_current_item_from_props({
                         page_type: Pages.ARTICLE,
                         model: model,
                         query: query,
                         timestamp: timestamp || Gdk.CURRENT_TIME,
                     });
-                } else if (model instanceof SetObjectModel.SetObjectModel) {
+                } else if (model instanceof Eknc.SetObjectModel) {
                     this.set_current_item_from_props({
                         page_type: Pages.SET,
                         model: model,

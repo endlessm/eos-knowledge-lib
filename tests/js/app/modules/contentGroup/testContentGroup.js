@@ -1,3 +1,4 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
@@ -7,7 +8,6 @@ Utils.register_gresource();
 
 const Actions = imports.app.actions;
 const ContentGroup = imports.app.modules.contentGroup.contentGroup;
-const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
@@ -66,7 +66,7 @@ describe('ContentGroup.ContentGroup', function () {
     });
 
     it('dispatches item clicked', function () {
-        let model = new ContentObjectModel.ContentObjectModel();
+        let model = Eknc.ContentObjectModel.new_from_props();
         selection.get_models.and.returnValue([model]);
         content_group.load();
         arrangement.emit('card-clicked', model);

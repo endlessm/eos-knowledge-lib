@@ -1,11 +1,10 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gtk = imports.gi.Gtk;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const ArticleObjectModel = imports.search.articleObjectModel;
 const HistoryStore = imports.app.historyStore;
-const MediaObjectModel = imports.search.mediaObjectModel;
 const Minimal = imports.tests.minimal;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
@@ -33,10 +32,10 @@ describe('ContentGroup.MediaLightbox', function () {
             },
         });
 
-        media_model = new MediaObjectModel.MediaObjectModel({
+        media_model = Eknc.MediaObjectModel.new_from_props({
             ekn_id: 'ekn://foo/bar',
         });
-        article_model = new ArticleObjectModel.ArticleObjectModel({
+        article_model = Eknc.ArticleObjectModel.new_from_props({
             resources: ['ekn://foo/bar'],
         });
     });
@@ -64,7 +63,7 @@ describe('ContentGroup.MediaLightbox', function () {
         });
         expect(factory.get_created('card').length).toBe(1);
 
-        let nonexistent_media_object = new MediaObjectModel.MediaObjectModel({
+        let nonexistent_media_object = Eknc.MediaObjectModel.new_from_props({
             ekn_id: 'ekn://no/media',
         });
         store.set_current_item_from_props({

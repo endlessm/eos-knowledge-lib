@@ -1,5 +1,6 @@
 // Copyright 2016 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
@@ -14,7 +15,6 @@ const Module = imports.app.interfaces.module;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const SetMap = imports.app.setMap;
-const SetObjectModel = imports.search.setObjectModel;
 
 const MockView = new Module.Class({
     Name: 'testCourseController_MockView',
@@ -32,10 +32,10 @@ describe('Controller.Course', function () {
 
     beforeEach(function () {
 
-        set_models = [0, 1, 2].map(() => new SetObjectModel.SetObjectModel({
+        set_models = [0, 1, 2].map(() => Eknc.SetObjectModel.new_from_props({
             tags: ['foo'],
         }));
-        let parent = new SetObjectModel.SetObjectModel({
+        let parent = Eknc.SetObjectModel.new_from_props({
             child_tags: ['foo'],
         });
         set_models.push(parent);

@@ -1,9 +1,9 @@
 // Copyright 2016 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const ContentObjectModel = imports.search.contentObjectModel;
 const Unread = imports.app.modules.filter.unread;
 const MockFactory = imports.tests.mockFactory;
 const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
@@ -15,7 +15,7 @@ describe('Filter.Unread', function () {
 
     beforeEach(function () {
         models = IDS.map(ekn_id =>
-            new ContentObjectModel.ContentObjectModel({
+            Eknc.ContentObjectModel.new_from_props({
                 ekn_id: ekn_id,
             }));
         history_model = MockReadingHistoryModel.mock_default();
