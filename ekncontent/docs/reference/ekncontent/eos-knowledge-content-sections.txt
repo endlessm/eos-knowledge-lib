@@ -20,6 +20,18 @@ eknc_content_object_model_add_json_to_params
 </SECTION>
 
 <SECTION>
+<FILE>article-object-model</FILE>
+eknc_article_object_model_get_authors
+eknc_article_object_model_get_outgoing_links
+eknc_article_object_model_get_table_of_contents
+eknc_article_object_model_new_from_json_node
+<SUBSECTION Standard>
+EkncArticleObjectModel
+EkncArticleObjectModelClass
+EKNC_TYPE_ARTICLE_OBJECT_MODEL
+</SECTION>
+
+<SECTION>
 <FILE>media-object-model</FILE>
 eknc_media_object_model_new_from_json_node
 <SUBSECTION Standard>

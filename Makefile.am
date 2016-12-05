@@ -521,7 +521,6 @@ javascript_tests = \
 	tests/js/app/widgets/testSlidingPanelOverlay.js \
 	tests/js/app/widgets/testSpaceContainer.js \
 	tests/js/app/widgets/testTableOfContents.js \
-	tests/js/search/testArticleObjectModel.js \
 	tests/js/search/testAsyncTask.js \
 	tests/js/search/testDatadir.js \
 	tests/js/search/testDomain.js \

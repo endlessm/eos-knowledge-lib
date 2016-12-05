@@ -9,6 +9,7 @@ G_BEGIN_DECLS
 #define _EKN_CONTENT_INSIDE_EOSKNOWLEDGECONTENT_H
 
 /* Pull in other header files */
+#include "eknc-article-object-model.h"
 #include "eknc-content-object-model.h"
 #include "eknc-image-object-model.h"
 #include "eknc-media-object-model.h"

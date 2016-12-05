@@ -59,6 +59,7 @@ install-data-hook:
 
 ekncontent_public_installed_headers = ekncontent/eos-knowledge-content.h
 ekncontent_private_installed_headers = \
+	ekncontent/eknc-article-object-model.h \
 	ekncontent/eknc-content-object-model.h \
 	ekncontent/eknc-image-object-model.h \
 	ekncontent/eknc-media-object-model.h \
@@ -68,6 +69,7 @@ ekncontent_private_installed_headers = \
 	ekncontent/eknc-video-object-model.h \
 	$(NULL)
 ekncontent_sources = \
+	ekncontent/eknc-article-object-model.c \
 	ekncontent/eknc-content-object-model-private.h \
 	ekncontent/eknc-content-object-model.c \
 	ekncontent/eknc-image-object-model.c \
@@ -117,6 +119,7 @@ DISTCLEANFILES += @EKN_CONTENT_API_NAME@.pc
 # # # TESTS # # #
 
 javascript_tests = \
+	tests/ekncontent/testArticleObjectModel.js \
 	tests/ekncontent/testContentObjectModel.js \
 	tests/ekncontent/testMediaObjectModels.js \
 	tests/ekncontent/testUtils.js \
