@@ -6,13 +6,33 @@ const SearchUtils = imports.search.utils;
 const SetMap = imports.app.setMap;
 
 describe('Article HTML Renderer', function () {
-    let wikihow_model, wikibooks_model;
+    let wikihow_model, wikibooks_model, wikipedia_model, wikisource_model;
     let renderer;
 
     beforeEach(function () {
         Utils.register_gresource();
 
         renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
+        wikipedia_model = Eknc.ArticleObjectModel.new_from_props({
+            source_uri: 'http://en.wikipedia.org/wiki/When_It_Hits_the_Fan',
+            original_uri: 'http://en.wikipedia.org/wiki/When_It_Hits_the_Fan',
+            content_type: 'text/html',
+            source: 'wikipedia',
+            source_name: 'Wikipedia',
+            license: 'CC-BY-SA 3.0',
+            title: 'Wikipedia title',
+        });
+        wikipedia_model.get_content_stream = () => { return SearchUtils.string_to_stream('<html><body><p>wikipedia html</p></body></html>'); };
+        wikisource_model = Eknc.ArticleObjectModel.new_from_props({
+            source_uri: 'http://en.wikisource.org/wiki/When_It_Hits_the_Fan',
+            original_uri: 'http://en.wikisource.org/wiki/When_It_Hits_the_Fan',
+            content_type: 'text/html',
+            source: 'wikisource',
+            source_name: 'Wikibooks',
+            license: 'CC-BY-SA 3.0',
+            title: 'Wikibooks title',
+        });
+        wikisource_model.get_content_stream = () => { return SearchUtils.string_to_stream('<html><body><p>wikisource html</p></body></html>'); };
         wikihow_model = Eknc.ArticleObjectModel.new_from_props({
             source_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
             original_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
@@ -90,11 +110,9 @@ describe('Article HTML Renderer', function () {
     it('includes MathJax in rendered Wikipedia, Wikibooks, and Wikisource articles', function () {
         let html = renderer.render(wikibooks_model);
         expect(html).toMatch('<script type="text/x-mathjax-config">');
-        wikibooks_model.source = 'wikipedia';
-        html = renderer.render(wikibooks_model);
+        html = renderer.render(wikipedia_model);
         expect(html).toMatch('<script type="text/x-mathjax-config">');
-        wikibooks_model.source = 'wikisource';
-        html = renderer.render(wikibooks_model);
+        html = renderer.render(wikisource_model);
         expect(html).toMatch('<script type="text/x-mathjax-config">');
     });
 
