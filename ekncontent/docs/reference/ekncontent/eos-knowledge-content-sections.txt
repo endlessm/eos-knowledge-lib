@@ -11,6 +11,7 @@ eknc_content_object_model_get_content_stream
 eknc_content_object_model_get_resources
 eknc_content_object_model_get_tags
 eknc_content_object_model_new_from_json_node
+eknc_object_model_from_json_node
 <SUBSECTION Standard>
 EkncContentObjectModel
 EkncContentObjectModelClass
