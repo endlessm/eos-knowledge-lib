@@ -27,7 +27,7 @@ const MockEngine = new Lang.Class({
         spyOn(this, 'get_objects_by_query_finish');
         spyOn(this, '_lookup_ekn_uri');
 
-        let vfs = Gio.Vfs.get_local();
+        let vfs = Gio.Vfs.get_default();
         vfs.register_uri_scheme('ekn', this._lookup_ekn_uri.bind(this), this._lookup_ekn_uri.bind(this));
     },
 
