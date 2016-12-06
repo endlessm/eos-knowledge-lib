@@ -138,7 +138,12 @@ AM_TESTS_ENVIRONMENT = \
 
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
-INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all $(EKN_CONTENT_CFLAGS)
+INTROSPECTION_SCANNER_ARGS = \
+	--add-include-path=$(srcdir) \
+	--warn-all \
+	$(EKN_CONTENT_CFLAGS) \
+	-I ekncontent \
+	$(NULL)
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
 introspection_sources = \
