@@ -201,6 +201,106 @@ eknc_utils_parallel_init (GSList        *initables,
     }
 }
 
+static GFile *
+database_dir_from_data_dir (const gchar *data_dir, const gchar *app_id)
+{
+  g_autofree gchar *database_dir = g_build_filename (data_dir, "ekn", "data",
+                                                     app_id, NULL);
+  GFile *file = g_file_new_for_path (database_dir);
+  if (g_file_query_exists (file, NULL))
+      return file;
+  g_object_unref (file);
+  return NULL;
+}
+
+/**
+ * eknc_get_running_under_flatpak:
+ *
+ * Checks if we are running in a flatpak sandbox.
+ *
+ * Returns: true if we are running in a flatpak sandbox.
+ */
+gboolean
+eknc_get_running_under_flatpak (void)
+{
+  g_autoptr(GError) error = NULL;
+  g_autofree gchar *path = g_build_filename (g_get_user_runtime_dir (),
+                                             "flatpak-info", NULL);
+  g_autoptr(GKeyFile) keyfile = g_key_file_new ();
+
+  g_key_file_load_from_file (keyfile, path, G_KEY_FILE_NONE, &error);
+  if (error)
+    return FALSE;
+
+  return TRUE;
+}
+
+/**
+ * eknc_get_data_dir:
+ * @app_id: knowledge app ID, such as "com.endlessm.health-es"
+ *
+ * Searches for the EKN manifest for a knowledge engine domain
+ *
+ * This function searches through the system data directories for an EKN
+ * data directory for the given domain.
+ *
+ * Returns: (transfer full): a #GFile pointing to an app content directory, or *null*.
+ */
+GFile *
+eknc_get_data_dir (const gchar *app_id)
+{
+  GFile *ret;
+  // We may be asked for the data dir on behalf of another bundle, in
+  // the search provider case -- so detect if we're under flatpak and
+  // key off the app ID
+  if (eknc_get_running_under_flatpak ())
+    {
+      g_autofree gchar *flatpak_relative_path = NULL;
+      g_autofree gchar *user_path = NULL;
+      g_autofree gchar *system_path = NULL;
+      g_autofree gchar *split_path = NULL;
+
+      flatpak_relative_path = g_build_filename ("flatpak", "app", app_id,
+                                                "current", "active",
+                                                "files", "share", NULL);
+      ret = database_dir_from_data_dir (flatpak_relative_path, app_id);
+      if (ret)
+        return ret;
+
+      // Try the user flatpak location first
+      user_path = g_build_filename (g_get_home_dir (), ".local", "share",
+                                    flatpak_relative_path, NULL);
+      ret = database_dir_from_data_dir (user_path, app_id);
+      if (ret)
+        return ret;
+
+      // Try the system flatpak location next
+      system_path = g_build_filename ("/var", "lib", flatpak_relative_path,
+                                      NULL);
+      ret = database_dir_from_data_dir (system_path, app_id);
+      if (ret)
+        return ret;
+
+      // Try the split layout system flatpak location next
+      split_path = g_build_filename ("/var", "endless-extra",
+                                     flatpak_relative_path, NULL);
+      ret = database_dir_from_data_dir (split_path, app_id);
+      if (ret)
+        return ret;
+    }
+
+  // Fall back to the XDG data dirs otherwise
+  const gchar * const *dirs = g_get_system_data_dirs ();
+  for (gint i = 0; dirs[i]; i++)
+    {
+      ret = database_dir_from_data_dir (dirs[i], app_id);
+      if (ret)
+        return ret;
+    }
+
+  return NULL;
+}
+
 /**
  * eknc_default_vfs_set_shards:
  * @shards: (type GSList(EosShardShardFile)): a list of shard objects

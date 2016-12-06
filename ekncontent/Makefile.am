@@ -125,6 +125,7 @@ DISTCLEANFILES += @EKN_CONTENT_API_NAME@.pc
 javascript_tests = \
 	tests/ekncontent/testArticleObjectModel.js \
 	tests/ekncontent/testContentObjectModel.js \
+	tests/ekncontent/testDatadir.js \
 	tests/ekncontent/testMediaObjectModels.js \
 	tests/ekncontent/testObjectModel.js \
 	tests/ekncontent/testSetObjectModel.js \

@@ -9,7 +9,6 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 
 const AsyncTask = imports.search.asyncTask;
-const datadir = imports.search.datadir;
 const Downloader = imports.search.downloader;
 const QueryObject = imports.search.queryObject;
 const Utils = imports.search.utils;
@@ -36,7 +35,7 @@ const Domain = new Lang.Class({
 
     _get_content_dir: function () {
         if (this._content_dir === null)
-            this._content_dir = datadir.get_data_dir(this._app_id);
+            this._content_dir = Eknc.get_data_dir(this._app_id);
 
         return this._content_dir;
     },
@@ -507,7 +506,7 @@ const DomainV3 = new Lang.Class({
 /* Returns the EKN Version of the given app ID. Defaults to 1 if
    no EKN_VERSION file is found. This function does synchronous file I/O. */
 function get_ekn_version (app_id) {
-    let dir = datadir.get_data_dir(app_id);
+    let dir = Eknc.get_data_dir(app_id);
 
     // Sanity check
     if (!dir) {

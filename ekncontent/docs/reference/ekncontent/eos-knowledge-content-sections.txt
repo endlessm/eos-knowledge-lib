@@ -75,6 +75,8 @@ EKNC_TYPE_IMAGE_OBJECT_MODEL
 <FILE>utils</FILE>
 eknc_utils_parallel_init
 eknc_default_vfs_set_shards
+eknc_get_data_dir
+eknc_get_running_under_flatpak
 EkncContentObjectError
 <SUBSECTION Standard>
 EKNC_CONTENT_OBJECT_ERROR

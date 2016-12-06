@@ -1,7 +1,6 @@
 const Eknc = imports.gi.EosKnowledgeContent;
 const Gio = imports.gi.Gio;
 
-const Datadir = imports.search.datadir;
 const Domain = imports.search.domain;
 const Engine = imports.search.engine;
 const QueryObject = imports.search.queryObject;
@@ -119,7 +118,7 @@ function create_mock_shard_with_link_table (link_table_hash) {
 describe('Domain', function () {
     describe('get_ekn_version', function () {
         it('should throw an exception when datadir can\'t be found', function () {
-            spyOn(Datadir, 'get_data_dir').and.returnValue(undefined);
+            spyOn(Eknc, 'get_data_dir').and.returnValue(undefined);
 
             let expectedError = new Error("Could not find data dir for app ID abc");
 

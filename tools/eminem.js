@@ -1,5 +1,6 @@
 
 const ByteArray = imports.byteArray;
+const Eknc = imports.gi.EosKnowledgeContent;
 const EosShard = imports.gi.EosShard;
 const Format = imports.format;
 const GLib = imports.gi.GLib;
@@ -7,7 +8,6 @@ const Gio = imports.gi.Gio;
 const Soup = imports.gi.Soup;
 const System = imports.system;
 
-const Datadir = imports.search.datadir;
 const Domain = imports.search.domain;
 const Utils = imports.search.utils;
 
@@ -175,7 +175,7 @@ function regenerate (path) {
 function inspect_app_id (app_id) {
     let cancellable = null;
 
-    let data_dir = Datadir.get_data_dir(app_id);
+    let data_dir = Eknc.get_data_dir(app_id);
     print(Format.vprintf("data dir: %s", [data_dir.get_path()]));
 
     let ekn_version = Domain.get_ekn_version(app_id);

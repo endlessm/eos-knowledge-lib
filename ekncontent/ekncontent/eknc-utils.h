@@ -30,4 +30,10 @@ eknc_utils_parallel_init (GSList        *initables,
 gboolean
 eknc_default_vfs_set_shards (GSList *shards);
 
+gboolean
+eknc_get_running_under_flatpak (void);
+
+GFile *
+eknc_get_data_dir (const gchar *app_id);
+
 G_END_DECLS

@@ -522,7 +522,6 @@ javascript_tests = \
 	tests/js/app/widgets/testSpaceContainer.js \
 	tests/js/app/widgets/testTableOfContents.js \
 	tests/js/search/testAsyncTask.js \
-	tests/js/search/testDatadir.js \
 	tests/js/search/testDomain.js \
 	tests/js/search/testEngine.js \
 	tests/js/search/testQueryObject.js \
