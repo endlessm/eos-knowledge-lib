@@ -158,7 +158,7 @@ defines:
     card: 'Card.KnowledgeDocument(show-toc: true)'
 
 root:
-  shortdef: 'Controller.Buffet(theme: preset_a)'
+  shortdef: 'Controller.Buffet(theme: library_list)'
   slots:
     window:
       type: Window.Simple
