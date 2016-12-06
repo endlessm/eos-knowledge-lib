@@ -1,14 +1,12 @@
 .Lightbox {
     &__navigationButton {
-        padding: 7px;
+        padding: 10px;
         border-radius: 27px;
-        background-color: transparentize(#888a85, 1 - 0.5);
-        background-image: linear-gradient(-89deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.50) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.25);
+        background-color: transparentize(white, 1 - 0.2);
         box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 0, 0.24);
 
         &:hover {
-            background-color: transparentize(#888a85, 1 - 0.8);
+            background-color: transparentize(white, 1 - 0.4);
         }
     }
 
@@ -16,3 +14,4 @@
         background-color: transparentize(black, 1 - 0.9);
     }
 }
+
