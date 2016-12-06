@@ -61,7 +61,7 @@ defines:
   shortdef: 'Layout.Sidebar(sidebar-first: false)'
   slots:
     content:
-      shortdef: 'Banner.Set(valign: center)'
+      shortdef: 'Banner.Set(valign: end)'
       slots:
         card: Card.Title
     sidebar:
