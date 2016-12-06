@@ -176,6 +176,33 @@ scrollbar {
     font-size: 16px;
 }
 
+.LayoutResponsiveMargins {
+    &--small {
+        margin: 0px 30px;
+    }
+
+    &--medium {
+        margin: 0px 90px;
+    }
+
+    &--large {
+        margin: 0px 150px;
+    }
+
+    &--xlarge {
+        margin: 0px 240px;
+    }
+}
+
+.paper-template {
+    background-image: linear-gradient(to bottom, #ececec 0%, #ececec 100%),
+                      image-url('../templates/images/noise.png');
+
+    .search-page & {
+        padding: 0 45px;
+    }
+}
+
 
 /* Changes for composite TVs */
 
