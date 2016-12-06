@@ -33,7 +33,8 @@ function define_enum (values) {
 
 function components_from_ekn_id (ekn_id) {
     // The URI is of form 'ekn://domain/hash[/resource]'.
-    // Domain is usually empty string, but can contain something for older bundles.
+    // Domain is part of legacy bundle support and should not be used for
+    // modern content.
 
     // Chop off our constant scheme identifier.
     let stripped_ekn_id = ekn_id.slice('ekn://'.length);

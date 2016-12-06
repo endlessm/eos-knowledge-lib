@@ -246,6 +246,8 @@ ekn_vfs_get_file_for_uri (GVfs *self, const char *uri)
   if (uri && g_str_has_prefix (uri, EKN_URI":"))
     {
       /* The URI is of the form 'ekn://domain/hash[/resource]' */
+      /* Domain is part of legacy bundle support and should not be used
+       * for modern content. */
       gchar **tokens = g_strsplit (uri + EKN_SCHEME_LEN, "/", -1);
 
       if (tokens && tokens[0] && tokens[1])
