@@ -65,6 +65,15 @@ G_DEFINE_DYNAMIC_TYPE_EXTENDED (EknVfs,
 
 #define EKN_VFS_PRIVATE(d) ((EknVfsPrivate *) ekn_vfs_get_instance_private((EknVfs*)d))
 
+static inline gpointer
+extension_object_new (GType type)
+{
+  if (g_type_is_a (type, G_TYPE_INITABLE))
+    return g_initable_new (type, NULL, NULL, NULL);
+  else
+    return g_object_new (type, NULL);
+}
+
 static void
 ekn_vfs_extension_points_init (EknVfs *self)
 {
@@ -92,14 +101,17 @@ ekn_vfs_extension_points_init (EknVfs *self)
       gint i;
 
       /* Skip ourself and uninstantiable extensions points */
-      if (type == EKN_TYPE_VFS || !(vfs = g_object_new (type, NULL)))
+      if (type == EKN_TYPE_VFS || !(vfs = extension_object_new (type)))
         continue;
 
       /* Get all the native schemes suported by the extension point */
       schemes = (gchar **) (* G_VFS_GET_CLASS (vfs)->get_supported_uri_schemes) (vfs);
 
       if (g_strcmp0 (g_io_extension_get_name (extension), "local") == 0)
-        priv->local = vfs;
+        {
+          g_clear_object (&priv->local);
+          priv->local = g_object_ref (vfs);
+        }
 
       /* Add them in out hash table */
       for (i = 0; schemes && schemes[i]; i++)
@@ -134,6 +146,13 @@ ekn_vfs_init (EknVfs *self)
   /* Init priv->extensions hash table */
   ekn_vfs_extension_points_init (self);
 
+  /* This shold never happen, since a local extension point will be added */
+  if (priv->local == NULL)
+    {
+      g_warning ("No local vfs returned by g_io_extension_point_lookup(), using g_vfs_get_local ()");
+      priv->local = g_object_ref (g_vfs_get_local ());
+    }
+
   /* Get suported all uri schemes */
   schemes = (gchar **) g_hash_table_get_keys_as_array (priv->extensions, &length);
   priv->schemes = g_realloc (schemes, (length + 2) * sizeof (gchar *));
@@ -150,7 +169,7 @@ ekn_vfs_finalize (GObject *self)
 
   g_free (priv->default_domain);
   g_free (priv->schemes);
-  g_hash_table_unref (priv->extensions);
+  g_clear_pointer (&priv->extensions, g_hash_table_unref);
 
   G_OBJECT_CLASS (ekn_vfs_parent_class)->finalize (self);
 }
@@ -160,8 +179,8 @@ ekn_vfs_dispose (GObject *self)
 {
   EknVfsPrivate *priv = EKN_VFS_PRIVATE (self);
 
-  g_hash_table_unref (priv->domain_shards);
-  priv->domain_shards = NULL;
+  g_clear_pointer (&priv->domain_shards, g_hash_table_unref);
+  g_clear_object (&priv->local);
 
   G_OBJECT_CLASS (ekn_vfs_parent_class)->dispose (self);
 }
