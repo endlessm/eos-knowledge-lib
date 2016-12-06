@@ -98,9 +98,6 @@ ekn_vfs_extension_points_init (EknVfs *self)
       /* Get all the native schemes suported by the extension point */
       schemes = (gchar **) (* G_VFS_GET_CLASS (vfs)->get_supported_uri_schemes) (vfs);
 
-      if (g_strcmp0 (g_io_extension_get_name (extension), "local") == 0)
-        priv->local = vfs;
-
       /* Add them in out hash table */
       for (i = 0; schemes && schemes[i]; i++)
         {
@@ -108,7 +105,14 @@ ekn_vfs_extension_points_init (EknVfs *self)
             g_hash_table_insert (priv->extensions, schemes[i], g_object_ref (vfs));
         }
 
-      g_object_unref (vfs);
+      if (g_strcmp0 (g_io_extension_get_name (extension), "local") == 0)
+        {
+          priv->local = vfs;
+        }
+      else
+        {
+          g_object_unref (vfs);
+        }
     }
 }
 
@@ -161,6 +165,7 @@ ekn_vfs_dispose (GObject *self)
   EknVfsPrivate *priv = EKN_VFS_PRIVATE (self);
 
   g_hash_table_unref (priv->domain_shards);
+  g_clear_object (&priv->local);
   priv->domain_shards = NULL;
 
   G_OBJECT_CLASS (ekn_vfs_parent_class)->dispose (self);
