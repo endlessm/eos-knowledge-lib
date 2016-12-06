@@ -78,10 +78,6 @@ const Domain = new Lang.Class({
 
         this._load_sync_internal();
         this._shard_inited = true;
-
-        /* Append shards to default EknVfs for ekn:// uri to work */
-        if (this._app_id && this._shards)
-            Eknc.default_vfs_register_domain_shards (this._app_id, this._shards);
     },
 
     /**
@@ -257,6 +253,10 @@ const DomainV2 = new Lang.Class({
     _DB_DIR: 'db',
     _MEDIA_SHARD: 'media.shard',
 
+    get_shards: function () {
+        return [this._get_shard_file()];
+    },
+
     _get_shard_path: function () {
         let path_components = [this._get_content_path(), this._MEDIA_SHARD];
         let filename = GLib.build_filenamev(path_components);
@@ -315,6 +315,10 @@ const DomainV2 = new Lang.Class({
 const DomainV3 = new Lang.Class({
     Name: 'DomainV3',
     Extends: Domain,
+
+    get_shards: function () {
+        return this._load_shards();
+    },
 
     _get_subscription_entry: function () {
         if (this._subscription_entry === undefined) {

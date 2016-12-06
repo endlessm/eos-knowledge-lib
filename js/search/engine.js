@@ -1,5 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
@@ -216,6 +217,8 @@ const Engine = Lang.Class({
             domain.check_for_updates();
 
         domain.load_sync();
+
+        Eknc.vfs_set_shards(domain.get_shards());
     },
 
     test_link: function (link) {

@@ -15,7 +15,6 @@ eknc_utils_parallel_init (GSList        *initables,
                           GError       **error);
 
 gboolean
-eknc_default_vfs_register_domain_shards (const gchar *domain,
-                                         GSList *shards);
+eknc_vfs_set_shards (GSList *shards);
 
 G_END_DECLS

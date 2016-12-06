@@ -13,7 +13,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
@@ -40,19 +40,18 @@ struct _EknVfs
 
 typedef struct
 {
-  gchar      *default_domain; /* Default domain to lookup ekn uris */
-  GHashTable *domain_shards;  /* (domain, EosShardShardFile GSList*) table */
+  GSList *shards;         /* EosShardShardFile list */
 
-  GHashTable *extensions;     /* (uri, GVfs *) table */
-  gchar     **schemes;        /* Schemes suported by all GVfs in extensions table */
-  GVfs       *local;          /* see g_vfs_get_local () */
+  GHashTable *extensions; /* (uri, GVfs *) table */
+  gchar     **schemes;    /* Schemes suported by all GVfs in extensions table */
+  GVfs       *local;      /* see g_vfs_get_local () */
 } EknVfsPrivate;
 
 enum
 {
   PROP_0,
 
-  PROP_DEFAULT_DOMAIN,
+  PROP_SHARDS,
   N_PROPERTIES
 };
 
@@ -125,23 +124,11 @@ ekn_vfs_extension_points_init (EknVfs *self)
 }
 
 static void
-ekn_vfs_shard_list_destroy (gpointer data)
-{
-  g_slist_free_full (data, g_object_unref);
-}
-
-static void
 ekn_vfs_init (EknVfs *self)
 {
   EknVfsPrivate *priv = EKN_VFS_PRIVATE (self);
   gchar **schemes;
   guint length;
-
-  /* A hash table to map a domain to a GSList of shards */
-  priv->domain_shards = g_hash_table_new_full (g_str_hash,
-                                               g_str_equal,
-                                               g_free,
-                                               ekn_vfs_shard_list_destroy);
 
   /* Init priv->extensions hash table */
   ekn_vfs_extension_points_init (self);
@@ -167,7 +154,6 @@ ekn_vfs_finalize (GObject *self)
 {
   EknVfsPrivate *priv = EKN_VFS_PRIVATE (self);
 
-  g_free (priv->default_domain);
   g_free (priv->schemes);
   g_clear_pointer (&priv->extensions, g_hash_table_unref);
 
@@ -179,23 +165,23 @@ ekn_vfs_dispose (GObject *self)
 {
   EknVfsPrivate *priv = EKN_VFS_PRIVATE (self);
 
-  g_clear_pointer (&priv->domain_shards, g_hash_table_unref);
+  g_slist_free_full (priv->shards, g_object_unref);
+  priv->shards = NULL;
   g_clear_object (&priv->local);
 
   G_OBJECT_CLASS (ekn_vfs_parent_class)->dispose (self);
 }
 
 static inline void
-ekn_vfs_set_default_domain (EknVfs *self, const gchar *domain)
+ekn_vfs_set_shards (EknVfs *self, GSList *shards)
 {
   EknVfsPrivate *priv = EKN_VFS_PRIVATE (self);
 
-  if (g_strcmp0 (priv->default_domain, domain) != 0)
-    {
-      g_free (priv->default_domain);
-      priv->default_domain = g_strdup (domain);
-      g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_DEFAULT_DOMAIN]);
-    }
+  g_slist_free_full (priv->shards, g_object_unref);
+
+  priv->shards = shards ? g_slist_copy_deep (shards, (GCopyFunc) g_object_ref, NULL) : NULL;
+
+  g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_SHARDS]);
 }
 
 static void
@@ -208,8 +194,8 @@ ekn_vfs_set_property (GObject      *self,
 
   switch (prop_id)
     {
-    case PROP_DEFAULT_DOMAIN:
-      ekn_vfs_set_default_domain (EKN_VFS (self), g_value_get_string (value));
+    case PROP_SHARDS:
+      ekn_vfs_set_shards (EKN_VFS (self), g_value_get_pointer (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (self, prop_id, pspec);
@@ -230,8 +216,8 @@ ekn_vfs_get_property (GObject    *self,
 
   switch (prop_id)
     {
-    case PROP_DEFAULT_DOMAIN:
-      g_value_set_string (value, priv->default_domain);
+    case PROP_SHARDS:
+      g_value_set_pointer (value, priv->shards);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (self, prop_id, pspec);
@@ -251,45 +237,38 @@ ekn_vfs_get_file_for_path (GVfs *self, const char *path)
   return g_vfs_get_file_for_path (EKN_VFS_PRIVATE (self)->local, path);
 }
 
-static inline EosShardBlob *
-ekn_vfs_get_blob (GVfs *self, gchar *domain, gchar *hash, gchar *resource)
-{
-  EknVfsPrivate *priv = EKN_VFS_PRIVATE (self);
-  EosShardRecord *record = NULL;
-  GSList *l, *shards;
-
-  /* Use default domain if none is provided in the uri */
-  if (*domain == '\0')
-    domain = priv->default_domain;
-
-  /* Lookup shards list for domain */
-  shards = (domain) ? g_hash_table_lookup (priv->domain_shards, domain) : NULL;
-
-  /* Iterate over all shards until we find a matching record */
-  for (l = shards; l && !record; l = g_slist_next (l))
-    record = eos_shard_shard_file_find_record_by_hex_name (l->data, hash);
-
-  if (record)
-    return resource ? eos_shard_record_lookup_blob (record, resource) : record->data;
-
-  return NULL;
-}
-
 static GFile *
 ekn_vfs_get_file_for_uri (GVfs *self, const char *uri)
 {
   EknVfsPrivate *priv = EKN_VFS_PRIVATE (self);
   GFile *retval = NULL;
-  
+
   if (uri && g_str_has_prefix (uri, EKN_URI":"))
     {
-      gchar **tokens = g_strsplit (uri + EKN_SCHEME_LEN, "/", -1);
-      EosShardBlob *blob;
-
       /* The URI is of the form 'ekn://domain/hash[/resource]' */
-      if (tokens && tokens[0] && tokens[1] &&
-          (blob = ekn_vfs_get_blob (self, tokens[0], tokens[1], tokens[2])))
-        retval = _ekn_file_new (uri, blob);
+      gchar **tokens = g_strsplit (uri + EKN_SCHEME_LEN, "/", -1);
+
+      if (tokens && tokens[0] && tokens[1])
+        {
+          EosShardRecord *record = NULL;
+          GSList *l;
+
+          /* iterate over all shards until we find a matching record */
+          for (l = priv->shards; l && !record; l = g_slist_next (l))
+            record = eos_shard_shard_file_find_record_by_hex_name (l->data, tokens[1]);
+
+          if (record)
+            {
+              EosShardBlob *blob = record->data;
+
+              /* Use resource, if present */
+              if (tokens[2])
+                blob = eos_shard_record_lookup_blob (record, tokens[2]);
+
+              if (blob)
+                retval = _ekn_file_new (uri, blob);
+            }
+        }
 
       g_strfreev (tokens);
     }
@@ -324,26 +303,6 @@ ekn_vfs_parse_name (GVfs *self, const char *parse_name)
 }
 
 static void
-ekn_vfs_register_domain_shards (EknVfs      *self,
-                                const gchar *domain,
-                                GSList      *shards)
-{
-  EknVfsPrivate *priv = EKN_VFS_PRIVATE (self);
-
-  g_return_if_fail (domain != NULL);
-
-  if (shards)
-    {
-      GSList *shards_copy = g_slist_copy_deep (shards, (GCopyFunc) g_object_ref, NULL);
-      g_hash_table_insert (priv->domain_shards, g_strdup (domain), shards_copy);
-    }
-  else
-    {
-      g_hash_table_remove (priv->domain_shards, domain);
-    }
-}
-
-static void
 ekn_vfs_class_init (EknVfsClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -359,26 +318,15 @@ ekn_vfs_class_init (EknVfsClass *klass)
   vfs_class->get_file_for_uri          = ekn_vfs_get_file_for_uri;
   vfs_class->get_supported_uri_schemes = ekn_vfs_get_supported_uri_schemes;
   vfs_class->parse_name                = ekn_vfs_parse_name;
-  
+
   /* Properties */
-  properties[PROP_DEFAULT_DOMAIN] =
-    g_param_spec_string ("default-domain",
-                         "Default domain",
-                         "Default shard domain to look up ekn uris",
-                         NULL,
-                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  properties[PROP_SHARDS] =
+    g_param_spec_pointer ("shards",
+                          "Shards",
+                          "Add a EosShardShardFile object to the list of shards to lookup ekn uris",
+                          G_PARAM_READWRITE);
 
   g_object_class_install_properties (object_class, N_PROPERTIES, properties);
-
-  /* Signals */
-  g_signal_new_class_handler ("register-domain-shards",
-                              G_TYPE_FROM_CLASS (klass),
-                              G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-                              G_CALLBACK (ekn_vfs_register_domain_shards),
-                              NULL, NULL, NULL,
-                              G_TYPE_NONE, 2,
-                              G_TYPE_STRING,
-                              G_TYPE_POINTER);
 }
 
 static void
