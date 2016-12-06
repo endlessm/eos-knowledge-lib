@@ -30,7 +30,7 @@ defines:
     slots:
       contents:
       - *inner-page-layout
-      - type: Layout.Paper
+      - type: Layout.ResponsiveMargins
         slots:
           content:
             type: Layout.InfiniteScrolling
@@ -39,6 +39,8 @@ defines:
             slots:
               content:
                 shortdef: 'Layout.Box(orientation: vertical)'
+                styles:
+                  - paper-template
                 slots:
                   contents:
                   - 'Banner.Search(halign: start)'
@@ -62,10 +64,12 @@ defines:
     slots:
       contents:
       - *inner-page-layout
-      - type: Layout.Paper
+      - type: Layout.ResponsiveMargins
         slots:
           content:
             shortdef: 'Layout.ArticleStack(do-sliding-animation: false)'
+            styles:
+              - paper-template
             slots:
               card: 'Card.KnowledgeDocument(show-titles: false)'
 
