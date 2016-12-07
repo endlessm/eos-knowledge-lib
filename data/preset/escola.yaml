@@ -1,0 +1,87 @@
+---
+defines:
+
+- &main-arrangement-slot
+  arrangement:
+    type: Arrangement.Grid
+    properties:
+      homogeneous: true
+    slots:
+      card:
+        shortdef: 'Card.Thumb(background-size: "center")'
+
+- &home-page
+  shortdef: Layout.Scrolling
+  slots:
+    content:
+      shortdef: 'Layout.Box(orientation: vertical)'
+      slots:
+        contents:
+        - shortdef: Layout.Box
+          styles:
+            - landing
+          slots:
+            contents:
+            - shortdef: 'Banner.Dynamic(show-subtitle: true, mode: text, expand: true)'
+        - shortdef: 'ContentGroup.ContentGroup(expand: true)'
+          slots:
+            <<: *main-arrangement-slot
+            selection:
+              type: Selection.AllSets
+              slots:
+                filter: Filter.Featured
+        - shortdef: 'Layout.Box(orientation: vertical, halign: fill, hexpand: true)'
+          styles:
+            - footer
+          slots:
+            contents:
+            - shortdef: 'Decoration.ThemeableImage(halign: end, hexpand: true, image-uri: "resource:///app/assets/titleImage")'
+
+- &set-page
+  shortdef: Layout.Scrolling
+  slots:
+    content:
+      shortdef: 'Layout.Box(orientation: vertical)'
+      styles:
+        - background
+      slots:
+        contents:
+        - shortdef: 'Layout.ResponsiveMargins'
+          slots:
+            content:
+              shortdef: 'ContentGroup.ContentGroup(expand: true)'
+              slots:
+                title:
+                  type: ContentGroup.DynamicTitle
+                  properties:
+                    format-string: "%s"
+                    expand: true
+                arrangement:
+                  shortdef: 'Arrangement.List(hexpand: true)'
+                  slots:
+                    card:
+                      shortdef: 'Card.List(hexpand: true)'
+                selection:
+                  shortdef: 'Selection.ArticlesForSet()'
+        - shortdef: 'Layout.Box(orientation: vertical, halign: fill, hexpand: true)'
+          styles:
+            - footer
+          slots:
+            contents:
+            - shortdef: 'Decoration.ThemeableImage(halign: end, hexpand: true, image-uri: "resource:///app/assets/titleImage")'
+
+
+root:
+  shortdef: 'Controller.Course(theme: escola)'
+  slots:
+    window:
+      type: Window.Simple
+      slots:
+        content:
+          type: ContentGroup.MediaLightbox
+          slots:
+            content:
+              type: Pager.Simple
+              slots:
+                home-page: *home-page
+                set-page: *set-page
