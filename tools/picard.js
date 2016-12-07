@@ -212,10 +212,10 @@ function get_module_menu () {
     });
 
     widgets.card_combo_box = new Gtk.ComboBoxText();
-    ['ColorBoxCard'].concat(get_available_modules_for_type('Card'))
-    .sort()
-    .filter((name) => UNUSED_CARDS.indexOf(name) < 0)
-    .forEach((name) => widgets.card_combo_box.append_text(name));
+
+    let card_types = get_available_modules_for_type('Card').sort().filter((name) => UNUSED_CARDS.indexOf(name) < 0);
+    card_types.unshift('ColorBoxCard');
+    card_types.forEach((name) => widgets.card_combo_box.append_text(name));
 
     widgets.card_combo_box.set_active(0);
 
