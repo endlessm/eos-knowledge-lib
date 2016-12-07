@@ -28,6 +28,9 @@ modules = ['eos-knowledge-lib']
 checkoutroot = os.path.expanduser('~/checkout')
 prefix = os.path.expanduser('~/install')
 
+# This option is required
+os.environ['GIO_EXTRA_MODULES'] = os.path.join(prefix, 'lib', 'gio', 'modules')
+
 # Set options to your liking
 os.environ['CFLAGS'] = '-g -Og -fdiagnostics-color=auto'
 use_local_modulesets = True

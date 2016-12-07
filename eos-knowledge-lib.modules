@@ -172,6 +172,11 @@ use the latest stable release branch from GNOME if you prefer that.
     </systemdependencies>
   </systemmodule>
 
+  <systemmodule id="libsoup">
+    <branch repo="libsoup"/>
+    <pkg-config>libsoup-2.4.pc</pkg-config>
+  </systemmodule>
+
   <!-- OFFLINE CONTENT PLATFORM -->
 
   <autotools id="eos-sdk" autogenargs="--enable-strict-flags --enable-gtk-doc --enable-gir-doc --enable-js-doc --disable-metrics">
@@ -272,14 +277,6 @@ use the latest stable release branch from GNOME if you prefer that.
       <dep package="gobject-introspection"/>
       <dep package="libepoxy"/>
       <dep package="at-spi2-atk"/>
-    </dependencies>
-  </autotools>
-
-  <autotools id="libsoup" autogenargs="--disable-tls-check">
-    <branch/>
-    <dependencies>
-      <dep package="glib"/>
-      <dep package="sqlite3"/>
     </dependencies>
   </autotools>
 
