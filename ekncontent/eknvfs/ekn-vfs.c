@@ -80,6 +80,9 @@ ekn_vfs_extension_points_init (EknVfs *self)
   GIOExtensionPoint *epoint;
   GList *l;
 
+  /* Get the local vfs first */
+  priv->local = g_object_ref (g_vfs_get_local ());
+
   /* Hash table to quickly get the extension point with higher priority that
    * supports a uri scheme.
    */
@@ -95,28 +98,33 @@ ekn_vfs_extension_points_init (EknVfs *self)
     {
       GIOExtension *extension = l->data;
       GType type = g_io_extension_get_type (extension);
-      gchar **schemes;
+      const gchar * const *schemes;
       GVfs *vfs;
       gint i;
 
-      /* Skip ourself and uninstantiable extensions points */
-      if (type == EKN_TYPE_VFS || !(vfs = extension_object_new (type)))
+      /* Skip ourself */
+      if (type == EKN_TYPE_VFS)
+        continue;
+
+      if (type == G_OBJECT_TYPE (priv->local))
+        vfs = g_object_ref (priv->local);
+      else
+        vfs = extension_object_new (type);
+
+      /* Skip uninstantiable extensions points */
+      if (vfs == NULL)
         continue;
 
       /* Get all the native schemes suported by the extension point */
-      schemes = (gchar **) (* G_VFS_GET_CLASS (vfs)->get_supported_uri_schemes) (vfs);
-
-      if (g_strcmp0 (g_io_extension_get_name (extension), "local") == 0)
-        {
-          g_clear_object (&priv->local);
-          priv->local = g_object_ref (vfs);
-        }
+      schemes = (* G_VFS_GET_CLASS (vfs)->get_supported_uri_schemes) (vfs);
 
       /* Add them in out hash table */
       for (i = 0; schemes && schemes[i]; i++)
         {
           if (!g_hash_table_lookup (priv->extensions, schemes[i]))
-            g_hash_table_insert (priv->extensions, schemes[i], g_object_ref (vfs));
+            g_hash_table_insert (priv->extensions,
+                                 (gpointer) schemes[i],
+                                 g_object_ref (vfs));
         }
 
       g_object_unref (vfs);
@@ -132,13 +140,6 @@ ekn_vfs_init (EknVfs *self)
 
   /* Init priv->extensions hash table */
   ekn_vfs_extension_points_init (self);
-
-  /* This shold never happen, since a local extension point will be added */
-  if (priv->local == NULL)
-    {
-      g_warning ("No local vfs returned by g_io_extension_point_lookup(), using g_vfs_get_local ()");
-      priv->local = g_object_ref (g_vfs_get_local ());
-    }
 
   /* Get suported all uri schemes */
   schemes = (gchar **) g_hash_table_get_keys_as_array (priv->extensions, &length);
