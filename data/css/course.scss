@@ -36,10 +36,9 @@ $support-font: 'Montserrat' !default;
     .BannerDynamic {
       margin-right: 10px;
       &__logo {
-        padding: 10px 100px;
+        padding: 10px 50px;
         background-color: $base-color;
         margin-right: 150px;
-        margin-bottom: -20px;
         opacity: 0.9;
         -EknDynamicLogo-sizing: "size-min";
         color: $accent-light-color;
@@ -47,12 +46,14 @@ $support-font: 'Montserrat' !default;
         min-width: 400px;
         font-weight: normal;
         font-family: $title-font;
+        font-size: 58px;
       }
       &__subtitle {
         color: $primary-medium-color;
         padding: 25px 40px;
         margin-top: -20px;
-        font-size: 1.75em;
+        font-family: $title-font;
+        font-size: 28px;
         background-color: $accent-medium-color;
         margin-left: 120px;
         box-shadow: 4px 0px 20px 0px rgba(0, 0, 0, 0.4);
@@ -64,6 +65,7 @@ $support-font: 'Montserrat' !default;
       opacity: 0.6;
       color: $accent-light-color;
       font-family: $support-font;
+      font-size: 18px;
       padding: 0 30px;
 
       .BannerApp {
@@ -76,7 +78,7 @@ $support-font: 'Montserrat' !default;
     background-color: $background-dark-color;
     min-height: 270px;
     color: $primary-medium-color;
-    font-size: 1.25em;
+    font-size: 20px;
     font-family: $body-font;
     .StaticText:first-child {
       margin-top: 60px;
@@ -88,14 +90,15 @@ $support-font: 'Montserrat' !default;
 
   .ContentGroupContentGroup {
     background-image: url('resource:///app/assets/graphy_bg.png');
-    background-repeat: repeat;
+    background-repeat: repeat-x;
     background-color: white;
     padding: 20px;
 
     &__title {
       .BannerDynamic__logo {
-        font-size: 30px;
         color: $primary-dark-color;
+        font-size: 30px;
+        font-family: $title-font;
         font-weight: normal;
       }
     }
@@ -110,7 +113,7 @@ $support-font: 'Montserrat' !default;
   .Card__synopsis {
     margin-right: 20px;
     padding: 0px;
-    font-size: 1.5em;
+    font-size: 24px;
     color: $primary-medium-color;
   }
 }
@@ -119,7 +122,8 @@ $support-font: 'Montserrat' !default;
   .CardTitle {
     &__title {
       color: white;
-      font-size: 1.5em;
+      font-size: 24px;
+      -EknFormattableLabel-text-transform: 'uppercase';
       font-family: $support-font;
     }
     &:hover .CardTitle__title {
@@ -154,18 +158,20 @@ $support-font: 'Montserrat' !default;
 .BannerSet {
   margin: 40px 0px 0px 0px;
   .CardList {
-    min-height: 20px;
-    min-width: 20px;
     background-color: rgba(255, 255, 255, 0.0);
     box-shadow: none;
     padding: 0;
     margin: 0;
-    &.width-d .Card__title, &.width-e .Card__title {
-      font-size: 2.1em;
+    &.width-d .Card__title, &.width-e .Card__title, &.width-f .Card__title {
+      font-size: 34px;
     }
     &__title {
       font-weight: normal;
       color: $accent-light-color;
+    }
+    &__content_grid {
+      padding-left: 0px;
+      margin-left: -20px;
     }
     &__checkmark {
       margin: 0px;
@@ -186,7 +192,7 @@ $support-font: 'Montserrat' !default;
       margin: 0;
       .CardList {
         &__title {
-          font-size: 1.2em;
+          font-size: 24px;
           color: $primary-medium-color;
           font-weight: normal;
         }
@@ -217,13 +223,16 @@ $support-font: 'Montserrat' !default;
   .header {
     background-image: url($secondary-background-image);
     background-repeat: no-repeat;
+    .BannerApp {
+      margin-right: 50px;
+    }
   }
 
   .ArrangementAccordion {
     &__title {
       background-color: $base-color;
       color: white;
-      font-size: 1.5em;
+      font-size: 24px;
       font-family: $support-font;
       border-bottom: 2px solid white;
       padding: 15px 0px 15px 30px;
@@ -241,7 +250,7 @@ $support-font: 'Montserrat' !default;
     .BannerDynamic__logo {
       -EknDynamicLogo-sizing: "size-min";
       color: $primary-dark-color;
-      font-size: 1.75em;
+      font-size: 28px;
       font-family: $title-font;
       font-weight: normal;
       margin-top: 5px;
@@ -255,7 +264,7 @@ $support-font: 'Montserrat' !default;
     margin: 10px;
     &__title {
       font-weight: normal;
-      font-size: 1.5em;
+      font-size: 24px;
     }
     &.highlighted {
         .CardThumb__title {
@@ -263,7 +272,7 @@ $support-font: 'Montserrat' !default;
         }
     }
     &__context {
-      font-size: 1em;
+      font-size: 16px;
       -EknFormattableLabel-text-transform: 'uppercase';
       font-weight: normal;
       color: $accent-dark-color;
