@@ -2,6 +2,7 @@
 
 /* exported Piano */
 
+const Emeus = imports.gi.Emeus;
 const Endless = imports.gi.Endless;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -19,6 +20,110 @@ const CARD_HEIGHT = Card.MinSize.B;
 const DEFAULT_SUPPORT_CARD_COUNT = 3;
 const HORIZONTAL_PROPORTION = 3;
 const FEATURED_CARD_WIDTH_FRACTION = 2 / 3;
+
+const _PianoConstraintLayout = new Knowledge.Class({
+    Name: 'Arrangement.PianoConstraintLayout',
+    Extends: Emeus.ConstraintLayout,
+
+    _init: function (props={}) {
+        this.parent(props);
+        this._count = 0;
+        this._setup = false;
+    },
+
+    get compact_mode() {
+        return false;
+    },
+
+    set compact_mode(value) {
+    },
+
+    get all_visible() {
+      return true;
+    },
+
+    vfunc_add: function (widget) {
+      this.parent(widget);
+
+      if (!this._setup) {
+          this._setup_arrangement();
+          this._setup = true;
+      }
+
+      if (this._count == 0) {
+          this._setup_featured(widget);
+      } else {
+          this._setup_support(widget);
+      }
+
+      this._count += 1;
+    },
+
+    /* XXX: widgets are removed one after another in Arrangement.set_models
+            so we can reset everything here, at least for just testing */
+    vfunc_remove: function (widget) {
+      this.parent(widget);
+
+      this.clear_constraints();
+      this._setup = false;
+
+      this._count -= 1;
+    },
+
+    _setup_arrangement: function () {
+        let constraints = [
+            new Emeus.Constraint({ target_attribute: Emeus.ConstraintAttribute.WIDTH,
+                                   relation: Emeus.ConstraintRelation.LE,
+                                   constant: CARD_WIDTH_BIG * DEFAULT_SUPPORT_CARD_COUNT}),
+            new Emeus.Constraint({ target_attribute: Emeus.ConstraintAttribute.HEIGHT,
+                                   relation: Emeus.ConstraintRelation.EQ,
+                                   constant: CARD_HEIGHT * DEFAULT_SUPPORT_CARD_COUNT}),
+        ];
+        constraints.forEach(this.add_constraint, this);
+    },
+
+    _setup_featured: function (widget) {
+        let constraints = [
+            new Emeus.Constraint({ target_attribute: Emeus.ConstraintAttribute.START,
+                                   target_object: widget,
+                                   relation: Emeus.ConstraintRelation.EQ,
+                                   source_attribute: Emeus.ConstraintAttribute.START}),
+            new Emeus.Constraint({ target_attribute: Emeus.ConstraintAttribute.WIDTH,
+                                   target_object: widget,
+                                   relation: Emeus.ConstraintRelation.EQ,
+                                   source_attribute: Emeus.ConstraintAttribute.WIDTH,
+                                   multiplier: 2 / 3}),
+            new Emeus.Constraint({ target_attribute: Emeus.ConstraintAttribute.HEIGHT,
+                                   target_object: widget,
+                                   relation: Emeus.ConstraintRelation.EQ,
+                                   source_attribute: Emeus.ConstraintAttribute.HEIGHT}),
+        ];
+        constraints.forEach(this.add_constraint, this);
+    },
+
+    _setup_support: function (widget) {
+        let constraints = [
+            new Emeus.Constraint({ target_attribute: Emeus.ConstraintAttribute.END,
+                                   target_object: widget,
+                                   relation: Emeus.ConstraintRelation.EQ,
+                                   source_attribute: Emeus.ConstraintAttribute.END}),
+            new Emeus.Constraint({ target_attribute: Emeus.ConstraintAttribute.TOP,
+                                   target_object: widget,
+                                   relation: Emeus.ConstraintRelation.EQ,
+                                   constant: (this._count - 1) * CARD_HEIGHT}),
+            new Emeus.Constraint({ target_attribute: Emeus.ConstraintAttribute.WIDTH,
+                                   target_object: widget,
+                                   relation: Emeus.ConstraintRelation.EQ,
+                                   source_attribute: Emeus.ConstraintAttribute.WIDTH,
+                                   multiplier: 1 / 3}),
+            new Emeus.Constraint({ target_attribute: Emeus.ConstraintAttribute.HEIGHT,
+                                   target_object: widget,
+                                   relation: Emeus.ConstraintRelation.EQ,
+                                   constant: CARD_HEIGHT}),
+        ];
+        constraints.forEach(this.add_constraint, this);
+    },
+});
 
 const _PianoLayout = new Knowledge.Class({
     Name: 'Arrangement.PianoLayout',
@@ -161,7 +266,7 @@ const Piano = new Module.Class({
     },
 
     _init: function (props={}) {
-        this._layout = new _PianoLayout({
+        this._layout = new _PianoConstraintLayout({
             visible: true,
             expand: true,
         });
