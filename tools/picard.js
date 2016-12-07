@@ -7,11 +7,27 @@ const Gtk = imports.gi.Gtk;
 const Card = imports.app.interfaces.card;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const SetObjectModel = imports.search.setObjectModel;
+const Knowledge = imports.app.knowledge;
 const Module = imports.app.interfaces.module;
 const ModuleFactory = imports.app.moduleFactory;
+const ReadingHistoryModel = imports.app.readingHistoryModel;
 const Selection = imports.app.modules.selection.selection;
 const SetMap = imports.app.setMap;
 const Utils = imports.app.utils;
+
+// Patch in a reading history model that works without a GApplication.
+const DummyReadingHistoryModel = new Knowledge.Class({
+    Name: 'DummyReadingHistoryModel',
+    Signals: {
+        'changed': {},
+    },
+
+    mark_article_read: function () { },
+    is_read_article: function () { return false; },
+    get_read_articles: function () { return []; },
+});
+let picard_reading_history = new DummyReadingHistoryModel();
+ReadingHistoryModel.get_default = function () { return picard_reading_history; };
 
 const PicardSelection = new Module.Class({
     Name: 'PicardSelection',
@@ -139,8 +155,9 @@ function get_available_modules_for_type (type) {
 }
 
 const UNUSED_CARDS = [
-    'KnowledgeDocumentCard',
-    'MediaCard',
+    'Card.ContentGroup',
+    'Card.KnowledgeDocument',
+    'Card.Media',
 ];
 
 function get_dimensions_menu () {
@@ -211,10 +228,10 @@ function get_module_menu () {
     });
 
     widgets.card_combo_box = new Gtk.ComboBoxText();
-    ['ColorBoxCard'].concat(get_available_modules_for_type('Card'))
-    .sort()
-    .filter((name) => UNUSED_CARDS.indexOf(name) < 0)
-    .forEach((name) => widgets.card_combo_box.append_text(name));
+
+    let card_types = get_available_modules_for_type('Card').sort().filter((name) => UNUSED_CARDS.indexOf(name) < 0);
+    card_types.unshift('ColorBoxCard');
+    card_types.forEach((name) => widgets.card_combo_box.append_text(name));
 
     widgets.card_combo_box.set_active(0);
 
