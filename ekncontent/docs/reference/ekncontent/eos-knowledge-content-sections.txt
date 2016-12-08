@@ -80,6 +80,7 @@ eknc_get_running_under_flatpak
 EkncContentObjectError
 <SUBSECTION Standard>
 EKNC_CONTENT_OBJECT_ERROR
+EKNC_TYPE_CONTENT_OBJECT_ERROR
 <SUBSECTION Private>
 eknc_content_object_error_quark
 eknc_utils_append_gparam_from_json_node

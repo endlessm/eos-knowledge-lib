@@ -95,7 +95,10 @@ AC_PROG_SED  # needed for finding files for coverage
 AC_REQUIRE_AUX_FILE([tap-driver.sh])
 AC_PATH_PROG([GIO_QUERYMODULES], [gio-querymodules], [notfound])
 AS_IF([test x$GIO_QUERYMODULES = xnotfound], [AC_MSG_ERROR([gio-querymodules not found.
-Try installing "glib" package.])])
+Try installing the glib package.])])
+AC_PATH_PROG([GLIB_MKENUMS], [glib-mkenums], [notfound])
+AS_IF([test x$GLIB_MKENUMS = xnotfound], [AC_MSG_ERROR([glib-mkenums not found.
+Try installing the glib development package.])])
 
 AC_CACHE_SAVE
 
