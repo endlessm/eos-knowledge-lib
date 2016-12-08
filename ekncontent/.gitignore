@@ -1,6 +1,7 @@
 # Build products
 /eos-knowledge-content-0.pc
 /ekncontent/eknc-version.h
+/ekncontent/eknc-enums.[ch]
 *.la
 *.o
 *.lo

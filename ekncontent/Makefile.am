@@ -17,6 +17,7 @@ ACLOCAL_AMFLAGS = -I m4
 # Forward declare variables we'll be modifying all over
 CLEANFILES =
 DISTCLEANFILES =
+BUILT_SOURCES =
 EXTRA_DIST = README.md eos-knowledge-content.pc.in
 lib_LTLIBRARIES =
 
@@ -85,8 +86,20 @@ ekncontent_sources = \
 	ekncontent/eknc-video-object-model.c \
 	$(NULL)
 
+glib_enum_headers = \
+	$(ekncontent_public_installed_headers) \
+	$(ekncontent_private_installed_headers) \
+	$(NULL)
+
+glib_enum_h = ekncontent/eknc-enums.h
+glib_enum_c = ekncontent/eknc-enums.c
+
+include $(top_srcdir)/Makefile.am.enums
+
 lib_LTLIBRARIES += libeos-knowledge-content-@EKN_CONTENT_API_VERSION@.la
 libeos_knowledge_content_@EKN_CONTENT_API_VERSION@_la_SOURCES = \
+	$(glib_enum_h) \
+	$(glib_enum_c) \
 	$(ekncontent_public_installed_headers) \
 	$(ekncontent_private_installed_headers) \
 	$(ekncontent_sources) \
@@ -112,6 +125,7 @@ libeos_knowledge_content_@EKN_CONTENT_API_VERSION@_la_LDFLAGS = \
 # Public header files
 ekncontentincludedir = $(includedir)/@EKN_CONTENT_API_NAME@
 ekncontentinclude_HEADERS = \
+	$(glib_enum_h) \
 	$(ekncontent_public_installed_headers) \
 	$(ekncontent_private_installed_headers)
 
@@ -174,6 +188,7 @@ INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
 introspection_sources = \
 	$(filter-out %-private.h, $(ekncontent_sources)) \
+	$(glib_enum_h) \
 	$(ekncontent_public_installed_headers) \
 	$(ekncontent_private_installed_headers)
 
