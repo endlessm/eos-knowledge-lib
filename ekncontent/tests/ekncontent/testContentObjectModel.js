@@ -14,10 +14,10 @@ const MOCK_CONTENT_DATA = {
     'featured': true,
 };
 
-describe ('Content Object Model', function () {
+describe('Content Object Model', function () {
     let contentObject;
 
-    it ('successfully creates new object from properties', function () {
+    it('successfully creates new object from properties', function () {
         contentObject = Eknc.ContentObjectModel.new_from_props({
             ekn_id : 'ekn:text_editors/Emacs',
             title : 'Emacs',
@@ -25,12 +25,12 @@ describe ('Content Object Model', function () {
         expect(contentObject.title).toEqual('Emacs');
     });
 
-    it ('successfully creates new object from JSON-LD data', function () {
+    it('successfully creates new object from JSON-LD data', function () {
         contentObject = Eknc.ContentObjectModel.new_from_json(MOCK_CONTENT_DATA);
         expect(contentObject.title).toEqual(MOCK_CONTENT_DATA.title);
     });
 
-    it ('successfully creates new object from JSON-LD with missing properties', function () {
+    it('successfully creates new object from JSON-LD with missing properties', function () {
         let just_a_title_json_ld = {
             '@id': MOCK_CONTENT_DATA['@id'],
             'title': MOCK_CONTENT_DATA['title']
@@ -49,11 +49,11 @@ describe ('Content Object Model', function () {
             contentObject = Eknc.ContentObjectModel.new_from_json(MOCK_CONTENT_DATA);
         });
 
-        it ('should have an ID', function () {
+        it('should have an ID', function () {
             expect(contentObject.ekn_id).toEqual(MOCK_CONTENT_DATA['@id']);
         });
 
-        it ('should have a title', function () {
+        it('should have a title', function () {
             expect(contentObject.title).toEqual(MOCK_CONTENT_DATA['title']);
         });
 
@@ -61,32 +61,32 @@ describe ('Content Object Model', function () {
             expect(contentObject.original_uri).toEqual(MOCK_CONTENT_DATA.originalURI);
         });
 
-        it ('should have a language', function () {
+        it('should have a language', function () {
             expect(contentObject.language).toEqual(MOCK_CONTENT_DATA['language']);
         });
 
-        it ('should have a synopsis', function () {
+        it('should have a synopsis', function () {
             expect(contentObject.synopsis).toEqual(MOCK_CONTENT_DATA['synopsis']);
         });
 
-        it ('should have a last-modified date', function () {
+        it('should have a last-modified date', function () {
             expect(new Date(contentObject.last_modified_date))
                 .toEqual(new Date(MOCK_CONTENT_DATA.lastModifiedDate));
         });
 
-        it ('should have tags', function () {
+        it('should have tags', function () {
             expect(contentObject.tags).toEqual(MOCK_CONTENT_DATA['tags']);
         });
 
-        it ('should have a license', function () {
+        it('should have a license', function () {
             expect(contentObject.license).toEqual(MOCK_CONTENT_DATA['license']);
         });
 
-        it ('should have a thumbnail-uri', function () {
+        it('should have a thumbnail-uri', function () {
             expect(contentObject.thumbnail_uri).toEqual(MOCK_CONTENT_DATA['thumbnail']);
         });
 
-        it ('should have resources', function () {
+        it('should have resources', function () {
             expect(contentObject.resources).toEqual(MOCK_CONTENT_DATA.resources);
         });
 

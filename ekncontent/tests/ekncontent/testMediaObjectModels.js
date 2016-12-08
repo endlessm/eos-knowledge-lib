@@ -20,7 +20,7 @@ const MOCK_VIDEO_DATA = {
     'poster-uri': 'ekn://rick/poster',
 };
 
-describe ('Image Object Model', function () {
+describe('Image Object Model', function () {
     let imageObject;
 
     beforeEach(function () {
@@ -28,22 +28,22 @@ describe ('Image Object Model', function () {
         imageObject = Eknc.ImageObjectModel.new_from_json(MOCK_IMAGE_DATA);
     });
 
-    describe ('type', function () {
-        it ('should be an ImageObjectModel', function () {
+    describe('type', function () {
+        it('should be an ImageObjectModel', function () {
             expect(imageObject).toBeA(Eknc.ImageObjectModel);
         });
 
-        it ('should be an MediaObjectModel', function () {
+        it('should be an MediaObjectModel', function () {
             expect(imageObject).toBeA(Eknc.MediaObjectModel);
         });
     });
 
-    describe ('JSON-LD marshaler', function () {
-        it ('should construct from a JSON-LD document', function () {
+    describe('JSON-LD marshaler', function () {
+        it('should construct from a JSON-LD document', function () {
             expect(imageObject).toBeDefined();
         });
 
-        it ('should inherit properties set by parent class (MediaObjectModel)', function () {
+        it('should inherit properties set by parent class (MediaObjectModel)', function () {
             expect(imageObject.caption).toBeDefined();
             expect(imageObject.width).toBeDefined();
             expect(imageObject.title).toBeDefined();
@@ -52,7 +52,7 @@ describe ('Image Object Model', function () {
     });
 });
 
-describe ('Video Object Model', function () {
+describe('Video Object Model', function () {
     let videoObject;
 
     beforeEach(function () {
@@ -60,22 +60,22 @@ describe ('Video Object Model', function () {
         videoObject = Eknc.VideoObjectModel.new_from_json(MOCK_VIDEO_DATA);
     });
 
-    describe ('type', function () {
-        it ('should be an VideoObjectModel', function () {
+    describe('type', function () {
+        it('should be an VideoObjectModel', function () {
             expect(videoObject).toBeA(Eknc.VideoObjectModel);
         });
 
-        it ('should be an MediaObjectModel', function () {
+        it('should be an MediaObjectModel', function () {
             expect(videoObject).toBeA(Eknc.MediaObjectModel);
         });
     });
 
-    describe ('JSON-LD marshaler', function () {
-        it ('should construct from a JSON-LD document', function () {
+    describe('JSON-LD marshaler', function () {
+        it('should construct from a JSON-LD document', function () {
             expect(videoObject).toBeDefined();
         });
 
-        it ('should inherit properties set by parent class (MediaObjectModel)', function () {
+        it('should inherit properties set by parent class (MediaObjectModel)', function () {
             expect(videoObject.caption).toBeDefined();
             expect(videoObject.width).toBeDefined();
             expect(videoObject.height).toBeDefined();
