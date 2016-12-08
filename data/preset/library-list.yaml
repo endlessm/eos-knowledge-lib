@@ -61,7 +61,7 @@ defines:
   shortdef: 'Layout.Sidebar(sidebar-first: false)'
   slots:
     content:
-      shortdef: 'Banner.Set(valign: center)'
+      shortdef: 'Banner.Set(valign: end)'
       slots:
         card: Card.Title
     sidebar:
@@ -158,7 +158,7 @@ defines:
     card: 'Card.KnowledgeDocument(show-toc: true)'
 
 root:
-  shortdef: 'Controller.Buffet(theme: preset_a)'
+  shortdef: 'Controller.Buffet(theme: library_list)'
   slots:
     window:
       type: Window.Simple

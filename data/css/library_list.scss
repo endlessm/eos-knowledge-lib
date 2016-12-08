@@ -1,0 +1,66 @@
+@import 'mesh';
+
+.home-page {
+  .BannerDynamic {
+    &__logo {
+      -EknDynamicLogo-sizing: "size-min";
+      min-height: 250px;
+      font-weight: normal;
+      font-size: 77px;
+    }
+    .composite & {
+        .BannerDynamic__logo {
+          min-height: 50px;
+        }
+    }
+  }
+
+  .CardLegacyPolaroid {
+    padding: 0px;
+  }
+}
+
+.subset-page, .article-page {
+  background-color: $primary-dark-color;
+}
+
+.subset-page {
+  .ContentGroupContentGroup {
+    &__title {
+      font-size: 32px;
+    }
+  }
+}
+
+.article-page .CardKnowledgeDocument__contentFrame {
+    padding: 20px 0px;
+}
+
+.sidebar {
+    scrollbar {
+        trough {
+            padding: 0px 3px;
+            background-color: transparentize(black, 1 - 0.5);
+            background-image: linear-gradient(89deg,
+                                              transparentize(white, 1 - 0.1) 0%,
+                                              transparentize(black, 1 - 0.1) 100%);
+            box-shadow: inset 1px 0px 0px 0px transparentize(black, 1 - 0.15);
+        }
+
+        slider {
+            background-color: #888888;
+        }
+    }
+
+    .ContentGroupContentGroup {
+        background-color: transparentize(black, 1 - 0.75);
+    }
+
+    .ContentGroupNoResultsMessage__title,
+    .ContentGroupNoResultsMessage__subtitle {
+        color:white;
+        font-size: 1.2em;
+        font-style: normal;
+        padding: 10px 25px;
+    }
+}
