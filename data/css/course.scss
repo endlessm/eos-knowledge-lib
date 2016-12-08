@@ -199,6 +199,7 @@ $support-font: 'Montserrat' !default;
 
         &__thumbnail {
           min-height: 150px;
+          background-image: url('resource:///app/assets/activity.png');
         }
 
         padding-right: 20px;
