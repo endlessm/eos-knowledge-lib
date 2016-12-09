@@ -54,6 +54,7 @@ scss_theme_toplevels = \
 	$(srcdir)/data/css/course.scss \
 	$(srcdir)/data/css/default.scss \
 	$(srcdir)/data/css/encyclopedia.scss \
+	$(srcdir)/data/css/library_list.scss \
 	$(srcdir)/data/css/news.scss \
 	$(srcdir)/data/css/picard.scss \
 	$(srcdir)/data/css/preset_a.scss \
