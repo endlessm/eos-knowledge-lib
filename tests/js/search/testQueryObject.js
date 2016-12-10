@@ -118,7 +118,7 @@ describe('QueryObject', function () {
         it('adds wildcard terms only for incremental search', function () {
             let query_obj = new QueryObject.QueryObject({
                 query: 'foo',
-                type: QueryObject.QueryObjectType.INCREMENTAL,
+                mode: QueryObject.QueryObjectMode.INCREMENTAL,
             });
             let result = query_obj.get_query_parser_string(query_obj);
             expect(result).toMatch('exact_title:Foo\\*');
@@ -126,7 +126,7 @@ describe('QueryObject', function () {
 
             query_obj = new QueryObject.QueryObject({
                 query: 'foo',
-                type: QueryObject.QueryObjectType.DELIMITED,
+                mode: QueryObject.QueryObjectMode.DELIMITED,
             });
             result = query_obj.get_query_parser_string(query_obj);
             expect(result).not.toMatch('exact_title:Foo\\*');
@@ -156,7 +156,7 @@ describe('QueryObject', function () {
         it('only uses exact title search for single character queries', function () {
             let query_obj = new QueryObject.QueryObject({
                 query: 'a',
-                type: QueryObject.QueryObjectType.INCREMENTAL,
+                mode: QueryObject.QueryObjectMode.INCREMENTAL,
             });
             let result = query_obj.get_query_parser_string(query_obj);
             expect(result).toMatch('exact_title:A');
