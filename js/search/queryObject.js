@@ -33,13 +33,13 @@ const _WHITESPACE_REGEX = /\s+/;
 const _TERM_DELIMITER_REGEX = /[\s\-;]+/;
 
 /**
- * Enum: QueryObjectType
+ * Enum: QueryObjectMode
  *
  * INCREMENTAL - Queries will match partially typed words. For example a query
  *               for 'dragonba' will match the Dragonball article.
  * DELIMITED   - Queries will be assumed to be entire words.
  */
-const QueryObjectType = Utils.define_enum(['INCREMENTAL', 'DELIMITED']);
+const QueryObjectMode = Utils.define_enum(['INCREMENTAL', 'DELIMITED']);
 
 /**
  * Enum: QueryObjectMatch
@@ -117,16 +117,16 @@ const QueryObject = Lang.Class({
             'A version of query without any stopword words',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
-         * Property: type
+         * Property: mode
          *
-         * The type of query to preform, see <QueryObjectType>.
+         * The mode of query to perform, see <QueryObjectMode>.
          *
-         * Defaults to <QueryObjectType.INCREMENTAL>.
+         * Defaults to <QueryObjectMode.INCREMENTAL>.
          */
-        'type': GObject.ParamSpec.uint('type', 'Type',
-            'Type of query to preform',
+        'mode': GObject.ParamSpec.uint('mode', 'Mode',
+            'Mode of query to perform',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, Object.keys(QueryObjectType).length - 1, QueryObjectType.INCREMENTAL),
+            0, Object.keys(QueryObjectMode).length - 1, QueryObjectMode.INCREMENTAL),
         /**
          * Property: match
          *
@@ -313,7 +313,7 @@ const QueryObject = Lang.Class({
         if (sanitized_query.length === 1)
             return exact_title_clause;
 
-        let maybe_add_wildcard = this.type === QueryObjectType.INCREMENTAL ?
+        let maybe_add_wildcard = this.mode === QueryObjectMode.INCREMENTAL ?
             (term) => Utils.parenthesize(term + _XAPIAN_OP_OR + term + '*') :
             (term) => term;
         let add_title_prefix = (term) => _XAPIAN_PREFIX_TITLE + term;
