@@ -223,8 +223,11 @@ EOS_CHECK_GJS_GIR([GLib], [2.0])
 EOS_CHECK_GJS_GIR([GObject], [2.0])
 EOS_CHECK_GJS_GIR([Gtk], [3.0])
 EOS_CHECK_GJS_GIR([Pango], [1.0])
+EOS_CHECK_GJS_GIR([Rsvg], [2.0])
 EOS_CHECK_GJS_GIR([WebKit2], [4.0])
 EOS_CHECK_GJS_GIR_API([Gdk], [Rectangle])
+AS_IF([test "x$enable_metrics" != "xno"],
+    [EOS_CHECK_GJS_GIR([EosMetrics], [0])])
 
 # GStreamer plugins needed for EknMediaBin widget
 m4_pattern_allow([AM_GST_ELEMENT_CHECK])

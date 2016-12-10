@@ -141,9 +141,8 @@ describe('Card interface', function () {
 
     it('sets a thumbnail frame visible if model has a thumbnail uri', function () {
         let engine = MockEngine.mock_default();
-        engine._lookup_ekn_uri.and.callFake(() => {
-            return Gio.Vfs.get_local().get_file_for_path('/dev/zero');
-        });
+        let zeroes = Gio.File.new_for_path('/dev/zero');
+        engine._lookup_ekn_uri.and.returnValue(zeroes);
 
         let frame = new Gtk.Frame();
         card.set_thumbnail_frame_from_model(frame);
