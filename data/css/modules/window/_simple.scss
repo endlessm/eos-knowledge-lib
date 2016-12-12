@@ -1,5 +1,6 @@
 .WindowSimple {
     background-size: cover;
+    background-image: url($primary-background-image);
 
     scrollbar {
         padding: 3px;
@@ -15,8 +16,4 @@
 
 .search-page separator {
     background-color: $black-20-color;
-}
-
-EosWindow {
-    background-image: url($primary-background-image);
 }
