@@ -147,7 +147,7 @@ root:
           type: ContentGroup.MediaLightbox
           slots:
             content:
-              type: Pager.ParallaxBackground
+              type: Pager.Simple
               slots:
                 home-page: *home-page
                 set-page: *set-page
