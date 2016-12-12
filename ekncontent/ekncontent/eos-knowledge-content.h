@@ -13,6 +13,7 @@ G_BEGIN_DECLS
 #include "eknc-content-object-model.h"
 #include "eknc-image-object-model.h"
 #include "eknc-media-object-model.h"
+#include "eknc-query-object.h"
 #include "eknc-set-object-model.h"
 #include "eknc-subtree-dispatcher.h"
 #include "eknc-utils.h"

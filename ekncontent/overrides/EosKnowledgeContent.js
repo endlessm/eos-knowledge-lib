@@ -1,15 +1,20 @@
 const Json = imports.gi.Json;
 const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+
+function toUnderscore (string) {
+    return string.replace('-', '_', 'g');
+}
 
 function define_property (klass, name, descriptor) {
     Object.defineProperty(klass.prototype, name, descriptor);
-    Object.defineProperty(klass.prototype, name.replace('-', '_', 'g'), descriptor);
+    Object.defineProperty(klass.prototype, toUnderscore(name), descriptor);
 }
 
 function marshal_property (props, name, marshaller) {
     if (props[name])
         props[name] = marshaller(props[name]);
-    let underscored = name.replace('-', '_', 'g');
+    let underscored = toUnderscore(name);
     if (name === underscored)
         return;
     if (props[underscored])
@@ -114,4 +119,66 @@ function _init() {
     add_custom_model_constructors(Eknc.MediaObjectModel);
     add_custom_model_constructors(Eknc.ImageObjectModel);
     add_custom_model_constructors(Eknc.VideoObjectModel);
+
+    define_property(Eknc.QueryObject, 'tags-match-any', {
+        get: function () {
+            let tags = this.get_tags_match_any();
+            return tags ? tags.deep_unpack() : [];
+        },
+    });
+    define_property(Eknc.QueryObject, 'tags-match-all', {
+        get: function () {
+            let tags = this.get_tags_match_all();
+            return tags ? tags.deep_unpack() : [];
+        },
+    });
+    define_property(Eknc.QueryObject, 'ids', {
+        get: function () {
+            let ids = this.get_ids();
+            return ids ? ids.deep_unpack() : [];
+        },
+    });
+    define_property(Eknc.QueryObject, 'excluded-ids', {
+        get: function () {
+            let ids = this.get_excluded_ids();
+            return ids ? ids.deep_unpack() : [];
+        },
+    });
+    define_property(Eknc.QueryObject, 'excluded-tags', {
+        get: function () {
+            let tags = this.get_excluded_tags();
+            return tags ? tags.deep_unpack() : [];
+        },
+    });
+
+    Eknc.QueryObject.new_from_props = function (props={}) {
+        marshal_property(props, 'tags-match-any', function (v) {
+            return new GLib.Variant('as', v);
+        });
+        marshal_property(props, 'tags-match-all', function (v) {
+            return new GLib.Variant('as', v);
+        });
+        marshal_property(props, 'ids', function (v) {
+            return new GLib.Variant('as', v);
+        });
+        marshal_property(props, 'excluded-ids', function (v) {
+            return new GLib.Variant('as', v);
+        });
+        marshal_property(props, 'excluded-tags', function (v) {
+            return new GLib.Variant('as', v);
+        });
+        return new Eknc.QueryObject(props);
+    };
+
+    Eknc.QueryObject.new_from_object = function (source, props={}) {
+        for (let param_spec of GObject.Object.list_properties.call(Eknc.QueryObject)) {
+            let name = param_spec.name;
+            if (props.hasOwnProperty(name))
+                continue;
+            if (props.hasOwnProperty(toUnderscore(name)))
+                continue;
+            props[name] = source[name];
+        }
+        return Eknc.QueryObject.new_from_props(props);
+    };
 }

@@ -72,8 +72,34 @@ EKNC_TYPE_IMAGE_OBJECT_MODEL
 </SECTION>
 
 <SECTION>
+<FILE>query-object</FILE>
+EkncQueryObjectMode
+EkncQueryObjectMatch
+EkncQueryObjectSort
+EkncQueryObjectOrder
+eknc_query_object_get_cutoff
+eknc_query_object_get_excluded_ids
+eknc_query_object_get_excluded_tags
+eknc_query_object_get_ids
+eknc_query_object_get_query_parser_string
+eknc_query_object_get_sort_value
+eknc_query_object_get_tags_match_all
+eknc_query_object_get_tags_match_any
+<SUBSECTION Standard>
+EkncQueryObject
+EkncQueryObjectClass
+EKNC_TYPE_QUERY_OBJECT
+EKNC_TYPE_QUERY_OBJECT_MATCH
+EKNC_TYPE_QUERY_OBJECT_MODE
+EKNC_TYPE_QUERY_OBJECT_ORDER
+EKNC_TYPE_QUERY_OBJECT_SORT
+</SECTION>
+
+<SECTION>
 <FILE>utils</FILE>
 eknc_utils_parallel_init
+eknc_utils_id_get_hash
+eknc_utils_is_valid_id
 eknc_default_vfs_set_shards
 eknc_get_data_dir
 eknc_get_running_under_flatpak
