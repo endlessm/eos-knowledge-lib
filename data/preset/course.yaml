@@ -6,8 +6,6 @@ defines:
     type: Arrangement.Grid
     properties:
       homogeneous: true
-      max-children-per-line: 3
-      min-children-per-line: 3
     slots:
       card:
         shortdef: 'Card.Thumb(background-size: "center")'

@@ -154,6 +154,7 @@ where it needs to be */
   padding: 10px;
   .CardThumb {
     margin: 10px;
+    min-width: 360px;
     background-color: $background-dark-color;
     &__title {
       font-weight: normal;
