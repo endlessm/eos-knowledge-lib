@@ -3,7 +3,6 @@ const Gio = imports.gi.Gio;
 
 const Domain = imports.search.domain;
 const Engine = imports.search.engine;
-const QueryObject = imports.search.queryObject;
 const Utils = imports.search.utils;
 
 const MockShard = imports.tests.mockShard;
@@ -264,7 +263,7 @@ describe('DomainV2', function () {
             ];
             mock_query(undefined, mock_data);
 
-            domain.get_objects_by_query(new QueryObject.QueryObject(), null, function (domain, task) {
+            domain.get_objects_by_query(Eknc.QueryObject.new_from_props(), null, function (domain, task) {
                 let [results, info] = domain.get_objects_by_query_finish(task);
                 expect(results).toEqual(mock_data);
                 expect(info.upper_bound).toEqual(UPPER_BOUND);
@@ -276,7 +275,7 @@ describe('DomainV2', function () {
             mock_query(new Error('I am an error'), undefined);
 
             let callback_called = 0;
-            domain.get_objects_by_query(new QueryObject.QueryObject(), null, function () {
+            domain.get_objects_by_query(Eknc.QueryObject.new_from_props(), null, function () {
                 callback_called++;
             });
             setTimeout(function () {

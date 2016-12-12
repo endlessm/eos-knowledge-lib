@@ -2,7 +2,6 @@ const Domain = imports.search.domain;
 const Engine = imports.search.engine;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const MockShard = imports.tests.mockShard;
-const QueryObject = imports.search.queryObject;
 const Utils = imports.search.utils;
 
 describe('Engine', function () {

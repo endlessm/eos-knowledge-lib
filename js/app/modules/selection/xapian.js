@@ -2,9 +2,10 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
+
 const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
-const QueryObject = imports.search.queryObject;
 const Selection = imports.app.modules.selection.selection;
 
 /**
@@ -12,7 +13,7 @@ const Selection = imports.app.modules.selection.selection;
  * A general, superclass for populating selection content using xapian
  * queries. Note that this superclass cannot be used directly itself. You must
  * subclass it and implement the construct_query_object method, which should
- * return a <QueryObject.QueryObject> determining what content to fetch from
+ * return a <Eknc.QueryObject> determining what content to fetch from
  * a xapian database.
  *
  * This superclass handles continuation-passing on the queue_load_more method.
@@ -130,7 +131,7 @@ const Xapian = new Module.Class({
                 // got back, the first 5 passed the filter, then our new offset
                 // is 5. But if, out of those 10, it was the latter 5 which
                 // passed the filter, then our new offset should be 10.
-                more_results_query = QueryObject.QueryObject.new_from_object(query, {
+                more_results_query = Eknc.QueryObject.new_from_object(query, {
                     offset: query.offset + offset_for_next_query,
                 });
             }

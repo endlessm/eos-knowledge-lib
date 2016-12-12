@@ -19,7 +19,6 @@ const Engine = imports.search.engine;
 const FormattableLabel = imports.app.widgets.formattableLabel;
 const ImageCoverFrame = imports.app.widgets.imageCoverFrame;
 const Module = imports.app.interfaces.module;
-const QueryObject = imports.search.queryObject;
 const SearchUtils = imports.search.utils;
 const SetMap = imports.app.setMap;
 const SpaceContainer = imports.app.widgets.spaceContainer;
@@ -300,7 +299,7 @@ const Card = new Lang.Interface({
 
     // O promises, where art thou?
     _count_set: function (set_obj, callback) {
-        let query = new QueryObject.QueryObject({
+        let query = Eknc.QueryObject.new_from_props({
             tags_match_any: set_obj.child_tags,
             limit: -1,
         });

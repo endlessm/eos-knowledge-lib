@@ -1,5 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -7,7 +8,6 @@ const Lang = imports.lang;
 
 const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
-const QueryObject = imports.search.queryObject;
 const SetMap = imports.app.setMap;
 
 const CSS_RESOURCE_PATH = '/com/endlessm/knowledge/data/css/';
@@ -92,7 +92,7 @@ const Controller = new Lang.Interface({
     initialize_set_map: function (cb) {
         // Load all sets, with which to populate the set map
         // FIXME: deduplicate this with Selection.AllSets
-        Engine.get_default().get_objects_by_query(new QueryObject.QueryObject({
+        Engine.get_default().get_objects_by_query(Eknc.QueryObject.new_from_props({
             limit: -1,
             tags_match_all: ['EknSetObject'],
         }), null, (engine, res) => {

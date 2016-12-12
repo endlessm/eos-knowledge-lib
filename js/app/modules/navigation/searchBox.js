@@ -1,5 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
 const Gettext = imports.gettext;
@@ -13,7 +14,6 @@ const Engine = imports.search.engine;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const Pages = imports.app.pages;
-const QueryObject = imports.search.queryObject;
 const Utils = imports.app.utils;
 
 const RESULTS_SIZE = 4;
@@ -104,7 +104,7 @@ const SearchBox = new Module.Class({
         if (query.length === 0)
             return;
 
-        let query_obj = new QueryObject.QueryObject({
+        let query_obj = Eknc.QueryObject.new_from_props({
             query: query,
             limit: RESULTS_SIZE,
             tags_match_any: ['EknArticleObject'],

@@ -12,7 +12,6 @@ const Engine = imports.search.engine;
 const HistoryItem = imports.app.historyItem;
 const HistoryStore = imports.app.historyStore;
 const Pages = imports.app.pages;
-const QueryObject = imports.search.queryObject;
 const SetMap = imports.app.setMap;
 
 /**
@@ -78,11 +77,11 @@ const CourseHistoryStore = new GObject.Class({
     },
 
     _load_first_subset: function (model) {
-        let query = new QueryObject.QueryObject({
+        let query = Eknc.QueryObject.new_from_props({
             limit: 1,
             tags_match_any: model.child_tags,
             tags_match_all: ['EknSetObject'],
-            sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
+            sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,
         });
         Engine.get_default().get_objects_by_query(query, null, (engine, task) => {
             let results, info;

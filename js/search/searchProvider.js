@@ -6,7 +6,6 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 const Engine = imports.search.engine;
-const QueryObject = imports.search.queryObject;
 const Utils = imports.search.utils;
 
 const SearchIface = '\
@@ -144,7 +143,7 @@ const AppSearchProvider = Lang.Class({
         let app = Gio.Application.get_default();
         app.hold();
 
-        let query_obj = new QueryObject.QueryObject({
+        let query_obj = Eknc.QueryObject.new_from_props({
             query: query,
             limit: this.NUM_RESULTS,
             app_id: this.application_id,

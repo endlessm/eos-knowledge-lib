@@ -10,7 +10,6 @@ const Lang = imports.lang;
 
 const AsyncTask = imports.search.asyncTask;
 const Downloader = imports.search.downloader;
-const QueryObject = imports.search.queryObject;
 const Utils = imports.search.utils;
 
 // This hash is derived from sha1('link-table'), and for now is the hardcoded

@@ -44,10 +44,10 @@ const QueryObjectMode = Utils.define_enum(['INCREMENTAL', 'DELIMITED']);
 /**
  * Enum: QueryObjectMatch
  *
- * TITLE_ONLY     - Only article titles will match against the query string.
+ * ONLY_TITLE     - Only article titles will match against the query string.
  * TITLE_SYNOPSIS - Article titles and synopsis will match the query string.
  */
-const QueryObjectMatch = Utils.define_enum(['TITLE_ONLY', 'TITLE_SYNOPSIS']);
+const QueryObjectMatch = Utils.define_enum(['ONLY_TITLE', 'TITLE_SYNOPSIS']);
 
 /**
  * Enum: QueryObjectSort
@@ -132,12 +132,12 @@ const QueryObject = Lang.Class({
          *
          * What to match against in the source documents, see <QueryObjectMatch>.
          *
-         * Defaults to <QueryObjectMatch.TITLE_ONLY>.
+         * Defaults to <QueryObjectMatch.ONLY_TITLE>.
          */
         'match': GObject.ParamSpec.uint('match', 'Match',
             'What to match against in the source documents',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, Object.keys(QueryObjectMatch).length - 1, QueryObjectMatch.TITLE_ONLY),
+            0, Object.keys(QueryObjectMatch).length - 1, QueryObjectMatch.ONLY_TITLE),
         /**
          * Property: limit
          *

@@ -1,12 +1,12 @@
 // Copyright 2016 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Soup = imports.gi.Soup;
 
 const AsyncTask = imports.search.asyncTask;
-const QueryObject = imports.search.queryObject;
 
 /**
  * Class: XapianBridge
@@ -93,7 +93,7 @@ const XapianBridge = new Lang.Class({
             lang: this.language,
             limit: query_obj.limit,
             offset: query_obj.offset,
-            order: query_obj.order === QueryObject.QueryObjectOrder.ASCENDING ? 'asc' : 'desc',
+            order: query_obj.order === Eknc.QueryObjectOrder.ASCENDING ? 'asc' : 'desc',
             q: query_obj.get_query_parser_string(),
             sortBy: query_obj.get_sort_value(),
         };
@@ -160,7 +160,7 @@ const XapianBridge = new Lang.Class({
                     fixed_props.stopword_free_query = fixed_query_json['stopWordCorrectedQuery'];
                 }
 
-                let new_query_object = QueryObject.QueryObject.new_from_object(query_obj, fixed_props);
+                let new_query_object = Eknc.QueryObject.new_from_object(query_obj, fixed_props);
                 task.return_value(new_query_object);
             }));
         });
