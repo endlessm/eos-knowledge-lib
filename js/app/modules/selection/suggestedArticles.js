@@ -2,11 +2,11 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const GLib = imports.gi.GLib;
 
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
-const QueryObject = imports.search.queryObject;
 const Utils = imports.app.utils;
 const Xapian = imports.app.modules.selection.xapian;
 
@@ -31,7 +31,7 @@ const SuggestedArticles = new Module.Class({
         // FIXME: We still need a better way to issue a query for
         // 'random' articles. This just gets a random offset and then
         // requests articles (in order) starting from that point.
-        let random_query = new QueryObject.QueryObject({
+        let random_query = Eknc.QueryObject.new_from_props({
             offset: this._hash % this._TOTAL_ARTICLES,
             limit: limit,
             tags_match_any: ['EknArticleObject'],

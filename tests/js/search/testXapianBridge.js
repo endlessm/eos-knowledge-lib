@@ -1,7 +1,7 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gio = imports.gi.Gio;
 const Soup = imports.gi.Soup;
 
-const QueryObject = imports.search.queryObject;
 const XapianBridge = imports.search.xapianBridge;
 
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
@@ -69,9 +69,9 @@ describe('XapianBridge', function () {
 
     describe('get_xapian_uri', function () {
         it('sets order field', function () {
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 query: 'tyrion',
-                order: QueryObject.QueryObjectOrder.ASCENDING,
+                order: Eknc.QueryObjectOrder.ASCENDING,
             });
 
             let mock_uri = bridge._get_xapian_query_uri(query_obj);
@@ -81,7 +81,7 @@ describe('XapianBridge', function () {
 
         it('should use the lang param iff a language is set', function () {
             let mock_uri, mock_query_obj;
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 query: 'tyrion',
             });
 
@@ -96,7 +96,7 @@ describe('XapianBridge', function () {
         });
 
         it('does not set path', function () {
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 query: 'tyrion',
                 app_id: 'foo',
             });
@@ -130,7 +130,7 @@ describe('XapianBridge', function () {
             let mock_correction = {
                 'stopWordCorrectedQuery': 'a query with no stop words',
             };
-            let mock_query_obj = new QueryObject.QueryObject({
+            let mock_query_obj = Eknc.QueryObject.new_from_props({
                 query: 'a query with lots of stop words',
             });
             mock_request(mock_correction);
@@ -153,7 +153,7 @@ describe('XapianBridge', function () {
 
         it('can be cancelled', function () {
             let cancellable = new Gio.Cancellable();
-            bridge.query(new QueryObject.QueryObject({ query: '0123456789' }), {}, cancellable, noop);
+            bridge.query(Eknc.QueryObject.new_from_props({ query: '0123456789' }), {}, cancellable, noop);
             cancellable.cancel();
             expect(bridge._http_session.cancel_message).toHaveBeenCalled();
             let message = bridge._http_session.cancel_message.calls.mostRecent().args[0];
@@ -165,7 +165,7 @@ describe('XapianBridge', function () {
         it('does not make a request if already cancelled', function () {
             let cancellable = new Gio.Cancellable();
             cancellable.cancel();
-            bridge.query(new QueryObject.QueryObject(), {}, cancellable, noop);
+            bridge.query(Eknc.QueryObject.new_from_props(), {}, cancellable, noop);
             expect(bridge._http_session.queue_message).not.toHaveBeenCalled();
         });
     });
