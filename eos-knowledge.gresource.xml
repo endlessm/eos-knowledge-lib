@@ -200,7 +200,6 @@
     <file>js/search/downloader.js</file>
     <file>js/search/engine.js</file>
     <file>js/search/moltresEngine.js</file>
-    <file>js/search/queryObject.js</file>
     <file>js/search/searchProvider.js</file>
     <file>js/search/utils.js</file>
     <file>js/search/xapianBridge.js</file>
