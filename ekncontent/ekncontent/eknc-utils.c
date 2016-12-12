@@ -7,6 +7,7 @@
 
 #include <eos-shard/eos-shard-shard-file.h>
 #include <stdlib.h>
+#include <string.h>
 
 /**
  * SECTION:utils
@@ -105,6 +106,39 @@ eknc_utils_free_gparam_array (GArray *params)
     g_value_unset (&param->value);
   }
   g_array_free (params, TRUE);
+}
+
+#define EKN_ID_REGEX "^ekn://[^/]*/(?=[A-Za-z0-9]*)(?:.{16}|.{40})$"
+/**
+ * eknc_utils_is_valid_id:
+ * @ekn_id: the ekn id
+ *
+ * Checks if an ekn id is valid.
+ *
+ * Returns: true if the ekn id is valid.
+ */
+gboolean
+eknc_utils_is_valid_id (const gchar *ekn_id)
+{
+  g_autoptr(GRegex) ekn_id_regex = g_regex_new (EKN_ID_REGEX, 0, 0, NULL);
+  return g_regex_match (ekn_id_regex, ekn_id, 0, NULL);
+}
+
+/**
+ * eknc_utils_id_get_hash:
+ * @ekn_id: the ekn id
+ *
+ * Gets a pointer to the hash part of an ekn id.
+ *
+ * Returns: (transfer none): a pointer to the hash part of the ekn id.
+ */
+const gchar *
+eknc_utils_id_get_hash (const gchar *ekn_id)
+{
+  if (!eknc_utils_is_valid_id (ekn_id))
+    return NULL;
+  const gchar *post_uri = ekn_id + strlen ("ekn://");
+  return g_strstr_len (post_uri, -1, "/") + 1;
 }
 
 struct parallel_init_data {
