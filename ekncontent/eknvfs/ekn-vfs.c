@@ -165,8 +165,7 @@ ekn_vfs_dispose (GObject *self)
 {
   EknVfsPrivate *priv = EKN_VFS_PRIVATE (self);
 
-  g_slist_free_full (priv->shards, g_object_unref);
-  priv->shards = NULL;
+  g_clear_pointer (&priv->shards, g_slist_free_full);
   g_clear_object (&priv->local);
 
   G_OBJECT_CLASS (ekn_vfs_parent_class)->dispose (self);

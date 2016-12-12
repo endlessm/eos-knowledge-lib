@@ -109,7 +109,7 @@ eknc_utils_parallel_init (GSList        *initables,
 }
 
 /**
- * eknc_vfs_set_shards:
+ * eknc_default_vfs_set_shards:
  * @shards: (type GSList(EosShardShardFile)): a list of shard objects
  *
  * Set a list of shards in the default GVfs extension point where to lookup
@@ -118,7 +118,7 @@ eknc_utils_parallel_init (GSList        *initables,
  * Returns: TRUE on success, FALSE if an error occurred
  */
 gboolean
-eknc_vfs_set_shards (GSList *shards)
+eknc_default_vfs_set_shards (GSList *shards)
 {
   GType shard_type = EOS_SHARD_TYPE_SHARD_FILE;
   GVfs *vfs = g_vfs_get_default ();

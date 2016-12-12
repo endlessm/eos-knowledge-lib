@@ -8,7 +8,7 @@ EKNC_MICRO_VERSION
 <SECTION>
 <FILE>utils</FILE>
 eknc_utils_parallel_init
-eknc_vfs_set_shards
+eknc_default_vfs_set_shards
 </SECTION>
 
 <SECTION>

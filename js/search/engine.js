@@ -136,7 +136,7 @@ const Engine = Lang.Class({
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
             if (query_obj.app_id === '')
-                query_obj = QueryObject.QueryObject.new_from_object(query_obj, { app_id: this._default_app_id });
+                query_obj = QueryObject.QueryObject.new_from_object(query_obj, { app_id: this.default_app_id });
 
             let domain_obj = this._get_domain(query_obj.app_id);
 
@@ -192,7 +192,7 @@ const Engine = Lang.Class({
         if (this._domain_cache[app_id] === undefined) {
             let domain_obj = Domain.get_domain_impl(app_id, this._xapian_bridge);
 
-            if (app_id === this._default_app_id && this.default_data_path)
+            if (app_id === this.default_app_id && this.default_data_path)
                 domain_obj._content_path = this.default_data_path;
 
             this._domain_cache[app_id] = domain_obj;
@@ -202,7 +202,7 @@ const Engine = Lang.Class({
     },
 
     get_default_domain: function () {
-        return this._get_domain(this._default_app_id);
+        return this._get_domain(this.default_app_id);
     },
 
     /**
@@ -218,22 +218,12 @@ const Engine = Lang.Class({
 
         domain.load_sync();
 
-        Eknc.vfs_set_shards(domain.get_shards());
+        // Append shards to default EknVfs for ekn:// uri to work
+        Eknc.default_vfs_set_shards(domain.get_shards());
     },
 
     test_link: function (link) {
         return this.get_default_domain().test_link(link);
-    },
-
-    set default_app_id (id) {
-        if (this._default_app_id !== id) {
-            this._default_app_id = id;
-            this.notify('default-app-id');
-        }
-    },
-
-    get default_app_id () {
-        return this._default_app_id;
     },
 });
 
@@ -244,14 +234,6 @@ let get_default = function () {
         var language = Utils.get_current_language();
         the_engine = new Engine({
             language: language,
-        });
-
-        // Tell EknVfs which one is the default domain
-        the_engine.connect('notify::default-app-id', function () {
-            let vfs = Gio.Vfs.get_default();
-
-            if (GObject.type_name (vfs.constructor.$gtype) === "EknVfs")
-                vfs.default_domain = the_engine.default_app_id;
         });
     }
     return the_engine;

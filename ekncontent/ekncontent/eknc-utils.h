@@ -15,6 +15,6 @@ eknc_utils_parallel_init (GSList        *initables,
                           GError       **error);
 
 gboolean
-eknc_vfs_set_shards (GSList *shards);
+eknc_default_vfs_set_shards (GSList *shards);
 
 G_END_DECLS
