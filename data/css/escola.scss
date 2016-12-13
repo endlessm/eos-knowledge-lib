@@ -1,0 +1,181 @@
+@import "project-setup";
+@import "compass";
+
+/* === Colors and Fonts (Overrides) === */
+
+$base-color: #0e82c5 !default;
+$highlight-color: #f5d888  !default;
+
+$background-light-color: #2b2b2c !default;
+$background-dark-color: #141418 !default;
+
+$title-font: Raleway !default;
+$context-font: Raleway !default;
+
+@import "base";
+
+.WindowSimple {
+  background-color: $background-light-color;
+  background-image: none;
+}
+
+.home-page {
+  .landing {
+    background-image: url($primary-background-image);
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 546px;
+
+    .BannerDynamic {
+      &__logo {
+        -EknDynamicLogo-sizing: "size-min";
+        color: white;
+        min-height: 120px;
+        min-width: 400px;
+        font-weight: normal;
+        font-family: $title-font;
+        font-size: 72px;
+      }
+      &__subtitle {
+        color: white;
+        margin-top: 0px;
+        font-size: 30px;
+        -EknFormattableLabel-text-transform: 'uppercase';
+      }
+    }
+  }
+
+  .ContentGroupContentGroup {
+    padding: 20px;
+  }
+}
+
+.CardList {
+  &__checkmark {
+    margin-right: 20px;
+    min-width: 39px;
+    min-height: 38px;
+    -gtk-icon-source: url("resource:///com/endlessm/knowledge/data/images/checkmark.png");
+  }
+  &:hover &__title {
+      color: $accent-light-color;
+  }
+}
+
+.set-page {
+  .background {
+    background-image: url($secondary-background-image);
+    background-repeat: no-repeat;
+  }
+
+  .ContentGroupContentGroup {
+    &__title {
+      font-size: 48px;
+      margin: 50px 0;
+    }
+  }
+
+  .ArrangementList {
+    margin: 0;
+    .CardList {
+      background-color: $background-dark-color;
+      &__title {
+        font-size: 24px;
+        color: $primary-medium-color;
+        font-weight: normal;
+      }
+
+      &__thumbnail {
+        min-height: 150px;
+      }
+
+      padding-right: 20px;
+      box-shadow: none;
+      margin: 0px 0px 2px 0px;
+    }
+  }
+}
+
+.ArrangementAccordion {
+  &__title {
+    background-color: $base-color;
+    color: white;
+    font-size: 24px;
+    font-family: $support-font;
+    border-bottom: 2px solid white;
+    padding: 15px 0px 15px 30px;
+  }
+}
+
+.CardVideo {
+  &__player {
+    min-height: 300px;
+    box-shadow: 4px 0px 20px 0px rgba(0, 0, 0, 0.5);
+  }
+  .Card__synopsis {
+    margin-right: 20px;
+    padding: 0px;
+    font-size: 24px;
+    color: $primary-medium-color;
+  }
+}
+
+.ArrangementSideBySide {
+  .CardTitle {
+    &__title {
+      color: white;
+      font-size: 24px;
+      -EknFormattableLabel-text-transform: 'uppercase';
+      font-family: $support-font;
+    }
+    &:hover .CardTitle__title {
+        border-bottom: none;
+    }
+    &.highlighted {
+        background-color: transparent;
+        .CardTitle__title {
+            color: $highlight-color;
+        }
+    }
+  }
+}
+
+/* For some reason this doesnt work if put inside .ArrangementGrid
+where it needs to be */
+.Card {
+  &.width-c &__title,
+  &.width-d.height-c &__title,
+  &.width-d.height-b &__title {
+    font-size: 24px;
+  }
+}
+
+.ArrangementGrid {
+  padding: 10px;
+  .CardThumb {
+    margin: 10px;
+    min-width: 360px;
+    background-color: $background-dark-color;
+    &__title {
+      font-weight: normal;
+    }
+    &.highlighted {
+        .CardThumb__title {
+          color: $primary-medium-color;
+        }
+    }
+    &__context {
+      font-size: 16px;
+      -EknFormattableLabel-text-transform: 'uppercase';
+      font-weight: normal;
+      color: $accent-dark-color;
+    }
+    &__thumbnail {
+      background-color: $base-color;
+    }
+  }
+}
+
+.footer {
+  background-color: darkgrey;
+}

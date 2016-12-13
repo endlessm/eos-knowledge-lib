@@ -6,8 +6,6 @@ defines:
     type: Arrangement.Grid
     properties:
       homogeneous: true
-      max-children-per-line: 3
-      min-children-per-line: 3
     slots:
       card:
         shortdef: 'Card.Thumb(background-size: "center")'
@@ -147,7 +145,7 @@ root:
           type: ContentGroup.MediaLightbox
           slots:
             content:
-              type: Pager.ParallaxBackground
+              type: Pager.Simple
               slots:
                 home-page: *home-page
                 set-page: *set-page

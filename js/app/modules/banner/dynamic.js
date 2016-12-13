@@ -8,6 +8,7 @@ const Gtk = imports.gi.Gtk;
 const Module = imports.app.interfaces.module;
 // Make sure included for glade template
 const DynamicLogo = imports.app.widgets.dynamicLogo;
+const FormattableLabel = imports.app.widgets.formattableLabel;
 const Utils = imports.app.utils;
 
 /**
