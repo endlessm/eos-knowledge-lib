@@ -11,13 +11,12 @@
     {{/title}}
     <section id="inside-content" class="section">
         <div>{{{body-html}}}</div>
-        <hr>
-        {{#disclaimer}}
-        <div class="disclaimer">
-            <p>{{{.}}}</p>
-        </div>
-        {{/disclaimer}}
     </section>
+    {{#disclaimer}}
+    <div class="disclaimer">
+        <p>{{{.}}}</p>
+    </div>
+    {{/disclaimer}}
 </div>
 {{#javascript-files}}
 <script type="text/javascript" src="resource:///com/endlessm/knowledge/data/templates/js/{{{.}}}"></script>

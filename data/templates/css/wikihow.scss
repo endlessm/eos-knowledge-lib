@@ -4,14 +4,13 @@
 
 @include global-reset;
 
-//
+//////////////////////////////
 // Variables
-//
+//////////////////////////////
 
-$font1: "Lato", sans-serif;
-$font1-heading: "Lato";
-$font1-composite: "DejaVu Sans";
-$font2: "Montserrat", sans-serif;
+$font-primary: "Merriweather", sans-serif;
+$font-primary-composite: "Roboto";
+$font-secondary: "Fira Sans", sans-serif;
 
 $cols: 100% / 36;
 
@@ -22,24 +21,21 @@ $xga: 1024px * 36 / 56;
 $wxga: 1366px * 36 / 56;
 $fhd: 1920px * 36 / 56;
 
-$gray-darker: #191919;
-$gray-dark: #333;
-$gray: #666;
-$gray-light: #959595;
-$gray-lighter: #ccc;
+$text-color-body: #505050;
+$text-color-title: #282828;
 
-$fast: 0.25s;
-$normal: 0.5s;
-$slow: 1s;
+$section-color: #e9e9e3;
 
-//
-//
-//
+$divider-color: #ccc;
+$divider-color-composite: #959595;
+
+//////////////////////////////
+// Styling
+//////////////////////////////
 
 * {
     outline: none;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     &[align="center"] {
         text-align: center;
     }
@@ -47,14 +43,11 @@ $slow: 1s;
 
 html, body {
     height: 100%;
+    font: 20px $font-primary;
 }
 
 body {
-    background: #ececec image-url("noise.png");
-}
-
-img {
-    vertical-align: middle;
+    background: white;
 }
 
 strong, b {
@@ -69,10 +62,6 @@ a[href] {
     color: #d16550;
     text-decoration: none;
 }
-
-//
-//
-//
 
 .hidden,
 .editsection,
@@ -91,49 +80,110 @@ a[href] {
     display: inline;
 }
 
-$rhythm: 22px;
+$spacing-elements: 30px;
 
 #bodycontents {
-    $in-cols: 100% / (36 - 2 * 2);
-    padding: 20px $in-cols * 2;
-    color: $gray;
-    font: 0.8125em $font1; /* 13px / 12px/em * 72/96 */
-    line-height: 1.71;
-    img {
-        height: auto;
-        max-width: 100%;
-    }
     .eos-article-title {
-        color: $gray-dark;
-        font: 1.875em $font1-heading; /* 30px / 12px/em * 72/96 */
-        line-height: 1.375;
-        margin-bottom: 36px;
-        margin-top: 22px;
+        color: $text-color-title;
+        font: 700 2.8rem $font-secondary;   // 56px // Root: 20px 
+        text-align: center;
+        line-height: 1.125;
+        margin-bottom: $spacing-elements;
+        margin-top: $spacing-elements;
+        padding: 50px 80px 70px 80px; // 60px because of mw-body top padding of 20px
+        border-bottom: 1px solid $divider-color;
     }
-    h2, h3, .firstHeading, h4 {
-        color: $gray-dark;
-        font: 900 0.875em $font2; /* 14px / 12px/em * 72/96 */
-        line-height: 1.55;
-        margin-bottom: $rhythm;
-        // text-transform: uppercase
-        a[href] {
-            color: $gray-dark;
+
+    .disclaimer {
+        font: 400 0.8rem $font-secondary;   // 16px // Root: 20px
+        text-align: center;
+        padding: 40px;
+        margin-top: $spacing-elements;
+        border-top: 1px solid $divider-color;
+        clear: both;
+        p {
+            width: 100% !important;
         }
     }
-    h4 {
-        text-transform: none;
-    }
-    sup {
-        font-size: 0.625em; /* 10px / 12px/em * 72/96 */
-        margin-left: 3px;
-        vertical-align: super;
+
+    #inside-content {
+        padding: 20px 20%;
+        $spacing: 15px;
+        $spacing-newh2: $spacing * 4;
+        $spacing-newh3: $spacing * 3;
+        $spacing-newh4: $spacing * 2.5;
+        $spacing-newh5: $spacing * 1.7;
+        $spacing-newh6: $spacing * 1.3;
+        $in-cols: 100% / (36 - 2 * 2);
+        color: $text-color-body;
+        font: 1.0rem $font-primary; // 20px // Root: 20px
+        line-height: 1.71;
+        img {
+            height: auto;
+            max-width: 100% !important;
+        }
+
+        h2, .firstHeading, h3, h4, h5 {
+            color: $text-color-title;
+            margin-bottom: $spacing-elements;
+            margin-top: $spacing-elements;
+            a[href] {
+                color: $text-color-title;
+            }
+        }
+
+        h2, .firstHeading {
+            font: 700 2.2rem $font-secondary;   // 44px // Root: 20px
+            line-height: 1.125;
+            margin-top: $spacing-newh2;
+            + h3, + h4, + h5, + h6 {
+                margin-top: $spacing;
+            }
+        }
+
+        h3 {
+            font: 700 1.7rem $font-secondary;  // 34px // Root: 20px 
+            margin-top: $spacing-newh3;
+        }
+
+        h4 {
+            font: 700 1.4rem $font-secondary;  // 28px // Root: 20px
+            margin-top: $spacing-newh4;
+        }
+
+        h5 {
+            font: 700 1.2rem $font-secondary;  // 24px // Root: 20px
+            margin-top: $spacing-newh5;
+        }
+
+        h6 {
+            font: 400 1.0rem $font-secondary;  // 20px // Root: 20px
+            margin-top: $spacing-newh6;
+            font-style: italic;
+        }
+
+        sup {
+            font-size: xx-small;
+            margin-left: 3px;
+            vertical-align: super;
+        }
     }
 }
 
 .section {
     @include pie-clearfix;
+    li, ul {
+        background-color: $section-color;
+        padding: 40px;
+        img {
+            width: 100%;
+        }
+    }
     ul {
-        margin-bottom: $rhythm;
+        margin-top: $spacing-elements;
+        li {
+            padding: 0;
+        }
         li:before {
             content: "• ";
             display: inline;
@@ -145,25 +195,21 @@ $rhythm: 22px;
 h2 + ol, h3 + ol, .steps_list_2 {
     $in-cols: 100% / (36 - 2 * 2);
     > li {
-        border-left: 1px solid $gray-lighter;
         clear: both;
-        margin-bottom: $rhythm;
-        padding-left: $in-cols * 2;
+        margin-bottom: 50px;
         @include box-sizing(border-box);
         @include pie-clearfix;
     }
     .mwimg {
         margin: 0 auto;
-        margin-bottom: $rhythm;
+        margin-bottom: $spacing-elements;
+        margin-top: $spacing-elements;
         position: relative;
-        width: $in-cols * 30;
+        max-width: 100% !important;
         img {
-            border: 5px solid #fff;
             display: block;
             height: auto;
-            margin-bottom: $rhythm;
             width: 100%;
-            @include box-shadow(0 0 6px 0 rgba(#000, 0.3));
             @include box-sizing(border-box);
         }
         &:before {
@@ -172,11 +218,7 @@ h2 + ol, h3 + ol, .steps_list_2 {
             content: "";
             display: none;
             height: image-height($file);
-            padding-left: image-width($file);
             position: absolute;
-            right: 10px + 5;
-            top: 10px + 5;
-            width: image-width($file);
             z-index: 10;
             @include box-sizing(border-box);
         }
@@ -186,11 +228,10 @@ h2 + ol, h3 + ol, .steps_list_2 {
     }
     .step_num {
         display: inline;
-        // font-size: 12px
         margin-right: 1em;
     }
     .whb {
-        color: $gray-dark;
+        color: $text-color-title;
     }
 }
 
@@ -211,7 +252,7 @@ h2 + ol, h3 + ol, .steps_list_2 {
     border: 5px solid #fff;
     background: #fff;
     line-height: 1.4;
-    margin-bottom: $rhythm;
+    margin-bottom: $spacing-elements;
     @include box-shadow(0 0 6px 0 rgba(#000, 0.3));
     @include box-sizing(border-box);
     img {
@@ -221,16 +262,17 @@ h2 + ol, h3 + ol, .steps_list_2 {
     }
 }
 
-//
-// Responsive
-//
 
-@media (min-width: $vga) {
+//////////////////////////////
+// Responsive
+//////////////////////////////
+
+@media (min-width: $vga) {  // FIXME: Haven't tested for vga yet
     #bodycontents {
         $cols: 100% / 56;
         .firstHeading {
             color: #fff;
-            font: 700 1.125em / 1.5em $font2; /* (18px, 24px) / 12px/em * 72/96 */
+            font: 700 1.125em / 1.5em $font-secondary; // 22px // Root: 20px
             left: $cols * 3;
             margin-bottom: 0;
             position: fixed;
@@ -244,7 +286,7 @@ h2 + ol, h3 + ol, .steps_list_2 {
         h2, h3 {
             padding-top: 5px;
             &:before {
-                font-size: 1.5em; /* 24px / 12px/em * 72/96 */
+                font-size: 1.5em; // 30px // Root: 20px
             }
         }
     }
@@ -261,33 +303,21 @@ h2 + ol, h3 + ol, .steps_list_2 {
 @media (min-width: $xga) {
     #bodycontents {
         .firstHeading {
-            font: 700 2em / 2.5em $font2; /* (32px, 40px) / 12px/em * 72/96 */
+            font: 700 2em / 2.5em $font-secondary; // 40px // Root: 20px
             top: 60px;
         }
         h2, h3 {
             padding-top: 9px;
             &:before {
-                font-size: 2.25em; /* 36px / 12px/em * 72/96 */
+                font-size: 2.25em; // 45px // Root: 20px
             }
         }
     }
-    .section {
-        $in-cols: 100% / (56 - 17 - 3);
-        padding: 30px $in-cols * 15 30px $in-cols * 2;
-        padding-left: 0px;
-    }
     $in-cols: 100% / (56 - 17 - 3 - 15 - 2);
     h2 + ol, h3 + ol, .steps_list_2 {
-        > li {
-            padding-left: $in-cols;
-        }
         $in-cols: 100% / (19 - 1);
         .mwimg {
             clear: both;
-            float: right;
-            margin-bottom: 0;
-            margin-right: -($in-cols * 13);
-            width: $in-cols * 11;
         }
     }
     #sd_container,
@@ -295,23 +325,34 @@ h2 + ol, h3 + ol, .steps_list_2 {
         width: $in-cols * 30;
         $in-cols: 100% / 30;
     }
-    #sd_container {
-        .sd_multiple_3 {
-            padding-left: $in-cols / 2;
-            padding-right: $in-cols / 2;
+}
+
+/* Composite */
+
+@media (max-width: 720px) {
+    #bodycontents {
+        #inside-content {
+            padding: 20px 7%;
+        }
+
+        .section li,
+        .section ul {
+            padding: 20px;
         }
     }
 }
 
-/* Composite */
 @media (device-width: 720px) and (device-height: 480px),
        (device-width: 720px) and (device-height: 576px) {
     #bodycontents {
-        font-family: $font1-composite;
-        font-size: 19.4px;  /* 22px spec * 88% because spec was at 110% scale not 125% */
+        font-family: $font-primary-composite;
 
-        h2, h3, .firstHeading, h4 {
-            font-size: 22.9px;  /* 26px * 88% */
+        #inside-content {
+            padding: 10px 7%;
+        }
+
+        .eos-article-title {
+            padding: 20px 0px 40px 0px; // 40px because of top padding of 20px
         }
     }
 }

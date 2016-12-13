@@ -1,35 +1,30 @@
 .CardMedia {
-    padding: 10px;
     background-color: white;
 
-    separator {
-        background-color: $black-20-color;
-        min-height: 1px;
-    }
-
     &__caption {
-        font-size: .81em;  /* 13pt * 1/12 * 0.75 DPI correction factor */
-        font-family: $display-font;
+        font-size: 20px;
+        font-family: $body-font;
         color: #666666;
+        padding: 20px 20px 0px 20px;
 
         .composite & {
-            font-size: 14.1px;  /* 12px spec * 88% because spec was at 110% scale not 125% */
+            font-size: 20px;
         }
     }
 
     &__attributionText {
         font-weight: bold;
-        font-size: .62em;  /* 10pt * 1/12 * 0.75 DPI correction factor */
+        font-size: 16px;
         font-family: $display-font;
         color: $accent-light-color;
-        transition: color 250ms ease-in-out;
+        padding: 10px 20px 20px 20px;
 
         &:hover {
             color: $accent-dark-color;
         }
 
         .composite & {
-            font-size: 10.5px;  /* 9px spec * 88% */
+            font-size: 20px;
         }
     }
 }
