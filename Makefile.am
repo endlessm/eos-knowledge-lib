@@ -598,7 +598,7 @@ YAML_LOG_COMPILER = $(top_srcdir)/tests/autobahn/testautobahn.sh
 # $(top_srcdir) for including test helper files.
 # (May need to change to AM_TESTS_ENVIRONMENT in a later version of Automake)
 TESTS_ENVIRONMENT = \
-	export GJS_PATH="$(top_srcdir):$(top_srcdir)/js:$(top_builddir)/js"; \
+	export GJS_PATH="$(top_srcdir):$(top_srcdir)/js:$(top_builddir)/js:$(top_srcdir)/ekncontent:$(top_builddir)/ekncontent"; \
 	export GI_TYPELIB_PATH="$(top_builddir):$(top_builddir)/ekncontent$${GI_TYPELIB_PATH:+:$$GI_TYPELIB_PATH}"; \
 	export LD_LIBRARY_PATH="$(top_builddir)/.libs:$(top_builddir)/ekncontent/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
 	export GIO_EXTRA_MODULES="$(top_builddir)/ekncontent/.libs"; \
