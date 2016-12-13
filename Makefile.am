@@ -191,7 +191,7 @@ resource_verbose_0 = @echo "  RES      $@";
 		--sourcedir=$(srcdir)/$(*D) --sourcedir=$(builddir)/$(*D) $< > $@.tmp && \
 	DEPENDENCIES=$$(tr '\n' ' ' < $@.tmp) && rm $@.tmp && \
 	echo "$*.gresource: $$DEPENDENCIES" > $@ && \
-	echo "gresource_depedencies += $$DEPENDENCIES" >> $@
+	echo "gresource_dependencies += $$DEPENDENCIES" >> $@
 
 %.gresource: %.gresource.xml %.gresource.deps
 	$(resource_verbose) $(MKDIR_P) $(dir $@) && \
@@ -204,10 +204,10 @@ resource_verbose_0 = @echo "  RES      $@";
 		--sourcedir=$(srcdir)/$(*D) --sourcedir=$(builddir)/$(*D) $<
 
 gresources =
-gresource_depedencies =
+gresource_dependencies =
 -include $(gresources:.gresource=.gresource.deps)
 CLEANFILES += $(gresources:.gresource=.gresource.deps) $(gresources)
-EXTRA_DIST += $(gresources:.gresource=.gresource.xml) $(gresource_depedencies)
+EXTRA_DIST += $(gresources:.gresource=.gresource.xml) $(gresource_dependencies)
 
 # glib-compile-resources --generate-dependencies can't be run until all
 # dependencies are present, so we need to build the scss first
