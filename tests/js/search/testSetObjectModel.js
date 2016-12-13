@@ -11,6 +11,7 @@ describe('Set object model', function () {
             tags: ['EknHomePageTag', 'EknSetObject'],
             title: 'Astrophysics',
             thumbnail: 'resource:///com/endlessm/physics-en/assets/Astrophysics-thumbnail.jpeg',
+            background: 'resource:///com/endlessm/physics-en/assets/Astrophysics-background.jpeg',
             childTags: ['Astrophysics'],
             featured: true,
         };
@@ -24,9 +25,15 @@ describe('Set object model', function () {
         expect(model.thumbnail_uri).toEqual(jsonld['thumbnail']);
     });
 
-    it('marshals a child_tags property', function () {
-        expect(model.child_tags).toEqual(jasmine.arrayContaining(jsonld['childTags']));
-    });
+    describe('Marshals own properties', function () {
+        it('background_uri property', function () {
+            expect(model.background_uri).toEqual(jsonld['background']);
+        }),
+
+        it('child_tags property', function () {
+            expect(model.child_tags).toEqual(jasmine.arrayContaining(jsonld['childTags']));
+        });
+    }),
 
     it('makes a deep copy of the child tags', function () {
         jsonld['childTags'] = ['Other', 'tags'];

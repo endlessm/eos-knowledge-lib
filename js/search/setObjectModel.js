@@ -1,6 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 /* exported SetObjectModel */
 
+const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 const ContentObjectModel = imports.search.contentObjectModel;
@@ -12,6 +13,17 @@ const ContentObjectModel = imports.search.contentObjectModel;
 const SetObjectModel = new Lang.Class({
     Name: 'SetObjectModel',
     Extends: ContentObjectModel.ContentObjectModel,
+    Properties: {
+        /**
+         * Property: background-uri
+         * URI of the the background image
+         *
+         * Usually the EKN ID of an <ImageObjectModel>.
+         */
+        'background-uri': GObject.ParamSpec.string('background-uri',
+            'background URI', 'URI of the background image',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+    },
 
     _init: function (props={}, json_ld=null) {
         if (json_ld)
@@ -46,5 +58,8 @@ const SetObjectModel = new Lang.Class({
         // Marshal properties specific to SetObjectModel
         if (json_ld.hasOwnProperty('childTags'))
             props.child_tags = json_ld.childTags.slice();
+
+        if (json_ld.hasOwnProperty('background'))
+            props.background_uri = json_ld.background;
     },
 });
