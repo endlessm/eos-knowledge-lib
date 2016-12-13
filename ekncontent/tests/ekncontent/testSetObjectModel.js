@@ -1,4 +1,4 @@
-const SetObjectModel = imports.search.setObjectModel;
+const Eknc = imports.gi.EosKnowledgeContent;
 
 describe('Set object model', function () {
     let model, jsonld;
@@ -14,7 +14,7 @@ describe('Set object model', function () {
             childTags: ['Astrophysics'],
             featured: true,
         };
-        model = new SetObjectModel.SetObjectModel({}, jsonld);
+        model = Eknc.SetObjectModel.new_from_json(jsonld);
     });
 
     it('inherits properties set from parent model', function () {
@@ -26,10 +26,5 @@ describe('Set object model', function () {
 
     it('marshals a child_tags property', function () {
         expect(model.child_tags).toEqual(jasmine.arrayContaining(jsonld['childTags']));
-    });
-
-    it('makes a deep copy of the child tags', function () {
-        jsonld['childTags'] = ['Other', 'tags'];
-        expect(model.child_tags).not.toEqual(jsonld['childTags']);
     });
 });

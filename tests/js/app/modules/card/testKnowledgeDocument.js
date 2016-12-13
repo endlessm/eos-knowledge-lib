@@ -1,3 +1,4 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const EvinceDocument = imports.gi.EvinceDocument;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
@@ -6,7 +7,6 @@ const WebKit2 = imports.gi.WebKit2;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const ArticleObjectModel = imports.search.articleObjectModel;
 const KnowledgeDocument = imports.app.modules.card.knowledgeDocument;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
@@ -39,11 +39,11 @@ describe('Card.KnowledgeDocument', function () {
         });
 
         toc =
-            [{"hasIndex": 0, "hasIndexLabel": 1, "hasLabel": "Foo", "hasContent": "#Foo"},
-             {"hasIndex": 1, "hasIndexLabel": 2, "hasLabel": "Bar", "hasContent": "#Bar"},
-             {"hasIndex": 2, "hasIndexLabel": 3, "hasLabel": "Baz", "hasContent": "#Baz"}];
+            [{"hasIndex": 0, "hasIndexLabel": "1", "hasLabel": "Foo", "hasContent": "#Foo"},
+             {"hasIndex": 1, "hasIndexLabel": "2", "hasLabel": "Bar", "hasContent": "#Bar"},
+             {"hasIndex": 2, "hasIndexLabel": "3", "hasLabel": "Baz", "hasContent": "#Baz"}];
 
-        model = new ArticleObjectModel.ArticleObjectModel({
+        model = Eknc.ArticleObjectModel.new_from_props({
             ekn_id: 'ekn:///foo/bar',
             title: '!!!',
             table_of_contents: toc,
@@ -83,7 +83,7 @@ describe('Card.KnowledgeDocument', function () {
     describe('with pdf model', function () {
         let pdf_model;
         beforeEach(function (done) {
-            pdf_model = new ArticleObjectModel.ArticleObjectModel({
+            pdf_model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn:///foo/bar',
                 content_type: 'application/pdf',
                 title: 'Pdf title',
@@ -113,7 +113,7 @@ describe('Card.KnowledgeDocument', function () {
     describe('with html model', function () {
         let html_model, previous_card, next_card;
         beforeEach(function (done) {
-            html_model = new ArticleObjectModel.ArticleObjectModel({
+            html_model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn:///foo/bar',
                 content_type: 'text/html',
                 title: 'Html title',

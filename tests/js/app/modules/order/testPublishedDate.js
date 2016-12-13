@@ -1,9 +1,9 @@
 // Copyright 2016 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gtk = imports.gi.Gtk;
 Gtk.init(null);
 
-const ArticleObjectModel = imports.search.articleObjectModel;
 const MockFactory = imports.tests.mockFactory;
 const PublishedDate = imports.app.modules.order.publishedDate;
 
@@ -27,7 +27,7 @@ describe('Order.PublishedDate', function () {
 
     beforeEach(function () {
         models = UNSORTED_DATES.map(date =>
-            new ArticleObjectModel.ArticleObjectModel({ published: date }));
+            Eknc.ArticleObjectModel.new_from_props({ published: date }));
     });
 
     describe('ascending', function () {

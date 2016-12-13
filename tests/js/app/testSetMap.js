@@ -1,6 +1,6 @@
-const ArticleObjectModel = imports.search.articleObjectModel;
+const Eknc = imports.gi.EosKnowledgeContent;
+
 const SetMap = imports.app.setMap;
-const SetObjectModel = imports.search.setObjectModel;
 
 describe('Set Map', function () {
     let sets, articles;
@@ -31,7 +31,7 @@ describe('Set Map', function () {
                 child_tags: [],
             },
         ];
-        sets = data.map((props) => new SetObjectModel.SetObjectModel(props));
+        sets = data.map((props) => Eknc.SetObjectModel.new_from_props(props));
         SetMap.init_map_with_models(sets);
 
         let article_data = [
@@ -47,7 +47,7 @@ describe('Set Map', function () {
             },
         ];
 
-        articles = article_data.map((props) => new ArticleObjectModel.ArticleObjectModel(props));
+        articles = article_data.map((props) => Eknc.ArticleObjectModel.new_from_props(props));
     });
 
     describe('tag map', function () {

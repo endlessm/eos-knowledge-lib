@@ -3,13 +3,12 @@
 /* exported test_arrangement_compliance, test_arrangement_fade_in_compliance,
 test_card_compliance, test_card_container_fade_in_compliance */
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HistoryStore = imports.app.historyStore;
-const SetObjectModel = imports.search.setObjectModel;
 const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
@@ -26,7 +25,7 @@ function test_card_compliance(CardClass) {
 
         it('by having a theming class for PDF records', function () {
             let card = new CardClass({
-                model: new ContentObjectModel.ContentObjectModel({
+                model: Eknc.ContentObjectModel.new_from_props({
                     title: 'The Joy Of Cooking, Pirated Copy',
                     content_type: 'application/pdf',
                 }),
@@ -36,7 +35,7 @@ function test_card_compliance(CardClass) {
             expect(card).toHaveCssClass('Card--pdf');
             expect(card).toHaveCssClass(pretty_name + '--pdf');
             card = new CardClass({
-                model: new ContentObjectModel.ContentObjectModel({
+                model: Eknc.ContentObjectModel.new_from_props({
                     title: 'Autoconf Manual',
                     content_type: 'text/html',
                 }),
@@ -50,7 +49,7 @@ function test_card_compliance(CardClass) {
         let model, card, synopsis_label;
 
         beforeEach(function () {
-            model = new ContentObjectModel.ContentObjectModel({
+            model = Eknc.ContentObjectModel.new_from_props({
                 title: '!!! containing hippo',
                 synopsis: '@@@ synopsis also containing hippo',
             });
@@ -127,7 +126,7 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
         function add_cards(a, ncards) {
             let models = [];
             for (let ix = 0; ix < ncards; ix++) {
-                let model = new ContentObjectModel.ContentObjectModel();
+                let model = Eknc.ContentObjectModel.new_from_props();
                 models.push(model);
             }
             a.set_models(a.get_models().concat(models));
@@ -163,8 +162,8 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
         });
 
         it('by returning the card corresponding to a model', function () {
-            let model1 = new ContentObjectModel.ContentObjectModel();
-            let model2 = new ContentObjectModel.ContentObjectModel();
+            let model1 = Eknc.ContentObjectModel.new_from_props();
+            let model2 = Eknc.ContentObjectModel.new_from_props();
             arrangement.set_models([model1, model2]);
             expect(arrangement.get_card_for_model(model1).model).toBe(model1);
             expect(arrangement.get_card_for_model(model2).model).toBe(model2);
@@ -200,7 +199,7 @@ function test_arrangement_fade_in_compliance(ArrangementClass, extra_slots={}) {
 
         it('by fading in cards when requested to', function () {
             arrangement.fade_cards = true;
-            let model = new ContentObjectModel.ContentObjectModel();
+            let model = Eknc.ContentObjectModel.new_from_props();
             arrangement.set_models([model]);
             expect(arrangement.get_card_for_model(model).fade_in)
                 .toHaveBeenCalled();
@@ -208,7 +207,7 @@ function test_arrangement_fade_in_compliance(ArrangementClass, extra_slots={}) {
 
         it('by not fading in cards when requested not to', function () {
             arrangement.fade_cards = false;
-            let model = new ContentObjectModel.ContentObjectModel();
+            let model = Eknc.ContentObjectModel.new_from_props();
             arrangement.set_models([model]);
             expect(arrangement.get_card_for_model(model).fade_in)
                 .not.toHaveBeenCalled();
@@ -233,7 +232,7 @@ function test_selection_compliance (SelectionClass, setup=function () {}, extra_
                     'filter': { type: Minimal.TitleFilter },
                 }),
             }, {
-                model: new SetObjectModel.SetObjectModel(),
+                model: Eknc.SetObjectModel.new_from_props(),
             });
 
             // setup must happen after selection has been created so that
@@ -254,7 +253,7 @@ function test_selection_compliance (SelectionClass, setup=function () {}, extra_
         function add_models (c, num) {
             let models = [];
             for (let ix = 0; ix < num; ix++) {
-                let model = new ContentObjectModel.ContentObjectModel();
+                let model = Eknc.ContentObjectModel.new_from_props();
                 models.push(model);
                 c.add_model(model);
             }
@@ -264,7 +263,7 @@ function test_selection_compliance (SelectionClass, setup=function () {}, extra_
         function add_filtered_models (c, num) {
             let models = [];
             for (let ix = 0; ix < num; ix++) {
-                let model = new ContentObjectModel.ContentObjectModel({
+                let model = Eknc.ContentObjectModel.new_from_props({
                     title: '0Filter me out',
                 });
                 models.push(model);
@@ -288,7 +287,7 @@ function test_selection_compliance (SelectionClass, setup=function () {}, extra_
         it('by keeping models in desired order', function () {
             let models = [];
             for (let ix = 5; ix > 0; ix--) {
-                let model = new ContentObjectModel.ContentObjectModel({
+                let model = Eknc.ContentObjectModel.new_from_props({
                     title: ix.toString(),
                 });
                 selection.add_model(model);
@@ -355,7 +354,7 @@ function test_xapian_selection_compliance(SelectionClass, setup=function () {}, 
                 type: SelectionClass,
                 slots: slots,
             }, {
-                model: new SetObjectModel.SetObjectModel(),
+                model: Eknc.SetObjectModel.new_from_props(),
             });
             setup(store);
             reading_history = MockReadingHistoryModel.mock_default();
@@ -371,7 +370,7 @@ function test_xapian_selection_compliance(SelectionClass, setup=function () {}, 
             spyOn(selection, 'add_model').and.callThrough();
             let models = [];
             for (let ix = 0; ix < 10; ix++) {
-                let model = new ContentObjectModel.ContentObjectModel();
+                let model = Eknc.ContentObjectModel.new_from_props();
                 models.push(model);
             }
             engine.get_objects_by_query_finish.and.returnValue([models, {

@@ -59,13 +59,30 @@ install-data-hook:
 
 ekncontent_public_installed_headers = ekncontent/eos-knowledge-content.h
 ekncontent_private_installed_headers = \
+	ekncontent/eknc-article-object-model.h \
+	ekncontent/eknc-content-object-model.h \
+	ekncontent/eknc-image-object-model.h \
+	ekncontent/eknc-media-object-model.h \
+	ekncontent/eknc-object-model.h \
+	ekncontent/eknc-set-object-model.h \
 	ekncontent/eknc-subtree-dispatcher.h \
 	ekncontent/eknc-utils.h \
 	ekncontent/eknc-version.h \
+	ekncontent/eknc-video-object-model.h \
 	$(NULL)
 ekncontent_sources = \
+	ekncontent/eknc-article-object-model.c \
+	ekncontent/eknc-content-object-model-private.h \
+	ekncontent/eknc-content-object-model.c \
+	ekncontent/eknc-image-object-model.c \
+	ekncontent/eknc-media-object-model-private.h \
+	ekncontent/eknc-media-object-model.c \
+	ekncontent/eknc-object-model.c \
+	ekncontent/eknc-set-object-model.c \
 	ekncontent/eknc-subtree-dispatcher.c \
+	ekncontent/eknc-utils-private.h \
 	ekncontent/eknc-utils.c \
+	ekncontent/eknc-video-object-model.c \
 	$(NULL)
 
 lib_LTLIBRARIES += libeos-knowledge-content-@EKN_CONTENT_API_VERSION@.la
@@ -106,11 +123,18 @@ DISTCLEANFILES += @EKN_CONTENT_API_NAME@.pc
 # # # TESTS # # #
 
 javascript_tests = \
+	tests/ekncontent/testArticleObjectModel.js \
+	tests/ekncontent/testContentObjectModel.js \
+	tests/ekncontent/testDatadir.js \
+	tests/ekncontent/testMediaObjectModels.js \
+	tests/ekncontent/testObjectModel.js \
+	tests/ekncontent/testSetObjectModel.js \
 	tests/ekncontent/testUtils.js \
 	$(NULL)
 
 EXTRA_DIST += \
 	$(javascript_tests) \
+	tests/InstanceOfMatcher.js \
 	$(NULL)
 
 # Run tests when running 'make check'
@@ -128,6 +152,7 @@ JS_LOG_COMPILER = jasmine
 AM_JS_LOG_FLAGS = --tap --no-config @JASMINE_REPORT_ARGUMENT@
 
 AM_TESTS_ENVIRONMENT = \
+	export GJS_PATH="$(top_srcdir):$(top_builddir)"; \
 	export GI_TYPELIB_PATH="$(top_builddir)$${GI_TYPELIB_PATH:+:$$GI_TYPELIB_PATH}"; \
 	export LD_LIBRARY_PATH="$(top_builddir)/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
 	export G_TEST_SRCDIR="$(abs_srcdir)/tests"; \
@@ -157,6 +182,7 @@ EosKnowledgeContent_@EKN_CONTENT_API_VERSION@_gir_INCLUDES = \
 	EosShard-0 \
 	Gio-2.0 \
 	GLib-2.0 \
+	Json-1.0 \
 	GObject-2.0
 EosKnowledgeContent_@EKN_CONTENT_API_VERSION@_gir_SCANNERFLAGS = \
 	--warn-all --warn-error \
@@ -173,5 +199,9 @@ gir_DATA = $(INTROSPECTION_GIRS)
 
 typelibdir = $(libdir)/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+
+overridesdir = $(datadir)/gjs-1.0/overrides
+overrides_DATA = overrides/EosKnowledgeContent.js
+EXTRA_DIST += overrides/EosKnowledgeContent.js
 
 CLEANFILES += $(INTROSPECTION_GIRS) $(typelib_DATA)

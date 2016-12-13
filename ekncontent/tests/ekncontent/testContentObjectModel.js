@@ -1,4 +1,4 @@
-const ContentObjectModel = imports.search.contentObjectModel;
+const Eknc = imports.gi.EosKnowledgeContent;
 
 const MOCK_CONTENT_DATA = {
     '@id': 'ekn:text_editors/Emacs',
@@ -14,46 +14,46 @@ const MOCK_CONTENT_DATA = {
     'featured': true,
 };
 
-describe ('Content Object Model', function () {
+describe('Content Object Model', function () {
     let contentObject;
 
-    it ('successfully creates new object from properties', function () {
-        contentObject = new ContentObjectModel.ContentObjectModel({
+    it('successfully creates new object from properties', function () {
+        contentObject = Eknc.ContentObjectModel.new_from_props({
             ekn_id : 'ekn:text_editors/Emacs',
             title : 'Emacs',
         });
         expect(contentObject.title).toEqual('Emacs');
     });
 
-    it ('successfully creates new object from JSON-LD data', function () {
-        contentObject = new ContentObjectModel.ContentObjectModel({}, MOCK_CONTENT_DATA);
+    it('successfully creates new object from JSON-LD data', function () {
+        contentObject = Eknc.ContentObjectModel.new_from_json(MOCK_CONTENT_DATA);
         expect(contentObject.title).toEqual(MOCK_CONTENT_DATA.title);
     });
 
-    it ('successfully creates new object from JSON-LD with missing properties', function () {
+    it('successfully creates new object from JSON-LD with missing properties', function () {
         let just_a_title_json_ld = {
             '@id': MOCK_CONTENT_DATA['@id'],
             'title': MOCK_CONTENT_DATA['title']
         };
-        contentObject = new ContentObjectModel.ContentObjectModel({}, just_a_title_json_ld);
+        contentObject = Eknc.ContentObjectModel.new_from_json(just_a_title_json_ld);
         expect(contentObject.title).toEqual(MOCK_CONTENT_DATA.title);
     });
 
     it('successfully creates a new object with no info at all', function () {
-        contentObject = new ContentObjectModel.ContentObjectModel();
+        contentObject = Eknc.ContentObjectModel.new_from_props();
         expect(contentObject.ekn_id.startsWith('ekn:///')).toBeTruthy();
     });
 
     describe ('properties', function () {
         beforeEach (function() {
-            contentObject = new ContentObjectModel.ContentObjectModel({}, MOCK_CONTENT_DATA);
+            contentObject = Eknc.ContentObjectModel.new_from_json(MOCK_CONTENT_DATA);
         });
 
-        it ('should have an ID', function () {
+        it('should have an ID', function () {
             expect(contentObject.ekn_id).toEqual(MOCK_CONTENT_DATA['@id']);
         });
 
-        it ('should have a title', function () {
+        it('should have a title', function () {
             expect(contentObject.title).toEqual(MOCK_CONTENT_DATA['title']);
         });
 
@@ -61,52 +61,37 @@ describe ('Content Object Model', function () {
             expect(contentObject.original_uri).toEqual(MOCK_CONTENT_DATA.originalURI);
         });
 
-        it ('should have a language', function () {
+        it('should have a language', function () {
             expect(contentObject.language).toEqual(MOCK_CONTENT_DATA['language']);
         });
 
-        it ('should have a synopsis', function () {
+        it('should have a synopsis', function () {
             expect(contentObject.synopsis).toEqual(MOCK_CONTENT_DATA['synopsis']);
         });
 
-        it ('should have a last-modified date', function () {
+        it('should have a last-modified date', function () {
             expect(new Date(contentObject.last_modified_date))
                 .toEqual(new Date(MOCK_CONTENT_DATA.lastModifiedDate));
         });
 
-        it ('should have tags', function () {
+        it('should have tags', function () {
             expect(contentObject.tags).toEqual(MOCK_CONTENT_DATA['tags']);
         });
 
-        it ('should have a license', function () {
+        it('should have a license', function () {
             expect(contentObject.license).toEqual(MOCK_CONTENT_DATA['license']);
         });
 
-        it ('should have a thumbnail-uri', function () {
+        it('should have a thumbnail-uri', function () {
             expect(contentObject.thumbnail_uri).toEqual(MOCK_CONTENT_DATA['thumbnail']);
         });
 
-        it ('should have resources', function () {
+        it('should have resources', function () {
             expect(contentObject.resources).toEqual(MOCK_CONTENT_DATA.resources);
         });
 
         it('has a featured flag', function () {
             expect(contentObject.featured).toBeTruthy();
         });
-    });
-
-    it('makes deep copies of the arrays passed into it', function () {
-        let tags = MOCK_CONTENT_DATA['tags'].slice();
-        let resources = MOCK_CONTENT_DATA['resources'].slice();
-        let model = new ContentObjectModel.ContentObjectModel({
-            ekn_id: 'ekn:text_editors/Emacs',
-            title: 'Emacs',
-            tags: tags,
-            resources: resources,
-        });
-        tags.push('or is it?');
-        delete resources[0];
-        expect(model.tags).not.toEqual(tags);
-        expect(model.resources).not.toEqual(resources);
     });
 });

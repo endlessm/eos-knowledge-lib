@@ -18,6 +18,12 @@
   <chapter>
     <title>Endless Knowledge Content library reference</title>
     <xi:include href="xml/version-information.xml"/>
+    <xi:include href="xml/content-object-model.xml"/>
+    <xi:include href="xml/article-object-model.xml"/>
+    <xi:include href="xml/set-object-model.xml"/>
+    <xi:include href="xml/media-object-model.xml"/>
+    <xi:include href="xml/video-object-model.xml"/>
+    <xi:include href="xml/image-object-model.xml"/>
     <xi:include href="xml/utils.xml"/>
     <xi:include href="xml/subtree-dispatcher.xml"/>
   </chapter>

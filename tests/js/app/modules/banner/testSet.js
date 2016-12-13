@@ -1,5 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gtk = imports.gi.Gtk;
 
 const BannerSet = imports.app.modules.banner.set;
@@ -7,7 +8,6 @@ const HistoryStore = imports.app.historyStore;
 const MockFactory = imports.tests.mockFactory;
 const Minimal = imports.tests.minimal;
 const Pages = imports.app.pages;
-const SetObjectModel = imports.search.setObjectModel;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
@@ -29,7 +29,7 @@ describe('Banner.Set', function () {
     });
 
     it('creates a card when state changes to set page', function () {
-        let model = new SetObjectModel.SetObjectModel();
+        let model = Eknc.SetObjectModel.new_from_props();
         store.set_current_item_from_props({
             page_type: Pages.SET,
             model: model,
@@ -40,8 +40,8 @@ describe('Banner.Set', function () {
     });
 
     it('creates a new card for each new set model on set page', function () {
-        let model1 = new SetObjectModel.SetObjectModel();
-        let model2 = new SetObjectModel.SetObjectModel();
+        let model1 = Eknc.SetObjectModel.new_from_props();
+        let model2 = Eknc.SetObjectModel.new_from_props();
         store.set_current_item_from_props({
             page_type: Pages.SET,
             model: model1,
@@ -54,7 +54,7 @@ describe('Banner.Set', function () {
     });
 
     it('does not change for the same set model', function () {
-        let model = new SetObjectModel.SetObjectModel();
+        let model = Eknc.SetObjectModel.new_from_props();
         store.set_current_item_from_props({
             page_type: Pages.SET,
             model: model,

@@ -1,13 +1,12 @@
+const Eknc = imports.gi.EosKnowledgeContent;
+
 const Actions = imports.app.actions;
 const AppUtils = imports.app.utils;
-const ArticleObjectModel = imports.search.articleObjectModel;
 const BuffetHistoryStore = imports.app.buffetHistoryStore;
-const MediaObjectModel = imports.search.mediaObjectModel;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const Pages = imports.app.pages;
-const SetObjectModel = imports.search.setObjectModel;
 
 describe('BuffetHistoryStore', function () {
     let store, dispatcher, engine, reading_history;
@@ -43,7 +42,7 @@ describe('BuffetHistoryStore', function () {
     });
 
     it('shows the set page when a set model is clicked', function () {
-        let model = new SetObjectModel.SetObjectModel({
+        let model = Eknc.SetObjectModel.new_from_props({
             ekn_id: 'ekn://foo/set',
         });
         dispatcher.dispatch({
@@ -55,10 +54,10 @@ describe('BuffetHistoryStore', function () {
 
     function test_close_lightbox (action, descriptor) {
         it('closes the lightbox when ' + descriptor, function () {
-            let model = new ArticleObjectModel.ArticleObjectModel({
+            let model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn://foo/bar',
             });
-            let media_model = new MediaObjectModel.MediaObjectModel({
+            let media_model = Eknc.MediaObjectModel.new_from_props({
                 ekn_id: 'ekn://foo/pix',
             });
             store.set_current_item_from_props({
@@ -98,7 +97,7 @@ describe('BuffetHistoryStore', function () {
 
     describe('when link in article clicked', function () {
         it('goes to article page', function () {
-            let model = new ArticleObjectModel.ArticleObjectModel({
+            let model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn://foo/bar',
             });
             engine.get_object_by_id_finish.and.returnValue(model);
@@ -110,7 +109,7 @@ describe('BuffetHistoryStore', function () {
         });
 
         it('shows lightbox if link was media', function () {
-            let model = new MediaObjectModel.MediaObjectModel({
+            let model = Eknc.MediaObjectModel.new_from_props({
                 ekn_id: 'ekn://foo/pix',
             });
             engine.get_object_by_id_finish.and.returnValue(model);
@@ -125,13 +124,13 @@ describe('BuffetHistoryStore', function () {
     describe('when an article card is clicked', function () {
         let prev_model, next_model;
         beforeEach(function () {
-            let model = new ArticleObjectModel.ArticleObjectModel({
+            let model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn://test/article',
             });
-            prev_model = new ArticleObjectModel.ArticleObjectModel({
+            prev_model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn://test/prev',
             });
-            next_model = new ArticleObjectModel.ArticleObjectModel({
+            next_model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn://test/next',
             });
 
@@ -173,7 +172,7 @@ describe('BuffetHistoryStore', function () {
         let model;
 
         beforeEach(function () {
-            model = new ArticleObjectModel.ArticleObjectModel({
+            model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn:///foo',
             });
             engine.get_object_by_id_finish.and.returnValue(model);

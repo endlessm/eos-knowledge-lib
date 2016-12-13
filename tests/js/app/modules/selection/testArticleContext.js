@@ -1,3 +1,4 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gtk = imports.gi.Gtk;
 
 const Utils = imports.tests.utils;
@@ -7,14 +8,13 @@ const ArticleContext = imports.app.modules.selection.articleContext;
 const Compliance = imports.tests.compliance;
 const HistoryStore = imports.app.historyStore;
 const Pages = imports.app.pages;
-const SetObjectModel = imports.search.setObjectModel;
 
 Gtk.init(null);
 
 function setup (store) {
     store.set_current_item_from_props({
         page_type: Pages.SET,
-        model: new SetObjectModel.SetObjectModel(),
+        model: Eknc.SetObjectModel.new_from_props(),
     });
 }
 

@@ -1,10 +1,10 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gtk = imports.gi.Gtk;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const Compliance = imports.tests.compliance;
-const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Video = imports.app.modules.card.video;
@@ -19,7 +19,7 @@ describe('Card.Video', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
         card = new Video.Video({
-            model: new ContentObjectModel.ContentObjectModel({
+            model: Eknc.ContentObjectModel.new_from_props({
                 title: '!!!',
             }),
         });

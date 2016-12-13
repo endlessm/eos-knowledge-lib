@@ -2,6 +2,7 @@
 
 /* exported Card, MinSize, MaxSize */
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Format = imports.format;
 const GdkPixbuf = imports.gi.GdkPixbuf;
@@ -14,7 +15,6 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
 const Config = imports.app.config;
-const ContentObjectModel = imports.search.contentObjectModel;
 const Engine = imports.search.engine;
 const FormattableLabel = imports.app.widgets.formattableLabel;
 const ImageCoverFrame = imports.app.widgets.imageCoverFrame;
@@ -22,7 +22,6 @@ const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
 const SearchUtils = imports.search.utils;
 const SetMap = imports.app.setMap;
-const SetObjectModel = imports.search.setObjectModel;
 const SpaceContainer = imports.app.widgets.spaceContainer;
 const Utils = imports.app.utils;
 
@@ -154,7 +153,7 @@ const Card = new Lang.Interface({
         'model': GObject.ParamSpec.object('model', 'Model',
             'Card model with which to create this card',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            ContentObjectModel.ContentObjectModel),
+            Eknc.ContentObjectModel),
         /**
          * Property: highlight-string
          * A substring within a card's title or synopsis to get highlighted
@@ -311,7 +310,7 @@ const Card = new Lang.Interface({
                 [results, info] = engine.get_objects_by_query_finish(task);
                 let reached_bottom = true;
                 results.forEach((obj) => {
-                    if (obj instanceof SetObjectModel.SetObjectModel) {
+                    if (obj instanceof Eknc.SetObjectModel) {
                         reached_bottom = false;
                         this._count_set(obj, callback);
                     } else {
@@ -354,7 +353,7 @@ const Card = new Lang.Interface({
      */
     create_context_widget_from_model: function () {
         let widget;
-        if (this.model instanceof SetObjectModel.SetObjectModel) {
+        if (this.model instanceof Eknc.SetObjectModel) {
             widget = this._create_inventory_widget();
         } else {
             widget = this._create_contextual_tag_widget();

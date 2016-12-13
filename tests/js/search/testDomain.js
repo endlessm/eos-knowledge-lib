@@ -1,13 +1,9 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gio = imports.gi.Gio;
 
-const ArticleObjectModel = imports.search.articleObjectModel;
-const ContentObjectModel = imports.search.contentObjectModel;
-const Datadir = imports.search.datadir;
 const Domain = imports.search.domain;
 const Engine = imports.search.engine;
 const QueryObject = imports.search.queryObject;
-const MediaObjectModel = imports.search.mediaObjectModel;
-const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.search.utils;
 
 const MockShard = imports.tests.mockShard;
@@ -122,7 +118,7 @@ function create_mock_shard_with_link_table (link_table_hash) {
 describe('Domain', function () {
     describe('get_ekn_version', function () {
         it('should throw an exception when datadir can\'t be found', function () {
-            spyOn(Datadir, 'get_data_dir').and.returnValue(undefined);
+            spyOn(Eknc, 'get_data_dir').and.returnValue(undefined);
 
             let expectedError = new Error("Could not find data dir for app ID abc");
 
@@ -173,7 +169,7 @@ describe('DomainV2', function () {
             mock_shard_file.find_record_by_hex_name.and.returnValue(mock_shard_record);
             domain.get_object_by_id('whatever', null, function (domain, task) {
                 let result = domain.get_object_by_id_finish(task);
-                expect(result).toBeA(ArticleObjectModel.ArticleObjectModel);
+                expect(result).toBeA(Eknc.ArticleObjectModel);
                 expect(result.synopsis).toEqual('NOW IS THE WINTER OF OUR DISCONTENT');
                 done();
             });
@@ -189,7 +185,7 @@ describe('DomainV2', function () {
             mock_shard_file.find_record_by_hex_name.and.returnValue(mock_shard_record);
             domain.get_object_by_id('whatever', null, function (domain, task) {
                 let result = domain.get_object_by_id_finish(task);
-                expect(result).toBeA(SetObjectModel.SetObjectModel);
+                expect(result).toBeA(Eknc.SetObjectModel);
                 expect(result.child_tags).toEqual(jasmine.arrayContaining(['made', 'glorious', 'summer']));
                 done();
             });
@@ -209,7 +205,7 @@ describe('DomainV2', function () {
 
             domain.get_object_by_id('whatever', null, function (domain, task) {
                 let result = domain.get_object_by_id_finish(task);
-                expect(result).toBeA(ArticleObjectModel.ArticleObjectModel);
+                expect(result).toBeA(Eknc.ArticleObjectModel);
                 expect(result.content_type).toBe('text/html');
                 done();
             });

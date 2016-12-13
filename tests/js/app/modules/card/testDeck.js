@@ -1,10 +1,10 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gtk = imports.gi.Gtk;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const Compliance = imports.tests.compliance;
-const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const Deck = imports.app.modules.card.deck;
 
@@ -16,7 +16,7 @@ describe('Card.Deck', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         card = new Deck.Deck({
-            model: new ContentObjectModel.ContentObjectModel({
+            model: Eknc.ContentObjectModel.new_from_props({
                 title: '!!!',
             }),
         });

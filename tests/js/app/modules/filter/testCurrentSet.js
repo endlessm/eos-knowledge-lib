@@ -1,21 +1,21 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const ContentObjectModel = imports.search.contentObjectModel;
+const Eknc = imports.gi.EosKnowledgeContent;
+
 const CurrentSet = imports.app.modules.filter.currentSet;
 const HistoryStore = imports.app.historyStore;
 const MockFactory = imports.tests.mockFactory;
 const Pages = imports.app.pages;
 const SetMap = imports.app.setMap;
-const SetObjectModel = imports.search.setObjectModel;
 
 describe('Filter.CurrentSet', function () {
     const SETS = [
-        new SetObjectModel.SetObjectModel({
+        Eknc.SetObjectModel.new_from_props({
             ekn_id: 'ekn://set',
             tags: ['EknSetObject'],
             child_tags: ['set'],
         }),
-        new SetObjectModel.SetObjectModel({
+        Eknc.SetObjectModel.new_from_props({
             ekn_id: 'ekn://subset',
             tags: ['set', 'EknSetObject'],
             child_tags: ['subset'],
@@ -23,15 +23,15 @@ describe('Filter.CurrentSet', function () {
     ];
 
     const ARTICLES = [
-        new ContentObjectModel.ContentObjectModel({
+        Eknc.ContentObjectModel.new_from_props({
             ekn_id: 'ekn://belongs_to_set',
             tags: ['set', 'EknArticleObject'],
         }),
-        new ContentObjectModel.ContentObjectModel({
+        Eknc.ContentObjectModel.new_from_props({
             ekn_id: 'ekn://belongs_to_subset',
             tags: ['set', 'subset', 'EknArticleObject'],
         }),
-        new ContentObjectModel.ContentObjectModel({
+        Eknc.ContentObjectModel.new_from_props({
             ekn_id: 'ekn://belongs_to_none',
             tags: ['EknArticleObject'],
         }),

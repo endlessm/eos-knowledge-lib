@@ -1,6 +1,5 @@
-const Gtk = imports.gi.Gtk;
+const Eknc = imports.gi.EosKnowledgeContent;
 
-const ArticleObjectModel = imports.search.articleObjectModel;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 
 describe ('Article Object Model', function () {
@@ -24,7 +23,7 @@ describe ('Article Object Model', function () {
                 },
             ],
         };
-        articleObject = new ArticleObjectModel.ArticleObjectModel({}, jsonld);
+        articleObject = Eknc.ArticleObjectModel.new_from_json(jsonld);
     });
 
     describe ('JSON-LD marshaler', function () {

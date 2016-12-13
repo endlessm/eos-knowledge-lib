@@ -1,12 +1,13 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const ContentObjectModel = imports.search.contentObjectModel;
+const Eknc = imports.gi.EosKnowledgeContent;
+
 const Featured = imports.app.modules.filter.featured;
 const MockFactory = imports.tests.mockFactory;
 
 describe('Filter.Featured', function () {
     const MODELS = [true, false].map(featured =>
-        new ContentObjectModel.ContentObjectModel({
+        Eknc.ContentObjectModel.new_from_props({
             featured: featured,
         }));
     let filter;

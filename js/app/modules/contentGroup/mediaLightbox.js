@@ -1,12 +1,11 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gdk = imports.gi.Gdk;
 
 const Actions = imports.app.actions;
-const ContentObjectModel = imports.search.contentObjectModel;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryStore = imports.app.historyStore;
 const Lightbox = imports.app.widgets.lightbox;
-const MediaObjectModel = imports.search.mediaObjectModel;
 const Module = imports.app.interfaces.module;
 const PDFView = imports.app.widgets.PDFView;
 
@@ -81,7 +80,7 @@ const MediaLightbox = new Module.Class({
         this._loading_new_lightbox = true;
         let new_index = this._current_index + delta;
         let resource = this._context[new_index];
-        if (resource instanceof ContentObjectModel.ContentObjectModel) {
+        if (resource instanceof Eknc.ContentObjectModel) {
             this._preview_media_object(resource);
             this._loading_new_lightbox = false;
         } else {
@@ -108,7 +107,7 @@ const MediaLightbox = new Module.Class({
         let resources = this._context;
 
         this._current_index = resources.map((item) => {
-            if (item instanceof ContentObjectModel.ContentObjectModel) {
+            if (item instanceof Eknc.ContentObjectModel) {
                 return item.ekn_id;
             }
             return item;
@@ -129,7 +128,7 @@ const MediaLightbox = new Module.Class({
         // specified, try to determine content type and show it accordingly.
         let content_type = media_object.content_type;
         if (widget === null) {
-            if (media_object instanceof MediaObjectModel.VideoObjectModel) {
+            if (media_object instanceof Eknc.VideoObjectModel) {
                 widget = new EosKnowledgePrivate.MediaBin({
                     // FIXME: Video player doesn't start with proper width
                     // and height: https://phabricator.endlessm.com/T14316

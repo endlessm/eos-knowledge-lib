@@ -1,6 +1,6 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gio = imports.gi.Gio;
 
-const ContentObjectModel = imports.search.contentObjectModel;
 const DominantColor = imports.app.dominantColor;
 const MockEngine = imports.tests.mockEngine;
 const Utils = imports.tests.utils;
@@ -20,7 +20,7 @@ describe ('Dominant Color', function () {
     });
 
     it('extracts color when fetching the image from a resource file', function (done) {
-        let model = new ContentObjectModel.ContentObjectModel({
+        let model = Eknc.ContentObjectModel.new_from_props({
             thumbnail_uri: image,
         });
 

@@ -1,3 +1,4 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gtk = imports.gi.Gtk;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 
@@ -5,7 +6,6 @@ const CssClassMatcher = imports.tests.CssClassMatcher;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const MediaObjectModel = imports.search.mediaObjectModel;
 const Media = imports.app.modules.card.media;
 
 Gtk.init(null);
@@ -17,7 +17,7 @@ describe ('Card.Media', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
-        imageObject = new MediaObjectModel.ImageObjectModel({
+        imageObject = Eknc.ImageObjectModel.new_from_props({
             caption: 'foo',
             license: 'bar',
             copyright_holder: 'baz',
@@ -27,14 +27,14 @@ describe ('Card.Media', function () {
     });
 
     it ('hides separator when caption or attribution not visible', function () {
-        let noCaption = new MediaObjectModel.ImageObjectModel({
+        let noCaption = Eknc.ImageObjectModel.new_from_props({
             license: 'bar',
             copyright_holder: 'baz',
             content_type: 'image/jpeg',
         });
         noCaption.get_content_stream = () => null;
 
-        let noAttribution = new MediaObjectModel.ImageObjectModel({
+        let noAttribution = Eknc.ImageObjectModel.new_from_props({
             caption: 'foo',
             content_type: 'image/jpeg',
         });
@@ -58,7 +58,7 @@ describe ('Card.Media', function () {
     });
 
     it('has labels that understand Pango markup', function () {
-        let model = new MediaObjectModel.ImageObjectModel({
+        let model = Eknc.ImageObjectModel.new_from_props({
             copyright_holder: '!!!',
             caption: '@@@',
         });
@@ -76,7 +76,7 @@ describe ('Card.Media', function () {
         let attribution_button;
 
         it ('displays license file when license is known', function () {
-            let model = new MediaObjectModel.ImageObjectModel({
+            let model = Eknc.ImageObjectModel.new_from_props({
                 license: 'CC BY 4.0',
                 copyright_holder: copyright_holder,
             });
@@ -91,7 +91,7 @@ describe ('Card.Media', function () {
         });
 
         it ('does not display license file when license is unknown', function () {
-            let model = new MediaObjectModel.ImageObjectModel({
+            let model = Eknc.ImageObjectModel.new_from_props({
                 license: 'foobar',
                 copyright_holder: copyright_holder,
             });

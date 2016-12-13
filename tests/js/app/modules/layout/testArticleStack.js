@@ -1,3 +1,4 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gtk = imports.gi.Gtk;
 
 const Utils = imports.tests.utils;
@@ -5,7 +6,6 @@ Utils.register_gresource();
 
 const Actions = imports.app.actions;
 const AppUtils = imports.app.utils;
-const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticleStack = imports.app.modules.layout.articleStack;
 const Box = imports.app.modules.layout.box;
 const ContentGroup = imports.app.modules.contentGroup.contentGroup;
@@ -66,11 +66,11 @@ describe('Layout.ArticleStack', function () {
         module = factory.get_created('contents')[0];
         spyOn(AppUtils, 'get_web_plugin_dbus_name').and.returnValue('test0');
 
-        article_model = new ArticleObjectModel.ArticleObjectModel();
-        previous_model = new ArticleObjectModel.ArticleObjectModel({
+        article_model = Eknc.ArticleObjectModel.new_from_props();
+        previous_model = Eknc.ArticleObjectModel.new_from_props({
             title: 'foo',
         });
-        next_model = new ArticleObjectModel.ArticleObjectModel({
+        next_model = Eknc.ArticleObjectModel.new_from_props({
             title: 'bar',
         });
         store.set_current_item_from_props({
@@ -117,7 +117,7 @@ describe('Layout.ArticleStack', function () {
 
     it('loads a new article when selection changes', function () {
         spyOn(selection, 'get_models');
-        let different_article_model = new ArticleObjectModel.ArticleObjectModel();
+        let different_article_model = Eknc.ArticleObjectModel.new_from_props();
         selection.get_models.and.returnValue([different_article_model]);
         selection.emit('models-changed');
         Utils.update_gui();

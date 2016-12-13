@@ -6,9 +6,84 @@ EKNC_MICRO_VERSION
 </SECTION>
 
 <SECTION>
+<FILE>content-object-model</FILE>
+eknc_content_object_model_get_content_stream
+eknc_content_object_model_get_resources
+eknc_content_object_model_get_tags
+eknc_content_object_model_new_from_json_node
+eknc_object_model_from_json_node
+<SUBSECTION Standard>
+EkncContentObjectModel
+EkncContentObjectModelClass
+EKNC_TYPE_CONTENT_OBJECT_MODEL
+<SUBSECTION Private>
+eknc_content_object_model_add_json_to_params
+</SECTION>
+
+<SECTION>
+<FILE>article-object-model</FILE>
+eknc_article_object_model_get_authors
+eknc_article_object_model_get_outgoing_links
+eknc_article_object_model_get_table_of_contents
+eknc_article_object_model_new_from_json_node
+<SUBSECTION Standard>
+EkncArticleObjectModel
+EkncArticleObjectModelClass
+EKNC_TYPE_ARTICLE_OBJECT_MODEL
+</SECTION>
+
+<SECTION>
+<FILE>set-object-model</FILE>
+eknc_set_object_model_get_child_tags
+eknc_set_object_model_new_from_json_node
+<SUBSECTION Standard>
+EkncSetObjectModel
+EkncSetObjectModelClass
+EKNC_TYPE_SET_OBJECT_MODEL
+</SECTION>
+
+<SECTION>
+<FILE>media-object-model</FILE>
+eknc_media_object_model_new_from_json_node
+<SUBSECTION Standard>
+EkncMediaObjectModel
+EkncMediaObjectModelClass
+EKNC_TYPE_MEDIA_OBJECT_MODEL
+<SUBSECTION Private>
+eknc_media_object_model_add_json_to_params
+</SECTION>
+
+<SECTION>
+<FILE>video-object-model</FILE>
+eknc_video_object_model_new_from_json_node
+<SUBSECTION Standard>
+EkncVideoObjectModel
+EkncVideoObjectModelClass
+EKNC_TYPE_VIDEO_OBJECT_MODEL
+</SECTION>
+
+<SECTION>
+<FILE>image-object-model</FILE>
+eknc_image_object_model_new_from_json_node
+<SUBSECTION Standard>
+EkncImageObjectModel
+EkncImageObjectModelClass
+EKNC_TYPE_IMAGE_OBJECT_MODEL
+</SECTION>
+
+<SECTION>
 <FILE>utils</FILE>
 eknc_utils_parallel_init
 eknc_default_vfs_set_shards
+eknc_get_data_dir
+eknc_get_running_under_flatpak
+EkncContentObjectError
+<SUBSECTION Standard>
+EKNC_CONTENT_OBJECT_ERROR
+<SUBSECTION Private>
+eknc_content_object_error_quark
+eknc_utils_append_gparam_from_json_node
+eknc_utils_free_gparam_array
 </SECTION>
 
 <SECTION>

@@ -1,6 +1,6 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const GObject = imports.gi.GObject;
 
-const ContentObjectModel = imports.search.contentObjectModel;
 const Filter = imports.app.interfaces.filter;
 const MockFactory = imports.tests.mockFactory;
 const Module = imports.app.interfaces.module;
@@ -47,7 +47,7 @@ describe('Filter interface', function () {
         });
         filter = factory.create_root_module();
         models = MODELS.map(properties =>
-            new ContentObjectModel.ContentObjectModel(properties));
+            Eknc.ContentObjectModel.new_from_props(properties));
     });
 
     it('filters models correctly', function () {

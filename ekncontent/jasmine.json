@@ -2,7 +2,7 @@
     "spec_files": ["tests"],
     "options": "--verbose",
     "environment": {
-        "GJS_PATH": ".:js",
+        "GJS_PATH": ".",
         "GI_TYPELIB_PATH": ".",
         "LD_LIBRARY_PATH": ".libs",
         "GIO_EXTRA_MODULES": ".libs",

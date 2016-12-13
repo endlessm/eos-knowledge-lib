@@ -1,4 +1,5 @@
 const ByteArray = imports.byteArray;
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 
@@ -49,19 +50,6 @@ function components_from_ekn_id (ekn_id) {
 
 function object_path_from_app_id (app_id) {
     return '/' + app_id.replace(/\./g, '/');
-}
-
-function get_running_under_flatpak () {
-    let path = GLib.build_filenamev([GLib.get_user_runtime_dir(), 'flatpak-info']);
-    let keyfile = new GLib.KeyFile();
-
-    try {
-        keyfile.load_from_file(path, GLib.KeyFileFlags.NONE);
-    } catch (e) {
-        return false;
-    }
-
-    return true;
 }
 
 // String operations
@@ -130,7 +118,7 @@ function ensure_directory (dir) {
 
 function get_subscriptions_dir () {
     let user_data_path;
-    if (get_running_under_flatpak()) {
+    if (Eknc.get_running_under_flatpak()) {
         // When running under flatpak, GLib.get_user_data_dir() points to the
         // private home inside the application, not the real home.
         // Use the absolute path here instead of the utility function.

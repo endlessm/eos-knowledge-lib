@@ -1,19 +1,19 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const ContentObjectModel = imports.search.contentObjectModel;
+const Eknc = imports.gi.EosKnowledgeContent;
+
 const SeeMore = imports.app.modules.filter.seeMore;
 const HistoryStore = imports.app.historyStore;
 const MockFactory = imports.tests.mockFactory;
 const Pages = imports.app.pages;
-const SetObjectModel = imports.search.setObjectModel;
 
 describe('Filter.SeeMore', function () {
     const SETS = [
-        new SetObjectModel.SetObjectModel({
+        Eknc.SetObjectModel.new_from_props({
             ekn_id: 'ekn://set1',
             tags: ['EknSetObject'],
         }),
-        new SetObjectModel.SetObjectModel({
+        Eknc.SetObjectModel.new_from_props({
             ekn_id: 'ekn://set2',
             tags: ['EknSetObject'],
         }),

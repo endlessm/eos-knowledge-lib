@@ -1,10 +1,10 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gtk = imports.gi.Gtk;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const Compliance = imports.tests.compliance;
-const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const Title = imports.app.modules.card.title;
 
@@ -17,7 +17,7 @@ describe('Card.Title', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
         card = new Title.Title({
-            model: new ContentObjectModel.ContentObjectModel(),
+            model: Eknc.ContentObjectModel.new_from_props(),
         });
     });
 
@@ -35,7 +35,7 @@ describe('Card.Title', function () {
 
     it('has labels that understand Pango markup', function () {
         let card = new Title.Title({
-            model: new ContentObjectModel.ContentObjectModel({
+            model: Eknc.ContentObjectModel.new_from_props({
                 title: '!!!',
             }),
         });

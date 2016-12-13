@@ -521,15 +521,10 @@ javascript_tests = \
 	tests/js/app/widgets/testSlidingPanelOverlay.js \
 	tests/js/app/widgets/testSpaceContainer.js \
 	tests/js/app/widgets/testTableOfContents.js \
-	tests/js/search/testArticleObjectModel.js \
 	tests/js/search/testAsyncTask.js \
-	tests/js/search/testContentObjectModel.js \
-	tests/js/search/testDatadir.js \
 	tests/js/search/testDomain.js \
 	tests/js/search/testEngine.js \
-	tests/js/search/testMediaObjectModels.js \
 	tests/js/search/testQueryObject.js \
-	tests/js/search/testSetObjectModel.js \
 	tests/js/search/testUtils.js \
 	tests/js/search/testXapianBridge.js \
 	$(NULL)

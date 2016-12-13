@@ -2,6 +2,7 @@
 
 /* exported MeshHistoryStore */
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 
@@ -10,7 +11,6 @@ const Dispatcher = imports.app.dispatcher;
 const HistoryItem = imports.app.historyItem;
 const HistoryStore = imports.app.historyStore;
 const Pages = imports.app.pages;
-const SetObjectModel = imports.search.setObjectModel;
 
 /**
  * Class: MeshHistoryStore
@@ -34,7 +34,7 @@ const MeshHistoryStore = new GObject.Class({
                     break;
                 case Actions.ITEM_CLICKED: {
                     let props = { model: payload.model };
-                    if (payload.model instanceof SetObjectModel.SetObjectModel)
+                    if (payload.model instanceof Eknc.SetObjectModel)
                         props['page_type'] = Pages.SET;
                     else
                         props['page_type'] = Pages.ARTICLE;

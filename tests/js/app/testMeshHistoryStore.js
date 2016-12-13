@@ -1,13 +1,12 @@
+const Eknc = imports.gi.EosKnowledgeContent;
+
 const Actions = imports.app.actions;
 const AppUtils = imports.app.utils;
-const ArticleObjectModel = imports.search.articleObjectModel;
-const MediaObjectModel = imports.search.mediaObjectModel;
 const MeshHistoryStore = imports.app.meshHistoryStore;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const Pages = imports.app.pages;
-const SetObjectModel = imports.search.setObjectModel;
 
 describe('MeshHistoryStore', function () {
     let store, dispatcher, engine, reading_history;
@@ -36,7 +35,7 @@ describe('MeshHistoryStore', function () {
     });
 
     it('shows the set page when a set model is clicked', function () {
-        let model = new SetObjectModel.SetObjectModel({
+        let model = Eknc.SetObjectModel.new_from_props({
             ekn_id: 'ekn://foo/set',
         });
         dispatcher.dispatch({
@@ -47,7 +46,7 @@ describe('MeshHistoryStore', function () {
     });
 
     it('shows the article page when item clicked', function () {
-        let model = new ArticleObjectModel.ArticleObjectModel({
+        let model = Eknc.ArticleObjectModel.new_from_props({
             ekn_id: 'ekn://foo/bar',
         });
         dispatcher.dispatch({
@@ -114,7 +113,7 @@ describe('MeshHistoryStore', function () {
     });
 
     it('sets the appropriate state when item clicked with a query (e.g. autocomplete)', function () {
-        let model = new ArticleObjectModel.ArticleObjectModel({
+        let model = Eknc.ArticleObjectModel.new_from_props({
             ekn_id: 'ekn://foo/bar',
         });
         dispatcher.dispatch({
@@ -130,10 +129,10 @@ describe('MeshHistoryStore', function () {
 
     function test_close_lightbox (action, descriptor) {
         it('closes the lightbox when ' + descriptor, function () {
-            let model = new ArticleObjectModel.ArticleObjectModel({
+            let model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn://foo/bar',
             });
-            let media_model = new MediaObjectModel.MediaObjectModel({
+            let media_model = Eknc.MediaObjectModel.new_from_props({
                 ekn_id: 'ekn://foo/pix',
             });
             store.set_current_item_from_props({
@@ -173,7 +172,7 @@ describe('MeshHistoryStore', function () {
 
     describe('when link in article clicked', function () {
         it('goes to article page', function () {
-            let model = new ArticleObjectModel.ArticleObjectModel({
+            let model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn://foo/bar',
             });
             engine.get_object_by_id_finish.and.returnValue(model);
@@ -185,7 +184,7 @@ describe('MeshHistoryStore', function () {
         });
 
         it('shows lightbox if link was media', function () {
-            let model = new MediaObjectModel.MediaObjectModel({
+            let model = Eknc.MediaObjectModel.new_from_props({
                 ekn_id: 'ekn://foo/pix',
             });
             engine.get_object_by_id_finish.and.returnValue(model);
@@ -201,7 +200,7 @@ describe('MeshHistoryStore', function () {
         let model;
 
         it('loads an item', function () {
-            model = new ArticleObjectModel.ArticleObjectModel({
+            model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn:///foo',
             });
             engine.get_object_by_id_finish.and.returnValue(model);
@@ -217,7 +216,7 @@ describe('MeshHistoryStore', function () {
         });
 
         it('goes to the article page if an article was opened', function () {
-            model = new ArticleObjectModel.ArticleObjectModel({
+            model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn:///foo',
             });
             engine.get_object_by_id_finish.and.returnValue(model);
@@ -231,7 +230,7 @@ describe('MeshHistoryStore', function () {
         });
 
         it('goes to the set page if an article was opened', function () {
-            model = new SetObjectModel.SetObjectModel({
+            model = Eknc.SetObjectModel.new_from_props({
                 ekn_id: 'ekn:///foo',
             });
             engine.get_object_by_id_finish.and.returnValue(model);

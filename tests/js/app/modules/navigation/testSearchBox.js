@@ -1,12 +1,12 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gtk = imports.gi.Gtk;
 
 Gtk.init(null);
 
 const Actions = imports.app.actions;
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const ContentObjectModel = imports.search.contentObjectModel;
 const HistoryStore = imports.app.historyStore;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
@@ -72,7 +72,7 @@ describe('Navigation.SearchBox', function () {
     });
 
     it('dispatches autocomplete-selected when a item is selected', function () {
-        let model = new ContentObjectModel.ContentObjectModel({
+        let model = Eknc.ContentObjectModel.new_from_props({
             ekn_id: 'ekn://aaaabbbbccccdddd',
             title: 'foo',
         });

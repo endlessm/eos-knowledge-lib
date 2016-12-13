@@ -1,10 +1,10 @@
+const Eknc = imports.gi.EosKnowledgeContent;
+
 const Actions = imports.app.actions;
-const ContentObjectModel = imports.search.contentObjectModel;
 const HistoryStore = imports.app.historyStore;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const Pages = imports.app.pages;
-const SetObjectModel = imports.search.setObjectModel;
 
 describe('History Store', function () {
     let history_store;
@@ -54,8 +54,8 @@ describe('History Store', function () {
     });
 
     it('tracks the current set', function () {
-        let set1 = new SetObjectModel.SetObjectModel({ title: 'blah' });
-        let set2 = new SetObjectModel.SetObjectModel({ title: 'gah' });
+        let set1 = Eknc.SetObjectModel.new_from_props({ title: 'blah' });
+        let set2 = Eknc.SetObjectModel.new_from_props({ title: 'gah' });
         history_store.set_current_item_from_props({
             page_type: Pages.SET,
             model: set1,
@@ -102,7 +102,7 @@ describe('History Store', function () {
     });
 
     it('marks items as read', function () {
-        let item = new ContentObjectModel.ContentObjectModel({ ekn_id: 'foo', title: 'blah' });
+        let item = Eknc.ContentObjectModel.new_from_props({ ekn_id: 'foo', title: 'blah' });
         spyOn(reading_history, 'mark_article_read');
 
         dispatcher.dispatch({

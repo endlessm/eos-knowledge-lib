@@ -1,16 +1,16 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const ContentObjectModel = imports.search.contentObjectModel;
+const Eknc = imports.gi.EosKnowledgeContent;
+
 const MockFactory = imports.tests.mockFactory;
-const SetObjectModel = imports.search.setObjectModel;
 const Sets = imports.app.modules.filter.sets;
 
 describe('Filter.Sets', function () {
     const MODELS = [
-        new ContentObjectModel.ContentObjectModel({
+        Eknc.ContentObjectModel.new_from_props({
             tags: ['a', 'b', 'EknArticleObject'],
         }),
-        new SetObjectModel.SetObjectModel({
+        Eknc.SetObjectModel.new_from_props({
             tags: ['a', 'b', 'EknSetObject'],
         }),
     ];

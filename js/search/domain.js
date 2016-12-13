@@ -3,18 +3,14 @@
 const Eknc = imports.gi.EosKnowledgeContent;
 const EosShard = imports.gi.EosShard;
 const Format = imports.format;
+const Json = imports.gi.Json;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 
-const ArticleObjectModel = imports.search.articleObjectModel;
 const AsyncTask = imports.search.asyncTask;
-const ContentObjectModel = imports.search.contentObjectModel;
-const datadir = imports.search.datadir;
 const Downloader = imports.search.downloader;
-const MediaObjectModel = imports.search.mediaObjectModel;
 const QueryObject = imports.search.queryObject;
-const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.search.utils;
 
 // This hash is derived from sha1('link-table'), and for now is the hardcoded
@@ -39,37 +35,13 @@ const Domain = new Lang.Class({
 
     _get_content_dir: function () {
         if (this._content_dir === null)
-            this._content_dir = datadir.get_data_dir(this._app_id);
+            this._content_dir = Eknc.get_data_dir(this._app_id);
 
         return this._content_dir;
     },
 
     _get_content_path: function () {
         return this._get_content_dir().get_path();
-    },
-
-    // Returns a marshaled ObjectModel based on json_ld's @type value, or throws
-    // error if there is no corresponding model
-    _get_model_from_json_ld: function (json_ld) {
-        let ekn_model_by_ekv_type = {
-            'ekn://_vocab/ContentObject':
-                ContentObjectModel.ContentObjectModel,
-            'ekn://_vocab/ArticleObject':
-                ArticleObjectModel.ArticleObjectModel,
-            'ekn://_vocab/ImageObject':
-                MediaObjectModel.ImageObjectModel,
-            'ekn://_vocab/VideoObject':
-                MediaObjectModel.VideoObjectModel,
-            'ekn://_vocab/SetObject':
-                SetObjectModel.SetObjectModel,
-        };
-
-        let json_ld_type = json_ld['@type'];
-        if (!ekn_model_by_ekv_type.hasOwnProperty(json_ld_type))
-            throw new Error('No EKN model found for json_ld type ' + json_ld_type);
-
-        let Model = ekn_model_by_ekv_type[json_ld_type];
-        return new Model({}, json_ld);
     },
 
     load_sync: function () {
@@ -214,8 +186,8 @@ const Domain = new Lang.Class({
             let metadata_stream = record.metadata.get_stream();
             Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
                 let data = Utils.read_stream_finish(stream_task);
-                let json_ld = JSON.parse(data);
-                task.return_value(this._get_model_from_json_ld(json_ld));
+                let node = Json.from_string(data);
+                task.return_value(Eknc.object_model_from_json_node(node));
             }));
         });
         return task;
@@ -534,7 +506,7 @@ const DomainV3 = new Lang.Class({
 /* Returns the EKN Version of the given app ID. Defaults to 1 if
    no EKN_VERSION file is found. This function does synchronous file I/O. */
 function get_ekn_version (app_id) {
-    let dir = datadir.get_data_dir(app_id);
+    let dir = Eknc.get_data_dir(app_id);
 
     // Sanity check
     if (!dir) {

@@ -1,5 +1,6 @@
+const Eknc = imports.gi.EosKnowledgeContent;
+
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
-const MediaObjectModel = imports.search.mediaObjectModel;
 
 const MOCK_IMAGE_DATA = {
     '@id': 'ekn://rick/astley',
@@ -19,30 +20,30 @@ const MOCK_VIDEO_DATA = {
     'poster-uri': 'ekn://rick/poster',
 };
 
-describe ('Image Object Model', function () {
+describe('Image Object Model', function () {
     let imageObject;
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        imageObject = new MediaObjectModel.ImageObjectModel({}, MOCK_IMAGE_DATA);
+        imageObject = Eknc.ImageObjectModel.new_from_json(MOCK_IMAGE_DATA);
     });
 
-    describe ('type', function () {
-        it ('should be an ImageObjectModel', function () {
-            expect(imageObject).toBeA(MediaObjectModel.ImageObjectModel);
+    describe('type', function () {
+        it('should be an ImageObjectModel', function () {
+            expect(imageObject).toBeA(Eknc.ImageObjectModel);
         });
 
-        it ('should be an MediaObjectModel', function () {
-            expect(imageObject).toBeA(MediaObjectModel.MediaObjectModel);
+        it('should be an MediaObjectModel', function () {
+            expect(imageObject).toBeA(Eknc.MediaObjectModel);
         });
     });
 
-    describe ('JSON-LD marshaler', function () {
-        it ('should construct from a JSON-LD document', function () {
+    describe('JSON-LD marshaler', function () {
+        it('should construct from a JSON-LD document', function () {
             expect(imageObject).toBeDefined();
         });
 
-        it ('should inherit properties set by parent class (MediaObjectModel)', function () {
+        it('should inherit properties set by parent class (MediaObjectModel)', function () {
             expect(imageObject.caption).toBeDefined();
             expect(imageObject.width).toBeDefined();
             expect(imageObject.title).toBeDefined();
@@ -51,30 +52,30 @@ describe ('Image Object Model', function () {
     });
 });
 
-describe ('Video Object Model', function () {
+describe('Video Object Model', function () {
     let videoObject;
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        videoObject = new MediaObjectModel.VideoObjectModel({}, MOCK_VIDEO_DATA);
+        videoObject = Eknc.VideoObjectModel.new_from_json(MOCK_VIDEO_DATA);
     });
 
-    describe ('type', function () {
-        it ('should be an VideoObjectModel', function () {
-            expect(videoObject).toBeA(MediaObjectModel.VideoObjectModel);
+    describe('type', function () {
+        it('should be an VideoObjectModel', function () {
+            expect(videoObject).toBeA(Eknc.VideoObjectModel);
         });
 
-        it ('should be an MediaObjectModel', function () {
-            expect(videoObject).toBeA(MediaObjectModel.MediaObjectModel);
+        it('should be an MediaObjectModel', function () {
+            expect(videoObject).toBeA(Eknc.MediaObjectModel);
         });
     });
 
-    describe ('JSON-LD marshaler', function () {
-        it ('should construct from a JSON-LD document', function () {
+    describe('JSON-LD marshaler', function () {
+        it('should construct from a JSON-LD document', function () {
             expect(videoObject).toBeDefined();
         });
 
-        it ('should inherit properties set by parent class (MediaObjectModel)', function () {
+        it('should inherit properties set by parent class (MediaObjectModel)', function () {
             expect(videoObject.caption).toBeDefined();
             expect(videoObject.width).toBeDefined();
             expect(videoObject.height).toBeDefined();

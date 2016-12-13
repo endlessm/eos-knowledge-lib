@@ -2,10 +2,10 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const ContentObjectModel = imports.search.contentObjectModel;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 
@@ -44,7 +44,7 @@ const Selection = new Module.Class({
         'model': GObject.ParamSpec.object('model', 'Model',
             'Content model to back this selection',
             GObject.ParamFlags.READWRITE,
-            ContentObjectModel.ContentObjectModel),
+            Eknc.ContentObjectModel),
     },
 
     Signals: {

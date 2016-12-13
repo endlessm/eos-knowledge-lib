@@ -1,3 +1,4 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 
@@ -6,11 +7,9 @@ Utils.register_gresource();
 
 const Card = imports.app.interfaces.card;
 const Compliance = imports.tests.compliance;
-const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const Text = imports.app.modules.card.text;
 const SetMap = imports.app.setMap;
-const SetObjectModel = imports.search.setObjectModel;
 
 Gtk.init(null);
 
@@ -20,13 +19,13 @@ describe('Card.Text', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
-        set = new SetObjectModel.SetObjectModel({
+        set = Eknc.SetObjectModel.new_from_props({
             ekn_id: '2',
             title: 'Bar',
         });
         spyOn(SetMap, 'get_set_for_tag').and.returnValue(set);
         card = new Text.Text({
-            model: new ContentObjectModel.ContentObjectModel({
+            model: Eknc.ContentObjectModel.new_from_props({
                 title: '!!!',
                 synopsis: '@@@',
                 tags: ['???'],

@@ -116,7 +116,7 @@ AC_SUBST([JASMINE_REPORT_ARGUMENT])
 
 # Package dependencies
 # Update these whenever you use a function that requires a certain API version
-AX_PKG_CHECK_MODULES([EKN_CONTENT], [glib-2.0 gio-2.0 gobject-2.0], [eos-shard-0 >= 0.1.2])
+AX_PKG_CHECK_MODULES([EKN_CONTENT], [glib-2.0 gio-2.0 gobject-2.0 json-glib-1.0], [eos-shard-0 >= 0.1.2])
 AX_PKG_CHECK_MODULES([EKN_VFS], [], [eos-shard-0 gio-2.0 gmodule-2.0])
 
 # Code Coverage

@@ -1,14 +1,13 @@
+const Eknc = imports.gi.EosKnowledgeContent;
+
 const Actions = imports.app.actions;
 const AppUtils = imports.app.utils;
-const ArticleObjectModel = imports.search.articleObjectModel;
 const CourseHistoryStore = imports.app.courseHistoryStore;
-const MediaObjectModel = imports.search.mediaObjectModel;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const Pages = imports.app.pages;
 const SetMap = imports.app.setMap;
-const SetObjectModel = imports.search.setObjectModel;
 
 describe('CourseHistoryStore', function () {
     let store, dispatcher, engine, reading_history;
@@ -32,7 +31,7 @@ describe('CourseHistoryStore', function () {
                 child_tags: ['bar'],
             },
         ];
-        let sets = data.map((obj) => new SetObjectModel.SetObjectModel(obj));
+        let sets = data.map((obj) => Eknc.SetObjectModel.new_from_props(obj));
         engine.get_objects_by_query_finish.and.returnValue([sets, {
             more_results: null,
         }]);
@@ -54,7 +53,7 @@ describe('CourseHistoryStore', function () {
     });
 
     it('shows the set page when a set model is clicked', function () {
-        let model = new SetObjectModel.SetObjectModel({
+        let model = Eknc.SetObjectModel.new_from_props({
             ekn_id: 'ekn://foo/set',
         });
         dispatcher.dispatch({
@@ -66,7 +65,7 @@ describe('CourseHistoryStore', function () {
 
     it('updates current-subset when a subset model is clicked', function () {
         spyOn(store, 'set_current_subset');
-        let model = new SetObjectModel.SetObjectModel({
+        let model = Eknc.SetObjectModel.new_from_props({
             ekn_id: 'ekn://foo/set',
             tags: ['foo'],
         });
@@ -79,10 +78,10 @@ describe('CourseHistoryStore', function () {
 
     function test_close_lightbox (action, descriptor) {
         it('closes the lightbox when ' + descriptor, function () {
-            let model = new ArticleObjectModel.ArticleObjectModel({
+            let model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn://foo/bar',
             });
-            let media_model = new MediaObjectModel.MediaObjectModel({
+            let media_model = Eknc.MediaObjectModel.new_from_props({
                 ekn_id: 'ekn://foo/pix',
             });
             store.set_current_item_from_props({
@@ -102,13 +101,13 @@ describe('CourseHistoryStore', function () {
     describe('when an article card is clicked', function () {
         let prev_model, next_model, model;
         beforeEach(function () {
-            model = new ArticleObjectModel.ArticleObjectModel({
+            model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn://test/article',
             });
-            prev_model = new ArticleObjectModel.ArticleObjectModel({
+            prev_model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn://test/prev',
             });
-            next_model = new ArticleObjectModel.ArticleObjectModel({
+            next_model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn://test/next',
             });
 
@@ -129,7 +128,7 @@ describe('CourseHistoryStore', function () {
         let model;
 
         beforeEach(function () {
-            model = new ArticleObjectModel.ArticleObjectModel({
+            model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn:///foo',
             });
             engine.get_object_by_id_finish.and.returnValue(model);

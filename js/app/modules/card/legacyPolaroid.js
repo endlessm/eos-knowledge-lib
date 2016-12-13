@@ -1,12 +1,12 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const Gdk = imports.gi.Gdk;
+const Eknc = imports.gi.EosKnowledgeContent;
 const Endless = imports.gi.Endless;
+const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
-const SetObjectModel = imports.search.setObjectModel;
 const ToggleTweener = imports.app.toggleTweener;
 const Utils = imports.app.utils;
 const WidgetSurfaceCache = imports.app.widgetSurfaceCache;
@@ -36,7 +36,7 @@ const LegacyPolaroid = new Module.Class({
 
         this.set_title_label_with_highlight(this._title_label);
 
-        if (this.model instanceof SetObjectModel.SetObjectModel) {
+        if (this.model instanceof Eknc.SetObjectModel) {
             this.set_thumbnail_frame_from_model(this._thumbnail_frame);
         }
 

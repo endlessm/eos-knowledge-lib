@@ -1,4 +1,5 @@
-const ContentObjectModel = imports.search.contentObjectModel;
+const Eknc = imports.gi.EosKnowledgeContent;
+
 const HistoryItem = imports.app.historyItem;
 
 describe('History Item', function () {
@@ -27,20 +28,20 @@ describe('History Item', function () {
         it('checks ekn ids on models', function () {
             let item1 = new HistoryItem.HistoryItem({
                 page_type: 'foo',
-                model: new ContentObjectModel.ContentObjectModel({
+                model: Eknc.ContentObjectModel.new_from_props({
                     ekn_id: 'ekn://aaaaaaaaaaaaaaaa',
                 }),
             });
             let item2 = new HistoryItem.HistoryItem({
                 page_type: 'foo',
-                model: new ContentObjectModel.ContentObjectModel({
+                model: Eknc.ContentObjectModel.new_from_props({
                     ekn_id: 'ekn://aaaaaaaaaaaaaaaa',
                 }),
             });
             expect(item1.equals(item2)).toBeTruthy();
             item2 = new HistoryItem.HistoryItem({
                 page_type: 'foo',
-                model: new ContentObjectModel.ContentObjectModel({
+                model: Eknc.ContentObjectModel.new_from_props({
                     ekn_id: 'ekn://bbbbbbbbbbbbbbbb',
                 }),
             });
@@ -52,7 +53,7 @@ describe('History Item', function () {
         let item1 = new HistoryItem.HistoryItem({
             page_type: 'foo',
             query: 'bar',
-            model: new ContentObjectModel.ContentObjectModel({
+            model: Eknc.ContentObjectModel.new_from_props({
                 ekn_id: 'ekn://aaaaaaaaaaaaaaaa',
             }),
         });

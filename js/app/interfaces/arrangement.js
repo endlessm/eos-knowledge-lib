@@ -2,12 +2,12 @@
 
 /* exported Arrangement, place_card, get_spare_pixels_for_card_index */
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const ContentObjectModel = imports.search.contentObjectModel;
 const Module = imports.app.interfaces.module;
 
 /**
@@ -76,7 +76,7 @@ const Arrangement = new Lang.Interface({
          *   model - the <ContentObjectModel> of the card that was clicked
          */
         'card-clicked': {
-            param_types: [ ContentObjectModel.ContentObjectModel ],
+            param_types: [ Eknc.ContentObjectModel ],
         },
     },
 

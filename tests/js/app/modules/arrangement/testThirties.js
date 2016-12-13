@@ -1,9 +1,9 @@
 // Copyright 2016 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gtk = imports.gi.Gtk;
 
 const Compliance = imports.tests.compliance;
-const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const Thirties = imports.app.modules.arrangement.thirties;
@@ -25,7 +25,7 @@ describe('Arrangement.Thirties', function () {
             max_rows: 1,
             fade_cards: true,
         });
-        let model = new ContentObjectModel.ContentObjectModel();
+        let model = Eknc.ContentObjectModel.new_from_props();
         arrangement.set_models([model]);
         expect(arrangement.get_card_for_model(model).fade_in)
             .not.toHaveBeenCalled();
