@@ -135,3 +135,11 @@ EKNC_SUBTREE_DISPATCHER_GET_CLASS
 <SUBSECTION Private>
 eknc_subtree_dispatcher_get_type
 </SECTION>
+
+<SECTION>
+<FILE>xapian-bridge</FILE>
+<SUBSECTION Standard>
+EkncXapianBridge
+EkncXapianBridgeClass
+EKNC_TYPE_XAPIAN_BRIDGE
+</SECTION>
