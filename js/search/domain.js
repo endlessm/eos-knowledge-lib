@@ -4,13 +4,11 @@ const Eknc = imports.gi.EosKnowledgeContent;
 const EosShard = imports.gi.EosShard;
 const Format = imports.format;
 const Json = imports.gi.Json;
-const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 
 const AsyncTask = imports.search.asyncTask;
 const Downloader = imports.search.downloader;
-const QueryObject = imports.search.queryObject;
 const Utils = imports.search.utils;
 
 // This hash is derived from sha1('link-table'), and for now is the hardcoded
@@ -22,14 +20,12 @@ const LINK_TABLE_ID = '4dba9091495e8f277893e0d400e9e092f9f6f551';
  */
 const Domain = new Lang.Class({
     Name: 'Domain',
-    Abstract: true,
 
     _init: function (app_id, xapian_bridge) {
         this._app_id = app_id;
         this._xapian_bridge = xapian_bridge;
 
         this._content_dir = null;
-        this._shard_file = null;
         this._shard_inited = false;
     },
 
@@ -44,252 +40,25 @@ const Domain = new Lang.Class({
         return this._get_content_dir().get_path();
     },
 
-    load_sync: function () {
-        if (this._shard_inited)
-            return;
-
-        this._load_sync_internal();
-        this._shard_inited = true;
-    },
-
-    /**
-     * Function: _load_sync_internal
-     *
-     * Private method, intended to be overridden by subclasses.
-     *
-     * Loads the domain from disk synchronously.
-     */
-    _load_sync_internal: function () {
-        throw new Error('Should be overridden in subclasses');
-    },
-
-    /**
-     * Function: test_link
-     *
-     * Attempts to determine if the given link corresponds to content within
-     * this domain. Returns an EKN URI to that content if so, and false
-     * otherwise.
-     */
-    test_link: function (link) {
-        throw new Error('Should be overridden in subclasses');
-    },
-
-    /**
-     * Function: get_domain_query_params
-     *
-     * Gets the parameters to pass to the Xapian Bridge for this domain.
-     * The domain *must* be loaded before calling!
-     */
-    get_domain_query_params: function () {
-        throw new Error('Should be overridden in subclasses');
-    },
-
-    /**
-     * Function: get_fixed_query
-     *
-     * Asynchronously sends a request for to xapian-bridge to correct a given
-     * query object. The corrections can be zero or more of the following:
-     *      - the query with its stop words removed
-     *      - the query which has had spelling correction applied to it.
-     *
-     * Note that the spelling correction will be performed on the original
-     * query string, and not the string with stop words removed.
-     *
-     * Parameters:
-     *   query_obj - A <QueryObject> describing the query.
-     *   cancellable - A Gio.Cancellable to cancel the async request.
-     *   callback - A function which will be called after the request finished.
-     *              The function will be called with the engine and a task object,
-     *              as parameters. The task object can be used with
-     *              <get_fixed_query_finish> to retrieve the result.
-     */
-    get_fixed_query: function (query_obj, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-
-        task.catch_errors(() => {
-            this.load_sync();
-
-            let domain_params = this.get_domain_query_params();
-            this._xapian_bridge.get_fixed_query(query_obj, domain_params, cancellable, task.catch_callback_errors((bridge, bridge_task) => {
-                let result = this._xapian_bridge.get_fixed_query_finish(bridge_task);
-                task.return_value(result);
-            }));
-        });
-
-        return task;
-    },
-
-    /**
-     * Function: get_fixed_query_finish
-     *
-     * Finishes a call to <get_fixed_query>. Returns a query object with the
-     * corrections applied. Throws an error if one occurred.
-     *
-     * Parameters:
-     *   task - The task returned by <get_fixed_query>
-     */
-    get_fixed_query_finish: function (task) {
-        return task.finish();
-    },
-
-    resolve_xapian_result: function (result, cancellable, callback) {
-        let id = result;
-        return this.get_object_by_id(id, cancellable, callback);
-    },
-
-    resolve_xapian_result_finish: function (task) {
-        return task.finish();
-    },
-
-    get_objects_by_query: function (query_obj, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        task.catch_errors(() => {
-            this.load_sync();
-
-            let domain_params = this.get_domain_query_params();
-            this._xapian_bridge.query(query_obj, domain_params, cancellable, task.catch_callback_errors((bridge, query_task) => {
-                let json_ld = this._xapian_bridge.query_finish(query_task);
-
-                if (json_ld.results.length === 0) {
-                    task.return_value([[], {}]);
-                    return;
-                }
-
-                let info = {};
-                Object.defineProperty(info, 'upper_bound', {
-                    value: json_ld['upperBound'] || 0,
-                });
-
-                AsyncTask.all(this, (add_task) => {
-                    json_ld.results.forEach((result) => {
-                        add_task((cancellable, callback) => this.resolve_xapian_result(result, cancellable, callback),
-                                 (task) => this.resolve_xapian_result_finish(task));
-                    });
-                }, cancellable, task.catch_callback_errors((source, resolve_task) => {
-                    let results = AsyncTask.all_finish(resolve_task);
-                    task.return_value([results, info]);
-                }));
-            }));
-        });
-        return task;
-    },
-
-    get_objects_by_query_finish: function (task) {
-        return task.finish();
-    },
-
-    get_object_by_id: function (id, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        task.catch_errors(() => {
-            let [hash] = Utils.components_from_ekn_id(id);
-            let record = this.load_record_from_hash_sync(hash);
-            let metadata_stream = record.metadata.get_stream();
-            Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
-                let data = Utils.read_stream_finish(stream_task);
-                let node = Json.from_string(data);
-                task.return_value(Eknc.object_model_from_json_node(node));
-            }));
-        });
-        return task;
-    },
-
-    get_object_by_id_finish: function (task) {
-        return task.finish();
-    },
-
-    /**
-     * Function: check_for_updates
-     *
-     * Synchronously check for updates to the domain.
-     */
-    check_for_updates: function () {
-        // By default, do nothing.
-    },
-
-    /**
-     * Method: get_subscription_entries
-     * Return the entries from
-     */
-    get_subscription_entries: function () {
-        return [];
-    },
-});
-
-// XXX Note that DomainV2 apps are no longer going to be generated in
-// production, but we retain compatibility with it for the sake of
-// developer-made test apps.
-const DomainV2 = new Lang.Class({
-    Name: 'DomainV2',
-    Extends: Domain,
-
-    _DB_DIR: 'db',
-    _MEDIA_SHARD: 'media.shard',
-
-    get_shards: function () {
-        return [this._get_shard_file()];
-    },
-
-    _get_shard_path: function () {
-        let path_components = [this._get_content_path(), this._MEDIA_SHARD];
-        let filename = GLib.build_filenamev(path_components);
-        return filename;
-    },
-
-    _get_shard_file: function () {
-        if (this._shard_file === null)
-            this._shard_file = new EosShard.ShardFile({
-                path: this._get_shard_path(),
-            });
-
-        return this._shard_file;
-    },
-
-    // We don't resolve links using the usual load() pattern because this
-    // method needs to be synchronous, but we're guaranteed that the shard is
-    // initialized by the time this is invoked by the HTML renderer.
-    _setup_link_table: function () {
-        // Ignore if we've already setup our table
-        if (this._link_table !== undefined)
-            return;
-
-        let table_record = this._shard_file.find_record_by_hex_name(LINK_TABLE_ID);
-        if (table_record)
-            this._link_table = table_record.data.load_as_dictionary();
-    },
-
-    _load_sync_internal: function () {
-        // Don't allow init() to be cancelled; otherwise, cancellation
-        // will spoil the object for future use.
-        let shard_file = this._get_shard_file();
-        shard_file.init(null);
-    },
-
-    test_link: function (link) {
-        if (this._link_table === undefined)
-            return false;
-        let ekn_id = this._link_table.lookup_key(link);
-        if (!ekn_id) return false;
-        return ekn_id;
-    },
-
-    get_domain_query_params: function () {
+    // Gets the parameters to pass to the Xapian Bridge for this domain.
+    // The domain *must* be loaded before calling!
+    _get_domain_query_params: function () {
         let params = {};
-        params.path = GLib.build_filenamev([this._get_content_path(), this._DB_DIR]);
+        params.manifest_path = this._get_manifest_file().get_path();
         return params;
     },
 
-    load_record_from_hash_sync: function (hash) {
-        this.load_sync();
-        return this._shard_file.find_record_by_hex_name(hash);
-    },
-});
-
-const DomainV3 = new Lang.Class({
-    Name: 'DomainV3',
-    Extends: Domain,
-
-    get_shards: function () {
-        return this._load_shards();
+    /**
+     * Function: get_subscription_entries
+     *
+     * Gets a list of subscription entries. Contains an id field and a
+     * disable_update field.
+     */
+    get_subscription_entries: function () {
+        let file = this._get_content_dir().get_child('subscriptions.json');
+        let [, data] = file.load_contents(null);
+        let subscriptions = JSON.parse(data);
+        return subscriptions.subscriptions.slice();
     },
 
     _get_subscription_entry: function () {
@@ -305,13 +74,6 @@ const DomainV3 = new Lang.Class({
 
     _get_subscription_id: function () {
         return this._get_subscription_entry().id;
-    },
-
-    get_subscription_entries: function () {
-        let file = this._get_content_dir().get_child('subscriptions.json');
-        let [, data] = file.load_contents(null);
-        let subscriptions = JSON.parse(data);
-        return subscriptions.subscriptions.slice();
     },
 
     _get_subscription_dir: function () {
@@ -379,7 +141,20 @@ const DomainV3 = new Lang.Class({
         });
     },
 
-    _load_shards: function (cancellable) {
+    _load_record_from_hash_sync: function (hash) {
+        this.load_sync();
+
+        for (let i = 0; i < this._shards.length; i++) {
+            let shard_file = this._shards[i];
+            let record = shard_file.find_record_by_hex_name(hash);
+            if (record)
+                return record;
+        }
+
+        return null;
+    },
+
+    get_shards: function (cancellable=null) {
         if (this._shards === undefined) {
             let manifest_file = this._get_manifest_file();
 
@@ -417,15 +192,6 @@ const DomainV3 = new Lang.Class({
         return this._shards;
     },
 
-    test_link: function (link) {
-        for (let table of this._link_tables) {
-            let result = table.lookup_key(link);
-            if (result !== null)
-                return result;
-        }
-        return false;
-    },
-
     // We don't resolve links using the usual load() pattern because this
     // method needs to be synchronous, but we're guaranteed that all shards are
     // initialized by the time this is invoked by the HTML renderer.
@@ -447,35 +213,151 @@ const DomainV3 = new Lang.Class({
         this._link_tables = tables.filter((t) => t);
     },
 
-    _load_sync_internal: function () {
-        this._load_shards(null);
+    /**
+     * Function: load_sync
+     *
+     * Loads up the shard needed for this domain.
+     */
+    load_sync: function () {
+        if (this._shard_inited)
+            return;
+
+        this.get_shards(null);
         // Don't allow init() to be cancelled; otherwise,
         // cancellation will spoil the object for future use.
         Eknc.utils_parallel_init(this._shards, 0, null);
 
         // Fetch the link table dictionaries from each shard for link lookups
         this._setup_link_tables();
+
+        this._shard_inited = true;
     },
 
-    get_domain_query_params: function () {
-        let params = {};
-        params.manifest_path = this._get_manifest_file().get_path();
-        return params;
-    },
-
-    load_record_from_hash_sync: function (hash) {
-        this.load_sync();
-
-        for (let i = 0; i < this._shards.length; i++) {
-            let shard_file = this._shards[i];
-            let record = shard_file.find_record_by_hex_name(hash);
-            if (record)
-                return record;
+    /**
+     * Function: test_link
+     *
+     * Attempts to determine if the given link corresponds to content within
+     * this domain. Returns an EKN URI to that content if so, and false
+     * otherwise.
+     */
+    test_link: function (link) {
+        for (let table of this._link_tables) {
+            let result = table.lookup_key(link);
+            if (result !== null)
+                return result;
         }
-
-        return null;
+        return false;
     },
 
+    get_object_by_id: function (id, cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        task.catch_errors(() => {
+            let [hash] = Utils.components_from_ekn_id(id);
+            let record = this._load_record_from_hash_sync(hash);
+            let metadata_stream = record.metadata.get_stream();
+            Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
+                let data = Utils.read_stream_finish(stream_task);
+                let node = Json.from_string(data);
+                task.return_value(Eknc.object_model_from_json_node(node));
+            }));
+        });
+        return task;
+    },
+
+    get_object_by_id_finish: function (task) {
+        return task.finish();
+    },
+
+    /**
+     * Function: get_fixed_query
+     *
+     * Asynchronously sends a request for to xapian-bridge to correct a given
+     * query object. The corrections can be zero or more of the following:
+     *      - the query with its stop words removed
+     *      - the query which has had spelling correction applied to it.
+     *
+     * Note that the spelling correction will be performed on the original
+     * query string, and not the string with stop words removed.
+     *
+     * Parameters:
+     *   query_obj - A <QueryObject> describing the query.
+     *   cancellable - A Gio.Cancellable to cancel the async request.
+     *   callback - A function which will be called after the request finished.
+     *              The function will be called with the engine and a task object,
+     *              as parameters. The task object can be used with
+     *              <get_fixed_query_finish> to retrieve the result.
+     */
+    get_fixed_query: function (query_obj, cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+
+        task.catch_errors(() => {
+            this.load_sync();
+
+            let domain_params = this._get_domain_query_params();
+            this._xapian_bridge.get_fixed_query(query_obj, domain_params, cancellable, task.catch_callback_errors((bridge, bridge_task) => {
+                let result = this._xapian_bridge.get_fixed_query_finish(bridge_task);
+                task.return_value(result);
+            }));
+        });
+
+        return task;
+    },
+
+    /**
+     * Function: get_fixed_query_finish
+     *
+     * Finishes a call to <get_fixed_query>. Returns a query object with the
+     * corrections applied. Throws an error if one occurred.
+     *
+     * Parameters:
+     *   task - The task returned by <get_fixed_query>
+     */
+    get_fixed_query_finish: function (task) {
+        return task.finish();
+    },
+
+    get_objects_by_query: function (query_obj, cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        task.catch_errors(() => {
+            this.load_sync();
+
+            let domain_params = this._get_domain_query_params();
+            this._xapian_bridge.query(query_obj, domain_params, cancellable, task.catch_callback_errors((bridge, query_task) => {
+                let json_ld = this._xapian_bridge.query_finish(query_task);
+
+                if (json_ld.results.length === 0) {
+                    task.return_value([[], {}]);
+                    return;
+                }
+
+                let info = {};
+                Object.defineProperty(info, 'upper_bound', {
+                    value: json_ld['upperBound'] || 0,
+                });
+
+                AsyncTask.all(this, (add_task) => {
+                    json_ld.results.forEach((result) => {
+                        add_task((cancellable, callback) => this.get_object_by_id(result, cancellable, callback),
+                                 (task) => this.get_object_by_id_finish(task));
+                    });
+                }, cancellable, task.catch_callback_errors((source, resolve_task) => {
+                    let results = AsyncTask.all_finish(resolve_task);
+                    task.return_value([results, info]);
+                }));
+            }));
+        });
+        return task;
+    },
+
+    get_objects_by_query_finish: function (task) {
+        return task.finish();
+    },
+
+    /**
+     * Function: check_for_updates
+     *
+     * Synchronously check for updates to the domain.
+     */
     check_for_updates: function () {
         let subscription_entry = this._get_subscription_entry();
         let id = subscription_entry.id;
@@ -503,28 +385,18 @@ const DomainV3 = new Lang.Class({
     },
 });
 
-/* Returns the EKN Version of the given app ID. Defaults to 1 if
-   no EKN_VERSION file is found. This function does synchronous file I/O. */
-function get_ekn_version (app_id) {
-    let dir = Eknc.get_data_dir(app_id);
-
-    // Sanity check
-    if (!dir) {
-        throw new Error(Format.vprintf('Could not find data dir for app ID %s', [app_id]));
-    }
-
-    let ekn_version_file = dir.get_child('EKN_VERSION');
-    let [success, contents, _] = ekn_version_file.load_contents(null);
-    let version_string = contents.toString();
-
-    return parseInt(version_string);
-}
-
+/**
+ * Function: get_domain_impl
+ *
+ * Gets a domain object for a given app id. Currently only EKN_VERSION 3 domains
+ * are supported, but we may bring back multiple version of our on disk database
+ * format in the future.
+ */
 function get_domain_impl (app_id, xapian_bridge) {
-    let ekn_version = get_ekn_version(app_id);
+    let ekn_version = Utils.get_ekn_version(app_id);
+
     let impls = {
-        '2': DomainV2,
-        '3': DomainV3,
+        '3': Domain,
     };
 
     let impl = impls[ekn_version];

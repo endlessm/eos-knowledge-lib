@@ -1,8 +1,5 @@
-const Domain = imports.search.domain;
 const Engine = imports.search.engine;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
-const MockShard = imports.tests.mockShard;
-const QueryObject = imports.search.queryObject;
 const Utils = imports.search.utils;
 
 describe('Engine', function () {
@@ -13,7 +10,7 @@ describe('Engine', function () {
         engine = new Engine.Engine();
         engine.default_app_id = 'foo';
 
-        spyOn(Domain, 'get_ekn_version').and.returnValue(2);
+        spyOn(Utils, 'get_ekn_version').and.returnValue(3);
         let domain = engine._get_domain('foo');
 
         engine._mock_domain = domain;

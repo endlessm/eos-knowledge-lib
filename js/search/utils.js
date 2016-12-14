@@ -1,5 +1,6 @@
 const ByteArray = imports.byteArray;
 const Eknc = imports.gi.EosKnowledgeContent;
+const Format = imports.format;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 
@@ -129,4 +130,21 @@ function get_subscriptions_dir () {
 
     let path = GLib.build_filenamev([user_data_path, 'com.endlessm.subscriptions']);
     return Gio.File.new_for_path(path);
+}
+
+/* Returns the EKN Version of the given app ID. Defaults to 1 if
+ * no EKN_VERSION file is found. This function does synchronous file I/O. */
+function get_ekn_version (app_id) {
+    let dir = Eknc.get_data_dir(app_id);
+
+    // Sanity check
+    if (!dir) {
+        throw new Error(Format.vprintf('Could not find data dir for app ID %s', [app_id]));
+    }
+
+    let ekn_version_file = dir.get_child('EKN_VERSION');
+    let [success, contents, _] = ekn_version_file.load_contents(null);
+    let version_string = contents.toString();
+
+    return parseInt(version_string);
 }
