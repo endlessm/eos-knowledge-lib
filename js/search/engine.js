@@ -1,8 +1,5 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
@@ -62,7 +59,8 @@ const Engine = Lang.Class({
     /**
      * Function: get_object_by_id
      *
-     * Asynchronously fetches an object with ID.
+     * Asynchronously fetches an object with ID. Only works with ekn ids that
+     * are part of the default app id's content.
      *
      * Parameters:
      *   id - The unique ID for this object, of the form ekn://domain/sha
@@ -176,23 +174,13 @@ const Engine = Lang.Class({
         return this._domain_cache[app_id];
     },
 
+    /**
+     * Method: get_default_domain
+     *
+     * Get the domain object for the default app id.
+     */
     get_default_domain: function () {
         return this._get_domain(this.default_app_id);
-    },
-
-    /**
-     * Method: update_and_preload_default_domain
-     *
-     * Synchronously checks for updates to apply to the current domain.
-     */
-    update_and_preload_default_domain: function () {
-        let domain = this.get_default_domain();
-
-        if (!GLib.getenv('EKN_DISABLE_UPDATES'))
-            domain.check_for_updates();
-
-        // Append shards to default EknVfs for ekn:// uri to work
-        Eknc.default_vfs_set_shards(domain.get_shards());
     },
 
     test_link: function (link) {

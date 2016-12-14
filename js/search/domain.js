@@ -8,7 +8,6 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 
 const AsyncTask = imports.search.asyncTask;
-const Downloader = imports.search.downloader;
 const Utils = imports.search.utils;
 
 // This hash is derived from sha1('link-table'), and for now is the hardcoded
@@ -329,37 +328,6 @@ const Domain = new Lang.Class({
 
     get_objects_by_query_finish: function (task) {
         return task.finish();
-    },
-
-    /**
-     * Function: check_for_updates
-     *
-     * Synchronously check for updates to the domain.
-     */
-    check_for_updates: function () {
-        let subscription_entry = this._get_subscription_entry();
-        let id = subscription_entry.id;
-        let disable_updates = !!subscription_entry.disable_updates;
-
-        if (disable_updates)
-            return;
-
-        let downloader = Downloader.get_default();
-
-        // Synchronously apply any update we have.
-        downloader.apply_update(id, null, (downloader, result) => {
-            downloader.apply_update_finish(result);
-
-            // Regardless of whether or not we applied an update,
-            // let's see about fetching a new one...
-            downloader.fetch_update(id, null, (downloader, result) => {
-                try {
-                    downloader.fetch_update_finish(result);
-                } catch(e) {
-                    logError(e, Format.vprintf("Could not update subscription ID: %s", [id]));
-                }
-            });
-        });
     },
 });
 

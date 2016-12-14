@@ -1,7 +1,9 @@
 imports.gi.versions.WebKit2 = '4.0';
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const Endless = imports.gi.Endless;
 const EvinceDocument = imports.gi.EvinceDocument;
+const Format = imports.format;
 const Gdk = imports.gi.Gdk;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
@@ -13,6 +15,7 @@ const System = imports.system;
 const Actions = imports.app.actions;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
+const Downloader = imports.search.downloader;
 const Engine = imports.search.engine;
 const Knowledge = imports.app.knowledge;
 const ModuleFactory = imports.app.moduleFactory;
@@ -142,8 +145,10 @@ const Application = new Knowledge.Class({
         if (engine instanceof MoltresEngine.MoltresEngine)
             return;
 
+        this._check_for_update();
         try {
-            engine.update_and_preload_default_domain();
+            let shards = engine.get_default_domain().get_shards();
+            Eknc.default_vfs_set_shards(shards);
         } catch (e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND)) {
             // No content. If updates are pending then show a nice dialog
             let subs = engine.get_default_domain().get_subscription_entries();
@@ -159,6 +164,36 @@ const Application = new Knowledge.Class({
             }
             // if no updates pending, then proceed and let Xapian queries fail
         }
+    },
+
+    _check_for_update: function () {
+        if (GLib.getenv('EKN_DISABLE_UPDATES'))
+            return;
+
+        let engine = Engine.get_default();
+        let downloader = Downloader.get_default();
+        let subs = engine.get_default_domain().get_subscription_entries();
+        subs.forEach(function (entry) {
+            let id = entry.id;
+
+            if (entry.disable_updates)
+                return;
+
+            // Synchronously apply any update we have.
+            downloader.apply_update(id, null, (downloader, result) => {
+                downloader.apply_update_finish(result);
+
+                // Regardless of whether or not we applied an update,
+                // let's see about fetching a new one...
+                downloader.fetch_update(id, null, (downloader, result) => {
+                    try {
+                        downloader.fetch_update_finish(result);
+                    } catch(e) {
+                        logError(e, Format.vprintf("Could not update subscription ID: %s", [id]));
+                    }
+                });
+            });
+        });
     },
 
     vfunc_startup: function () {
