@@ -24,7 +24,7 @@ $context-font: Raleway !default;
     background-image: url($primary-background-image);
     background-repeat: no-repeat;
     background-size: cover;
-    min-height: 546px;
+    min-height: 562px;
 
     .BannerDynamic {
       &__logo {
@@ -73,6 +73,7 @@ $context-font: Raleway !default;
       font-size: 48px;
       margin: 50px 0;
     }
+    padding: 20px;
   }
 
   .ArrangementList {
@@ -177,5 +178,6 @@ where it needs to be */
 }
 
 .footer {
-  background-color: darkgrey;
+  min-height: 102px;
+  background-color: #323233;
 }
