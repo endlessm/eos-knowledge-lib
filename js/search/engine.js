@@ -13,12 +13,6 @@ const Utils = imports.search.utils;
 const XapianBridge = imports.search.xapianBridge;
 
 /**
- * Constant: HOME_PAGE_TAG
- * Special tag value indicating content for the app's home page
- */
-const HOME_PAGE_TAG = 'EknHomePageTag';
-
-/**
  * Class: Engine
  *
  * Engine represents the connection to the Knowledge Engine's API. It exposes
