@@ -38,19 +38,6 @@ const Engine = Lang.Class({
             ''),
 
         /**
-         * Property: default-data-path
-         *
-         * The path to the default domains database, if unset will be search for
-         * in XDG_DATA_DIRS normally.
-         *
-         * e.g. /endless/share/ekn/data/animals-es
-         */
-        'default-data-path': GObject.ParamSpec.string('default-data-path',
-            'Default Domain Path', 'The path to the data of the default app ID',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            ''),
-
-        /**
          * Property: language
          *
          * The ISO639 language code which will be used for various search
@@ -183,14 +170,8 @@ const Engine = Lang.Class({
     },
 
     _get_domain: function (app_id) {
-        if (this._domain_cache[app_id] === undefined) {
-            let domain_obj = Domain.get_domain_impl(app_id, this._xapian_bridge);
-
-            if (app_id === this.default_app_id && this.default_data_path)
-                domain_obj._content_path = this.default_data_path;
-
-            this._domain_cache[app_id] = domain_obj;
-        }
+        if (this._domain_cache[app_id] === undefined)
+            this._domain_cache[app_id] = Domain.get_domain_impl(app_id, this._xapian_bridge);
 
         return this._domain_cache[app_id];
     },

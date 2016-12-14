@@ -82,8 +82,6 @@ const Application = new Knowledge.Class({
                              'Recompile the app json file from the source yaml', null);
         this.add_main_option('recompile-all', 'r'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
                              'Same as --recompile-overrides --recompile-app-json', null);
-        this.add_main_option('data-path', 'D'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
-                             'Path to the default data directory for finding content', null);
         this.add_main_option('resource-path', 'R'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Path to a different gresource to use with the application', null);
         this.add_main_option('theme-overrides-path', 'O'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
@@ -101,9 +99,6 @@ const Application = new Knowledge.Class({
         function get_option_string (option) {
             return options.lookup_value(option, null).deep_unpack().toString();
         }
-
-        if (has_option('data-path'))
-            Engine.get_default().default_data_path = get_option_string('data-path');
 
         if (has_option('resource-path'))
             this.resource_path = get_option_string('resource-path');

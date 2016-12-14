@@ -16,8 +16,6 @@ describe('Engine', function () {
         spyOn(Domain, 'get_ekn_version').and.returnValue(2);
         let domain = engine._get_domain('foo');
 
-        // Don't hit the disk.
-        domain._content_path = '/foo';
         engine._mock_domain = domain;
     });
 
