@@ -84,11 +84,11 @@ const MediaLightbox = new Module.Class({
             this._preview_media_object(resource);
             this._loading_new_lightbox = false;
         } else {
-            Engine.get_default().get_object_by_id(resource, null, (engine, task) => {
+            Engine.get_default().get_object(resource, null, (engine, task) => {
                 this._loading_new_lightbox = false;
                 let media_object;
                 try {
-                    media_object = engine.get_object_by_id_finish(task);
+                    media_object = engine.get_object_finish(task);
                 } catch (error) {
                     logError(error);
                     return;

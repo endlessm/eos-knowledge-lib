@@ -246,10 +246,10 @@ const ArticleStack = new Module.Class({
 
     _on_show_tooltip: function (tooltip_presenter, tooltip, uri) {
         if (GLib.uri_parse_scheme(uri) === 'ekn') {
-            Engine.get_default().get_object_by_id(uri, null, (engine, task) => {
+            Engine.get_default().get_object(uri, null, (engine, task) => {
                 let article_model;
                 try {
-                    article_model = engine.get_object_by_id_finish(task);
+                    article_model = engine.get_object_finish(task);
                 } catch (error) {
                     logError(error, 'Could not get article model');
                     return;

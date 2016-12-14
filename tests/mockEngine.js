@@ -15,16 +15,16 @@ const MockEngine = new Lang.Class({
         this.port = 3003;
         this.language = '';
 
-        // get_object_by_id() and get_objects_by_query() are spies to begin
+        // get_object() and get_objects_for_query() are spies to begin
         // with, since that is how they will usually be used.
         // Use like so, for example:
-        // engine.get_object_by_id_finish.and.returnValue(my_object);
-        // engine.get_objects_by_query_finish.and.returnValue([[object1,
+        // engine.get_object_finish.and.returnValue(my_object);
+        // engine.get_objects_for_query_finish.and.returnValue([[object1,
         //    object2], {}])
-        spyOn(this, 'get_object_by_id').and.callThrough();
-        spyOn(this, 'get_object_by_id_finish');
-        spyOn(this, 'get_objects_by_query').and.callThrough();
-        spyOn(this, 'get_objects_by_query_finish');
+        spyOn(this, 'get_object').and.callThrough();
+        spyOn(this, 'get_object_finish');
+        spyOn(this, 'get_objects_for_query').and.callThrough();
+        spyOn(this, 'get_objects_for_query_finish');
         spyOn(this, '_lookup_ekn_uri');
 
         let vfs = Gio.Vfs.get_default();
@@ -37,17 +37,17 @@ const MockEngine = new Lang.Class({
     // in testAisleController expect it currently. Would be good to rewrite
     // those tests to tolerate a mock object that was actually async.
 
-    get_object_by_id: function (query, cancellable, callback) {
+    get_object: function (query, cancellable, callback) {
         callback(this);
     },
 
-    get_object_by_id_finish: function () {},
+    get_object_finish: function () {},
 
-    get_objects_by_query: function (query, cancellable, callback) {
+    get_objects_for_query: function (query, cancellable, callback) {
         callback(this);
     },
 
-    get_objects_by_query_finish: function () {},
+    get_objects_for_query_finish: function () {},
 
     _lookup_ekn_uri: function (uri) {
     },

@@ -12,8 +12,7 @@ const XapianBridge = imports.search.xapianBridge;
 /**
  * Class: Engine
  *
- * Engine represents the connection to the Knowledge Engine's API. It exposes
- * that API through two methods, <get_object_by_id> and <get_objects_by_query>.
+ * Engine represents the connection to the Knowledge Engine's API.
  */
 const Engine = Lang.Class({
     Name: 'Engine',
@@ -57,27 +56,28 @@ const Engine = Lang.Class({
     },
 
     /**
-     * Function: get_object_by_id
+     * Function: get_object_for_app
      *
-     * Asynchronously fetches an object with ID. Only works with ekn ids that
-     * are part of the default app id's content.
+     * Asynchronously fetches an object with ID for a given application.
      *
      * Parameters:
-     *   id - The unique ID for this object, of the form ekn://domain/sha
+     *   id - The unique ID for this object, of the form ekn:///sha
+     *   app_id - The id of the application the object belongs to. Will use the
+     *            default-app-id if not set.
      *   cancellable - A Gio.Cancellable to cancel the async request.
      *   callback - A function which will be called after the request finished.
      *              The function will be called with the engine and a task object,
      *              as parameters. The task object can be used with
-     *              <get_object_by_id_finish> to retrieve the result.
+     *              <get_object_for_app> to retrieve the result.
      */
-    get_object_by_id: function (id, cancellable, callback) {
+    get_object_for_app: function (id, app_id, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
             let [hash] = Utils.components_from_ekn_id(id);
-            let domain_obj = this.get_default_domain();
+            let domain_obj = this._get_domain(app_id);
 
-            domain_obj.get_object_by_id(id, cancellable, task.catch_callback_errors((domain_obj, domain_task) => {
-                let model = domain_obj.get_object_by_id_finish(domain_task);
+            domain_obj.get_object(id, cancellable, task.catch_callback_errors((domain_obj, domain_task) => {
+                let model = domain_obj.get_object_finish(domain_task);
                 task.return_value(model);
             }));
         });
@@ -85,20 +85,48 @@ const Engine = Lang.Class({
     },
 
     /**
-     * Function: get_object_by_id_finish
+     * Function: get_object_for_app_finish
      *
-     * Finishes a call to <get_object_by_id>. Returns the <ContentObjectModel>
+     * Finishes a call to <get_object_for_app>. Returns the <ContentObjectModel>
      * associated with the id requested, or throws an error if one occurred.
      *
      * Parameters:
-     *   task - The task returned by <get_object_by_id>
+     *   task - The task returned by <get_object_for_app>
      */
-    get_object_by_id_finish: function (task) {
+    get_object_for_app_finish: function (task) {
         return task.finish();
     },
 
     /**
-     * Function: get_objects_by_query
+     * Function: get_object
+     *
+     * Asynchronously fetches an object with ID for the default application.
+     * Requires the default-app-id property to be set.
+     *
+     * Parameters:
+     *   id - The unique ID for this object, of the form ekn:///sha
+     *   cancellable - A Gio.Cancellable to cancel the async request.
+     *   callback - Completion callback see <get_object_for_app>.
+     */
+    get_object: function (id, cancellable, callback) {
+        this._check_default_domain();
+        this.get_object_for_app(id, this.default_app_id, cancellable, callback);
+    },
+
+    /**
+     * Function: get_object_finish
+     *
+     * Finishes a call to <get_object>.
+     *
+     * Parameters:
+     *   task - The task returned by <get_object>.
+     */
+    get_object_finish: function (task) {
+        return this.get_object_for_app_finish(task);
+    },
+
+    /**
+     * Function: get_objects_for_query
      *
      * Asynchronously sends a request to xapian-bridge for a given *query_obj*,
      * and return a list of matching models.
@@ -109,20 +137,22 @@ const Engine = Lang.Class({
      *   callback - A function which will be called after the request finished.
      *              The function will be called with the engine and a task object,
      *              as parameters. The task object can be used with
-     *              <get_objects_by_query_finish> to retrieve the result.
+     *              <get_objects_for_query_finish> to retrieve the result.
      */
-    get_objects_by_query: function (query_obj, cancellable, callback) {
+    get_objects_for_query: function (query_obj, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
-            if (query_obj.app_id === '')
+            if (query_obj.app_id === '') {
+                this._check_default_domain();
                 query_obj = QueryObject.QueryObject.new_from_object(query_obj, { app_id: this.default_app_id });
+            }
 
             let domain_obj = this._get_domain(query_obj.app_id);
 
             let do_query = (query_obj) => {
-                domain_obj.get_objects_by_query(query_obj, cancellable, task.catch_callback_errors((domain_obj, query_task) => {
+                domain_obj.get_objects_for_query(query_obj, cancellable, task.catch_callback_errors((domain_obj, query_task) => {
                     let [results, info] =
-                        domain_obj.get_objects_by_query_finish(query_task);
+                        domain_obj.get_objects_for_query_finish(query_task);
 
                     if (results.length === 0) {
                         task.return_value([[], info]);
@@ -148,9 +178,9 @@ const Engine = Lang.Class({
     },
 
     /**
-     * Function: get_objects_by_query_finish
+     * Function: get_objects_for_query_finish
      *
-     * Finishes a call to <get_objects_by_query>.
+     * Finishes a call to <get_objects_for_query>.
      * Returns both a list of <ContentObjectModels> and a dictionary with
      * results info.
      * Throws an error if one occurred.
@@ -161,9 +191,9 @@ const Engine = Lang.Class({
      *   upper_bound - an upper bound on the total number of results.
      *
      * Parameters:
-     *   task - The task returned by <get_objects_by_query>
+     *   task - The task returned by <get_objects_for_query>
      */
-    get_objects_by_query_finish: function (task) {
+    get_objects_for_query_finish: function (task) {
         return task.finish();
     },
 
@@ -180,11 +210,32 @@ const Engine = Lang.Class({
      * Get the domain object for the default app id.
      */
     get_default_domain: function () {
+        this._check_default_domain();
         return this._get_domain(this.default_app_id);
     },
 
-    test_link: function (link) {
-        return this.get_default_domain().test_link(link);
+    /**
+     * Method: test_link
+     * Parameters:
+     *   link - The ekn id to test for, of the form ekn:///sha
+     *   app_id - The id of the application to search for the link in. Will use the
+     *            default-app-id if not set.
+     *
+     * Check if a link is is available in the default domain. Other domains are
+     * currently not supported.
+     */
+    test_link: function (link, app_id) {
+        if (!app_id) {
+            this._check_default_domain();
+            app_id = this.default_app_id;
+        }
+
+        return this._get_domain(app_id).test_link(link);
+    },
+
+    _check_default_domain: function () {
+        if (!this.default_app_id)
+            throw new Error('The default-app-id has not been set');
     },
 });
 

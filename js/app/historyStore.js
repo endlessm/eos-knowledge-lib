@@ -262,10 +262,10 @@ const HistoryStore = new Lang.Class({
     // the same after a link click, factoring out this common function. When we
     // diverge in future interactions we should revisit this decomposition.
     show_ekn_id: function (ekn_id) {
-        Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
+        Engine.get_default().get_object(ekn_id, null, (engine, task) => {
             let model;
             try {
-                model = engine.get_object_by_id_finish(task);
+                model = engine.get_object_finish(task);
             } catch (error) {
                 logError(error);
                 return;
@@ -295,9 +295,9 @@ const HistoryStore = new Lang.Class({
     },
 
     load_dbus_item: function (ekn_id, query, timestamp) {
-        Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
+        Engine.get_default().get_object(ekn_id, null, (engine, task) => {
             try {
-                let model = engine.get_object_by_id_finish(task);
+                let model = engine.get_object_finish(task);
                 if (model instanceof Eknc.ArticleObjectModel) {
                     this.set_current_item_from_props({
                         page_type: Pages.ARTICLE,

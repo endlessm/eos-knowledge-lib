@@ -92,13 +92,13 @@ const Controller = new Lang.Interface({
     initialize_set_map: function (cb) {
         // Load all sets, with which to populate the set map
         // FIXME: deduplicate this with Selection.AllSets
-        Engine.get_default().get_objects_by_query(new QueryObject.QueryObject({
+        Engine.get_default().get_objects_for_query(new QueryObject.QueryObject({
             limit: -1,
             tags_match_all: ['EknSetObject'],
         }), null, (engine, res) => {
             let models;
             try {
-                [models] = engine.get_objects_by_query_finish(res);
+                [models] = engine.get_objects_for_query_finish(res);
             } catch (e) {
                 logError(e, 'Failed to load sets from database');
                 return;

@@ -230,7 +230,7 @@ const Domain = new Lang.Class({
         return false;
     },
 
-    get_object_by_id: function (id, cancellable, callback) {
+    get_object: function (id, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
             let [hash] = Utils.components_from_ekn_id(id);
@@ -245,7 +245,7 @@ const Domain = new Lang.Class({
         return task;
     },
 
-    get_object_by_id_finish: function (task) {
+    get_object_finish: function (task) {
         return task.finish();
     },
 
@@ -295,7 +295,7 @@ const Domain = new Lang.Class({
         return task.finish();
     },
 
-    get_objects_by_query: function (query_obj, cancellable, callback) {
+    get_objects_for_query: function (query_obj, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
             let domain_params = this._get_domain_query_params();
@@ -314,8 +314,8 @@ const Domain = new Lang.Class({
 
                 AsyncTask.all(this, (add_task) => {
                     json_ld.results.forEach((result) => {
-                        add_task((cancellable, callback) => this.get_object_by_id(result, cancellable, callback),
-                                 (task) => this.get_object_by_id_finish(task));
+                        add_task((cancellable, callback) => this.get_object(result, cancellable, callback),
+                                 (task) => this.get_object_finish(task));
                     });
                 }, cancellable, task.catch_callback_errors((source, resolve_task) => {
                     let results = AsyncTask.all_finish(resolve_task);
@@ -326,7 +326,7 @@ const Domain = new Lang.Class({
         return task;
     },
 
-    get_objects_by_query_finish: function (task) {
+    get_objects_for_query_finish: function (task) {
         return task.finish();
     },
 });

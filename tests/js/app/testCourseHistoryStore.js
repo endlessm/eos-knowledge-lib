@@ -32,7 +32,7 @@ describe('CourseHistoryStore', function () {
             },
         ];
         let sets = data.map((obj) => Eknc.SetObjectModel.new_from_props(obj));
-        engine.get_objects_by_query_finish.and.returnValue([sets, {
+        engine.get_objects_for_query_finish.and.returnValue([sets, {
             more_results: null,
         }]);
         SetMap.init_map_with_models(sets);
@@ -131,7 +131,7 @@ describe('CourseHistoryStore', function () {
             model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn:///foo',
             });
-            engine.get_object_by_id_finish.and.returnValue(model);
+            engine.get_object_finish.and.returnValue(model);
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                 query: 'foo',
@@ -140,8 +140,8 @@ describe('CourseHistoryStore', function () {
         });
 
         it('loads an item', function () {
-            expect(engine.get_object_by_id).toHaveBeenCalled();
-            expect(engine.get_object_by_id.calls.mostRecent().args[0])
+            expect(engine.get_object).toHaveBeenCalled();
+            expect(engine.get_object.calls.mostRecent().args[0])
                 .toBe('ekn:///foo');
         });
 

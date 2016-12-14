@@ -175,7 +175,7 @@ describe('MeshHistoryStore', function () {
             let model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn://foo/bar',
             });
-            engine.get_object_by_id_finish.and.returnValue(model);
+            engine.get_object_finish.and.returnValue(model);
             dispatcher.dispatch({
                 action_type: Actions.ARTICLE_LINK_CLICKED,
                 ekn_id: 'ekn://foo/bar',
@@ -187,7 +187,7 @@ describe('MeshHistoryStore', function () {
             let model = Eknc.MediaObjectModel.new_from_props({
                 ekn_id: 'ekn://foo/pix',
             });
-            engine.get_object_by_id_finish.and.returnValue(model);
+            engine.get_object_finish.and.returnValue(model);
             dispatcher.dispatch({
                 action_type: Actions.ARTICLE_LINK_CLICKED,
                 ekn_id: 'ekn://foo/pix',
@@ -203,15 +203,15 @@ describe('MeshHistoryStore', function () {
             model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn:///foo',
             });
-            engine.get_object_by_id_finish.and.returnValue(model);
+            engine.get_object_finish.and.returnValue(model);
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                 query: 'foo',
                 ekn_id: 'ekn:///foo',
             });
 
-            expect(engine.get_object_by_id).toHaveBeenCalled();
-            expect(engine.get_object_by_id.calls.mostRecent().args[0])
+            expect(engine.get_object).toHaveBeenCalled();
+            expect(engine.get_object.calls.mostRecent().args[0])
                 .toBe('ekn:///foo');
         });
 
@@ -219,7 +219,7 @@ describe('MeshHistoryStore', function () {
             model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn:///foo',
             });
-            engine.get_object_by_id_finish.and.returnValue(model);
+            engine.get_object_finish.and.returnValue(model);
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                 query: 'foo',
@@ -233,7 +233,7 @@ describe('MeshHistoryStore', function () {
             model = Eknc.SetObjectModel.new_from_props({
                 ekn_id: 'ekn:///foo',
             });
-            engine.get_object_by_id_finish.and.returnValue(model);
+            engine.get_object_finish.and.returnValue(model);
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                 query: 'foo',

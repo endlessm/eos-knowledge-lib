@@ -64,11 +64,11 @@ describe('Navigation.SearchBox', function () {
     });
 
     it('calls into engine for auto complete results', function () {
-        engine.get_objects_by_query_finish.and.returnValue([[], {
+        engine.get_objects_for_query_finish.and.returnValue([[], {
             more_results: null,
         }]);
         box.text = 'foo';
-        expect(engine.get_objects_by_query).toHaveBeenCalled();
+        expect(engine.get_objects_for_query).toHaveBeenCalled();
     });
 
     it('dispatches autocomplete-selected when a item is selected', function () {
@@ -76,7 +76,7 @@ describe('Navigation.SearchBox', function () {
             ekn_id: 'ekn://aaaabbbbccccdddd',
             title: 'foo',
         });
-        engine.get_objects_by_query_finish.and.returnValue([[model], {
+        engine.get_objects_for_query_finish.and.returnValue([[model], {
             more_results: null,
         }]);
         box.text = 'foo';
