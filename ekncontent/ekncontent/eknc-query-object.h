@@ -86,4 +86,9 @@ eknc_query_object_get_cutoff (EkncQueryObject *self);
 gint
 eknc_query_object_get_sort_value (EkncQueryObject *self);
 
+EkncQueryObject *
+eknc_query_object_new_from_object (EkncQueryObject *source,
+                                   const gchar     *first_property_name,
+                                   ...);
+
 G_END_DECLS

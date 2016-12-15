@@ -5,6 +5,7 @@
 #include "eknc-enums.h"
 #include "eknc-utils-private.h"
 
+#include <gobject/gvaluecollector.h>
 #include <string.h>
 
 #define MATCH_SYNOPSIS_CUTOFF 20
@@ -824,4 +825,71 @@ eknc_query_object_get_sort_value (EkncQueryObject *self)
       return -1;
       break;
     }
+}
+
+/**
+ * eknc_query_object_new_from_object:
+ * @source: the query object to copy
+ * @first_property_name: name of the first property to set
+ * @...: values and names of other properties to set
+ *
+ * Clone all properties not explicitly set from the source object.
+ *
+ * Returns: (transfer full): the newly allocated query object
+ */
+EkncQueryObject *
+eknc_query_object_new_from_object (EkncQueryObject *source,
+                                   const gchar     *first_property_name,
+                                   ...)
+{
+  g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (source), NULL);
+
+  GParameter params[NPROPS - 1] = {{ NULL, { 0, }}};
+  for (guint i = 0; i < NPROPS - 1; i++)
+    {
+      GParamSpec *pspec = eknc_query_object_props[i + 1];
+      params[i].name = g_param_spec_get_name (pspec);
+      g_value_init (&params[i].value, pspec->value_type);
+      g_object_get_property (G_OBJECT (source), params[i].name, &params[i].value);
+    }
+
+  va_list args;
+  va_start (args, first_property_name);
+  const gchar *name = first_property_name;
+  do
+    {
+      GParamSpec *pspec = NULL;
+      GValue *value = NULL;
+      for (guint i = 0; i < NPROPS - 1; i++)
+        {
+          const gchar *prop_name = g_param_spec_get_name (eknc_query_object_props[i + 1]);
+          if (strcmp (prop_name, name) != 0)
+            continue;
+          pspec = eknc_query_object_props[i + 1];
+          value = &params[i].value;
+          g_value_unset (value);
+        }
+      if (!pspec)
+        {
+          g_critical ("Failed to find property: %s", name);
+          return NULL;
+        }
+
+      g_autofree gchar *error = NULL;
+      G_VALUE_COLLECT_INIT (value, pspec->value_type, args, 0, &error);
+      if (error != NULL)
+        {
+          g_critical ("Failed to retrieve va_list value: %s", error);
+          return NULL;
+        }
+    }
+  while ((name = va_arg (args, const gchar *)));
+  va_end (args);
+
+  GObject *ret = g_object_newv (EKNC_TYPE_QUERY_OBJECT, NPROPS - 1, params);
+  for (guint i = 0; i < NPROPS - 1; i++)
+    {
+      g_value_unset (&params[i].value);
+    }
+  return EKNC_QUERY_OBJECT (ret);
 }
