@@ -82,6 +82,22 @@ describe('Card interface', function () {
         expect(label.visible).toBeTruthy();
     });
 
+    it('sets a label for the duration', function () {
+        let label = new Gtk.Label();
+        card.set_duration_label(label, 2000);
+        expect(label.visible).toBeTruthy();
+        expect(label.label).toBe('0:02 minutes');
+
+        card.set_duration_label(label, 605000);
+        expect(label.label).toBe('10:05 minutes');
+
+        card.set_duration_label(label, 60000);
+        expect(label.label).toBe('1:00 minute');
+
+        card.set_duration_label(label, undefined);
+        expect(label.visible).toBeFalsy();
+    });
+
     it('sets up a context widget with model tags', function () {
         let widget = card.create_context_widget_from_model();
         let first_tag = Gtk.test_find_label(widget, 'Foo');

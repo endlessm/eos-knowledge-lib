@@ -60,7 +60,7 @@ defines:
                   shortdef: 'Arrangement.List(hexpand: true)'
                   slots:
                     card:
-                      shortdef: 'Card.List(hexpand: true)'
+                      shortdef: 'Card.List(hexpand: true, show-synopsis: false)'
                 selection:
                   shortdef: 'Selection.ContentForSet()'
         - shortdef: 'Layout.Box(orientation: vertical, halign: fill, hexpand: true)'
