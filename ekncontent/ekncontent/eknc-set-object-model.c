@@ -97,7 +97,7 @@ eknc_set_object_model_class_init (EkncSetObjectModelClass *klass)
    * #ContentObjectModel:tags properties contain one of the tags in
    * the set's child-tags property.
    *
-   * Note that #ContentObjectModel:tags on a #SetObjectModel refers
+   * Note that #EkncContentObjectModel:tags on an #EkncSetObjectModel refers
    * to the tags with which a set itself has been tagged.
    */
   eknc_set_object_model_props[PROP_CHILD_TAGS] =

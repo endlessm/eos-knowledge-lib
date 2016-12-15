@@ -300,7 +300,8 @@ const Domain = new Lang.Class({
         task.catch_errors(() => {
             let domain_params = this._get_domain_query_params();
             this._xapian_bridge.query(query_obj, domain_params, cancellable, task.catch_callback_errors((bridge, query_task) => {
-                let json_ld = this._xapian_bridge.query_finish(query_task);
+                let json_node = this._xapian_bridge.query_finish(query_task);
+                let json_ld = JSON.parse(Json.to_string(json_node, false));
 
                 if (json_ld.results.length === 0) {
                     task.return_value([[], {}]);

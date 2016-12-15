@@ -71,6 +71,7 @@ ekncontent_private_installed_headers = \
 	ekncontent/eknc-subtree-dispatcher.h \
 	ekncontent/eknc-utils.h \
 	ekncontent/eknc-video-object-model.h \
+	ekncontent/eknc-xapian-bridge.h \
 	$(NULL)
 ekncontent_sources = \
 	ekncontent/eknc-article-object-model.c \
@@ -86,6 +87,7 @@ ekncontent_sources = \
 	ekncontent/eknc-utils-private.h \
 	ekncontent/eknc-utils.c \
 	ekncontent/eknc-video-object-model.c \
+	ekncontent/eknc-xapian-bridge.c \
 	$(NULL)
 
 glib_enum_headers = \
@@ -148,6 +150,7 @@ javascript_tests = \
 	tests/ekncontent/testQueryObject.js \
 	tests/ekncontent/testSetObjectModel.js \
 	tests/ekncontent/testUtils.js \
+	tests/ekncontent/testXapianBridge.js \
 	$(NULL)
 
 EXTRA_DIST += \
@@ -201,8 +204,10 @@ EosKnowledgeContent_@EKN_CONTENT_API_VERSION@_gir_INCLUDES = \
 	EosShard-0 \
 	Gio-2.0 \
 	GLib-2.0 \
+	GObject-2.0 \
 	Json-1.0 \
-	GObject-2.0
+	Soup-2.4 \
+	$(NULL)
 EosKnowledgeContent_@EKN_CONTENT_API_VERSION@_gir_SCANNERFLAGS = \
 	--warn-all --warn-error \
 	--identifier-prefix=Eknc \

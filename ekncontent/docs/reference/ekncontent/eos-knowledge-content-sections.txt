@@ -130,3 +130,22 @@ EKNC_SUBTREE_DISPATCHER_GET_CLASS
 <SUBSECTION Private>
 eknc_subtree_dispatcher_get_type
 </SECTION>
+
+
+<SECTION>
+<FILE>xapian-bridge</FILE>
+eknc_xapian_bridge_get_fixed_query
+eknc_xapian_bridge_get_fixed_query_finish
+eknc_xapian_bridge_query
+eknc_xapian_bridge_query_finish
+eknc_xapian_bridge_get_soup_session
+EkncXapianBridgeError
+<SUBSECTION Standard>
+EkncXapianBridge
+EkncXapianBridgeClass
+EKNC_TYPE_XAPIAN_BRIDGE
+EKNC_XAPIAN_BRIDGE_ERROR
+EKNC_TYPE_XAPIAN_BRIDGE_ERROR
+<SUBSECTION Private>
+eknc_xapian_bridge_error_quark
+</SECTION>
