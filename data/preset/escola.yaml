@@ -62,7 +62,7 @@ defines:
                     card:
                       shortdef: 'Card.List(hexpand: true)'
                 selection:
-                  shortdef: 'Selection.ArticlesForSet()'
+                  shortdef: 'Selection.ContentForSet()'
         - shortdef: 'Layout.Box(orientation: vertical, halign: fill, hexpand: true)'
           styles:
             - footer
