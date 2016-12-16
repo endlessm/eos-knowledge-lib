@@ -89,9 +89,10 @@ function _init() {
     });
     define_property(Eknc.ArticleObjectModel, 'table-of-contents', {
         get: function () {
-            let toc = this.get_table_of_contents().deep_unpack();
+            let toc = this.get_table_of_contents();
             if (!toc)
                 return [];
+            toc = toc.deep_unpack();
             toc.forEach(item => {
                 for (let prop in item)
                     item[prop] = item[prop].deep_unpack();
