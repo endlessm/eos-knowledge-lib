@@ -35,7 +35,7 @@ defines:
             - footer
           slots:
             contents:
-            - shortdef: 'Decoration.ThemeableImage(halign: end, hexpand: true, image-uri: "resource:///app/assets/titleImage")'
+            - shortdef: 'Decoration.ThemeableImage(halign: end, expand: true, valign: center, image-uri: "resource:///app/assets/logo")'
 
 - &set-page
   shortdef: Layout.Scrolling
@@ -60,15 +60,15 @@ defines:
                   shortdef: 'Arrangement.List(hexpand: true)'
                   slots:
                     card:
-                      shortdef: 'Card.List(hexpand: true)'
+                      shortdef: 'Card.List(hexpand: true, show-synopsis: false)'
                 selection:
-                  shortdef: 'Selection.ArticlesForSet()'
+                  shortdef: 'Selection.ContentForSet()'
         - shortdef: 'Layout.Box(orientation: vertical, halign: fill, hexpand: true)'
           styles:
             - footer
           slots:
             contents:
-            - shortdef: 'Decoration.ThemeableImage(halign: end, hexpand: true, image-uri: "resource:///app/assets/titleImage")'
+            - shortdef: 'Decoration.ThemeableImage(halign: end, expand: true, valign: center, image-uri: "resource:///app/assets/logo")'
 
 
 root:

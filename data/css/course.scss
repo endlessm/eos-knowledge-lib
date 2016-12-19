@@ -139,6 +139,14 @@ $support-font: 'Montserrat' !default;
         background-color: #e9e9e3;
       }
     }
+    .ContentGroupContentGroup {
+      padding: 0;
+    }
+
+    .levels {
+      background-color: $base-color-shade;
+      padding: 20px 0px;
+    }
   }
 
   .intro-video {
@@ -157,11 +165,6 @@ $support-font: 'Montserrat' !default;
     .BannerApp {
       margin-right: 50px;
     }
-  }
-
-  .levels {
-    background-color: $base-color-shade;
-    padding: 20px 0px;
   }
 
   .see-more {

@@ -76,6 +76,22 @@
                 </style>
               </object>
             </child>
+            <child>
+              <object class="GtkLabel" id="context-label">
+                <property name="can_focus">False</property>
+                <property name="visible">False</property>
+                <property name="no_show_all">True</property>
+                <property name="wrap">True</property>
+                <property name="wrap_mode">word-char</property>
+                <property name="ellipsize">end</property>
+                <property name="lines">1</property>
+                <property name="xalign">0</property>
+                <style>
+                  <class name="CardList__context"/>
+                  <class name="Card__context"/>
+                </style>
+              </object>
+            </child>
           </object>
         </child>
         <child>
