@@ -6,4 +6,7 @@ permalink: /docs/
 
 Documentation versions:
 
-- [master](master)
+- [Current stable version (eos3.1)](eos3.1)
+- [Unstable development version (master)](master)
+- Old versions:
+  - [eos3.0](eos3.0)
