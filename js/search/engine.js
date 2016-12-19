@@ -191,8 +191,6 @@ const Engine = Lang.Class({
         if (!GLib.getenv('EKN_DISABLE_UPDATES'))
             domain.check_for_updates();
 
-        domain.load_sync();
-
         // Append shards to default EknVfs for ekn:// uri to work
         Eknc.default_vfs_set_shards(domain.get_shards());
     },

@@ -26,7 +26,8 @@ const Domain = new Lang.Class({
         this._xapian_bridge = xapian_bridge;
 
         this._content_dir = null;
-        this._shard_inited = false;
+
+        this._load_sync();
     },
 
     _get_content_dir: function () {
@@ -34,10 +35,6 @@ const Domain = new Lang.Class({
             this._content_dir = Eknc.get_data_dir(this._app_id);
 
         return this._content_dir;
-    },
-
-    _get_content_path: function () {
-        return this._get_content_dir().get_path();
     },
 
     // Gets the parameters to pass to the Xapian Bridge for this domain.
@@ -142,8 +139,6 @@ const Domain = new Lang.Class({
     },
 
     _load_record_from_hash_sync: function (hash) {
-        this.load_sync();
-
         for (let i = 0; i < this._shards.length; i++) {
             let shard_file = this._shards[i];
             let record = shard_file.find_record_by_hex_name(hash);
@@ -155,40 +150,6 @@ const Domain = new Lang.Class({
     },
 
     get_shards: function (cancellable=null) {
-        if (this._shards === undefined) {
-            let manifest_file = this._get_manifest_file();
-
-            // If the manifest.json doesn't exist, and we have a manifest in the bundle, symlink
-            // to it to bootstrap our subscription.
-            if (!manifest_file.query_exists(cancellable)) {
-                let bundle_dir = this._get_bundle_dir();
-                let bundle_manifest_file = bundle_dir.get_child('manifest.json');
-                if (bundle_manifest_file.query_exists(cancellable)) {
-                    manifest_file.make_symbolic_link(bundle_manifest_file.get_path(), cancellable);
-                } else {
-                    throw new Gio.IOErrorEnum({
-                        message: 'You have no manifest.json and are not ' +
-                            'running from a Flatpak bundle. You must download' +
-                            ' a content update.',
-                        code: Gio.IOErrorEnum.NOT_FOUND,
-                    });
-                }
-            }
-
-            this._make_bundle_symlinks(cancellable);
-
-            let [success, data] = manifest_file.load_contents(cancellable);
-            let manifest = JSON.parse(data);
-
-            let subscription_dir = this._get_subscription_dir();
-            this._shards = manifest.shards.map(function(shard_entry) {
-                let file = subscription_dir.get_child(shard_entry.path);
-                return new EosShard.ShardFile({
-                    path: file.get_path(),
-                });
-            });
-        }
-
         return this._shards;
     },
 
@@ -213,24 +174,45 @@ const Domain = new Lang.Class({
         this._link_tables = tables.filter((t) => t);
     },
 
-    /**
-     * Function: load_sync
-     *
-     * Loads up the shard needed for this domain.
-     */
-    load_sync: function () {
-        if (this._shard_inited)
-            return;
+    _load_sync: function () {
+        let manifest_file = this._get_manifest_file();
 
-        this.get_shards(null);
+        // If the manifest.json doesn't exist, and we have a manifest in the bundle, symlink
+        // to it to bootstrap our subscription.
+        if (!manifest_file.query_exists(null)) {
+            let bundle_dir = this._get_bundle_dir();
+            let bundle_manifest_file = bundle_dir.get_child('manifest.json');
+            if (bundle_manifest_file.query_exists(null)) {
+                manifest_file.make_symbolic_link(bundle_manifest_file.get_path(), null);
+            } else {
+                throw new Gio.IOErrorEnum({
+                    message: 'You have no manifest.json and are not ' +
+                        'running from a Flatpak bundle. You must download' +
+                        ' a content update.',
+                    code: Gio.IOErrorEnum.NOT_FOUND,
+                });
+            }
+        }
+
+        this._make_bundle_symlinks(null);
+
+        let [success, data] = manifest_file.load_contents(null);
+        let manifest = JSON.parse(data);
+
+        let subscription_dir = this._get_subscription_dir();
+        this._shards = manifest.shards.map(function(shard_entry) {
+            let file = subscription_dir.get_child(shard_entry.path);
+            return new EosShard.ShardFile({
+                path: file.get_path(),
+            });
+        });
+
         // Don't allow init() to be cancelled; otherwise,
         // cancellation will spoil the object for future use.
         Eknc.utils_parallel_init(this._shards, 0, null);
 
         // Fetch the link table dictionaries from each shard for link lookups
         this._setup_link_tables();
-
-        this._shard_inited = true;
     },
 
     /**
@@ -291,8 +273,6 @@ const Domain = new Lang.Class({
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
 
         task.catch_errors(() => {
-            this.load_sync();
-
             let domain_params = this._get_domain_query_params();
             this._xapian_bridge.get_fixed_query(query_obj, domain_params, cancellable, task.catch_callback_errors((bridge, bridge_task) => {
                 let result = this._xapian_bridge.get_fixed_query_finish(bridge_task);
@@ -319,8 +299,6 @@ const Domain = new Lang.Class({
     get_objects_by_query: function (query_obj, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
-            this.load_sync();
-
             let domain_params = this._get_domain_query_params();
             this._xapian_bridge.query(query_obj, domain_params, cancellable, task.catch_callback_errors((bridge, query_task) => {
                 let json_ld = this._xapian_bridge.query_finish(query_task);

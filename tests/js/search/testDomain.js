@@ -1,5 +1,4 @@
 const Eknc = imports.gi.EosKnowledgeContent;
-const Gio = imports.gi.Gio;
 
 const Domain = imports.search.domain;
 const Utils = imports.search.utils;
@@ -9,12 +8,10 @@ const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 
 function create_mock_domain_for_version (versionNo) {
     spyOn(Utils, 'get_ekn_version').and.callFake(() => versionNo);
-    let domain = Domain.get_domain_impl('foo', null);
-
     // Don't hit the disk.
-    domain._content_dir = Gio.File.new_for_path('/foo');
+    spyOn(Domain.Domain.prototype, '_load_sync').and.callFake(() => {});
 
-    return domain;
+    return Domain.get_domain_impl('foo', null);
 }
 
 function create_mock_shard_with_link_table (link_table_hash) {

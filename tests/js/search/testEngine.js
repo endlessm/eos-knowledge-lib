@@ -1,36 +1,35 @@
 const Engine = imports.search.engine;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
-const Utils = imports.search.utils;
 
 describe('Engine', function () {
     let engine;
+    let mock_domain;
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
         engine = new Engine.Engine();
         engine.default_app_id = 'foo';
 
-        spyOn(Utils, 'get_ekn_version').and.returnValue(3);
-        let domain = engine._get_domain('foo');
-
-        engine._mock_domain = domain;
+        mock_domain = {
+            get_object_by_id: jasmine.createSpy(),
+            get_object_by_id_finish: jasmine.createSpy(),
+        };
+        spyOn(engine, '_get_domain').and.returnValue(mock_domain);
     });
 
     describe('domain wrap behavior', function () {
         it('calls get_object_by_id correctly', function (done) {
-            let domain = engine._mock_domain;
-
-            spyOn(domain, 'get_object_by_id').and.callFake(function (id, cancellable, callback) {
-                callback(domain, 'testing whether this was called');
+            mock_domain.get_object_by_id.and.callFake(function (id, cancellable, callback) {
+                callback(mock_domain, 'testing whether this was called');
             });
-            spyOn(domain, 'get_object_by_id_finish').and.callFake(function (task) {
+            mock_domain.get_object_by_id_finish.and.callFake(function (task) {
                 return task;
             });
 
             engine.get_object_by_id('ekn:///1234567890abcdef', null, function (engine, task) {
                 let res = engine.get_object_by_id_finish(task);
                 expect(res).toEqual('testing whether this was called');
-                expect(domain.get_object_by_id).toHaveBeenCalled();
+                expect(mock_domain.get_object_by_id).toHaveBeenCalled();
                 done();
             });
         });
