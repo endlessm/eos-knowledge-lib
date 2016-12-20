@@ -276,12 +276,14 @@ ekn_vfs_get_file_for_uri (GVfs *self, const char *uri)
     }
   else if (uri && priv->extensions)
     {
-      gchar *scheme   = g_uri_parse_scheme (uri);
-      GVfs  *delegate = g_hash_table_lookup (priv->extensions, scheme);
+      gchar *scheme = g_uri_parse_scheme (uri);
+      if (scheme)
+        {
+          GVfs  *delegate = g_hash_table_lookup (priv->extensions, scheme);
 
-      if (delegate)
-        retval = g_vfs_get_file_for_uri (delegate, uri);
-
+          if (delegate)
+            retval = g_vfs_get_file_for_uri (delegate, uri);
+        }
       g_free (scheme);
     }
 
