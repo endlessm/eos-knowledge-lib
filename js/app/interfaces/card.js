@@ -316,10 +316,10 @@ const Card = new Lang.Interface({
             tags_match_any: set_obj.child_tags,
             limit: -1,
         });
-        Engine.get_default().get_objects_by_query(query, null, (engine, task) => {
+        Engine.get_default().get_objects_for_query(query, null, (engine, task) => {
             let results, info;
             try {
-                [results, info] = engine.get_objects_by_query_finish(task);
+                [results, info] = engine.get_objects_for_query_finish(task);
                 let reached_bottom = true;
                 results.forEach((obj) => {
                     if (obj instanceof Eknc.SetObjectModel) {

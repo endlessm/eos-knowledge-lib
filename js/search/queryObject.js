@@ -70,7 +70,7 @@ const QueryObjectOrder = Utils.define_enum(['ASCENDING', 'DESCENDING']);
  * Class: QueryObject
  *
  * The QueryObject class allows you to describe a query to a knowledge app
- * database for articles. Use this with <Engine.get_object_by_id> to retrieve
+ * database for articles. Use this with <Engine.get_object> to retrieve
  * article from the database.
  *
  * This class has no functionality, but is just a bag of properties to tweak

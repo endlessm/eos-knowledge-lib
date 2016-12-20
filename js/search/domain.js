@@ -8,7 +8,6 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 
 const AsyncTask = imports.search.asyncTask;
-const Downloader = imports.search.downloader;
 const Utils = imports.search.utils;
 
 // This hash is derived from sha1('link-table'), and for now is the hardcoded
@@ -231,7 +230,7 @@ const Domain = new Lang.Class({
         return false;
     },
 
-    get_object_by_id: function (id, cancellable, callback) {
+    get_object: function (id, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
             let [hash] = Utils.components_from_ekn_id(id);
@@ -246,7 +245,7 @@ const Domain = new Lang.Class({
         return task;
     },
 
-    get_object_by_id_finish: function (task) {
+    get_object_finish: function (task) {
         return task.finish();
     },
 
@@ -296,7 +295,7 @@ const Domain = new Lang.Class({
         return task.finish();
     },
 
-    get_objects_by_query: function (query_obj, cancellable, callback) {
+    get_objects_for_query: function (query_obj, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
             let domain_params = this._get_domain_query_params();
@@ -315,8 +314,8 @@ const Domain = new Lang.Class({
 
                 AsyncTask.all(this, (add_task) => {
                     json_ld.results.forEach((result) => {
-                        add_task((cancellable, callback) => this.get_object_by_id(result, cancellable, callback),
-                                 (task) => this.get_object_by_id_finish(task));
+                        add_task((cancellable, callback) => this.get_object(result, cancellable, callback),
+                                 (task) => this.get_object_finish(task));
                     });
                 }, cancellable, task.catch_callback_errors((source, resolve_task) => {
                     let results = AsyncTask.all_finish(resolve_task);
@@ -327,39 +326,8 @@ const Domain = new Lang.Class({
         return task;
     },
 
-    get_objects_by_query_finish: function (task) {
+    get_objects_for_query_finish: function (task) {
         return task.finish();
-    },
-
-    /**
-     * Function: check_for_updates
-     *
-     * Synchronously check for updates to the domain.
-     */
-    check_for_updates: function () {
-        let subscription_entry = this._get_subscription_entry();
-        let id = subscription_entry.id;
-        let disable_updates = !!subscription_entry.disable_updates;
-
-        if (disable_updates)
-            return;
-
-        let downloader = Downloader.get_default();
-
-        // Synchronously apply any update we have.
-        downloader.apply_update(id, null, (downloader, result) => {
-            downloader.apply_update_finish(result);
-
-            // Regardless of whether or not we applied an update,
-            // let's see about fetching a new one...
-            downloader.fetch_update(id, null, (downloader, result) => {
-                try {
-                    downloader.fetch_update_finish(result);
-                } catch(e) {
-                    logError(e, Format.vprintf("Could not update subscription ID: %s", [id]));
-                }
-            });
-        });
     },
 });
 

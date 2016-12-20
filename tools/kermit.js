@@ -472,9 +472,9 @@ function query (app_id, query_string) {
 }
 
 function perform_query (engine, query_obj) {
-    engine.get_objects_by_query(query_obj, null, (engine, task) => {
+    engine.get_objects_for_query(query_obj, null, (engine, task) => {
         try {
-            let [results, info] = engine.get_objects_by_query_finish(task);
+            let [results, info] = engine.get_objects_for_query_finish(task);
             results.forEach(function (result) {
                 let id = normalize_ekn_id(result.ekn_id);
                 print_result(id, result.content_type, result.title);

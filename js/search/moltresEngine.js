@@ -46,7 +46,7 @@ const MoltresEngine = new Lang.Class({
 
     get_ekn_id: function () {},
 
-    get_object_by_id: function (ekn_id, cancellable, callback) {
+    get_object: function (ekn_id, cancellable, callback) {
         let set = this._set_models.filter((model) => {
             return model.ekn_id === ekn_id;
         })[0];
@@ -74,7 +74,7 @@ const MoltresEngine = new Lang.Class({
         callback(this);
     },
 
-    get_object_by_id_finish: function () {
+    get_object_finish: function () {
         return this._to_return;
     },
 
@@ -120,7 +120,7 @@ const MoltresEngine = new Lang.Class({
         }
     },
 
-    get_objects_by_query: function (query, cancellable, callback) {
+    get_objects_for_query: function (query, cancellable, callback) {
         let generation_func;
         if (query.tags_match_all.indexOf('EknSetObject') >= 0) {
             this._get_sets(query);
@@ -131,7 +131,7 @@ const MoltresEngine = new Lang.Class({
         callback(this);
     },
 
-    get_objects_by_query_finish: function () {
+    get_objects_for_query_finish: function () {
         return [this._to_return, this._info];
     },
 

@@ -76,14 +76,14 @@ const Xapian = new Module.Class({
 
         this._loading = true;
         this.notify('loading');
-        engine.get_objects_by_query(query, null, (engine, task) => {
+        engine.get_objects_for_query(query, null, (engine, task) => {
             this._loading = false;
             this._set_needs_refresh(false);
             this.notify('loading');
 
             let results, info;
             try {
-                [results, info] = engine.get_objects_by_query_finish(task);
+                [results, info] = engine.get_objects_for_query_finish(task);
                 this._exception = null;
                 if (this._error_state) {
                     this._error_state = false;

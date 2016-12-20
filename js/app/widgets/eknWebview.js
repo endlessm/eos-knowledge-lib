@@ -119,8 +119,8 @@ const EknWebview = new Knowledge.Class({
 
     _load_object: function (id, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        Engine.get_default().get_object_by_id(id, cancellable, task.catch_callback_errors((engine, load_task) => {
-            let model = engine.get_object_by_id_finish(load_task);
+        Engine.get_default().get_object(id, cancellable, task.catch_callback_errors((engine, load_task) => {
+            let model = engine.get_object_finish(load_task);
             if (model instanceof Eknc.ArticleObjectModel) {
                 let html = this.renderer.render(model);
                 let bytes = ByteArray.fromString(html).toGBytes();
