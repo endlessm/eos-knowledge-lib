@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-11-22 02:49+0000\n"
+"POT-Creation-Date: 2016-12-13 02:57+0000\n"
 "PO-Revision-Date: 2016-12-02 16:35+0000\n"
 "Last-Translator: Shimon Sharmin <oparthib@gmail.com>\n"
 "Language-Team: Bengali (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/bn/)\n"
@@ -147,7 +147,7 @@ msgstr "বিষয় কৃতজ্ঞতা {ব্লগ-লিঙ্ক}, {�
 msgid "Results were found for “%s”"
 msgstr "“%s”এর জন্য প্রাপ্ত ফলাফল "
 
-#: js/app/interfaces/card.js:338
+#: js/app/interfaces/card.js:337
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"

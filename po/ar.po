@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-11-22 02:49+0000\n"
+"POT-Creation-Date: 2016-12-13 02:57+0000\n"
 "PO-Revision-Date: 2016-11-22 02:50+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/ar/)\n"
@@ -146,7 +146,7 @@ msgstr "المحتوى مهدى من {blog-link}، ومرخص بموجب {licens
 msgid "Results were found for “%s”"
 msgstr "النتائج التي عثرنا عليها لـ “%s”"
 
-#: js/app/interfaces/card.js:338
+#: js/app/interfaces/card.js:337
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
