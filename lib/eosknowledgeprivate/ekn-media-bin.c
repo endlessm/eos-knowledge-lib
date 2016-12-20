@@ -55,7 +55,7 @@ GST_DEBUG_CATEGORY_STATIC (ekn_media_bin_debug);
 
 struct _EknMediaBin
 {
-  GtkWindow parent;
+  GtkBox parent;
 };
 
 typedef struct
@@ -106,6 +106,9 @@ typedef struct
 
   guint tick_id;             /* Widget frame clock tick callback (used to update UI) */
   GdkEventType pressed_button_type;
+
+  gint video_width;
+  gint video_height;
 
   /* Gst support */
   GstElement *play;          /* playbin element */
@@ -425,28 +428,6 @@ ekn_media_bin_update_state (EknMediaBin *self)
       g_object_set (priv->play, "uri", priv->uri, NULL);
       gst_element_set_state (priv->play, priv->state);
     }
-}
-
-static inline gboolean
-ekn_media_bin_get_sample_size (EknMediaBin *self,
-                               GstSample   *sample,
-                               gint        *width,
-                               gint        *height)
-{
-  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
-  GstStructure *caps_struct;
-  GstCaps *caps;
-
-  if (sample == NULL)
-    g_object_get (priv->play, "sample", &sample, NULL);
-
-  if (!sample || !(caps = gst_sample_get_caps (sample)))
-    return FALSE;
-
-  caps_struct = gst_caps_get_structure (caps, 0);
-
-  return (gst_structure_get_int (caps_struct, "width", width) &&
-          gst_structure_get_int (caps_struct, "height", height));
 }
 
 static inline GtkWidget *
@@ -869,6 +850,35 @@ ekn_media_bin_get_property (GObject    *object,
     }
 }
 
+static GtkSizeRequestMode
+ekn_media_bin_get_request_mode (GtkWidget *self)
+{
+  return GTK_SIZE_REQUEST_CONSTANT_SIZE;
+}
+
+
+static void
+ekn_media_bin_get_preferred_width (GtkWidget *self,
+                                   gint      *minimum_width,
+                                   gint      *natural_width)
+{
+  EknMediaBinPrivate *priv = EMB_PRIVATE (EKN_MEDIA_BIN (self));
+
+  *minimum_width = 320;
+  *natural_width = priv->video_width ? priv->video_width : 320;
+}
+
+static void
+ekn_media_bin_get_preferred_height (GtkWidget *self,
+                                    gint      *minimum_height,
+                                    gint      *natural_height)
+{
+  EknMediaBinPrivate *priv = EMB_PRIVATE (EKN_MEDIA_BIN (self));
+
+  *minimum_height = 240;
+  *natural_height = priv->video_height ? priv->video_height : 240;
+}
+
 #define EMB_DEFINE_ACTION_SIGNAL(klass, name, handler,...) \
   g_signal_new_class_handler (name, \
                               G_TYPE_FROM_CLASS (klass), \
@@ -886,6 +896,10 @@ ekn_media_bin_class_init (EknMediaBinClass *klass)
   object_class->finalize = ekn_media_bin_finalize;
   object_class->set_property = ekn_media_bin_set_property;
   object_class->get_property = ekn_media_bin_get_property;
+
+  widget_class->get_request_mode = ekn_media_bin_get_request_mode;
+  widget_class->get_preferred_width = ekn_media_bin_get_preferred_width;
+  widget_class->get_preferred_height = ekn_media_bin_get_preferred_height;
 
   /* Properties */
   properties[PROP_URI] =
@@ -1300,17 +1314,20 @@ print_tag (const GstTagList *list, const gchar *tag, gpointer data)
 }
 
 static inline void
+meta_data_strings_set_title (MetaDataStrings *metadata, const gchar *title)
+{
+  g_string_assign (metadata->tag, title);
+  g_string_assign (metadata->val, "");
+}
+
+static inline void
 meta_data_strings_set_info (MetaDataStrings *metadata,
                             GtkLabel        *left,
                             GtkLabel        *right,
-                            GstTagList      *tags,
-                            const gchar     *title)
+                            GstTagList      *tags)
 {
   if (tags)
     {
-      g_string_assign (metadata->tag, title);
-      g_string_assign (metadata->val, "");
-
       gst_tag_list_foreach (tags, print_tag, metadata);
 
       gtk_label_set_label (left, metadata->tag->str);
@@ -1329,23 +1346,28 @@ ekn_media_bin_update_stream_info (EknMediaBin *self)
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
   MetaDataStrings metadata = { g_string_new (""), g_string_new ("") };
 
+  meta_data_strings_set_title (&metadata, "Audio:");
   meta_data_strings_set_info (&metadata,
                               priv->info_column_label[0],
                               priv->info_column_label[1],
-                              priv->audio_tags,
-                              "Audio:");
+                              priv->audio_tags);
 
+  meta_data_strings_set_title (&metadata, "Video:");
+  if (priv->video_width && priv->video_height)
+    {
+      g_string_append_printf (metadata.tag, "\n    video-resolution");
+      g_string_append_printf (metadata.val, "\n: %dx%d", priv->video_width, priv->video_height);
+    }
   meta_data_strings_set_info (&metadata,
                               priv->info_column_label[2],
                               priv->info_column_label[3],
-                              priv->video_tags,
-                              "Video:");
+                              priv->video_tags);
 
+  meta_data_strings_set_title (&metadata, "Text:");
   meta_data_strings_set_info (&metadata,
                               priv->info_column_label[4],
                               priv->info_column_label[5],
-                              priv->text_tags,
-                              "Text:");
+                              priv->text_tags);
 
   g_string_free (metadata.tag, TRUE);
   g_string_free (metadata.val, TRUE);
@@ -1452,6 +1474,47 @@ ekn_media_bin_handle_msg_tag (EknMediaBin *self, GstMessage *msg)
   g_clear_pointer (&old_tags, gst_tag_list_unref);
 }
 
+static inline void
+ekn_media_bin_handle_streams_selected (EknMediaBin *self, GstMessage *msg)
+{
+  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
+  GstStreamCollection *collection = NULL;
+  GstStructure *caps_struct;
+  GstStream *stream;
+  GstCaps *caps;
+  gint i, n, w, h;
+
+  gst_message_parse_streams_selected (msg, &collection);
+  n = gst_stream_collection_get_size (collection);
+
+  for (i = 0; i < n; i++)
+    {
+      stream = gst_stream_collection_get_stream (collection, i);
+
+      if (gst_stream_get_stream_type (stream) == GST_STREAM_TYPE_VIDEO)
+        break;
+    }
+
+  caps = gst_stream_get_caps (stream);
+  caps_struct = gst_caps_get_structure (caps, 0);
+
+  if (gst_structure_get_int (caps_struct, "width", &w) &&
+      gst_structure_get_int (caps_struct, "height", &h))
+    {
+      if (priv->video_width != w || priv->video_height != h)
+        {
+          priv->video_width = w;
+          priv->video_height = h;
+          gtk_widget_queue_resize (GTK_WIDGET (self));
+        }
+    }
+  else
+    priv->video_width = priv->video_height = 0;
+
+  gst_caps_unref (caps);
+  gst_object_unref (collection);
+}
+
 static gboolean
 ekn_media_bin_bus_watch (GstBus *bus, GstMessage *msg, gpointer data)
 {
@@ -1472,6 +1535,9 @@ ekn_media_bin_bus_watch (GstBus *bus, GstMessage *msg, gpointer data)
       return ekn_media_bin_handle_msg_error (self, msg);
     case GST_MESSAGE_STATE_CHANGED:
       ekn_media_bin_handle_msg_state_changed (self, msg);
+      break;
+    case GST_MESSAGE_STREAMS_SELECTED:
+      ekn_media_bin_handle_streams_selected (self, msg);
       break;
     case GST_MESSAGE_TAG:
       ekn_media_bin_handle_msg_tag (self, msg);
@@ -1783,7 +1849,20 @@ ekn_media_bin_screenshot (EknMediaBin *self, gint width, gint height)
   g_signal_emit_by_name (priv->play, "convert-sample", caps, &sample);
   gst_caps_unref (caps);
 
-  if (!sample || !ekn_media_bin_get_sample_size (self, sample, &width, &height))
+  if (sample)
+    {
+      GstStructure *caps_struct;
+
+      if (!(caps = gst_sample_get_caps (sample)))
+        return NULL;
+
+      caps_struct = gst_caps_get_structure (caps, 0);
+
+      if (!(gst_structure_get_int (caps_struct, "width", &width) &&
+            gst_structure_get_int (caps_struct, "height", &height)))
+        return NULL;
+    }
+  else
     {
       /* FIXME: gst does not suport converting from video/x-raw(memory:GLMemory) */
       g_warning ("Could not get video sample");

@@ -239,7 +239,7 @@ for GStreamer 1.0 and rerun autogen.sh.])
 ])
 have_all_elements=yes
 m4_map_args_w([
-		playbin
+		playbin3
 		glsinkbin
 		gtksink
 		gtkglsink
@@ -259,7 +259,7 @@ m4_map_args_w([
 		oggdemux
 		oggparse
 		pulsesink],
-		[GST_ELEMENT_CHECK(], [, [1.8.2], [], [have_all_elements=no])])
+		[GST_ELEMENT_CHECK(], [, [1.10.0], [], [have_all_elements=no])])
 			AS_IF([test "x$have_all_elements" = "xno"],
 				[AC_MSG_ERROR([One or more required GStreamer elements were not found.
 You will have to install your system's "base", "good", and "bad" plugins
