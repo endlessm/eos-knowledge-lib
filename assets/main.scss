@@ -1,0 +1,46 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+@charset "utf-8";
+@import url('https://fonts.googleapis.com/css?family=Lato|Montserrat');
+
+// Our variables
+$base-font-family: Lato, sans-serif;
+$base-font-size:   18px;
+$base-font-weight: 400;
+$small-font-size:  $base-font-size * 0.875;
+$base-line-height: 1.5;
+
+$spacing-unit:     30px;
+
+$text-color:       #12272e;
+$background-color: #ffffff;
+$brand-color:      #f15a22;
+
+$grey-color:       #cdcdc5;
+$grey-color-light: lighten($grey-color, 10%);
+$grey-color-dark:  darken($grey-color, 25%);
+
+// Width of the content area
+$content-width:    800px;
+
+$on-palm:          600px;
+$on-laptop:        800px;
+
+// Import partials from the `minima` theme.
+@import "minima";
+
+// Some tweaks to make it look more Endless-y
+h1, h2, h3, h4, h5, h6, header {
+    font-family: Montserrat, sans-serif;
+    font-weight: bold;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: $brand-color;
+}
+
+// Remove lilac background color of code snippets, it clashes
+.highlighter-rouge .highlight, pre, code {
+    background-color: $grey-color-light;
+}
