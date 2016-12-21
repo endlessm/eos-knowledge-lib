@@ -1,13 +1,12 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 const AsyncTask = imports.search.asyncTask;
 const Domain = imports.search.domain;
-const QueryObject = imports.search.queryObject;
 const Utils = imports.search.utils;
-const XapianBridge = imports.search.xapianBridge;
 
 /**
  * Class: Engine
@@ -50,7 +49,7 @@ const Engine = Lang.Class({
     _init: function (params) {
         this.parent(params);
 
-        this._xapian_bridge = new XapianBridge.XapianBridge({ language: this.language });
+        this._xapian_bridge = new Eknc.XapianBridge({ language: this.language });
 
         this._domain_cache = {};
     },
@@ -144,7 +143,7 @@ const Engine = Lang.Class({
         task.catch_errors(() => {
             if (query_obj.app_id === '') {
                 this._check_default_domain();
-                query_obj = QueryObject.QueryObject.new_from_object(query_obj, { app_id: this.default_app_id });
+                query_obj = Eknc.QueryObject.new_from_object(query_obj, { app_id: this.default_app_id });
             }
 
             let domain_obj = this._get_domain(query_obj.app_id);

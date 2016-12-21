@@ -2,11 +2,12 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
+
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
-const QueryObject = imports.search.queryObject;
 const Xapian = imports.app.modules.selection.xapian;
 
 const ArticlesForSetCrossSection = new Module.Class({
@@ -28,10 +29,10 @@ const ArticlesForSetCrossSection = new Module.Class({
         let current_set = HistoryStore.get_default().current_set;
         if (current_set)
             tags = tags.concat(current_set.child_tags);
-        return new QueryObject.QueryObject({
+        return Eknc.QueryObject.new_from_props({
             limit: limit,
             tags_match_all: tags,
-            sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
+            sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,
         });
     },
 

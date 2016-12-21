@@ -1,11 +1,11 @@
-const QueryObject = imports.search.queryObject;
+const Eknc = imports.gi.EosKnowledgeContent;
 
 describe('QueryObject', function () {
     it('sets tags and ids objects properly', function () {
         let ids = ['ekn://busters-es/0123456789012345',
                    'ekn://busters-es/fabaffacabacbafa'];
         let tags = ['Venkman', 'Stantz'];
-        let query_obj = new QueryObject.QueryObject({
+        let query_obj = Eknc.QueryObject.new_from_props({
             ids: ids,
             tags_match_any: tags,
         });
@@ -17,7 +17,7 @@ describe('QueryObject', function () {
         let ids = ['ekn://busters-es/0123456789012345',
                    'ekn://busters-es/fabaffacabacbafa'];
         let tags = ['Venkman', 'Stantz'];
-        let query_obj = new QueryObject.QueryObject({
+        let query_obj = Eknc.QueryObject.new_from_props({
             ids: ids,
             tags_match_any: tags,
         });
@@ -31,11 +31,11 @@ describe('QueryObject', function () {
         it('duplicates properties from source object', function () {
             let tags = ['Venkman', 'Stantz'];
             let query = 'keymaster';
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 tags_match_any: tags,
                 query: query,
             });
-            let query_obj_copy = QueryObject.QueryObject.new_from_object(query_obj);
+            let query_obj_copy = Eknc.QueryObject.new_from_object(query_obj);
             expect(query_obj_copy.tags_match_any).toEqual(tags);
             expect(query_obj_copy.query).toEqual(query);
         });
@@ -43,12 +43,12 @@ describe('QueryObject', function () {
         it('allows properties to be overridden', function () {
             let tags = ['Venkman', 'Stantz'];
             let query = 'keymaster';
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 tags_match_any: tags,
                 query: query,
             });
             let new_query = 'gatekeeper';
-            let new_query_object = QueryObject.QueryObject.new_from_object(query_obj, {
+            let new_query_object = Eknc.QueryObject.new_from_object(query_obj, {
                 query: new_query
             });
             expect(new_query_object.tags_match_any).toEqual(tags);
@@ -57,31 +57,31 @@ describe('QueryObject', function () {
     });
 
     it('should map sort property to xapian sort value', function () {
-        let query_obj = new QueryObject.QueryObject({
+        let query_obj = Eknc.QueryObject.new_from_props({
             query: 'tyrion wins',
-            sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
+            sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,
         });
         let result = query_obj.get_sort_value(query_obj);
         expect(result).toBe(0);
 
-        query_obj = new QueryObject.QueryObject({
+        query_obj = Eknc.QueryObject.new_from_props({
             query: 'tyrion wins',
         });
         let undefined_result = query_obj.get_sort_value(query_obj);
-        expect(undefined_result).toBe(undefined);
+        expect(undefined_result).toBe(-1);
     });
 
     it('should map match type to xapian cutoff value', () => {
-        let query_obj = new QueryObject.QueryObject({
+        let query_obj = Eknc.QueryObject.new_from_props({
             query: 'tyrion wins',
-            match: QueryObject.QueryObjectMatch.TITLE_SYNOPSIS,
+            match: Eknc.QueryObjectMatch.TITLE_SYNOPSIS,
         });
         let result = query_obj.get_cutoff(query_obj);
         expect(result).toBe(20);
 
-        query_obj = new QueryObject.QueryObject({
+        query_obj = Eknc.QueryObject.new_from_props({
             query: 'tyrion wins',
-            match: QueryObject.QueryObjectMatch.TITLE_ONLY,
+            match: Eknc.QueryObjectMatch.ONLY_TITLE,
         });
         let result = query_obj.get_cutoff(query_obj);
         expect(result).toBe(10);
@@ -89,7 +89,7 @@ describe('QueryObject', function () {
 
     describe('query parser string', () => {
         it('contains expected terms', function () {
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 query: 'foo bar baz',
             });
             let result = query_obj.get_query_parser_string(query_obj);
@@ -100,7 +100,7 @@ describe('QueryObject', function () {
         });
 
         it('creates title clause based on the stop-free-query if provided', () => {
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 query: 'foo bar baz',
                 stopword_free_query: 'oof rab zab',
             });
@@ -116,17 +116,17 @@ describe('QueryObject', function () {
         });
 
         it('adds wildcard terms only for incremental search', function () {
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 query: 'foo',
-                type: QueryObject.QueryObjectType.INCREMENTAL,
+                mode: Eknc.QueryObjectMode.INCREMENTAL,
             });
             let result = query_obj.get_query_parser_string(query_obj);
             expect(result).toMatch('exact_title:Foo\\*');
             expect(result).toMatch('title:foo\\*');
 
-            query_obj = new QueryObject.QueryObject({
+            query_obj = Eknc.QueryObject.new_from_props({
                 query: 'foo',
-                type: QueryObject.QueryObjectType.DELIMITED,
+                mode: Eknc.QueryObjectMode.DELIMITED,
             });
             result = query_obj.get_query_parser_string(query_obj);
             expect(result).not.toMatch('exact_title:Foo\\*');
@@ -134,19 +134,19 @@ describe('QueryObject', function () {
         });
 
         it('contains terms without title prefix if matching synopsis', function () {
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 query: 'littl searc',
-                match: QueryObject.QueryObjectMatch.TITLE_SYNOPSIS,
+                match: Eknc.QueryObjectMatch.TITLE_SYNOPSIS,
             });
             let result = query_obj.get_query_parser_string(query_obj);
             expect(result).toMatch(/\(littl OR littl\*\) AND \(searc OR searc\*\)/);
         });
 
         it('uses stopword free terms if matching synopsis', function () {
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 query: 'littl searc',
                 stopword_free_query: 'no stopwords',
-                match: QueryObject.QueryObjectMatch.TITLE_SYNOPSIS,
+                match: Eknc.QueryObjectMatch.TITLE_SYNOPSIS,
             });
             let result = query_obj.get_query_parser_string(query_obj);
             expect(result).toMatch(/\(no OR no\*\) AND \(stopwords OR stopwords\*\)/);
@@ -154,9 +154,9 @@ describe('QueryObject', function () {
         });
 
         it('only uses exact title search for single character queries', function () {
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 query: 'a',
-                type: QueryObject.QueryObjectType.INCREMENTAL,
+                mode: Eknc.QueryObjectMode.INCREMENTAL,
             });
             let result = query_obj.get_query_parser_string(query_obj);
             expect(result).toMatch('exact_title:A');
@@ -165,7 +165,7 @@ describe('QueryObject', function () {
         });
 
         it('should ignore excess whitespace (except for tags)', function () {
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 query: 'whoa      man',
             });
             let result = query_obj.get_query_parser_string(query_obj);
@@ -175,7 +175,7 @@ describe('QueryObject', function () {
         });
 
         it('should treat semi colons as whitespace', function () {
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 query: 'whoa;man',
             });
             let result = query_obj.get_query_parser_string(query_obj);
@@ -185,7 +185,7 @@ describe('QueryObject', function () {
         });
 
         it('should lowercase xapian operator terms', function () {
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 query: 'PENN AND tELLER',
             });
             let result = query_obj.get_query_parser_string(query_obj);
@@ -193,7 +193,7 @@ describe('QueryObject', function () {
         });
 
         it('should remove parentheses in user terms', function () {
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 query: 'foo (bar) baz ((',
             });
             let result = query_obj.get_query_parser_string(query_obj);
@@ -201,7 +201,7 @@ describe('QueryObject', function () {
         });
 
         it('contains ids from query object', function () {
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 app_id: 'app-id',
                 ids: ['ekn://domain/0123456789abcdef',
                       'ekn://domain/fedcba9876543210'],
@@ -211,7 +211,7 @@ describe('QueryObject', function () {
         });
 
         it('contains tags from query object', function () {
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 tags_match_any: ['cats', 'dogs', 'turtles'],
             });
             let result = query_obj.get_query_parser_string(query_obj);
@@ -219,7 +219,7 @@ describe('QueryObject', function () {
         });
 
         it('joins tags with AND for tag-match all', function () {
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 tags_match_all: ['cats', 'dogs', 'turtles'],
             });
             let result = query_obj.get_query_parser_string(query_obj);
@@ -227,7 +227,7 @@ describe('QueryObject', function () {
         });
 
         it('should surround multiword tags in quotes', function () {
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 tags_match_any: ['cat zombies'],
             });
             let result = query_obj.get_query_parser_string(query_obj);
@@ -235,7 +235,7 @@ describe('QueryObject', function () {
         });
 
         it('filters unwanted tags and ids', function () {
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 query: 'tyrion wins',
                 excluded_ids: [
                     'ekn://fake-domain/cleganebowlfever',
@@ -252,7 +252,7 @@ describe('QueryObject', function () {
 
         it('should handle large queries', function () {
             let long_query = 'q'.repeat(300);
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 query: long_query,
             });
             let result = query_obj.get_query_parser_string(query_obj);
@@ -265,7 +265,7 @@ describe('QueryObject', function () {
 
         it('should handle large queries with non-ASCII characters', function () {
             let long_query = 'ç'.repeat(300);
-            let query_obj = new QueryObject.QueryObject({
+            let query_obj = Eknc.QueryObject.new_from_props({
                 query: long_query,
             });
             let result = query_obj.get_query_parser_string(query_obj);
@@ -282,63 +282,57 @@ describe('QueryObject', function () {
 
         describe('id checking code', function () {
             it('validates a simple EKN ID', function () {
-                let query_obj = new QueryObject.QueryObject({
+                let query_obj = Eknc.QueryObject.new_from_props({
                     app_id: 'com.endlessm.travel-es',
                     ids: ['ekn://travel-es/2e11617b6bce1e6d'],
                 });
-                expect(function () {
-                    query_obj.get_query_parser_string(query_obj);
-                }).not.toThrow();
+                let result = query_obj.get_query_parser_string(query_obj);
+                expect(result).toMatch('2e11617b6bce1e6d');
             });
 
             it('validates an EKN ID with uppercase hex digits', function () {
-                let query_obj = new QueryObject.QueryObject({
+                let query_obj = Eknc.QueryObject.new_from_props({
                     app_id: 'com.endlessm.travel-es',
                     ids: ['ekn://travel-es/2E11617B6BCE1E6D'],
                 });
-                expect(function () {
-                    query_obj.get_query_parser_string(query_obj);
-                }).not.toThrow();
+                let result = query_obj.get_query_parser_string(query_obj);
+                expect(result).toMatch('2E11617B6BCE1E6D');
             });
 
             it('rejects an EKN ID with an invalid hash', function () {
-                let query_obj = new QueryObject.QueryObject({
+                let query_obj = Eknc.QueryObject.new_from_props({
                     app_id: 'com.endlessm.bad1',
                     ids: ['ekn://bad1/someha$h'],
                 });
-                expect(function () {
-                    query_obj.get_query_parser_string(query_obj);
-                }).toThrow();
+                let result = query_obj.get_query_parser_string(query_obj);
+                expect(result).not.toMatch('id:');
             });
 
             it('rejects an EKN ID with the wrong URI scheme', function () {
-                let query_obj = new QueryObject.QueryObject({
+                let query_obj = Eknc.QueryObject.new_from_props({
                     app_id: 'com.endlessm.bad1',
                     ids: ['bad1/2e11617b6bce1e6d'],
                 });
-                expect(function () {
-                    query_obj.get_query_parser_string(query_obj);
-                }).toThrow();
+                let result = query_obj.get_query_parser_string(query_obj);
+                expect(result).not.toMatch('id:');
             });
 
             it('rejects an EKN ID with no hash', function () {
-                let query_obj = new QueryObject.QueryObject({
+                let query_obj = Eknc.QueryObject.new_from_props({
                     app_id: 'com.endlessm.scuba-diving-es',
                     ids: ['ekn://scuba-diving-es'],
                 });
-                expect(function () {
-                    query_obj.get_query_parser_string(query_obj);
-                }).toThrow();
+                let result = query_obj.get_query_parser_string(query_obj);
+                expect(result).not.toMatch('id:');
             });
 
             it('rejects an EKN ID with too many parts', function () {
-                let query_obj = new QueryObject.QueryObject({
+                let query_obj = Eknc.QueryObject.new_from_props({
                     app_id: 'ccom.endlessm.travel-es',
                     ids: ['ekn://travel-es/2e11617b6bce1e6d/too/many/parts'],
                 });
-                expect(function () {
-                    query_obj.get_query_parser_string(query_obj);
-                }).toThrow();
+                let result = query_obj.get_query_parser_string(query_obj);
+                expect(result).not.toMatch('id:');
             });
         });
     });

@@ -2,11 +2,11 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const GObject = imports.gi.GObject;
 
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
-const QueryObject = imports.search.queryObject;
 const SetMap = imports.app.setMap;
 const Xapian = imports.app.modules.selection.xapian;
 
@@ -69,11 +69,11 @@ const SubsetsForSet = new Module.Class({
         if (!this.model)
             return null;
 
-        return new QueryObject.QueryObject({
+        return Eknc.QueryObject.new_from_props({
             limit: limit,
             tags_match_any: this.model.child_tags,
             tags_match_all: ['EknSetObject'],
-            sort: QueryObject.QueryObjectSort.SEQUENCE_NUMBER,
+            sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,
         });
     },
 });

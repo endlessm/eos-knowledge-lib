@@ -2,7 +2,6 @@ const Engine = imports.search.engine;
 const EosShard = imports.gi.EosShard;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
-const QueryObject = imports.search.queryObject;
 const System = imports.system;
 
 const USAGE = [
@@ -460,7 +459,7 @@ function _pretty_print_table (elements) {
 
 function query (app_id, query_string) {
     let engine = new Engine.Engine();
-    let query_obj = new QueryObject.QueryObject({
+    let query_obj = Eknc.QueryObject.new_from_props({
         query: query_string,
         limit: BATCH_SIZE,
         app_id: app_id,
@@ -485,7 +484,7 @@ function perform_query (engine, query_obj) {
             if (results.length < BATCH_SIZE) {
                 System.exit(0);
             } else {
-                let more_results_query = QueryObject.QueryObject.new_from_object(query_obj, {
+                let more_results_query = Eknc.QueryObject.new_from_object(query_obj, {
                     offset: query_obj.offset + results.length,
                 });
                 perform_query(engine, more_results_query);

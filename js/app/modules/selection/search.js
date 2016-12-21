@@ -2,9 +2,10 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
+
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
-const QueryObject = imports.search.queryObject;
 const Xapian = imports.app.modules.selection.xapian;
 
 const Search = new Module.Class({
@@ -22,7 +23,7 @@ const Search = new Module.Class({
         let query = HistoryStore.get_default().current_query;
         if (query_index > 0 || query.length === 0)
             return null;
-        return new QueryObject.QueryObject({
+        return Eknc.QueryObject.new_from_props({
             query: query,
             limit: limit,
             tags_match_all: ['EknArticleObject'],

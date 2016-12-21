@@ -17,6 +17,7 @@ ACLOCAL_AMFLAGS = -I m4
 # Forward declare variables we'll be modifying all over
 CLEANFILES =
 DISTCLEANFILES =
+BUILT_SOURCES =
 EXTRA_DIST = README.md eos-knowledge-content.pc.in
 lib_LTLIBRARIES =
 
@@ -58,17 +59,19 @@ install-data-hook:
 # # # CONTENT LIBRARY # # #
 
 ekncontent_public_installed_headers = ekncontent/eos-knowledge-content.h
+ekncontent_built_installed_headers = ekncontent/eknc-version.h
 ekncontent_private_installed_headers = \
 	ekncontent/eknc-article-object-model.h \
 	ekncontent/eknc-content-object-model.h \
 	ekncontent/eknc-image-object-model.h \
 	ekncontent/eknc-media-object-model.h \
 	ekncontent/eknc-object-model.h \
+	ekncontent/eknc-query-object.h \
 	ekncontent/eknc-set-object-model.h \
 	ekncontent/eknc-subtree-dispatcher.h \
 	ekncontent/eknc-utils.h \
-	ekncontent/eknc-version.h \
 	ekncontent/eknc-video-object-model.h \
+	ekncontent/eknc-xapian-bridge.h \
 	$(NULL)
 ekncontent_sources = \
 	ekncontent/eknc-article-object-model.c \
@@ -78,16 +81,29 @@ ekncontent_sources = \
 	ekncontent/eknc-media-object-model-private.h \
 	ekncontent/eknc-media-object-model.c \
 	ekncontent/eknc-object-model.c \
+	ekncontent/eknc-query-object.c \
 	ekncontent/eknc-set-object-model.c \
 	ekncontent/eknc-subtree-dispatcher.c \
 	ekncontent/eknc-utils-private.h \
 	ekncontent/eknc-utils.c \
 	ekncontent/eknc-video-object-model.c \
+	ekncontent/eknc-xapian-bridge.c \
 	$(NULL)
+
+glib_enum_headers = \
+	$(ekncontent_public_installed_headers) \
+	$(ekncontent_private_installed_headers) \
+	$(NULL)
+glib_enum_h = ekncontent/eknc-enums.h
+glib_enum_c = ekncontent/eknc-enums.c
+include $(top_srcdir)/Makefile.am.enums
 
 lib_LTLIBRARIES += libeos-knowledge-content-@EKN_CONTENT_API_VERSION@.la
 libeos_knowledge_content_@EKN_CONTENT_API_VERSION@_la_SOURCES = \
+	$(glib_enum_h) \
+	$(glib_enum_c) \
 	$(ekncontent_public_installed_headers) \
+	$(ekncontent_built_installed_headers) \
 	$(ekncontent_private_installed_headers) \
 	$(ekncontent_sources) \
 	$(NULL)
@@ -97,6 +113,7 @@ libeos_knowledge_content_@EKN_CONTENT_API_VERSION@_la_CPPFLAGS = \
 	$(CODE_COVERAGE_CPPFLAGS) \
 	-DG_LOG_DOMAIN=\"EosKnowledgeContent\" \
 	-DCOMPILING_EKN_CONTENT \
+	-I $(builddir)/ekncontent \
 	$(NULL)
 libeos_knowledge_content_@EKN_CONTENT_API_VERSION@_la_CFLAGS = \
 	$(AM_CFLAGS) \
@@ -112,7 +129,9 @@ libeos_knowledge_content_@EKN_CONTENT_API_VERSION@_la_LDFLAGS = \
 # Public header files
 ekncontentincludedir = $(includedir)/@EKN_CONTENT_API_NAME@
 ekncontentinclude_HEADERS = \
+	$(glib_enum_h) \
 	$(ekncontent_public_installed_headers) \
+	$(ekncontent_built_installed_headers) \
 	$(ekncontent_private_installed_headers)
 
 # Pkg-config file
@@ -128,8 +147,10 @@ javascript_tests = \
 	tests/ekncontent/testDatadir.js \
 	tests/ekncontent/testMediaObjectModels.js \
 	tests/ekncontent/testObjectModel.js \
+	tests/ekncontent/testQueryObject.js \
 	tests/ekncontent/testSetObjectModel.js \
 	tests/ekncontent/testUtils.js \
+	tests/ekncontent/testXapianBridge.js \
 	$(NULL)
 
 EXTRA_DIST += \
@@ -174,6 +195,7 @@ INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
 introspection_sources = \
 	$(filter-out %-private.h, $(ekncontent_sources)) \
+	$(glib_enum_h) \
 	$(ekncontent_public_installed_headers) \
 	$(ekncontent_private_installed_headers)
 
@@ -182,8 +204,10 @@ EosKnowledgeContent_@EKN_CONTENT_API_VERSION@_gir_INCLUDES = \
 	EosShard-0 \
 	Gio-2.0 \
 	GLib-2.0 \
+	GObject-2.0 \
 	Json-1.0 \
-	GObject-2.0
+	Soup-2.4 \
+	$(NULL)
 EosKnowledgeContent_@EKN_CONTENT_API_VERSION@_gir_SCANNERFLAGS = \
 	--warn-all --warn-error \
 	--identifier-prefix=Eknc \

@@ -3,7 +3,6 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 const Engine = imports.search.engine;
-const QueryObject = imports.search.queryObject;
 const SearchUtils = imports.search.utils;
 
 const IMAGES_DIR = 'resource:///com/endlessm/knowledge/data/images/tools/';
