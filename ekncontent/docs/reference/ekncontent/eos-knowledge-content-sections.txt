@@ -116,6 +116,7 @@ eknc_utils_is_valid_id
 eknc_default_vfs_set_shards
 eknc_get_data_dir
 eknc_get_running_under_flatpak
+eknc_get_subscriptions_dir
 EkncContentObjectError
 <SUBSECTION Standard>
 EKNC_CONTENT_OBJECT_ERROR

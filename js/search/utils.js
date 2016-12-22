@@ -117,21 +117,6 @@ function ensure_directory (dir) {
     }
 }
 
-function get_subscriptions_dir () {
-    let user_data_path;
-    if (Eknc.get_running_under_flatpak()) {
-        // When running under flatpak, GLib.get_user_data_dir() points to the
-        // private home inside the application, not the real home.
-        // Use the absolute path here instead of the utility function.
-        user_data_path = GLib.build_filenamev([GLib.get_home_dir(), '.local', 'share']);
-    } else {
-        user_data_path = GLib.get_user_data_dir();
-    }
-
-    let path = GLib.build_filenamev([user_data_path, 'com.endlessm.subscriptions']);
-    return Gio.File.new_for_path(path);
-}
-
 /* Returns the EKN Version of the given app ID. Defaults to 1 if
  * no EKN_VERSION file is found. This function does synchronous file I/O. */
 function get_ekn_version (app_id) {
