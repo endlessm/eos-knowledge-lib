@@ -181,4 +181,11 @@ function _init() {
         }
         return Eknc.QueryObject.new_from_props(props);
     };
+
+    // FIXME: Can be removed when GJS supports pointer-valued properties.
+    define_property(Eknc.QueryResults, 'models', {
+        get: function () {
+            return this.get_models();
+        },
+    });
 }
