@@ -216,6 +216,7 @@ PKG_CHECK_MODULES([SCROLL_PLUGIN], [
 ])
 
 # Check installed GIRs for Javascript overrides
+EOS_CHECK_GJS_GIR([Emeus], [1.0])
 EOS_CHECK_GJS_GIR([Endless], [0])
 EOS_CHECK_GJS_GIR([EosShard], [0])
 EOS_CHECK_GJS_GIR([EvinceDocument], [3.0])
