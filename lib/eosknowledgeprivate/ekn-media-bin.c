@@ -24,6 +24,8 @@
 
 #include "ekn-media-bin.h"
 #include <gst/gst.h>
+#include <gst/video/gstvideosink.h>
+#include <gst/audio/gstaudiobasesink.h>
 #include <epoxy/gl.h>
 
 #ifdef DEBUG
@@ -46,12 +48,14 @@
 #define EMB_ICON_NAME_FULLSCREEN "ekn-media-bin-fullscreen"
 #define EMB_ICON_NAME_RESTORE    "ekn-media-bin-restore"
 
+#define EMB_INITIAL_STATE        GST_STATE_PAUSED
+
 GST_DEBUG_CATEGORY_STATIC (ekn_media_bin_debug);
 #define GST_CAT_DEFAULT ekn_media_bin_debug
 
 struct _EknMediaBin
 {
-  GtkWindow parent;
+  GtkBox parent;
 };
 
 typedef struct
@@ -102,6 +106,9 @@ typedef struct
 
   guint tick_id;             /* Widget frame clock tick callback (used to update UI) */
   GdkEventType pressed_button_type;
+
+  gint video_width;
+  gint video_height;
 
   /* Gst support */
   GstElement *play;          /* playbin element */
@@ -423,28 +430,6 @@ ekn_media_bin_update_state (EknMediaBin *self)
     }
 }
 
-static inline gboolean
-ekn_media_bin_get_sample_size (EknMediaBin *self,
-                               GstSample   *sample,
-                               gint        *width,
-                               gint        *height)
-{
-  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
-  GstStructure *caps_struct;
-  GstCaps *caps;
-
-  if (sample == NULL)
-    g_object_get (priv->play, "sample", &sample, NULL);
-
-  if (!sample || !(caps = gst_sample_get_caps (sample)))
-    return FALSE;
-
-  caps_struct = gst_caps_get_structure (caps, 0);
-
-  return (gst_structure_get_int (caps_struct, "width", width) &&
-          gst_structure_get_int (caps_struct, "height", height));
-}
-
 static inline GtkWidget *
 ekn_media_bin_video_image_new (EknMediaBin *self)
 {
@@ -702,7 +687,7 @@ ekn_media_bin_init (EknMediaBin *self)
 
   gtk_widget_init_template (GTK_WIDGET (self));
 
-  priv->state = GST_STATE_READY;
+  priv->state = EMB_INITIAL_STATE;
   priv->autohide_timeout = AUTOHIDE_TIMEOUT_DEFAULT;
   priv->pressed_button_type = GDK_NOTHING;
 
@@ -714,6 +699,7 @@ ekn_media_bin_init (EknMediaBin *self)
       GtkWidget *label = gtk_label_new ("");
       priv->info_column_label[i] = GTK_LABEL (label);
       gtk_container_add (GTK_CONTAINER (priv->info_box), label);
+      gtk_widget_set_valign (label, GTK_ALIGN_START);
       gtk_widget_show (label);
     }
 
@@ -864,6 +850,35 @@ ekn_media_bin_get_property (GObject    *object,
     }
 }
 
+static GtkSizeRequestMode
+ekn_media_bin_get_request_mode (GtkWidget *self)
+{
+  return GTK_SIZE_REQUEST_CONSTANT_SIZE;
+}
+
+
+static void
+ekn_media_bin_get_preferred_width (GtkWidget *self,
+                                   gint      *minimum_width,
+                                   gint      *natural_width)
+{
+  EknMediaBinPrivate *priv = EMB_PRIVATE (EKN_MEDIA_BIN (self));
+
+  *minimum_width = 320;
+  *natural_width = priv->video_width ? priv->video_width : 320;
+}
+
+static void
+ekn_media_bin_get_preferred_height (GtkWidget *self,
+                                    gint      *minimum_height,
+                                    gint      *natural_height)
+{
+  EknMediaBinPrivate *priv = EMB_PRIVATE (EKN_MEDIA_BIN (self));
+
+  *minimum_height = 240;
+  *natural_height = priv->video_height ? priv->video_height : 240;
+}
+
 #define EMB_DEFINE_ACTION_SIGNAL(klass, name, handler,...) \
   g_signal_new_class_handler (name, \
                               G_TYPE_FROM_CLASS (klass), \
@@ -881,6 +896,10 @@ ekn_media_bin_class_init (EknMediaBinClass *klass)
   object_class->finalize = ekn_media_bin_finalize;
   object_class->set_property = ekn_media_bin_set_property;
   object_class->get_property = ekn_media_bin_get_property;
+
+  widget_class->get_request_mode = ekn_media_bin_get_request_mode;
+  widget_class->get_preferred_width = ekn_media_bin_get_preferred_width;
+  widget_class->get_preferred_height = ekn_media_bin_get_preferred_height;
 
   /* Properties */
   properties[PROP_URI] =
@@ -1295,17 +1314,20 @@ print_tag (const GstTagList *list, const gchar *tag, gpointer data)
 }
 
 static inline void
+meta_data_strings_set_title (MetaDataStrings *metadata, const gchar *title)
+{
+  g_string_assign (metadata->tag, title);
+  g_string_assign (metadata->val, "");
+}
+
+static inline void
 meta_data_strings_set_info (MetaDataStrings *metadata,
                             GtkLabel        *left,
                             GtkLabel        *right,
-                            GstTagList      *tags,
-                            const gchar     *title)
+                            GstTagList      *tags)
 {
   if (tags)
     {
-      g_string_assign (metadata->tag, title);
-      g_string_assign (metadata->val, "");
-
       gst_tag_list_foreach (tags, print_tag, metadata);
 
       gtk_label_set_label (left, metadata->tag->str);
@@ -1324,23 +1346,28 @@ ekn_media_bin_update_stream_info (EknMediaBin *self)
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
   MetaDataStrings metadata = { g_string_new (""), g_string_new ("") };
 
+  meta_data_strings_set_title (&metadata, "Audio:");
   meta_data_strings_set_info (&metadata,
                               priv->info_column_label[0],
                               priv->info_column_label[1],
-                              priv->audio_tags,
-                              "Audio:");
+                              priv->audio_tags);
 
+  meta_data_strings_set_title (&metadata, "Video:");
+  if (priv->video_width && priv->video_height)
+    {
+      g_string_append_printf (metadata.tag, "\n    video-resolution");
+      g_string_append_printf (metadata.val, "\n: %dx%d", priv->video_width, priv->video_height);
+    }
   meta_data_strings_set_info (&metadata,
                               priv->info_column_label[2],
                               priv->info_column_label[3],
-                              priv->video_tags,
-                              "Video:");
+                              priv->video_tags);
 
+  meta_data_strings_set_title (&metadata, "Text:");
   meta_data_strings_set_info (&metadata,
                               priv->info_column_label[4],
                               priv->info_column_label[5],
-                              priv->text_tags,
-                              "Text:");
+                              priv->text_tags);
 
   g_string_free (metadata.tag, TRUE);
   g_string_free (metadata.val, TRUE);
@@ -1395,8 +1422,97 @@ ekn_media_bin_handle_msg_application (EknMediaBin *self, GstMessage *msg)
 static inline void
 ekn_media_bin_handle_msg_eos (EknMediaBin *self, GstMessage *msg)
 {
-  ekn_media_bin_set_state (self, GST_STATE_READY);
+  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
+
+  GST_DEBUG ("Got EOS");
+
+  gst_element_set_state (priv->play, GST_STATE_NULL);
+  ekn_media_bin_set_state (self, EMB_INITIAL_STATE);
   ekn_media_bin_update_position (self);
+}
+
+static inline void
+ekn_media_bin_post_message_application (EknMediaBin *self, const gchar *name)
+{
+  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
+  GstStructure *data = gst_structure_new (name, NULL, NULL);
+
+  /* Post message on the bus for the main thread to pick it up */
+  gst_element_post_message (priv->play,
+                            gst_message_new_application (GST_OBJECT (priv->play),
+                                                         data));
+}
+
+static inline void
+ekn_media_bin_handle_msg_tag (EknMediaBin *self, GstMessage *msg)
+{
+  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
+  GstObject *src = GST_MESSAGE_SRC (msg);
+  GstTagList *tags = NULL, *old_tags;
+  const gchar *type = NULL;
+
+  gst_message_parse_tag (msg, &tags);
+
+  if (g_type_is_a (G_OBJECT_TYPE (src), GST_TYPE_VIDEO_SINK))
+    {
+      type = "video-tags-changed";
+      old_tags = priv->video_tags;
+      priv->video_tags = gst_tag_list_merge (old_tags, tags, GST_TAG_MERGE_REPLACE);
+    }
+  else if (g_type_is_a (G_OBJECT_TYPE (src), GST_TYPE_AUDIO_BASE_SINK))
+    {
+      type = "audio-tags-changed";
+      old_tags = priv->audio_tags;
+      priv->audio_tags = gst_tag_list_merge (old_tags, tags, GST_TAG_MERGE_REPLACE);
+    }
+
+  /* Post message on the bus for the main thread to pick it up */
+  if (type)
+    ekn_media_bin_post_message_application (self, type);
+
+  gst_tag_list_unref (tags);
+  g_clear_pointer (&old_tags, gst_tag_list_unref);
+}
+
+static inline void
+ekn_media_bin_handle_streams_selected (EknMediaBin *self, GstMessage *msg)
+{
+  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
+  GstStreamCollection *collection = NULL;
+  GstStructure *caps_struct;
+  GstStream *stream;
+  GstCaps *caps;
+  gint i, n, w, h;
+
+  gst_message_parse_streams_selected (msg, &collection);
+  n = gst_stream_collection_get_size (collection);
+
+  for (i = 0; i < n; i++)
+    {
+      stream = gst_stream_collection_get_stream (collection, i);
+
+      if (gst_stream_get_stream_type (stream) == GST_STREAM_TYPE_VIDEO)
+        break;
+    }
+
+  caps = gst_stream_get_caps (stream);
+  caps_struct = gst_caps_get_structure (caps, 0);
+
+  if (gst_structure_get_int (caps_struct, "width", &w) &&
+      gst_structure_get_int (caps_struct, "height", &h))
+    {
+      if (priv->video_width != w || priv->video_height != h)
+        {
+          priv->video_width = w;
+          priv->video_height = h;
+          gtk_widget_queue_resize (GTK_WIDGET (self));
+        }
+    }
+  else
+    priv->video_width = priv->video_height = 0;
+
+  gst_caps_unref (caps);
+  gst_object_unref (collection);
 }
 
 static gboolean
@@ -1406,19 +1522,25 @@ ekn_media_bin_bus_watch (GstBus *bus, GstMessage *msg, gpointer data)
 
   switch (GST_MESSAGE_TYPE (msg))
     {
+    case GST_MESSAGE_APPLICATION:
+      ekn_media_bin_handle_msg_application (self, msg);
+      break;
+    case GST_MESSAGE_DURATION_CHANGED:
+      ekn_media_bin_update_duration (self);
+      break;
+    case GST_MESSAGE_EOS:
+      ekn_media_bin_handle_msg_eos (self, msg);
+      break;
     case GST_MESSAGE_ERROR:
       return ekn_media_bin_handle_msg_error (self, msg);
     case GST_MESSAGE_STATE_CHANGED:
       ekn_media_bin_handle_msg_state_changed (self, msg);
       break;
-    case GST_MESSAGE_DURATION_CHANGED:
-      ekn_media_bin_update_duration (self);
+    case GST_MESSAGE_STREAMS_SELECTED:
+      ekn_media_bin_handle_streams_selected (self, msg);
       break;
-    case GST_MESSAGE_APPLICATION:
-      ekn_media_bin_handle_msg_application (self, msg);
-      break;
-    case GST_MESSAGE_EOS:
-      ekn_media_bin_handle_msg_eos (self, msg);
+    case GST_MESSAGE_TAG:
+      ekn_media_bin_handle_msg_tag (self, msg);
       break;
     default:
       break;
@@ -1427,87 +1549,12 @@ ekn_media_bin_bus_watch (GstBus *bus, GstMessage *msg, gpointer data)
   return G_SOURCE_CONTINUE;
 }
 
-static inline void
-on_playbin_tags_changed (GstElement   *playbin,
-                         GstTagList  **tags,
-                         gint          stream_id,
-                         const gchar  *name,
-                         const gchar  *stream_prop,
-                         const gchar  *action_signal)
-{
-  GstStructure *data;
-  gint current_id = 0;
-
-  g_object_get (G_OBJECT (playbin), stream_prop, &current_id, NULL);
-
-  if (current_id != stream_id)
-    return;
-
-  /* Free old tags */
-  g_clear_pointer (tags, gst_tag_list_unref);
-
-  /* Get new tags from playbin */
-  g_signal_emit_by_name (G_OBJECT (playbin), action_signal, stream_id, tags);
-
-  /* Post message on the bus for the main thread to pick it up */
-  data = gst_structure_new (name, NULL, NULL);
-  gst_element_post_message (playbin,
-                            gst_message_new_application (GST_OBJECT (playbin),
-                                                         data));
-}
-
-static void
-on_playbin_audio_tags_changed (GstElement *play, gint stream, EknMediaBin *self)
-{
-  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
-  on_playbin_tags_changed (play,
-                           &priv->audio_tags,
-                           stream,
-                           "audio-tags-changed",
-                           "current-audio",
-                           "get-audio-tags");
-}
-
-static void
-on_playbin_video_tags_changed (GstElement *play, gint stream, EknMediaBin *self)
-{
-  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
-  on_playbin_tags_changed (play,
-                           &priv->video_tags,
-                           stream,
-                           "video-tags-changed",
-                           "current-video",
-                           "get-video-tags");
-}
-
-static void
-on_playbin_text_tags_changed (GstElement *play, gint stream, EknMediaBin *self)
-{
-  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
-  on_playbin_tags_changed (play,
-                           &priv->text_tags,
-                           stream,
-                           "text-tags-changed",
-                           "current-text",
-                           "get-text-tags");
-}
-
 static void
 ekn_media_bin_init_playbin (EknMediaBin *self)
 {
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
 
-  priv->play = gst_element_factory_make ("playbin", "EknMediaBinPlayBin");
-
-  g_signal_connect (priv->play, "audio-tags-changed",
-                    G_CALLBACK (on_playbin_audio_tags_changed),
-                    self);
-  g_signal_connect (priv->play, "video-tags-changed",
-                    G_CALLBACK (on_playbin_video_tags_changed),
-                    self);
-  g_signal_connect (priv->play, "text-tags-changed",
-                    G_CALLBACK (on_playbin_text_tags_changed),
-                    self);
+  priv->play = gst_element_factory_make ("playbin3", "EknMediaBinPlayBin");
 
   /* Setup volume */
   /* NOTE: Bidirectional binding makes the app crash on X11 */
@@ -1553,7 +1600,26 @@ EMB_DEFINE_SETTER_STRING (uri, URI,
   /* Make playbin show the first video frame if there is an URI
    * and the widget is realized.
    */
-   ekn_media_bin_update_state (self);
+  ekn_media_bin_update_state (self);
+
+  /* Clear tag lists */
+  if (priv->audio_tags)
+    {
+      g_clear_pointer (&priv->audio_tags, gst_tag_list_unref);
+      ekn_media_bin_post_message_application (self, "audio-tags-changed");
+    }
+
+  if (priv->video_tags)
+    {
+      g_clear_pointer (&priv->video_tags, gst_tag_list_unref);
+      ekn_media_bin_post_message_application (self, "video-tags-changed");
+    }
+
+  if (priv->text_tags)
+    {
+      g_clear_pointer (&priv->text_tags, gst_tag_list_unref);
+      ekn_media_bin_post_message_application (self, "text-tags-changed");
+    }
 )
 
 /**
@@ -1783,7 +1849,20 @@ ekn_media_bin_screenshot (EknMediaBin *self, gint width, gint height)
   g_signal_emit_by_name (priv->play, "convert-sample", caps, &sample);
   gst_caps_unref (caps);
 
-  if (!sample || !ekn_media_bin_get_sample_size (self, sample, &width, &height))
+  if (sample)
+    {
+      GstStructure *caps_struct;
+
+      if (!(caps = gst_sample_get_caps (sample)))
+        return NULL;
+
+      caps_struct = gst_caps_get_structure (caps, 0);
+
+      if (!(gst_structure_get_int (caps_struct, "width", &width) &&
+            gst_structure_get_int (caps_struct, "height", &height)))
+        return NULL;
+    }
+  else
     {
       /* FIXME: gst does not suport converting from video/x-raw(memory:GLMemory) */
       g_warning ("Could not get video sample");
