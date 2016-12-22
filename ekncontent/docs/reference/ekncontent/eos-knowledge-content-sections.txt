@@ -97,6 +97,18 @@ EKNC_TYPE_QUERY_OBJECT_SORT
 </SECTION>
 
 <SECTION>
+<FILE>query-results</FILE>
+eknc_query_results_get_models
+eknc_query_results_get_upper_bound
+<SUBSECTION Standard>
+EkncQueryResults
+EkncQueryResultsClass
+EKNC_TYPE_QUERY_RESULTS
+<SUBSECTION Private>
+eknc_query_results_new_for_testing
+</SECTION>
+
+<SECTION>
 <FILE>utils</FILE>
 eknc_utils_parallel_init
 eknc_utils_id_get_hash
