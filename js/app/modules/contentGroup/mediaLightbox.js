@@ -129,12 +129,7 @@ const MediaLightbox = new Module.Class({
         let content_type = media_object.content_type;
         if (widget === null) {
             if (media_object instanceof Eknc.VideoObjectModel) {
-                widget = new EosKnowledgePrivate.MediaBin({
-                    // FIXME: Video player doesn't start with proper width
-                    // and height: https://phabricator.endlessm.com/T14316
-                    height_request: Gdk.Screen.get_default().get_height(),
-                    width_request: Gdk.Screen.get_default().get_width(),
-                });
+                widget = new EosKnowledgePrivate.MediaBin();
                 widget.set_uri(media_object.ekn_id);
             } else if (content_type === 'application/pdf') {
                 let stream = media_object.get_content_stream();
