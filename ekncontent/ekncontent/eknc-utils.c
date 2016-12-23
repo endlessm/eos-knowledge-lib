@@ -160,6 +160,42 @@ eknc_get_subscriptions_dir (void)
   return g_file_new_for_path (path);
 }
 
+/**
+ * eknc_get_ekn_version:
+ * @app_id: knowledge app id
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @error: #GError for error reporting.
+ *
+ * Gets the version of our on disk content format, stored in the EKN_VERSION
+ * file.
+ *
+ * Returns: (transfer full): the version, or NULL if an error occurred
+ */
+gchar *
+eknc_get_ekn_version (const gchar *app_id,
+                      GCancellable *cancellable,
+                      GError **error)
+{
+  g_autoptr(GFile) dir = eknc_get_data_dir (app_id);
+
+  // Sanity check
+  if (dir == NULL)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
+                   "No data dir found for app id %s", app_id);
+      return NULL;
+    }
+
+  g_autoptr(GFile) ekn_version_file = g_file_get_child (dir, "EKN_VERSION");
+  g_autofree gchar *contents = NULL;
+  if (!g_file_load_contents (ekn_version_file, cancellable, &contents,
+                             NULL, NULL, error))
+    return NULL;
+
+  gchar *stripped = g_strstrip (contents);
+  return g_strdup (stripped);
+}
+
 struct parallel_init_data {
   int n_left;
   GError *error;

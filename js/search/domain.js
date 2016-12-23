@@ -340,7 +340,7 @@ const Domain = new Lang.Class({
  * format in the future.
  */
 function get_domain_impl (app_id, xapian_bridge) {
-    let ekn_version = Utils.get_ekn_version(app_id);
+    let ekn_version = Eknc.get_ekn_version(app_id, null);
 
     let impls = {
         '3': Domain,
