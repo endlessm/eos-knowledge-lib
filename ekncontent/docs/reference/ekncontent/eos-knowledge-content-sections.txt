@@ -114,6 +114,7 @@ eknc_utils_parallel_init
 eknc_utils_id_get_hash
 eknc_utils_is_valid_id
 eknc_default_vfs_set_shards
+eknc_get_current_language
 eknc_get_data_dir
 eknc_get_ekn_version
 eknc_get_running_under_flatpak

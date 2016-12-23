@@ -47,4 +47,7 @@ eknc_get_ekn_version (const gchar *app_id,
                       GCancellable *cancellable,
                       GError **error);
 
+const gchar *
+eknc_get_current_language (void);
+
 G_END_DECLS

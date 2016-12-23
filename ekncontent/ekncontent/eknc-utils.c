@@ -196,6 +196,33 @@ eknc_get_ekn_version (const gchar *app_id,
   return g_strdup (stripped);
 }
 
+/**
+ * eknc_get_current_language:
+ *
+ * Gets the Xapian-friendly version of the current system language, or NULL if
+ * none set.
+ *
+ * Returns: the language
+ */
+const gchar *
+eknc_get_current_language (void)
+{
+  const gchar * const * langs = g_get_language_names ();
+
+  guint length = g_strv_length ((gchar **)langs);
+  // We don't care about the last entry of the locales list, since it's always
+  // 'C'. If we get there without finding a suitable language, return null
+  for (guint i = 0; i < length - 1; i++)
+    {
+      const gchar *lang = langs[i];
+      // If the locale includes a country code or codeset (e.g. "en.utf8"), skip it
+      if (strpbrk (lang, "_.") == NULL)
+          return lang;
+    }
+
+  return NULL;
+}
+
 struct parallel_init_data {
   int n_left;
   GError *error;

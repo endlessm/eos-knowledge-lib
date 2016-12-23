@@ -242,7 +242,7 @@ let the_engine = null;
 let get_default = function () {
     if (the_engine === null) {
         // try to create an engine configured with the current locale
-        var language = Utils.get_current_language();
+        var language = Eknc.get_current_language();
         the_engine = new Engine({
             language: language,
         });
