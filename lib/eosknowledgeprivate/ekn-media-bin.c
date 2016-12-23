@@ -96,6 +96,7 @@ typedef struct
   GtkAdjustment  *playback_adjustment;
 
   /* Support Objects */
+  GtkWidget *video_widget;      /* Created at runtime from sink */
   GtkWindow *fullscreen_window;
   GdkCursor *blank_cursor;
   GtkWidget *tmp_image;      /* FIXME: remove this once we can derive from GtkBin in Glade */
@@ -112,7 +113,7 @@ typedef struct
 
   /* Gst support */
   GstElement *play;          /* playbin element */
-  GstElement *video_sink;    /* The video sink element used (gtkglsink or gtksink) */
+  GstElement *video_sink;    /* The video sink element used (glsinkbin or gtksink) */
   GstElement *vis_plugin;    /* The visualization plugin */
   GstBus     *bus;           /* playbin bus */
 
@@ -155,6 +156,8 @@ G_DEFINE_TYPE_WITH_PRIVATE (EknMediaBin, ekn_media_bin, GTK_TYPE_BOX);
 #define EMB_PRIVATE(d) ((EknMediaBinPrivate *) ekn_media_bin_get_instance_private(d))
 
 static void         ekn_media_bin_init_playbin (EknMediaBin *self);
+static void         ekn_media_bin_set_tick_enabled (EknMediaBin *self,
+                                                    gboolean enabled);
 static GtkWindow   *ekn_media_bin_window_new (EknMediaBin *self);
 static const gchar *format_time (gint time);
 
@@ -164,7 +167,7 @@ ekn_media_bin_get_position (EknMediaBin *self)
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
   gint64 position;
 
-  if (!gst_element_query (priv->play, priv->position_query))
+  if (!priv->play || !gst_element_query (priv->play, priv->position_query))
     return 0;
 
   gst_query_parse_position (priv->position_query, NULL, &position);
@@ -430,91 +433,49 @@ ekn_media_bin_update_state (EknMediaBin *self)
     }
 }
 
-static inline GtkWidget *
-ekn_media_bin_video_image_new (EknMediaBin *self)
+static GdkPixbuf *
+ekn_media_bin_video_pixbuf_new (EknMediaBin *self)
 {
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
-  GtkWidget *retval, *video_widget;
-  GdkPixbuf *pixbuf;
-  gint w, h;
-  cairo_t *cr;
+  gint width, height, video_width, video_height, dx, dy;
   cairo_surface_t *surface;
+  gdouble scale = 1.0;
+  GdkPixbuf *pixbuf;
+  cairo_t *cr;
 
-  video_widget = gtk_bin_get_child (GTK_BIN (priv->overlay));
-  w = gtk_widget_get_allocated_width (video_widget);
-  h = gtk_widget_get_allocated_height (video_widget);
+  width = gtk_widget_get_allocated_width (GTK_WIDGET (self));
+  height = gtk_widget_get_allocated_height (GTK_WIDGET (self));
 
-  surface = cairo_image_surface_create (CAIRO_FORMAT_RGB24, w, h);
+  video_width = gtk_widget_get_allocated_width (priv->video_widget);
+  video_height = gtk_widget_get_allocated_height (priv->video_widget);
+
+  if ((width != video_width || height != video_height) &&
+      priv->video_width && priv->video_height)
+    {
+      scale = MIN (width/(gdouble)priv->video_width, height/(gdouble)priv->video_height);
+
+      dx = ABS (video_width - priv->video_width) * scale;
+      dy = ABS (video_height - priv->video_height) * scale;
+      width = video_width * scale;
+      height = video_height * scale;
+    }
+  else
+    dx = dy = 0;
+
+  surface = cairo_image_surface_create (CAIRO_FORMAT_RGB24, width, height);
   cr = cairo_create (surface);
-  gtk_widget_draw (video_widget, cr);
 
-  pixbuf = gdk_pixbuf_get_from_surface (surface, 0, 0, w, h);
-  retval = gtk_image_new_from_pixbuf (pixbuf);
-  g_object_set (retval, "expand", TRUE, NULL);
+  if (scale != 1.0)
+    cairo_scale (cr, scale, scale);
+
+  gtk_widget_draw (priv->video_widget, cr);
+
+  pixbuf = gdk_pixbuf_get_from_surface (surface, dx/2, dy/2, width-dx, height-dy);
 
   cairo_destroy (cr);
   cairo_surface_destroy (surface);
-  g_object_unref (pixbuf);
 
-  return retval;
-}
-
-static void
-ekn_media_bin_fullscreen_apply (EknMediaBin *self, gboolean fullscreen)
-{
-  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
-
-  if (fullscreen && priv->fullscreen_window == NULL)
-    {
-      /*
-       * To avoid flickering, this will make the widget pack a image with the last
-       * frame in the container before reparenting the video widget in the
-       * fullscreen window
-       */
-      priv->tmp_image = ekn_media_bin_video_image_new (self);
-
-      priv->fullscreen_window = g_object_ref (ekn_media_bin_window_new (self));
-
-      /* Reparent video widget in a fullscreen window */
-      g_object_ref (priv->overlay);
-      gtk_container_remove (GTK_CONTAINER (self), priv->overlay);
-
-      /* Pack an image with the last frame inside the bin */
-      gtk_container_add (GTK_CONTAINER (self), priv->tmp_image);
-      gtk_widget_show (priv->tmp_image);
-
-      /* Pack video in the fullscreen window */
-      gtk_container_add (GTK_CONTAINER (priv->fullscreen_window), priv->overlay);
-      g_object_unref (priv->overlay);
-
-      gtk_window_fullscreen (priv->fullscreen_window);
-      gtk_window_present (priv->fullscreen_window);
-
-      /* Hide cursor if controls are hidden */
-      if (!gtk_revealer_get_reveal_child (priv->bottom_revealer))
-        gdk_window_set_cursor (gtk_widget_get_window (GTK_WIDGET (priv->fullscreen_window)),
-                               priv->blank_cursor);
-
-      gtk_image_set_from_icon_name (priv->fullscreen_image, EMB_ICON_NAME_RESTORE, EMB_ICON_SIZE);
-    }
-  else if (priv->fullscreen_window)
-    {
-      gtk_container_remove (GTK_CONTAINER (self), priv->tmp_image);
-      priv->tmp_image = NULL;
-
-      /* Reparent video widget back into ourselves */
-      g_object_ref (priv->overlay);
-      gtk_container_remove (GTK_CONTAINER (priv->fullscreen_window), priv->overlay);
-      gtk_container_add (GTK_CONTAINER (self), priv->overlay);
-      g_object_unref (priv->overlay);
-
-      gtk_widget_destroy (GTK_WIDGET (priv->fullscreen_window));
-      priv->fullscreen_window = NULL;
-
-      gtk_image_set_from_icon_name (priv->fullscreen_image, EMB_ICON_NAME_FULLSCREEN, EMB_ICON_SIZE);
-    }
-
-  gtk_widget_grab_focus (priv->overlay);
+  return pixbuf;
 }
 
 static inline gboolean
@@ -524,12 +485,13 @@ ekn_media_bin_gl_check (GtkWidget *widget)
 
   if (g_once_init_enter (&gl_works))
     {
+      GError *error = NULL;
       gsize works = 1;
       GdkGLContext *context;
       GdkWindow *window;
 
       if ((window  = gtk_widget_get_window (widget)) &&
-           (context = gdk_window_create_gl_context (window, NULL)))
+           (context = gdk_window_create_gl_context (window, &error)))
         {
           const gchar *vendor, *renderer;
 
@@ -553,31 +515,27 @@ ekn_media_bin_gl_check (GtkWidget *widget)
           gdk_gl_context_clear_current ();
         }
 
+        if (error)
+          {
+            GST_WARNING ("Could not window to create GL context, %s", error->message);
+            g_error_free (error);
+          }
+
       g_once_init_leave (&gl_works, works);
     }
 
   return (gl_works > 1);
 }
 
-static inline GtkWidget *
-ekn_media_bin_get_video_widget (GstElement *sink)
-{
-  GtkWidget *retval = NULL;
-
-  g_object_get (sink, "widget", &retval, NULL);
-
-  if (!retval)
-    GST_WARNING ("Could not get video widget from gtkglsink/gtksink");
-
-  return retval;
-}
-
-static inline GstElement *
-ekn_media_bin_video_sink_new (EknMediaBin *self)
+static inline void
+ekn_media_bin_init_video_sink (EknMediaBin *self)
 {
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
   GtkWidget *video_widget = NULL;
   GstElement *video_sink = NULL;
+
+  if (priv->video_sink)
+    return;
 
   if (ekn_media_bin_gl_check (GTK_WIDGET (self)))
     {
@@ -591,7 +549,7 @@ ekn_media_bin_video_sink_new (EknMediaBin *self)
             {
               GST_INFO ("Using gtkglsink");
               g_object_set (video_sink, "sink", gtkglsink, NULL);
-              video_widget = ekn_media_bin_get_video_widget (gtkglsink);
+              g_object_get (gtkglsink, "widget", &video_widget, NULL);
             }
           else
             {
@@ -608,12 +566,9 @@ ekn_media_bin_video_sink_new (EknMediaBin *self)
   /* Fallback to gtksink */
   if (!video_sink)
     {
-      video_sink = gst_element_factory_make ("gtksink", NULL);
-
       GST_INFO ("Falling back to gtksink");
-
-      if (video_sink)
-        video_widget = ekn_media_bin_get_video_widget (video_sink);
+      video_sink = gst_element_factory_make ("gtksink", NULL);
+      g_object_get (video_sink, "widget", &video_widget, NULL);
     }
 
   /* We use a null sink as a last resort */
@@ -624,13 +579,16 @@ ekn_media_bin_video_sink_new (EknMediaBin *self)
       /* And pack it where we want the video to show up */
       gtk_container_add (GTK_CONTAINER (priv->overlay), video_widget);
       gtk_widget_show (video_widget);
+
+      /* Grab a reference */
+      priv->video_widget = g_object_ref (video_widget);
     }
   else
     {
       GtkWidget *img = gtk_image_new_from_icon_name ("image-missing",
                                                      GTK_ICON_SIZE_DIALOG);
 
-      GST_WARNING ("Falling back to fakesink");
+      GST_WARNING ("Could not get video widget from gtkglsink/gtksink, falling back to fakesink");
 
       g_clear_object (&video_sink);
       video_sink = gst_element_factory_make ("fakesink", "EknMediaBinFakeSink");
@@ -641,7 +599,136 @@ ekn_media_bin_video_sink_new (EknMediaBin *self)
       /* FIXME: the overlay does not get motion and press events with this code path */
     }
 
-  return video_sink;
+  /* Setup playbin video sink */
+  if (video_sink)
+    {
+      g_object_set (priv->play, "video-sink", video_sink, NULL);
+      priv->video_sink = g_object_ref (video_sink);
+    }
+}
+
+static void
+ekn_media_bin_fullscreen_apply (EknMediaBin *self, gboolean fullscreen)
+{
+  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
+  gint64 position = -1;
+
+  if ((fullscreen && priv->fullscreen_window) ||
+      (!fullscreen && !priv->fullscreen_window))
+    return;
+
+  /*
+   * To avoid flickering, this will make the widget pack an image with the last
+   * frame in the container before reparenting the video widget in the
+   * fullscreen window
+   */
+  if (!priv->tmp_image)
+    {
+      GdkPixbuf *pixbuf = ekn_media_bin_video_pixbuf_new (self);
+      priv->tmp_image = gtk_image_new_from_pixbuf (pixbuf);
+      g_object_set (priv->tmp_image, "expand", TRUE, NULL);
+      g_object_unref (pixbuf);
+    }
+
+  /*
+   * FIXME: GtkGstGLWidget does not support reparenting to a different toplevel
+   * because the gl context is different and the pipeline does not know it
+   * changes, so as a temporary workaround we simply reconstruct the whole
+   * pipeline.
+   *
+   * See bug https://bugzilla.gnome.org/show_bug.cgi?id=775045
+   */
+  if ((priv->state == GST_STATE_PAUSED || priv->state == GST_STATE_PLAYING) &&
+      g_strcmp0 (G_OBJECT_TYPE_NAME (priv->video_sink), "GstGLSinkBin") == 0)
+    {
+      /* NOTE: here we could set tmp_image to the content of the current sample
+       * but it wont be updated until the main window is show at which point
+       * we will see the old frame anyways.
+       */
+      position = ekn_media_bin_get_position (self);
+
+      g_clear_object (&priv->video_sink);
+      gst_element_set_state (priv->play, GST_STATE_NULL);
+      gst_bus_set_flushing (priv->bus, TRUE);
+      gst_bus_remove_watch (priv->bus);
+      g_clear_object (&priv->bus);
+      g_clear_object (&priv->play);
+
+      gtk_container_remove (GTK_CONTAINER (priv->overlay), priv->video_widget);
+      g_clear_object (&priv->video_widget);
+    }
+
+  g_object_ref (priv->overlay);
+
+  if (fullscreen)
+    {
+      priv->fullscreen_window = g_object_ref (ekn_media_bin_window_new (self));
+
+      /* Reparent video widget in a fullscreen window */
+      gtk_container_remove (GTK_CONTAINER (self), priv->overlay);
+
+      /* Pack an image with the last frame inside the bin */
+      gtk_container_add (GTK_CONTAINER (self), priv->tmp_image);
+      gtk_widget_show (priv->tmp_image);
+
+      /* Pack video in the fullscreen window */
+      gtk_container_add (GTK_CONTAINER (priv->fullscreen_window), priv->overlay);
+
+      gtk_window_fullscreen (priv->fullscreen_window);
+      gtk_window_present (priv->fullscreen_window);
+
+      /* Hide cursor if controls are hidden */
+      if (!gtk_revealer_get_reveal_child (priv->bottom_revealer))
+        gdk_window_set_cursor (gtk_widget_get_window (GTK_WIDGET (priv->fullscreen_window)),
+                               priv->blank_cursor);
+
+      gtk_image_set_from_icon_name (priv->fullscreen_image, EMB_ICON_NAME_RESTORE, EMB_ICON_SIZE);
+    }
+  else
+    {
+      gtk_container_remove (GTK_CONTAINER (self), priv->tmp_image);
+      priv->tmp_image = NULL;
+
+      /* Reparent video widget back into ourselves */
+      gtk_container_remove (GTK_CONTAINER (priv->fullscreen_window), priv->overlay);
+      gtk_container_add (GTK_CONTAINER (self), priv->overlay);
+
+      gtk_widget_destroy (GTK_WIDGET (priv->fullscreen_window));
+      g_clear_object (&priv->fullscreen_window);
+
+      gtk_image_set_from_icon_name (priv->fullscreen_image, EMB_ICON_NAME_FULLSCREEN, EMB_ICON_SIZE);
+    }
+
+  /*
+   * FIXME: See bug https://bugzilla.gnome.org/show_bug.cgi?id=775045
+   */
+  if (priv->play == NULL)
+    {
+      ekn_media_bin_init_playbin (self);
+      ekn_media_bin_init_video_sink (self);
+
+      g_object_set (priv->play, "uri", priv->uri, NULL);
+
+      /* Init new pipeline */
+      gst_element_set_state (priv->play, GST_STATE_PAUSED);
+      gst_element_get_state (priv->play, NULL, NULL, GST_CLOCK_TIME_NONE);
+
+      /* Seek to position */
+      gst_element_seek_simple (priv->play, GST_FORMAT_TIME,
+                               GST_SEEK_FLAG_ACCURATE | GST_SEEK_FLAG_FLUSH,
+                               position);
+      gst_bus_pop_filtered (priv->bus, GST_MESSAGE_ASYNC_DONE);
+
+      /* Resume playback */
+      if (priv->state == GST_STATE_PLAYING)
+        {
+          gst_element_set_state (priv->play, GST_STATE_PLAYING);
+          gst_element_get_state (priv->play, NULL, NULL, GST_CLOCK_TIME_NONE);
+        }
+    }
+
+  gtk_widget_grab_focus (priv->overlay);
+  g_object_unref (priv->overlay);
 }
 
 static void
@@ -654,11 +741,7 @@ on_ekn_media_bin_realize (GtkWidget *widget, EknMediaBin *self)
                                                  "none");
 
   /* Create video sink */
-  priv->video_sink = g_object_ref (ekn_media_bin_video_sink_new (self));
-
-  /* Setup playbin video sink */
-  if (priv->video_sink)
-    g_object_set (priv->play, "video-sink", priv->video_sink, NULL);
+  ekn_media_bin_init_video_sink (self);
 
   if (priv->fullscreen)
     ekn_media_bin_fullscreen_apply (self, TRUE);
@@ -720,7 +803,8 @@ ekn_media_bin_init (EknMediaBin *self)
 static void
 ekn_media_bin_finalize (GObject *object)
 {
-  EknMediaBinPrivate *priv = EMB_PRIVATE (EKN_MEDIA_BIN (object));
+  EknMediaBin *self = EKN_MEDIA_BIN (object);
+  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
 
   /* Stop Playback to give gst a chance to cleanup its mess */
   gst_element_set_state (priv->play, GST_STATE_NULL);
@@ -734,11 +818,7 @@ ekn_media_bin_finalize (GObject *object)
   g_clear_pointer (&priv->position_query, gst_query_unref);
 
   /* Remove frame clock tick callback */
-  if (priv->tick_id)
-    {
-      gtk_widget_remove_tick_callback (GTK_WIDGET (object), priv->tick_id);
-      priv->tick_id = 0;
-    }
+  ekn_media_bin_set_tick_enabled (self, FALSE);
 
   /* Remove controls timeout */
   if (priv->timeout_id)
@@ -1246,6 +1326,24 @@ ekn_media_bin_tick_callback (GtkWidget     *widget,
   return G_SOURCE_CONTINUE;
 }
 
+static void
+ekn_media_bin_set_tick_enabled (EknMediaBin *self, gboolean enabled)
+{
+  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
+
+  if (enabled)
+    {
+      priv->tick_id = gtk_widget_add_tick_callback (GTK_WIDGET (self),
+                                                    ekn_media_bin_tick_callback,
+                                                    NULL, NULL);
+    }
+  else if (priv->tick_id)
+    {
+      gtk_widget_remove_tick_callback (GTK_WIDGET (self), priv->tick_id);
+      priv->tick_id = 0;
+    }
+}
+
 static inline void
 ekn_media_bin_handle_msg_state_changed (EknMediaBin *self, GstMessage *msg)
 {
@@ -1273,17 +1371,14 @@ ekn_media_bin_handle_msg_state_changed (EknMediaBin *self, GstMessage *msg)
     {
       widget_set_visible (priv->play_box, FALSE);
       gtk_image_set_from_icon_name (priv->playback_image, EMB_ICON_NAME_PAUSE, EMB_ICON_SIZE);
-      priv->tick_id = gtk_widget_add_tick_callback (GTK_WIDGET (self),
-                                                    ekn_media_bin_tick_callback,
-                                                    NULL, NULL);
+      ekn_media_bin_set_tick_enabled (self, TRUE);
     }
   else
     {
       gtk_image_set_from_icon_name (priv->playback_image, EMB_ICON_NAME_PLAY, EMB_ICON_SIZE);
       widget_set_visible (priv->play_box, TRUE);
       priv->position = 0;
-      gtk_widget_remove_tick_callback (GTK_WIDGET (self), priv->tick_id);
-      priv->tick_id = 0;
+      ekn_media_bin_set_tick_enabled (self, FALSE);
     }
 }
 
