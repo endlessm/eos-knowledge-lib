@@ -69,6 +69,7 @@ typedef struct
   /* Boolean properties */
   gboolean fullscreen:1;
   gboolean show_stream_info:1;
+  gboolean audio_mode:1;
 
   /* We place extra flags here so the get squashed with the boolean properties */
   gboolean title_user_set:1;            /* True if the user set title property */
@@ -76,13 +77,16 @@ typedef struct
   gboolean ignore_adjustment_changes:1;
 
   /* Internal Widgets */
+  GtkStack      *stack;
+  GtkImage      *playback_image;
+  GtkImage      *fullscreen_image;
+  GtkAdjustment *playback_adjustment;
+  GtkAdjustment *volume_adjustment;
+
+  /* Internal Video Widgets */
   GtkWidget      *overlay;
   GtkWidget      *play_box;
-  GtkButton      *playback_button;
-  GtkImage       *playback_image;
   GtkScaleButton *volume_button;
-  GtkButton      *fullscreen_button;
-  GtkImage       *fullscreen_image;
   GtkWidget      *info_box;
 
   GtkLabel *title_label;
@@ -93,7 +97,11 @@ typedef struct
   GtkRevealer *top_revealer;
   GtkRevealer *bottom_revealer;
 
-  GtkAdjustment  *playback_adjustment;
+  /* Internal Audio Widgets */
+  GtkWidget      *audio_box;
+  GtkScaleButton *audio_volume_button;
+  GtkLabel       *audio_position_label;
+  GtkImage       *audio_playback_image;
 
   /* Support Objects */
   GtkWidget *video_widget;      /* Created at runtime from sink */
@@ -137,6 +145,7 @@ enum
   PROP_AUTOHIDE_TIMEOUT,
   PROP_FULLSCREEN,
   PROP_SHOW_STREAM_INFO,
+  PROP_AUDIO_MODE,
   PROP_TITLE,
   PROP_DESCRIPTION,
   N_PROPERTIES
@@ -197,7 +206,13 @@ ekn_media_bin_toggle_playback (EknMediaBin *self)
 static void
 ekn_media_bin_toggle_fullscreen (EknMediaBin *self)
 {
-  ekn_media_bin_set_fullscreen (self, !EMB_PRIVATE (self)->fullscreen);
+  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
+
+  /* Do nothing in audio mode */
+  if (priv->audio_mode)
+    return;
+
+  ekn_media_bin_set_fullscreen (self, !priv->fullscreen);
 }
 
 static void
@@ -248,10 +263,18 @@ ekn_media_bin_revealer_timeout (EknMediaBin *self, gboolean activate)
       if (!priv->timeout_id)
         priv->timeout_id = g_timeout_add_seconds (1, revealer_timeout, self);
     }
-  else if (priv->timeout_id)
+  else
    {
-      g_source_remove (priv->timeout_id);
-      priv->timeout_id = 0;
+      GdkWindow *window = gtk_widget_get_window (priv->overlay);
+
+      if (priv->timeout_id)
+        {
+          g_source_remove (priv->timeout_id);
+          priv->timeout_id = 0;
+        }
+
+      if (window)
+        gdk_window_set_cursor (window, NULL);
    }
 }
 
@@ -270,7 +293,6 @@ ekn_media_bin_action_toggle (EknMediaBin *self, const gchar *action)
     {
       ekn_media_bin_set_show_stream_info (self, !priv->show_stream_info);
       ekn_media_bin_reveal_controls (self);
-      ekn_media_bin_revealer_timeout (self, TRUE);
     }
   else
     g_warning ("Ignoring unknown toggle action %s", action);
@@ -290,12 +312,6 @@ ekn_media_bin_action_seek (EknMediaBin *self, gint seconds)
 }
 
 /* Signals handlers */
-static void
-on_playback_button_clicked (GtkButton *button, EknMediaBin *self)
-{
-  ekn_media_bin_toggle_playback (self);
-}
-
 static gboolean
 on_overlay_button_press_event (GtkWidget   *widget,
                                GdkEvent    *event,
@@ -352,13 +368,8 @@ on_revealer_motion_notify_event (GtkWidget   *widget,
                                  GdkEvent    *event,
                                  EknMediaBin *self)
 {
-  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
-
-  /* Do not hide controls */
+  /* Do not hide controls and restore pointer */
   ekn_media_bin_revealer_timeout (self, FALSE);
-
-  /* Restore pointer */
-  gdk_window_set_cursor (gtk_widget_get_window (priv->overlay), NULL);
 
   return TRUE;
 }
@@ -371,13 +382,6 @@ on_overlay_motion_notify_event (GtkWidget   *widget,
   ekn_media_bin_reveal_controls (self);
   ekn_media_bin_revealer_timeout (self, TRUE);
   return FALSE;
-}
-
-static void
-on_fullscreen_button_clicked (GtkButton *button, EknMediaBin *self)
-{
-  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
-  ekn_media_bin_set_fullscreen (self, !priv->fullscreen);
 }
 
 static void
@@ -537,6 +541,15 @@ ekn_media_bin_init_video_sink (EknMediaBin *self)
   if (priv->video_sink)
     return;
 
+  if (priv->audio_mode)
+    {
+      video_sink = gst_element_factory_make ("fakesink", "EknMediaBinNullSink");
+      g_object_set (video_sink, "sync", TRUE, NULL);
+      g_object_set (priv->play, "video-sink", video_sink, NULL);
+      priv->video_sink = g_object_ref (video_sink);
+      return;
+    }
+
   if (ekn_media_bin_gl_check (GTK_WIDGET (self)))
     {
       video_sink = gst_element_factory_make ("glsinkbin", "EknMediaBinGLVideoSink");
@@ -592,6 +605,7 @@ ekn_media_bin_init_video_sink (EknMediaBin *self)
 
       g_clear_object (&video_sink);
       video_sink = gst_element_factory_make ("fakesink", "EknMediaBinFakeSink");
+      g_object_set (video_sink, "sync", TRUE, NULL);
 
       gtk_container_add (GTK_CONTAINER (priv->overlay), img);
       gtk_widget_show (img);
@@ -665,11 +679,12 @@ ekn_media_bin_fullscreen_apply (EknMediaBin *self, gboolean fullscreen)
       priv->fullscreen_window = g_object_ref (ekn_media_bin_window_new (self));
 
       /* Reparent video widget in a fullscreen window */
-      gtk_container_remove (GTK_CONTAINER (self), priv->overlay);
+      gtk_container_remove (GTK_CONTAINER (priv->stack), priv->overlay);
 
       /* Pack an image with the last frame inside the bin */
-      gtk_container_add (GTK_CONTAINER (self), priv->tmp_image);
+      gtk_container_add (GTK_CONTAINER (priv->stack), priv->tmp_image);
       gtk_widget_show (priv->tmp_image);
+      gtk_stack_set_visible_child (GTK_STACK (priv->stack), priv->tmp_image);
 
       /* Pack video in the fullscreen window */
       gtk_container_add (GTK_CONTAINER (priv->fullscreen_window), priv->overlay);
@@ -686,17 +701,20 @@ ekn_media_bin_fullscreen_apply (EknMediaBin *self, gboolean fullscreen)
     }
   else
     {
-      gtk_container_remove (GTK_CONTAINER (self), priv->tmp_image);
+      gtk_container_remove (GTK_CONTAINER (priv->stack), priv->tmp_image);
       priv->tmp_image = NULL;
 
       /* Reparent video widget back into ourselves */
       gtk_container_remove (GTK_CONTAINER (priv->fullscreen_window), priv->overlay);
-      gtk_container_add (GTK_CONTAINER (self), priv->overlay);
+      gtk_container_add (GTK_CONTAINER (priv->stack), priv->overlay);
+      gtk_stack_set_visible_child (GTK_STACK (priv->stack), priv->overlay);
 
       gtk_widget_destroy (GTK_WIDGET (priv->fullscreen_window));
       g_clear_object (&priv->fullscreen_window);
 
       gtk_image_set_from_icon_name (priv->fullscreen_image, EMB_ICON_NAME_FULLSCREEN, EMB_ICON_SIZE);
+
+      gtk_widget_grab_focus (GTK_WIDGET (self));
     }
 
   /*
@@ -727,7 +745,6 @@ ekn_media_bin_fullscreen_apply (EknMediaBin *self, gboolean fullscreen)
         }
     }
 
-  gtk_widget_grab_focus (priv->overlay);
   g_object_unref (priv->overlay);
 }
 
@@ -762,10 +779,29 @@ ekn_media_bin_error (EknMediaBin *self, GError *error)
 }
 
 static void
+ekn_media_bin_init_volume_button (EknMediaBin    *self,
+                                  GtkScaleButton *button,
+                                  gboolean        stop_timeout)
+{
+  GtkWidget *popup = gtk_scale_button_get_popup (button);
+
+  if (stop_timeout)
+    {
+      g_signal_connect (popup, "show", G_CALLBACK (on_volume_popup_show), self);
+      g_signal_connect (popup, "hide", G_CALLBACK (on_volume_popup_hide), self);
+    }
+
+  gtk_style_context_add_class (gtk_widget_get_style_context (popup), "ekn-media-bin");
+
+  /* Hide volume popup buttons */
+  gtk_widget_hide (gtk_scale_button_get_plus_button (button));
+  gtk_widget_hide (gtk_scale_button_get_minus_button (button));
+}
+
+static void
 ekn_media_bin_init (EknMediaBin *self)
 {
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
-  GtkWidget *popup;
   gint i;
 
   gtk_widget_init_template (GTK_WIDGET (self));
@@ -789,15 +825,13 @@ ekn_media_bin_init (EknMediaBin *self)
   /* Cache position query */
   priv->position_query = gst_query_new_position (GST_FORMAT_TIME);
 
-  popup = gtk_scale_button_get_popup (GTK_SCALE_BUTTON (priv->volume_button));
-  g_signal_connect (popup, "show", G_CALLBACK (on_volume_popup_show), self);
-  g_signal_connect (popup, "hide", G_CALLBACK (on_volume_popup_hide), self);
+  /* Make both buttons look the same */
+  g_object_bind_property (priv->playback_image, "icon-name",
+                          priv->audio_playback_image, "icon-name",
+                          G_BINDING_SYNC_CREATE);
 
-  gtk_style_context_add_class (gtk_widget_get_style_context (popup), "ekn-media-bin");
-
-  /* Hide volume popup buttons */
-  gtk_widget_hide (gtk_scale_button_get_plus_button (GTK_SCALE_BUTTON (priv->volume_button)));
-  gtk_widget_hide (gtk_scale_button_get_minus_button (GTK_SCALE_BUTTON (priv->volume_button)));
+  ekn_media_bin_init_volume_button (self, priv->volume_button, TRUE);
+  ekn_media_bin_init_volume_button (self, priv->audio_volume_button, FALSE);
 }
 
 static void
@@ -846,6 +880,17 @@ ekn_media_bin_finalize (GObject *object)
   G_OBJECT_CLASS (ekn_media_bin_parent_class)->finalize (object);
 }
 
+static inline void
+ekn_media_bin_set_audio_mode (EknMediaBin *self, gboolean audio_mode)
+{
+  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
+
+  priv->audio_mode = audio_mode;
+
+  if (audio_mode)
+    gtk_stack_set_visible_child (GTK_STACK (priv->stack), priv->audio_box);
+}
+
 static void
 ekn_media_bin_set_property (GObject      *object,
                             guint         prop_id,
@@ -875,6 +920,10 @@ ekn_media_bin_set_property (GObject      *object,
     case PROP_SHOW_STREAM_INFO:
       ekn_media_bin_set_show_stream_info (EKN_MEDIA_BIN (object),
                                           g_value_get_boolean (value));
+      break;
+    case PROP_AUDIO_MODE:
+      ekn_media_bin_set_audio_mode (EKN_MEDIA_BIN (object),
+                                    g_value_get_boolean (value));
       break;
     case PROP_TITLE:
       ekn_media_bin_set_title (EKN_MEDIA_BIN (object),
@@ -907,7 +956,7 @@ ekn_media_bin_get_property (GObject    *object,
       g_value_set_string (value, priv->uri);
       break;
     case PROP_VOLUME:
-      g_value_set_double (value, gtk_scale_button_get_value (priv->volume_button));
+      g_value_set_double (value, gtk_adjustment_get_value (priv->volume_adjustment));
       break;
     case PROP_AUTOHIDE_TIMEOUT:
       g_value_set_int (value, priv->autohide_timeout);
@@ -917,6 +966,9 @@ ekn_media_bin_get_property (GObject    *object,
       break;
     case PROP_SHOW_STREAM_INFO:
       g_value_set_boolean (value, priv->show_stream_info);
+      break;
+    case PROP_AUDIO_MODE:
+      g_value_set_boolean (value, priv->audio_mode);
       break;
     case PROP_TITLE:
       g_value_set_string (value, priv->title);
@@ -944,8 +996,16 @@ ekn_media_bin_get_preferred_width (GtkWidget *self,
 {
   EknMediaBinPrivate *priv = EMB_PRIVATE (EKN_MEDIA_BIN (self));
 
-  *minimum_width = 320;
-  *natural_width = priv->video_width ? priv->video_width : 320;
+  if (priv->audio_mode)
+    {
+      GTK_WIDGET_CLASS (ekn_media_bin_parent_class)->get_preferred_width
+        (self, minimum_width, natural_width);
+    }
+  else
+    {
+      *minimum_width = 320;
+      *natural_width = priv->video_width ? priv->video_width : 640;
+    }
 }
 
 static void
@@ -955,8 +1015,16 @@ ekn_media_bin_get_preferred_height (GtkWidget *self,
 {
   EknMediaBinPrivate *priv = EMB_PRIVATE (EKN_MEDIA_BIN (self));
 
-  *minimum_height = 240;
-  *natural_height = priv->video_height ? priv->video_height : 240;
+  if (priv->audio_mode)
+    {
+      GTK_WIDGET_CLASS (ekn_media_bin_parent_class)->get_preferred_height
+        (self, minimum_height, natural_height);
+    }
+  else
+    {
+      *minimum_height = 240;
+      *natural_height = priv->video_height ? priv->video_height : 480;
+    }
 }
 
 #define EMB_DEFINE_ACTION_SIGNAL(klass, name, handler,...) \
@@ -1018,6 +1086,13 @@ ekn_media_bin_class_init (EknMediaBinClass *klass)
                           FALSE,
                           G_PARAM_READWRITE);
 
+  properties[PROP_AUDIO_MODE] =
+    g_param_spec_boolean ("audio-mode",
+                          "Audio Mode",
+                          "Wheter to show controls suitable for audio files only",
+                          FALSE,
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+
   properties[PROP_TITLE] =
     g_param_spec_string ("title",
                          "Title",
@@ -1055,19 +1130,25 @@ ekn_media_bin_class_init (EknMediaBinClass *klass)
   /* Template */
   gtk_widget_class_set_template_from_resource (widget_class, "/com/endlessm/knowledge-private/EknMediaBin.ui");
 
+  gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, stack);
+  gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, playback_adjustment);
+  gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, volume_adjustment);
+  gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, playback_image);
+  gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, fullscreen_image);
+
   gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, overlay);
   gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, play_box);
-  gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, playback_button);
-  gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, playback_image);
-  gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, playback_adjustment);
   gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, volume_button);
-  gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, fullscreen_button);
-  gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, fullscreen_image);
   gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, title_label);
   gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, info_box);
   gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, duration_label);
   gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, top_revealer);
   gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, bottom_revealer);
+
+  gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, audio_box);
+  gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, audio_volume_button);
+  gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, audio_position_label);
+  gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, audio_playback_image);
 
   gtk_widget_class_bind_template_callback (widget_class, on_ekn_media_bin_realize);
 
@@ -1079,9 +1160,10 @@ ekn_media_bin_class_init (EknMediaBinClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, on_revealer_leave_notify_event);
 
   gtk_widget_class_bind_template_callback (widget_class, on_progress_scale_format_value);
-  gtk_widget_class_bind_template_callback (widget_class, on_playback_button_clicked);
   gtk_widget_class_bind_template_callback (widget_class, on_playback_adjustment_value_changed);
-  gtk_widget_class_bind_template_callback (widget_class, on_fullscreen_button_clicked);
+
+  gtk_widget_class_bind_template_callback (widget_class, ekn_media_bin_toggle_playback);
+  gtk_widget_class_bind_template_callback (widget_class, ekn_media_bin_toggle_fullscreen);
 
   /* Setup CSS */
   gtk_widget_class_set_css_name (widget_class, "ekn-media-bin");
@@ -1311,9 +1393,12 @@ ekn_media_bin_update_position (EknMediaBin *self)
     return;
 
   priv->position = position;
+
   priv->ignore_adjustment_changes = TRUE;
   gtk_adjustment_set_value (priv->playback_adjustment, position);
   priv->ignore_adjustment_changes = FALSE;
+
+  gtk_label_set_label (priv->audio_position_label, format_time (position));
 }
 
 static gboolean
@@ -1543,7 +1628,7 @@ ekn_media_bin_handle_msg_tag (EknMediaBin *self, GstMessage *msg)
 {
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
   GstObject *src = GST_MESSAGE_SRC (msg);
-  GstTagList *tags = NULL, *old_tags;
+  GstTagList *tags = NULL, *old_tags = NULL;
   const gchar *type = NULL;
 
   gst_message_parse_tag (msg, &tags);
@@ -1653,7 +1738,7 @@ ekn_media_bin_init_playbin (EknMediaBin *self)
 
   /* Setup volume */
   /* NOTE: Bidirectional binding makes the app crash on X11 */
-  g_object_bind_property (priv->volume_button, "value",
+  g_object_bind_property (priv->volume_adjustment, "value",
                           priv->play, "volume",
                           G_BINDING_SYNC_CREATE);
 
@@ -1666,14 +1751,17 @@ ekn_media_bin_init_playbin (EknMediaBin *self)
 
 /**
  * ekn_media_bin_new:
+ * @audio_mode:
  *
  * Returns a new #EknMediaBin
  *
  */
 GtkWidget *
-ekn_media_bin_new ()
+ekn_media_bin_new (gboolean audio_mode)
 {
-  return (GtkWidget*) g_object_new (EKN_TYPE_MEDIA_BIN, NULL);
+  return (GtkWidget*) g_object_new (EKN_TYPE_MEDIA_BIN,
+                                    "audio-mode", audio_mode,
+                                    NULL);
 }
 
 /**
@@ -1837,7 +1925,7 @@ EMB_DEFINE_SETTER_STRING (description, DESCRIPTION,
  * Returns audio volume from 0.0 to 1.0
  */
 EMB_DEFINE_GETTER_FULL (gdouble, volume, 1.0,
-  return gtk_scale_button_get_value (EMB_PRIVATE (self)->volume_button);
+  return gtk_adjustment_get_value (EMB_PRIVATE (self)->volume_adjustment);
 )
 
 /**
@@ -1849,8 +1937,8 @@ EMB_DEFINE_GETTER_FULL (gdouble, volume, 1.0,
  */
 EMB_DEFINE_SETTER_FULL (gdouble, volume, VOLUME,
   volume = CLAMP (volume, 0.0, 1.0),
-  gtk_scale_button_get_value (priv->volume_button) != volume,
-  gtk_scale_button_set_value (priv->volume_button, volume),
+  gtk_adjustment_get_value (priv->volume_adjustment) != volume,
+  gtk_adjustment_set_value (priv->volume_adjustment, volume),
 )
 
 /**

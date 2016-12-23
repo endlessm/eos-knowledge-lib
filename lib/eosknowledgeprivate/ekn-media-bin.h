@@ -31,7 +31,7 @@ G_BEGIN_DECLS
 #define EKN_TYPE_MEDIA_BIN (ekn_media_bin_get_type ())
 G_DECLARE_FINAL_TYPE (EknMediaBin, ekn_media_bin, EKN, MEDIA_BIN, GtkBox)
 
-GtkWidget     *ekn_media_bin_new                  ();
+GtkWidget     *ekn_media_bin_new                  (gboolean audio_mode);
 
 const gchar   *ekn_media_bin_get_uri              (EknMediaBin *self);
 void           ekn_media_bin_set_uri              (EknMediaBin *self,
