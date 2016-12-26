@@ -5,7 +5,6 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 const AsyncTask = imports.search.asyncTask;
-const Domain = imports.search.domain;
 const Utils = imports.search.utils;
 
 /**
@@ -149,16 +148,9 @@ const Engine = Lang.Class({
             let domain_obj = this._get_domain(query_obj.app_id);
 
             let do_query = (query_obj) => {
-                domain_obj.get_objects_for_query(query_obj, cancellable, task.catch_callback_errors((domain_obj, query_task) => {
-                    let [results, info] =
-                        domain_obj.get_objects_for_query_finish(query_task);
-
-                    if (results.length === 0) {
-                        task.return_value([[], info]);
-                        return;
-                    }
-
-                    task.return_value([results, info]);
+                domain_obj.query(query_obj, cancellable, task.catch_callback_errors((domain_obj, query_task) => {
+                    let results = domain_obj.query_finish(query_task);
+                    task.return_value(results);
                 }));
             };
 
@@ -198,7 +190,7 @@ const Engine = Lang.Class({
 
     _get_domain: function (app_id) {
         if (this._domain_cache[app_id] === undefined)
-            this._domain_cache[app_id] = Domain.get_domain_impl(app_id, this._xapian_bridge);
+            this._domain_cache[app_id] = Eknc.Domain.get_impl(app_id, this._xapian_bridge, null);
 
         return this._domain_cache[app_id];
     },

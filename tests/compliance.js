@@ -245,9 +245,7 @@ function test_selection_compliance (SelectionClass, setup=function () {}, extra_
             // Not all Selections might use the Xapian engine, but I can't think
             // of a better place to put this
             let engine = MockEngine.mock_default();
-            engine.get_objects_for_query_finish.and.returnValue([[], {
-                more_results: null,
-            }]);
+            engine.get_objects_for_query_finish.and.returnValue({ models: [] });
         });
 
         function add_models (c, num) {
@@ -361,9 +359,7 @@ function test_xapian_selection_compliance(SelectionClass, setup=function () {}, 
             jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
             engine = MockEngine.mock_default();
-            engine.get_objects_for_query_finish.and.returnValue([[], {
-                info: {upper_bound: 0},
-            }]);
+            engine.get_objects_for_query_finish.and.returnValue({ models: [] });
         });
 
         it('continues the query based on how many results were added', function () {
@@ -373,9 +369,7 @@ function test_xapian_selection_compliance(SelectionClass, setup=function () {}, 
                 let model = Eknc.ContentObjectModel.new_from_props();
                 models.push(model);
             }
-            engine.get_objects_for_query_finish.and.returnValue([models, {
-                info: {upper_bound: 10},
-            }]);
+            engine.get_objects_for_query_finish.and.returnValue({ models: models, upper_bound: 10 });
             selection.queue_load_more(3);
             let first_query = engine.get_objects_for_query.calls.mostRecent().args[0];
             // Since we requested 3, we should only add three models to the

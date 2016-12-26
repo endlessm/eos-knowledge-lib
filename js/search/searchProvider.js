@@ -119,9 +119,9 @@ const AppSearchProvider = Lang.Class({
         this._app_proxy.init(null);
     },
 
-    _add_results_to_cache: function (results) {
-        results.forEach(function (result) {
-            this._object_cache[result.ekn_id] = result;
+    _add_models_to_cache: function (models) {
+        models.forEach(function (model) {
+            this._object_cache[model.ekn_id] = model;
         }.bind(this));
     },
 
@@ -152,9 +152,9 @@ const AppSearchProvider = Lang.Class({
                                           this._cancellable,
                                           (engine, query_task) => {
             try {
-                let [results] = engine.get_objects_for_query_finish(query_task);
-                this._add_results_to_cache(results);
-                let ids = results.map(function (result) { return result.ekn_id; });
+                let results = engine.get_objects_for_query_finish(query_task);
+                this._add_models_to_cache(results.models);
+                let ids = results.models.map(function (result) { return result.ekn_id; });
                 invocation.return_value(new GLib.Variant('(as)', [ids]));
             } catch (error) {
                 if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {

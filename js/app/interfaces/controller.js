@@ -96,15 +96,15 @@ const Controller = new Lang.Interface({
             limit: -1,
             tags_match_all: ['EknSetObject'],
         }), null, (engine, res) => {
-            let models;
+            let results;
             try {
-                [models] = engine.get_objects_for_query_finish(res);
+                results = engine.get_objects_for_query_finish(res);
             } catch (e) {
                 logError(e, 'Failed to load sets from database');
                 return;
             }
 
-            SetMap.init_map_with_models(models);
+            SetMap.init_map_with_models(results.models);
 
             this._window.make_ready(cb);
         });

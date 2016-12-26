@@ -86,10 +86,10 @@ const MoltresEngine = new Lang.Class({
             });
         });
 
-        this._to_return = set_models;
-        this._info = {
+        this._to_return =  {
+            models: set_models,
             upper_bound: set_models.length,
-        }
+        };
     },
 
     _get_articles: function (query) {
@@ -100,7 +100,10 @@ const MoltresEngine = new Lang.Class({
         // If the query matches any article or set title, or the synopsis, return some content.
         // Otherwise, return nothing. If no query string was specified at all, we also want to
         // return content since this handles e.g. suggested articles modules.
-        this._to_return = [];
+        this._to_return = {
+            models: [],
+            upper_bound: 0,
+        };
         if (!query.query || query.query.toLowerCase().split(' ').some((token) => matching_strings.indexOf(token.trim()) > -1)) {
             for (let i = 0; i < Math.min(10, query.limit); i++) {
                 let data = this._ARTICLES[i % this._ARTICLES.length];
@@ -111,11 +114,9 @@ const MoltresEngine = new Lang.Class({
                 // add those tags at runtime, to 'fake' the result.
                 if (query.tags_match_any.length !== 0)
                     unique_data.tags.push(query.tags_match_any[0])
-                this._to_return.push(this._generate_article_object(unique_data));
+                this._to_return.models.push(this._generate_article_object(unique_data));
             }
-            this._info = {
-                upper_bound: this._to_return.length,
-            };
+            this._to_return.upper_bound = this._to_return.models.length;
         }
     },
 
@@ -131,7 +132,7 @@ const MoltresEngine = new Lang.Class({
     },
 
     get_objects_for_query_finish: function () {
-        return [this._to_return, this._info];
+        return this._to_return;
     },
 
     _ARTICLES: [

@@ -583,6 +583,25 @@ eknc_domain_get_object_finish (EkncDomain *self,
   return g_task_propagate_pointer (task, error);
 }
 
+static void
+on_xapian_bridge_query_fixed (GObject *source,
+                              GAsyncResult *result,
+                              gpointer user_data)
+{
+  EkncXapianBridge *bridge = EKNC_XAPIAN_BRIDGE (source);
+  g_autoptr(GTask) task = user_data;
+  GError *error;
+
+  EkncQueryObject *query;
+  if (!(query = eknc_xapian_bridge_get_fixed_query_finish (bridge, result, &error)))
+    {
+      g_task_return_error (task, error);
+      return;
+    }
+
+  g_task_return_pointer (task, query, g_object_unref);
+}
+
 /**
  * eknc_domain_get_fixed_query:
  * @self: the domain
@@ -610,13 +629,11 @@ eknc_domain_get_fixed_query (EkncDomain *self,
   g_return_if_fail (EKNC_IS_QUERY_OBJECT (query));
   g_return_if_fail (G_IS_CANCELLABLE (cancellable) || cancellable == NULL);
 
+  GTask *task = g_task_new (self, cancellable, callback, user_data);
+
   g_autoptr(GHashTable) params = eknc_get_domain_query_params (self);
-  eknc_xapian_bridge_get_fixed_query (self->xapian_bridge,
-                                      query,
-                                      params,
-                                      cancellable,
-                                      callback,
-                                      user_data);
+  eknc_xapian_bridge_get_fixed_query (self->xapian_bridge, query, params, cancellable,
+                                      on_xapian_bridge_query_fixed, task);
 }
 
 /**
@@ -638,9 +655,7 @@ eknc_domain_get_fixed_query_finish (EkncDomain *self,
   g_return_val_if_fail (G_IS_TASK (result), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  return eknc_xapian_bridge_get_fixed_query_finish (self->xapian_bridge,
-                                                    result,
-                                                    error);
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 typedef struct

@@ -316,11 +316,11 @@ const Card = new Lang.Interface({
             limit: -1,
         });
         Engine.get_default().get_objects_for_query(query, null, (engine, task) => {
-            let results, info;
+            let results;
             try {
-                [results, info] = engine.get_objects_for_query_finish(task);
+                results = engine.get_objects_for_query_finish(task);
                 let reached_bottom = true;
-                results.forEach((obj) => {
+                results.models.forEach((obj) => {
                     if (obj instanceof Eknc.SetObjectModel) {
                         reached_bottom = false;
                         this._count_set(obj, callback);
@@ -333,8 +333,6 @@ const Card = new Lang.Interface({
                 }
             } catch (e) {
                 logError(e, 'Failed to load content from engine');
-                results = [];
-                info = { more_results: null };
                 return;
             }
         });
