@@ -11,6 +11,7 @@ G_BEGIN_DECLS
 /* Pull in other header files */
 #include "eknc-article-object-model.h"
 #include "eknc-content-object-model.h"
+#include "eknc-domain.h"
 #include "eknc-image-object-model.h"
 #include "eknc-media-object-model.h"
 #include "eknc-query-object.h"

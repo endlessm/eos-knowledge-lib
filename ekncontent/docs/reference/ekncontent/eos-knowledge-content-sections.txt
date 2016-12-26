@@ -6,6 +6,28 @@ EKNC_MICRO_VERSION
 </SECTION>
 
 <SECTION>
+<FILE>domain</FILE>
+eknc_domain_get_shards
+eknc_domain_get_subscription_id
+eknc_domain_get_subscription_entries
+eknc_domain_test_link
+eknc_domain_get_object
+eknc_domain_get_object_finish
+eknc_domain_get_fixed_query
+eknc_domain_get_fixed_query_finish
+eknc_domain_query
+eknc_domain_query_finish
+eknc_domain_get_impl
+EkncDomainError
+<SUBSECTION Standard>
+EkncDomain
+EKNC_TYPE_DOMAIN
+EKNC_DOMAIN_ERROR
+<SUBSECTION Private>
+eknc_domain_error_quark
+</SECTION>
+
+<SECTION>
 <FILE>content-object-model</FILE>
 eknc_content_object_model_get_content_stream
 eknc_content_object_model_get_resources

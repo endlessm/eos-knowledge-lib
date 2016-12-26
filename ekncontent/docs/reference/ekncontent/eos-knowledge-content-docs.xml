@@ -18,6 +18,7 @@
   <chapter>
     <title>Endless Knowledge Content library reference</title>
     <xi:include href="xml/version-information.xml"/>
+    <xi:include href="xml/domain.xml"/>
     <xi:include href="xml/content-object-model.xml"/>
     <xi:include href="xml/article-object-model.xml"/>
     <xi:include href="xml/set-object-model.xml"/>
