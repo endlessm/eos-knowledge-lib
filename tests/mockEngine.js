@@ -1,9 +1,6 @@
-
-const Gio = imports.gi.Gio;
+const Eknc = imports.gi.EosKnowledgeContent;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
-
-const Engine = imports.search.engine;
 
 const MockEngine = new Lang.Class({
     Name: 'MockEngine',
@@ -15,20 +12,16 @@ const MockEngine = new Lang.Class({
         this.port = 3003;
         this.language = '';
 
-        // get_object() and get_objects_for_query() are spies to begin
+        // get_object() and query() are spies to begin
         // with, since that is how they will usually be used.
         // Use like so, for example:
         // engine.get_object_finish.and.returnValue(my_object);
-        // engine.get_objects_for_query_finish.and.returnValue([[object1,
+        // engine.query_finish.and.returnValue([[object1,
         //    object2], {}])
         spyOn(this, 'get_object').and.callThrough();
         spyOn(this, 'get_object_finish');
-        spyOn(this, 'get_objects_for_query').and.callThrough();
-        spyOn(this, 'get_objects_for_query_finish');
-        spyOn(this, '_lookup_ekn_uri');
-
-        let vfs = Gio.Vfs.get_default();
-        vfs.register_uri_scheme('ekn', this._lookup_ekn_uri.bind(this), this._lookup_ekn_uri.bind(this));
+        spyOn(this, 'query').and.callThrough();
+        spyOn(this, 'query_finish');
     },
 
     get_ekn_id: function () {},
@@ -43,20 +36,17 @@ const MockEngine = new Lang.Class({
 
     get_object_finish: function () {},
 
-    get_objects_for_query: function (query, cancellable, callback) {
+    query: function (query, cancellable, callback) {
         callback(this);
     },
 
-    get_objects_for_query_finish: function () {},
-
-    _lookup_ekn_uri: function (uri) {
-    },
+    query_finish: function () {},
 });
 
 // Creates a new MockEngine and sets it up as the engine singleton. Use
 // in a beforeEach to have a new engine each test iteration.
 let mock_default = () => {
     let engine = new MockEngine();
-    spyOn(Engine, 'get_default').and.returnValue(engine);
+    spyOn(Eknc.Engine, 'get_default').and.returnValue(engine);
     return engine;
 };

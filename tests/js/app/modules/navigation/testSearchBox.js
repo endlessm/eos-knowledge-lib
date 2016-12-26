@@ -64,9 +64,9 @@ describe('Navigation.SearchBox', function () {
     });
 
     it('calls into engine for auto complete results', function () {
-        engine.get_objects_for_query_finish.and.returnValue({ models: [] });
+        engine.query_finish.and.returnValue({ models: [] });
         box.text = 'foo';
-        expect(engine.get_objects_for_query).toHaveBeenCalled();
+        expect(engine.query).toHaveBeenCalled();
     });
 
     it('dispatches autocomplete-selected when a item is selected', function () {
@@ -74,7 +74,7 @@ describe('Navigation.SearchBox', function () {
             ekn_id: 'ekn://aaaabbbbccccdddd',
             title: 'foo',
         });
-        engine.get_objects_for_query_finish.and.returnValue({ models: [model] });
+        engine.query_finish.and.returnValue({ models: [model] });
         box.text = 'foo';
         box.emit('menu-item-selected', 'ekn://aaaabbbbccccdddd');
         let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);

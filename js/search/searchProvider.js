@@ -5,7 +5,6 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const Engine = imports.search.engine;
 const Utils = imports.search.utils;
 
 const SearchIface = '\
@@ -100,7 +99,6 @@ const AppSearchProvider = Lang.Class({
         this.skeleton = Gio.DBusExportedObject.wrapJSObject(SearchIfaceInfo, this);
         this._search_provider_domain = GLib.quark_from_string('Knowledge App Search Provider Error');
 
-        this._engine = Engine.get_default();
         this._object_cache = {};
 
         this._app_proxy = null;
@@ -148,11 +146,11 @@ const AppSearchProvider = Lang.Class({
             limit: this.NUM_RESULTS,
             app_id: this.application_id,
         });
-        this._engine.get_objects_for_query(query_obj,
-                                          this._cancellable,
-                                          (engine, query_task) => {
+        Eknc.Engine.get_default().query(query_obj,
+                                        this._cancellable,
+                                        (engine, query_task) => {
             try {
-                let results = engine.get_objects_for_query_finish(query_task);
+                let results = engine.query_finish(query_task);
                 this._add_models_to_cache(results.models);
                 let ids = results.models.map(function (result) { return result.ekn_id; });
                 invocation.return_value(new GLib.Variant('(as)', [ids]));

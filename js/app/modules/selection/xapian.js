@@ -4,7 +4,6 @@
 
 const Eknc = imports.gi.EosKnowledgeContent;
 
-const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const Selection = imports.app.modules.selection.selection;
 
@@ -61,7 +60,7 @@ const Xapian = new Module.Class({
         if (this.loading)
             return;
 
-        let engine = Engine.get_default();
+        let engine = Eknc.Engine.get_default();
         let query = this._next_query;
 
         if (!query) {
@@ -77,7 +76,7 @@ const Xapian = new Module.Class({
 
         this._loading = true;
         this.notify('loading');
-        engine.get_objects_for_query(query, null, (engine, task) => {
+        engine.query(query, null, (engine, task) => {
             this._loading = false;
             this._set_needs_refresh(false);
             this.notify('loading');
@@ -85,7 +84,7 @@ const Xapian = new Module.Class({
             let models = [];
             let upper_bound = 0;
             try {
-                let results = engine.get_objects_for_query_finish(task);
+                let results = engine.query_finish(task);
                 models = results.models;
                 upper_bound = results.upper_bound;
                 this._exception = null;

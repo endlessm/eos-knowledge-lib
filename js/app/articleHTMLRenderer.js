@@ -1,9 +1,9 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const Endless = imports.gi.Endless;
 const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
-const Engine = imports.search.engine;
 
 const Config = imports.app.config;
 const Knowledge = imports.app.knowledge;
@@ -242,7 +242,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
     },
 
     _get_crosslink_data: function (model) {
-        let engine = Engine.get_default();
+        let engine = Eknc.Engine.get_default();
         let links = model.outgoing_links.map((link) => engine.test_link(link));
         return JSON.stringify(links);
     },

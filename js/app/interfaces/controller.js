@@ -6,7 +6,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const SetMap = imports.app.setMap;
 
@@ -92,13 +91,13 @@ const Controller = new Lang.Interface({
     initialize_set_map: function (cb) {
         // Load all sets, with which to populate the set map
         // FIXME: deduplicate this with Selection.AllSets
-        Engine.get_default().get_objects_for_query(Eknc.QueryObject.new_from_props({
+        Eknc.Engine.get_default().query(Eknc.QueryObject.new_from_props({
             limit: -1,
             tags_match_all: ['EknSetObject'],
         }), null, (engine, res) => {
             let results;
             try {
-                results = engine.get_objects_for_query_finish(res);
+                results = engine.query_finish(res);
             } catch (e) {
                 logError(e, 'Failed to load sets from database');
                 return;

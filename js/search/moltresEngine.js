@@ -2,7 +2,6 @@ const Eknc = imports.gi.EosKnowledgeContent;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const Engine = imports.search.engine;
 const SearchUtils = imports.search.utils;
 
 const IMAGES_DIR = 'resource:///com/endlessm/knowledge/data/images/tools/';
@@ -120,7 +119,7 @@ const MoltresEngine = new Lang.Class({
         }
     },
 
-    get_objects_for_query: function (query, cancellable, callback) {
+    query: function (query, cancellable, callback) {
         let generation_func;
         if (query.tags_match_all.indexOf('EknSetObject') >= 0) {
             this._get_sets(query);
@@ -131,7 +130,7 @@ const MoltresEngine = new Lang.Class({
         callback(this);
     },
 
-    get_objects_for_query_finish: function () {
+    query_finish: function () {
         return this._to_return;
     },
 
@@ -206,5 +205,7 @@ placerat varius non id dui.',
 // Override the default engine singleton with our own, moltres Engine.
 let override_engine = () => {
     let engine = new MoltresEngine();
-    Engine.the_engine = engine;
+    Eknc.Engine.get_default = function () {
+        return engine;
+    };
 };

@@ -10,7 +10,6 @@ const GObject = imports.gi.GObject;
 const Actions = imports.app.actions;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
-const Engine = imports.search.engine;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const Pages = imports.app.pages;
@@ -109,7 +108,7 @@ const SearchBox = new Module.Class({
             limit: RESULTS_SIZE,
             tags_match_any: ['EknArticleObject'],
         });
-        Engine.get_default().get_objects_for_query(query_obj,
+        Eknc.Engine.get_default().query(query_obj,
                                          this._cancellable,
                                          (engine, task) => {
             this._cancellable = null;
@@ -117,7 +116,7 @@ const SearchBox = new Module.Class({
                 return;
 
             try {
-                let results = engine.get_objects_for_query_finish(task);
+                let results = engine.query_finish(task);
                 this._autocomplete_models = results.models;
             } catch (error) {
                 if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))

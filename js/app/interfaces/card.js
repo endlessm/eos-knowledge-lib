@@ -15,7 +15,6 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
 const Config = imports.app.config;
-const Engine = imports.search.engine;
 const FormattableLabel = imports.app.widgets.formattableLabel;
 const ImageCoverFrame = imports.app.widgets.imageCoverFrame;
 const Module = imports.app.interfaces.module;
@@ -315,10 +314,10 @@ const Card = new Lang.Interface({
             tags_match_any: set_obj.child_tags,
             limit: -1,
         });
-        Engine.get_default().get_objects_for_query(query, null, (engine, task) => {
+        Eknc.Engine.get_default().query(query, null, (engine, task) => {
             let results;
             try {
-                results = engine.get_objects_for_query_finish(task);
+                results = engine.query_finish(task);
                 let reached_bottom = true;
                 results.models.forEach((obj) => {
                     if (obj instanceof Eknc.SetObjectModel) {

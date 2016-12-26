@@ -8,7 +8,6 @@ const GObject = imports.gi.GObject;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
-const Engine = imports.search.engine;
 const HistoryItem = imports.app.historyItem;
 const HistoryStore = imports.app.historyStore;
 const Pages = imports.app.pages;
@@ -83,10 +82,10 @@ const CourseHistoryStore = new GObject.Class({
             tags_match_all: ['EknSetObject'],
             sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,
         });
-        Engine.get_default().get_objects_for_query(query, null, (engine, task) => {
+        Eknc.Engine.get_default().query(query, null, (engine, task) => {
             let results;
             try {
-                results = engine.get_objects_for_query_finish(task);
+                results = engine.query_finish(task);
             } catch (error) {
                 logError(error);
                 return;

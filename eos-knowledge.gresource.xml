@@ -198,7 +198,6 @@
     <file>js/search/asyncTask.js</file>
     <file>js/search/config.js</file>
     <file>js/search/downloader.js</file>
-    <file>js/search/engine.js</file>
     <file>js/search/moltresEngine.js</file>
     <file>js/search/searchProvider.js</file>
     <file>js/search/utils.js</file>

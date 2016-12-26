@@ -3,7 +3,6 @@ const Gdk = imports.gi.Gdk;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
-const Engine = imports.search.engine;
 const HistoryStore = imports.app.historyStore;
 const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
@@ -84,7 +83,7 @@ const MediaLightbox = new Module.Class({
             this._preview_media_object(resource);
             this._loading_new_lightbox = false;
         } else {
-            Engine.get_default().get_object(resource, null, (engine, task) => {
+            Eknc.Engine.get_default().get_object(resource, null, (engine, task) => {
                 this._loading_new_lightbox = false;
                 let media_object;
                 try {
