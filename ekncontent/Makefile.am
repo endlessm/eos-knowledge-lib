@@ -64,6 +64,7 @@ ekncontent_private_installed_headers = \
 	ekncontent/eknc-article-object-model.h \
 	ekncontent/eknc-content-object-model.h \
 	ekncontent/eknc-domain.h \
+	ekncontent/eknc-engine.h \
 	ekncontent/eknc-image-object-model.h \
 	ekncontent/eknc-media-object-model.h \
 	ekncontent/eknc-object-model.h \
@@ -80,6 +81,7 @@ ekncontent_sources = \
 	ekncontent/eknc-content-object-model-private.h \
 	ekncontent/eknc-content-object-model.c \
 	ekncontent/eknc-domain.c \
+	ekncontent/eknc-engine.c \
 	ekncontent/eknc-image-object-model.c \
 	ekncontent/eknc-media-object-model-private.h \
 	ekncontent/eknc-media-object-model.c \
@@ -150,6 +152,7 @@ javascript_tests = \
 	tests/ekncontent/testContentObjectModel.js \
 	tests/ekncontent/testDatadir.js \
 	tests/ekncontent/testDomain.js \
+	tests/ekncontent/testEngine.js \
 	tests/ekncontent/testMediaObjectModels.js \
 	tests/ekncontent/testObjectModel.js \
 	tests/ekncontent/testQueryObject.js \
