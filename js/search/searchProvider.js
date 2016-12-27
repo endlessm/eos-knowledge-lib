@@ -186,7 +186,7 @@ const AppSearchProvider = Lang.Class({
         for (let obj of result_ekn_objects) {
             if (typeof obj !== 'undefined') {
                 let displayTitle;
-                if (typeof obj.originalTitle !== 'undefined') {
+                if (obj.originalTitle) {
                     displayTitle = obj.originalTitle;
                 } else {
                     displayTitle = obj.title;
