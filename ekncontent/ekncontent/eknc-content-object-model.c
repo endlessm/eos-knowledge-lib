@@ -473,7 +473,7 @@ eknc_content_object_model_add_json_to_params (JsonNode *node,
   eknc_utils_append_gparam_from_json_node (json_object_get_member (object, "title"),
                                            g_object_class_find_property (klass, "title"),
                                            params);
-  eknc_utils_append_gparam_from_json_node (json_object_get_member (object, "contentType"),
+  eknc_utils_append_gparam_from_json_node (json_object_get_member (object, "originalTitle"),
                                            g_object_class_find_property (klass, "original-title"),
                                            params);
   eknc_utils_append_gparam_from_json_node (json_object_get_member (object, "originalURI"),
