@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-12-13 02:57+0000\n"
-"PO-Revision-Date: 2016-11-22 02:50+0000\n"
+"POT-Creation-Date: 2016-12-20 02:58+0000\n"
+"PO-Revision-Date: 2016-12-20 02:59+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/vi/)\n"
 "MIME-Version: 1.0\n"
@@ -61,11 +61,11 @@ msgstr "TRANG CHỦ"
 msgid "View the license"
 msgstr ""
 
-#: js/app/application.js:158
+#: js/app/application.js:153
 msgid "Oops! No content."
 msgstr ""
 
-#: js/app/application.js:159
+#: js/app/application.js:154
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -145,7 +145,13 @@ msgstr "Được quyền sử dụng nội dung từ {blog-link}, được cấp
 msgid "Results were found for “%s”"
 msgstr "Đã tìm thấy kết quả tìm kiếm cho \"%s\""
 
-#: js/app/interfaces/card.js:337
+#: js/app/interfaces/card.js:281
+#, javascript-format
+msgid "%s:%s minute"
+msgid_plural "%s:%s minutes"
+msgstr[0] ""
+
+#: js/app/interfaces/card.js:349
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
