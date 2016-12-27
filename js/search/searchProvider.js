@@ -5,8 +5,6 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const Utils = imports.search.utils;
-
 const SearchIface = '\
 <node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd"> \
   <interface name="org.gnome.Shell.SearchProvider2"> \
@@ -64,6 +62,10 @@ function systemd_bus_path_decode(string) {
     });
 }
 
+function object_path_from_app_id (app_id) {
+    return '/' + app_id.replace(/\./g, '/');
+}
+
 /**
  * Class: SearchProvider
  *
@@ -109,7 +111,7 @@ const AppSearchProvider = Lang.Class({
             return;
         this._app_proxy = new Gio.DBusProxy({ g_bus_type: Gio.BusType.SESSION,
                                               g_name: this.application_id,
-                                              g_object_path: Utils.object_path_from_app_id(this.application_id),
+                                              g_object_path: object_path_from_app_id(this.application_id),
                                               g_interface_info: KnowledgeSearchIfaceInfo,
                                               g_interface_name: KnowledgeSearchIfaceInfo.name,
                                               g_flags: (Gio.DBusProxyFlags.DO_NOT_AUTO_START_AT_CONSTRUCTION |

@@ -18,7 +18,6 @@ const Config = imports.app.config;
 const FormattableLabel = imports.app.widgets.formattableLabel;
 const ImageCoverFrame = imports.app.widgets.imageCoverFrame;
 const Module = imports.app.interfaces.module;
-const SearchUtils = imports.search.utils;
 const SetMap = imports.app.setMap;
 const SpaceContainer = imports.app.widgets.spaceContainer;
 const Utils = imports.app.utils;
@@ -33,7 +32,7 @@ let ngettext = Gettext.dngettext.bind(null, Config.GETTEXT_PACKAGE);
  * NEXT     - Next article in the sequence.
  * NONE     - Not part of a sequence.
  */
-const Sequence = SearchUtils.define_enum(['PREVIOUS', 'NEXT', 'NONE']);
+const Sequence = Utils.define_enum(['PREVIOUS', 'NEXT', 'NONE']);
 
 /**
  * Constant: WIDTH_STYLE_CLASSES

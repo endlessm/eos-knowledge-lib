@@ -2,7 +2,7 @@ const Eknc = imports.gi.EosKnowledgeContent;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const SearchUtils = imports.search.utils;
+const Utils = imports.app.utils;
 
 const IMAGES_DIR = 'resource:///com/endlessm/knowledge/data/images/tools/';
 const NUM_TOP_LEVEL_SETS = 20;
@@ -197,7 +197,7 @@ placerat varius non id dui.',
         data.source = 'wikipedia';
         data.license = 'CC-BY-SA 3.0';
         let article = Eknc.ArticleObjectModel.new_from_props(data);
-        article.get_content_stream = () => { return SearchUtils.string_to_stream('<html><body><p>Some content</p></body></html>'); };
+        article.get_content_stream = () => { return Utils.string_to_stream('<html><body><p>Some content</p></body></html>'); };
         return article;
     },
 });

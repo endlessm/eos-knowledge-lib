@@ -9,7 +9,7 @@ const Soup = imports.gi.Soup;
 
 const AsyncTask = imports.search.asyncTask;
 const Config = imports.search.config;
-const Utils = imports.search.utils;
+const Utils = imports.app.utils;
 
 const FileDownloadRequest = new Lang.Class({
     Name: 'FileDownloadRequest',

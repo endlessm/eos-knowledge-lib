@@ -13,7 +13,6 @@ const AsyncTask = imports.search.asyncTask;
 const Config = imports.app.config;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Knowledge = imports.app.knowledge;
-const SearchUtils = imports.search.utils;
 const Utils = imports.app.utils;
 
 function should_enable_inspector() {
@@ -146,7 +145,7 @@ const EknWebview = new Knowledge.Class({
 
         let id = req.get_uri();
 
-        let components = SearchUtils.components_from_ekn_id(id);
+        let components = Utils.components_from_ekn_id(id);
         if (components.length === 1) {
             this._load_object(id, cancellable, (source, load_task) => {
                 try {

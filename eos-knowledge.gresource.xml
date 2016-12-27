@@ -200,7 +200,6 @@
     <file>js/search/downloader.js</file>
     <file>js/search/moltresEngine.js</file>
     <file>js/search/searchProvider.js</file>
-    <file>js/search/utils.js</file>
     <file>tools/eminem.js</file>
     <file>tools/kermit.js</file>
     <file>tools/picard.js</file>

@@ -526,7 +526,6 @@ javascript_tests = \
 	tests/js/app/widgets/testSpaceContainer.js \
 	tests/js/app/widgets/testTableOfContents.js \
 	tests/js/search/testAsyncTask.js \
-	tests/js/search/testUtils.js \
 	$(NULL)
 yaml_tests = \
 	tests/autobahn/basic.yaml \

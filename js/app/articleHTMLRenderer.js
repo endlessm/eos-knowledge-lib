@@ -8,7 +8,7 @@ const GObject = imports.gi.GObject;
 const Config = imports.app.config;
 const Knowledge = imports.app.knowledge;
 const Mustache = imports.app.libs.mustache.Mustache;
-const SearchUtils = imports.search.utils;
+const Utils = imports.app.utils;
 const SetMap = imports.app.setMap;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -132,7 +132,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
 
     _get_html: function (model) {
         let stream = model.get_content_stream();
-        return SearchUtils.read_stream_sync(stream);
+        return Utils.read_stream_sync(stream);
     },
 
     _render_legacy_content: function (model) {

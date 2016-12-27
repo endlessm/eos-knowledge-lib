@@ -15,6 +15,7 @@ const MockMetricsModule = {
 
 const Config = imports.app.config;
 
+const ByteArray = imports.byteArray;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EosMetrics = Config.metrics_enabled ? imports.gi.EosMetrics : MockMetricsModule;
 const Format = imports.format;
@@ -475,4 +476,63 @@ function record_search_metric (query) {
     let recorder = EosMetrics.EventRecorder.get_default();
     recorder.record_event(SEARCH_METRIC_EVENT_ID, new GLib.Variant('(ss)',
         [query, app_id]));
+}
+
+// number of bytes to read from the stream at a time (chosen rather arbitrarily
+// to be 8KB)
+const CHUNK_SIZE = 1024 * 8;
+
+// synchronously read an entire GInputStream
+function read_stream_sync (stream, cancellable = null) {
+    try {
+        let total_read = '';
+
+        let buffer = stream.read_bytes(CHUNK_SIZE, cancellable);
+        while (buffer.get_size() !== 0) {
+            total_read += buffer.get_data().toString();
+            buffer = stream.read_bytes(CHUNK_SIZE, cancellable);
+        }
+        total_read += buffer.get_data().toString();
+
+        return total_read;
+    } catch (error) {
+        logError(error, 'Error reading steam');
+        return undefined;
+    }
+}
+
+function define_enum (values) {
+    return values.reduce((obj, val, index) => {
+        obj[val] = index;
+        return obj;
+    }, {});
+}
+
+function components_from_ekn_id (ekn_id) {
+    // The URI is of form 'ekn://domain/hash[/resource]'.
+    // Domain is part of legacy bundle support and should not be used for
+    // modern content.
+
+    // Chop off our constant scheme identifier.
+    let stripped_ekn_id = ekn_id.slice('ekn://'.length);
+
+    let components = stripped_ekn_id.split('/');
+
+    // Pop off the domain component.
+    components.shift();
+
+    return components;
+}
+
+function ensure_directory (dir) {
+    try {
+        dir.make_directory_with_parents(null);
+    } catch (e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS)) {
+        // Directory already exists, we're good.
+    }
+}
+
+function string_to_stream(string) {
+    let bytes = ByteArray.fromString(string).toGBytes();
+    return Gio.MemoryInputStream.new_from_bytes(bytes);
 }

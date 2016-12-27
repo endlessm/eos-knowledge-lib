@@ -2,7 +2,7 @@ const Eknc = imports.gi.EosKnowledgeContent;
 
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const Utils = imports.tests.utils;
-const SearchUtils = imports.search.utils;
+const AppUtils = imports.app.utils;
 const SetMap = imports.app.setMap;
 
 describe('Article HTML Renderer', function () {
@@ -22,7 +22,7 @@ describe('Article HTML Renderer', function () {
             license: 'CC-BY-SA 3.0',
             title: 'Wikipedia title',
         });
-        wikipedia_model.get_content_stream = () => { return SearchUtils.string_to_stream('<html><body><p>wikipedia html</p></body></html>'); };
+        wikipedia_model.get_content_stream = () => { return AppUtils.string_to_stream('<html><body><p>wikipedia html</p></body></html>'); };
         wikisource_model = Eknc.ArticleObjectModel.new_from_props({
             source_uri: 'http://en.wikisource.org/wiki/When_It_Hits_the_Fan',
             original_uri: 'http://en.wikisource.org/wiki/When_It_Hits_the_Fan',
@@ -32,7 +32,7 @@ describe('Article HTML Renderer', function () {
             license: 'CC-BY-SA 3.0',
             title: 'Wikibooks title',
         });
-        wikisource_model.get_content_stream = () => { return SearchUtils.string_to_stream('<html><body><p>wikisource html</p></body></html>'); };
+        wikisource_model.get_content_stream = () => { return AppUtils.string_to_stream('<html><body><p>wikisource html</p></body></html>'); };
         wikihow_model = Eknc.ArticleObjectModel.new_from_props({
             source_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
             original_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
@@ -42,7 +42,7 @@ describe('Article HTML Renderer', function () {
             license: 'Owner permission',
             title: 'Wikihow & title',
         });
-        wikihow_model.get_content_stream = () => { return SearchUtils.string_to_stream('<html><body><p>wikihow html</p></body></html>'); };
+        wikihow_model.get_content_stream = () => { return AppUtils.string_to_stream('<html><body><p>wikihow html</p></body></html>'); };
         wikibooks_model = Eknc.ArticleObjectModel.new_from_props({
             source_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
             original_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
@@ -52,7 +52,7 @@ describe('Article HTML Renderer', function () {
             license: 'CC-BY-SA 3.0',
             title: 'Wikibooks title',
         });
-        wikibooks_model.get_content_stream = () => { return SearchUtils.string_to_stream('<html><body><p>wikibooks html</p></body></html>'); };
+        wikibooks_model.get_content_stream = () => { return AppUtils.string_to_stream('<html><body><p>wikibooks html</p></body></html>'); };
     });
 
     it('can render an article', function () {
@@ -155,7 +155,7 @@ describe('Article HTML Renderer', function () {
                 published: '2016-02-25T09:31:00',
                 tags: ['guatemala/comunitario', 'guatemala', 'EknArticleObject'],
             });
-            model.get_content_stream = () => SearchUtils.string_to_stream('<html><body><p>Prensa Libre</p></body></html>');
+            model.get_content_stream = () => AppUtils.string_to_stream('<html><body><p>Prensa Libre</p></body></html>');
             html = renderer.render(model);
         });
 
@@ -192,7 +192,7 @@ describe('Article HTML Renderer', function () {
                 is_server_templated: true,
                 title: 'Some good server templated content',
             });
-            server_templated_model.get_content_stream = () => { return SearchUtils.string_to_stream('<html><body><p>Excellent server templated content</p></body></html>'); };
+            server_templated_model.get_content_stream = () => { return AppUtils.string_to_stream('<html><body><p>Excellent server templated content</p></body></html>'); };
             let renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
             html = renderer.render(server_templated_model);
         });
