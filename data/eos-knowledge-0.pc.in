@@ -2,9 +2,7 @@ prefix = @prefix@
 exec_prefix = @exec_prefix@
 datarootdir = @datarootdir@
 datadir = @datadir@
-pkgdatadir = @datadir@/eos-knowledge
-pkglibdir = @libdir@/eos-knowledge
-typelibdir = @libdir@/eos-knowledge/girepository-1.0
+pkgdatadir = @datadir@/@PACKAGE@
 eos_theme_path=@datadir@/@PACKAGE@/theme/
 eos_preset_path=@datadir@/@PACKAGE@/preset/
 
