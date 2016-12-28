@@ -3,7 +3,7 @@
 const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gio = imports.gi.Gio;
 
-const AsyncTask = imports.search.asyncTask;
+const AsyncTask = imports.app.asyncTask;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 
 // Note: this is a temporary solution until the color extraction is done

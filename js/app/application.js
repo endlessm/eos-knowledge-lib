@@ -15,10 +15,10 @@ const System = imports.system;
 const Actions = imports.app.actions;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
-const Downloader = imports.search.downloader;
+const Downloader = imports.app.downloader;
 const Knowledge = imports.app.knowledge;
 const ModuleFactory = imports.app.moduleFactory;
-const MoltresEngine = imports.search.moltresEngine;
+const MoltresEngine = imports.app.moltresEngine;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 

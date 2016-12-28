@@ -1,6 +1,6 @@
 const Gio = imports.gi.Gio;
 
-const AsyncTask = imports.search.asyncTask;
+const AsyncTask = imports.app.asyncTask;
 
 describe('AsyncTask', function () {
     describe('callback function', function (done) {

@@ -67,11 +67,13 @@
     <file>js/app/actions.js</file>
     <file>js/app/application.js</file>
     <file>js/app/articleHTMLRenderer.js</file>
+    <file>js/app/asyncTask.js</file>
     <file>js/app/buffetHistoryStore.js</file>
     <file>js/app/config.js</file>
     <file>js/app/courseHistoryStore.js</file>
     <file>js/app/dispatcher.js</file>
     <file>js/app/dominantColor.js</file>
+    <file>js/app/downloader.js</file>
     <file>js/app/historyItem.js</file>
     <file>js/app/historyStore.js</file>
     <file>js/app/interfaces/arrangement.js</file>
@@ -170,6 +172,7 @@
     <file>js/app/modules/selection/supplementaryArticles.js</file>
     <file>js/app/modules/selection/xapian.js</file>
     <file>js/app/modules/window/simple.js</file>
+    <file>js/app/moltresEngine.js</file>
     <file>js/app/pages.js</file>
     <file>js/app/readingHistoryModel.js</file>
     <file>js/app/setMap.js</file>
@@ -195,10 +198,6 @@
     <file>js/app/widgets/tableOfContents.js</file>
     <file>js/app/widgets/themeableImage.js</file>
     <file>js/app/widgetSurfaceCache.js</file>
-    <file>js/search/asyncTask.js</file>
-    <file>js/search/config.js</file>
-    <file>js/search/downloader.js</file>
-    <file>js/search/moltresEngine.js</file>
     <file>tools/eminem.js</file>
     <file>tools/kermit.js</file>
     <file>tools/picard.js</file>

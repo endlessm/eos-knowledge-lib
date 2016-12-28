@@ -339,7 +339,6 @@ subst = $(SED) \
 subst_files = \
 	ekn-app-runner \
 	js/app/config.js \
-	js/search/config.js \
 	tools/eminem \
 	tools/kermit \
 	tools/picard \
@@ -500,6 +499,7 @@ javascript_tests = \
 	tests/js/app/modules/selection/testSupplementaryArticles.js \
 	tests/js/app/modules/window/testSimple.js \
 	tests/js/app/testArticleHTMLRenderer.js \
+	tests/js/app/testAsyncTask.js \
 	tests/js/app/testBuffetHistoryStore.js \
 	tests/js/app/testCourseHistoryStore.js \
 	tests/js/app/testDispatcher.js \
@@ -525,7 +525,6 @@ javascript_tests = \
 	tests/js/app/widgets/testSlidingPanelOverlay.js \
 	tests/js/app/widgets/testSpaceContainer.js \
 	tests/js/app/widgets/testTableOfContents.js \
-	tests/js/search/testAsyncTask.js \
 	$(NULL)
 yaml_tests = \
 	tests/autobahn/basic.yaml \

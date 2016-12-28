@@ -9,7 +9,7 @@ const Gtk = imports.gi.Gtk;
 const WebKit2 = imports.gi.WebKit2;
 
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
-const AsyncTask = imports.search.asyncTask;
+const AsyncTask = imports.app.asyncTask;
 const Config = imports.app.config;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Knowledge = imports.app.knowledge;
