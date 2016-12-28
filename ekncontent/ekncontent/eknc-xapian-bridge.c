@@ -231,7 +231,7 @@ get_xapian_query_uri (EkncXapianBridge *self,
 {
   g_autoptr(GHashTable) params = g_hash_table_new (g_str_hash, g_str_equal);
   g_hash_table_insert (params, "q", (gpointer) eknc_query_object_get_query_parser_string (query));
-  if (*self->language)
+  if (self->language && *self->language)
     g_hash_table_insert (params, "lang", self->language);
 
   guint limit, offset;
