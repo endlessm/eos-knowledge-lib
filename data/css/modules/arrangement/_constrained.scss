@@ -1,0 +1,9 @@
+$constrained-arrangement-spacing: 10px;
+
+.ArrangementConstrained {
+    margin: $constrained-arrangement-spacing * -1;
+
+    .Card {
+        margin: $constrained-arrangement-spacing;
+    }
+}

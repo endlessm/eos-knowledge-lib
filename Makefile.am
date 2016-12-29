@@ -70,6 +70,7 @@ scss_theme_base_partials = \
 	$(srcdir)/data/css/_mesh.scss \
 	$(NULL)
 scss_theme_arrangement_partials = \
+	$(srcdir)/data/css/modules/arrangement/_constrained.scss \
 	$(srcdir)/data/css/modules/arrangement/_half.scss \
 	$(srcdir)/data/css/modules/arrangement/_list.scss \
 	$(srcdir)/data/css/modules/arrangement/_piano.scss \
@@ -427,6 +428,7 @@ javascript_tests = \
 	tests/js/app/interfaces/testModule.js \
 	tests/js/app/interfaces/testOrder.js \
 	tests/js/app/modules/arrangement/testAccordion.js \
+	tests/js/app/modules/arrangement/testConstrained.js \
 	tests/js/app/modules/arrangement/testGrid.js \
 	tests/js/app/modules/arrangement/testHalf.js \
 	tests/js/app/modules/arrangement/testList.js \
