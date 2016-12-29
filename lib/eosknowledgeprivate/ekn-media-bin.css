@@ -24,6 +24,7 @@
 @define-color transparent-light rgba (1,1,1,.1);
 @define-color transparent-dark  rgba (.11,.11,.11,.8);
 @define-color highlight-color   #ff6835;
+@define-color audio-bg-color    #4c4c4c;
 
 /* hiden/shown  */
 ekn-media-bin *.hide {
@@ -36,17 +37,17 @@ ekn-media-bin *.show {
   opacity: 1;
 }
 
-ekn-media-bin > image {
+ekn-media-bin > stack > image {
   background: black;
 }
 
-ekn-media-bin overlay label,
-ekn-media-bin overlay scale value {
+ekn-media-bin label,
+ekn-media-bin scale value {
   color: white;
 }
 
-ekn-media-bin overlay label:backdrop,
-ekn-media-bin overlay scale value:backdrop {
+ekn-media-bin label:backdrop,
+ekn-media-bin scale value:backdrop {
   color: darker(white);
 }
 
@@ -62,7 +63,7 @@ ekn-media-bin label.title {
   font: 18px Sans;
 }
 
-ekn-media-bin box.overlay-bar.bottom button {
+ekn-media-bin box.bottom button {
   border: 0px;
   border-radius: 0px;
   box-shadow: none;
@@ -71,13 +72,13 @@ ekn-media-bin box.overlay-bar.bottom button {
   padding: 8px;
 }
 
-ekn-media-bin box.overlay-bar.bottom button:hover {
+ekn-media-bin box.bottom button:hover {
   box-shadow: none;
   background: rgba (0,0,0,.6);
 }
 
 /* Main play button */
-ekn-media-bin > overlay > box {
+ekn-media-bin overlay > box {
   font-size: 18px;
   border: 0px;
   border-radius: 2em;
@@ -86,25 +87,25 @@ ekn-media-bin > overlay > box {
   background: @transparent-dark;
 }
 
-ekn-media-bin > overlay > box > label {
+ekn-media-bin overlay > box > label {
   padding-left: .64em;
 }
 
 /* Style media playback scale */
-ekn-media-bin overlay scale {
+ekn-media-bin scale {
   margin-top: .5em;
   padding: 3px 0px;
   background-image: linear-gradient(to top, @transparent-dark 3px, transparent 3px);
 }
 
-ekn-media-bin overlay scale trough {
+ekn-media-bin scale trough {
   border: 0;
   border-radius: 0px;
   padding: 1px;
   background: @transparent-light;
 }
 
-ekn-media-bin overlay scale slider {
+ekn-media-bin scale slider {
   min-height: 12px;
   min-width: 12px;
   margin: -4px;
@@ -114,20 +115,20 @@ ekn-media-bin overlay scale slider {
   background: none;
 }
 
-ekn-media-bin overlay scale highlight {
+ekn-media-bin scale highlight {
   border: 0px;
   padding: 0px;
   border-radius: 0px 4px 4px 0px;
   background: @highlight-color;
 }
 
-ekn-media-bin overlay scale value {
+ekn-media-bin scale value {
   padding: 2px 0px;
   border-radius: 1em;
   background: @transparent-dark;
 }
 
-ekn-media-bin overlay scale:hover slider {
+ekn-media-bin scale:hover slider {
   background: white;
 }
 
@@ -172,6 +173,22 @@ popover.ekn-media-bin scale slider {
 
 popover.ekn-media-bin scale:hover slider {
   background: white;
+}
+
+/* Audio nodes */
+ekn-media-bin box.audio > box {
+  background: @audio-bg-color;
+}
+
+ekn-media-bin box.audio > scale {
+  margin: 0;
+  padding: 1px 0px;
+  background-image: linear-gradient(to top, @audio-bg-color 3px, transparent 3px);
+}
+
+ekn-media-bin box.audio > scale trough {
+  padding: 1px 0px;
+  background: #707070;
 }
 
 /* Setup key bindings */

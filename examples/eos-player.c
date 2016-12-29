@@ -37,7 +37,7 @@ main (int argc, char **argv)
   /* Quit app on delete-event */
   g_signal_connect (window, "delete-event", G_CALLBACK (gtk_main_quit), NULL);
 
-  bin = ekn_media_bin_new ();
+  bin = ekn_media_bin_new (FALSE);
   ekn_media_bin_set_uri (EKN_MEDIA_BIN (bin), argv[1]);
   gtk_container_add (GTK_CONTAINER (window), bin);
 
