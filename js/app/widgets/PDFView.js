@@ -1,6 +1,9 @@
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EvinceDocument = imports.gi.EvinceDocument;
 const EvinceView = imports.gi.EvinceView;
 const Gdk = imports.gi.Gdk;
+const GLib = imports.gi.GLib;
+const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 
 const Knowledge = imports.app.knowledge;
@@ -46,7 +49,43 @@ const PDFView = new Knowledge.Class({
         view.connect('external-link', (view, link_action) => {
             if (link_action.type !== EvinceDocument.LinkActionType.EXTERNAL_URI)
                 return;
-            Gtk.show_uri(null, link_action.uri, Gdk.CURRENT_TIME);
+
+            let [content_type, uncertain] = Gio.content_type_guess (link_action.uri, null);
+
+            if (GLib.uri_parse_scheme (link_action.uri) !== 'file' ||
+                !GLib.str_has_prefix (content_type, 'audio')) {
+                Gtk.show_uri(null, link_action.uri, Gdk.CURRENT_TIME);
+                return;
+            }
+
+            let mediabin = new EosKnowledgePrivate.MediaBin({
+                audioMode: true,
+                uri: link_action.uri,
+            });
+            mediabin.show();
+
+            let popover = new Gtk.Popover({
+                relative_to: this,
+                pointing_to: new Gdk.Rectangle ({
+                    x: this.get_allocated_width()/2,
+                    y: 0,
+                    width: 1,
+                    height: 1,
+                })
+            });
+
+            popover.add (mediabin);
+
+            popover.connect('closed', () => {
+                mediabin.stop();
+                popover.remove(mediabin);
+            });
+
+            /* Show popup */
+            popover.popup();
+
+            /* Start playback */
+            mediabin.play();
         });
 
         let child = this.get_child();
@@ -60,3 +99,4 @@ const PDFView = new Knowledge.Class({
         return [Math.min(minimal, _MAX_PDF_VIEW_WIDTH), _MAX_PDF_VIEW_WIDTH];
     }
 });
+

@@ -188,7 +188,7 @@ PKG_CHECK_MODULES([EOS_KNOWLEDGE_PRIVATE], [
     glib-2.0
     gobject-2.0
     gio-2.0
-    gtk+-3.0 >= 3.12
+    gtk+-3.0 >= 3.22
     webkit2gtk-4.0
     gstreamer-1.0 >= 1.10
     gstreamer-audio-1.0 >= 1.10
