@@ -49,25 +49,6 @@ to day basis.
    eos-knowledge-db-build (to build the shard on our servers) and eos-knowledge-lib (to
    read from the shard at runtime).
 
-Additionally, we have these deprecated repos:
-
- * [eos-knowledge-engine](http://github.com/endlessm/eos-knowledge-engine) - Originally
-   contained a small HTTP service running on the user's computer to render and display
-   content. Was eventually killed off, with all the smarts being merged into
-   eos-knowledge-lib, the client application.
- * [eos-encyclopedia](https://github.com/endlessm/eos-encyclopedia) - Originally contained
-   client code for the Encyclopedia app. The Encyclopedia application was eventually
-   restructured to be a knowledge app, with the code for the Encyclopedia moving into
-   eos-knowledge-lib.
- * [eos-encyclopedia-db](https://github.com/endlessm/eos-encyclopedia-db) - Originally
-   contained build processes for the Encyclopedia app. When the Encyclopedia app was
-   restructured to be a knowledge app, we also put the app description and databases in
-   eos-knowledge-apps.
- * [eos-pantheon-tools](https://github.com/endlessm/eos-pantheon-tools) - A failed project
-   to replace our hairy mess of database build scripts of eos-knowledge-db-build. Was
-   killed off in favor of a giant rethink of our application build processes, codenamed
-   "SOMA".
-
 # Useful Terms
 
  * EOS - **EndlessOS**
