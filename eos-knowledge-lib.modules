@@ -244,7 +244,7 @@ use the latest stable release branch from GNOME if you prefer that.
 
   <!-- GNOME DEPENDENCIES -->
 
-  <autotools id="glib" autogenargs="--enable-installed-tests">
+  <autotools id="glib" autogenargs="--enable-installed-tests --disable-libmount">
     <branch/>
     <dependencies>
       <dep package="gtk-doc"/>
