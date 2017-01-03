@@ -22,13 +22,6 @@ use the latest stable release branch from GNOME if you prefer that.
 
   <!-- SYSTEM DEPENDENCIES -->
 
-  <systemmodule id="libtool">
-    <branch repo="system"/>
-    <systemdependencies>
-      <dep type="path" name="libtoolize"/>
-    </systemdependencies>
-  </systemmodule>
-
   <systemmodule id="gtk-doc">
     <branch repo="system"/>
     <systemdependencies>
@@ -158,11 +151,6 @@ use the latest stable release branch from GNOME if you prefer that.
   <systemmodule id="json-glib">
     <branch repo="system"/>
     <pkg-config>json-glib-1.0.pc</pkg-config>
-  </systemmodule>
-
-  <systemmodule id="sqlite3">
-    <branch repo="system"/>
-    <pkg-config>sqlite3.pc</pkg-config>
   </systemmodule>
 
   <systemmodule id="mathjax">
