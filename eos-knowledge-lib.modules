@@ -199,6 +199,7 @@ use the latest stable release branch from GNOME if you prefer that.
       <dep package="gjs"/>
       <dep package="glib"/>
       <dep package="gtk+"/>
+      <dep package="emeus"/>
       <dep package="jasmine-gjs"/>
     </dependencies>
   </autotools>
@@ -234,12 +235,12 @@ use the latest stable release branch from GNOME if you prefer that.
     </dependencies>
   </autotools>
 
-  <autotools id="emeus">
+  <meson id="emeus">
     <branch repo="github" module="ebassi/emeus"/>
     <dependencies>
       <dep package="gtk+"/>
     </dependencies>
-  </autotools>
+  </meson>
 
   <!-- GNOME DEPENDENCIES -->
 
