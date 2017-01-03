@@ -161,7 +161,7 @@ use the latest stable release branch from GNOME if you prefer that.
   </systemmodule>
 
   <systemmodule id="libsoup">
-    <branch repo="libsoup"/>
+    <branch repo="system"/>
     <pkg-config>libsoup-2.4.pc</pkg-config>
   </systemmodule>
 
