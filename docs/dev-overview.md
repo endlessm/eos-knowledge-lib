@@ -162,38 +162,3 @@ proxy so that the Wikimedia Foundation does not get mad. You can do
 this with the `--enable-proxy` configure argument to
 eos-knowledge-apps (caveat: you'll need to either be in the SF office
 network, or connected to it via VPN for the proxy to work).
-
-## Useful tools for development
-
-# kermit
-`kermit` is a tool to explore shard files and extract metadata from them. You can find this tool in `eos-knowledge-0-bin` package.
-
-```
-$ kermit grep ~/install/share/ekn/data/animals-en/media.shard Elephant
-42bf022e85a8125950006b0c6551059be5f93b79 - image/jpeg - "File:African Elephant distribution map.svg"
-7755613999585b5fd2e4fa09120ebe163c1ef019 - image/jpeg - "File:African Bush Elephant Skull.jpg"
-7985071cfaf383912a5ac011fc2bc31734d15cea - image/jpeg - "File:African Bush Elephants.jpg"
-7d967898cf519f144e231b0375573ec75658b994 - image/jpeg - "File:African Bush Elephant.jpg"
-8b6814b2634cf78d609c44ba024d29361bba4c54 - text/html - "African Bush Elephant"
-efa7ca51e93495d9b77849e315fe3ad0c7f7b059 - image/jpeg - "File:Elephant, Selous Game Reserve.jpg"
-
-$ kermit dump ~/install/share/ekn/data/animals-en/media.shard 7755613999585b5fd2e4fa09120ebe163c1ef019 metadata | python -m json.tool
-{
-    "@context": "ekn://_context/ImageObject",
-    "@id": "ekn://animals-en/7755613999585b5fd2e4fa09120ebe163c1ef019",
-    "@type": "ekn://_vocab/ImageObject",
-    "caption": "",
-    "contentType": "image/jpeg",
-    "contentURL": "7755613999585b5fd2e4fa09120ebe163c1ef019.jpeg",
-    "copyrightHolder": "FSV",
-    "encodingFormat": "image/jpeg",
-    "license": "CC BY-SA 3.0",
-    "sourceURI": "https://upload.wikimedia.org/wikipedia/commons/0/09/African_Bush_Elephant_Skull.jpg",
-    "title": "File:African Bush Elephant Skull.jpg"
-}
-
-$ kermit query animals-en "african"
-8b6814b2634cf78d609c44ba024d29361bba4c54 - text/html - "African Bush Elephant"
-d117aee6a4cbd916e50f14fb5bfcf2870c817fc0 - text/html - "African Grey Parrot"
-3819dfa2bbd9cc31e2184c004d9ba1765c14145a - text/html - "African Penguin"
-```
