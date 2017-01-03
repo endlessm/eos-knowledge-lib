@@ -69,9 +69,9 @@ use the latest stable release branch from GNOME if you prefer that.
     <pkg-config>zlib.pc</pkg-config>
   </systemmodule>
 
-  <systemmodule id="js24">
+  <systemmodule id="mozjs31">
     <branch repo="system"/>
-    <pkg-config>mozjs-24.pc</pkg-config>
+    <pkg-config>mozjs-31.pc</pkg-config>
   </systemmodule>
 
   <systemmodule id="dbus-glib">
@@ -273,7 +273,7 @@ use the latest stable release branch from GNOME if you prefer that.
     <dependencies>
       <dep package="dbus-glib"/>
       <dep package="gobject-introspection"/>
-      <dep package="js24"/>
+      <dep package="mozjs31"/>
       <dep package="gtk+"/>
     </dependencies>
   </autotools>
