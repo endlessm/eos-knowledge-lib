@@ -82,8 +82,6 @@ GOBJECT_INTROSPECTION_REQUIRE([1.30])
 AC_PROG_AWK  # needed for TAP driver
 AC_PROG_SED  # needed for finding files for coverage
 AC_REQUIRE_AUX_FILE([tap-driver.sh])
-AC_PATH_PROG([NATURALDOCS], [naturaldocs], [notfound])
-AC_ARG_VAR([NATURALDOCS], [Path to naturaldocs])
 AC_SUBST([GLIB_COMPILE_RESOURCES], [`$PKG_CONFIG --variable glib_compile_resources gio-2.0`])
 AC_PATH_PROG([SCSS], [sassc], [notfound])
 AS_IF([test x$SCSS = xnotfound], [AC_MSG_ERROR([Sass compiler not found.
@@ -130,15 +128,6 @@ AS_CASE([$enable_strict_flags],
         ],
     [AC_MSG_ERROR([Invalid option for --enable-strict-flags])])
 AC_SUBST([STRICT_CFLAGS])
-
-# --enable-js-doc: Build pure Javascript module documentation.
-AC_ARG_ENABLE([js-doc],
-    [AS_HELP_STRING([--enable-js-doc],
-        [Build documentation for pure Javascript modules @<:@default=no@:>@])])
-AS_IF([test "x$enable_js_doc" = "xyes"], [
-    AS_IF([test "x$NATURALDOCS" = "xnotfound"],
-        [AC_MSG_ERROR([NaturalDocs must be installed for --enable-js-doc])])])
-AM_CONDITIONAL([ENABLE_JS_DOC], [test "x$enable_js_doc" = "xyes"])
 
 # --enable-inspector: Allow opening the WebKit inspector in the webviews by
 # right-clicking
@@ -280,11 +269,6 @@ AC_CONFIG_FILES([
     js/app/config.js.in
 ])
 AC_CONFIG_HEADERS([config.h])  dnl Header with system-dependent #defines
-# Make docs/reference/js/eos.css available in the build tree
-# as well as the source tree
-AC_CONFIG_LINKS([
-    docs/reference/js/eos.css:docs/reference/js/eos.css
-])
 
 # Call ekncontent ./configure
 AC_CONFIG_SUBDIRS([ekncontent])
