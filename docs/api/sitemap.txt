@@ -1,0 +1,3 @@
+index.md
+	flatpak-bundle.md
+	domain.md

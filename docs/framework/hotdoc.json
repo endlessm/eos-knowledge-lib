@@ -1,0 +1,8 @@
+{
+    "project_name": "framework",
+    "project_version": "0",
+
+    "index": "index.md",
+    "output": "built",
+    "sitemap": "sitemap.txt"
+}

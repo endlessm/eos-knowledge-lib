@@ -1,3 +1,6 @@
+---
+short-description: Domains
+...
 # Domains
 
 The convention used by this document is to explain paths in context of a
