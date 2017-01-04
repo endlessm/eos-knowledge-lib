@@ -1,3 +1,4 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const Engine = imports.search.engine;
 const EosShard = imports.gi.EosShard;
 const GLib = imports.gi.GLib;
