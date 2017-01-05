@@ -2,8 +2,11 @@
 <gresources>
   <gresource prefix="/com/endlessm/knowledge">
     <file compressed="true">data/css/buffet.css</file>
+    <file compressed="true">data/css/course.css</file>
     <file compressed="true">data/css/default.css</file>
     <file compressed="true">data/css/encyclopedia.css</file>
+    <file compressed="true">data/css/escola.css</file>
+    <file compressed="true">data/css/library_list.css</file>
     <file compressed="true">data/css/news.css</file>
     <file compressed="true">data/css/picard.css</file>
     <file compressed="true">data/css/preset_a.css</file>
