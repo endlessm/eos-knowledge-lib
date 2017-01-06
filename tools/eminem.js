@@ -183,14 +183,9 @@ function inspect_app_id (app_id) {
 
     let domain_obj = Domain.get_domain_impl(app_id, null);
 
-    if (ekn_version === 2) {
-        print(Format.vprintf("media shard: %s", [GLib.build_filenamev(data_dir, 'media.shard')]));
-        print(Format.vprintf("db dir: %s", [GLib.build_filenamev(data_dir, 'db')]));
-    } else if (ekn_version === 3) {
-        let subscription_id = domain_obj._get_subscription_id();
-        print(Format.vprintf("subscription ID: %s", [subscription_id]));
-        print(Format.vprintf("subscription dir: %s", [get_subscription_dir(subscription_id, cancellable).get_path()]));
-    }
+    let subscription_id = domain_obj._get_subscription_id();
+    print(Format.vprintf("subscription ID: %s", [subscription_id]));
+    print(Format.vprintf("subscription dir: %s", [get_subscription_dir(subscription_id, cancellable).get_path()]));
 }
 
 const USAGE = [
