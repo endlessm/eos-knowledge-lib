@@ -35,13 +35,13 @@ eknc_domain_get_fixed_query
 eknc_domain_get_fixed_query_finish
 eknc_domain_query
 eknc_domain_query_finish
-eknc_domain_get_impl
 EkncDomainError
 <SUBSECTION Standard>
 EkncDomain
 EKNC_TYPE_DOMAIN
 EKNC_DOMAIN_ERROR
 <SUBSECTION Private>
+eknc_domain_get_impl
 eknc_domain_error_quark
 </SECTION>
 

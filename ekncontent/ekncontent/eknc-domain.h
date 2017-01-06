@@ -87,10 +87,4 @@ eknc_domain_query_finish (EkncDomain *self,
                           GAsyncResult *result,
                           GError **error);
 
-EkncDomain *
-eknc_domain_get_impl (const gchar *app_id,
-                      EkncXapianBridge *xapian_bridge,
-                      GCancellable *cancellable,
-                      GError **error);
-
 G_END_DECLS

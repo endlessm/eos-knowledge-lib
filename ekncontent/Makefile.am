@@ -80,6 +80,7 @@ ekncontent_sources = \
 	ekncontent/eknc-article-object-model.c \
 	ekncontent/eknc-content-object-model-private.h \
 	ekncontent/eknc-content-object-model.c \
+	ekncontent/eknc-domain-private.h \
 	ekncontent/eknc-domain.c \
 	ekncontent/eknc-engine.c \
 	ekncontent/eknc-image-object-model.c \

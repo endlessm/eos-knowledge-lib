@@ -3,6 +3,7 @@
 #include "eknc-engine.h"
 
 #include "eknc-domain.h"
+#include "eknc-domain-private.h"
 #include "eknc-xapian-bridge.h"
 #include "eknc-utils.h"
 

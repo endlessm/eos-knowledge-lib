@@ -178,7 +178,7 @@ function inspect_app_id (app_id) {
     let ekn_version = Eknc.get_ekn_version(app_id, null);
     print(Format.vprintf("EKN_VERSION: %s", [ekn_version]));
 
-    let domain_obj = Eknc.Domain.get_impl(app_id, null, cancellable);
+    let domain_obj = Eknc.Engine.get_default().get_domain_for_app(app_id);
 
     let subscription_id = domain_obj.get_subscription_id();
     print(Format.vprintf("subscription ID: %s", [subscription_id]));
