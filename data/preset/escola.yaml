@@ -17,22 +17,33 @@ defines:
       shortdef: 'Layout.Box(orientation: vertical)'
       slots:
         contents:
-        - shortdef: Layout.Box
+        - type: Layout.Overlay
           styles:
             - landing
           slots:
-            contents:
-            - shortdef: 'Banner.Dynamic(show-subtitle: true, mode: text, expand: true)'
-        - shortdef: 'ContentGroup.ContentGroup(expand: true)'
+            content:
+              shortdef: Layout.Box
+              styles:
+                - background
+            overlays:
+            - shortdef: 'Layout.Box(orientation: vertical, valign: center, vexpand: true)'
+              slots:
+                contents:
+                - shortdef: 'Banner.Dynamic(mode: text, expand: true)'
+                - shortdef: 'ContentGroup.StaticText(label: "TV ESCOLA")'
+        - shortdef: 'Layout.Box(orientation: vertical)'
           slots:
-            <<: *main-arrangement-slot
-            selection: Selection.AllSets
-        - shortdef: 'Layout.Box(orientation: vertical, halign: fill, hexpand: true)'
-          styles:
-            - footer
-          slots:
             contents:
-            - shortdef: 'Decoration.ThemeableImage(halign: end, expand: true, valign: center, image-uri: "resource:///app/assets/logo")'
+            - shortdef: 'ContentGroup.ContentGroup(expand: true)'
+              slots:
+                <<: *main-arrangement-slot
+                selection: Selection.AllSets
+            - shortdef: 'Layout.Box(orientation: vertical, halign: fill, hexpand: true)'
+              styles:
+                - footer
+              slots:
+                contents:
+                - shortdef: 'Decoration.ThemeableImage(halign: end, expand: true, valign: center, image-uri: "resource:///app/assets/logo")'
 
 - &set-page
   shortdef: Layout.Scrolling
