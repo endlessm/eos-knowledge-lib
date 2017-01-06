@@ -1,5 +1,6 @@
 // Copyright 2016 Endless Mobile, Inc.
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const Format = imports.format;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
@@ -191,7 +192,7 @@ const SubscriptionDownloader = new Lang.Class({
 
         this._file_downloader = new FileDownloader();
 
-        this._subscriptions_dir = Utils.get_subscriptions_dir();
+        this._subscriptions_dir = Eknc.get_subscriptions_dir();
         Utils.ensure_directory(this._subscriptions_dir);
 
         this._load_from_config();

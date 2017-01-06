@@ -1,30 +1,7 @@
 const ByteArray = imports.byteArray;
-const Eknc = imports.gi.EosKnowledgeContent;
-const Format = imports.format;
 const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
 
 const AsyncTask = imports.search.asyncTask;
-
-/* Returns the current locale's language code, or null if one cannot be found */
-function get_current_language () {
-    var locales = GLib.get_language_names();
-
-    // we don't care about the last entry of the locales list, since it's
-    // always 'C'. If we get there without finding a suitable language, return
-    // null
-    while (locales.length > 1) {
-        var next_locale = locales.shift();
-
-        // if the locale includes a country code or codeset (e.g. "en.utf8"),
-        // skip it
-        if (next_locale.indexOf('_') === -1 && next_locale.indexOf('.') === -1) {
-            return next_locale;
-        }
-    }
-
-    return null;
-}
 
 function define_enum (values) {
     return values.reduce((obj, val, index) => {
@@ -115,36 +92,4 @@ function ensure_directory (dir) {
     } catch (e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS)) {
         // Directory already exists, we're good.
     }
-}
-
-function get_subscriptions_dir () {
-    let user_data_path;
-    if (Eknc.get_running_under_flatpak()) {
-        // When running under flatpak, GLib.get_user_data_dir() points to the
-        // private home inside the application, not the real home.
-        // Use the absolute path here instead of the utility function.
-        user_data_path = GLib.build_filenamev([GLib.get_home_dir(), '.local', 'share']);
-    } else {
-        user_data_path = GLib.get_user_data_dir();
-    }
-
-    let path = GLib.build_filenamev([user_data_path, 'com.endlessm.subscriptions']);
-    return Gio.File.new_for_path(path);
-}
-
-/* Returns the EKN Version of the given app ID. Defaults to 1 if
- * no EKN_VERSION file is found. This function does synchronous file I/O. */
-function get_ekn_version (app_id) {
-    let dir = Eknc.get_data_dir(app_id);
-
-    // Sanity check
-    if (!dir) {
-        throw new Error(Format.vprintf('Could not find data dir for app ID %s', [app_id]));
-    }
-
-    let ekn_version_file = dir.get_child('EKN_VERSION');
-    let [success, contents, _] = ekn_version_file.load_contents(null);
-    let version_string = contents.toString();
-
-    return parseInt(version_string);
 }

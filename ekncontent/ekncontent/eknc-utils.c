@@ -141,6 +141,88 @@ eknc_utils_id_get_hash (const gchar *ekn_id)
   return g_strstr_len (post_uri, -1, "/") + 1;
 }
 
+/**
+ * eknc_get_subscriptions_dir:
+ *
+ * Gets the user's subscription directory (not app specific one).
+ *
+ * Returns: (transfer full): a GFile pointing to the directory.
+ */
+GFile *
+eknc_get_subscriptions_dir (void)
+{
+  g_autofree gchar *path = NULL;
+  if (eknc_get_running_under_flatpak ())
+    path = g_build_filename (g_get_home_dir (), ".local", "share",
+                             "com.endlessm.subscriptions", NULL);
+  else
+    path = g_build_filename (g_get_user_data_dir (), "com.endlessm.subscriptions", NULL);
+  return g_file_new_for_path (path);
+}
+
+/**
+ * eknc_get_ekn_version:
+ * @app_id: knowledge app id
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @error: #GError for error reporting.
+ *
+ * Gets the version of our on disk content format, stored in the EKN_VERSION
+ * file.
+ *
+ * Returns: (transfer full): the version, or NULL if an error occurred
+ */
+gchar *
+eknc_get_ekn_version (const gchar *app_id,
+                      GCancellable *cancellable,
+                      GError **error)
+{
+  g_autoptr(GFile) dir = eknc_get_data_dir (app_id);
+
+  // Sanity check
+  if (dir == NULL)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
+                   "No data dir found for app id %s", app_id);
+      return NULL;
+    }
+
+  g_autoptr(GFile) ekn_version_file = g_file_get_child (dir, "EKN_VERSION");
+  g_autofree gchar *contents = NULL;
+  if (!g_file_load_contents (ekn_version_file, cancellable, &contents,
+                             NULL, NULL, error))
+    return NULL;
+
+  gchar *stripped = g_strstrip (contents);
+  return g_strdup (stripped);
+}
+
+/**
+ * eknc_get_current_language:
+ *
+ * Gets the Xapian-friendly version of the current system language, or NULL if
+ * none set.
+ *
+ * Returns: the language
+ */
+const gchar *
+eknc_get_current_language (void)
+{
+  const gchar * const * langs = g_get_language_names ();
+
+  guint length = g_strv_length ((gchar **)langs);
+  // We don't care about the last entry of the locales list, since it's always
+  // 'C'. If we get there without finding a suitable language, return null
+  for (guint i = 0; i < length - 1; i++)
+    {
+      const gchar *lang = langs[i];
+      // If the locale includes a country code or codeset (e.g. "en.utf8"), skip it
+      if (strpbrk (lang, "_.") == NULL)
+          return lang;
+    }
+
+  return NULL;
+}
+
 struct parallel_init_data {
   int n_left;
   GError *error;

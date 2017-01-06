@@ -7,7 +7,7 @@ const MockShard = imports.tests.mockShard;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 
 function create_mock_domain_for_version (versionNo) {
-    spyOn(Utils, 'get_ekn_version').and.callFake(() => versionNo);
+    spyOn(Eknc, 'get_ekn_version').and.callFake(() => versionNo);
     // Don't hit the disk.
     spyOn(Domain.Domain.prototype, '_load_sync').and.callFake(() => {});
 
@@ -33,22 +33,12 @@ function create_mock_shard_with_link_table (link_table_hash) {
     return mock_shard_file;
 }
 
-describe('get_ekn_version', function () {
-    it('should throw an exception when datadir can\'t be found', function () {
-        spyOn(Eknc, 'get_data_dir').and.returnValue(undefined);
-
-        let expectedError = new Error("Could not find data dir for app ID abc");
-
-        expect(() => Utils.get_ekn_version("abc")).toThrow(expectedError);
-    });
-});
-
 describe('Domain', function () {
     let domain;
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        domain = create_mock_domain_for_version(3);
+        domain = create_mock_domain_for_version('3');
     });
 
     describe('test_link', function () {

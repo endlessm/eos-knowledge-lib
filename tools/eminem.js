@@ -9,7 +9,6 @@ const Soup = imports.gi.Soup;
 const System = imports.system;
 
 const Domain = imports.search.domain;
-const Utils = imports.search.utils;
 
 // For those interested in eminem's etymology, it goes roughly like this:
 // Subscriptions -> Netflix -> Chill -> Ice Cube -> Eminem
@@ -175,22 +174,17 @@ function regenerate (path) {
 function inspect_app_id (app_id) {
     let cancellable = null;
 
-    let data_dir = Eknc.get_data_dir(app_id);
+    let data_dir = Eknc.get_data_dir(app_id, null);
     print(Format.vprintf("data dir: %s", [data_dir.get_path()]));
 
-    let ekn_version = Domain.get_ekn_version(app_id);
+    let ekn_version = Eknc.get_ekn_version(app_id, null);
     print(Format.vprintf("EKN_VERSION: %s", [ekn_version]));
 
     let domain_obj = Domain.get_domain_impl(app_id, null);
 
-    if (ekn_version === 2) {
-        print(Format.vprintf("media shard: %s", [GLib.build_filenamev(data_dir, 'media.shard')]));
-        print(Format.vprintf("db dir: %s", [GLib.build_filenamev(data_dir, 'db')]));
-    } else if (ekn_version === 3) {
-        let subscription_id = domain_obj._get_subscription_id();
-        print(Format.vprintf("subscription ID: %s", [subscription_id]));
-        print(Format.vprintf("subscription dir: %s", [get_subscription_dir(subscription_id, cancellable).get_path()]));
-    }
+    let subscription_id = domain_obj._get_subscription_id();
+    print(Format.vprintf("subscription ID: %s", [subscription_id]));
+    print(Format.vprintf("subscription dir: %s", [get_subscription_dir(subscription_id, cancellable).get_path()]));
 }
 
 const USAGE = [

@@ -75,7 +75,7 @@ const Domain = new Lang.Class({
     _get_subscription_dir: function () {
         if (this._subscription_dir === undefined) {
             let subscription_id = this._get_subscription_id();
-            let subscriptions_dir = Utils.get_subscriptions_dir();
+            let subscriptions_dir = Eknc.get_subscriptions_dir();
             this._subscription_dir = subscriptions_dir.get_child(subscription_id);
             Utils.ensure_directory(this._subscription_dir);
         }
@@ -340,7 +340,7 @@ const Domain = new Lang.Class({
  * format in the future.
  */
 function get_domain_impl (app_id, xapian_bridge) {
-    let ekn_version = Utils.get_ekn_version(app_id);
+    let ekn_version = Eknc.get_ekn_version(app_id, null);
 
     let impls = {
         '3': Domain,

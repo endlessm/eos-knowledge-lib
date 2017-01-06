@@ -10,4 +10,10 @@ describe('Utils', function () {
             }).not.toThrow();
         });
     });
+
+    describe('get_ekn_version', function () {
+        it('should throw an exception when datadir can\'t be found', function () {
+            expect(() => Eknc.get_ekn_version("should-not-exist", null)).toThrow();
+        });
+    });
 });

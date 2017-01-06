@@ -39,4 +39,15 @@ eknc_utils_is_valid_id (const gchar *ekn_id);
 GFile *
 eknc_get_data_dir (const gchar *app_id);
 
+GFile *
+eknc_get_subscriptions_dir (void);
+
+gchar *
+eknc_get_ekn_version (const gchar *app_id,
+                      GCancellable *cancellable,
+                      GError **error);
+
+const gchar *
+eknc_get_current_language (void);
+
 G_END_DECLS
