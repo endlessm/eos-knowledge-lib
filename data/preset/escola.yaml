@@ -26,10 +26,7 @@ defines:
         - shortdef: 'ContentGroup.ContentGroup(expand: true)'
           slots:
             <<: *main-arrangement-slot
-            selection:
-              type: Selection.AllSets
-              slots:
-                filter: Filter.Featured
+            selection: Selection.AllSets
         - shortdef: 'Layout.Box(orientation: vertical, halign: fill, hexpand: true)'
           styles:
             - footer
