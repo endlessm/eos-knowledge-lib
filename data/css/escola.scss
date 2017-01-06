@@ -21,10 +21,12 @@ $context-font: Raleway !default;
 
 .home-page {
   .landing {
-    background-image: url($primary-background-image);
-    background-repeat: no-repeat;
-    background-size: cover;
-    min-height: 562px;
+    .background {
+      background-image: url($primary-background-image);
+      background-repeat: no-repeat;
+      background-size: 100%;
+      min-height: 346px;
+    }
 
     .BannerDynamic {
       &__logo {
@@ -36,12 +38,11 @@ $context-font: Raleway !default;
         font-family: $title-font;
         font-size: 72px;
       }
-      &__subtitle {
-        color: white;
-        margin-top: 0px;
-        font-size: 30px;
-        -EknFormattableLabel-text-transform: 'uppercase';
-      }
+    }
+
+    .StaticText {
+      color: white;
+      font-size: 30px;
     }
   }
 
@@ -173,7 +174,7 @@ where it needs to be */
       font-size: 16px;
       -EknFormattableLabel-text-transform: 'uppercase';
       font-weight: normal;
-      color: $accent-dark-color;
+      color: #b3b3b3;
     }
     &__thumbnail {
       background-color: $base-color;
