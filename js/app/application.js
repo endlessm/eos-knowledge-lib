@@ -15,11 +15,10 @@ const System = imports.system;
 const Actions = imports.app.actions;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
-const Downloader = imports.search.downloader;
-const Engine = imports.search.engine;
+const Downloader = imports.app.downloader;
 const Knowledge = imports.app.knowledge;
 const ModuleFactory = imports.app.moduleFactory;
-const MoltresEngine = imports.search.moltresEngine;
+const MoltresEngine = imports.app.moltresEngine;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -73,7 +72,7 @@ const Application = new Knowledge.Class({
         this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
         this.image_attribution_file = Gio.File.new_for_uri(CREDITS_URI);
 
-        Engine.get_default().default_app_id = this.application_id;
+        Eknc.Engine.get_default().default_app_id = this.application_id;
 
         this.add_main_option('theme-name', 't'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.STRING,
                              'Use a stock theme with given name instead of any application theme overrides', null);
@@ -141,17 +140,17 @@ const Application = new Knowledge.Class({
     },
 
     _check_for_content: function () {
-        let engine = Engine.get_default();
+        let engine = Eknc.Engine.get_default();
         if (engine instanceof MoltresEngine.MoltresEngine)
             return;
 
         this._check_for_update();
         try {
-            let shards = engine.get_default_domain().get_shards();
+            let shards = engine.get_domain().get_shards();
             Eknc.default_vfs_set_shards(shards);
         } catch (e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND)) {
             // No content. If updates are pending then show a nice dialog
-            let subs = engine.get_default_domain().get_subscription_entries();
+            let subs = engine.get_domain().get_subscription_entries();
             if (subs.some(entry => !entry.disable_updates)) {
                 let dialog = new Gtk.MessageDialog({
                     message_type: Gtk.MessageType.ERROR,
@@ -170,9 +169,9 @@ const Application = new Knowledge.Class({
         if (GLib.getenv('EKN_DISABLE_UPDATES'))
             return;
 
-        let engine = Engine.get_default();
+        let engine = Eknc.Engine.get_default();
         let downloader = Downloader.get_default();
-        let subs = engine.get_default_domain().get_subscription_entries();
+        let subs = engine.get_domain().get_subscription_entries();
         subs.forEach(function (entry) {
             let id = entry.id;
 

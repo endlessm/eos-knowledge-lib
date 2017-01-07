@@ -1,14 +1,14 @@
+const Eknc = imports.gi.EosKnowledgeContent;
 const Endless = imports.gi.Endless;
 const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
-const Engine = imports.search.engine;
 
 const Config = imports.app.config;
 const Knowledge = imports.app.knowledge;
 const Mustache = imports.app.libs.mustache.Mustache;
-const SearchUtils = imports.search.utils;
+const Utils = imports.app.utils;
 const SetMap = imports.app.setMap;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -132,7 +132,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
 
     _get_html: function (model) {
         let stream = model.get_content_stream();
-        return SearchUtils.read_stream_sync(stream);
+        return Utils.read_stream_sync(stream);
     },
 
     _render_legacy_content: function (model) {
@@ -242,7 +242,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
     },
 
     _get_crosslink_data: function (model) {
-        let engine = Engine.get_default();
+        let engine = Eknc.Engine.get_default();
         let links = model.outgoing_links.map((link) => engine.test_link(link));
         return JSON.stringify(links);
     },

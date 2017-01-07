@@ -8,7 +8,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const WebKit2 = imports.gi.WebKit2;
 
-const AsyncTask = imports.search.asyncTask;
+const AsyncTask = imports.app.asyncTask;
 const Card = imports.app.interfaces.card;
 const DocumentCard = imports.app.interfaces.documentCard;
 const EknWebview = imports.app.widgets.eknWebview;

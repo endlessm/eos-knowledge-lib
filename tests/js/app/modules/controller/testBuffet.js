@@ -41,9 +41,7 @@ describe('Controller.Buffet', function () {
         set_models.push(parent);
 
         engine = MockEngine.mock_default();
-        engine.get_objects_for_query_finish.and.returnValue([set_models, {
-            more_results: null,
-        }]);
+        engine.query_finish.and.returnValue({ models: set_models });
 
         [buffet, factory] = MockFactory.setup_tree({
             type: Buffet.Buffet,

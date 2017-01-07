@@ -7,9 +7,9 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Soup = imports.gi.Soup;
 
-const AsyncTask = imports.search.asyncTask;
-const Config = imports.search.config;
-const Utils = imports.search.utils;
+const AsyncTask = imports.app.asyncTask;
+const Config = imports.app.config;
+const Utils = imports.app.utils;
 
 const FileDownloadRequest = new Lang.Class({
     Name: 'FileDownloadRequest',

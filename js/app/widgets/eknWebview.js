@@ -9,12 +9,10 @@ const Gtk = imports.gi.Gtk;
 const WebKit2 = imports.gi.WebKit2;
 
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
-const AsyncTask = imports.search.asyncTask;
+const AsyncTask = imports.app.asyncTask;
 const Config = imports.app.config;
-const Engine = imports.search.engine;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Knowledge = imports.app.knowledge;
-const SearchUtils = imports.search.utils;
 const Utils = imports.app.utils;
 
 function should_enable_inspector() {
@@ -119,7 +117,7 @@ const EknWebview = new Knowledge.Class({
 
     _load_object: function (id, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        Engine.get_default().get_object(id, cancellable, task.catch_callback_errors((engine, load_task) => {
+        Eknc.Engine.get_default().get_object(id, cancellable, task.catch_callback_errors((engine, load_task) => {
             let model = engine.get_object_finish(load_task);
             if (model instanceof Eknc.ArticleObjectModel) {
                 let html = this.renderer.render(model);
@@ -147,7 +145,7 @@ const EknWebview = new Knowledge.Class({
 
         let id = req.get_uri();
 
-        let components = SearchUtils.components_from_ekn_id(id);
+        let components = Utils.components_from_ekn_id(id);
         if (components.length === 1) {
             this._load_object(id, cancellable, (source, load_task) => {
                 try {

@@ -2,8 +2,7 @@ const Eknc = imports.gi.EosKnowledgeContent;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const Engine = imports.search.engine;
-const SearchUtils = imports.search.utils;
+const Utils = imports.app.utils;
 
 const IMAGES_DIR = 'resource:///com/endlessm/knowledge/data/images/tools/';
 const NUM_TOP_LEVEL_SETS = 20;
@@ -86,10 +85,10 @@ const MoltresEngine = new Lang.Class({
             });
         });
 
-        this._to_return = set_models;
-        this._info = {
+        this._to_return =  {
+            models: set_models,
             upper_bound: set_models.length,
-        }
+        };
     },
 
     _get_articles: function (query) {
@@ -100,7 +99,10 @@ const MoltresEngine = new Lang.Class({
         // If the query matches any article or set title, or the synopsis, return some content.
         // Otherwise, return nothing. If no query string was specified at all, we also want to
         // return content since this handles e.g. suggested articles modules.
-        this._to_return = [];
+        this._to_return = {
+            models: [],
+            upper_bound: 0,
+        };
         if (!query.query || query.query.toLowerCase().split(' ').some((token) => matching_strings.indexOf(token.trim()) > -1)) {
             for (let i = 0; i < Math.min(10, query.limit); i++) {
                 let data = this._ARTICLES[i % this._ARTICLES.length];
@@ -111,15 +113,13 @@ const MoltresEngine = new Lang.Class({
                 // add those tags at runtime, to 'fake' the result.
                 if (query.tags_match_any.length !== 0)
                     unique_data.tags.push(query.tags_match_any[0])
-                this._to_return.push(this._generate_article_object(unique_data));
+                this._to_return.models.push(this._generate_article_object(unique_data));
             }
-            this._info = {
-                upper_bound: this._to_return.length,
-            };
+            this._to_return.upper_bound = this._to_return.models.length;
         }
     },
 
-    get_objects_for_query: function (query, cancellable, callback) {
+    query: function (query, cancellable, callback) {
         let generation_func;
         if (query.tags_match_all.indexOf('EknSetObject') >= 0) {
             this._get_sets(query);
@@ -130,8 +130,8 @@ const MoltresEngine = new Lang.Class({
         callback(this);
     },
 
-    get_objects_for_query_finish: function () {
-        return [this._to_return, this._info];
+    query_finish: function () {
+        return this._to_return;
     },
 
     _ARTICLES: [
@@ -197,7 +197,7 @@ placerat varius non id dui.',
         data.source = 'wikipedia';
         data.license = 'CC-BY-SA 3.0';
         let article = Eknc.ArticleObjectModel.new_from_props(data);
-        article.get_content_stream = () => { return SearchUtils.string_to_stream('<html><body><p>Some content</p></body></html>'); };
+        article.get_content_stream = () => { return Utils.string_to_stream('<html><body><p>Some content</p></body></html>'); };
         return article;
     },
 });
@@ -205,5 +205,7 @@ placerat varius non id dui.',
 // Override the default engine singleton with our own, moltres Engine.
 let override_engine = () => {
     let engine = new MoltresEngine();
-    Engine.the_engine = engine;
+    Eknc.Engine.get_default = function () {
+        return engine;
+    };
 };

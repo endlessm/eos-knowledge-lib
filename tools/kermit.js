@@ -1,5 +1,4 @@
 const Eknc = imports.gi.EosKnowledgeContent;
-const Engine = imports.search.engine;
 const EosShard = imports.gi.EosShard;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
@@ -459,7 +458,7 @@ function _pretty_print_table (elements) {
 }
 
 function query (app_id, query_string) {
-    let engine = new Engine.Engine();
+    let engine = new Eknc.Engine.get_default();
     let query_obj = Eknc.QueryObject.new_from_props({
         query: query_string,
         limit: BATCH_SIZE,
@@ -472,21 +471,21 @@ function query (app_id, query_string) {
 }
 
 function perform_query (engine, query_obj) {
-    engine.get_objects_for_query(query_obj, null, (engine, task) => {
+    engine.query(query_obj, null, (engine, task) => {
         try {
-            let [results, info] = engine.get_objects_for_query_finish(task);
-            results.forEach(function (result) {
+            let results = engine.query_finish(task);
+            results.models.forEach(function (result) {
                 let id = normalize_ekn_id(result.ekn_id);
                 print_result(id, result.content_type, result.title);
             });
 
             // if there were fewer than the requested number of results, that
             // means we're done.
-            if (results.length < BATCH_SIZE) {
+            if (results.models.length < BATCH_SIZE) {
                 System.exit(0);
             } else {
                 let more_results_query = Eknc.QueryObject.new_from_object(query_obj, {
-                    offset: query_obj.offset + results.length,
+                    offset: query_obj.offset + results.models.length,
                 });
                 perform_query(engine, more_results_query);
             }

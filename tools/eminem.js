@@ -8,8 +8,6 @@ const Gio = imports.gi.Gio;
 const Soup = imports.gi.Soup;
 const System = imports.system;
 
-const Domain = imports.search.domain;
-
 // For those interested in eminem's etymology, it goes roughly like this:
 // Subscriptions -> Netflix -> Chill -> Ice Cube -> Eminem
 
@@ -180,9 +178,9 @@ function inspect_app_id (app_id) {
     let ekn_version = Eknc.get_ekn_version(app_id, null);
     print(Format.vprintf("EKN_VERSION: %s", [ekn_version]));
 
-    let domain_obj = Domain.get_domain_impl(app_id, null);
+    let domain_obj = Eknc.Engine.get_default().get_domain_for_app(app_id);
 
-    let subscription_id = domain_obj._get_subscription_id();
+    let subscription_id = domain_obj.get_subscription_id();
     print(Format.vprintf("subscription ID: %s", [subscription_id]));
     print(Format.vprintf("subscription dir: %s", [get_subscription_dir(subscription_id, cancellable).get_path()]));
 }

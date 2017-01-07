@@ -41,7 +41,7 @@ describe('Card interface', function () {
         SetMap.init_map_with_models(sets);
         model = Eknc.ArticleObjectModel.new_from_props({
             title: 'record title &',
-            thumbnail_uri: 'ekn://foo/bar',
+            thumbnail_uri: 'file:///dev/zero',
             authors: ['record author &'],
             tags: ['foo', 'bar'],
         });
@@ -154,10 +154,6 @@ describe('Card interface', function () {
     });
 
     it('sets a thumbnail frame visible if model has a thumbnail uri', function () {
-        let engine = MockEngine.mock_default();
-        let zeroes = Gio.File.new_for_path('/dev/zero');
-        engine._lookup_ekn_uri.and.returnValue(zeroes);
-
         let frame = new Gtk.Frame();
         card.set_thumbnail_frame_from_model(frame);
         expect(frame.visible).toBeTruthy();

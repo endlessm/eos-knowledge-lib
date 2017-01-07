@@ -2,6 +2,7 @@
 
 /* exported ArticleStack */
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gettext = imports.gettext;
 const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
@@ -13,7 +14,6 @@ const Actions = imports.app.actions;
 const Card = imports.app.interfaces.card;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
-const Engine = imports.search.engine;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const Pages = imports.app.pages;
@@ -246,7 +246,7 @@ const ArticleStack = new Module.Class({
 
     _on_show_tooltip: function (tooltip_presenter, tooltip, uri) {
         if (GLib.uri_parse_scheme(uri) === 'ekn') {
-            Engine.get_default().get_object(uri, null, (engine, task) => {
+            Eknc.Engine.get_default().get_object(uri, null, (engine, task) => {
                 let article_model;
                 try {
                     article_model = engine.get_object_finish(task);

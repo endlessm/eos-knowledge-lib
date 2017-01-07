@@ -32,9 +32,7 @@ describe('CourseHistoryStore', function () {
             },
         ];
         let sets = data.map((obj) => Eknc.SetObjectModel.new_from_props(obj));
-        engine.get_objects_for_query_finish.and.returnValue([sets, {
-            more_results: null,
-        }]);
+        engine.query_finish.and.returnValue({ models: sets });
         SetMap.init_map_with_models(sets);
     });
 

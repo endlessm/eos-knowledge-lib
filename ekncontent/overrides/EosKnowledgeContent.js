@@ -188,4 +188,10 @@ function _init() {
             return this.get_models();
         },
     });
+
+    Eknc.Domain.prototype._get_subscription_entries_real = Eknc.Domain.prototype.get_subscription_entries;
+    Eknc.Domain.prototype.get_subscription_entries = function () {
+        let json_node = this._get_subscription_entries_real();
+        return JSON.parse(Json.to_string(json_node, false));
+    };
 }

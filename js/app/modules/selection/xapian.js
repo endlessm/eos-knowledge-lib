@@ -4,7 +4,6 @@
 
 const Eknc = imports.gi.EosKnowledgeContent;
 
-const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const Selection = imports.app.modules.selection.selection;
 
@@ -61,7 +60,7 @@ const Xapian = new Module.Class({
         if (this.loading)
             return;
 
-        let engine = Engine.get_default();
+        let engine = Eknc.Engine.get_default();
         let query = this._next_query;
 
         if (!query) {
@@ -77,14 +76,17 @@ const Xapian = new Module.Class({
 
         this._loading = true;
         this.notify('loading');
-        engine.get_objects_for_query(query, null, (engine, task) => {
+        engine.query(query, null, (engine, task) => {
             this._loading = false;
             this._set_needs_refresh(false);
             this.notify('loading');
 
-            let results, info;
+            let models = [];
+            let upper_bound = 0;
             try {
-                [results, info] = engine.get_objects_for_query_finish(task);
+                let results = engine.query_finish(task);
+                models = results.models;
+                upper_bound = results.upper_bound;
                 this._exception = null;
                 if (this._error_state) {
                     this._error_state = false;
@@ -92,8 +94,6 @@ const Xapian = new Module.Class({
                 }
             } catch (e) {
                 logError(e, 'Failed to load content from engine');
-                results = [];
-                info = { more_results: null };
                 this._exception = e;
                 if (!this._error_state) {
                     this._error_state = true;
@@ -108,7 +108,7 @@ const Xapian = new Module.Class({
             // In that case we do not want to add those superfluous results to
             // the models map.
             let offset_for_next_query;
-            let num_results_added = results.reduce((count, model, idx) => {
+            let num_results_added = models.reduce((count, model, idx) => {
                 if (count < num_desired) {
                     count += this.add_model(model) ? 1 : 0;
                     offset_for_next_query = idx + 1;
@@ -119,7 +119,7 @@ const Xapian = new Module.Class({
             // If we got back less than we even asked for, then obviously there
             // are no more results to be fetched.
             let more_results_query;
-            if (results.length < query.limit) {
+            if (models.length < query.limit) {
                 more_results_query = null;
             } else {
                 // If we got back at least what we asked for, there is the
@@ -144,7 +144,7 @@ const Xapian = new Module.Class({
             }
 
             this._next_query = more_results_query;
-            let can_load_more = !!more_results_query && (info.upper_bound > results.length || new_query);
+            let can_load_more = !!more_results_query && (upper_bound > models.length || new_query);
             if (can_load_more !== this._can_load_more) {
                 this._can_load_more = can_load_more;
                 this.notify('can-load-more');

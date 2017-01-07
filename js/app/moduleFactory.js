@@ -1,7 +1,6 @@
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const Engine = imports.search.engine;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Knowledge = imports.app.knowledge;
 const Warehouse = imports.app.warehouse;

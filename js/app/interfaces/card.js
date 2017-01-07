@@ -15,11 +15,9 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
 const Config = imports.app.config;
-const Engine = imports.search.engine;
 const FormattableLabel = imports.app.widgets.formattableLabel;
 const ImageCoverFrame = imports.app.widgets.imageCoverFrame;
 const Module = imports.app.interfaces.module;
-const SearchUtils = imports.search.utils;
 const SetMap = imports.app.setMap;
 const SpaceContainer = imports.app.widgets.spaceContainer;
 const Utils = imports.app.utils;
@@ -34,7 +32,7 @@ let ngettext = Gettext.dngettext.bind(null, Config.GETTEXT_PACKAGE);
  * NEXT     - Next article in the sequence.
  * NONE     - Not part of a sequence.
  */
-const Sequence = SearchUtils.define_enum(['PREVIOUS', 'NEXT', 'NONE']);
+const Sequence = Utils.define_enum(['PREVIOUS', 'NEXT', 'NONE']);
 
 /**
  * Constant: WIDTH_STYLE_CLASSES
@@ -315,12 +313,12 @@ const Card = new Lang.Interface({
             tags_match_any: set_obj.child_tags,
             limit: -1,
         });
-        Engine.get_default().get_objects_for_query(query, null, (engine, task) => {
-            let results, info;
+        Eknc.Engine.get_default().query(query, null, (engine, task) => {
+            let results;
             try {
-                [results, info] = engine.get_objects_for_query_finish(task);
+                results = engine.query_finish(task);
                 let reached_bottom = true;
-                results.forEach((obj) => {
+                results.models.forEach((obj) => {
                     if (obj instanceof Eknc.SetObjectModel) {
                         reached_bottom = false;
                         this._count_set(obj, callback);
@@ -333,8 +331,6 @@ const Card = new Lang.Interface({
                 }
             } catch (e) {
                 logError(e, 'Failed to load content from engine');
-                results = [];
-                info = { more_results: null };
                 return;
             }
         });
