@@ -2,6 +2,7 @@
 
 /* exported Dynamic */
 
+const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
@@ -10,6 +11,8 @@ const Module = imports.app.interfaces.module;
 const DynamicLogo = imports.app.widgets.dynamicLogo;
 const FormattableLabel = imports.app.widgets.formattableLabel;
 const Utils = imports.app.utils;
+
+const LOGO_URI = 'resource:///app/assets/logo';
 
 /**
  * Class: Dynamic
@@ -40,7 +43,7 @@ const Dynamic = new Module.Class({
          * The mode of the logo, it can be text, image or full.
          */
         'mode': GObject.ParamSpec.string('mode', 'mode', 'mode',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, 'text'),
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, 'text'),
         /**
          * Property: format-string
          * The format string for this title. Defaults to an empty string.
@@ -59,9 +62,16 @@ const Dynamic = new Module.Class({
         props.expand = props.expand || false;
         this.parent(props);
 
+        if (this.mode !== 'text') {
+            let file = Gio.File.new_for_uri(LOGO_URI);
+            if (!file.query_exists(null)) {
+                this.mode = 'text';
+            } else {
+                this._logo.image_uri = LOGO_URI;
+            }
+        }
+
         this._logo.mode = this.mode;
-        if (this.mode !== 'text')
-            this._logo.image_uri = 'resource:///app/assets/logo';
 
         let text = '';
         let app_info = Utils.get_desktop_app_info();
