@@ -35,6 +35,6 @@ const Mesh = new Module.Class({
     },
 
     make_ready: function (cb=function () {}) {
-        this._window.make_ready(cb);
+        this.initialize_set_map(cb);
     },
 });
