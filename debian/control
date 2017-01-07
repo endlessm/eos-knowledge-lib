@@ -141,6 +141,7 @@ Section: non-free/libdevel
 Architecture: any
 Multi-Arch: same
 Depends: ${misc:Depends},
+         libeos-shard-0-dev,
          libglib2.0-dev,
          libeos-knowledge-content-0-0 (= ${binary:Version})
 Description: Endless Knowledge Content development files
