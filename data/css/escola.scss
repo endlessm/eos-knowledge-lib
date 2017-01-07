@@ -11,6 +11,7 @@ $background-dark-color: #141418 !default;
 
 $title-font: Raleway !default;
 $context-font: Raleway !default;
+$display-font: 'Raleway Black' !default;
 
 @import "base";
 
@@ -35,7 +36,7 @@ $context-font: Raleway !default;
         min-height: 120px;
         min-width: 400px;
         font-weight: normal;
-        font-family: $title-font;
+        font-family: $display-font;
         font-size: 72px;
       }
     }
@@ -43,6 +44,7 @@ $context-font: Raleway !default;
     .StaticText {
       color: white;
       font-size: 30px;
+      font-family: $title-font;
     }
   }
 
@@ -73,6 +75,7 @@ $context-font: Raleway !default;
     &__title {
       font-size: 48px;
       margin: 50px 0;
+      font-family: $display-font;
     }
     padding: 20px;
   }
@@ -152,7 +155,7 @@ where it needs to be */
   &.width-c &__title,
   &.width-d.height-c &__title,
   &.width-d.height-b &__title {
-    font-size: 24px;
+    font-size: 16px;
   }
 }
 
