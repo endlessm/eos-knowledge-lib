@@ -43,7 +43,7 @@ defines:
                 - footer
               slots:
                 contents:
-                - shortdef: 'Decoration.ThemeableImage(halign: end, expand: true, valign: center, image-uri: "resource:///app/assets/logo")'
+                - shortdef: 'Decoration.ThemeableImage(halign: end, expand: true, valign: center, image-uri: "resource:///app/assets/watermark")'
 
 - &set-page
   shortdef: Layout.Scrolling
@@ -76,7 +76,7 @@ defines:
             - footer
           slots:
             contents:
-            - shortdef: 'Decoration.ThemeableImage(halign: end, expand: true, valign: center, image-uri: "resource:///app/assets/logo")'
+            - shortdef: 'Decoration.ThemeableImage(halign: end, expand: true, valign: center, image-uri: "resource:///app/assets/watermark")'
 
 
 root:
