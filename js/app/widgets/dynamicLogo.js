@@ -150,6 +150,10 @@ const DynamicLogo = new Knowledge.Class({
     _load_image: function () {
         try {
             let file = Gio.File.new_for_uri(this._image_uri);
+            if (!file.query_exists(null) && this.mode === 'full') {
+                this.mode = 'text';
+                return;
+            }
             let stream = file.read(null);
             this._image = Rsvg.Handle.new_from_stream_sync(stream, file, 0, null);
         } catch (e) {
