@@ -170,7 +170,7 @@ defines:
     card: 'Card.KnowledgeDocument(show-toc: true)'
 
 root:
-  shortdef: 'Controller.Buffet(theme: library_list)'
+  shortdef: 'Controller.Mesh(theme: library_list)'
   slots:
     window:
       type: Window.Simple
