@@ -54,7 +54,7 @@ See [`js/app/modules/`][modules] for the code.
   A **Selection** serves records through a **ContentGroup** to an **Arrangement**, which turns the records into **Card**s.
 - **Window** - These modules are the toplevel windows which contain other modules.
 
-Here's a diagram of what contains what, roughly:
+Here's a diagram of what contains what:
 
 ```
 Controller
