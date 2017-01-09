@@ -84,14 +84,14 @@ describe('Card interface', function () {
 
     it('sets a label for the duration', function () {
         let label = new Gtk.Label();
-        card.set_duration_label(label, 2000);
+        card.set_duration_label(label, 2);
         expect(label.visible).toBeTruthy();
         expect(label.label).toBe('0:02 minutes');
 
-        card.set_duration_label(label, 605000);
+        card.set_duration_label(label, 605);
         expect(label.label).toBe('10:05 minutes');
 
-        card.set_duration_label(label, 60000);
+        card.set_duration_label(label, 60);
         expect(label.label).toBe('1:00 minute');
 
         card.set_duration_label(label, undefined);
