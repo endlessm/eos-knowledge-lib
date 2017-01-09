@@ -58,6 +58,10 @@ const MediaLightbox = new Module.Class({
     },
 
     _on_close: function () {
+        if (this.lightbox_widget instanceof EosKnowledgePrivate.MediaBin) {
+            this.lightbox_widget.stop();
+        }
+        this.lightbox_widget = null;
         Dispatcher.get_default().dispatch({
             action_type: Actions.LIGHTBOX_CLOSED,
         });
@@ -116,8 +120,13 @@ const MediaLightbox = new Module.Class({
         if (this._current_index === -1)
             return;
 
-        if (this.lightbox_widget)
+        if (this.lightbox_widget) {
+            if (this.lightbox_widget instanceof EosKnowledgePrivate.MediaBin) {
+                this.lightbox_widget.stop();
+            }
             this.drop_submodule(this.lightbox_widget);
+            this.lightbox_widget = null;
+        }
 
         let widget = this.create_submodule('card', {
             model: media_object
