@@ -112,7 +112,7 @@ eknc_video_object_model_class_init (EkncVideoObjectModelClass *klass)
   /**
    * EkncVideoObjectModel:duration:
    *
-   * The duration of the video in milliseconds.
+   * The duration of the video in seconds.
    */
   eknc_video_object_model_props[PROP_DURATION] =
     g_param_spec_uint ("duration", "Duration",

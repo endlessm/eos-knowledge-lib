@@ -273,8 +273,8 @@ const Card = new Lang.Interface({
 
     set_duration_label: function (label, duration) {
         if (typeof duration !== 'undefined') {
-            let minutes = Math.floor(duration / (1000 * 60));
-            let seconds = Math.floor((duration / 1000)) % 60;
+            let minutes = Math.floor(duration / 60);
+            let seconds = Math.floor(duration) % 60;
             let count = (minutes === 1 && seconds === 0) ? 1 : minutes;
             label.visible = true;
             label.label = ngettext("%s:%s minute", "%s:%s minutes", count).format(minutes, ("00" + seconds).substr(-2, 2));
