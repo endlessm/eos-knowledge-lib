@@ -21,21 +21,33 @@ defines:
     top: 'Banner.Dynamic(mode: full)'
     middle: 'Navigation.SearchBox(halign: center, focus-on-map: true)'
     bottom:
-      type: ContentGroup.ContentGroup
-      id: sets-group
+      type: Layout.Box
       properties:
-        expand: true
-        halign: center
-        valign: center
+        orientation: vertical
+        valign: fill
       slots:
-        arrangement:
-          shortdef: 'Arrangement.Overflow(orientation: horizontal)'
+        contents:
+        - type: ContentGroup.ContentGroup
+          id: sets-group
+          properties:
+            expand: true
+            halign: center
+            valign: end
           slots:
-            card: *card
-        selection:
-          type: Selection.AllSets
-          slots:
-            filter: Filter.Featured
+            arrangement:
+              shortdef: 'Arrangement.Overflow(orientation: horizontal)'
+              slots:
+                card: *card
+            selection:
+              type: Selection.AllSets
+              slots:
+                filter: Filter.Featured
+        - type: Decoration.ThemeableImage
+          properties:
+            halign: end
+            valign: end
+            expand: true
+            image-uri: 'resource:///app/assets/watermark'
     basement:
       type: Layout.InfiniteScrolling
       references:
@@ -158,7 +170,7 @@ defines:
     card: 'Card.KnowledgeDocument(show-toc: true)'
 
 root:
-  shortdef: 'Controller.Buffet(theme: library_list)'
+  shortdef: 'Controller.Mesh(theme: library_list)'
   slots:
     window:
       type: Window.Simple

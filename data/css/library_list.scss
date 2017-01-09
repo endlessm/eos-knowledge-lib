@@ -20,6 +20,22 @@
 
   .CardLegacyPolaroid {
     padding: 0px;
+    &__title {
+      font-size: 18px;
+    }
+  }
+
+  .DecorationThemeableImage {
+    margin: 0 20px -20px 0;
+  }
+}
+
+.set-page .BannerSet {
+  margin: 0 0 45px 45px;
+  .CardTitle {
+      &__title {
+        font-family: $logo-font;
+      }
   }
 }
 

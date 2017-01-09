@@ -11,6 +11,7 @@ $background-dark-color: #141418 !default;
 
 $title-font: Raleway !default;
 $context-font: Raleway !default;
+$display-font: 'Raleway Black' !default;
 
 @import "base";
 
@@ -21,10 +22,12 @@ $context-font: Raleway !default;
 
 .home-page {
   .landing {
-    background-image: url($primary-background-image);
-    background-repeat: no-repeat;
-    background-size: cover;
-    min-height: 562px;
+    .background {
+      background-image: url($primary-background-image);
+      background-repeat: no-repeat;
+      background-size: 100%;
+      min-height: 346px;
+    }
 
     .BannerDynamic {
       &__logo {
@@ -33,15 +36,15 @@ $context-font: Raleway !default;
         min-height: 120px;
         min-width: 400px;
         font-weight: normal;
-        font-family: $title-font;
+        font-family: $display-font;
         font-size: 72px;
       }
-      &__subtitle {
-        color: white;
-        margin-top: 0px;
-        font-size: 30px;
-        -EknFormattableLabel-text-transform: 'uppercase';
-      }
+    }
+
+    .StaticText {
+      color: white;
+      font-size: 30px;
+      font-family: $title-font;
     }
   }
 
@@ -72,6 +75,7 @@ $context-font: Raleway !default;
     &__title {
       font-size: 48px;
       margin: 50px 0;
+      font-family: $display-font;
     }
     padding: 20px;
   }
@@ -151,7 +155,7 @@ where it needs to be */
   &.width-c &__title,
   &.width-d.height-c &__title,
   &.width-d.height-b &__title {
-    font-size: 24px;
+    font-size: 16px;
   }
 }
 
@@ -173,7 +177,7 @@ where it needs to be */
       font-size: 16px;
       -EknFormattableLabel-text-transform: 'uppercase';
       font-weight: normal;
-      color: $accent-dark-color;
+      color: #b3b3b3;
     }
     &__thumbnail {
       background-color: $base-color;
