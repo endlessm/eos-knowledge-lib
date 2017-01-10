@@ -40,10 +40,17 @@
 }
 
 .subset-page, .article-page {
-  background-color: $primary-dark-color;
+  .sidebar {
+    padding-left: 60px;
+  }
 }
 
 .subset-page {
+  .content {
+    background-color: $primary-dark-color;
+    background-image: none;
+  }
+
   .ContentGroupContentGroup {
     &__title {
       font-size: 32px;
