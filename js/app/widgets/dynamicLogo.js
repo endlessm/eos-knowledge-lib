@@ -92,6 +92,8 @@ const DynamicLogo = new Knowledge.Class({
         this._text_transform = 'none';
         this._layout = null;
         this._image = null;
+        this._max_width = Width.MAX;
+        this._max_height = Height.MAX;
 
         this.connect('style-set', () => this._update_custom_style());
         this.connect('style-updated', () => this._update_custom_style());
@@ -202,7 +204,8 @@ const DynamicLogo = new Knowledge.Class({
                                                                   this.get_state_flags());
         min_width = min_width ? min_width : this.width_request;
         min_width = min_width > 0 ? min_width : Width.MIN;
-        let nat_width = this._sizing === 'size-min' ? min_width : Width.MAX;
+        this._max_width = Width.MAX < min_width ? min_width : Width.MAX;
+        let nat_width = this._sizing === 'size-min' ? min_width : this._max_width;
 
         let margin = this._get_margin();
         let padding = this._get_padding();
@@ -217,7 +220,8 @@ const DynamicLogo = new Knowledge.Class({
                                                                    this.get_state_flags());
         min_height = min_height ? min_height : this.height_request;
         min_height = min_height > 0 ? min_height : Height.MIN;
-        let nat_height = this._sizing === 'size-min' ? min_height : Height.MAX;
+        this._max_height = Height.MAX < min_height ? min_height : Height.MAX;
+        let nat_height = this._sizing === 'size-min' ? min_height : this._max_height;
 
         let margin = this._get_margin();
         let padding = this._get_padding();
@@ -241,13 +245,13 @@ const DynamicLogo = new Knowledge.Class({
         let max_width = alloc.width;
         let max_height = alloc.height;
 
-        if (alloc.width > Width.MAX) {
-            max_width = Width.MAX;
-            translate_x += (alloc.width - Width.MAX) / 2;
+        if (alloc.width > this._max_width) {
+            max_width = this._max_width;
+            translate_x += (alloc.width - this._max_width) / 2;
         }
-        if (alloc.height > Height.MAX) {
-            max_height = Height.MAX;
-            translate_y += (alloc.height - Height.MAX) / 2;
+        if (alloc.height > this._max_height) {
+            max_height = this._max_height;
+            translate_y += (alloc.height - this._max_height) / 2;
         }
 
         // Draw background with padding
