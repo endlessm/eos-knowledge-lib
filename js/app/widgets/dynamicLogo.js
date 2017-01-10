@@ -322,6 +322,12 @@ const DynamicLogo = new Knowledge.Class({
             image_size = this._image.get_dimensions();
             // XXX this is a cheaper way to keep image and text equal in height
             image_scale = ((ink_size.height * text_scale) / image_size.height);
+
+            // if doesn't fit in then scale text height to image height
+            if (image_width < image_size.width * image_scale) {
+                image_scale = Math.min(image_width / image_size.width, image_height / image_size.height);
+                text_scale = ((image_size.height * image_scale) / ink_size.height);
+            }
         } else {
             image_size = this._image.get_dimensions();
             image_scale = Math.min(image_width / image_size.width, image_height / image_size.height);
