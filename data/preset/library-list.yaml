@@ -167,7 +167,7 @@ defines:
 - &article-page
   type: Layout.ArticleStack
   slots:
-    card: 'Card.KnowledgeDocument(show-toc: true)'
+    card: 'Card.KnowledgeDocument(show-toc: false, show-titles: false)'
 
 root:
   shortdef: 'Controller.Mesh(theme: library_list)'
