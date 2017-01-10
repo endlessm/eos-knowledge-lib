@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the eos-knowledge package.
 # 
 # Translators:
-# e2f_in c7 <e2f_in_c7@outlook.com>, 2016
+# e2f_in c7 <e2f_in_c7@outlook.com>, 2016-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-12-20 02:58+0000\n"
-"PO-Revision-Date: 2016-12-20 02:59+0000\n"
-"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
+"POT-Creation-Date: 2016-12-27 02:59+0000\n"
+"PO-Revision-Date: 2017-01-09 11:25+0000\n"
+"Last-Translator: e2f_in c7 <e2f_in_c7@outlook.com>\n"
 "Language-Team: Hindi (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/hi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,13 +36,13 @@ msgstr "ओह! कोई त्रुटि हुई."
 
 #: data/widgets/contentGroup/contentGroup.ui:40
 msgid "Download support info"
-msgstr ""
+msgstr "समर्थन जानकारी डाउनलोड करें"
 
 #: data/widgets/contentGroup/contentGroup.ui:44
 msgid ""
 "Click here to download a file with information that will help us track down "
 "the problem."
-msgstr ""
+msgstr "समस्या का ट्रैक रखने में हमारी मदद करने वाली जानकारी की फ़ाइल डाउनलोड करने के लिए यहां क्लिक करें."
 
 #: data/widgets/contentGroup/noResultsMessage.ui:50
 msgid ""
@@ -60,17 +60,17 @@ msgstr "मुखपृष्ठ"
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license"
-msgstr ""
+msgstr "लाइसेंस देखें"
 
-#: js/app/application.js:153
+#: js/app/application.js:158
 msgid "Oops! No content."
-msgstr ""
+msgstr "ओह! कोई सामग्री नहीं"
 
-#: js/app/application.js:154
+#: js/app/application.js:159
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
-msgstr ""
+msgstr "अगर आपके पास इंटरनेट कनेक्शन है, तो हम इस समय अधिक सामग्री डाउनलोड कर रहे हैं. इस संदेश के हट जाने के बाद कुछ समय में पुनः प्रयास करें."
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -146,19 +146,19 @@ msgstr "{blog-link} केे सामग्री सौजन्य से, {
 msgid "Results were found for “%s”"
 msgstr "“%s” के लिए परिणाम प्राप्त हुए"
 
-#: js/app/interfaces/card.js:281
+#: js/app/interfaces/card.js:280
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s:%s मिनट"
+msgstr[1] "%s:%s मिनट्स"
 
-#: js/app/interfaces/card.js:349
+#: js/app/interfaces/card.js:348
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d आइटम"
+msgstr[1] "%d आइटम्स"
 
 #: js/app/modules/banner/context.js:38 js/app/modules/banner/context.js:49
 msgid "Highlights"

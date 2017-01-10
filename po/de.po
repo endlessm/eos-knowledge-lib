@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-12-20 02:58+0000\n"
+"POT-Creation-Date: 2016-12-27 02:59+0000\n"
 "PO-Revision-Date: 2016-12-24 15:07+0000\n"
 "Last-Translator: Stefan Schroeder <ondekoza@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/de/)\n"
@@ -62,11 +62,11 @@ msgstr "Persönlicher Ordner"
 msgid "View the license"
 msgstr "Lizenz lesen"
 
-#: js/app/application.js:153
+#: js/app/application.js:158
 msgid "Oops! No content."
 msgstr "Huch! Kein Inhalt."
 
-#: js/app/application.js:154
+#: js/app/application.js:159
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -146,14 +146,14 @@ msgstr "Die Inhalte stammen von {blog-link} und stehen unter der Lizenz: {licens
 msgid "Results were found for “%s”"
 msgstr "Es gibt Ergebnisse für »%s«"
 
-#: js/app/interfaces/card.js:281
+#: js/app/interfaces/card.js:280
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/app/interfaces/card.js:349
+#: js/app/interfaces/card.js:348
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"

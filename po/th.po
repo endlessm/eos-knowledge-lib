@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-12-20 02:58+0000\n"
-"PO-Revision-Date: 2016-12-20 02:59+0000\n"
+"POT-Creation-Date: 2016-12-27 02:59+0000\n"
+"PO-Revision-Date: 2017-01-07 10:06+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Thai (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/th/)\n"
 "MIME-Version: 1.0\n"
@@ -35,13 +35,13 @@ msgstr "แย่ล่ะ! เกิดความผิดพลาดขึ�
 
 #: data/widgets/contentGroup/contentGroup.ui:40
 msgid "Download support info"
-msgstr ""
+msgstr "ดาวน์โหลดข้อมูลความช่วยเหลือ"
 
 #: data/widgets/contentGroup/contentGroup.ui:44
 msgid ""
 "Click here to download a file with information that will help us track down "
 "the problem."
-msgstr ""
+msgstr "คลิกที่นี่เพื่อดาวน์โหลดไฟล์ด้วยข้อมูลที่จะช่วยเราติดตามปัญหา"
 
 #: data/widgets/contentGroup/noResultsMessage.ui:50
 msgid ""
@@ -59,17 +59,17 @@ msgstr "โฮม"
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license"
-msgstr ""
+msgstr "ดูใบอนุญาต"
 
-#: js/app/application.js:153
+#: js/app/application.js:158
 msgid "Oops! No content."
-msgstr ""
+msgstr "อ๊ะ! ไม่มีเนื้อหา"
 
-#: js/app/application.js:154
+#: js/app/application.js:159
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
-msgstr ""
+msgstr "หากคุณมีการเชื่อมต่ออินเทอร์เน็ต เราจะดาวน์โหลดเนื้อหาเพิ่มเติมทันที  ทดลองอีกครั้งภายในสองหรือสามนาทีหลังจากข้อความนี้หายไป"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -145,17 +145,17 @@ msgstr "เนื้อหาจาก {blog-link} สงวนลิขสิ�
 msgid "Results were found for “%s”"
 msgstr "ผลลัพธ์ที่พบสำหรับ “%s”"
 
-#: js/app/interfaces/card.js:281
+#: js/app/interfaces/card.js:280
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
-msgstr[0] ""
+msgstr[0] "%s:%s นาที"
 
-#: js/app/interfaces/card.js:349
+#: js/app/interfaces/card.js:348
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
-msgstr[0] ""
+msgstr[0] "%d รายการ"
 
 #: js/app/modules/banner/context.js:38 js/app/modules/banner/context.js:49
 msgid "Highlights"
