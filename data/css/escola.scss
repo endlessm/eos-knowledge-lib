@@ -58,7 +58,7 @@ $display-font: 'Raleway Black' !default;
     margin-right: 20px;
     min-width: 39px;
     min-height: 38px;
-    -gtk-icon-source: url("resource:///com/endlessm/knowledge/data/images/checkmark.png");
+    -gtk-icon-source: none;
   }
   &:hover &__title {
       color: $accent-light-color;
