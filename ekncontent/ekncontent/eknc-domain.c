@@ -126,6 +126,8 @@ eknc_domain_finalize (GObject *object)
   g_slist_free_full (self->shards, g_object_unref);
   g_slist_free_full (self->link_tables, (GDestroyNotify)eos_shard_dictionary_unref);
   g_clear_pointer (&self->subscriptions_node, json_node_unref);
+
+  G_OBJECT_CLASS (eknc_domain_parent_class)->finalize (object);
 }
 
 static void

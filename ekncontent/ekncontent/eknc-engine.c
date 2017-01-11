@@ -99,6 +99,8 @@ eknc_engine_finalize (GObject *object)
   g_clear_pointer (&self->language, g_free);
   g_clear_object (&self->xapian_bridge);
   g_clear_object (&self->domains);
+
+  G_OBJECT_CLASS (eknc_engine_parent_class)->finalize (object);
 }
 
 static void
