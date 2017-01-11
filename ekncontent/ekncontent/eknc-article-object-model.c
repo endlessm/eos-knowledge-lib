@@ -156,6 +156,8 @@ eknc_article_object_model_finalize (GObject *object)
   g_clear_pointer (&priv->authors, g_variant_unref);
   g_clear_pointer (&priv->outgoing_links, g_variant_unref);
   g_clear_pointer (&priv->table_of_contents, g_variant_unref);
+
+  G_OBJECT_CLASS (eknc_article_object_model_parent_class)->finalize (object);
 }
 
 static void

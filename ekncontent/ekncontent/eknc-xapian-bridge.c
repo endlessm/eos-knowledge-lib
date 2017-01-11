@@ -109,6 +109,8 @@ eknc_xapian_bridge_finalize (GObject *object)
   g_clear_pointer (&self->host, g_free);
   g_clear_pointer (&self->language, g_free);
   g_clear_object (&self->session);
+
+  G_OBJECT_CLASS (eknc_xapian_bridge_parent_class)->finalize (object);
 }
 
 static void

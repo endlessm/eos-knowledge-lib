@@ -265,6 +265,8 @@ eknc_content_object_model_finalize (GObject *object)
   g_clear_pointer (&priv->license, g_free);
   g_clear_pointer (&priv->tags, g_variant_unref);
   g_clear_pointer (&priv->resources, g_variant_unref);
+
+  G_OBJECT_CLASS (eknc_content_object_model_parent_class)->finalize (object);
 }
 
 static void

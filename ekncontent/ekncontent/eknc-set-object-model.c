@@ -76,6 +76,8 @@ eknc_set_object_model_finalize (GObject *object)
   EkncSetObjectModelPrivate *priv = eknc_set_object_model_get_instance_private (self);
 
   g_clear_pointer (&priv->child_tags, g_variant_unref);
+
+  G_OBJECT_CLASS (eknc_set_object_model_parent_class)->finalize (object);
 }
 
 static void
