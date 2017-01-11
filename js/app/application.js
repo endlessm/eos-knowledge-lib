@@ -20,6 +20,7 @@ const Engine = imports.search.engine;
 const Knowledge = imports.app.knowledge;
 const ModuleFactory = imports.app.moduleFactory;
 const MoltresEngine = imports.search.moltresEngine;
+const Utils = imports.search.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -170,9 +171,8 @@ const Application = new Knowledge.Class({
         if (GLib.getenv('EKN_DISABLE_UPDATES'))
             return;
 
-        let engine = Engine.get_default();
         let downloader = Downloader.get_default();
-        let subs = engine.get_default_domain().get_subscription_entries();
+        let subs = Utils.get_subscription_entries(this.application_id);
         subs.forEach(function (entry) {
             let id = entry.id;
 
@@ -180,18 +180,15 @@ const Application = new Knowledge.Class({
                 return;
 
             // Synchronously apply any update we have.
-            downloader.apply_update(id, null, (downloader, result) => {
-                downloader.apply_update_finish(result);
-
-                // Regardless of whether or not we applied an update,
-                // let's see about fetching a new one...
-                downloader.fetch_update(id, null, (downloader, result) => {
-                    try {
-                        downloader.fetch_update_finish(result);
-                    } catch(e) {
-                        logError(e, Format.vprintf("Could not update subscription ID: %s", [id]));
-                    }
-                });
+            downloader.apply_update_sync(id);
+            // Regardless of whether or not we applied an update,
+            // let's see about fetching a new one...
+            downloader.fetch_update(id, null, (downloader, result) => {
+                try {
+                    downloader.fetch_update_finish(result);
+                } catch(e) {
+                    logError(e, Format.vprintf("Could not update subscription ID: %s", [id]));
+                }
             });
         });
     },

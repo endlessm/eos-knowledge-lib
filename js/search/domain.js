@@ -44,22 +44,9 @@ const Domain = new Lang.Class({
         return params;
     },
 
-    /**
-     * Function: get_subscription_entries
-     *
-     * Gets a list of subscription entries. Contains an id field and a
-     * disable_update field.
-     */
-    get_subscription_entries: function () {
-        let file = this._get_content_dir().get_child('subscriptions.json');
-        let [, data] = file.load_contents(null);
-        let subscriptions = JSON.parse(data);
-        return subscriptions.subscriptions.slice();
-    },
-
     _get_subscription_entry: function () {
         if (this._subscription_entry === undefined) {
-            let entries = this.get_subscription_entries();
+            let entries = Utils.get_subscription_entries(this._app_id);
 
             // XXX: For now, we only support the first subscription.
             this._subscription_entry = entries[0];
@@ -338,6 +325,11 @@ const Domain = new Lang.Class({
  * Gets a domain object for a given app id. Currently only EKN_VERSION 3 domains
  * are supported, but we may bring back multiple version of our on disk database
  * format in the future.
+ *
+ * You should only get a domain object _after_ applying any pending
+ * updates. Once this object is created, you should not make any
+ * modifications to the subscription manifest or the shards referenced
+ * by it.
  */
 function get_domain_impl (app_id, xapian_bridge) {
     let ekn_version = Utils.get_ekn_version(app_id);
