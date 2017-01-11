@@ -153,7 +153,7 @@ const ContentGroup = new Module.Class({
         if (this.paginate) {
             let see_more_button = new Gtk.Button({
                 halign: Gtk.Align.CENTER,
-                label: _('See more'),
+                label: _("See more"),
                 no_show_all: true,
                 visible: this.paginate,
             });
