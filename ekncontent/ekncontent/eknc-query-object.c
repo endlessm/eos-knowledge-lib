@@ -266,6 +266,8 @@ eknc_query_object_finalize (GObject *object)
   g_clear_pointer (&self->ids, g_variant_unref);
   g_clear_pointer (&self->excluded_ids, g_variant_unref);
   g_clear_pointer (&self->excluded_tags, g_variant_unref);
+
+  G_OBJECT_CLASS (eknc_query_object_parent_class)->finalize (object);
 }
 
 static void
