@@ -40,9 +40,6 @@ GQuark eknc_domain_error_quark (void);
 const gchar *
 eknc_domain_get_subscription_id (EkncDomain *self);
 
-JsonNode *
-eknc_domain_get_subscription_entries (EkncDomain *self);
-
 GSList *
 eknc_domain_get_shards (EkncDomain *self);
 

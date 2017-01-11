@@ -169,9 +169,8 @@ const Application = new Knowledge.Class({
         if (GLib.getenv('EKN_DISABLE_UPDATES'))
             return;
 
-        let engine = Eknc.Engine.get_default();
         let downloader = Downloader.get_default();
-        let subs = engine.get_domain().get_subscription_entries();
+        let subs = Eknc.get_subscriptions_json(this.application_id, null).subscriptions;
         subs.forEach(function (entry) {
             let id = entry.id;
 
