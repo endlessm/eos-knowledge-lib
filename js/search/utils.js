@@ -1,3 +1,5 @@
+/* exported get_subscription_entries */
+
 const ByteArray = imports.byteArray;
 const Eknc = imports.gi.EosKnowledgeContent;
 const Format = imports.format;
@@ -147,4 +149,17 @@ function get_ekn_version (app_id) {
     let version_string = contents.toString();
 
     return parseInt(version_string);
+}
+
+/**
+ * Function: get_subscription_entries
+ *
+ * Gets a list of subscription entries. Contains an id field and a
+ * disable_update field.
+ */
+function get_subscription_entries (app_id) {
+    let file = Eknc.get_data_dir(app_id).get_child('subscriptions.json');
+    let [, data] = file.load_contents(null);
+    let subscriptions = JSON.parse(data);
+    return subscriptions.subscriptions.slice();
 }

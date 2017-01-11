@@ -207,6 +207,11 @@ const Engine = Lang.Class({
      * Method: get_default_domain
      *
      * Get the domain object for the default app id.
+     *
+     * You should only get a domain object _after_ applying any pending
+     * updates. Once this object is created, you should not make any
+     * modifications to the subscription manifest or the shards
+     * referenced by it.
      */
     get_default_domain: function () {
         this._check_default_domain();

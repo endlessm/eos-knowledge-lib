@@ -20,6 +20,7 @@ const Engine = imports.search.engine;
 const Knowledge = imports.app.knowledge;
 const ModuleFactory = imports.app.moduleFactory;
 const MoltresEngine = imports.search.moltresEngine;
+const Utils = imports.search.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -170,9 +171,8 @@ const Application = new Knowledge.Class({
         if (GLib.getenv('EKN_DISABLE_UPDATES'))
             return;
 
-        let engine = Engine.get_default();
         let downloader = Downloader.get_default();
-        let subs = engine.get_default_domain().get_subscription_entries();
+        let subs = Utils.get_subscription_entries(this.application_id);
         subs.forEach(function (entry) {
             let id = entry.id;
 
