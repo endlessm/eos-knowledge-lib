@@ -44,7 +44,6 @@ struct _EkncDomain
   GSList *shards;
   // List of EosShardDictionary items
   GSList *link_tables;
-  JsonNode *subscriptions_node;
 };
 
 static void initable_iface_init (GInitableIface *initable_iface);
@@ -125,7 +124,6 @@ eknc_domain_finalize (GObject *object)
   g_clear_object (&self->manifest_file);
   g_slist_free_full (self->shards, g_object_unref);
   g_slist_free_full (self->link_tables, (GDestroyNotify)eos_shard_dictionary_unref);
-  g_clear_pointer (&self->subscriptions_node, json_node_unref);
 
   G_OBJECT_CLASS (eknc_domain_parent_class)->finalize (object);
 }
@@ -170,27 +168,22 @@ eknc_domain_init (EkncDomain *self)
 }
 
 static gboolean
-eknc_load_subscription_entries (EkncDomain *self,
-                                GCancellable *cancellable,
-                                GError **error)
+eknc_parse_subscription_id (EkncDomain *self,
+                            GCancellable *cancellable,
+                            GError **error)
 {
-  g_autoptr(GFile) subscriptions_file = g_file_get_child (self->content_dir, "subscriptions.json");
-  g_autofree gchar *contents = NULL;
-  if (!g_file_load_contents (subscriptions_file, cancellable, &contents,
-                             NULL, NULL, error))
+  g_autoptr(JsonNode) subscriptions_node = NULL;
+  if (!(subscriptions_node = eknc_get_subscriptions_json (self->app_id, cancellable, error)))
     return FALSE;
 
-  if (!(self->subscriptions_node = json_from_string (contents, error)))
-    return FALSE;
-
-  if (!JSON_NODE_HOLDS_OBJECT (self->subscriptions_node))
+  if (!JSON_NODE_HOLDS_OBJECT (subscriptions_node))
     {
       g_set_error (error, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_BAD_SUBSCRIPTIONS,
                    "Subscriptions file does not hold a json object");
       return FALSE;
     }
 
-  JsonNode *child_node = json_object_get_member (json_node_get_object (self->subscriptions_node), "subscriptions");
+  JsonNode *child_node = json_object_get_member (json_node_get_object (subscriptions_node), "subscriptions");
   if (child_node == NULL || !JSON_NODE_HOLDS_ARRAY (child_node))
     {
       g_set_error (error, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_BAD_SUBSCRIPTIONS,
@@ -296,7 +289,7 @@ eknc_domain_initable_init (GInitable *initable,
                  "You must set an app id to initialize a domain object");
 
   self->content_dir = eknc_get_data_dir (self->app_id);
-  if (!eknc_load_subscription_entries (self, cancellable, error))
+  if (!eknc_parse_subscription_id (self, cancellable, error))
     return FALSE;
 
   g_autoptr(GFile) subscriptions_dir = eknc_get_subscriptions_dir ();
@@ -439,23 +432,6 @@ eknc_domain_get_subscription_id (EkncDomain *self)
   g_return_val_if_fail (EKNC_IS_DOMAIN (self), NULL);
 
   return self->subscription_id;
-}
-
-/**
- * eknc_domain_get_subscription_entries:
- * @self: the domain
- *
- * Gets the json node containing the list of subscriptions from the
- * subscriptions file.
- *
- * Returns: (transfer none): the json node
- */
-JsonNode *
-eknc_domain_get_subscription_entries (EkncDomain *self)
-{
-  g_return_val_if_fail (EKNC_IS_DOMAIN (self), NULL);
-
-  return json_object_get_member (json_node_get_object (self->subscriptions_node), "subscriptions");
 }
 
 /**

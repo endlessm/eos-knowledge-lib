@@ -5,6 +5,7 @@
 #pragma once
 
 #include <gio/gio.h>
+#include <json-glib/json-glib.h>
 
 G_BEGIN_DECLS
 
@@ -49,5 +50,10 @@ eknc_get_ekn_version (const gchar *app_id,
 
 const gchar *
 eknc_get_current_language (void);
+
+JsonNode *
+eknc_get_subscriptions_json (const gchar *app_id,
+                             GCancellable *cancellable,
+                             GError **error);
 
 G_END_DECLS
