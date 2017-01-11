@@ -178,18 +178,15 @@ const Application = new Knowledge.Class({
                 return;
 
             // Synchronously apply any update we have.
-            downloader.apply_update(id, null, (downloader, result) => {
-                downloader.apply_update_finish(result);
-
-                // Regardless of whether or not we applied an update,
-                // let's see about fetching a new one...
-                downloader.fetch_update(id, null, (downloader, result) => {
-                    try {
-                        downloader.fetch_update_finish(result);
-                    } catch(e) {
-                        logError(e, Format.vprintf("Could not update subscription ID: %s", [id]));
-                    }
-                });
+            downloader.apply_update_sync(id);
+            // Regardless of whether or not we applied an update,
+            // let's see about fetching a new one...
+            downloader.fetch_update(id, null, (downloader, result) => {
+                try {
+                    downloader.fetch_update_finish(result);
+                } catch(e) {
+                    logError(e, Format.vprintf("Could not update subscription ID: %s", [id]));
+                }
             });
         });
     },
