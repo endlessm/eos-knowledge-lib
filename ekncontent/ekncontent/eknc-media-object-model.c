@@ -99,6 +99,8 @@ eknc_media_object_model_finalize (GObject *object)
   EkncMediaObjectModelPrivate *priv = eknc_media_object_model_get_instance_private (self);
 
   g_clear_pointer (&priv->caption, g_free);
+
+  G_OBJECT_CLASS (eknc_media_object_model_parent_class)->finalize (object);
 }
 
 static void

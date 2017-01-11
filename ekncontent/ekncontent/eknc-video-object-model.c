@@ -98,6 +98,8 @@ eknc_video_object_model_finalize (GObject *object)
 
   g_clear_pointer (&priv->transcript, g_free);
   g_clear_pointer (&priv->poster_uri, g_free);
+
+  G_OBJECT_CLASS (eknc_video_object_model_parent_class)->finalize (object);
 }
 
 static void
