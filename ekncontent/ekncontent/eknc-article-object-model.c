@@ -274,7 +274,7 @@ eknc_article_object_model_add_json_to_params (JsonNode *node,
   eknc_content_object_model_add_json_to_params (node, params);
 
   JsonObject *object = json_node_get_object (node);
-  GObjectClass *klass = g_type_class_peek (EKNC_TYPE_ARTICLE_OBJECT_MODEL);
+  GObjectClass *klass = g_type_class_ref (EKNC_TYPE_ARTICLE_OBJECT_MODEL);
 
   eknc_utils_append_gparam_from_json_node (json_object_get_member (object, "source"),
                                            g_object_class_find_property (klass, "source"),
@@ -300,6 +300,7 @@ eknc_article_object_model_add_json_to_params (JsonNode *node,
   eknc_utils_append_gparam_from_json_node (json_object_get_member (object, "tableOfContents"),
                                            g_object_class_find_property (klass, "table-of-contents"),
                                            params);
+  g_type_class_unref (klass);
 }
 
 /**
