@@ -52,9 +52,9 @@ function set_hand_cursor_on_widget(widget) {
 }
 
 /* Helper function to load a JSON object from a file */
-function parse_object_from_file (file) {
+function parse_object_from_file (file, cancellable) {
     try {
-        let [success, data] = file.load_contents(null);
+        let [success, data] = file.load_contents(cancellable || null);
         return JSON.parse(data);
     } catch(e) {
         logError(e);
@@ -535,4 +535,18 @@ function ensure_directory (dir) {
 function string_to_stream(string) {
     let bytes = ByteArray.fromString(string).toGBytes();
     return Gio.MemoryInputStream.new_from_bytes(bytes);
+}
+
+// Returns items that are in A but not in B.
+function subtract_set (A, B, key) {
+    let result = [];
+    let mapped_A = A.map(key);
+    let mapped_B = B.map(key);
+
+    for (let i = 0; i < mapped_A.length; i++) {
+        let item = mapped_A[i];
+        if (mapped_B.indexOf(item) === -1)
+            result.push(A[i]);
+    }
+    return result;
 }
