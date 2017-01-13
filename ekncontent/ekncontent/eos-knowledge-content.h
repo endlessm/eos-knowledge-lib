@@ -18,7 +18,6 @@ G_BEGIN_DECLS
 #include "eknc-query-object.h"
 #include "eknc-query-results.h"
 #include "eknc-set-object-model.h"
-#include "eknc-subtree-dispatcher.h"
 #include "eknc-utils.h"
 #include "eknc-version.h"
 #include "eknc-video-object-model.h"

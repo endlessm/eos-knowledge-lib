@@ -170,24 +170,6 @@ eknc_utils_free_gparam_array
 </SECTION>
 
 <SECTION>
-<FILE>subtree-dispatcher</FILE>
-EkncSubtreeDispatcher
-eknc_subtree_dispatcher_register
-eknc_subtree_dispatcher_unregister
-<SUBSECTION Standard>
-EkncSubtreeDispatcherClass
-EKNC_IS_SUBTREE_DISPATCHER
-EKNC_IS_SUBTREE_DISPATCHER_CLASS
-EKNC_TYPE_SUBTREE_DISPATCHER
-EKNC_SUBTREE_DISPATCHER
-EKNC_SUBTREE_DISPATCHER_CLASS
-EKNC_SUBTREE_DISPATCHER_GET_CLASS
-<SUBSECTION Private>
-eknc_subtree_dispatcher_get_type
-</SECTION>
-
-
-<SECTION>
 <FILE>xapian-bridge</FILE>
 eknc_xapian_bridge_get_fixed_query
 eknc_xapian_bridge_get_fixed_query_finish
