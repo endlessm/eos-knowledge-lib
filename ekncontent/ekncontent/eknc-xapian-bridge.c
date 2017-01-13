@@ -238,14 +238,14 @@ get_xapian_query_uri (EkncXapianBridge *self,
 
   guint limit, offset;
   g_object_get (query, "limit", &limit, "offset", &offset, NULL);
-  g_autofree gchar *offset_string = g_strdup_printf ("%d", offset);
-  g_autofree gchar *limit_string = g_strdup_printf ("%d", limit);
+  g_autofree gchar *offset_string = g_strdup_printf ("%u", offset);
+  g_autofree gchar *limit_string = g_strdup_printf ("%u", limit);
   if (limit > 0)
     g_hash_table_insert (params, "limit", limit_string);
   g_hash_table_insert (params, "offset", offset_string);
 
   guint cutoff = eknc_query_object_get_cutoff (query);
-  g_autofree gchar *cutoff_string = g_strdup_printf ("%d", cutoff);
+  g_autofree gchar *cutoff_string = g_strdup_printf ("%u", cutoff);
   g_hash_table_insert (params, "cutoff", cutoff_string);
 
   gint sort_value = eknc_query_object_get_sort_value (query);

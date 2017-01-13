@@ -311,7 +311,7 @@ const Card = new Lang.Interface({
     _count_set: function (set_obj, callback) {
         let query = Eknc.QueryObject.new_from_props({
             tags_match_any: set_obj.child_tags,
-            limit: -1,
+            limit: GLib.MAXUINT32,
         });
         Eknc.Engine.get_default().query(query, null, (engine, task) => {
             let results;
