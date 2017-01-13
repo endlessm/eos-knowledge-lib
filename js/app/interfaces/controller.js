@@ -2,6 +2,7 @@
 
 const Eknc = imports.gi.EosKnowledgeContent;
 const Gdk = imports.gi.Gdk;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -93,7 +94,7 @@ const Controller = new Lang.Interface({
         // Load all sets, with which to populate the set map
         // FIXME: deduplicate this with Selection.AllSets
         Engine.get_default().get_objects_for_query(Eknc.QueryObject.new_from_props({
-            limit: -1,
+            limit: GLib.MAXUINT32,
             tags_match_all: ['EknSetObject'],
         }), null, (engine, res) => {
             let models;
