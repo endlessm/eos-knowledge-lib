@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-12-27 02:59+0000\n"
-"PO-Revision-Date: 2017-01-09 11:25+0000\n"
+"POT-Creation-Date: 2017-01-10 02:57+0000\n"
+"PO-Revision-Date: 2017-01-10 11:16+0000\n"
 "Last-Translator: e2f_in c7 <e2f_in_c7@outlook.com>\n"
 "Language-Team: Hindi (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/hi/)\n"
 "MIME-Version: 1.0\n"
@@ -42,7 +42,7 @@ msgstr "समर्थन जानकारी डाउनलोड करे
 msgid ""
 "Click here to download a file with information that will help us track down "
 "the problem."
-msgstr "समस्या का ट्रैक रखने में हमारी मदद करने वाली जानकारी की फ़ाइल डाउनलोड करने के लिए यहां क्लिक करें."
+msgstr "समस्या का ट्रैक रखने में हमारी मदद करने वाली जानकारी की फ़ाइल डाउनलोड करने के लिए यहाँ क्लिक करें."
 
 #: data/widgets/contentGroup/noResultsMessage.ui:50
 msgid ""
@@ -62,15 +62,15 @@ msgstr "मुखपृष्ठ"
 msgid "View the license"
 msgstr "लाइसेंस देखें"
 
-#: js/app/application.js:158
+#: js/app/application.js:157
 msgid "Oops! No content."
-msgstr "ओह! कोई सामग्री नहीं"
+msgstr "ओह! कोई सामग्री नहीं है."
 
-#: js/app/application.js:159
+#: js/app/application.js:158
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
-msgstr "अगर आपके पास इंटरनेट कनेक्शन है, तो हम इस समय अधिक सामग्री डाउनलोड कर रहे हैं. इस संदेश के हट जाने के बाद कुछ समय में पुनः प्रयास करें."
+msgstr "अगर आपके पास इंटरनेट कनेक्शन है, तो हम इस समय अधिक सामग्री डाउनलोड कर रहे हैं. इस संदेश के हट जाने के कुछ मिनट बाद पुनः प्रयास करें."
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -146,14 +146,14 @@ msgstr "{blog-link} केे सामग्री सौजन्य से, {
 msgid "Results were found for “%s”"
 msgstr "“%s” के लिए परिणाम प्राप्त हुए"
 
-#: js/app/interfaces/card.js:280
+#: js/app/interfaces/card.js:278
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
 msgstr[0] "%s:%s मिनट"
-msgstr[1] "%s:%s मिनट्स"
+msgstr[1] "%s:%s मिनट"
 
-#: js/app/interfaces/card.js:348
+#: js/app/interfaces/card.js:344
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -201,10 +201,10 @@ msgstr "अधिक परिणाम देखें"
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:99
+#: js/app/utils.js:100
 msgid "by {author}"
 msgstr "{author} की ओर से"
 
-#: js/app/utils.js:99
+#: js/app/utils.js:100
 msgid "and"
 msgstr "और"

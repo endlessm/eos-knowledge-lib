@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-12-27 02:59+0000\n"
+"POT-Creation-Date: 2017-01-10 02:57+0000\n"
 "PO-Revision-Date: 2017-01-07 12:12+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/ar/)\n"
@@ -62,11 +62,11 @@ msgstr "الصفحة الرئيسية"
 msgid "View the license"
 msgstr "عرض الترخيص"
 
-#: js/app/application.js:158
+#: js/app/application.js:157
 msgid "Oops! No content."
 msgstr "يا لهذا! لا يوجد محتوى."
 
-#: js/app/application.js:159
+#: js/app/application.js:158
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -146,7 +146,7 @@ msgstr "المحتوى مهدى من {blog-link}، ومرخص بموجب {licens
 msgid "Results were found for “%s”"
 msgstr "النتائج التي عثرنا عليها لـ “%s”"
 
-#: js/app/interfaces/card.js:280
+#: js/app/interfaces/card.js:278
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
@@ -157,7 +157,7 @@ msgstr[3] "%s:%s دقائق"
 msgstr[4] "%s:%s دقائق"
 msgstr[5] "%s:%s دقائق "
 
-#: js/app/interfaces/card.js:348
+#: js/app/interfaces/card.js:344
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -209,10 +209,10 @@ msgstr "قُم بمشاهدة المزيد من النتائج"
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:99
+#: js/app/utils.js:100
 msgid "by {author}"
 msgstr "بواسطة (المؤلف)"
 
-#: js/app/utils.js:99
+#: js/app/utils.js:100
 msgid "and"
 msgstr "و"

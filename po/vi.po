@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-12-27 02:59+0000\n"
+"POT-Creation-Date: 2017-01-10 02:57+0000\n"
 "PO-Revision-Date: 2017-01-07 11:45+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/vi/)\n"
@@ -61,11 +61,11 @@ msgstr "TRANG CHỦ"
 msgid "View the license"
 msgstr "Xem giấy phép"
 
-#: js/app/application.js:158
+#: js/app/application.js:157
 msgid "Oops! No content."
 msgstr "Ối! Không có nội dung."
 
-#: js/app/application.js:159
+#: js/app/application.js:158
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -145,13 +145,13 @@ msgstr "Được quyền sử dụng nội dung từ {blog-link}, được cấp
 msgid "Results were found for “%s”"
 msgstr "Đã tìm thấy kết quả tìm kiếm cho \"%s\""
 
-#: js/app/interfaces/card.js:280
+#: js/app/interfaces/card.js:278
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
 msgstr[0] "%s:%s phút"
 
-#: js/app/interfaces/card.js:348
+#: js/app/interfaces/card.js:344
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -198,10 +198,10 @@ msgstr "Xem thêm kết quả"
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:99
+#: js/app/utils.js:100
 msgid "by {author}"
 msgstr "bởi {author}"
 
-#: js/app/utils.js:99
+#: js/app/utils.js:100
 msgid "and"
 msgstr "và"

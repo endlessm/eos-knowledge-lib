@@ -5,15 +5,16 @@
 # Translators:
 # chenzibing <chenzibing_endless@126.com>, 2016
 # e2f_cn c5 <e2f_cn_c3@outlook.com>, 2017
+# e2f_STM STM <STMcnhktw@outlook.com>, 2017
 # Roddy Shuler <roddy@endlessm.com>, 2016
 # zhifeng peng <jnufeng@126.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-12-27 02:59+0000\n"
-"PO-Revision-Date: 2017-01-10 02:04+0000\n"
-"Last-Translator: e2f_cn c5 <e2f_cn_c3@outlook.com>\n"
+"POT-Creation-Date: 2017-01-10 02:57+0000\n"
+"PO-Revision-Date: 2017-01-10 13:53+0000\n"
+"Last-Translator: e2f_STM STM <STMcnhktw@outlook.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -65,15 +66,15 @@ msgstr "主页"
 msgid "View the license"
 msgstr "查看许可证"
 
-#: js/app/application.js:158
+#: js/app/application.js:157
 msgid "Oops! No content."
-msgstr "哎呀! 无内容。"
+msgstr "哎呀！无内容。"
 
-#: js/app/application.js:159
+#: js/app/application.js:158
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
-msgstr "如果您具备互联网连接，我们将立即下载更多内容。请您在本消息消失后的几分钟后重试。"
+msgstr "如果您可以连接到互联网，我们将立即下载更多内容。请您在本消息消失后的几分钟后重试。"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -149,13 +150,13 @@ msgstr "内容由{blog-link}提供，已得到{license-link}许可认证。"
 msgid "Results were found for “%s”"
 msgstr "已找到“%s”的结果"
 
-#: js/app/interfaces/card.js:280
+#: js/app/interfaces/card.js:278
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
 msgstr[0] "%s: %s分钟"
 
-#: js/app/interfaces/card.js:348
+#: js/app/interfaces/card.js:344
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -202,10 +203,10 @@ msgstr "查看更多结果"
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:99
+#: js/app/utils.js:100
 msgid "by {author}"
 msgstr "作者：{author}"
 
-#: js/app/utils.js:99
+#: js/app/utils.js:100
 msgid "and"
 msgstr "与"
