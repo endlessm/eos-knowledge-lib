@@ -235,11 +235,6 @@ const KnowledgeDocument = new Module.Class({
         return task.finish();
     },
 
-    clear_content: function () {
-        this.content_view.destroy();
-        this.content_view = null;
-    },
-
     set_active: function () { /* NO-OP */},
 
     _scroll_to_section: function (index) {

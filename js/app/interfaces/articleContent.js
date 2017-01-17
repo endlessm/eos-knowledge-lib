@@ -65,14 +65,6 @@ const ArticleContent = new Lang.Interface({
     load_content_finish: Lang.Interface.UNIMPLEMENTED,
 
     /**
-     * Method: clear_content
-     * Clear the content for this article, and free
-     * any resources associated with the content view.
-     *
-     */
-    clear_content: Lang.Interface.UNIMPLEMENTED,
-
-    /**
      * Method: set_active (is_active)
      * Activate or deactivate the content being displayed on this page.
      * An example use case would be the video player starting or stopping
