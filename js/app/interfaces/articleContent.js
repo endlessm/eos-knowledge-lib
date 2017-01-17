@@ -5,15 +5,15 @@ const Lang = imports.lang;
 const Card = imports.app.interfaces.card;
 
 /**
- * Interface: DocumentCard
- * Interface for document card modules
+ * Interface: ArticleContent
+ * Interface for article content modules
  *
  * Requires:
  *   <Card>
  */
-const DocumentCard = new Lang.Interface({
-    Name: 'DocumentCard',
-    GTypeName: 'EknDocumentCard',
+const ArticleContent = new Lang.Interface({
+    Name: 'ArticleContent',
+    GTypeName: 'EknArticleContent',
     Requires: [ Card.Card ],
 
     Properties: {
@@ -52,7 +52,7 @@ const DocumentCard = new Lang.Interface({
 
     /**
      * Method: load_content
-     * Load the content for this document
+     * Load the content for this article
      *
      */
     load_content: Lang.Interface.UNIMPLEMENTED,
@@ -66,7 +66,7 @@ const DocumentCard = new Lang.Interface({
 
     /**
      * Method: clear_content
-     * Clear the content for this document, and free
+     * Clear the content for this article, and free
      * any resources associated with the content view.
      *
      */

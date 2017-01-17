@@ -78,9 +78,9 @@
     <file>js/app/historyItem.js</file>
     <file>js/app/historyStore.js</file>
     <file>js/app/interfaces/arrangement.js</file>
+    <file>js/app/interfaces/articleContent.js</file>
     <file>js/app/interfaces/card.js</file>
     <file>js/app/interfaces/controller.js</file>
-    <file>js/app/interfaces/documentCard.js</file>
     <file>js/app/interfaces/filter.js</file>
     <file>js/app/interfaces/module.js</file>
     <file>js/app/interfaces/navigationCard.js</file>
