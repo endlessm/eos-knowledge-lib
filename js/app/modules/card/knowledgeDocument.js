@@ -8,9 +8,9 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const WebKit2 = imports.gi.WebKit2;
 
+const ArticleContent = imports.app.interfaces.articleContent;
 const AsyncTask = imports.app.asyncTask;
 const Card = imports.app.interfaces.card;
-const DocumentCard = imports.app.interfaces.documentCard;
 const EknWebview = imports.app.widgets.eknWebview;
 const HistoryStore = imports.app.historyStore;
 const InArticleSearch = imports.app.widgets.inArticleSearch;
@@ -40,7 +40,7 @@ const CONTENT_PAGE_NAME = 'content';
 const KnowledgeDocument = new Module.Class({
     Name: 'Card.KnowledgeDocument',
     Extends: Endless.CustomContainer,
-    Implements: [Card.Card, DocumentCard.DocumentCard],
+    Implements: [Card.Card, ArticleContent.ArticleContent],
 
     Properties: {
         /**
