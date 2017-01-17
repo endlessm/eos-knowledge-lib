@@ -306,7 +306,6 @@ ekn_media_bin_action_seek (EknMediaBin *self, gint seconds)
 
   gst_element_seek_simple (priv->play, GST_FORMAT_TIME,
                            GST_SEEK_FLAG_FLUSH |
-                           GST_SEEK_FLAG_TRICKMODE |
                            GST_SEEK_FLAG_ACCURATE,
                            seconds ? CLAMP (position, 0, priv->duration) : 0);
 }
@@ -398,7 +397,6 @@ on_playback_adjustment_value_changed (GtkAdjustment *adjustment,
   gst_element_seek_simple (priv->play,
                            GST_FORMAT_TIME,
                            GST_SEEK_FLAG_ACCURATE |
-                           GST_SEEK_FLAG_TRICKMODE |
                            GST_SEEK_FLAG_FLUSH,
                            priv->position * GST_SECOND);
 }
