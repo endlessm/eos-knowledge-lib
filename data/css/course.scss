@@ -104,6 +104,19 @@ $support-font: 'Montserrat' !default;
   }
 }
 
+.CardVideo {
+  &__player {
+    min-height: 300px;
+    box-shadow: 4px 0px 20px 0px rgba(0, 0, 0, 0.5);
+  }
+  .Card__synopsis {
+    margin-right: 20px;
+    padding: 0px;
+    font-size: 24px;
+    color: $primary-medium-color;
+  }
+}
+
 .BannerSet {
   margin: 40px 0px 0px 0px;
   .CardList {
