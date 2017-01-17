@@ -68,7 +68,7 @@ defines:
           slots:
             <<: *main-arrangement-slot
             selection:
-              type: Selection.ArticlesForSet
+              type: Selection.ContentForSet
               id: set-articles
 
 - &search-page
@@ -95,6 +95,7 @@ defines:
   type: Layout.ArticleStack
   slots:
     card: 'Card.KnowledgeDocument(show-toc: true)'
+    video: 'Card.Video'
 
 root:
   shortdef: 'Controller.Mesh(theme: preset_a)'

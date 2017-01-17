@@ -62,7 +62,7 @@ defines:
           slots:
             <<: *sidebar-list-slots
             selection:
-              type: Selection.ArticlesForSet
+              type: Selection.ContentForSet
               id: set-sidebar
 
 - &search-page
@@ -92,6 +92,7 @@ defines:
           type: Card.KnowledgeDocument
           properties:
             show-titles: false
+        video: 'Card.Video'
     sidebar:
       type: Layout.InfiniteScrolling
       references:
