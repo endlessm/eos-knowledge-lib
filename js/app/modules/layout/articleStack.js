@@ -129,6 +129,7 @@ const ArticleStack = new Module.Class({
     _set_document_card: function (document) {
         this.visible_child = document;
         document.content_view.grab_focus();
+        document.set_active(true);
         this._clear_old_views();
     },
 
@@ -239,8 +240,10 @@ const ArticleStack = new Module.Class({
 
     _on_history_changed: function () {
         let item = HistoryStore.get_default().get_current_item();
-        if (item.page_type !== Pages.ARTICLE)
+        if (item.page_type !== Pages.ARTICLE) {
+            this.get_children().forEach((view) => view.set_active(false));
             return;
+        }
         this._load_article_model(item.model, item.context);
     },
 

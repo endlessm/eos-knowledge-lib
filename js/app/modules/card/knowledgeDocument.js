@@ -240,6 +240,8 @@ const KnowledgeDocument = new Module.Class({
         this.content_view = null;
     },
 
+    set_active: function () { /* NO-OP */},
+
     _scroll_to_section: function (index) {
         if (this.content_view.is_loading)
             return;

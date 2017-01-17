@@ -71,4 +71,13 @@ const DocumentCard = new Lang.Interface({
      *
      */
     clear_content: Lang.Interface.UNIMPLEMENTED,
+
+    /**
+     * Method: set_active (is_active)
+     * Activate or deactivate the content being displayed on this page.
+     * An example use case would be the video player starting or stopping
+     * its playback.
+     *
+     */
+    set_active: Lang.Interface.UNIMPLEMENTED,
 });
