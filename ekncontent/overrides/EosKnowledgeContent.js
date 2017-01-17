@@ -189,9 +189,9 @@ function _init() {
         },
     });
 
-    Eknc.Domain.prototype._get_subscription_entries_real = Eknc.Domain.prototype.get_subscription_entries;
-    Eknc.Domain.prototype.get_subscription_entries = function () {
-        let json_node = this._get_subscription_entries_real();
+    Eknc._get_subscriptions_json_real = Eknc.get_subscriptions_json;
+    Eknc.get_subscriptions_json = function (app_id, cancellable) {
+        let json_node = this._get_subscriptions_json_real(app_id, cancellable);
         return JSON.parse(Json.to_string(json_node, false));
     };
 }
