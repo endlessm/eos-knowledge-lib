@@ -42,13 +42,11 @@ const ArticleContext = new Module.Class({
             return Eknc.QueryObject.new_from_props({
                 limit: limit,
                 query: this._item.query,
-                tags_match_all: ['EknArticleObject'],
             });
         }
 
         return Eknc.QueryObject.new_from_props({
             limit: limit,
-            tags_match_all: ['EknArticleObject'],
             tags_match_any: this._item.model.child_tags,
             sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,
         });
