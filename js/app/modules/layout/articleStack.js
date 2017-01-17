@@ -79,6 +79,9 @@ const ArticleStack = new Module.Class({
         'nav-card': {
             multi: true,
         },
+        'video': {
+            multi: true,
+        },
     },
 
     References: {
@@ -206,6 +209,10 @@ const ArticleStack = new Module.Class({
             }
         }
 
+        let slot = 'card';
+        if (model instanceof Eknc.VideoObjectModel) {
+            slot = 'video';
+        }
         let article_content = this.create_submodule(slot, article_content_props);
 
         article_content.connect('ekn-link-clicked', (card, ekn_id) => {
