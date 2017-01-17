@@ -168,6 +168,7 @@ defines:
   type: Layout.ArticleStack
   slots:
     card: 'Card.KnowledgeDocument(show-toc: false, show-titles: false)'
+    video: 'Card.Video'
 
 root:
   shortdef: 'Controller.Mesh(theme: library_list)'
