@@ -41,6 +41,8 @@
 
 #define INFO_N_COLUMNS           6  /* Number of info columns labels */
 
+#define FPS_WINDOW_SIZE          2  /* Window size in seconds to calculate fps */
+
 #define EMB_ICON_SIZE            GTK_ICON_SIZE_BUTTON
 
 #define EMB_ICON_NAME_PLAY       "ekn-media-bin-play"
@@ -113,7 +115,11 @@ typedef struct
   guint timeout_id;          /* Autohide timeout source id */
   gint  timeout_count;       /* Autohide timeout count since last move event */
 
-  guint tick_id;             /* Widget frame clock tick callback (used to update UI) */
+  guint  tick_id;           /* Widget frame clock tick callback (used to update UI) */
+  gint64 tick_start;
+  gint64 frames_window_start;
+  guint  frames_window;     /* Frames "rendered" in the last FPS_WINDOW_SIZE seconds window */
+  guint  frames_rendered;   /* Total frames "rendered" */
   GdkEventType pressed_button_type;
 
   gint video_width;
@@ -124,6 +130,7 @@ typedef struct
   GstElement *video_sink;    /* The video sink element used (glsinkbin or gtksink) */
   GstElement *vis_plugin;    /* The visualization plugin */
   GstBus     *bus;           /* playbin bus */
+  GstBuffer  *last_buffer;
 
   GstTagList *audio_tags;
   GstTagList *video_tags;
@@ -1401,12 +1408,71 @@ ekn_media_bin_update_position (EknMediaBin *self)
   gtk_label_set_label (priv->audio_position_label, format_time (position));
 }
 
+static inline void
+log_fps (EknMediaBin *self, GdkFrameClock *frame_clock)
+{
+  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
+  gint64 frame_time, time;
+  GstSample *sample;
+
+  /* Get current buffer and return if its the same as last tick */
+  g_object_get (priv->play, "sample", &sample, NULL);
+  if (sample)
+    {
+      GstBuffer *buffer = gst_sample_get_buffer (sample);
+      gst_sample_unref (sample);
+      
+      if (priv->last_buffer == buffer)
+        return;
+
+      priv->last_buffer = buffer;
+    }
+  else
+    return;
+
+  frame_time = gdk_frame_clock_get_frame_time (frame_clock);
+
+  /* Initialize state variables */
+  if (priv->tick_start == 0)
+    {
+      priv->tick_start = frame_time;
+      priv->frames_window_start = frame_time;
+      priv->frames_window = 0;
+      priv->frames_rendered = 0;
+    }
+  else if (priv->frames_window == 0)
+    priv->frames_window_start = frame_time;
+
+  priv->frames_window++;
+
+  /* We only print FPS once every FPS_WINDOW_SIZE seconds */
+  time = frame_time - priv->frames_window_start;
+  if (time < FPS_WINDOW_SIZE * 1000000)
+    return;
+
+  priv->frames_rendered += priv->frames_window;
+
+  GST_INFO ("FPS: %lf average: %lf",
+            priv->frames_window / (time / 1000000.0),
+            priv->frames_rendered / ((frame_time - priv->tick_start) / 1000000.0));
+
+  priv->frames_window = 0;
+}
+
 static gboolean
 ekn_media_bin_tick_callback (GtkWidget     *widget,
                              GdkFrameClock *frame_clock,
                              gpointer       user_data)
 {
+  static GstDebugLevel level;
+
   ekn_media_bin_update_position ((EknMediaBin *)widget);
+
+  if (level == 0)
+    level = gst_debug_category_get_threshold (ekn_media_bin_debug);
+
+  if (level >= GST_LEVEL_INFO)
+    log_fps ((EknMediaBin *)widget, frame_clock);
 
   return G_SOURCE_CONTINUE;
 }
@@ -1416,17 +1482,16 @@ ekn_media_bin_set_tick_enabled (EknMediaBin *self, gboolean enabled)
 {
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
 
-  if (enabled)
-    {
-      priv->tick_id = gtk_widget_add_tick_callback (GTK_WIDGET (self),
-                                                    ekn_media_bin_tick_callback,
-                                                    NULL, NULL);
-    }
-  else if (priv->tick_id)
+  if (priv->tick_id)
     {
       gtk_widget_remove_tick_callback (GTK_WIDGET (self), priv->tick_id);
-      priv->tick_id = 0;
+      priv->tick_id = priv->tick_start = 0;
     }
+
+  if (enabled)
+    priv->tick_id = gtk_widget_add_tick_callback (GTK_WIDGET (self),
+                                                  ekn_media_bin_tick_callback,
+                                                  NULL, NULL);
 }
 
 static inline void
