@@ -3,9 +3,11 @@
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
+const ArticleContent = imports.app.interfaces.articleContent;
+const AsyncTask = imports.app.asyncTask;
 const Card = imports.app.interfaces.card;
-const Module = imports.app.interfaces.module;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const Module = imports.app.interfaces.module;
 
 // Make sure included for glade template
 const Utils = imports.app.utils;
@@ -18,7 +20,7 @@ const Utils = imports.app.utils;
 const Video = new Module.Class({
     Name: 'Card.Video',
     Extends: Gtk.Grid,
-    Implements: [Card.Card],
+    Implements: [Card.Card, ArticleContent.ArticleContent],
 
     Properties: {
         /**
@@ -46,5 +48,23 @@ const Video = new Module.Class({
         video_player.set_uri(this.model.ekn_id)
         video_player.show_all();
         this.attach(video_player, 1, 1, 1, 1);
+        this.content_view = video_player;
+    },
+
+    load_content: function (cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        task.catch_errors(() => {
+            task.return_value();
+        });
+    },
+
+    load_content_finish: function (task) {
+        return task.finish();
+    },
+
+    set_active: function (is_active) {
+        if (!is_active) {
+            this.content_view.stop();
+        }
     },
 });
