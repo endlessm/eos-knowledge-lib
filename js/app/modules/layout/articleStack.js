@@ -2,6 +2,7 @@
 
 /* exported ArticleStack */
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const Gettext = imports.gettext;
 const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
@@ -77,6 +78,9 @@ const ArticleStack = new Module.Class({
             multi: true,
         },
         'nav-card': {
+            multi: true,
+        },
+        'video': {
             multi: true,
         },
     },
@@ -206,6 +210,10 @@ const ArticleStack = new Module.Class({
             }
         }
 
+        let slot = 'card';
+        if (model instanceof Eknc.VideoObjectModel) {
+            slot = 'video';
+        }
         let article_content = this.create_submodule(slot, article_content_props);
 
         article_content.connect('ekn-link-clicked', (card, ekn_id) => {
