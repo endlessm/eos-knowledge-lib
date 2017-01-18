@@ -87,6 +87,7 @@
     <file>js/app/interfaces/module.js</file>
     <file>js/app/interfaces/navigationCard.js</file>
     <file>js/app/interfaces/order.js</file>
+    <file>js/app/introspect.js</file>
     <file>js/app/knowledge.js</file>
     <file>js/app/libs/mustache.js</file>
     <file>js/app/meshHistoryStore.js</file>
