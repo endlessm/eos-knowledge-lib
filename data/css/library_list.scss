@@ -61,7 +61,16 @@
   }
 }
 
-
+.search-results {
+  background-color: transparent;
+  .ContentGroupNoResultsMessage__title,
+  .ContentGroupNoResultsMessage__subtitle {
+      color: white;
+      font-size: 16px;
+      font-style: normal;
+      padding: 2.0em 0 0 0;
+  }
+}
 
 .sidebar {
     scrollbar {
