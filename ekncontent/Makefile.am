@@ -152,12 +152,13 @@ javascript_tests = \
 	tests/ekncontent/testDatadir.js \
 	tests/ekncontent/testDomain.js \
 	tests/ekncontent/testEngine.js \
-	tests/ekncontent/testMediaObjectModels.js \
+	tests/ekncontent/testMediaObjectModel.js \
 	tests/ekncontent/testObjectModel.js \
 	tests/ekncontent/testQueryObject.js \
 	tests/ekncontent/testQueryResults.js \
 	tests/ekncontent/testSetObjectModel.js \
 	tests/ekncontent/testUtils.js \
+	tests/ekncontent/testVideoObjectModel.js \
 	tests/ekncontent/testXapianBridge.js \
 	$(NULL)
 
