@@ -235,8 +235,9 @@ const Application = new Knowledge.Class({
             };
             if (this._theme)
                 controller_props.theme = this._theme;
-            else
-                controller_props.css = this._get_overrides_css();
+            let css = this._get_overrides_css();
+            if (css)
+                controller_props.css = css;
             this._controller = factory.create_root_module(controller_props);
             this._controller.make_ready();
         }
