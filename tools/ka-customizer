@@ -172,9 +172,11 @@ for (let app of Gio.app_info_get_all()) {
     if (!is_knowledge_app (app_id))
         continue;
     let locale = match[1];
+    let icon = app.get_icon();
+    icon = icon ? icon : new Gio.ThemedIcon({ name: 'image-missing' });
     app_chooser.append_custom_item(app_id,
                                    app.get_name() + ' (' + locale + ')',
-                                   app.get_icon());
+                                   icon);
 }
 app_chooser.connect('custom-item-activated', (chooser, app_id) => {
     selected_app_id = app_id;
