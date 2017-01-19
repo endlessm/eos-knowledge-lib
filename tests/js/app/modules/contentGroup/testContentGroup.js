@@ -118,24 +118,21 @@ describe('ContentGroup.ContentGroup', function () {
         });
 
         it('writes out a log file when the log button is clicked', function () {
-            let datastream = {
-                put_string: jasmine.createSpy('put_string'),
-            };
             let file = {
+                replace_contents: jasmine.createSpy('replace_contents')
+                    .and.returnValue([true, 'etag']),
                 get_uri: jasmine.createSpy('get_uri')
                     .and.returnValue('the log file uri'),
             };
-            let stream = { output_stream: {} };
-            spyOn(Gio.File, 'new_tmp').and.returnValue([file, stream]);
-            spyOn(Gio, 'DataOutputStream').and.returnValue(datastream);
+            spyOn(Gio.File, 'new_for_path').and.returnValue(file);
             spyOn(Gtk, 'show_uri');
 
             selection.simulate_error();
             log_button.clicked();
             Utils.update_gui();
-            expect(Gio.File.new_tmp)
+            expect(Gio.File.new_for_path)
                 .toHaveBeenCalledWith(jasmine.stringMatching(/eos-knowledge-lib log .*\.txt/));
-            expect(datastream.put_string.calls.mostRecent().args[0])
+            expect(file.replace_contents.calls.mostRecent().args[0])
                 .toMatch('this string should show up in the backtrace');
             expect(Gtk.show_uri).toHaveBeenCalledWith(
                 jasmine.any(Object),

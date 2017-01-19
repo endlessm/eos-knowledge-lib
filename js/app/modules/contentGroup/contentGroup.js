@@ -291,8 +291,9 @@ const ContentGroup = new Module.Class({
     _on_log_button_click: function () {
         let timestamp = new Date(Date.now());
         let stamp = 'eos-knowledge-lib log ' + timestamp.toISOString() +
-            ' XXXXXX.txt';
-        let [log_file, stream] = Gio.File.new_tmp(stamp);
+            '.txt';
+        let path = GLib.build_filenamev([GLib.get_user_cache_dir(), stamp]);
+        let log_file = Gio.File.new_for_path(path);
         let exception = this._selection.get_error();
         let app = Gio.Application.get_default();
         let log = [
@@ -306,10 +307,10 @@ const ContentGroup = new Module.Class({
             '',
         ].join('\n');
         log += exception ? exception.stack : '';
-        let os = new Gio.DataOutputStream({
-            base_stream: stream.output_stream,
-        });
-        os.put_string(log, null);
+        let [ok] = log_file.replace_contents(log, null, false,
+            Gio.FileCreateFlags.NONE, null);
+        if (!ok)
+            return;
         Gtk.show_uri(Gdk.Screen.get_default(), log_file.get_uri(),
             Gdk.CURRENT_TIME);
     },
