@@ -2,6 +2,7 @@
 
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 
 Gtk.init(null, 0);
@@ -146,6 +147,16 @@ function show_output_dialog (output) {
     dialog.destroy();
 }
 
+function is_knowledge_app (app_id) {
+    return GLib.get_system_data_dirs().some((path) => {
+        // Our ekn data dir is not an export, so replace the export path with
+        // the actual path within the flatpak deploy
+        path = path.replace('flatpak/exports/share', 'flatpak/app/' + app_id + '/current/active/files/share');
+        path = GLib.build_filenamev([path, 'ekn', 'data', app_id]);
+        return Gio.File.new_for_path(path).query_exists(null);
+    });
+}
+
 // App
 add_label('Choose a knowledge app:');
 let app_chooser = new Gtk.AppChooserButton({
@@ -158,12 +169,9 @@ for (let app of Gio.app_info_get_all()) {
     let match = app_id.match(/com\.endlessm\..+\.(.+)/);
     if (match === null)
         continue;
-    let locale = match[1];
-    // Check if knowledge app by looking for ekn directory
-    let eknDir = Gio.File.new_for_path('/var/lib/flatpak/app/' + app_id +
-                                       '/current/active/files/share/ekn');
-    if (!eknDir.query_exists(null))
+    if (!is_knowledge_app (app_id))
         continue;
+    let locale = match[1];
     app_chooser.append_custom_item(app_id,
                                    app.get_name() + ' (' + locale + ')',
                                    app.get_icon());
