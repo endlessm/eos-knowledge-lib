@@ -662,6 +662,9 @@ on_object_response (GObject *source,
   QueryState *state = g_task_get_task_data (task);
   GError *error = NULL;
 
+  if (g_task_get_completed (task))
+    return;
+
   EkncContentObjectModel *model = eknc_domain_get_object_finish (domain, result, &error);
   if (error != NULL)
     {
