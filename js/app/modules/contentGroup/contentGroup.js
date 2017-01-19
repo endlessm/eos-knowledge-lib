@@ -116,6 +116,7 @@ const ContentGroup = new Module.Class({
         this._stack = builder.get_object('stack');
         this._log_button = builder.get_object('log-button');
         this._error_page = builder.get_object('error-page');
+        this._button_image = builder.get_object('image1');
 
         // FIXME: extend the stack clip to cover its children clip.
         // https://bugzilla.gnome.org/show_bug.cgi?id=771436
@@ -309,10 +310,13 @@ const ContentGroup = new Module.Class({
         log += exception ? exception.stack : '';
         let [ok] = log_file.replace_contents(log, null, false,
             Gio.FileCreateFlags.NONE, null);
-        if (!ok)
+        if (!ok) {
+            this._button_image.icon_name = 'action-unavailable-symbolic';
             return;
+        }
         Gtk.show_uri(Gdk.Screen.get_default(), log_file.get_uri(),
             Gdk.CURRENT_TIME);
+        this._button_image.icon_name = 'object-select-symbolic';
     },
 
     load: function () {
