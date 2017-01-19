@@ -568,7 +568,7 @@ on_xapian_bridge_query_fixed (GObject *source,
 {
   EkncXapianBridge *bridge = EKNC_XAPIAN_BRIDGE (source);
   g_autoptr(GTask) task = user_data;
-  GError *error;
+  GError *error = NULL;
 
   EkncQueryObject *query;
   if (!(query = eknc_xapian_bridge_get_fixed_query_finish (bridge, result, &error)))
