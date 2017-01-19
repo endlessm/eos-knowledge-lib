@@ -234,6 +234,7 @@ done_button.connect('clicked', () => {
         args.push('update');
     }
     args.push(selected_app_id);
+    args.push('--recompile-all');
     if (app_json_file_chooser.get_filename())
         args.push('--app-json-path', app_json_file_chooser.get_filename());
     if (theme_file_chooser.get_filename())
