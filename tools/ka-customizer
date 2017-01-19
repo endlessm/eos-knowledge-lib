@@ -182,7 +182,17 @@ app_chooser.connect('custom-item-activated', (chooser, app_id) => {
     selected_app_id = app_id;
 });
 grid.add(app_chooser);
-add_label('Update:');
+
+add_label('Framework version:');
+let framework_version_chooser = new Gtk.ComboBoxText({
+    halign: Gtk.Align.START,
+});
+framework_version_chooser.append('master', 'Nightly');
+framework_version_chooser.append('production', 'Production');
+framework_version_chooser.set_active_id('master');
+grid.add(framework_version_chooser);
+
+add_label('Update application and framework:');
 let update_switch = new Gtk.Switch({
     halign: Gtk.Align.START,
     active: true,
@@ -229,6 +239,10 @@ done_button.connect('clicked', () => {
     }
 
     let args = ['./ka-customizer-runner'];
+    let branch = '';
+    if (framework_version_chooser.get_active_id() === 'master')
+        branch = 'master';
+    args.push(branch);
     if (update_switch.get_active()) {
         show_message('Updating app and libraries, this may take a while...');
         args.push('update');
