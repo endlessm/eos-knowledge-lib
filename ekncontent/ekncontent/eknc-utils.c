@@ -379,9 +379,6 @@ eknc_get_data_dir (const gchar *app_id)
       flatpak_relative_path = g_build_filename ("flatpak", "app", app_id,
                                                 "current", "active",
                                                 "files", "share", NULL);
-      ret = database_dir_from_data_dir (flatpak_relative_path, app_id);
-      if (ret)
-        return ret;
 
       // Try the user flatpak location first
       user_path = g_build_filename (g_get_home_dir (), ".local", "share",
