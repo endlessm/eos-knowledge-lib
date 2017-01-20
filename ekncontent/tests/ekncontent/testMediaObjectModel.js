@@ -2,7 +2,7 @@ const Eknc = imports.gi.EosKnowledgeContent;
 
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 
-const MOCK_IMAGE_DATA = {
+const MOCK_MEDIA_DATA = {
     '@id': 'ekn://rick/astley',
     'title': 'Rick Astley: The Man, The Myth, The Legend',
     'caption': 'Great musician, or greatest?',
@@ -15,15 +15,15 @@ describe('Media Object Model', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        imageObject = Eknc.MediaObjectModel.new_from_json(MOCK_IMAGE_DATA);
+        imageObject = Eknc.MediaObjectModel.new_from_json(MOCK_MEDIA_DATA);
     });
 
     describe('type', function () {
-        it('should be an MediaObjectModel', function () {
-            expect(imageObject).toBeA(Eknc.MediaObjectModel);
+        it('should be a ContentObjectModel', function () {
+            expect(imageObject).toBeA(Eknc.ContentObjectModel);
         });
 
-        it('should be an MediaObjectModel', function () {
+        it('should be a MediaObjectModel', function () {
             expect(imageObject).toBeA(Eknc.MediaObjectModel);
         });
     });
@@ -33,11 +33,14 @@ describe('Media Object Model', function () {
             expect(imageObject).toBeDefined();
         });
 
-        it('should inherit properties set by parent class (MediaObjectModel)', function () {
-            expect(imageObject.caption).toBeDefined();
-            expect(imageObject.width).toBeDefined();
-            expect(imageObject.title).toBeDefined();
-            expect(imageObject.height).toBeDefined();
+        it('should marshal properties', function () {
+            expect(imageObject.caption).toBe('Great musician, or greatest?');
+            expect(imageObject.width).toBe(666);
+            expect(imageObject.height).toBe(666);
+        });
+
+        it('should inherit properties set by parent class (ContentObjectModel)', function () {
+            expect(imageObject.title).toBe('Rick Astley: The Man, The Myth, The Legend');
         });
     });
 });
