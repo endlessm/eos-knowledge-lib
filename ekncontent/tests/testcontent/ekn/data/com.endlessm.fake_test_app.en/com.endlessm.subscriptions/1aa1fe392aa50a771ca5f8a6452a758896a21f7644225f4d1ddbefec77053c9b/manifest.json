@@ -1,0 +1,18 @@
+{
+  "version": "1",
+  "timestamp": "2016-07-28T01:10:56.705Z",
+  "subscription_id": "1aa1fe392aa50a771ca5f8a6452a758896a21f7644225f4d1ddbefec77053c9b",
+  "xapian_databases": [
+    {
+      "path": "test.shard",
+      "offset": 155712
+    }
+  ],
+  "shards": [
+    {
+      "path": "test.shard",
+      "sha256_csum": "6e1360bf7c8e4e946fafb508415c656db2448f6ee8c7e4c1eb8ddf7cee272ba7",
+      "published_timestamp": "2016-07-28T01:10:56.638Z"
+    }
+  ]
+}
