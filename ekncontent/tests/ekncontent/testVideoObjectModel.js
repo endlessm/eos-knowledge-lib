@@ -7,10 +7,10 @@ const MOCK_VIDEO_DATA = {
     'title': 'Never Gonna Give You Up (Never Gonna Let You Down)',
     'caption': 'If this song was sushi, it would be a Rick Roll',
     'transcript': 'We\'re no strangers to love, etc etc etc',
-    'duration': 'P666S',
+    'duration': '666',
     'height': '666',
     'width': '666',
-    'poster-uri': 'ekn://rick/poster',
+    'poster': 'ekn://rick/poster',
 };
 
 describe('Video Object Model', function () {
@@ -36,13 +36,16 @@ describe('Video Object Model', function () {
             expect(videoObject).toBeDefined();
         });
 
+        it('should marshal properties', function () {
+            expect(videoObject.duration).toBe(666);
+            expect(videoObject.transcript).toBe('We\'re no strangers to love, etc etc etc');
+            expect(videoObject.poster_uri).toBe('ekn://rick/poster');
+        });
+
         it('should inherit properties set by parent class (MediaObjectModel)', function () {
-            expect(videoObject.caption).toBeDefined();
-            expect(videoObject.width).toBeDefined();
-            expect(videoObject.height).toBeDefined();
-            expect(videoObject.duration).toBeDefined();
-            expect(videoObject.transcript).toBeDefined();
-            expect(videoObject.poster_uri).toBeDefined();
+            expect(videoObject.caption).toBe('If this song was sushi, it would be a Rick Roll');
+            expect(videoObject.width).toBe(666);
+            expect(videoObject.height).toBe(666);
         });
     });
 });
