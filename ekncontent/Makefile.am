@@ -152,6 +152,7 @@ javascript_tests = \
 	tests/ekncontent/testDatadir.js \
 	tests/ekncontent/testDomain.js \
 	tests/ekncontent/testEngine.js \
+	tests/ekncontent/testImageObjectModel.js \
 	tests/ekncontent/testMediaObjectModel.js \
 	tests/ekncontent/testObjectModel.js \
 	tests/ekncontent/testQueryObject.js \
