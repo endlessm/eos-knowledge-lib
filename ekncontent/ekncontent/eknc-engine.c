@@ -192,6 +192,8 @@ eknc_engine_test_link_for_app (EkncEngine *self,
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   EkncDomain *domain = eknc_engine_get_domain_for_app (self, app_id, error);
+  if (domain == NULL)
+    return NULL;
   return eknc_domain_test_link (domain, link, error);
 }
 
