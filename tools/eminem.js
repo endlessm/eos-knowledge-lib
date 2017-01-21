@@ -66,20 +66,42 @@ function ensure_directory (dir) {
     }
 }
 
-function get_subscription_dir (subscription_id, cancellable) {
-    let dir = Gio.File.new_for_path(GLib.build_filenamev([GLib.get_user_data_dir(), 'com.endlessm.subscriptions', subscription_id]));
-    if (!dir.query_exists(cancellable))
-        fail_with_message(Format.vprintf("Could not find subscription ID: %s. Did you misspell it?", [subscription_id]));
-    return dir;
+function get_subscription_dir (arg, cancellable) {
+    function get_dir_for_subscription_id (subscription_id, cancellable) {
+        return Gio.File.new_for_path(GLib.build_filenamev([GLib.get_user_data_dir(), 'com.endlessm.subscriptions', subscription_id]));
+    }
+
+    // Maybe it's a path to a directory?
+    let dir;
+    dir = Gio.File.new_for_commandline_arg(arg);
+    if (dir.get_child('manifest.json').query_exists(cancellable))
+        return dir;
+
+    // Try it as a subscription ID.
+    dir = get_dir_for_subscription_id(arg, cancellable);
+    if (dir.query_exists(cancellable))
+        return dir;
+
+    // Last, try it as an app ID.
+    let domain_obj = Eknc.Engine.get_default().get_domain_for_app(arg);
+    if (domain_id) {
+        let subscription_id = domain_obj.get_subscription_id();
+        dir = get_dir_for_subscription_id(subscription_id, cancellable);
+        if (dir.query_exists(cancellable))
+            return dir;
+    }
+
+    fail_with_message(Format.vprintf("Could not find subscription dir for: %s. Did you misspell it?", [subscription_id_or_app_id]));
+    return null;
 }
 
-function freeze (subscription_id) {
+function freeze (arg) {
     let cancellable = null;
 
     let date = GLib.DateTime.new_now_local();
     let output_path = Format.vprintf('manifest-%s-%s.json', [subscription_id, date.format('%y%m%d_%H%M%S_UTC%z')]);
     let output_file = Gio.File.new_for_path(output_path);
-    let subscription_dir = get_subscription_dir(subscription_id, cancellable);
+    let subscription_dir = get_subscription_dir(arg, cancellable);
 
     let manifest_file = subscription_dir.get_child('manifest.json');
     manifest_file.copy(output_file, Gio.FileCopyFlags.NONE, cancellable, null);
@@ -87,10 +109,10 @@ function freeze (subscription_id) {
     print(Format.vprintf("Frozen to %s", [output_path]));
 }
 
-function unfreeze (subscription_id, input_path) {
+function unfreeze (arg, input_path) {
     let cancellable = null;
 
-    let subscription_dir = get_subscription_dir(subscription_id, cancellable);
+    let subscription_dir = get_subscription_dir(arg, cancellable);
 
     // 0 is stdin
     let input_stream;
@@ -155,10 +177,11 @@ function regenerate_manifest (subscription_dir, cancellable) {
     return manifest;
 }
 
-function regenerate (path) {
+function regenerate (arg) {
     let cancellable = null;
 
-    let subscription_dir = Gio.File.new_for_path(path);
+    let subscription_dir = get_subscription_dir(arg, cancellable);
+
     let manifest = regenerate_manifest(subscription_dir, cancellable);
     let manifest_str = JSON.stringify(manifest, null, 2);
 
@@ -186,13 +209,13 @@ function inspect_app_id (app_id) {
 }
 
 const USAGE = [
-    'usage: eminem freeze <subscription_id>',
+    'usage: eminem freeze <subscription_id | app_id | directory>',
     '         Freeze the current state of the subscription to a file in the current directory.',
     '',
-    '       eminem unfreeze <subscription_id>',
+    '       eminem unfreeze <subscription_id | app_id | directory>',
     '         Restore the state of the subscription to the given manifest file (or stdin if not given).',
     '',
-    '       eminem regenerate <directory>',
+    '       eminem regenerate <subscription_id | app_id | directory>',
     '         Regenerate a manifest given a directory of shards.',
     '',
     '       eminem inspect-app-id <app_id>',
