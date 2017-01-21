@@ -29,7 +29,6 @@
     <xi:include href="xml/query-object.xml"/>
     <xi:include href="xml/query-results.xml"/>
     <xi:include href="xml/utils.xml"/>
-    <xi:include href="xml/subtree-dispatcher.xml"/>
     <xi:include href="xml/xapian-bridge.xml"/>
   </chapter>
 
