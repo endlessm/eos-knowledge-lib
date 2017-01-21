@@ -208,6 +208,15 @@ function inspect_app_id (app_id) {
     print(Format.vprintf("subscription dir: %s", [get_subscription_dir(subscription_id, cancellable).get_path()]));
 }
 
+function print_subscription_dir (app_id) {
+    let cancellable = null;
+
+    let domain_obj = Eknc.Engine.get_default().get_domain_for_app(app_id);
+
+    let subscription_id = domain_obj.get_subscription_id();
+    print(get_subscription_dir(subscription_id, cancellable).get_path());
+}
+
 const USAGE = [
     'usage: eminem freeze <subscription_id | app_id | directory>',
     '         Freeze the current state of the subscription to a file in the current directory.',
@@ -220,6 +229,9 @@ const USAGE = [
     '',
     '       eminem inspect-app-id <app_id>',
     '         Inspect various information about the given app ID.',
+    '',
+    '       eminem get-subscription-dir <app_id>',
+    '         Returns the subscription dir for an app, for easy subshell use.',
     '',
     'eminem is a subscription inspection utility for Knowledge Apps.',
 ].join('\n');
@@ -236,6 +248,8 @@ function main () {
         regenerate(argv[0]);
     else if (action === 'inspect-app-id' && argv.length === 1)
         inspect_app_id(argv[0]);
+    else if (action === 'get-subscription-dir' && argv.length === 1)
+        print_subscription_dir(argv[0]);
     else
         fail_with_message(USAGE);
 }
