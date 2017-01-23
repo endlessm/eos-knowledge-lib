@@ -19,11 +19,14 @@ const Downloader = imports.app.downloader;
 const Knowledge = imports.app.knowledge;
 const ModuleFactory = imports.app.moduleFactory;
 const MoltresEngine = imports.app.moltresEngine;
+const PromiseWrapper = imports.app.promiseWrapper;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 // Initialize libraries
 EvinceDocument.init();
+// Set up promise wrappers
+PromiseWrapper.wrapPromises();
 
 const KnowledgeSearchIface = '\
 <node> \

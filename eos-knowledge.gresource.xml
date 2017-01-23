@@ -180,6 +180,7 @@
     <file>js/app/modules/window/simple.js</file>
     <file>js/app/moltresEngine.js</file>
     <file>js/app/pages.js</file>
+    <file>js/app/promiseWrapper.js</file>
     <file>js/app/readingHistoryModel.js</file>
     <file>js/app/setMap.js</file>
     <file>js/app/toggleTweener.js</file>
