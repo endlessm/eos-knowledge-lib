@@ -32,7 +32,7 @@ defines:
               slots:
                 contents:
                 - shortdef: 'Banner.App'
-                - shortdef: 'ContentGroup.StaticText(wrap: true, wrap-mode: word-char, ellipsize: end, max-width-chars: 34, lines: 8,label: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vehicula diam id quam ornare, eu mattis ex vulputate. Integer egestas, nisi vel tincidunt congue, mauris elit pharetra mi, sit amet accumsan urna ex eu erat. ")'
+                - shortdef: 'Banner.AppMetadata(wrap: true, wrap-mode: word-char, ellipsize: end, max-width-chars: 34, lines: 8, field: description)'
             - shortdef: 'Banner.Dynamic(show-subtitle: true, mode: text, halign: end, valign: center)'
         - shortdef: 'ContentGroup.ContentGroup(expand: true)'
           slots:
