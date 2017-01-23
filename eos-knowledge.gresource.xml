@@ -87,6 +87,7 @@
     <file>js/app/interfaces/module.js</file>
     <file>js/app/interfaces/navigationCard.js</file>
     <file>js/app/interfaces/order.js</file>
+    <file>js/app/introspect.js</file>
     <file>js/app/knowledge.js</file>
     <file>js/app/libs/mustache.js</file>
     <file>js/app/meshHistoryStore.js</file>
@@ -202,6 +203,7 @@
     <file>js/app/widgets/themeableImage.js</file>
     <file>js/app/widgetSurfaceCache.js</file>
     <file>tools/eminem.js</file>
+    <file>tools/introspect.js</file>
     <file>tools/kermit.js</file>
     <file>tools/picard.js</file>
   </gresource>

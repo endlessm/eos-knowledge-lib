@@ -3,6 +3,7 @@
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
+const Introspect = imports.app.introspect;
 const Knowledge = imports.app.knowledge;
 
 /**
@@ -46,6 +47,16 @@ const Class = new Lang.Class({
          */
         module.get_slot_names = function () {
             return Object.keys(this.__slots__);
+        };
+
+        /**
+         * Method: introspect
+         * Class method for getting information about the module
+         *
+         * Returns a JSON object.
+         */
+        module.introspect = function () {
+            return Introspect.introspect_module(this);
         };
 
         return module;

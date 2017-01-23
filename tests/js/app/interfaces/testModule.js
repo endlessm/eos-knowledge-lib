@@ -131,3 +131,61 @@ describe('Module metaclass', function () {
         })).toThrow();
     });
 });
+
+describe('Introspection', function () {
+    let info;
+    beforeEach(function () {
+        info = Minimal.MinimalArrangement.introspect();
+    });
+
+    it('provides YAML module name', function () {
+        expect(info.name).toEqual('MinimalArrangement');
+    });
+
+    it('provides GType name', function () {
+        expect(info.gtype).toEqual('EknMinimalArrangement');
+    });
+
+    it('provides GType name of parent', function () {
+        expect(info.parent).toEqual('GtkGrid');
+    });
+
+    it('provides implemented interfaces', function () {
+        expect(info.interfaces).toEqual(jasmine.arrayContaining([
+            'Gjs_Module',
+            'EknArrangement',
+        ]));
+    });
+
+    it('provides properties from the object', function () {
+        expect(info.properties).toContain(jasmine.objectContaining({
+            name: 'max-cards',
+            type: 'Number',
+            default: -1,
+            readable: true,
+            writable: true,
+            construct: true,
+            construct_only: false,
+            origin: 'EknMinimalArrangement',
+        }));
+    });
+
+    it('provides properties from interfaces', function () {
+        expect(info.properties).toContain(jasmine.objectContaining({
+            name: 'all-visible',
+            origin: 'EknArrangement',
+        }));
+    });
+
+    it('provides slots', function () {
+        expect(info.slots).toContain(jasmine.objectContaining({
+            name: 'card',
+            array: false,
+            multi: true,
+        }));
+    });
+
+    it('provides references', function () {
+        expect(info.references).toEqual([]);
+    });
+});

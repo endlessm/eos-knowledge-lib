@@ -340,6 +340,7 @@ subst_files = \
 	ekn-app-runner \
 	js/app/config.js \
 	tools/eminem \
+	tools/introspect \
 	tools/kermit \
 	tools/picard \
 	$(NULL)
@@ -355,6 +356,7 @@ bin_SCRIPTS += \
 	ekn-app-runner \
 	tools/autobahn \
 	tools/eminem \
+	tools/introspect \
 	tools/kermit \
 	tools/picard \
 	$(NULL)
