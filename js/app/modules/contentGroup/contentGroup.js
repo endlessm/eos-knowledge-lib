@@ -116,6 +116,7 @@ const ContentGroup = new Module.Class({
         this._stack = builder.get_object('stack');
         this._log_button = builder.get_object('log-button');
         this._error_page = builder.get_object('error-page');
+        this._button_image = builder.get_object('image1');
 
         // FIXME: extend the stack clip to cover its children clip.
         // https://bugzilla.gnome.org/show_bug.cgi?id=771436
@@ -291,8 +292,9 @@ const ContentGroup = new Module.Class({
     _on_log_button_click: function () {
         let timestamp = new Date(Date.now());
         let stamp = 'eos-knowledge-lib log ' + timestamp.toISOString() +
-            ' XXXXXX.txt';
-        let [log_file, stream] = Gio.File.new_tmp(stamp);
+            '.txt';
+        let path = GLib.build_filenamev([GLib.get_user_cache_dir(), stamp]);
+        let log_file = Gio.File.new_for_path(path);
         let exception = this._selection.get_error();
         let app = Gio.Application.get_default();
         let log = [
@@ -306,12 +308,15 @@ const ContentGroup = new Module.Class({
             '',
         ].join('\n');
         log += exception ? exception.stack : '';
-        let os = new Gio.DataOutputStream({
-            base_stream: stream.output_stream,
-        });
-        os.put_string(log, null);
+        let [ok] = log_file.replace_contents(log, null, false,
+            Gio.FileCreateFlags.NONE, null);
+        if (!ok) {
+            this._button_image.icon_name = 'action-unavailable-symbolic';
+            return;
+        }
         Gtk.show_uri(Gdk.Screen.get_default(), log_file.get_uri(),
             Gdk.CURRENT_TIME);
+        this._button_image.icon_name = 'object-select-symbolic';
     },
 
     load: function () {
