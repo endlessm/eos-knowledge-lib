@@ -9,7 +9,6 @@ const Gtk = imports.gi.Gtk;
 const WebKit2 = imports.gi.WebKit2;
 
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
-const AsyncTask = imports.app.asyncTask;
 const Config = imports.app.config;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Knowledge = imports.app.knowledge;
@@ -115,21 +114,19 @@ const EknWebview = new Knowledge.Class({
         });
     },
 
-    _load_object: function (id, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        Eknc.Engine.get_default().get_object(id, cancellable, task.catch_callback_errors((engine, load_task) => {
-            let model = engine.get_object_finish(load_task);
+    _load_object: function (id) {
+        return Eknc.Engine.get_default().get_object_promise(id)
+        .then((model) => {
             if (model instanceof Eknc.ArticleObjectModel) {
                 let html = this.renderer.render(model);
                 let bytes = ByteArray.fromString(html).toGBytes();
                 let stream = Gio.MemoryInputStream.new_from_bytes(bytes);
-                task.return_value([stream, 'text/html; charset=utf-8']);
+                return [stream, 'text/html; charset=utf-8'];
             } else {
                 let stream = model.get_content_stream();
-                task.return_value([stream, null]);
+                return [stream, null];
             }
-        }));
-        return task;
+        });
     },
 
     _load_ekn_uri: function (req) {
@@ -147,13 +144,12 @@ const EknWebview = new Knowledge.Class({
 
         let components = Utils.components_from_ekn_id(id);
         if (components.length === 1) {
-            this._load_object(id, cancellable, (source, load_task) => {
-                try {
-                    let [stream, content_type] = load_task.finish();
-                    req.finish(stream, -1, content_type);
-                } catch (error) {
-                    fail_with_error(error);
-                }
+            this._load_object(id)
+            .then(([stream, content_type]) => {
+                req.finish(stream, -1, content_type);
+            })
+            .catch(function (error) {
+                fail_with_error(error);
             });
         } else {
             try {

@@ -92,21 +92,17 @@ const Controller = new Lang.Interface({
     initialize_set_map: function (cb) {
         // Load all sets, with which to populate the set map
         // FIXME: deduplicate this with Selection.AllSets
-        Eknc.Engine.get_default().query(Eknc.QueryObject.new_from_props({
+        Eknc.Engine.get_default().query_promise(Eknc.QueryObject.new_from_props({
             limit: GLib.MAXUINT32,
             tags_match_all: ['EknSetObject'],
-        }), null, (engine, res) => {
-            let results;
-            try {
-                results = engine.query_finish(res);
-            } catch (e) {
-                logError(e, 'Failed to load sets from database');
-                return;
-            }
-
+        }))
+        .then((results) => {
             SetMap.init_map_with_models(results.models);
 
             this._window.make_ready(cb);
+        })
+        .catch(function (error) {
+            logError(error, 'Failed to load sets from database');
         });
     },
 

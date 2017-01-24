@@ -10,6 +10,7 @@ const HistoryStore = imports.app.historyStore;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Mesh = imports.app.modules.controller.mesh;
 const MeshHistoryStore = imports.app.meshHistoryStore;
+const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const Module = imports.app.interfaces.module;
 
@@ -33,13 +34,16 @@ const MockView = new Module.Class({
 });
 
 describe('Controller.Mesh', function () {
-    let mesh, factory;
+    let mesh, engine, factory;
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
         let application = new GObject.Object();
         application.application_id = 'foobar';
+
+        engine = MockEngine.mock_default();
+        engine.query_promise.and.returnValue(Promise.resolve({ models: [] }));
 
         [mesh, factory] = MockFactory.setup_tree({
             type: Mesh.Mesh,

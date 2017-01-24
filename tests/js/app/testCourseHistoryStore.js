@@ -8,6 +8,7 @@ const MockEngine = imports.tests.mockEngine;
 const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const Pages = imports.app.pages;
 const SetMap = imports.app.setMap;
+const Utils = imports.tests.utils;
 
 describe('CourseHistoryStore', function () {
     let store, dispatcher, engine, reading_history;
@@ -32,7 +33,7 @@ describe('CourseHistoryStore', function () {
             },
         ];
         let sets = data.map((obj) => Eknc.SetObjectModel.new_from_props(obj));
-        engine.query_finish.and.returnValue({ models: sets });
+        engine.query_promise.and.returnValue(Promise.resolve({ models: sets }));
         SetMap.init_map_with_models(sets);
     });
 
@@ -71,6 +72,7 @@ describe('CourseHistoryStore', function () {
             action_type: Actions.ITEM_CLICKED,
             model: model,
         });
+        Utils.update_gui();
         expect(store.set_current_subset).toHaveBeenCalled();
     });
 
@@ -129,17 +131,18 @@ describe('CourseHistoryStore', function () {
             model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn:///foo',
             });
-            engine.get_object_finish.and.returnValue(model);
+            engine.get_object_promise.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                 query: 'foo',
                 ekn_id: 'ekn:///foo',
             });
+            Utils.update_gui();
         });
 
         it('loads an item', function () {
-            expect(engine.get_object).toHaveBeenCalled();
-            expect(engine.get_object.calls.mostRecent().args[0])
+            expect(engine.get_object_promise).toHaveBeenCalled();
+            expect(engine.get_object_promise.calls.mostRecent().args[0])
                 .toBe('ekn:///foo');
         });
 

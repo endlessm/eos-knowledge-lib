@@ -82,17 +82,14 @@ const CourseHistoryStore = new GObject.Class({
             tags_match_all: ['EknSetObject'],
             sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,
         });
-        Eknc.Engine.get_default().query(query, null, (engine, task) => {
-            let results;
-            try {
-                results = engine.query_finish(task);
-            } catch (error) {
-                logError(error);
-                return;
-            }
+        Eknc.Engine.get_default().query_promise(query)
+        .then((results) => {
             if (results.models.length > 0) {
                 this.set_current_subset(results[0]);
             }
+        })
+        .catch(function (error) {
+            logError(error);
         });
     },
 });

@@ -108,28 +108,23 @@ const SearchBox = new Module.Class({
             limit: RESULTS_SIZE,
             tags_match_any: ['EknArticleObject'],
         });
-        Eknc.Engine.get_default().query(query_obj,
-                                         this._cancellable,
-                                         (engine, task) => {
-            this._cancellable = null;
+        let engine = Eknc.Engine.get_default();
+        this._query_promise = engine.query_promise(query_obj, this._cancellable)
+        .then((results) => {
             if (query !== Utils.sanitize_query(this.text))
                 return;
 
-            try {
-                let results = engine.query_finish(task);
-                this._autocomplete_models = results.models;
-            } catch (error) {
-                if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                    logError(error);
-                return;
-            }
-
+            this._autocomplete_models = results.models;
             this.set_menu_items(this._autocomplete_models.map((model) => {
                 return {
                     title: this._get_prefixed_title(model, this.text),
                     id: model.ekn_id,
                 };
             }));
+        })
+        .catch(function (error) {
+            if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                logError(error);
         });
     },
 

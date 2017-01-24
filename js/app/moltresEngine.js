@@ -17,7 +17,6 @@ const MoltresEngine = new Lang.Class({
 
     _init: function () {
         this.parent();
-        this._to_return = null;
         this._article_count = 0;
         this._video_count = 0;
         this._set_models = [];
@@ -53,18 +52,13 @@ const MoltresEngine = new Lang.Class({
 
     get_ekn_id: function () {},
 
-    get_object: function (ekn_id, cancellable, callback) {
-        this._to_return = this._set_models
+    get_object_promise: function (id) {
+        return Promise.resolve(this._set_models
         .concat(this._article_models)
         .concat(this._video_models)
         .find((model) => {
-            return model.ekn_id === ekn_id;
-        });
-        callback(this);
-    },
-
-    get_object_finish: function () {
-        return this._to_return;
+            return model.ekn_id === id;
+        }));
     },
 
     _get_sets: function (query) {
@@ -76,7 +70,7 @@ const MoltresEngine = new Lang.Class({
             });
         });
 
-        this._to_return =  {
+        return {
             models: set_models,
             upper_bound: set_models.length,
         };
@@ -92,7 +86,7 @@ const MoltresEngine = new Lang.Class({
         // If the query matches any article or set title, or the synopsis, return some content.
         // Otherwise, return nothing. If no query string was specified at all, we also want to
         // return content since this handles e.g. suggested articles modules.
-        this._to_return = {
+        let to_return = {
             models: [],
             upper_bound: 0,
         };
@@ -122,29 +116,23 @@ const MoltresEngine = new Lang.Class({
                 } else {
                     logError("Moltres does not support serving objects of type " + object_type);
                 }
-                this._to_return.models.push(model);
+                to_return.models.push(model);
             }
-            this._to_return.upper_bound = this._to_return.models.length;
+            to_return.upper_bound = to_return.models.length;
         }
+        return to_return;
     },
 
-    query: function (query, cancellable, callback) {
-        let generation_func;
+    query_promise: function (query) {
         if (query.tags_match_all.indexOf('EknSetObject') >= 0) {
-            this._get_sets(query);
+            return Promise.resolve(this._get_sets(query));
         } else if (query.tags_match_all.indexOf('EknArticleObject') >= 0) {
-            this._get_items(query, 'EknArticleObject');
+            return Promise.resolve(this._get_items(query, 'EknArticleObject'));
         } else if (query.tags_match_all.indexOf('EknVideoObject') >= 0) {
-            this._get_items(query, 'EknVideoObject');
+            return Promise.resolve(this._get_items(query, 'EknVideoObject'));
         } else {
-            this._get_items(query, null);
+            return Promise.resolve(this._get_items(query, null));
         }
-
-        callback(this);
-    },
-
-    query_finish: function () {
-        return this._to_return;
     },
 
     _ARTICLES: [

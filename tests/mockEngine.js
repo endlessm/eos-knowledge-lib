@@ -12,16 +12,14 @@ const MockEngine = new Lang.Class({
         this.port = 3003;
         this.language = '';
 
-        // get_object() and query() are spies to begin
+        // get_object_promise() and query_promise() are spies to begin
         // with, since that is how they will usually be used.
         // Use like so, for example:
-        // engine.get_object_finish.and.returnValue(my_object);
-        // engine.query_finish.and.returnValue([[object1,
-        //    object2], {}])
-        spyOn(this, 'get_object').and.callThrough();
-        spyOn(this, 'get_object_finish');
-        spyOn(this, 'query').and.callThrough();
-        spyOn(this, 'query_finish');
+        // engine.get_object_promise.and.returnValue(Promise.resolve(my_object));
+        // engine.query_promise.and.returnValue(Promise.resolve([[object1,
+        //    object2], {}]))
+        spyOn(this, 'get_object_promise').and.callThrough();
+        spyOn(this, 'query_promise').and.callThrough();
     },
 
     get_ekn_id: function () {},
@@ -30,17 +28,13 @@ const MockEngine = new Lang.Class({
     // in testAisleController expect it currently. Would be good to rewrite
     // those tests to tolerate a mock object that was actually async.
 
-    get_object: function (query, cancellable, callback) {
-        callback(this);
+    get_object_promise: function () {
+        return Promise.resolve();
     },
 
-    get_object_finish: function () {},
-
-    query: function (query, cancellable, callback) {
-        callback(this);
+    query_promise: function () {
+        return Promise.resolve();
     },
-
-    query_finish: function () {},
 });
 
 // Creates a new MockEngine and sets it up as the engine singleton. Use

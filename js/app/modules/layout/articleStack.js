@@ -257,15 +257,12 @@ const ArticleStack = new Module.Class({
 
     _on_show_tooltip: function (tooltip_presenter, tooltip, uri) {
         if (GLib.uri_parse_scheme(uri) === 'ekn') {
-            Eknc.Engine.get_default().get_object(uri, null, (engine, task) => {
-                let article_model;
-                try {
-                    article_model = engine.get_object_finish(task);
-                } catch (error) {
-                    logError(error, 'Could not get article model');
-                    return;
-                }
+            Eknc.Engine.get_default().get_object_promise(uri)
+            .then((article_model) => {
                 this._webview_tooltip_presenter.show_default_tooltip(tooltip, article_model.title);
+            })
+            .catch(function (error) {
+                logError(error, 'Could not get article model');
             });
         } else if (GLib.uri_parse_scheme(uri) === 'license') {
             // If the URI has the "license://" scheme, then it corresponds to a

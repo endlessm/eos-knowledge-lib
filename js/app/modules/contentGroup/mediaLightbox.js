@@ -87,19 +87,16 @@ const MediaLightbox = new Module.Class({
             this._preview_media_object(resource);
             this._loading_new_lightbox = false;
         } else {
-            Eknc.Engine.get_default().get_object(resource, null, (engine, task) => {
+            Eknc.Engine.get_default().get_object_promise(resource)
+            .then((media_object) => {
                 this._loading_new_lightbox = false;
-                let media_object;
-                try {
-                    media_object = engine.get_object_finish(task);
-                } catch (error) {
-                    logError(error);
-                    return;
-                }
 
                 // If the next object is not the last, the forward arrow should be displayed.
                 this._preview_media_object(media_object);
                 this._loading_new_lightbox = false;
+            })
+            .catch(function (error) {
+                logError(error);
             });
         }
     },
