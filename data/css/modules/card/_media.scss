@@ -6,10 +6,6 @@
         font-family: $body-font;
         color: #666666;
         padding: 20px 20px 0px 20px;
-
-        .composite & {
-            font-size: 20px;
-        }
     }
 
     &__attributionText {
@@ -22,9 +18,17 @@
         &:hover {
             color: $accent-dark-color;
         }
+    }
+}
 
-        .composite & {
+.composite {
+    .CardMedia {
+        &__caption {
             font-size: 20px;
+        }
+
+        &__attributionText {
+            font-size: 15px;
         }
     }
 }
