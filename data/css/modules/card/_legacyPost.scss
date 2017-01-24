@@ -5,7 +5,7 @@ $legacy-post-card-border-color-hover: white;
     border-style: solid;
     border-width: 5px;
     border-color: $legacy-post-card-border-color;
-    transition: border-color 250ms ease-in-out;
+    transition: border-color 150ms ease-in-out;
 
     &:hover {
         border-color: $legacy-post-card-border-color-hover;
@@ -26,7 +26,13 @@ $legacy-post-card-border-color-hover: white;
         font-size: 1.8em;
         padding: .9em 0em;
         background-color: $legacy-post-card-border-color;
-        transition: color 250ms ease-in-out,
-                    background-color 250ms ease-in-out;
+        transition: color 150ms ease-in-out,
+                    background-color 150ms ease-in-out;
+    }
+}
+
+.composite {
+    .CardLegacyPost {
+        border-width: 2px;
     }
 }
