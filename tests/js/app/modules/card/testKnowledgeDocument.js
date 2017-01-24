@@ -97,10 +97,7 @@ describe('Card.KnowledgeDocument', function () {
             card = new KnowledgeDocument.KnowledgeDocument({
                 model: pdf_model,
             });
-            card.load_content(null, (card, task) => {
-                expect(() => card.load_content_finish(task)).not.toThrow();
-                done();
-            });
+            card.load_content_promise().then(done);
         });
 
         it('can be loaded', function () {});
@@ -128,10 +125,7 @@ describe('Card.KnowledgeDocument', function () {
                 next_card: next_card,
             });
             spyOn(card, '_create_webview').and.returnValue(new MockWidgets.MockEknWebview());
-            card.load_content(null, (card, task) => {
-                card.load_content_finish(task);
-                done();
-            });
+            card.load_content_promise().then(done);
             card.content_view.emit('load-changed', WebKit2.LoadEvent.COMMITTED);
         });
 
@@ -192,8 +186,8 @@ describe('Card.KnowledgeDocument', function () {
                 spyOn(webview.renderer, 'set_custom_css_files');
                 return webview;
             });
-            card.load_content(null, (card, task) => {
-                card.load_content_finish(task);
+            card.load_content_promise()
+            .then(() => {
                 expect(card.content_view.renderer.set_custom_css_files)
                     .toHaveBeenCalledWith(jasmine.arrayContaining(['some_custom.css']));
                 done();

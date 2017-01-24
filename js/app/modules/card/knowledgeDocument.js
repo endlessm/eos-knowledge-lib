@@ -9,7 +9,6 @@ const Gtk = imports.gi.Gtk;
 const WebKit2 = imports.gi.WebKit2;
 
 const ArticleContent = imports.app.interfaces.articleContent;
-const AsyncTask = imports.app.asyncTask;
 const Card = imports.app.interfaces.card;
 const EknWebview = imports.app.widgets.eknWebview;
 const HistoryStore = imports.app.historyStore;
@@ -171,11 +170,10 @@ const KnowledgeDocument = new Module.Class({
 
     },
 
-    load_content: function (cancellable, callback) {
-        this._stack.visible_child_name = SPINNER_PAGE_NAME;
-        this._spinner.active = true;
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        task.catch_errors(() => {
+    load_content_promise: function () {
+        return new Promise((resolve, reject) => {
+            this._stack.visible_child_name = SPINNER_PAGE_NAME;
+            this._spinner.active = true;
             if (this.model.content_type === 'text/html') {
                 this.content_view = this._get_webview();
 
@@ -202,7 +200,7 @@ const KnowledgeDocument = new Module.Class({
                     this._spinner.active = false;
                     this.content_view.disconnect(this._webview_load_id);
                     this._webview_load_id = 0;
-                    task.return_value();
+                    resolve();
                 });
 
                 // FIXME: Consider eventually connecting to load-failed and showing
@@ -222,17 +220,13 @@ const KnowledgeDocument = new Module.Class({
                 this.content_view.load_stream(stream, content_type);
                 this._stack.visible_child_name = CONTENT_PAGE_NAME;
                 this._spinner.active = false;
-                task.return_value();
+                resolve();
             } else {
-                throw new Error("Unknown article content type: ", this.model.content_type);
+                reject(new Error("Unknown article content type: ", this.model.content_type));
             }
 
             this._panel_overlay.add(this.content_view);
         });
-    },
-
-    load_content_finish: function (task) {
-        return task.finish();
     },
 
     set_active: function () { /* NO-OP */},

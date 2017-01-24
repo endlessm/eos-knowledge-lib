@@ -4,7 +4,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const ArticleContent = imports.app.interfaces.articleContent;
-const AsyncTask = imports.app.asyncTask;
 const Card = imports.app.interfaces.card;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Module = imports.app.interfaces.module;
@@ -51,15 +50,8 @@ const Video = new Module.Class({
         this.content_view = video_player;
     },
 
-    load_content: function (cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        task.catch_errors(() => {
-            task.return_value();
-        });
-    },
-
-    load_content_finish: function (task) {
-        return task.finish();
+    load_content_promise: function () {
+        return Promise.resolve();
     },
 
     set_active: function (is_active) {
