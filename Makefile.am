@@ -502,7 +502,6 @@ javascript_tests = \
 	tests/js/app/modules/selection/testSupplementaryArticles.js \
 	tests/js/app/modules/window/testSimple.js \
 	tests/js/app/testArticleHTMLRenderer.js \
-	tests/js/app/testAsyncTask.js \
 	tests/js/app/testBuffetHistoryStore.js \
 	tests/js/app/testCourseHistoryStore.js \
 	tests/js/app/testDispatcher.js \

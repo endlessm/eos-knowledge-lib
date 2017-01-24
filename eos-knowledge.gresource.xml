@@ -71,7 +71,6 @@
     <file>js/app/actions.js</file>
     <file>js/app/application.js</file>
     <file>js/app/articleHTMLRenderer.js</file>
-    <file>js/app/asyncTask.js</file>
     <file>js/app/buffetHistoryStore.js</file>
     <file>js/app/config.js</file>
     <file>js/app/courseHistoryStore.js</file>
