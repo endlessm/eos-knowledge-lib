@@ -89,12 +89,6 @@ const FileDownloader = new Lang.Class({
                 task.return_value(out_file);
             }
 
-            function keep_existing_file() {
-                download_cancellable.cancel();
-                tmp_file.delete(cancellable);
-                task.return_value(out_file);
-            }
-
             let finish_download = (finish) => {
                 // If we have a checksum, verify it.
                 let csum = file_download_request.csum;
