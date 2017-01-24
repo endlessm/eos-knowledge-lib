@@ -144,17 +144,15 @@ const DynamicBackground = new Module.Class({
             this._model = models[0];
         }
 
-        DominantColor.get_dominant_color(this._model, null, (helper, task) => {
-            try {
-                this._overlay_color = helper.get_dominant_color_finish(task);
-                this._image_uri = this._model.thumbnail_uri;
-            } catch (error) {
-                logError(error);
-                this._overlay_color = DEFAULT_COLOR;
-                this._image_uri = DEFAULT_IMAGE;
-            };
-            this._update_background();
-        });
+        try {
+            this._overlay_color = DominantColor.get_dominant_color(this._model);
+            this._image_uri = this._model.thumbnail_uri;
+        } catch (error) {
+            logError(error);
+            this._overlay_color = DEFAULT_COLOR;
+            this._image_uri = DEFAULT_IMAGE;
+        }
+        this._update_background();
     },
 
     _update_background: function () {
