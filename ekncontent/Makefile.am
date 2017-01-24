@@ -163,8 +163,16 @@ javascript_tests = \
 	tests/ekncontent/testXapianBridge.js \
 	$(NULL)
 
+test_content = \
+	tests/testcontent/ekn/data/com.endlessm.fake_test_app.en/EKN_VERSION \
+	tests/testcontent/ekn/data/com.endlessm.fake_test_app.en/subscriptions.json \
+	tests/testcontent/ekn/data/com.endlessm.fake_test_app.en/com.endlessm.subscriptions/1aa1fe392aa50a771ca5f8a6452a758896a21f7644225f4d1ddbefec77053c9b/manifest.json \
+	tests/testcontent/ekn/data/com.endlessm.fake_test_app.en/com.endlessm.subscriptions/1aa1fe392aa50a771ca5f8a6452a758896a21f7644225f4d1ddbefec77053c9b/test.shard \
+	$(NULL)
+
 EXTRA_DIST += \
 	$(javascript_tests) \
+	$(test_content) \
 	tests/InstanceOfMatcher.js \
 	$(NULL)
 
@@ -188,6 +196,7 @@ AM_TESTS_ENVIRONMENT = \
 	export LD_LIBRARY_PATH="$(top_builddir)/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
 	export G_TEST_SRCDIR="$(abs_srcdir)/tests"; \
 	export G_TEST_BUILDDIR="$(abs_builddir)/tests"; \
+	export XDG_DATA_DIRS="$(abs_srcdir)/tests/testcontent$${XDG_DATA_DIRS:+:$$XDG_DATA_DIRS}"; \
 	export LC_ALL=C; \
 	$(NULL)
 

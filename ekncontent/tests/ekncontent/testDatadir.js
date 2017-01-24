@@ -6,9 +6,13 @@ describe('Data dir finder', function () {
         expect(found_dir).toBeNull();
     });
 
+    it('returns a GFile pointing to a valid ekn data dir', function () {
+        let found_dir = Eknc.get_data_dir('com.endlessm.fake_test_app.en');
+        expect(found_dir.get_path()).toBeDefined();
+    });
+
     // FIXME: no easy way to test these without a way to mock file URIs
     // during tests.
-    it('returns a GFile pointing to a valid ekn data dir');
     it('discovers data dirs inside the flatpak sandbox');
     it('discovers data dirs in system data dirs');
 });

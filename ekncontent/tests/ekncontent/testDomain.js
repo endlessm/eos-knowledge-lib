@@ -2,41 +2,75 @@ const Eknc = imports.gi.EosKnowledgeContent;
 
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 
-// Need to rework domain tests for the C version
-xdescribe('Domain', function () {
-    let domain;
+describe('Domain', function () {
+    let domain, bridge;
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        domain = create_mock_domain_for_version('3');
+        bridge = new Eknc.XapianBridge();
+        domain = new Eknc.Domain({
+            app_id: 'com.endlessm.fake_test_app.en',
+            xapian_bridge: bridge,
+        });
+    });
+
+    describe('init', function () {
+        it('returns without error for a valid app id', function () {
+            expect(() => { domain.init(null); }).not.toThrow();
+        });
+
+        it('errors for an invalid app id', function () {
+            domain = new Eknc.Domain({
+                app_id: 'com.endlessm.invalid_app.en',
+                xapian_bridge: bridge,
+            });
+            expect(() => { domain.init(null); }).toThrow();
+        });
     });
 
     describe('test_link', function () {
-        function mock_ekn_link_tables (link_table_hashes) {
-            let shards = link_table_hashes.map(create_mock_shard_with_link_table);
-            domain._shards = shards;
-            domain._setup_link_tables();
-        }
-
-        it('returns false when no link table exists', function () {
-            mock_ekn_link_tables([null]);
-            expect(domain.test_link('foo')).toEqual(false);
+        beforeEach(function () {
+            domain.init(null);
         });
 
         it('returns entries from a link table which contains the link', function () {
-            mock_ekn_link_tables([
-                { 'foo': 'bar' },
-                { 'bar': 'baz' },
-            ]);
-            expect(domain.test_link('foo')).toEqual('bar');
+            expect(domain.test_link('https://en.wikipedia.org/wiki/America')).not.toBe(null);
         });
 
         it('returns false when no link table contains the link', function () {
-            mock_ekn_link_tables([
-                { 'foo': 'bar' },
-                { 'bar': 'baz' },
-            ]);
-            expect(domain.test_link('123')).toEqual(false);
+            expect(domain.test_link('http://www.bbc.com/news/')).toBe(null);
         });
+    });
+
+    describe('get_object', function () {
+        beforeEach(function () {
+            domain.init(null);
+        });
+
+        it('returns an object model for an ID in our database', function (done) {
+            domain.get_object("ekn:///02463d24cb5690af2c8e898736ea8c80e0e77077", null, function (domain, result) {
+                let model = domain.get_object_finish(result);
+                expect(model).not.toBe(null);
+                expect(model).toBeA(Eknc.ArticleObjectModel);
+                done();
+            });
+        });
+
+        it('throws for an ID not our database', function (done) {
+            domain.get_object("ekn:///0000000000000000000000000000000000000000", null, function (domain, result) {
+                expect(() => domain.get_object_finish(result)).toThrow();
+                done();
+            });
+        });
+
+        it('returns an object model for an ID in our database', function (done) {
+            domain.get_object("ekn:///02463d24cb5690af2c8e898736ea8c80e0e77077", null, function (domain, result) {
+                let model = domain.get_object_finish(result);
+                expect(model).not.toBe(null);
+                expect(model).toBeA(Eknc.ArticleObjectModel);
+                done();
+            });
+        });
+
     });
 });
