@@ -1,11 +1,14 @@
 #!/bin/bash -ex
 
+BRANCH=$1
+shift
+
 if [ "$1" = "update" ]; then
     shift
-    flatpak update com.endlessm.Platform master
-    flatpak update com.endlessm.Sdk master
+    flatpak update "com.endlessm.Platform//$BRANCH"
+    flatpak update "com.endlessm.Sdk//$BRANCH"
     flatpak update "$1"
 fi
 
-# Host fs for files, use master runtime, --devel for scss and yaml tools
-flatpak run --devel --filesystem=host --runtime='//master' "$@"
+# Host fs for files, use BRANCH runtime, --devel for scss and yaml tools
+flatpak run --devel --filesystem=host --runtime="//$BRANCH" "$@"
