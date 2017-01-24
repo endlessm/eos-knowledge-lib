@@ -13,6 +13,7 @@
 /js/search/config.js
 /ekn-app-runner
 tools/eminem
+tools/introspect
 tools/kermit
 tools/picard
 /ekn-downloader
