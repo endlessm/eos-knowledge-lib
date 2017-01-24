@@ -29,12 +29,12 @@ $display-font-composite: 'Roboto' !default;
     /* FIXME: for the time being, until we can properly customize the webkit
     scrollbars, style the GTK scrollbars to look slightly more like them */
     scrollbar {
-        background-color: transparent;
+        background-color: transparentize(black, 1 - 0.2);
         padding: 0px;
 
         slider {
             min-height: 8px;
-            background-color: #333333;
+            background-color: transparentize(white, 1 - 0.5);
         }
 
         trough {

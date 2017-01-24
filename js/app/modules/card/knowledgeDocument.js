@@ -348,8 +348,10 @@ const KnowledgeDocument = new Module.Class({
                 height: alloc.height
             });
             this._content_frame.size_allocate(switcher_alloc);
+            this._toolbar_frame.set_child_visible(false);
             return;
         }
+        this._toolbar_frame.set_child_visible(true);
 
         let collapsed_class = Utils.get_modifier_style_class('CardKnowledgeDocument__toolbarFrame', 'collapsed');
         // Decide if toolbar should be collapsed

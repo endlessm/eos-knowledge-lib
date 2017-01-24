@@ -5,12 +5,16 @@
     }
 
     &__title {
+        color: white;
         font-family: $title-font;
-        font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
-        font-weight: bold;
+        font-size: 45px;
+        font-weight: 700;
+        text-shadow: 2px 8px 6px rgba(0,0,0,0.2),
+                 0px -5px 35px rgba(255,255,255,0.1);
 
         &.collapsed {
-            margin-bottom: 10px;
+            font-size: 55px;
+            padding: 1.0em 1.0em 0.5em 1.0em;
         }
     }
 

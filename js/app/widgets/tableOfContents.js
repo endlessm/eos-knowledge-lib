@@ -415,7 +415,6 @@ const SectionButton = new Knowledge.Class({
         this.parent(params);
         let entry_class = Utils.get_element_style_class(TableOfContents, 'entry');
         this.get_style_context().add_class(entry_class);
-        section_title = section_title.toUpperCase();
         this.index = section_index;
 
         this.title_label = new Gtk.Label({
