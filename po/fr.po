@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-01-10 02:57+0000\n"
-"PO-Revision-Date: 2017-01-09 06:01+0000\n"
+"POT-Creation-Date: 2017-01-17 02:57+0000\n"
+"PO-Revision-Date: 2017-01-17 02:57+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: French (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -180,6 +180,10 @@ msgstr "Résultats de recherche pour “%s”"
 #, javascript-format
 msgid "Results for “%s”"
 msgstr "Résultats pour « %s »"
+
+#: js/app/modules/contentGroup/contentGroup.js:156
+msgid "See more"
+msgstr ""
 
 #: js/app/modules/contentGroup/noResultsMessage.js:52
 msgid "Sorry! :-("
