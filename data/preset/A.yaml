@@ -59,7 +59,6 @@ defines:
     - shortdef: 'Banner.Set(halign: center)'
       slots:
         card: Card.Title
-    - Decoration.Separator
     - type: Layout.InfiniteScrolling
       references:
         lazy-load: set-articles
@@ -77,7 +76,6 @@ defines:
   slots:
     contents:
     - 'Banner.Search(halign: center)'
-    - Decoration.Separator
     - type: Layout.InfiniteScrolling
       references:
         lazy-load: search-results

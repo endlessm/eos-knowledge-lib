@@ -1,14 +1,25 @@
+$body-font: 'Merriweather' !default;
+$display-font: 'Fira Sans' !default;
+$display-font-composite: 'Roboto' !default;
+
 @import "project-setup";
 @import "compass";
 
 @import 'mesh';
 
-.home-page .CardLegacyPolaroid__title {
-    padding: 9px 0px;
-}
+.home-page {
+    .CardLegacyPolaroid {
+        padding: 10px 10px 0px 10px;
+        box-shadow: 2px 8px 5px transparentize(black, 1 - 0.20);
+        &__title {
+            font-size: 0.85em;
+            padding: 10px;
+        }
+    }
 
-.home-page .ArrangementOverflow {
-    margin-top: 40px;
+    .ArrangementOverflow {
+        padding: 60px 60px 40px 60px;
+    }
 }
 
 .CardTitle__title,
@@ -22,68 +33,71 @@
 
 .set-page,
 .search-page {
-    padding: 0 100px;
-
     .BannerSet .Card__title,
     .BannerSearch__title {
-        padding-top: 1.0em;
-        padding-bottom: 1.0em;
-
-        font-size: 36px;
+        color: white;
+        font-size: 55px;
+        padding: 1.0em 1.0em 0.50em 1.0em;
+        text-shadow: 2px 8px 6px transparentize(black, 1 - 0.20);
     }
 
-    separator {
-        min-height: 1px;
-        background-color: rgba(255, 255, 255, 0.3);
+    .CardLegacyPolaroid {
+        padding: 11px;
+        box-shadow: 2px 8px 5px transparentize(black, 1 - 0.20);
+        &__title {
+            font-size: 1.0em;
+        }
+
+        &__synopsis {
+            font-size: 0.75em;
+            margin-top: 0.26em;
+        }
     }
 
-    .CardLegacyPolaroid__title {
-        font-size: 0.77em;
-        text-shadow: 0px 1px 0px white;
+    .ContentGroupContentGroup {
+        padding: 0px 60px 60px 60px;
     }
-}
-
-.set-page flowbox, .search-page flowbox {
-    margin-top: 20px;
 }
 
 .search-results {
     background-color: transparent;
 
-    .ContentGroupNoResultsMessage__title,
-    .ContentGroupNoResultsMessage__subtitle {
-        color:white;
-        font-size: 16px;
-        font-style:normal;
-        padding: 2.0em 0 0 0;
+    .ContentGroupNoResultsMessage {
+        margin-top: 3.0em;
+        &__title,
+        &__subtitle {
+            font-size: 1.25em;
+            color: white;
+            padding: 0em 1.25em 0em 1.25em;
+            font-style: normal;
+            text-shadow: 2px 8px 6px transparentize(black, 1 - 0.20);
+        }
+        &__subtitle {
+            margin-top: 1.0em;
+        }
     }
 }
 
-.article-page .CardKnowledgeDocument__contentFrame {
-    padding: 20px 0px;
-}
+.article-page {
+    .Card__title {
+        color: white;
+    }
 
-.article-page .Card__title {
-    color: white;
+    .CardKnowledgeDocument {
+        &__contentFrame {
+            margin: 0px 0px 0px 50px;
+        }
+
+        &__toolbarFrame {
+            // margin-top: 60px;
+            // margin-left: 50px;
+            margin: 60px 0px 0px 50px;
+        }
+    }
 }
 
 .PagerParallaxBackground {
     -EknPager_Simple-transitions-style: 'slide-all';
-}
-
-.window-small {
-    .set-page,
-    .search-page {
-        .ContentGroupContentGroup__title,
-        .BannerSearch__title {
-            font-size: 1.75em; /* 28pt * 1/12 * 0.75 DPI correction factor */
-        }
-    }
-
-    .ContentGroupNoResultsMessage__title,
-    .ContentGroupNoResultsMessage__subtitle {
-        padding-top: 1.5em;
-    }
 }
 
 .composite {
@@ -91,21 +105,66 @@
         min-height: 50px;
     }
 
-    .home-page .ArrangementOverflow {
-        margin-top: 0px;
+    .NavigationSearchBox {
+        min-width: 50px;
+    }
+
+    .home-page {
+        .ArrangementOverflow {
+            padding: 0px;
+        }
     }
 
     .set-page,
     .search-page {
         padding: 0px;
+
         .ContentGroupContentGroup__title,
+        .BannerSet__title,
         .BannerSearch__title {
-            font-size: 16.4px;  /* 14px spec * 88% */
+            font-family: $title-font-composite;
+        }
+
+        .CardLegacyPolaroid__title {
+            font-size: 1.0em;
+        }
+
+        .CardLegacyPolaroid__synopsis {
+            font-size: 1.0em;
+        }
+
+        .BannerSet .Card__title,
+        .BannerSearch__title {
+            font-size: 30px;
+        }
+
+        .ContentGroupContentGroup {
+            padding: 0px 40px 20px 40px;
         }
     }
 
-    .ContentGroupNoResultsMessage__title,
-    .ContentGroupNoResultsMessage__subtitle {
-        font-size: 18.8px;  /* 16px spec * 88% */
+    .article-page {
+        .Card__title {
+            font-size: 30px;
+            padding: 1.0em 0.5em 0.5em 0.5em;
+        }
+
+        .CardKnowledgeDocument__contentFrame {
+            margin: 0px 0px 0px 0px;
+        }
+
+        .CardKnowledgeDocument__toolbarFrame {
+            margin: 0px 20px 0px 45px;
+        }
+    }
+
+    .ContentGroupNoResultsMessage {
+        font-size: 20px;
+        &__title {
+            padding: 0em;
+        }
+        &__subtitle {
+            padding: 0em 0em 2.0em 0em;
+        }
     }
 }
