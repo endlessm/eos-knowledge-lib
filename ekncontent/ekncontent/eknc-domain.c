@@ -215,7 +215,6 @@ eknc_parse_subscription_id (EkncDomain *self,
       return FALSE;
     }
   self->subscription_id = g_strdup (json_node_get_string (id_node));
-
   return TRUE;
 }
 
@@ -242,7 +241,16 @@ eknc_domain_clean_old_symlinks (EkncDomain *self,
     {
       g_autoptr(GFileInfo) info = info_ptr;
       g_autoptr(GFile) file = g_file_enumerator_get_child (enumerator, info);
-      if (!g_file_query_exists (file, cancellable) && !g_file_delete (file, cancellable, &local_error))
+      if (g_file_query_exists (file, cancellable))
+        continue;
+      g_file_delete (file, cancellable, &local_error);
+      if (local_error == NULL)
+        continue;
+      if (g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
+        {
+          g_clear_error (&local_error);
+        }
+      else
         {
           g_propagate_error (error, local_error);
           return FALSE;
@@ -283,6 +291,7 @@ eknc_domain_initable_init (GInitable *initable,
                            GError **error)
 {
   EkncDomain *self = EKNC_DOMAIN (initable);
+  GError *local_error = NULL;
 
   if (self->app_id == NULL || *self->app_id == '\0')
     {
@@ -302,9 +311,19 @@ eknc_domain_initable_init (GInitable *initable,
   g_autoptr(GFile) bundle_subscriptions_dir = g_file_get_child (self->content_dir, "com.endlessm.subscriptions");
   g_autoptr(GFile) bundle_dir = g_file_get_child (bundle_subscriptions_dir, self->subscription_id);
 
-  if (!g_file_query_exists (subscription_dir, cancellable) &&
-      !g_file_make_directory_with_parents (subscription_dir, cancellable, error))
-      return FALSE;
+  g_file_make_directory_with_parents (subscription_dir, cancellable, &local_error);
+  if (local_error)
+    {
+      if (g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_EXISTS))
+        {
+          g_clear_error (&local_error);
+        }
+      else
+        {
+          g_propagate_error (error, local_error);
+          return FALSE;
+        }
+    }
 
   if (!g_file_query_exists (self->manifest_file, cancellable))
     {
@@ -316,11 +335,22 @@ eknc_domain_initable_init (GInitable *initable,
                        "Flatpak bundle. You must download a content update");
           return FALSE;
         }
-      if (!g_file_make_symbolic_link (self->manifest_file,
-                                      g_file_get_path (bundle_manifest_file),
-                                      cancellable,
-                                      error))
-        return FALSE;
+      g_file_make_symbolic_link (self->manifest_file,
+                                 g_file_get_path (bundle_manifest_file),
+                                 cancellable,
+                                 &local_error);
+      if (local_error)
+        {
+          if (g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_EXISTS))
+            {
+              g_clear_error (&local_error);
+            }
+          else
+            {
+              g_propagate_error (error, local_error);
+              return FALSE;
+            }
+        }
     }
 
 
@@ -373,12 +403,24 @@ eknc_domain_initable_init (GInitable *initable,
       g_autoptr(GFile) subscription_shard_file = g_file_get_child (subscription_dir, json_node_get_string (path_node));
 
       // Make a symlink if necessary
-      if (g_file_query_exists (bundle_shard_file, cancellable) &&
-          !g_file_query_exists (subscription_shard_file, cancellable) &&
-          !g_file_make_symbolic_link (subscription_shard_file,
-                                      g_file_get_path (bundle_shard_file),
-                                      cancellable, error))
-          return FALSE;
+      if (g_file_query_exists (bundle_shard_file, cancellable))
+        {
+          g_file_make_symbolic_link (subscription_shard_file,
+                                     g_file_get_path (bundle_shard_file),
+                                     cancellable, &local_error);
+          if (local_error)
+            {
+              if (g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_EXISTS))
+                {
+                  g_clear_error (&local_error);
+                }
+              else
+                {
+                  g_propagate_error (error, local_error);
+                  return FALSE;
+                }
+            }
+        }
       EosShardShardFile *shard = g_object_new (EOS_SHARD_TYPE_SHARD_FILE,
                                                "path", g_file_get_path (subscription_shard_file),
                                                NULL);
