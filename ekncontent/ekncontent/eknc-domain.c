@@ -285,8 +285,11 @@ eknc_domain_initable_init (GInitable *initable,
   EkncDomain *self = EKNC_DOMAIN (initable);
 
   if (self->app_id == NULL || *self->app_id == '\0')
-    g_set_error (error, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_APP_ID_NOT_SET,
-                 "You must set an app id to initialize a domain object");
+    {
+      g_set_error (error, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_APP_ID_NOT_SET,
+                   "You must set an app id to initialize a domain object");
+      return FALSE;
+    }
 
   self->content_dir = eknc_get_data_dir (self->app_id);
   if (!eknc_parse_subscription_id (self, cancellable, error))
