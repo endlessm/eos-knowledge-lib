@@ -33,7 +33,7 @@
             <property name="use_markup">True</property>
             <property name="wrap">False</property>
             <property name="wrap_mode">word-char</property>
-            <property name="max_width_chars">25</property>
+            <property name="max_width_chars">50</property>
             <property name="ellipsize">end</property>
             <property name="width_chars">1</property>
             <property name="lines">1</property>

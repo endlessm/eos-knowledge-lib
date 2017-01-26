@@ -14,3 +14,14 @@
         padding-bottom: 50px;
     }
 }
+
+.composite {
+    .ContentGroupNoResultsMessage {
+        &__title {
+            font-family: $title-font-composite;
+        }
+        &__subtitle {
+            font-family: $display-font-composite;
+        }
+    }
+}

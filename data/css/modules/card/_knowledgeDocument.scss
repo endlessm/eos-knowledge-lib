@@ -1,6 +1,18 @@
+/* So this value can be used in composite, too */
+$toc-selected-color: transparentize(white, 1 - 0.10);
+/* This aligns the document title to the TOC entryTitle */
+$toc-align-padding: 15px;
+
 .CardKnowledgeDocument {
     &__contentFrame {
         padding: 0;
+        margin: 0;
+    }
+}
+
+.DocumentCard {
+    &__title {
+        padding-left: $toc-align-padding;
     }
 }
 
@@ -30,58 +42,70 @@
 
 .TableOfContents {
     &__entry {
-        color: rgb(204, 204, 204);
-        font-weight: 900;  /* Black */
-        font-size: .7em;
+        font-family: $display-font;
+        color: transparentize(white, 1 - 0.7);
+        font-size: 18px;
+        font-weight: 700;
         background-color: transparent;
-        transition: background-color 150ms ease-in-out;
         border-radius: 1.75em;
-        padding: .75em 0em;
-        margin-bottom: .4em;
+        padding: 0.50em 0em;
+        text-shadow: 2px 8px 6px transparentize(black, 1 - 0.20);
 
         &:hover,
         &:selected {
             color: white;
         }
 
+        &:active {
+            color: transparentize(white, 1 - 0.90);
+            text-shadow: 1px 5px 3px transparentize(black, 1 - 0.20);
+        }
+
         &:selected {
-            background-color: transparentize(white, 1 - 0.247);
+            background-color: $toc-selected-color;
+            text-shadow: none;
+            box-shadow: 2px 8px 6px transparentize(black, 1 - 0.20);
+            &:active {
+                box-shadow: 1px 5px 3px transparentize(black, 1 - 0.20);
+            }
         }
     }
 
-    &__entryTitle {
-        padding-left: 1.5em;
-    }
-
+    &__entryTitle,
     &__entryIndex {
-        padding: 0em 2em;
+        padding: 0em $toc-align-padding;
     }
 
     &__arrow {
-        color: rgb(204, 204, 204);
+        color: white;
+        background-color: $toc-selected-color;
         border-radius: 50%;
-        border-width: 1px;
-        border-style: solid;
-        border-color: transparentize(black, 1 - 0.3);
+        margin: 1em 0em;
         padding: 5px;
-        box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.3);
+        box-shadow: 2px 8px 6px transparentize(black, 1 - 0.20);
 
         &:hover {
-            color: white;
-            border-color: transparentize(black, 1 - 0.4);
-            box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.4);
+            background-color: transparentize(white, 1 - 0.25);
         }
 
         &:disabled {
-            color: transparentize(rgb(204, 204, 204), 1 - 0.3);
-            border-color: transparentize(black, 1 - 0.15);
-            box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.15);
+            color: transparentize(white, 1 - 0.3);
+            background-color: transparentize(white, 1 - 0.05);
+            box-shadow: none;
+        }
+
+        &:active {
+            color: transparentize(white, 1 - 0.9);
+            background-color: transparentize(white, 1 - 0.20);
+            transition: none;
+            box-shadow: 1px 5px 3px transparentize(black, 1 - 0.20);
         }
     }
 
     /* Style table of contents when collapsed without section titles */
     &--collapsed &__entry {
-        border-radius: 1.75em 0em 0em 1.75em;
+        border-radius: 1.75em;
+        padding: 0.3em 0em;
     }
 
     &--collapsed &__entryIndex {
@@ -131,9 +155,18 @@
             color: #54595a;
         }
     }
+}
 
-    .composite &__entry {
-        font-size: 21.1px;  /* 18 px spec * 88% because spec was at 110% scale not 125% */
-        background-color: transparentize(black, 1 - 0.8);
+.composite {
+    .InArticleSearch {
+        &__entry {
+            font-size: 21.1px;  /* 18 px spec * 88% because spec was at 110% scale not 125% */
+            background-color: transparentize(black, 1 - 0.8);
+        }
     }
+
+    /*
+    TableOfContents NOTE: 
+    Some TableOfContents composite styling is in the .TableOfContents class, as &--collapsed. 
+    */
 }

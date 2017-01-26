@@ -12,19 +12,18 @@
                 padding: 0em 0em 0em 1.5em;
                 font-family: $display-font;
                 font-weight: 700;
-                font-size: 1.125em; /* 18pt * 1/12 * 0.75 DPI correction factor */
+                font-size: 20px;
                 color: $primary-light-color;
             }
 
             &:hover {
-
                 .Card__title {
                     color: $primary-medium-color;
                 }
             }
 
             &:active {
-                background: transparentize(black, 1 - 0.3);
+                background: transparentize(black, 1 - 0.7);
             }
 
             &.highlighted {
@@ -36,18 +35,17 @@
                     transition-property: color;
                     transition-timing-function: ease;
                     transition-duration: 0.5s;
-
                 }
 
                 &:hover {
-                    background-color: transparentize(black, 1 - 0.9);
+                    background-color: transparentize(black, 1 - 0.6);
                 }
 
                 &:active {
-                background: transparentize(black, 1 - 1);
-                box-shadow: none;
-                transition: none;
-            }
+                    background: transparentize(black, 1 - 1);
+                    box-shadow: none;
+                    transition: none;
+                }
             }
         }
     }
@@ -55,8 +53,16 @@
     & .content {
         background-image: linear-gradient(-180deg, rgba(0,0,0,0.0) 65%, rgba(0,0,0,0.30) 85%, rgba(0,0,0,0.70) 100%);
     }
+}
 
-    .composite & .sidebar .CardTitle__title {
-        font-family: $title-font-composite;
+.composite {
+    .sidebar {
+        .CardTitle {
+            &__title {
+                font-family: $display-font-composite;
+                padding: 0em 0em 0em 1.0em;
+                font-size: 20px;
+            }
+        }
     }
 }

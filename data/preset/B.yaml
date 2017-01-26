@@ -49,7 +49,7 @@ defines:
   <<: *sidebar-right
   slots:
     content:
-      shortdef: 'Banner.Set(valign: end)'
+      shortdef: 'Banner.Set(valign: center)'
       slots:
         card: Card.Title
     sidebar:
