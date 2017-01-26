@@ -7,6 +7,9 @@ const Utils = imports.app.utils;
 const IMAGES_DIR = 'resource:///com/endlessm/knowledge/data/images/tools/';
 const NUM_TOP_LEVEL_SETS = 20;
 const NUM_SUBSETS_PER_SET = 3;
+const ITEM_TYPES = ['EknArticleObject', 'EknVideoObject'];
+const VIDEO_FILENAME = 'give_that_man_a_knighthood.webm';
+const VIDEO_TITLE = 'Video Model';
 
 const MoltresEngine = new Lang.Class({
     Name: 'MoltresEngine',
@@ -15,8 +18,11 @@ const MoltresEngine = new Lang.Class({
     _init: function () {
         this.parent();
         this._to_return = null;
-        this._counter = 0;
+        this._article_count = 0;
+        this._video_count = 0;
         this._set_models = [];
+        this._article_models = [];
+        this._video_models = [];
 
         // Sets must all be created up front and be fixed. We cannot create
         // them dynamically at runtime because otherwise the SetMap (which
@@ -30,6 +36,9 @@ const MoltresEngine = new Lang.Class({
 
             // Now create subsets for this set. The child_tag variable is what
             // connects a parent set to its subsets.
+            // Note this means that moltres only works with templates that
+            // expect only two levels of sets, i.e will not work with
+            // capacitate app.
             for (let j = 0; j < NUM_SUBSETS_PER_SET; j++) {
                 let subset_props = JSON.parse(JSON.stringify(this._SETS[j]));
                 subset_props.tags.push(child_tag)
@@ -45,30 +54,12 @@ const MoltresEngine = new Lang.Class({
     get_ekn_id: function () {},
 
     get_object: function (ekn_id, cancellable, callback) {
-        let set = this._set_models.filter((model) => {
+        this._to_return = this._set_models
+        .concat(this._article_models)
+        .concat(this._video_models)
+        .find((model) => {
             return model.ekn_id === ekn_id;
-        })[0];
-
-        if (set) {
-            this._to_return = set;
-            callback(this);
-            return;
-        }
-        // Retrieve the original model data corresponding to
-        // this ekn_id. Each ekn_id is made unique by appending
-        // a nonce to the end. To get the original data, we
-        // remove the nonce and compare the ekn_id to those
-        // fixed ekn_ids we have defined below in _ARTICLES/_SETS.
-        let model_props = this._ARTICLES.filter((data) => {
-            return data.ekn_id == ekn_id.split('$')[0];
-        })[0];
-
-        // We only want to modify the ekn_id for this specific
-        // model, not the pristine data blob in _ARTICLES/_SETS, so
-        // we make a copy first.
-        let copy = JSON.parse(JSON.stringify(model_props));
-        copy.ekn_id = ekn_id;
-        this._to_return = this._generate_article_object(copy);
+        });
         callback(this);
     },
 
@@ -91,11 +82,13 @@ const MoltresEngine = new Lang.Class({
         };
     },
 
-    _get_articles: function (query) {
+    _get_items: function (query, type_tag) {
+        let normalize = (str) => str.toLowerCase().split(' ');
         let matching_strings = this._ARTICLES.reduce((arr, obj) => {
-                                                return arr.concat(obj.title.toLowerCase().split(' '));
+                                                return arr.concat(normalize(obj.title));
                                              }, [])
-                                             .concat(this._SYNOPSIS.toLowerCase().split(' '));
+                                             .concat(normalize(this._SYNOPSIS))
+                                             .concat(normalize(VIDEO_TITLE));
         // If the query matches any article or set title, or the synopsis, return some content.
         // Otherwise, return nothing. If no query string was specified at all, we also want to
         // return content since this handles e.g. suggested articles modules.
@@ -107,13 +100,29 @@ const MoltresEngine = new Lang.Class({
             for (let i = 0; i < Math.min(10, query.limit); i++) {
                 let data = this._ARTICLES[i % this._ARTICLES.length];
                 let unique_data = JSON.parse(JSON.stringify(data));
-                unique_data.ekn_id = data.ekn_id + '$' + this._counter++;
 
+                // type_tag is like 'EknArticleObject' or 'EknVideoObject'.
+                // If no type explicitly requested, randomly pick one
+                let object_type = type_tag;
+                if (!object_type) {
+                    let rand_index = Math.floor(Math.random() * 100) % ITEM_TYPES.length;
+                    object_type = ITEM_TYPES[rand_index];
+                }
+                unique_data.tags.push(object_type);
                 // If query requested articles matching certain tags, dynamically
                 // add those tags at runtime, to 'fake' the result.
                 if (query.tags_match_any.length !== 0)
-                    unique_data.tags.push(query.tags_match_any[0])
-                this._to_return.models.push(this._generate_article_object(unique_data));
+                    unique_data.tags.push(query.tags_match_any[0]);
+
+                let model;
+                if (object_type === 'EknArticleObject') {
+                    model = this._generate_article_object(unique_data);
+                } else if (object_type === 'EknVideoObject') {
+                    model = this._generate_video_object(unique_data);
+                } else {
+                    logError("Moltres does not support serving objects of type " + object_type);
+                }
+                this._to_return.models.push(model);
             }
             this._to_return.upper_bound = this._to_return.models.length;
         }
@@ -123,8 +132,12 @@ const MoltresEngine = new Lang.Class({
         let generation_func;
         if (query.tags_match_all.indexOf('EknSetObject') >= 0) {
             this._get_sets(query);
+        } else if (query.tags_match_all.indexOf('EknArticleObject') >= 0) {
+            this._get_items(query, 'EknArticleObject');
+        } else if (query.tags_match_all.indexOf('EknVideoObject') >= 0) {
+            this._get_items(query, 'EknVideoObject');
         } else {
-            this._get_articles(query);
+            this._get_items(query, null);
         }
 
         callback(this);
@@ -137,20 +150,17 @@ const MoltresEngine = new Lang.Class({
     _ARTICLES: [
         {
             title: 'Football',
-            ekn_id: 'ekn://moltres/football',
-            tags: ['EknArticleObject'],
+            tags: [],
             thumbnail_uri: IMAGES_DIR + 'football.jpg',
         },
         {
             title: 'The Importance of Studying',
-            ekn_id: 'ekn://moltres/studying',
-            tags: ['EknArticleObject'],
+            tags: [],
             thumbnail_uri: IMAGES_DIR + 'desk.jpg',
         },
         {
             title: 'A Room With A View',
-            ekn_id: 'ekn://moltres/room',
-            tags: ['EknArticleObject'],
+            tags: [],
             thumbnail_uri: IMAGES_DIR + 'house.jpg',
         },
     ],
@@ -191,13 +201,32 @@ placerat varius non id dui.',
         return Eknc.SetObjectModel.new_from_props(data);
     },
 
+    _generate_video_object: function (data) {
+        data.synopsis = this._SYNOPSIS;
+        data.content_type = 'video/webm';
+        data.title = VIDEO_TITLE; // Override title so we can see which ones are videos
+        // Extra slashes are ignored during the resource lookup so we always get the same
+        // file. However this does ensure we have unique ekn_ids
+        data.ekn_id = IMAGES_DIR + VIDEO_FILENAME + new Array(this._video_count++).fill('/').join('');
+        let video = Eknc.VideoObjectModel.new_from_props(data);
+        this._video_models.push(video);
+        return video;
+    },
+
     _generate_article_object: function (data) {
         data.synopsis = this._SYNOPSIS;
         data.content_type = 'text/html';
         data.source = 'wikipedia';
         data.license = 'CC-BY-SA 3.0';
+        data.ekn_id = 'ekn://moltres/article' + this._article_count++;
         let article = Eknc.ArticleObjectModel.new_from_props(data);
         article.get_content_stream = () => { return Utils.string_to_stream('<html><body><p>Some content</p></body></html>'); };
+
+        // Save this model. We can't just generate them on the fly and then
+        // discard them because later the client could request this same article
+        // by ekn_id and we need to remember which tags it had. So we have to
+        // keep the model around.
+        this._article_models.push(article);
         return article;
     },
 });

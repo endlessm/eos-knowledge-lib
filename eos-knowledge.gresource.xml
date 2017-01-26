@@ -16,12 +16,13 @@
     <file>data/images/checkmark.png</file>
     <file>data/images/pdf-background.png</file>
     <file>data/images/pdf_icon.png</file>
+    <file>data/images/tools/desk.jpg</file>
+    <file>data/images/tools/give_that_man_a_knighthood.webm</file>
+    <file>data/images/tools/house.jpg</file>
     <file>data/images/tools/food.jpg</file>
+    <file>data/images/tools/football.jpg</file>
     <file>data/images/tools/forest.jpg</file>
     <file>data/images/tools/people.jpg</file>
-    <file>data/images/tools/football.jpg</file>
-    <file>data/images/tools/desk.jpg</file>
-    <file>data/images/tools/house.jpg</file>
     <file preprocess="xml-stripblanks" compressed="true">data/images/arrow-symbolic.svg</file>
     <file preprocess="xml-stripblanks">data/images/deckbg.svg</file>
     <file>data/images/separator.png</file>
