@@ -28,6 +28,7 @@
     </child>
     <child>
       <object class="EknFormattableLabel" id="synopsis-label">
+        <property name="no_show_all">True</property>
         <property name="can_focus">False</property>
         <property name="vexpand">True</property>
         <property name="valign">center</property>

@@ -99,6 +99,7 @@ scss_theme_card_partials = \
 	$(srcdir)/data/css/modules/card/_text.scss \
 	$(srcdir)/data/css/modules/card/_thumb.scss \
 	$(srcdir)/data/css/modules/card/_title.scss \
+	$(srcdir)/data/css/modules/card/_video.scss \
 	$(NULL)
 scss_theme_content_partials = \
 	$(srcdir)/data/css/modules/contentGroup/_contentGroup.scss \

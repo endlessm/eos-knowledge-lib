@@ -6,22 +6,6 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
-      <object class="EknThemeableImage" id="image">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="valign">end</property>
-        <property name="expand">True</property>
-        <property name="image-uri">resource:///app/assets/titleImage</property>
-        <style>
-          <class name="BannerApp__image"/>
-        </style>
-      </object>
-      <packing>
-        <property name="left_attach">0</property>
-        <property name="top_attach">0</property>
-      </packing>
-    </child>
-    <child>
       <object class="GtkLabel" id="subtitle-label">
         <property name="no_show_all">True</property>
         <property name="can_focus">False</property>

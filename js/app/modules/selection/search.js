@@ -26,7 +26,6 @@ const Search = new Module.Class({
         return Eknc.QueryObject.new_from_props({
             query: query,
             limit: limit,
-            tags_match_all: ['EknArticleObject'],
         });
     },
 });

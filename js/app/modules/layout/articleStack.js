@@ -79,6 +79,9 @@ const ArticleStack = new Module.Class({
         'nav-card': {
             multi: true,
         },
+        'video': {
+            multi: true,
+        },
     },
 
     References: {
@@ -126,9 +129,10 @@ const ArticleStack = new Module.Class({
         }
     },
 
-    _set_document_card: function (document) {
-        this.visible_child = document;
-        document.content_view.grab_focus();
+    _set_article_content: function (article_content) {
+        this.visible_child = article_content;
+        article_content.content_view.grab_focus();
+        article_content.set_active(true);
         this._clear_old_views();
     },
 
@@ -159,7 +163,7 @@ const ArticleStack = new Module.Class({
             this.visible_child.model.ekn_id === model.ekn_id)
             return;
 
-        let document_card_props = {
+        let article_content_props = {
             model: model,
         };
         let previous_model, next_model;
@@ -178,7 +182,7 @@ const ArticleStack = new Module.Class({
                 navigation_context: _("Previous Article"),
             });
             if (card !== null) {
-                document_card_props.previous_card = card;
+                article_content_props.previous_card = card;
                 card.connect('clicked', () => {
                     Dispatcher.get_default().dispatch({
                         action_type: Actions.PREVIOUS_DOCUMENT_CLICKED,
@@ -195,7 +199,7 @@ const ArticleStack = new Module.Class({
                 navigation_context: _("Next Article"),
             });
             if (card !== null) {
-                document_card_props.next_card = card;
+                article_content_props.next_card = card;
                 card.connect('clicked', () => {
                     Dispatcher.get_default().dispatch({
                         action_type: Actions.NEXT_DOCUMENT_CLICKED,
@@ -204,25 +208,30 @@ const ArticleStack = new Module.Class({
                 });
             }
         }
-        let document_card = this.create_submodule('card', document_card_props);
 
-        document_card.connect('ekn-link-clicked', (card, ekn_id) => {
+        let slot = 'card';
+        if (model instanceof Eknc.VideoObjectModel) {
+            slot = 'video';
+        }
+        let article_content = this.create_submodule(slot, article_content_props);
+
+        article_content.connect('ekn-link-clicked', (card, ekn_id) => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.ARTICLE_LINK_CLICKED,
                 ekn_id: ekn_id,
             });
         });
         this.transition_type = this._get_transition_type();
-        this.add(document_card);
-        document_card.show_all();
+        this.add(article_content);
+        article_content.show_all();
 
-        document_card.load_content(null, (card, task) => {
+        article_content.load_content(null, (card, task) => {
             try {
-                document_card.load_content_finish(task);
-                if (document_card.get_parent() === null)
+                article_content.load_content_finish(task);
+                if (article_content.get_parent() === null)
                     return;
                 if (this.transition_type !== Gtk.StackTransitionType.NONE)
-                    this._set_document_card(document_card);
+                    this._set_article_content(article_content);
             } catch (error) {
                 logError(error);
             }
@@ -231,16 +240,18 @@ const ArticleStack = new Module.Class({
         // Don't wait for WebKit to signal load-committed if we don't have a
         // loading animation; instead, cut right to the unfinished page
         if (this.transition_type === Gtk.StackTransitionType.NONE)
-            this._set_document_card(document_card);
-        if (document_card.content_view instanceof WebKit2.WebView)
-            this._webview_tooltip_presenter.set_document_card(document_card);
+            this._set_article_content(article_content);
+        if (article_content.content_view instanceof WebKit2.WebView)
+            this._webview_tooltip_presenter.set_document_card(article_content);
         
     },
 
     _on_history_changed: function () {
         let item = HistoryStore.get_default().get_current_item();
-        if (item.page_type !== Pages.ARTICLE)
+        if (item.page_type !== Pages.ARTICLE) {
+            this.get_children().forEach((view) => view.set_active(false));
             return;
+        }
         this._load_article_model(item.model, item.context);
     },
 

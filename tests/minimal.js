@@ -10,8 +10,8 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Arrangement = imports.app.interfaces.arrangement;
+const ArticleContent = imports.app.interfaces.articleContent;
 const Card = imports.app.interfaces.card;
-const DocumentCard = imports.app.interfaces.documentCard;
 const Filter = imports.app.interfaces.filter;
 const Module = imports.app.interfaces.module;
 const NavigationCard = imports.app.interfaces.navigationCard;
@@ -101,7 +101,7 @@ const MinimalModuleWithSlots = new Module.Class({
 const MinimalDocumentCard = new Module.Class({
     Name: 'MinimalDocumentCard',
     Extends: Gtk.Widget,
-    Implements: [Card.Card, DocumentCard.DocumentCard],
+    Implements: [Card.Card, ArticleContent.ArticleContent],
 
     Properties: {
         'info-notice': GObject.ParamSpec.object('info-notice', '', '',
@@ -137,7 +137,7 @@ const MinimalDocumentCard = new Module.Class({
 
     load_content: function (cancellable, callback) { callback(this); },
     load_content_finish: function () {},
-    clear_content: function () {},
+    set_active: function () {},
 });
 
 const MinimalBinModule = new Module.Class({

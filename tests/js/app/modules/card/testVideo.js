@@ -37,6 +37,14 @@ describe('Card.Video', function () {
     it('has a video player', function () {
         expect(card).toHaveDescendantWithClass(EosKnowledgePrivate.MediaBin);
     });
+
+    it('implements the ArticleContent interface', function (done) {
+        expect(() => card.set_active(false)).not.toThrow();
+        card.load_content(null, (card, task) => {
+            expect(() => card.load_content_finish(task)).not.toThrow();
+            done();
+        });
+    });
 });
 
 Compliance.test_card_compliance(Video.Video);

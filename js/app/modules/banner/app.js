@@ -1,5 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
@@ -7,6 +8,8 @@ const Module = imports.app.interfaces.module;
 // Make sure included for glade template
 const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
+
+const TITLE_IMAGE_URI = 'resource:///app/assets/titleImage';
 
 /**
  * Class: App
@@ -41,6 +44,14 @@ const App = new Module.Class({
         // forced not to because logo child has expand=true set.
         props.expand = props.expand || false;
         this.parent(props);
+
+        let file = Gio.File.new_for_uri(TITLE_IMAGE_URI);
+        if (file.query_exists(null)) {
+            let image = new ThemeableImage.ThemeableImage({
+                image_uri: TITLE_IMAGE_URI,
+            });
+            this.attach(image, 0, 0, 1, 1);
+        }
 
         let subtitle = '';
         let app_info = Utils.get_desktop_app_info();
