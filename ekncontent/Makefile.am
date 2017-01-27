@@ -196,7 +196,7 @@ AM_TESTS_ENVIRONMENT = \
 	export LD_LIBRARY_PATH="$(top_builddir)/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
 	export G_TEST_SRCDIR="$(abs_srcdir)/tests"; \
 	export G_TEST_BUILDDIR="$(abs_builddir)/tests"; \
-	export XDG_DATA_DIRS="$(abs_srcdir)/tests/testcontent$${XDG_DATA_DIRS:+:$$XDG_DATA_DIRS}"; \
+	export XDG_DATA_DIRS="$(abs_srcdir)/tests/testcontent:$${XDG_DATA_DIRS:-/usr/local/share/:/usr/share/}"; \
 	export LC_ALL=C; \
 	$(NULL)
 
