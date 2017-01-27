@@ -1,0 +1,25 @@
+{
+  "name": "eos-knowledge-content",
+  "version": "0.0.1",
+  "description": "Node bindings for the EndlessOS knowledge content library",
+  "main": "index.js",
+  "scripts": {
+    "install": "node-gyp rebuild"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/endlessm/eos-knowledge-lib.git"
+  },
+  "keywords": [
+    "EndlessOS",
+    "gyp",
+    "native-module"
+  ],
+  "author": "Matthew Watson <mattdangerw@gmail.com>",
+  "license": "LGPL-2.1",
+  "gypfile": true,
+  "bugs": {
+    "url": "https://github.com/endlessm/eos-knowledge-lib/issues"
+  },
+  "homepage": "https://github.com/endlessm/eos-knowledge-lib"
+}
