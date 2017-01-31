@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge 0.4.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2017-01-24 03:24+0000\n"
+"POT-Creation-Date: 2017-01-31 03:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,11 +23,11 @@ msgstr ""
 msgid "PDF"
 msgstr ""
 
-#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:195
+#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:199
 msgid "Next Article"
 msgstr ""
 
-#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:178
+#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:182
 msgid "Previous Article"
 msgstr ""
 
@@ -206,10 +206,10 @@ msgstr ""
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:100
+#: js/app/utils.js:101
 msgid "by {author}"
 msgstr ""
 
-#: js/app/utils.js:100
+#: js/app/utils.js:101
 msgid "and"
 msgstr ""
