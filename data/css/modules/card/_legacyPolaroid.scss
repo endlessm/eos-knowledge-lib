@@ -34,6 +34,10 @@
         }
     }
 
+    &__label {
+        padding: 0.50em 0em 0.50em 0.50em;
+    }
+
     .composite & {
         &__title {
             font-weight: 600;
