@@ -19,18 +19,15 @@ describe ('Dominant Color', function () {
         resource._register();
     });
 
-    it('extracts color when fetching the image from a resource file', function (done) {
+    it('extracts color when fetching the image from a resource file', function () {
         let model = Eknc.ContentObjectModel.new_from_props({
             thumbnail_uri: image,
         });
 
-        _check_color_for_model(model, done);
+        _check_color_for_model(model);
     });
 
-    function _check_color_for_model (model, done) {
-        DominantColor.get_dominant_color(model, null, (helper, task_obj) => {
-            expect(helper.get_dominant_color_finish(task_obj)).toEqual(color);
-            done();
-        });
+    function _check_color_for_model (model) {
+        expect(DominantColor.get_dominant_color(model)).toEqual(color);
     }
 });

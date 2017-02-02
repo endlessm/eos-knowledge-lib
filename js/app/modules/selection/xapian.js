@@ -76,30 +76,15 @@ const Xapian = new Module.Class({
 
         this._loading = true;
         this.notify('loading');
-        engine.query(query, null, (engine, task) => {
+        engine.query_promise(query)
+        .then(({ models, upper_bound }) => {
             this._loading = false;
             this._set_needs_refresh(false);
             this.notify('loading');
-
-            let models = [];
-            let upper_bound = 0;
-            try {
-                let results = engine.query_finish(task);
-                models = results.models;
-                upper_bound = results.upper_bound;
-                this._exception = null;
-                if (this._error_state) {
-                    this._error_state = false;
-                    this.notify('in-error-state');
-                }
-            } catch (e) {
-                logError(e, 'Failed to load content from engine');
-                this._exception = e;
-                if (!this._error_state) {
-                    this._error_state = true;
-                    this.notify('in-error-state');
-                }
-                return;
+            this._exception = null;
+            if (this._error_state) {
+                this._error_state = false;
+                this.notify('in-error-state');
             }
 
             // Since above, in the case of having a filter present, we
@@ -155,6 +140,14 @@ const Xapian = new Module.Class({
             }
 
             this.emit_models_when_not_animating();
+        })
+        .catch((error) => {
+            logError(error, 'Failed to load content from engine');
+            this._exception = error;
+            if (!this._error_state) {
+                this._error_state = true;
+                this.notify('in-error-state');
+            }
         });
     },
 

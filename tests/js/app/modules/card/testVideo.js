@@ -40,10 +40,7 @@ describe('Card.Video', function () {
 
     it('implements the ArticleContent interface', function (done) {
         expect(() => card.set_active(false)).not.toThrow();
-        card.load_content(null, (card, task) => {
-            expect(() => card.load_content_finish(task)).not.toThrow();
-            done();
-        });
+        card.load_content_promise().then(done);
     });
 });
 

@@ -71,7 +71,6 @@
     <file>js/app/actions.js</file>
     <file>js/app/application.js</file>
     <file>js/app/articleHTMLRenderer.js</file>
-    <file>js/app/asyncTask.js</file>
     <file>js/app/buffetHistoryStore.js</file>
     <file>js/app/config.js</file>
     <file>js/app/courseHistoryStore.js</file>
@@ -180,6 +179,7 @@
     <file>js/app/modules/window/simple.js</file>
     <file>js/app/moltresEngine.js</file>
     <file>js/app/pages.js</file>
+    <file>js/app/promiseWrapper.js</file>
     <file>js/app/readingHistoryModel.js</file>
     <file>js/app/setMap.js</file>
     <file>js/app/toggleTweener.js</file>

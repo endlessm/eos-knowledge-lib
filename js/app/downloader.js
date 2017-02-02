@@ -7,7 +7,6 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Soup = imports.gi.Soup;
 
-const AsyncTask = imports.app.asyncTask;
 const Config = imports.app.config;
 const Utils = imports.app.utils;
 
@@ -36,79 +35,35 @@ const FileDownloader = new Lang.Class({
         Soup.Session.prototype.add_feature.call(this._http_session, this._requester);
     },
 
-    verify_checksum: function (file, against_digest, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        task.catch_errors(() => {
+    verify_checksum_promise: function (file, against_digest, cancellable) {
+        return Promise.resolve()
+        .then(() => {
             let stream = file.read(cancellable);
             let csum = new GLib.Checksum(GLib.ChecksumType.SHA256);
 
-            function finish() {
-                let digest = csum.get_string();
-                if (against_digest.toLowerCase() !== digest.toLowerCase())
-                    throw new Error(Format.vprintf("Checksum against file %s did not match: %s (local), %s (remote)", [file.get_basename(), digest, against_digest]));
-                task.return_value(true);
+            function continue_checksum () {
+                stream.read_bytes_promise(Utils.CHUNK_SIZE, 0, cancellable)
+                .then((bytes) => {
+                    csum.update(bytes.get_data());
+                    if (bytes.get_size() !== 0)
+                        return continue_checksum();
+
+                    let digest = csum.get_string();
+                    if (against_digest.toLowerCase() !== digest.toLowerCase())
+                        throw new Error(Format.vprintf("Checksum against file %s did not match: %s (local), %s (remote)", [file.get_basename(), digest, against_digest]));
+                    return true;
+                });
             }
 
-            function bytes_read(stream, res) {
-                let bytes = stream.read_bytes_finish(res);
-                csum.update(bytes.get_data());
-
-                if (bytes.get_size() !== 0)
-                    continue_checksum();
-                else
-                    finish();
-            }
-
-            function continue_checksum() {
-                stream.read_bytes_async(Utils.CHUNK_SIZE, 0, cancellable, task.catch_callback_errors(bytes_read));
-            }
-
-            continue_checksum();
+            return continue_checksum();
         });
-        return task;
     },
 
-    verify_checksum_finish: function (task) {
-        return task.finish();
-    },
-
-    download_file: function (file_download_request, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        task.catch_errors(() => {
+    download_file_promise: function (file_download_request, cancellable) {
+        return Promise.resolve()
+        .then(() => {
             let uri = file_download_request.uri;
             let out_file = file_download_request.out_file;
-
-            let download_cancellable = new Gio.Cancellable();
-            if (cancellable)
-                cancellable.connect(() => {
-                    download_cancellable.cancel();
-                });
-
-            function keep_new_file() {
-                tmp_file.move(out_file, Gio.FileCopyFlags.OVERWRITE, cancellable, null);
-                task.return_value(out_file);
-            }
-
-            function keep_existing_file() {
-                download_cancellable.cancel();
-                tmp_file.delete(cancellable);
-                task.return_value(out_file);
-            }
-
-            let finish_download = (finish) => {
-                // If we have a checksum, verify it.
-                let csum = file_download_request.csum;
-
-                if (csum) {
-                    this.verify_checksum(tmp_file, csum, cancellable, task.catch_callback_errors((source, csum_task) => {
-                        // XXX: If the file didn't checksum correctly, what should we do? Trash and re-download?
-                        this.verify_checksum_finish(csum_task);
-                        finish();
-                    }));
-                } else {
-                    finish();
-                }
-            };
 
             let request = this._requester.request_uri(uri);
 
@@ -120,44 +75,48 @@ const FileDownloader = new Lang.Class({
                     request.get_message().request_headers.set_range(size, -1);
             }
 
-            request.send_async(download_cancellable, task.catch_callback_errors((request, result) => {
+            return request.send_promise(cancellable)
+            .then((body) => {
                 // mirrors the SOUP_STATUS_IS_SUCCESSFUL macro
                 function soup_status_is_successful(status) {
                     return status >= 200 && status < 300;
                 }
 
-                let body = request.send_finish(result);
                 let msg = request.get_message();
                 let status = msg.status_code;
 
-                if (status === Soup.Status.REQUESTED_RANGE_NOT_SATISFIABLE) {
-                    // The server is telling us we already have the full file range.
-                    finish_download(keep_new_file);
-                } else if (!soup_status_is_successful(status)) {
+                // The server is telling us we already have the full file range.
+                if (status === Soup.Status.REQUESTED_RANGE_NOT_SATISFIABLE)
+                    return true;
+
+                if (!soup_status_is_successful(status))
                     throw new Error("Server returned code " + status + " while fetching " + uri.to_string(true));
+
+                let out_stream;
+                if (status === Soup.Status.PARTIAL_CONTENT) {
+                    out_stream = tmp_file.append_to(Gio.FileCreateFlags.NONE, cancellable);
                 } else {
-                    let out_stream;
-                    if (status === Soup.Status.PARTIAL_CONTENT) {
-                        out_stream = tmp_file.append_to(Gio.FileCreateFlags.NONE, cancellable);
-                    } else {
-                        out_stream = tmp_file.replace(null, false, Gio.FileCreateFlags.NONE, cancellable);
-                    }
-
-                    out_stream.splice_async(body, Gio.OutputStreamSpliceFlags.NONE,
-                                            GLib.PRIORITY_DEFAULT, cancellable, task.catch_callback_errors((source, res) => {
-                                                out_stream.splice_finish(res);
-                                                out_stream.close(cancellable);
-                                                finish_download(keep_new_file);
-                                            }));
+                    out_stream = tmp_file.replace(null, false, Gio.FileCreateFlags.NONE, cancellable);
                 }
-            }));
+
+                return out_stream.splice_promise(body, Gio.OutputStreamSpliceFlags.NONE, GLib.PRIORITY_DEFAULT, cancellable).then(() => {
+                    out_stream.close(cancellable);
+                });
+            })
+            .then(() => {
+                // If we have a checksum, verify it.
+                let csum = file_download_request.csum;
+
+                if (!csum)
+                    return true;
+                // XXX: If the file didn't checksum correctly, what should we do? Trash and re-download?
+                return this.verify_checksum_promise(tmp_file, csum, cancellable);
+            })
+            .then(() => {
+                tmp_file.move(out_file, Gio.FileCopyFlags.OVERWRITE, cancellable, null);
+                return out_file;
+            });
         });
-
-        return task;
-    },
-
-    download_file_finish: function (task) {
-        return task.finish();
     },
 });
 
@@ -210,51 +169,38 @@ const SubscriptionDownloader = new Lang.Class({
         this._server_host = kf.get_string("Repository", "ServerUrl");
     },
 
-    _download_new_shards: function (directory, old_manifest, new_manifest, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+    _download_new_shards_promise: function (directory, old_manifest, new_manifest, cancellable) {
+        return Promise.resolve()
+        .then(() => {
+            let old_shards = old_manifest.shards;
+            // Verify that client shards actually appear on disk.
+            old_shards = old_shards.filter((shard) => {
+                let shard_file = directory.get_child(shard.path);
+                return shard_file.query_exists(cancellable);
+            });
 
-        let old_shards = old_manifest.shards;
-        // Verify that client shards actually appear on disk.
-        old_shards = old_shards.filter((shard) => {
-            let shard_file = directory.get_child(shard.path);
-            return shard_file.query_exists(cancellable);
-        });
+            let new_shards = new_manifest.shards;
 
-        let new_shards = new_manifest.shards;
+            // Download any shards that are not on the client.
 
-        // Download any shards that are not on the client.
+            // XXX: We're currently indexing by filename, assuming it will be good enough.
+            // Will it be, or should we also store e.g. ETag?
+            let to_download = subtract_set(new_shards, old_shards, (shard) => shard.path);
+            let to_delete = subtract_set(old_shards, new_shards, (shard) => shard.path);
 
-        // XXX: We're currently indexing by filename, assuming it will be good enough.
-        // Will it be, or should we also store e.g. ETag?
-        let to_download = subtract_set(new_shards, old_shards, (shard) => shard.path);
-        let to_delete = subtract_set(old_shards, new_shards, (shard) => shard.path);
+            if (to_download.length === 0 && to_delete.length === 0)
+                return false;
 
-        if (to_download.length === 0 && to_delete.length === 0) {
-            task.return_value(false);
-            return task;
-        }
-
-        AsyncTask.all(this, (add_task) => {
-            to_download.forEach((shard) => {
+            let downloads = to_download.map((shard) => {
                 let shard_file = directory.get_child(shard.path);
                 let shard_uri = Soup.URI.new(shard.download_uri);
                 let shard_csum = shard.sha256_csum;
 
                 let request = new FileDownloadRequest(shard_uri, shard_file, shard_csum);
-                add_task((cancellable, callback) => this._file_downloader.download_file(request, cancellable, callback),
-                         (task) => this._file_downloader.download_file_finish(task));
+                return this._file_downloader.download_file_promise(request, cancellable);
             });
-        }, cancellable, task.catch_callback_errors((source, download_shards_task) => {
-            AsyncTask.all_finish(download_shards_task);
-
-            task.return_value(true);
-        }));
-
-        return task;
-    },
-
-    _download_new_shards_finish: function (task) {
-        return task.finish();
+            return Promise.all(downloads).then(function () { return true; });
+        });
     },
 
     apply_update_sync: function (subscription_id, cancellable=null) {
@@ -298,17 +244,13 @@ const SubscriptionDownloader = new Lang.Class({
         return true;
     },
 
-    fetch_update: function (subscription_id, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        task._subscription_id = subscription_id;
-
-        task.catch_errors(() => {
+    fetch_update_promise: function (subscription_id, cancellable=null) {
+        return Promise.resolve()
+        .then(() => {
             this._app.hold();
 
-            if (this._ongoing_downloads.has(subscription_id)) {
-                task.return_value(false);
-                return;
-            }
+            if (this._ongoing_downloads.has(subscription_id))
+                return true;
 
             this._ongoing_downloads.add(subscription_id);
 
@@ -326,32 +268,23 @@ const SubscriptionDownloader = new Lang.Class({
             let manifest_uri = Soup.URI.new(uri);
 
             let request = new FileDownloadRequest(manifest_uri, new_manifest_file);
-            this._file_downloader.download_file(request, cancellable, task.catch_callback_errors((source, download_task) => {
-                try {
-                    this._file_downloader.download_file_finish(download_task);
-                } catch(e if e.matches(Gio.ResolverError, Gio.ResolverError.NOT_FOUND)) {
-                    task.return_value(true);
-                    return;
-                }
-
+            return this._file_downloader.download_file_promise(request, cancellable).catch(function (error) {
+                if (!error.matches(Gio.ResolverError, Gio.ResolverError.NOT_FOUND))
+                    throw error;
+            })
+            .then(() => {
                 let new_manifest = load_manifest(new_manifest_file, cancellable);
-                this._download_new_shards(directory, old_manifest, new_manifest, cancellable, task.catch_callback_errors((source, download_task) => {
-                    let have_new_manifest = this._download_new_shards_finish(download_task);
+                return this._download_new_shards_promise(directory, old_manifest, new_manifest, cancellable).then((have_new_manifest) => {
                     if (!have_new_manifest)
                         new_manifest_file.delete(cancellable);
-
-                    task.return_value(true);
-                }));
-            }));
+                });
+            })
+            .then((updated) => {
+                this._app.release();
+                this._ongoing_downloads.delete(subscription_id);
+                return updated;
+            });
         });
-
-        return task;
-    },
-
-    fetch_update_finish: function (task) {
-        this._app.release();
-        this._ongoing_downloads.delete(task._subscription_id);
-        return task.finish();
     },
 });
 

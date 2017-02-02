@@ -51,18 +51,10 @@ const ArticleContent = new Lang.Interface({
     },
 
     /**
-     * Method: load_content
-     * Load the content for this article
-     *
+     * Method: load_content_promise
+     * Returns a promise for asynchronously loading the document content.
      */
-    load_content: Lang.Interface.UNIMPLEMENTED,
-
-    /**
-     * Method: load_content_finish
-     * Call this to end the async task
-     *
-     */
-    load_content_finish: Lang.Interface.UNIMPLEMENTED,
+    load_content_promise: Lang.Interface.UNIMPLEMENTED,
 
     /**
      * Method: set_active (is_active)

@@ -313,26 +313,23 @@ const Card = new Lang.Interface({
             tags_match_any: set_obj.child_tags,
             limit: GLib.MAXUINT32,
         });
-        Eknc.Engine.get_default().query(query, null, (engine, task) => {
-            let results;
-            try {
-                results = engine.query_finish(task);
-                let reached_bottom = true;
-                results.models.forEach((obj) => {
-                    if (obj instanceof Eknc.SetObjectModel) {
-                        reached_bottom = false;
-                        this._count_set(obj, callback);
-                    } else {
-                        this._child_count += 1;
-                    }
-                });
-                if (reached_bottom) {
-                    callback(this._child_count);
+        Eknc.Engine.get_default().query_promise(query)
+        .then((results) => {
+            let reached_bottom = true;
+            results.models.forEach((obj) => {
+                if (obj instanceof Eknc.SetObjectModel) {
+                    reached_bottom = false;
+                    this._count_set(obj, callback);
+                } else {
+                    this._child_count += 1;
                 }
-            } catch (e) {
-                logError(e, 'Failed to load content from engine');
-                return;
+            });
+            if (reached_bottom) {
+                callback(this._child_count);
             }
+        })
+        .catch(function (error) {
+            logError(error, 'Failed to load content from engine');
         });
     },
 

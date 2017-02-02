@@ -19,11 +19,14 @@ const Downloader = imports.app.downloader;
 const Knowledge = imports.app.knowledge;
 const ModuleFactory = imports.app.moduleFactory;
 const MoltresEngine = imports.app.moltresEngine;
+const PromiseWrapper = imports.app.promiseWrapper;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 // Initialize libraries
 EvinceDocument.init();
+// Set up promise wrappers
+PromiseWrapper.wrapPromises();
 
 const KnowledgeSearchIface = '\
 <node> \
@@ -181,12 +184,9 @@ const Application = new Knowledge.Class({
             downloader.apply_update_sync(id);
             // Regardless of whether or not we applied an update,
             // let's see about fetching a new one...
-            downloader.fetch_update(id, null, (downloader, result) => {
-                try {
-                    downloader.fetch_update_finish(result);
-                } catch(e) {
-                    logError(e, Format.vprintf("Could not update subscription ID: %s", [id]));
-                }
+            downloader.fetch_update_promise(id)
+            .catch(function (error) {
+                logError(error, Format.vprintf("Could not update subscription ID: %s", [id]));
             });
         });
     },

@@ -225,16 +225,15 @@ const ArticleStack = new Module.Class({
         this.add(article_content);
         article_content.show_all();
 
-        article_content.load_content(null, (card, task) => {
-            try {
-                article_content.load_content_finish(task);
-                if (article_content.get_parent() === null)
-                    return;
-                if (this.transition_type !== Gtk.StackTransitionType.NONE)
-                    this._set_article_content(article_content);
-            } catch (error) {
-                logError(error);
-            }
+        article_content.load_content_promise()
+        .then(() => {
+            if (article_content.get_parent() === null)
+                return;
+            if (this.transition_type !== Gtk.StackTransitionType.NONE)
+                this._set_article_content(article_content);
+        })
+        .catch(function (error) {
+            logError(error);
         });
 
         // Don't wait for WebKit to signal load-committed if we don't have a
@@ -257,15 +256,12 @@ const ArticleStack = new Module.Class({
 
     _on_show_tooltip: function (tooltip_presenter, tooltip, uri) {
         if (GLib.uri_parse_scheme(uri) === 'ekn') {
-            Eknc.Engine.get_default().get_object(uri, null, (engine, task) => {
-                let article_model;
-                try {
-                    article_model = engine.get_object_finish(task);
-                } catch (error) {
-                    logError(error, 'Could not get article model');
-                    return;
-                }
+            Eknc.Engine.get_default().get_object_promise(uri)
+            .then((article_model) => {
                 this._webview_tooltip_presenter.show_default_tooltip(tooltip, article_model.title);
+            })
+            .catch(function (error) {
+                logError(error, 'Could not get article model');
             });
         } else if (GLib.uri_parse_scheme(uri) === 'license') {
             // If the URI has the "license://" scheme, then it corresponds to a

@@ -261,15 +261,8 @@ const HistoryStore = new Lang.Class({
     // the same after a link click, factoring out this common function. When we
     // diverge in future interactions we should revisit this decomposition.
     show_ekn_id: function (ekn_id) {
-        Eknc.Engine.get_default().get_object(ekn_id, null, (engine, task) => {
-            let model;
-            try {
-                model = engine.get_object_finish(task);
-            } catch (error) {
-                logError(error);
-                return;
-            }
-
+        Eknc.Engine.get_default().get_object_promise(ekn_id)
+        .then((model) => {
             if (model instanceof Eknc.ArticleObjectModel) {
                 this.set_current_item_from_props({
                     page_type: Pages.ARTICLE,
@@ -290,31 +283,33 @@ const HistoryStore = new Lang.Class({
                     media_model: model,
                 });
             }
+        })
+        .catch(function (error) {
+            logError(error);
         });
     },
 
     load_dbus_item: function (ekn_id, query, timestamp) {
-        Eknc.Engine.get_default().get_object(ekn_id, null, (engine, task) => {
-            try {
-                let model = engine.get_object_finish(task);
-                if (model instanceof Eknc.ArticleObjectModel) {
-                    this.set_current_item_from_props({
-                        page_type: Pages.ARTICLE,
-                        model: model,
-                        query: query,
-                        timestamp: timestamp || Gdk.CURRENT_TIME,
-                    });
-                } else if (model instanceof Eknc.SetObjectModel) {
-                    this.set_current_item_from_props({
-                        page_type: Pages.SET,
-                        model: model,
-                        context_label: model.title,
-                        timestamp: timestamp || Gdk.CURRENT_TIME,
-                    });
-                }
-            } catch (error) {
-                logError(error);
+        Eknc.Engine.get_default().get_object_promise(ekn_id)
+        .then((model) => {
+            if (model instanceof Eknc.ArticleObjectModel) {
+                this.set_current_item_from_props({
+                    page_type: Pages.ARTICLE,
+                    model: model,
+                    query: query,
+                    timestamp: timestamp || Gdk.CURRENT_TIME,
+                });
+            } else if (model instanceof Eknc.SetObjectModel) {
+                this.set_current_item_from_props({
+                    page_type: Pages.SET,
+                    model: model,
+                    context_label: model.title,
+                    timestamp: timestamp || Gdk.CURRENT_TIME,
+                });
             }
+        })
+        .catch(function (error) {
+            logError(error);
         });
     },
 

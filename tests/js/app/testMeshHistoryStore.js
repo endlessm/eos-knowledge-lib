@@ -7,6 +7,7 @@ const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const Pages = imports.app.pages;
+const Utils = imports.tests.utils;
 
 describe('MeshHistoryStore', function () {
     let store, dispatcher, engine, reading_history;
@@ -175,11 +176,12 @@ describe('MeshHistoryStore', function () {
             let model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn://foo/bar',
             });
-            engine.get_object_finish.and.returnValue(model);
+            engine.get_object_promise.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.ARTICLE_LINK_CLICKED,
                 ekn_id: 'ekn://foo/bar',
             });
+            Utils.update_gui();
             expect(store.get_current_item().page_type).toBe(Pages.ARTICLE);
         });
 
@@ -187,11 +189,12 @@ describe('MeshHistoryStore', function () {
             let model = Eknc.MediaObjectModel.new_from_props({
                 ekn_id: 'ekn://foo/pix',
             });
-            engine.get_object_finish.and.returnValue(model);
+            engine.get_object_promise.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.ARTICLE_LINK_CLICKED,
                 ekn_id: 'ekn://foo/pix',
             });
+            Utils.update_gui();
             expect(store.get_current_item().media_model).toBe(model);
         });
     });
@@ -203,15 +206,15 @@ describe('MeshHistoryStore', function () {
             model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn:///foo',
             });
-            engine.get_object_finish.and.returnValue(model);
+            engine.get_object_promise.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                 query: 'foo',
                 ekn_id: 'ekn:///foo',
             });
 
-            expect(engine.get_object).toHaveBeenCalled();
-            expect(engine.get_object.calls.mostRecent().args[0])
+            expect(engine.get_object_promise).toHaveBeenCalled();
+            expect(engine.get_object_promise.calls.mostRecent().args[0])
                 .toBe('ekn:///foo');
         });
 
@@ -219,12 +222,13 @@ describe('MeshHistoryStore', function () {
             model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn:///foo',
             });
-            engine.get_object_finish.and.returnValue(model);
+            engine.get_object_promise.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                 query: 'foo',
                 ekn_id: 'ekn:///foo',
             });
+            Utils.update_gui();
 
             expect(store.get_current_item().page_type).toBe(Pages.ARTICLE);
         });
@@ -233,12 +237,13 @@ describe('MeshHistoryStore', function () {
             model = Eknc.SetObjectModel.new_from_props({
                 ekn_id: 'ekn:///foo',
             });
-            engine.get_object_finish.and.returnValue(model);
+            engine.get_object_promise.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                 query: 'foo',
                 ekn_id: 'ekn:///foo',
             });
+            Utils.update_gui();
 
             expect(store.get_current_item().page_type).toBe(Pages.SET);
         });
