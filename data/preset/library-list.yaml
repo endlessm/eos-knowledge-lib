@@ -73,7 +73,7 @@ defines:
   shortdef: 'Layout.Sidebar(sidebar-first: false)'
   slots:
     content:
-      shortdef: 'Banner.Set(valign: end)'
+      shortdef: 'Banner.Set(valign: center)'
       slots:
         card: Card.Title
     sidebar:
@@ -96,7 +96,6 @@ defines:
   slots:
     contents:
     - 'Banner.Search(halign: center)'
-    - Decoration.Separator
     - type: Layout.InfiniteScrolling
       references:
         lazy-load: search-results
@@ -149,7 +148,7 @@ defines:
                 valign: start
                 expand: true
                 max-children-per-line: 5
-                min-children-per-line: 3
+                min-children-per-line: 2
               slots:
                 card: *card
             selection:
