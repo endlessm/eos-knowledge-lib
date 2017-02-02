@@ -3,6 +3,10 @@
 
 @import 'mesh';
 
+.CardLegacyPolaroid {
+  box-shadow: 0px 2px 3px transparentize(black, 1 - 0.40);
+}
+
 .home-page {
   .BannerDynamic {
     &__logo {
@@ -22,24 +26,44 @@
     padding: 0px;
     &__title {
       font-size: 18px;
+      padding: 0.75em 0.50em;
     }
   }
 
   .DecorationThemeableImage {
     margin: 0 20px -20px 0;
   }
-}
 
-.set-page .BannerSet {
-  margin: 0 0 45px 45px;
-  .CardTitle {
-      &__title {
-        font-family: $logo-font;
-      }
+  .NavigationSearchBox {
+    color: black;
+    caret-color: black;
   }
 }
 
-.subset-page, .article-page {
+.set-page {
+  .BannerSet {
+    margin-left: 5.0em;
+    .CardTitle {
+        &__title {
+          font-size: 60px;
+          font-weight: 900;
+          font-family: $title-font;
+        }
+    }
+  }
+}
+
+.set-page,
+.subset-page {
+  .sidebar .CardTitle__title {
+    font-family: $display-font;
+    font-weight: 400;
+    padding-right: 1.0em;
+  }
+}
+
+.subset-page,
+.article-page {
   .sidebar {
     padding-left: 60px;
   }
@@ -54,21 +78,48 @@
   .ContentGroupContentGroup {
     &__title {
       font-size: 51px;
-      font-weight: bold;
+      font-weight: 900;
       font-family: $title-font;
       margin: 30px 0;
     }
   }
 }
 
+.subset-page,
+.search-page {
+  .CardLegacyPolaroid {
+    padding: 11px;
+    &__title {
+      font-size: 1.0em;
+    }
+    &__synopsis {
+      font-size: 0.75em;
+      margin-top: 0.26em;
+    }
+  }
+}
+
+.search-page {
+  .BannerSearch {
+    font-weight: 900;
+    padding: 1.0em 1.0em 0.50em 1.0em;
+  }
+}
+
 .search-results {
   background-color: transparent;
-  .ContentGroupNoResultsMessage__title,
-  .ContentGroupNoResultsMessage__subtitle {
+  .ContentGroupNoResultsMessage {
+    margin-top: 3.0em;
+    &__title,
+    &__subtitle {
+      font-size: 1.25em;
       color: white;
-      font-size: 16px;
+      padding: 0em 1.25em 0em 1.25em;
       font-style: normal;
-      padding: 2.0em 0 0 0;
+    }
+    &__subtitle {
+      margin-top: 1.0em;
+    }
   }
 }
 
@@ -76,7 +127,7 @@
     scrollbar {
         trough {
             padding: 0px 3px;
-            background-color: transparentize(black, 1 - 0.5);
+            background-color: transparentize(black, 1 - 0.90);
             background-image: linear-gradient(89deg,
                                               transparentize(white, 1 - 0.1) 0%,
                                               transparentize(black, 1 - 0.1) 100%);
@@ -84,7 +135,7 @@
         }
 
         slider {
-            background-color: #888888;
+            background-color: transparentize(white, 1 - 0.5);
         }
     }
 
@@ -99,4 +150,50 @@
         font-style: normal;
         padding: 10px 25px;
     }
+}
+
+.composite {
+  .set-page,
+  .subset-page,
+  .search-page {
+    .CardLegacyPolaroid__title {
+      font-size: 1.0em;
+    }
+
+    .CardLegacyPolaroid__synopsis {
+      font-size: 1.0em;
+    }
+
+    .BannerSet .CardTitle__title,
+    .BannerSearch__title,
+    .ContentGroupContentGroup__title {
+      font-family: $title-font-composite;
+      font-size: 30px;
+    }
+
+    .BannerSet {
+      margin-left: 3.0em;
+      margin-right: 1.0em;
+    }
+  }
+
+  .subset-page,
+  .article-page {
+    .sidebar .CardTitle__title {
+      font-family: $display-font-composite;
+      padding-right: 0.5em;
+    }
+  }
+
+  .ContentGroupNoResultsMessage {
+    margin-top: 1.0em;
+    &__title {
+      padding: 0em;
+      font-size: 20px;
+    }
+    &__subtitle {
+      padding: 0em 0em 2.0em 0em;
+      font-size: 20px;
+    }
+  }
 }
