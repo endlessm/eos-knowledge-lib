@@ -7,7 +7,6 @@
         'src/value.cc',
         'src/function.cc',
         'src/gobject.cc',
-        'src/closure.cc',
         'src/boxed.cc',
       ],
       'cflags': [

@@ -3,7 +3,6 @@
 
 #include "function.h"
 #include "value.h"
-#include "closure.h"
 
 using namespace v8;
 
@@ -114,29 +113,6 @@ static void GObjectConstructor(const FunctionCallbackInfo<Value> &args) {
 
 static G_DEFINE_QUARK(gnode_js_template, gnode_js_template);
 
-static void SignalConnectInternal(const FunctionCallbackInfo<Value> &args, bool after) {
-    Isolate *isolate = args.GetIsolate ();
-    GObject *gobject = GObjectFromWrapper (args.This ());
-
-    String::Utf8Value signal_name (args[0]->ToString ());
-    Local<Function> callback = Local<Function>::Cast (args[1]->ToObject ());
-    GClosure *gclosure = MakeClosure (isolate, callback);
-
-    ulong handler_id = g_signal_connect_closure (gobject, *signal_name, gclosure, after);
-    args.GetReturnValue ().Set(Integer::NewFromUnsigned (isolate, handler_id));
-}
-
-static void SignalConnect(const FunctionCallbackInfo<Value> &args) {
-    SignalConnectInternal (args, false);
-}
-
-static Local<FunctionTemplate> GetBaseClassTemplate(Isolate *isolate) {
-    Local<FunctionTemplate> tpl = FunctionTemplate::New (isolate);
-    Local<ObjectTemplate> proto = tpl->PrototypeTemplate ();
-    proto->Set (String::NewFromUtf8 (isolate, "connect"), FunctionTemplate::New (isolate, SignalConnect)->GetFunction ());
-    return tpl;
-}
-
 static Local<FunctionTemplate> GetClassTemplateFromGI(Isolate *isolate, GIBaseInfo *info);
 
 static void ClassDestroyed(const WeakCallbackData<FunctionTemplate, GIBaseInfo> &data) {
@@ -176,7 +152,7 @@ static Local<FunctionTemplate> GetClassTemplate(Isolate *isolate, GIBaseInfo *in
             Local<FunctionTemplate> parent_tpl = GetClassTemplateFromGI (isolate, (GIBaseInfo *) parent_info);
             tpl->Inherit (parent_tpl);
         } else {
-            tpl->Inherit (GetBaseClassTemplate (isolate));
+            tpl->Inherit (FunctionTemplate::New (isolate));
         }
 
         return tpl;
