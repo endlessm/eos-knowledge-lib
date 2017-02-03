@@ -6,7 +6,6 @@
 #include "boxed.h"
 #include "function.h"
 #include "gobject.h"
-#include "loop.h"
 
 #include <string.h>
 
@@ -173,10 +172,6 @@ static void BoxedFieldSetter(const FunctionCallbackInfo<Value> &args) {
     g_base_info_unref (type_info);
 }
 
-static void StartLoop(const FunctionCallbackInfo<Value> &args) {
-    GNodeJS::StartLoop ();
-}
-
 void InitModule(Local<Object> exports, Local<Value> module, void *priv) {
     Isolate *isolate = Isolate::GetCurrent ();
 
@@ -193,8 +188,6 @@ void InitModule(Local<Object> exports, Local<Value> module, void *priv) {
     exports->Set (String::NewFromUtf8 (isolate, "MakeBoxed"), FunctionTemplate::New (isolate, MakeBoxed)->GetFunction ());
     exports->Set (String::NewFromUtf8 (isolate, "BoxedFieldGetter"), FunctionTemplate::New (isolate, BoxedFieldGetter)->GetFunction ());
     exports->Set (String::NewFromUtf8 (isolate, "BoxedFieldSetter"), FunctionTemplate::New (isolate, BoxedFieldSetter)->GetFunction ());
-
-    exports->Set (String::NewFromUtf8 (isolate, "StartLoop"), FunctionTemplate::New (isolate, StartLoop)->GetFunction ());
 }
 
 NODE_MODULE(eknbindings, InitModule)

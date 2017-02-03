@@ -3,7 +3,6 @@
     {
       'target_name': 'ekn-bindings',
       'sources': [
-        'src/loop.cc',
         'src/gi.cc',
         'src/value.cc',
         'src/function.cc',
