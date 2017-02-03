@@ -177,16 +177,6 @@ function importNS(ns, version) {
         module[name] = makeInfo(info);
     }
 
-    var override;
-    try {
-        override = require('./overrides/' + ns);
-    } catch (e) {
-        // No override
-    }
-
-    if (override)
-        override.apply(module);
-
     return module;
 }
 
