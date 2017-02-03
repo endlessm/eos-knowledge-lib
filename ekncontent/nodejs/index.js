@@ -164,11 +164,11 @@ function makeInfo(info) {
         return makeStruct(info);
 }
 
-function importNS(ns, version) {
+function importNS(ns) {
     let module = {};
 
     let repo = GIRepository.Repository_get_default();
-    GIRepository.Repository_require.call(repo, ns, version || null, 0);
+    GIRepository.Repository_require.call(repo, ns, null, 0);
 
     let nInfos = GIRepository.Repository_get_n_infos.call(repo, ns);
     for (let i = 0; i < nInfos; i++) {
