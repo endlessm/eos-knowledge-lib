@@ -166,7 +166,7 @@ const Arrangement = new Lang.Interface({
             ekn_id_set.add(model.ekn_id);
             let newly_created = false;
             if (!this._cards_by_id.get(model.ekn_id)) {
-                this._cards_by_id.set(model.ekn_id, this._create_card(model));
+                this._create_card(model);
                 newly_created = true;
             }
 
