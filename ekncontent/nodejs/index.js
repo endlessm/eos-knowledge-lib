@@ -1,8 +1,8 @@
-const gi = require('./build/Release/ekn-bindings.node');
+const bindings = require('./build/Release/eknbindings.node');
 
 // The bootstrap from C here contains functions and methods for each object,
-// namespaced with underscores. See gi.cc for more information.
-const GIRepository = gi.Bootstrap();
+// namespaced with underscores. See bindings.cc for more information.
+const GIRepository = bindings.Bootstrap();
 
 // The GIRepository API is fairly poor, and contains methods on classes,
 // methods on objects, and what should be methods interpreted as functions,
@@ -31,7 +31,7 @@ const GIRepository = gi.Bootstrap();
 function declareFunction(obj, info) {
     let name = GIRepository.BaseInfo_get_name.call(info);
     let flags = GIRepository.function_info_get_flags(info);
-    let func = gi.MakeFunction(info);
+    let func = bindings.MakeFunction(info);
     let target = flags & GIRepository.FunctionInfoFlags.IS_METHOD ? obj.prototype : obj;
     Object.defineProperty(target, name, {
         configurable: true,
@@ -61,26 +61,26 @@ function makeEnum(info) {
 }
 
 function makeConstant(info) {
-    return gi.GetConstantValue(info);
+    return bindings.GetConstantValue(info);
 }
 
 function makeFunction(info) {
-    return gi.MakeFunction(info);
+    return bindings.MakeFunction(info);
 }
 
 function makeStruct(info) {
     function fieldGetter(fieldInfo) {
         return function() {
-            return gi.BoxedFieldGetter(this, fieldInfo);
+            return bindings.BoxedFieldGetter(this, fieldInfo);
         };
     }
     function fieldSetter(fieldInfo) {
         return function(value) {
-            return gi.BoxedFieldSetter(this, fieldInfo, value);
+            return bindings.BoxedFieldSetter(this, fieldInfo, value);
         };
     }
 
-    let constructor = gi.MakeBoxed(info);
+    let constructor = bindings.MakeBoxed(info);
 
     let nMethods = GIRepository.struct_info_get_n_methods(info);
     for (let i = 0; i < nMethods; i++) {
@@ -115,16 +115,16 @@ function makeStruct(info) {
 function makeObject(info) {
     function propertyGetter(propertyName) {
         return function() {
-            return gi.ObjectPropertyGetter(this, propertyName);
+            return bindings.ObjectPropertyGetter(this, propertyName);
         };
     }
     function propertySetter(propertyName) {
         return function(value) {
-            return gi.ObjectPropertySetter(this, propertyName, value);
+            return bindings.ObjectPropertySetter(this, propertyName, value);
         };
     }
 
-    let constructor = gi.MakeClass(info);
+    let constructor = bindings.MakeClass(info);
 
     let nMethods = GIRepository.object_info_get_n_methods(info);
     for (let i = 0; i < nMethods; i++) {

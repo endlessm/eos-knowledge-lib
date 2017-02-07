@@ -1,9 +1,9 @@
 {
   'targets': [
     {
-      'target_name': 'ekn-bindings',
+      'target_name': 'eknbindings',
       'sources': [
-        'src/gi.cc',
+        'src/bindings.cc',
         'src/value.cc',
         'src/function.cc',
         'src/gobject.cc',
