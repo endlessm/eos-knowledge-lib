@@ -180,4 +180,21 @@ function importNS(ns) {
     return module;
 }
 
-module.exports = importNS('EosKnowledgeContent');
+const Eknc = importNS('EosKnowledgeContent');
+
+// Setup async functions
+Eknc.Engine.prototype.get_object_for_app = function (id, app_id) {
+    return new Promise((resolve, reject) => {
+        bindings.EngineGetObject(this, id, app_id, resolve, reject);
+    });
+};
+Eknc.Engine.prototype.get_object = function (id) {
+    return Eknc.Engine.prototype.get_object_for_app.call(this, id, this.default_app_id);
+};
+Eknc.Engine.prototype.query = function (query) {
+    return new Promise((resolve, reject) => {
+        bindings.EngineQuery(this, query, resolve, reject);
+    });
+};
+
+module.exports = Eknc;
