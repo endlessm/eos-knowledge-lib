@@ -13,12 +13,12 @@ using namespace v8;
 
 static void DefineFunction(Isolate *isolate, Local<Object> module_obj, GIBaseInfo *info) {
     const char *function_name = g_base_info_get_name ((GIBaseInfo *) info);
-    module_obj->Set (String::NewFromUtf8 (isolate, function_name), GNodeJS::MakeFunction (isolate, info));
+    module_obj->Set (String::NewFromUtf8 (isolate, function_name), MakeFunction (isolate, info));
 }
 
 static void DefineFunction(Isolate *isolate, Local<Object> module_obj, GIBaseInfo *info, const char *base_name) {
     char *function_name = g_strdup_printf ("%s_%s", base_name, g_base_info_get_name ((GIBaseInfo *) info));
-    module_obj->Set (String::NewFromUtf8 (isolate, function_name), GNodeJS::MakeFunction (isolate, info));
+    module_obj->Set (String::NewFromUtf8 (isolate, function_name), MakeFunction (isolate, info));
     g_free (function_name);
 }
 
@@ -90,34 +90,34 @@ static void Bootstrap(const FunctionCallbackInfo<Value> &args) {
 
 static void GetConstantValue(const FunctionCallbackInfo<Value> &args) {
     Isolate *isolate = args.GetIsolate ();
-    GIBaseInfo *info = (GIBaseInfo *) GNodeJS::BoxedFromWrapper (args[0]);
+    GIBaseInfo *info = (GIBaseInfo *) BoxedFromWrapper (args[0]);
     GITypeInfo *type_info = g_constant_info_get_type ((GIConstantInfo *) info);
     GIArgument garg;
     g_constant_info_get_value ((GIConstantInfo *) info, &garg);
-    args.GetReturnValue ().Set (GNodeJS::GIArgumentToV8 (isolate, type_info, &garg));
+    args.GetReturnValue ().Set (GIArgumentToV8 (isolate, type_info, &garg));
 }
 
 static void MakeFunction(const FunctionCallbackInfo<Value> &args) {
     Isolate *isolate = args.GetIsolate ();
-    GIBaseInfo *info = (GIBaseInfo *) GNodeJS::BoxedFromWrapper (args[0]);
-    args.GetReturnValue ().Set (GNodeJS::MakeFunction (isolate, info));
+    GIBaseInfo *info = (GIBaseInfo *) BoxedFromWrapper (args[0]);
+    args.GetReturnValue ().Set (MakeFunction (isolate, info));
 }
 
 static void MakeClass(const FunctionCallbackInfo<Value> &args) {
     Isolate *isolate = args.GetIsolate ();
-    GIBaseInfo *info = (GIBaseInfo *) GNodeJS::BoxedFromWrapper (args[0]);
-    args.GetReturnValue ().Set (GNodeJS::MakeClass (isolate, info));
+    GIBaseInfo *info = (GIBaseInfo *) BoxedFromWrapper (args[0]);
+    args.GetReturnValue ().Set (MakeClass (isolate, info));
 }
 
 static void MakeBoxed(const FunctionCallbackInfo<Value> &args) {
     Isolate *isolate = args.GetIsolate ();
-    GIBaseInfo *info = (GIBaseInfo *) GNodeJS::BoxedFromWrapper (args[0]);
-    args.GetReturnValue ().Set (GNodeJS::MakeBoxed (isolate, info));
+    GIBaseInfo *info = (GIBaseInfo *) BoxedFromWrapper (args[0]);
+    args.GetReturnValue ().Set (MakeBoxed (isolate, info));
 }
 
 static void ObjectPropertyGetter(const FunctionCallbackInfo<Value> &args) {
     Isolate *isolate = args.GetIsolate ();
-    GObject *gobject = GNodeJS::GObjectFromWrapper (args[0]);
+    GObject *gobject = GObjectFromWrapper (args[0]);
     String::Utf8Value prop_name_v (args[1]->ToString ());
     const char *prop_name = *prop_name_v;
 
@@ -127,11 +127,11 @@ static void ObjectPropertyGetter(const FunctionCallbackInfo<Value> &args) {
 
     g_object_get_property (gobject, prop_name, &value);
 
-    args.GetReturnValue ().Set (GNodeJS::GValueToV8 (isolate, &value));
+    args.GetReturnValue ().Set (GValueToV8 (isolate, &value));
 }
 
 static void ObjectPropertySetter(const FunctionCallbackInfo<Value> &args) {
-    GObject *gobject = GNodeJS::GObjectFromWrapper (args[0]);
+    GObject *gobject = GObjectFromWrapper (args[0]);
     String::Utf8Value prop_name_v (args[1]->ToString ());
     const char *prop_name = *prop_name_v;
 
@@ -139,22 +139,22 @@ static void ObjectPropertySetter(const FunctionCallbackInfo<Value> &args) {
     GValue value = {};
     g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
 
-    GNodeJS::V8ToGValue (&value, args[2]);
+    V8ToGValue (&value, args[2]);
 
     g_object_set_property (gobject, prop_name, &value);
 }
 
 static void BoxedFieldGetter(const FunctionCallbackInfo<Value> &args) {
     Isolate *isolate = args.GetIsolate ();
-    void *boxed = GNodeJS::BoxedFromWrapper (args[0]);
-    GIFieldInfo *field_info = (GIFieldInfo *) GNodeJS::BoxedFromWrapper (args[1]);
+    void *boxed = BoxedFromWrapper (args[0]);
+    GIFieldInfo *field_info = (GIFieldInfo *) BoxedFromWrapper (args[1]);
     GIArgument argument;
     GITypeInfo *type_info = g_field_info_get_type (field_info);
     if (!g_field_info_get_field (field_info, boxed, &argument)) {
         isolate->ThrowException (Exception::Error (String::NewFromUtf8 (isolate, "Could not get boxed field")));
         goto out;
     }
-    args.GetReturnValue ().Set (GNodeJS::GIArgumentToV8 (isolate, type_info, &argument));
+    args.GetReturnValue ().Set (GIArgumentToV8 (isolate, type_info, &argument));
 
  out:
     g_base_info_unref (type_info);
@@ -162,11 +162,11 @@ static void BoxedFieldGetter(const FunctionCallbackInfo<Value> &args) {
 
 static void BoxedFieldSetter(const FunctionCallbackInfo<Value> &args) {
     Isolate *isolate = args.GetIsolate ();
-    void *boxed = GNodeJS::BoxedFromWrapper (args[0]);
-    GIFieldInfo *field_info = (GIFieldInfo *) GNodeJS::BoxedFromWrapper (args[1]);
+    void *boxed = BoxedFromWrapper (args[0]);
+    GIFieldInfo *field_info = (GIFieldInfo *) BoxedFromWrapper (args[1]);
     GIArgument argument;
     GITypeInfo *type_info = g_field_info_get_type (field_info);
-    GNodeJS::V8ToGIArgument (isolate, type_info, &argument, args[2], true);
+    V8ToGIArgument (isolate, type_info, &argument, args[2], true);
     if (!g_field_info_set_field (field_info, boxed, &argument))
         isolate->ThrowException (Exception::Error (String::NewFromUtf8 (isolate, "Could not set boxed field")));
     g_base_info_unref (type_info);

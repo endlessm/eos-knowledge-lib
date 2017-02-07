@@ -7,8 +7,6 @@
 
 using namespace v8;
 
-namespace GNodeJS {
-
 Local<Value> GIArgumentToV8(Isolate *isolate, GITypeInfo *type_info, GIArgument *arg) {
     GITypeTag type_tag = g_type_info_get_tag (type_info);
 
@@ -301,5 +299,3 @@ Local<Value> GValueToV8(Isolate *isolate, const GValue *gvalue) {
         g_assert_not_reached ();
     }
 }
-
-};

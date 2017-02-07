@@ -6,8 +6,6 @@
 
 using namespace v8;
 
-namespace GNodeJS {
-
 static bool InitGParameterFromProperty(GParameter    *parameter,
                                        void          *klass,
                                        Local<String> name,
@@ -234,5 +232,3 @@ GObject * GObjectFromWrapper(Local<Value> value) {
     GObject *gobject = G_OBJECT (data);
     return gobject;
 }
-
-};

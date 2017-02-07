@@ -7,8 +7,6 @@
 
 using namespace v8;
 
-namespace GNodeJS {
-
 struct FunctionInfo {
     GIFunctionInfo *info;
     GIFunctionInvoker invoker;
@@ -188,5 +186,3 @@ Local<Function> MakeFunction(Isolate *isolate, GIBaseInfo *info) {
 
     return fn;
 }
-
-};

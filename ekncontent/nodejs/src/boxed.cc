@@ -4,8 +4,6 @@
 
 using namespace v8;
 
-namespace GNodeJS {
-
 struct Boxed {
     GIBaseInfo *info;
 };
@@ -104,5 +102,3 @@ void * BoxedFromWrapper(Local<Value> value) {
     void *data = object->GetAlignedPointerFromInternalField (0);
     return data;
 }
-
-};
