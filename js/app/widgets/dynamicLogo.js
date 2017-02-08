@@ -83,8 +83,6 @@ const DynamicLogo = new Knowledge.Class({
     },
 
     _init: function (props={}) {
-        this.parent(props);
-        this.set_has_window(false);
         this._image_uri = '';
         this._mode = 'text';
         this._text = '';
@@ -94,6 +92,8 @@ const DynamicLogo = new Knowledge.Class({
         this._image = null;
         this._max_width = Width.MAX;
         this._max_height = Height.MAX;
+        this.parent(props);
+        this.set_has_window(false);
 
         this.connect('style-set', () => this._update_custom_style());
         this.connect('style-updated', () => this._update_custom_style());

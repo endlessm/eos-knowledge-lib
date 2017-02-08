@@ -69,10 +69,14 @@ function _construct_slot_type(props, slot_type, __slot_type__) {
     // allows us to get away with not defining a separate meta-interface
     // for module interfaces. If we need something more fancy, such as
     // freezing the interface's slots object, we can switch later.
-    props.Implements.forEach(iface =>
-        Lang.copyProperties(iface.prototype[slot_type], slots));
-    Lang.copyProperties(props.Extends[__slot_type__], slots);
-    Lang.copyProperties(props[slot_type], slots);
+    props.Implements.forEach(iface => {
+        if (iface.prototype[slot_type])
+            Lang.copyProperties(iface.prototype[slot_type], slots);
+    });
+    if (props.Extends[__slot_type__])
+        Lang.copyProperties(props.Extends[__slot_type__], slots);
+    if (props[slot_type])
+        Lang.copyProperties(props[slot_type], slots);
     delete props[slot_type];
 
     if (Object.keys(slots).some(name => name.indexOf('.') !== -1))
