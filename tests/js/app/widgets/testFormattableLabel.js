@@ -25,8 +25,7 @@ describe('Formattable Label', function () {
         let win = new Gtk.OffscreenWindow();
         win.add(label);
         win.show_all();
-        label.get_style_context().add_provider(cssProvider,
-                                                Gtk.StyleProvider.PRIORITY_APPLICATION + 10);
+        label.get_style_context().add_provider(cssProvider, 0);
 
         Utils.update_gui();
 
@@ -48,8 +47,7 @@ describe('Formattable Label', function () {
         let win = new Gtk.OffscreenWindow();
         win.add(label);
         win.show_all();
-        label.get_style_context().add_provider(cssProvider,
-                                                Gtk.StyleProvider.PRIORITY_APPLICATION + 10);
+        label.get_style_context().add_provider(cssProvider, 0);
 
         Utils.update_gui();
         label.use_markup = true;
@@ -67,8 +65,7 @@ describe('Formattable Label', function () {
         let win = new Gtk.OffscreenWindow();
         win.add(label);
         win.show_all();
-        label.get_style_context().add_provider(cssProvider,
-                                               Gtk.StyleProvider.PRIORITY_APPLICATION + 10);
+        label.get_style_context().add_provider(cssProvider, 0);
 
         Utils.update_gui();
         let text = "a & b";
