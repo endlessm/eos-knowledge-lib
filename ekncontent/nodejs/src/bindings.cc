@@ -173,6 +173,10 @@ static void BoxedFieldSetter(const FunctionCallbackInfo<Value> &args) {
     g_base_info_unref (type_info);
 }
 
+static void Tick(const FunctionCallbackInfo<Value> &args) {
+    g_main_context_iteration (NULL, TRUE);
+}
+
 void InitModule(Local<Object> exports, Local<Value> module, void *priv) {
     Isolate *isolate = Isolate::GetCurrent ();
 
@@ -192,6 +196,8 @@ void InitModule(Local<Object> exports, Local<Value> module, void *priv) {
 
     exports->Set (String::NewFromUtf8 (isolate, "EngineGetObject"), FunctionTemplate::New (isolate, EngineGetObject)->GetFunction ());
     exports->Set (String::NewFromUtf8 (isolate, "EngineQuery"), FunctionTemplate::New (isolate, EngineQuery)->GetFunction ());
+
+    exports->Set (String::NewFromUtf8 (isolate, "Tick"), FunctionTemplate::New (isolate, Tick)->GetFunction ());
 }
 
 NODE_MODULE(eknbindings, InitModule)
