@@ -83,7 +83,7 @@ describe('QueryObject', function () {
             query: 'tyrion wins',
             match: Eknc.QueryObjectMatch.ONLY_TITLE,
         });
-        let result = query_obj.get_cutoff(query_obj);
+        result = query_obj.get_cutoff(query_obj);
         expect(result).toBe(10);
     });
 

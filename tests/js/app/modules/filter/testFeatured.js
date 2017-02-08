@@ -14,7 +14,7 @@ describe('Filter.Featured', function () {
 
     describe('normal mode', function () {
         beforeEach(function () {
-            [filter, factory] = MockFactory.setup_tree({
+            [filter] = MockFactory.setup_tree({
                 type: Featured.Featured,
             });
         });
@@ -31,7 +31,7 @@ describe('Filter.Featured', function () {
 
     describe('inverse mode', function () {
         beforeEach(function () {
-            [filter, factory] = MockFactory.setup_tree({
+            [filter] = MockFactory.setup_tree({
                 type: Featured.Featured,
                 properties: {
                     invert: true,
