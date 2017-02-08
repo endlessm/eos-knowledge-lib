@@ -85,7 +85,7 @@ const CourseHistoryStore = new GObject.Class({
         Eknc.Engine.get_default().query_promise(query)
         .then((results) => {
             if (results.models.length > 0) {
-                this.set_current_subset(results[0]);
+                this.set_current_subset(results.models[0]);
             }
         })
         .catch(function (error) {
