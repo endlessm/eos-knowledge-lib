@@ -77,6 +77,16 @@ Local<Value> GIArgumentToV8(Isolate *isolate, GITypeInfo *type_info, GIArgument 
         }
         break;
 
+    case GI_TYPE_TAG_GSLIST:
+        {
+            Local<Array> array = Array::New (isolate);
+            GSList *list = (GSList *)arg->v_pointer;
+            for ( ; list != NULL; list = list->next) {
+                array->Set(array->Length(), WrapperFromGObject (isolate, (GObject *)list->data));
+            }
+            return array;
+        }
+
     default:
         g_assert_not_reached ();
     }
