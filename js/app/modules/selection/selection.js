@@ -57,6 +57,7 @@ const Selection = new Module.Class({
     },
 
     _init: function (props={}) {
+        this._model = null;
         this.parent(props);
         // If no model is provided upon construction, we must be getting our model from global state.
         this.global = !this.model;

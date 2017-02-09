@@ -8,6 +8,8 @@ const Gtk = imports.gi.Gtk;
 const Knowledge = imports.app.knowledge;
 const SlidingPanel = imports.app.widgets.slidingPanel;
 
+const _DEFAULT_TRANSITION_MS = 250;
+
 /**
  * Class: SlidingPanelOverlay
  * Overlays a <SlidingPanel> above some content.
@@ -24,10 +26,11 @@ const SlidingPanelOverlay = new Knowledge.Class({
         'transition-duration': GObject.ParamSpec.uint('transition-duration',
             'Transition Duration', 'Transition Duration',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            0, GLib.MAXUINT32, 250),
+            0, GLib.MAXUINT32, _DEFAULT_TRANSITION_MS),
     },
 
     _init: function (props) {
+        this._transition_duration = _DEFAULT_TRANSITION_MS;
         this.parent(props);
         this._panels = [];
     },

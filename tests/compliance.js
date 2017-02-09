@@ -271,14 +271,13 @@ function test_selection_compliance (SelectionClass, setup=function () {}, extra_
         }
 
         it('by adding models to the map', function () {
-            let models = add_models(selection, 3);
-
+            add_models(selection, 3);
             expect(selection.get_models().length).toBe(3);
         });
 
         it('by not adding filtered out models to the map', function () {
-            let models = add_models(selection, 3);
-            let models = add_filtered_models(selection, 1);
+            add_models(selection, 3);
+            add_filtered_models(selection, 1);
             expect(selection.get_models().length).toBe(3);
         });
 
@@ -296,7 +295,7 @@ function test_selection_compliance (SelectionClass, setup=function () {}, extra_
         });
 
         it('by clearing models when requested', function () {
-            let models = add_models(selection, 3);
+            add_models(selection, 3);
             selection.clear();
             expect(selection.get_models().length).toBe(0);
         });

@@ -70,12 +70,11 @@ const HistoryStore = new Lang.Class({
     },
 
     _init: function (props={}) {
-        this.parent(props);
-
         this._animating = false;
         this._items = [];
         this._index = -1;
         this._direction = Direction.FORWARDS;
+        this.parent(props);
 
         let article_search_state = new Gio.SimpleAction({
             name: 'article-search-visible',

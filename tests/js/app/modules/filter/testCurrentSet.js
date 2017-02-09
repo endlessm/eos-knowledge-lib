@@ -47,7 +47,7 @@ describe('Filter.CurrentSet', function () {
                 store = new HistoryStore.HistoryStore();
                 HistoryStore.set_default(store);
 
-                [filter, factory] = MockFactory.setup_tree({
+                [filter] = MockFactory.setup_tree({
                     type: CurrentSet.CurrentSet,
                     properties: {
                         invert: mode,

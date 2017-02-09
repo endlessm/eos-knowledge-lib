@@ -230,7 +230,8 @@ const Card = new Lang.Interface({
     },
 
     set highlight_string (value) {
-        if (this._highlight_string === value)
+        if (typeof this._highlight_string !== 'undefined' &&
+            this._highlight_string === value)
             return;
         this._highlight_string = value;
         this.notify('highlight-string');
@@ -243,7 +244,7 @@ const Card = new Lang.Interface({
     },
 
     set sequence (value) {
-        if (this._sequence === value)
+        if (typeof this._sequence !== 'undefined' && this._sequence === value)
             return;
         this._sequence = value;
         if (this._sequence === Sequence.PREVIOUS) {

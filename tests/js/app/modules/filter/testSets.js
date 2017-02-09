@@ -18,7 +18,7 @@ describe('Filter.Sets', function () {
 
     describe('normal mode', function () {
         beforeEach(function () {
-            [filter, factory] = MockFactory.setup_tree({
+            [filter] = MockFactory.setup_tree({
                 type: Sets.Sets,
             });
         });
@@ -35,7 +35,7 @@ describe('Filter.Sets', function () {
 
     describe('inverse mode', function () {
         beforeEach(function () {
-            [filter, factory] = MockFactory.setup_tree({
+            [filter] = MockFactory.setup_tree({
                 type: Sets.Sets,
                 properties: {
                     invert: true,

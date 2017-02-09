@@ -87,7 +87,10 @@ const Sidebar = new Module.Class({
                                                                                    'sidebar-width-large');
         let sidebar_width_small = EosKnowledgePrivate.style_context_get_custom_int(this.get_style_context(),
                                                                                    'sidebar-width-small');
-        if (this._threshold_width_large === threshold_width_large &&
+        if (typeof this._threshold_width_large !== 'undefined' &&
+            typeof this._sidebar_width_large !== 'undefined' &&
+            typeof this._sidebar_width_small !== 'undefined' &&
+            this._threshold_width_large === threshold_width_large &&
             this._sidebar_width_large === sidebar_width_large &&
             this._sidebar_width_small === sidebar_width_small)
             return;

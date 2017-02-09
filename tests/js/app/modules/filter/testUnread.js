@@ -24,7 +24,7 @@ describe('Filter.Unread', function () {
 
     describe('normal mode', function () {
         beforeEach(function () {
-            [filter, factory] = MockFactory.setup_tree({
+            [filter] = MockFactory.setup_tree({
                 type: Unread.Unread,
             });
         });
@@ -41,7 +41,7 @@ describe('Filter.Unread', function () {
 
     describe('inverse mode', function () {
         beforeEach(function () {
-            [filter, factory] = MockFactory.setup_tree({
+            [filter] = MockFactory.setup_tree({
                 type: Unread.Unread,
                 properties: {
                     invert: true,

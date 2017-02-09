@@ -81,7 +81,6 @@ const Dynamic = new Module.Class({
         this._logo.text = text;
 
         let subtitle = '';
-        let app_info = Utils.get_desktop_app_info();
         if (app_info) {
             subtitle = app_info.get_description();
         }
