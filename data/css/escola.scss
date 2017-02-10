@@ -69,6 +69,7 @@ $display-font: 'Raleway Black' !default;
   .background {
     background-image: url($secondary-background-image);
     background-repeat: no-repeat;
+    background-size: 100%;
   }
 
   .ContentGroupContentGroup {
