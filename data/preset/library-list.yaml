@@ -135,14 +135,20 @@ defines:
             halign: center
           slots:
             title:
-              shortdef: 'ContentGroup.DynamicTitle(format-string: "%s", hexpand: true)'
+              type: ContentGroup.DynamicTitle
+              properties:
+                format-string: "%s"
+                hexpand: true
+                wrap: true
+                halign: center
+                justify: center
             arrangement:
               type: Arrangement.Grid
               properties:
                 halign: center
                 valign: start
-                vexpand: true
-                max-children-per-line: 4
+                expand: true
+                max-children-per-line: 5
                 min-children-per-line: 3
               slots:
                 card: *card
