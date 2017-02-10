@@ -58,8 +58,9 @@ const ThemeableImage = new Knowledge.Class({
         this._surface_cache = null;
         this._image_width = 0;
         this._image_height = 0;
-        if (this.image_uri.length > 0) {
-            let stream = Gio.File.new_for_uri(this.image_uri).read(null);
+        let file = Gio.File.new_for_uri(this.image_uri);
+        if (file.query_exists(null)) {
+            let stream = file.read(null);
             this._pixbuf = GdkPixbuf.Pixbuf.new_from_stream(stream, null);
             this._surface_cache = new WidgetSurfaceCache.WidgetSurfaceCache(this, this._draw_scaled_pixbuf.bind(this));
         }
@@ -128,7 +129,13 @@ const ThemeableImage = new Knowledge.Class({
         let extra = [this._get_margin(), this._get_border(), this._get_padding()].reduce((total, border) => {
             return total + border.left + border.right;
         }, 0);
-        return [min_width + extra, nat_width + extra];
+
+        if (min_width + extra > 0)
+            min_width += extra;
+        if (nat_width + extra > 0)
+            nat_width += extra;
+
+        return [min_width, nat_width];
     },
 
     vfunc_get_preferred_height: function () {
@@ -148,15 +155,30 @@ const ThemeableImage = new Knowledge.Class({
         let extra = [this._get_margin(), this._get_border(), this._get_padding()].reduce((total, border) => {
             return total + border.top + border.bottom;
         }, 0);
-        return [min_height + extra, nat_height + extra];
+
+        if (min_height + extra > 0)
+            min_height += extra;
+        if (nat_height + extra > 0)
+            nat_height += extra;
+
+        return [min_height, nat_height];
     },
 
     vfunc_size_allocate: function (allocation) {
         let margin = this._get_margin();
-        allocation.x += margin.left;
-        allocation.y += margin.top;
-        allocation.width -= margin.left + margin.right;
-        allocation.height -= margin.top + margin.bottom;
+
+        let horizontal_margin = margin.left + margin.right;
+        if (allocation.width - horizontal_margin > 0) {
+            allocation.x += margin.left;
+            allocation.width -= margin.left + margin.right;
+        }
+
+        let vertical_margin = margin.top + margin.bottom;
+        if (allocation.height - vertical_margin > 0) {
+            allocation.y += margin.top;
+            allocation.height -= vertical_margin;
+        }
+
         this.set_allocation(allocation);
         // FIXME: Clip is not set correctly for this widget as there's no way
         // for out of tree widgets to access box shadow extents. We could carry
