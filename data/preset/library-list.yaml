@@ -141,8 +141,8 @@ defines:
               properties:
                 halign: center
                 valign: start
-                vexpand: true
-                max-children-per-line: 4
+                expand: true
+                max-children-per-line: 5
                 min-children-per-line: 3
               slots:
                 card: *card
