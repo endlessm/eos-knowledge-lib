@@ -123,7 +123,7 @@ static void ObjectPropertyGetter(const FunctionCallbackInfo<Value> &args) {
     const char *prop_name = *prop_name_v;
 
     GParamSpec *pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (gobject), prop_name);
-    GValue value = {};
+    GValue value = { 0, 0 };
     g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
 
     g_object_get_property (gobject, prop_name, &value);
@@ -137,7 +137,7 @@ static void ObjectPropertySetter(const FunctionCallbackInfo<Value> &args) {
     const char *prop_name = *prop_name_v;
 
     GParamSpec *pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (gobject), prop_name);
-    GValue value = {};
+    GValue value = { 0, 0 };
     g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
 
     V8ToGValue (&value, args[2]);

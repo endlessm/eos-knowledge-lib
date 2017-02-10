@@ -88,7 +88,7 @@ static void FunctionInvoker(const FunctionCallbackInfo<Value> &args) {
         if (call_parameters[i].type == Parameter::SKIP)
             continue;
 
-        GIArgInfo arg_info = {};
+        GIArgInfo arg_info;
         g_callable_info_load_arg ((GICallableInfo *) info, i, &arg_info);
         GIDirection direction = g_arg_info_get_direction (&arg_info);
 
