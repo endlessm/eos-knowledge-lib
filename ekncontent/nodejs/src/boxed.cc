@@ -10,8 +10,8 @@ struct Boxed {
 
 static G_DEFINE_QUARK(gnode_js_template, gnode_js_template);
 
-static void BoxedClassDestroyed(const WeakCallbackInfo<GIBaseInfo> &cbinfo) {
-    GIBaseInfo *info = cbinfo.GetParameter ();
+static void BoxedClassDestroyed(const WeakCallbackInfo<GIBaseInfo> &data) {
+    GIBaseInfo *info = data.GetParameter ();
     GType gtype = g_registered_type_info_get_g_type ((GIRegisteredTypeInfo *) info);
 
     void *type_data = g_type_get_qdata (gtype, gnode_js_template_quark ());
@@ -93,8 +93,8 @@ Local<Value> WrapperFromBoxed(Isolate *isolate, GIBaseInfo *info, void *data) {
 
     Local<Value> boxed_external = External::New (isolate, data);
     Local<Value> args[] = { boxed_external };
-    Local<Object> obj = constructor->NewInstance (1, args);
-    return obj;
+    MaybeLocal<Object> obj = constructor->NewInstance (isolate->GetCurrentContext(), 1, args);
+    return obj.ToLocalChecked();
 }
 
 void * BoxedFromWrapper(Local<Value> value) {

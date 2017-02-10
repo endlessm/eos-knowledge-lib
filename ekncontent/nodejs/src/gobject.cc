@@ -221,8 +221,8 @@ Local<Value> WrapperFromGObject(Isolate *isolate, GObject *gobject) {
 
         Local<Value> gobject_external = External::New (isolate, gobject);
         Local<Value> args[] = { gobject_external };
-        Local<Object> obj = constructor->NewInstance (1, args);
-        return obj;
+        MaybeLocal<Object> obj = constructor->NewInstance (isolate->GetCurrentContext(), 1, args);
+        return obj.ToLocalChecked();
     }
 }
 
