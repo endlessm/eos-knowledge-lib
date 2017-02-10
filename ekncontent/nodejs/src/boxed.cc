@@ -10,8 +10,8 @@ struct Boxed {
 
 static G_DEFINE_QUARK(gnode_js_template, gnode_js_template);
 
-static void BoxedClassDestroyed(const WeakCallbackData<FunctionTemplate, GIBaseInfo> &data) {
-    GIBaseInfo *info = data.GetParameter ();
+static void BoxedClassDestroyed(const WeakCallbackInfo<GIBaseInfo> &cbinfo) {
+    GIBaseInfo *info = cbinfo.GetParameter ();
     GType gtype = g_registered_type_info_get_g_type ((GIRegisteredTypeInfo *) info);
 
     void *type_data = g_type_get_qdata (gtype, gnode_js_template_quark ());
@@ -64,7 +64,7 @@ static Local<FunctionTemplate> GetBoxedTemplate(Isolate *isolate, GIBaseInfo *in
         Local<FunctionTemplate> tpl = FunctionTemplate::New (isolate, BoxedConstructor, External::New (isolate, info));
 
         Persistent<FunctionTemplate> *persistent = new Persistent<FunctionTemplate>(isolate, tpl);
-        persistent->SetWeak (g_base_info_ref (info), BoxedClassDestroyed);
+        persistent->SetWeak (g_base_info_ref (info), BoxedClassDestroyed, WeakCallbackType::kParameter);
 
         const char *class_name = g_base_info_get_name (info);
         tpl->SetClassName (String::NewFromUtf8 (isolate, class_name));

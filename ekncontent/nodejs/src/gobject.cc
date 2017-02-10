@@ -113,7 +113,7 @@ static G_DEFINE_QUARK(gnode_js_template, gnode_js_template);
 
 static Local<FunctionTemplate> GetClassTemplateFromGI(Isolate *isolate, GIBaseInfo *info);
 
-static void ClassDestroyed(const WeakCallbackData<FunctionTemplate, GIBaseInfo> &data) {
+static void ClassDestroyed(const WeakCallbackInfo<GIBaseInfo> &data) {
     GIBaseInfo *info = data.GetParameter ();
     GType gtype = g_registered_type_info_get_g_type ((GIRegisteredTypeInfo *) info);
 
@@ -137,7 +137,7 @@ static Local<FunctionTemplate> GetClassTemplate(Isolate *isolate, GIBaseInfo *in
         Local<FunctionTemplate> tpl = FunctionTemplate::New (isolate, GObjectConstructor, External::New (isolate, info));
 
         Persistent<FunctionTemplate> *persistent = new Persistent<FunctionTemplate>(isolate, tpl);
-        persistent->SetWeak (g_base_info_ref (info), ClassDestroyed);
+        persistent->SetWeak (g_base_info_ref (info), ClassDestroyed, WeakCallbackType::kParameter);
         g_type_set_qdata (gtype, gnode_js_template_quark (), persistent);
 
         const char *class_name = g_base_info_get_name (info);
@@ -173,7 +173,7 @@ Local<Function> MakeClass(Isolate *isolate, GIBaseInfo *info) {
     return tpl->GetFunction ();
 }
 
-static void ObjectDestroyed(const WeakCallbackData<Object, GObject> &data) {
+static void ObjectDestroyed(const WeakCallbackInfo<GObject> &data) {
     GObject *gobject = data.GetParameter ();
 
     void *type_data = g_object_get_qdata (gobject, gnode_js_object_quark ());
@@ -197,7 +197,7 @@ static void ToggleNotify(gpointer user_data, GObject *gobject, gboolean toggle_d
     if (toggle_down) {
         /* We're dropping from 2 refs to 1 ref. We are the last holder. Make
          * sure that that our weak ref is installed. */
-        persistent->SetWeak (gobject, ObjectDestroyed);
+        persistent->SetWeak (gobject, ObjectDestroyed, WeakCallbackType::kParameter);
     } else {
         /* We're going from 1 ref to 2 refs. We can't let our wrapper be
          * collected, so make sure that our reference is persistent */

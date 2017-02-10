@@ -162,8 +162,8 @@ static void FunctionInvoker(const FunctionCallbackInfo<Value> &args) {
     args.GetReturnValue ().Set (GIArgumentToV8 (isolate, &return_value_type, &return_value));
 }
 
-static void FunctionDestroyed(const WeakCallbackData<FunctionTemplate, FunctionInfo> &data) {
-    FunctionInfo *func = data.GetParameter ();
+static void FunctionDestroyed(const WeakCallbackInfo<FunctionInfo> &info) {
+    FunctionInfo *func = info.GetParameter ();
     g_base_info_unref (func->info);
     g_function_invoker_destroy (&func->invoker);
     g_free (func);
@@ -179,7 +179,7 @@ Local<Function> MakeFunction(Isolate *isolate, GIBaseInfo *info) {
     Local<Function> fn = tpl->GetFunction ();
 
     Persistent<FunctionTemplate> persistent(isolate, tpl);
-    persistent.SetWeak (func, FunctionDestroyed);
+    persistent.SetWeak (func, FunctionDestroyed, WeakCallbackType::kParameter);
 
     const char *function_name = g_base_info_get_name (info);
     fn->SetName (String::NewFromUtf8 (isolate, function_name));
