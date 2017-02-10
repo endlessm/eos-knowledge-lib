@@ -8,8 +8,8 @@
     &__logo {
       -EknDynamicLogo-sizing: "size-min";
       min-height: 250px;
+      min-width: 800px;
       font-weight: normal;
-      font-size: 77px;
     }
     .composite & {
         .BannerDynamic__logo {
@@ -35,6 +35,7 @@
   .CardTitle {
       &__title {
         font-family: $logo-font;
+        font-weight: normal;
       }
   }
 }

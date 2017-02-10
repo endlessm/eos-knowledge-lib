@@ -42,7 +42,10 @@ const LegacyPolaroid = new Module.Class({
 
         if (!this._thumbnail_frame.visible) {
             this._title_label.xalign = 0;
+            this._title_label.yalign = 0;
             this._title_label.vexpand = false;
+            this._title_label.lines += 1;
+            this._synopsis_label.lines -= 1;
 
             let is_pdf = (this.model.content_type === 'application/pdf');
             this._pdf_icon.visible = is_pdf;
@@ -50,6 +53,8 @@ const LegacyPolaroid = new Module.Class({
 
             this.set_label_with_highlight(this._synopsis_label, this.model.synopsis);
             this._synopsis_label.visible = this._synopsis_label.visible && !is_pdf;
+        } else {
+            this._title_label.justify = Utils.alignment_to_justification(this._title_label.halign);
         }
 
         Utils.set_hand_cursor_on_widget(this);
