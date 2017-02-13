@@ -551,7 +551,7 @@ ekn_media_bin_init_video_sink (EknMediaBin *self)
       video_sink = gst_element_factory_make ("fakesink", "EknMediaBinNullSink");
       g_object_set (video_sink, "sync", TRUE, NULL);
       g_object_set (priv->play, "video-sink", video_sink, NULL);
-      priv->video_sink = g_object_ref (video_sink);
+      priv->video_sink = gst_object_ref_sink (video_sink);
       return;
     }
 
@@ -572,7 +572,7 @@ ekn_media_bin_init_video_sink (EknMediaBin *self)
           else
             {
               GST_WARNING ("Could not create gtkglsink");
-              g_clear_object (&video_sink);
+              gst_object_replace ((GstObject**)&video_sink, NULL);
             }
         }
       else
@@ -598,8 +598,8 @@ ekn_media_bin_init_video_sink (EknMediaBin *self)
       gtk_container_add (GTK_CONTAINER (priv->overlay), video_widget);
       gtk_widget_show (video_widget);
 
-      /* Grab a reference */
-      priv->video_widget = g_object_ref (video_widget);
+      /* g_object_get() returns a new reference */
+      priv->video_widget = video_widget;
     }
   else
     {
@@ -608,7 +608,8 @@ ekn_media_bin_init_video_sink (EknMediaBin *self)
 
       GST_WARNING ("Could not get video widget from gtkglsink/gtksink, falling back to fakesink");
 
-      g_clear_object (&video_sink);
+      g_object_unref (video_widget);
+      gst_object_unref (video_sink);
       video_sink = gst_element_factory_make ("fakesink", "EknMediaBinFakeSink");
       g_object_set (video_sink, "sync", TRUE, NULL);
 
@@ -622,8 +623,35 @@ ekn_media_bin_init_video_sink (EknMediaBin *self)
   if (video_sink)
     {
       g_object_set (priv->play, "video-sink", video_sink, NULL);
-      priv->video_sink = g_object_ref (video_sink);
+      priv->video_sink = gst_object_ref_sink (video_sink);
     }
+}
+
+static inline void
+ekn_media_bin_deinit_video_sink (EknMediaBin *self)
+{
+  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
+
+  /* Stop Playback to give gst a chance to cleanup its mess */
+  if (priv->play)
+    gst_element_set_state (priv->play, GST_STATE_NULL);
+
+  /* Stop bus watch */
+  if (priv->bus)
+    {
+      gst_bus_set_flushing (priv->bus, TRUE);
+      gst_bus_remove_watch (priv->bus);
+      gst_object_replace ((GstObject**)&priv->bus, NULL);
+    }
+
+  /* Unref video sink */
+  gst_object_replace ((GstObject**)&priv->video_sink, NULL);
+
+  /* Unref video widget */
+  g_clear_object (&priv->video_widget);
+
+  /* Unref playbin */
+  gst_object_replace ((GstObject**)&priv->play, NULL);
 }
 
 static void
@@ -666,15 +694,8 @@ ekn_media_bin_fullscreen_apply (EknMediaBin *self, gboolean fullscreen)
        */
       position = ekn_media_bin_get_position (self);
 
-      g_clear_object (&priv->video_sink);
-      gst_element_set_state (priv->play, GST_STATE_NULL);
-      gst_bus_set_flushing (priv->bus, TRUE);
-      gst_bus_remove_watch (priv->bus);
-      g_clear_object (&priv->bus);
-      g_clear_object (&priv->play);
-
       gtk_container_remove (GTK_CONTAINER (priv->overlay), priv->video_widget);
-      g_clear_object (&priv->video_widget);
+      ekn_media_bin_deinit_video_sink (self);
     }
 
   g_object_ref (priv->overlay);
@@ -740,7 +761,7 @@ ekn_media_bin_fullscreen_apply (EknMediaBin *self, gboolean fullscreen)
       gst_element_seek_simple (priv->play, GST_FORMAT_TIME,
                                GST_SEEK_FLAG_ACCURATE | GST_SEEK_FLAG_FLUSH,
                                position);
-      gst_bus_pop_filtered (priv->bus, GST_MESSAGE_ASYNC_DONE);
+      gst_message_unref (gst_bus_pop_filtered (priv->bus, GST_MESSAGE_ASYNC_DONE));
 
       /* Resume playback */
       if (priv->state == GST_STATE_PLAYING)
@@ -840,18 +861,32 @@ ekn_media_bin_init (EknMediaBin *self)
 }
 
 static void
-ekn_media_bin_finalize (GObject *object)
+ekn_media_bin_dispose (GObject *object)
 {
   EknMediaBin *self = EKN_MEDIA_BIN (object);
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
 
-  /* Stop Playback to give gst a chance to cleanup its mess */
-  gst_element_set_state (priv->play, GST_STATE_NULL);
+  /* Finalize gstreamer related objects */
+  ekn_media_bin_deinit_video_sink (self);
 
-  /* Stop bus watch */
-  gst_bus_set_flushing (priv->bus, TRUE);
-  gst_bus_remove_watch (priv->bus);
-  g_clear_object (&priv->bus);
+  /* Destroy fullscreen window */
+  if (priv->fullscreen_window)
+    {
+      gtk_widget_destroy (GTK_WIDGET (priv->fullscreen_window));
+      g_clear_object (&priv->fullscreen_window);
+    }
+
+  /* Unref cursor */
+  g_clear_object (&priv->blank_cursor);
+
+  G_OBJECT_CLASS (ekn_media_bin_parent_class)->dispose (object);
+}
+
+static void
+ekn_media_bin_finalize (GObject *object)
+{
+  EknMediaBin *self = EKN_MEDIA_BIN (object);
+  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
 
   /* Clear position query */
   g_clear_pointer (&priv->position_query, gst_query_unref);
@@ -867,15 +902,6 @@ ekn_media_bin_finalize (GObject *object)
   g_clear_pointer (&priv->audio_tags, gst_tag_list_unref);
   g_clear_pointer (&priv->video_tags, gst_tag_list_unref);
   g_clear_pointer (&priv->text_tags, gst_tag_list_unref);
-
-  /* Unref playbin */
-  g_clear_object (&priv->play);
-
-  /* Destroy fullscreen window */
-  g_clear_object (&priv->fullscreen_window);
-
-  /* Unref cursor */
-  g_clear_object (&priv->blank_cursor);
 
   /* Free properties */
   g_clear_pointer (&priv->uri, g_free);
@@ -1046,6 +1072,7 @@ ekn_media_bin_class_init (EknMediaBinClass *klass)
   GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
+  object_class->dispose = ekn_media_bin_dispose;
   object_class->finalize = ekn_media_bin_finalize;
   object_class->set_property = ekn_media_bin_set_property;
   object_class->get_property = ekn_media_bin_get_property;
@@ -1798,6 +1825,7 @@ ekn_media_bin_init_playbin (EknMediaBin *self)
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
 
   priv->play = gst_element_factory_make ("playbin3", "EknMediaBinPlayBin");
+  gst_object_ref_sink (priv->play);
 
   /* Setup volume */
   /* NOTE: Bidirectional binding makes the app crash on X11 */
