@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-01-24 03:24+0000\n"
+"POT-Creation-Date: 2017-02-07 02:56+0000\n"
 "PO-Revision-Date: 2017-01-26 07:49+0000\n"
 "Last-Translator: georgian balan <braila222@gmail.com>\n"
 "Language-Team: Romanian (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/ro/)\n"
@@ -18,15 +18,15 @@ msgstr ""
 "Language: ro\n"
 "Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
 
-#: data/widgets/card/legacyPolaroid.ui:101
+#: data/widgets/card/legacyPolaroid.ui:105
 msgid "PDF"
 msgstr "PDF"
 
-#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:195
+#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:199
 msgid "Next Article"
 msgstr "Articolul Urmator"
 
-#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:178
+#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:182
 msgid "Previous Article"
 msgstr "Articolul Anterior"
 
@@ -62,11 +62,11 @@ msgstr "ACASA"
 msgid "View the license"
 msgstr "Vezi licenta"
 
-#: js/app/application.js:157
+#: js/app/application.js:160
 msgid "Oops! No content."
 msgstr "Oops! Nici un continut."
 
-#: js/app/application.js:158
+#: js/app/application.js:161
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -154,7 +154,7 @@ msgstr[0] "%s:%s minut"
 msgstr[1] "%s:%s minut"
 msgstr[2] "%s:%s minute"
 
-#: js/app/interfaces/card.js:344
+#: js/app/interfaces/card.js:341
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -198,7 +198,7 @@ msgstr "Nici un rezultate care corespunde cautarii.\n"
 msgid "SEE ALL CATEGORIES"
 msgstr "VEZI TOATE CATEGORIILE"
 
-#: js/app/modules/navigation/searchBox.js:167
+#: js/app/modules/navigation/searchBox.js:162
 msgid "See more results"
 msgstr "Vezi mai multe rezultate"
 
@@ -207,10 +207,10 @@ msgstr "Vezi mai multe rezultate"
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:100
+#: js/app/utils.js:101
 msgid "by {author}"
 msgstr "Autor{author}"
 
-#: js/app/utils.js:100
+#: js/app/utils.js:101
 msgid "and"
 msgstr "si"
