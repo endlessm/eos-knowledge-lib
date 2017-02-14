@@ -4,7 +4,7 @@
 # 
 # Translators:
 # chenzibing <chenzibing_endless@126.com>, 2016
-# e2f_cn c5 <e2f_cn_c3@outlook.com>, 2017
+# e2f_cn c5 <jarvisn@ecinnovations.com>, 2017
 # e2f_STM STM <STMcnhktw@outlook.com>, 2017
 # Roddy Shuler <roddy@endlessm.com>, 2016
 # zhifeng peng <jnufeng@126.com>, 2016
@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-01-24 03:24+0000\n"
+"POT-Creation-Date: 2017-02-07 02:56+0000\n"
 "PO-Revision-Date: 2017-01-17 02:57+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/zh_CN/)\n"
@@ -22,15 +22,15 @@ msgstr ""
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: data/widgets/card/legacyPolaroid.ui:101
+#: data/widgets/card/legacyPolaroid.ui:105
 msgid "PDF"
 msgstr "PDF"
 
-#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:195
+#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:199
 msgid "Next Article"
 msgstr "下一篇"
 
-#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:178
+#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:182
 msgid "Previous Article"
 msgstr "上一篇"
 
@@ -66,11 +66,11 @@ msgstr "主页"
 msgid "View the license"
 msgstr "查看许可证"
 
-#: js/app/application.js:157
+#: js/app/application.js:160
 msgid "Oops! No content."
 msgstr "哎呀！无内容。"
 
-#: js/app/application.js:158
+#: js/app/application.js:161
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -156,7 +156,7 @@ msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
 msgstr[0] "%s: %s分钟"
 
-#: js/app/interfaces/card.js:344
+#: js/app/interfaces/card.js:341
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -198,7 +198,7 @@ msgstr "没有符合您搜索的结果。\n"
 msgid "SEE ALL CATEGORIES"
 msgstr "展示全部类别"
 
-#: js/app/modules/navigation/searchBox.js:167
+#: js/app/modules/navigation/searchBox.js:162
 msgid "See more results"
 msgstr "查看更多结果"
 
@@ -207,10 +207,10 @@ msgstr "查看更多结果"
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:100
+#: js/app/utils.js:101
 msgid "by {author}"
 msgstr "作者：{author}"
 
-#: js/app/utils.js:100
+#: js/app/utils.js:101
 msgid "and"
 msgstr "与"

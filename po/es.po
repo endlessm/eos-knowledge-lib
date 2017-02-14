@@ -4,7 +4,7 @@
 # 
 # Translators:
 # c.sanchez <cassandra@endlessm.com>, 2014-2015
-# Fernando Farfan <fernando@endlessm.com>, 2015-2016
+# Fernando Farfan <fernando@endlessm.com>, 2015-2017
 # Joel Gil León <joel@endlessm.com>, 2014
 # Martin Abente Lahaye <tch@sugarlabs.org>, 2016
 # Nuritzi Sanchez <ns@endlessm.com>, 2016
@@ -14,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-01-24 03:24+0000\n"
-"PO-Revision-Date: 2017-01-17 02:57+0000\n"
-"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
+"POT-Creation-Date: 2017-02-07 02:56+0000\n"
+"PO-Revision-Date: 2017-02-09 15:34+0000\n"
+"Last-Translator: Fernando Farfan <fernando@endlessm.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,15 +24,15 @@ msgstr ""
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: data/widgets/card/legacyPolaroid.ui:101
+#: data/widgets/card/legacyPolaroid.ui:105
 msgid "PDF"
 msgstr "PDF"
 
-#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:195
+#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:199
 msgid "Next Article"
 msgstr "Próximo Artículo"
 
-#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:178
+#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:182
 msgid "Previous Article"
 msgstr "Artículo Previo"
 
@@ -68,11 +68,11 @@ msgstr "INICIO"
 msgid "View the license"
 msgstr "Ver la licencia"
 
-#: js/app/application.js:157
+#: js/app/application.js:160
 msgid "Oops! No content."
 msgstr "¡Lo sentimos! Noy hay contenido."
 
-#: js/app/application.js:158
+#: js/app/application.js:161
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -159,7 +159,7 @@ msgid_plural "%s:%s minutes"
 msgstr[0] "%s:%s minutos"
 msgstr[1] "%s:%s minutos"
 
-#: js/app/interfaces/card.js:344
+#: js/app/interfaces/card.js:341
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -188,7 +188,7 @@ msgstr "Resultados para \"%s\""
 
 #: js/app/modules/contentGroup/contentGroup.js:157
 msgid "See more"
-msgstr ""
+msgstr "Ver más"
 
 #: js/app/modules/contentGroup/noResultsMessage.js:52
 msgid "Sorry! :-("
@@ -202,7 +202,7 @@ msgstr "No hemos encontrado resultados que coincidan con tu búsqueda.\n"
 msgid "SEE ALL CATEGORIES"
 msgstr "VER TODAS LAS CATEGORÍAS"
 
-#: js/app/modules/navigation/searchBox.js:167
+#: js/app/modules/navigation/searchBox.js:162
 msgid "See more results"
 msgstr "Ver más resultados"
 
@@ -211,10 +211,10 @@ msgstr "Ver más resultados"
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:100
+#: js/app/utils.js:101
 msgid "by {author}"
 msgstr "por {author}"
 
-#: js/app/utils.js:100
+#: js/app/utils.js:101
 msgid "and"
 msgstr "y"

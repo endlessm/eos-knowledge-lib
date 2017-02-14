@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge 0.4.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2017-01-31 03:04+0000\n"
+"POT-Creation-Date: 2017-02-14 02:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: data/widgets/card/legacyPolaroid.ui:101
+#: data/widgets/card/legacyPolaroid.ui:105
 msgid "PDF"
 msgstr ""
 
@@ -63,11 +63,11 @@ msgstr ""
 msgid "View the license"
 msgstr ""
 
-#: js/app/application.js:157
+#: js/app/application.js:160
 msgid "Oops! No content."
 msgstr ""
 
-#: js/app/application.js:158
+#: js/app/application.js:161
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -147,14 +147,14 @@ msgstr ""
 msgid "Results were found for “%s”"
 msgstr ""
 
-#: js/app/interfaces/card.js:278
+#: js/app/interfaces/card.js:279
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/app/interfaces/card.js:344
+#: js/app/interfaces/card.js:342
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -197,7 +197,7 @@ msgstr ""
 msgid "SEE ALL CATEGORIES"
 msgstr ""
 
-#: js/app/modules/navigation/searchBox.js:167
+#: js/app/modules/navigation/searchBox.js:162
 msgid "See more results"
 msgstr ""
 
