@@ -91,12 +91,43 @@ defines:
                           id: content-for-set
             - <<: *footer
 
+- &search-page
+  <<: *background
+  slots:
+    contents:
+    - type: Layout.InfiniteScrolling
+      references:
+        lazy-load: search-results
+      slots:
+        content:
+          shortdef: 'Layout.Box(orientation: vertical)'
+          slots:
+            contents:
+            - shortdef: 'Layout.ResponsiveMargins'
+              slots:
+                content:
+                  shortdef: 'Layout.Box(orientation: vertical)'
+                  slots:
+                    contents:
+                    - 'Banner.Search(halign: center, justify: center, xalign: 0.5)'
+                    - type: ContentGroup.ContentGroup
+                      slots:
+                        <<: *list-arrangement-slot
+                        selection:
+                          type: Selection.Search
+                          id: search-results
+                        no-results: ContentGroup.NoResultsMessage
+                      styles:
+                      - search-results
+            - <<: *footer
+
 root:
   shortdef: 'Controller.Course(theme: escola)'
   slots:
     window:
       type: Window.Simple
       slots:
+        search: Navigation.SearchBox
         content:
           type: ContentGroup.MediaLightbox
           slots:
@@ -108,3 +139,4 @@ root:
                   slots:
                     home-page: *home-page
                     set-page: *set-page
+                    search-page: *search-page

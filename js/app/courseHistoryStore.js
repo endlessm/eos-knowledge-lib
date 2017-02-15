@@ -67,6 +67,11 @@ const CourseHistoryStore = new GObject.Class({
                 case Actions.ARTICLE_LINK_CLICKED:
                     this.show_ekn_id(payload.ekn_id);
                     break;
+                case Actions.SEARCH_TEXT_ENTERED:
+                case Actions.DBUS_LOAD_QUERY_CALLED:
+                    this.do_search(payload.query,
+                        payload.timestamp || Gdk.CURRENT_TIME);
+                    break;
                 case Actions.DBUS_LOAD_ITEM_CALLED:
                     this.load_dbus_item(payload.ekn_id, payload.query,
                         payload.timestamp || Gdk.CURRENT_TIME);
