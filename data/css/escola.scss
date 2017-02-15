@@ -65,7 +65,7 @@ $display-font: 'Raleway Black' !default;
   }
 }
 
-.set-page {
+.set-page, .search-page {
   &.background {
     background-image: url($secondary-background-image);
     background-repeat: no-repeat;
@@ -73,6 +73,9 @@ $display-font: 'Raleway Black' !default;
 
   .LayoutInfiniteScrolling {
     background-color: transparent;
+    .search-results {
+      background-color: transparent;
+    }
   }
 
   .ContentGroupContentGroup {
