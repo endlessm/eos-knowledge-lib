@@ -72,6 +72,25 @@ $display-font: 'Raleway Black' !default;
     background-size: 100%;
   }
 
+  .LayoutResponsiveMargins {
+
+      &--small {
+          margin: 0px 60px;
+      }
+
+      &--medium {
+          margin: 0px 95px;
+      }
+
+      &--large {
+          margin: 0px 100px;
+      }
+
+      &--xlarge {
+          margin: 0px 240px;
+      }
+  }
+
   .LayoutInfiniteScrolling {
     background-color: transparent;
     .search-results {
