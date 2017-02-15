@@ -66,10 +66,14 @@ $display-font: 'Raleway Black' !default;
 }
 
 .set-page {
-  .background {
+  &.background {
     background-image: url($secondary-background-image);
     background-repeat: no-repeat;
     background-size: 100%;
+  }
+
+  .LayoutInfiniteScrolling {
+    background-color: transparent;
   }
 
   .ContentGroupContentGroup {
