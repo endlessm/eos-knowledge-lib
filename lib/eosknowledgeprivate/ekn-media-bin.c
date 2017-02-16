@@ -76,6 +76,7 @@ typedef struct
   /* We place extra flags here so the get squashed with the boolean properties */
   gboolean title_user_set:1;            /* True if the user set title property */
   gboolean description_user_set:1;      /* True if the user set description property */
+  gboolean dump_dot_file:1;             /* True if GST_DEBUG_DUMP_DOT_DIR is set */
   gboolean ignore_adjustment_changes:1;
 
   /* Internal Widgets */
@@ -835,6 +836,7 @@ ekn_media_bin_init (EknMediaBin *self)
   priv->state = EMB_INITIAL_STATE;
   priv->autohide_timeout = AUTOHIDE_TIMEOUT_DEFAULT;
   priv->pressed_button_type = GDK_NOTHING;
+  priv->dump_dot_file = (g_getenv ("GST_DEBUG_DUMP_DOT_DIR") != NULL);
 
   ekn_media_bin_init_playbin (self);
 
@@ -1520,6 +1522,21 @@ ekn_media_bin_set_tick_enabled (EknMediaBin *self, gboolean enabled)
 }
 
 static inline void
+ekn_media_bin_dump_dot (EknMediaBin *self, GstState old, GstState new)
+{
+  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
+  gchar *filename;
+
+  filename = g_strdup_printf ("%s_%s_%s", g_get_prgname (),
+                              gst_element_state_get_name (old),
+                              gst_element_state_get_name (new));
+  gst_debug_bin_to_dot_file_with_ts (GST_BIN (priv->play),
+                                     GST_DEBUG_GRAPH_SHOW_ALL,
+                                     filename);
+  g_free (filename);
+}
+
+static inline void
 ekn_media_bin_handle_msg_state_changed (EknMediaBin *self, GstMessage *msg)
 {
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
@@ -1534,6 +1551,9 @@ ekn_media_bin_handle_msg_state_changed (EknMediaBin *self, GstMessage *msg)
   GST_DEBUG ("State changed from %s to %s",
              gst_element_state_get_name (old_state),
              gst_element_state_get_name (new_state));
+
+  if (priv->dump_dot_file)
+    ekn_media_bin_dump_dot (self, old_state, new_state);
 
   /* Update UI */
   if (old_state == GST_STATE_READY && new_state == GST_STATE_PAUSED)
