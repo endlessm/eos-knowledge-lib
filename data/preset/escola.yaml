@@ -9,6 +9,26 @@ defines:
     slots:
       card:
         shortdef: 'Card.Thumb(background-size: "center")'
+- &footer
+  shortdef: 'Layout.Box(orientation: vertical, halign: fill, hexpand: true)'
+  styles:
+    - footer
+  slots:
+    contents:
+    - shortdef: 'Decoration.ThemeableImage(halign: end, expand: true, valign: center, image-uri: "resource:///app/assets/watermark")'
+
+- &background
+  shortdef: 'Layout.Box(orientation: vertical)'
+  styles:
+    - background
+
+- &list-arrangement-slot
+  arrangement:
+    shortdef: 'Arrangement.List(hexpand: true)'
+    slots:
+      card:
+        shortdef: 'Card.List(hexpand: true, show-synopsis: false)'
+
 
 - &home-page
   shortdef: Layout.Scrolling
@@ -38,46 +58,68 @@ defines:
               slots:
                 <<: *main-arrangement-slot
                 selection: Selection.AllSets
-            - shortdef: 'Layout.Box(orientation: vertical, halign: fill, hexpand: true)'
-              styles:
-                - footer
-              slots:
-                contents:
-                - shortdef: 'Decoration.ThemeableImage(halign: end, expand: true, valign: center, image-uri: "resource:///app/assets/watermark")'
+            - <<: *footer
 
 - &set-page
-  shortdef: Layout.Scrolling
+  <<: *background
   slots:
-    content:
-      shortdef: 'Layout.Box(orientation: vertical)'
-      styles:
-        - background
+    contents:
+    - type: Layout.InfiniteScrolling
+      references:
+        lazy-load: content-for-set
       slots:
-        contents:
-        - shortdef: 'Layout.ResponsiveMargins'
-          slots:
-            content:
-              shortdef: 'ContentGroup.ContentGroup(expand: true)'
-              slots:
-                title:
-                  type: ContentGroup.DynamicTitle
-                  properties:
-                    format-string: "%s"
-                    expand: true
-                arrangement:
-                  shortdef: 'Arrangement.List(hexpand: true)'
-                  slots:
-                    card:
-                      shortdef: 'Card.List(hexpand: true, show-synopsis: false)'
-                selection:
-                  shortdef: 'Selection.ContentForSet()'
-        - shortdef: 'Layout.Box(orientation: vertical, halign: fill, hexpand: true)'
-          styles:
-            - footer
+        content:
+          shortdef: 'Layout.Box(orientation: vertical)'
           slots:
             contents:
-            - shortdef: 'Decoration.ThemeableImage(halign: end, expand: true, valign: center, image-uri: "resource:///app/assets/watermark")'
+            - shortdef: 'Layout.ResponsiveMargins'
+              slots:
+                content:
+                  shortdef: 'Layout.Box(orientation: vertical)'
+                  slots:
+                    contents:
+                    - shortdef: 'ContentGroup.ContentGroup(expand: true)'
+                      slots:
+                        title:
+                          type: ContentGroup.DynamicTitle
+                          properties:
+                            format-string: "%s"
+                            expand: true
+                        <<: *list-arrangement-slot
+                        selection:
+                          shortdef: 'Selection.ContentForSet()'
+                          id: content-for-set
+            - <<: *footer
 
+- &search-page
+  <<: *background
+  slots:
+    contents:
+    - type: Layout.InfiniteScrolling
+      references:
+        lazy-load: search-results
+      slots:
+        content:
+          shortdef: 'Layout.Box(orientation: vertical)'
+          slots:
+            contents:
+            - shortdef: 'Layout.ResponsiveMargins'
+              slots:
+                content:
+                  shortdef: 'Layout.Box(orientation: vertical)'
+                  slots:
+                    contents:
+                    - 'Banner.Search(halign: center, justify: center, xalign: 0.5)'
+                    - type: ContentGroup.ContentGroup
+                      slots:
+                        <<: *list-arrangement-slot
+                        selection:
+                          type: Selection.Search
+                          id: search-results
+                        no-results: ContentGroup.NoResultsMessage
+                      styles:
+                      - search-results
+            - <<: *footer
 
 root:
   shortdef: 'Controller.Course(theme: escola)'
@@ -85,6 +127,7 @@ root:
     window:
       type: Window.Simple
       slots:
+        search: Navigation.SearchBox
         content:
           type: ContentGroup.MediaLightbox
           slots:
@@ -96,3 +139,4 @@ root:
                   slots:
                     home-page: *home-page
                     set-page: *set-page
+                    search-page: *search-page

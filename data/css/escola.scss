@@ -65,11 +65,37 @@ $display-font: 'Raleway Black' !default;
   }
 }
 
-.set-page {
-  .background {
+.set-page, .search-page {
+  &.background {
     background-image: url($secondary-background-image);
     background-repeat: no-repeat;
     background-size: 100%;
+  }
+
+  .LayoutResponsiveMargins {
+
+      &--small {
+          margin: 0px 60px;
+      }
+
+      &--medium {
+          margin: 0px 95px;
+      }
+
+      &--large {
+          margin: 0px 100px;
+      }
+
+      &--xlarge {
+          margin: 0px 240px;
+      }
+  }
+
+  .LayoutInfiniteScrolling {
+    background-color: transparent;
+    .search-results {
+      background-color: transparent;
+    }
   }
 
   .ContentGroupContentGroup {
