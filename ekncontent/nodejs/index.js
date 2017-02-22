@@ -202,4 +202,8 @@ Eknc.Engine.prototype.query = function (query) {
     });
 };
 
+Eknc.Domain.prototype.read_uri = function (uri) {
+    return bindings.DomainReadURI(this, uri);
+};
+
 module.exports = Eknc;
