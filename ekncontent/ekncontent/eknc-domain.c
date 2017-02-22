@@ -850,6 +850,55 @@ eknc_domain_query_finish (EkncDomain *self,
 }
 
 /**
+ * eknc_domain_read_uri:
+ * @self: domain
+ * @uri: (out) (transfer none) (allow-none): return location for the content mime type
+ * @error: #GError for error reporting
+ *
+ * Reads the contents of a ekn uri within the domain as a GBytes. Optionally
+ * returns the mime type of the contents as well.
+ *
+ * Returns: (transfer full): the gbytes
+ */
+GBytes *
+eknc_domain_read_uri (EkncDomain *self,
+                      const gchar *uri,
+                      const gchar **mime_type,
+                      GError **error)
+{
+  if (!uri || !g_str_has_prefix (uri, "ekn:"))
+    return NULL;
+
+  g_auto(GStrv) tokens = g_strsplit (uri + 6, "/", -1);
+  if (!tokens || !tokens[0] || !tokens[1])
+    return NULL;
+
+  EosShardRecord *record = NULL;
+  /* iterate over all shards until we find a matching record */
+  for (GSList *l = self->shards; l && !record; l = g_slist_next (l))
+    {
+      record = eos_shard_shard_file_find_record_by_hex_name (l->data, tokens[1]);
+      if (!record)
+        continue;
+
+      EosShardBlob *blob = record->data;
+      /* Use resource, if present */
+      if (tokens[2])
+        blob = eos_shard_record_lookup_blob (record, tokens[2]);
+
+      if (!blob)
+        continue;
+
+      if (mime_type)
+        *mime_type = eos_shard_blob_get_content_type (blob);
+
+      return eos_shard_blob_load_contents (blob, error);
+    }
+
+  return NULL;
+}
+
+/**
  * eknc_domain_get_impl:
  * @app_id: the domains app id
  * @xapian_bridge: the xapian bridge instance to use to communicate to xapian

@@ -79,6 +79,12 @@ eknc_domain_query (EkncDomain *self,
                    GAsyncReadyCallback callback,
                    gpointer user_data);
 
+GBytes *
+eknc_domain_read_uri (EkncDomain *self,
+                      const gchar *uri,
+                      const gchar **scheme,
+                      GError **error);
+
 EkncQueryResults *
 eknc_domain_query_finish (EkncDomain *self,
                           GAsyncResult *result,
