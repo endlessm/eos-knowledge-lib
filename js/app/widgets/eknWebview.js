@@ -182,6 +182,9 @@ const EknWebview = new Knowledge.Class({
                             transient_for: this.get_toplevel(),
                         });
                         this._license_view.maximize();
+                        this._license_view.connect('destroy', () => {
+                            this._license_view = null;
+                        });
                     }
 
                     let license = GLib.uri_unescape_string(uri.replace('license://', ''), null);
