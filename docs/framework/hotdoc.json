@@ -4,5 +4,8 @@
 
     "index": "index.md",
     "output": "built",
-    "sitemap": "sitemap.txt"
+    "sitemap": "sitemap.txt",
+
+    "mf_sources": ["../../js/app/modules/*/*.js"],
+    "mf_smart_index": true
 }
