@@ -1,4 +1,7 @@
 .NavigationSearchBox {
+    font-family: $display-font;
+    font-weight: normal;
+
     .PagerSimple & {
         box-shadow: inset 0em 0.16em 0.16em transparentize(black, 1 - 0.14);
         background-image: linear-gradient(-179deg, transparentize(black, 1 - 0.17) 0%,
@@ -23,11 +26,6 @@
             background-color: $primary-dark-color;
         }
 
-        &:selected {
-            background-color: lighter($primary-dark-color);
-            color: #eeeeec;
-        }
-
         &:focus {
             box-shadow: inset 0px 0px 3px 2px #5097D1;
         }
@@ -39,40 +37,31 @@
     }
 
     .composite .PagerSimple & {
-        font-size: 18.8px;  /* 16px spec * 88% */
+        font-size: 20px;
     }
 
-    font-family: $body-font;
-
     frame {
-       background-color: $background-light-color;
+       background-color: white;
+       padding: 0;
+       border-radius: 0px;
     }
 
     .view {
         padding: 10px;
-
         .cell {
-            border-color: $background-light-color;
-            border-width: 3px;
-            border-radius: 2px;
-            border-style: solid;
             color: $black-80-color;
-            background-color: white;
+            border-bottom: 1px solid transparentize(black, 1 - 0.10);
 
             &:selected {
-                color: $black-60-color;
+                background-color: transparentize(black, 1 - 0.10);
+                border: none;
             }
         }
 
         &:nth-child(2) {
+            font-weight: bold;
             .cell {
-                color: $accent-light-color;
-                border-color: $background-light-color;
-                background-color: $background-light-color;
-
-                &:selected {
-                    color: $accent-dark-color;
-                }
+                color: $accent-dark-color;
             }
         }
     }
