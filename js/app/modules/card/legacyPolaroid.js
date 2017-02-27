@@ -122,17 +122,26 @@ const LegacyPolaroid = new Module.Class({
 
     vfunc_get_preferred_width: function () {
         // FIXME: figure out better way to respect childs size request
+        // We must chain up to the parent implementation because we are
+        // subclassing GtkButton. In practice, the only way around this
+        // is to *not* subclass GtkButton, but to use a custom widget
+        // instead.
         let [min,] = this.parent();
-        if (min > WIDTH)
-            logError(new Error('LegacyPolaroidCard min width '+ min + ' greater than ' + WIDTH));
+        if (min > WIDTH) {
+            let child = this.get_child();
+            log('LegacyPolaroidCard min child ' + child  + ' width ' + min + ' greater than ' + WIDTH);
+        }
         return [WIDTH, WIDTH];
     },
 
     vfunc_get_preferred_height: function () {
         // FIXME: figure out better way to respect childs size request
+        // See above
         let [min,] = this.parent();
-        if (min > HEIGHT)
-            logError(new Error('LegacyPolaroidCard min width '+ min + ' greater than ' + HEIGHT));
+        if (min > HEIGHT) {
+            let child = this.get_child();
+            log('LegacyPolaroidCard min child ' + child  + ' height ' + min + ' greater than ' + HEIGHT);
+        }
         return [HEIGHT, HEIGHT];
     },
 });
