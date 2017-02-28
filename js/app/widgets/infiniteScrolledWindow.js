@@ -36,8 +36,6 @@ const InfiniteScrolledWindow = new Knowledge.Class({
         'need-more-content': {},
     },
 
-    _MINIMAL_WIDTH: 200,
-
     _init: function(props) {
         this.parent(props);
 
@@ -90,11 +88,5 @@ const InfiniteScrolledWindow = new Knowledge.Class({
             this._requested_content = true;
             this.emit('need-more-content');
         }
-    },
-
-    vfunc_get_preferred_width: function () {
-        if (this.preferred_width > -1)
-            return [this._MINIMAL_WIDTH, this.preferred_width];
-        return this.parent();
     },
 });
