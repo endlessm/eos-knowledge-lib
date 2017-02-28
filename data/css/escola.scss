@@ -8,6 +8,8 @@ $highlight-color: #f5d888  !default;
 
 $background-light-color: #2b2b2c !default;
 $background-dark-color: #141418 !default;
+$background-dark-color-hover: #1e1e22 !default;
+$card-context-color: #b3b3b3 !default;
 
 $title-font: Raleway !default;
 $context-font: Raleway !default;
@@ -20,13 +22,21 @@ $display-font: 'Raleway Black' !default;
   background-image: none;
 }
 
+.DecorationThemeableImage {
+  margin: 0px 30px;
+}
+
+.NavigationSearchBox {
+  font-family: $context-font;
+}
+
 .home-page {
   .landing {
     .background {
       background-image: url($primary-background-image);
       background-repeat: no-repeat;
-      background-size: 100%;
-      min-height: 346px;
+      background-size: cover;
+      min-height: 400px;
     }
 
     .BannerDynamic {
@@ -45,11 +55,13 @@ $display-font: 'Raleway Black' !default;
       color: white;
       font-size: 30px;
       font-family: $title-font;
+      font-weight: 500;
+      margin-top: -0.90em;
     }
   }
 
   .ContentGroupContentGroup {
-    padding: 20px;
+    padding: 40px;
   }
 }
 
@@ -69,11 +81,9 @@ $display-font: 'Raleway Black' !default;
   &.background {
     background-image: url($secondary-background-image);
     background-repeat: no-repeat;
-    background-size: 100%;
   }
 
   .LayoutResponsiveMargins {
-
       &--small {
           margin: 0px 60px;
       }
@@ -98,23 +108,28 @@ $display-font: 'Raleway Black' !default;
     }
   }
 
-  .ContentGroupContentGroup {
+  .ContentGroupContentGroup,
+  .BannerSearch {
     &__title {
       font-size: 48px;
-      margin: 50px 0;
       font-family: $display-font;
+      margin: 90px 0;
     }
-    padding: 20px;
+    padding: 0px 20px 20px 20px;
   }
 
   .ArrangementList {
     margin: 0;
     .CardList {
       background-color: $background-dark-color;
+      &:hover {
+        background-color: $background-dark-color-hover;
+      }
+      transition: background-color 50ms ease-in-out;
       &__title {
         font-size: 24px;
         color: $primary-medium-color;
-        font-weight: normal;
+        font-weight: 500;
       }
 
       &__thumbnail {
@@ -122,13 +137,37 @@ $display-font: 'Raleway Black' !default;
       }
 
       &__context {
-        color: #b3b3b3;
+        font-size: 16px;
+        color: $card-context-color;
+        font-weight: 300;
+      }
+
+      &__title,
+      &__context {
+        padding-left: 20px;
       }
 
       padding-right: 20px;
       box-shadow: none;
-      margin: 0px 0px 2px 0px;
+      margin: 0px 100px 10px 100px;
     }
+  }
+}
+
+.ContentGroupNoResultsMessage {
+  font-family: $context-font;
+  margin-top: 50px;
+  padding: 0;
+  &__title,
+  &__subtitle {
+    font-size: 1.50em;
+    color: white;
+    padding: 0em 1.25em 0em 1.25em;
+    font-style: normal;
+  }
+  &__subtitle {
+    margin-top: 1.0em;
+    padding: 0;
   }
 }
 
@@ -163,8 +202,8 @@ $display-font: 'Raleway Black' !default;
   }
 }
 
-/* For some reason this doesnt work if put inside .ArrangementGrid
-where it needs to be */
+/* For some reason both of these doesn't work if put inside .ArrangementGrid
+where they need to be */
 .Card {
   &.width-c &__title,
   &.width-d.height-c &__title,
@@ -173,14 +212,29 @@ where it needs to be */
   }
 }
 
+.CardThumb {
+  &.width-d.height-b &__contentFrame,
+  &.width-e.height-b &__contentFrame,
+  &.width-e.height-c &__contentFrame {
+    padding: 20px;
+  }
+}
+
+
 .ArrangementGrid {
   padding: 10px;
   .CardThumb {
-    margin: 10px;
+    margin: 12px;
     min-width: 360px;
     background-color: $background-dark-color;
+    box-shadow: none;
+    &:hover {
+      background-color: $background-dark-color-hover;
+    }
+    transition: background-color 50ms ease-in-out;
     &__title {
-      font-weight: normal;
+      font-size: 16px;
+      font-weight: 500;
     }
     &.highlighted {
         .CardThumb__title {
@@ -189,12 +243,12 @@ where it needs to be */
     }
     &__context {
       font-size: 16px;
-      -EknFormattableLabel-text-transform: 'uppercase';
       font-weight: normal;
-      color: #b3b3b3;
+      color: $card-context-color;
+      font-weight: 300;
     }
     &__thumbnail {
-      background-color: $base-color;
+      background-color: $background-dark-color;
     }
   }
 }
@@ -202,4 +256,54 @@ where it needs to be */
 .footer {
   min-height: 102px;
   background-color: #323233;
+}
+
+.composite {
+  .home-page {
+    .landing {
+      .background {
+        min-height: 250px;
+      }
+
+      .BannerDynamic {
+        &__logo {
+          min-height: 120px;
+          min-width: 300px;
+        }
+      }
+
+      .StaticText {
+        font-size: 20px;
+        margin-top: -1.5em;
+      }
+    }
+  }
+
+  .set-page,
+  .search-page {
+    .ContentGroupContentGroup,
+    .BannerSearch {
+      &__title {
+        font-size: 30px;
+        margin: 30px 0px;
+      }
+    }
+
+    &.background {
+      background-size: 100%;
+    }
+  }
+
+  .ContentGroupNoResultsMessage {
+    margin-top: 30px;
+    &__title,
+    &__subtitle {
+      font-size: 20px;
+      padding: 0;
+      margin: 0;
+    }
+    &__subtitle {
+      margin-top: 1.0em;
+    }
+  }
 }
