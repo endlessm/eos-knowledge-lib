@@ -88,7 +88,7 @@ defines:
           slots:
             <<: *sidebar-list-slots
             selection:
-              type: Selection.SubsetsForSet
+              type: Selection.ContentForSet
               id: set-sidebar
 
 - &search-page
