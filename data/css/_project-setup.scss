@@ -6,6 +6,3 @@
 
 $images-path: 'resource:///com/endlessm/knowledge/data/images/';
 $project-path: absolute-path("../..");
-@import "compass/configuration";
-$compass-options: (images-dir: "data/images", relative-assets: false, asset-cache-buster: no-cache-buster, http-images-path: $images-path);
-@include compass-configuration($compass-options);

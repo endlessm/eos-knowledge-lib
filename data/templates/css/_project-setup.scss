@@ -5,6 +5,3 @@
 }
 
 $project-path: absolute-path("../../..");
-@import "compass/configuration";
-$compass-options: (images-dir: "data/templates/images", relative-assets: true, asset-cache-buster: no-cache-buster);
-@include compass-configuration($compass-options);

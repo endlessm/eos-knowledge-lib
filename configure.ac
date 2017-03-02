@@ -89,10 +89,6 @@ AC_PATH_PROG([SCSS], [scss], [notfound])
 AS_IF([test x$SCSS = xnotfound], [AC_MSG_ERROR([SCSS compiler not found.
 Try installing the "sass" Ruby gem or its equivalent package.])])
 AC_ARG_VAR([SCSS], [Path to SCSS compiler])
-AC_MSG_CHECKING([whether SCSS compiler supports compass])
-AS_IF([scss --compass], [AC_MSG_RESULT([yes])],
-    [AC_MSG_ERROR([SCSS compiler does not have Compass support.
-Try installing the "compass" Ruby gem or its equivalent package.])])
 
 AC_CACHE_SAVE
 
