@@ -16,7 +16,7 @@ const SearchBox = imports.app.modules.navigation.searchBox;
 const Utils = imports.app.utils;
 
 /**
- * Class: Window.Simple
+ * Class: Simple
  * Window with default functionality
  *
  * Slots:

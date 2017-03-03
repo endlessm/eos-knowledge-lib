@@ -8,7 +8,7 @@ const Module = imports.app.interfaces.module;
 const Selection = imports.app.modules.selection.selection;
 
 /**
- * Class: Selection.Xapian
+ * Class: Xapian
  * A general, superclass for populating selection content using xapian
  * queries. Note that this superclass cannot be used directly itself. You must
  * subclass it and implement the construct_query_object method, which should
