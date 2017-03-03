@@ -9,6 +9,9 @@ const Lang = imports.lang;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 
+/**
+ * Class: Selection
+ */
 const Selection = new Module.Class({
     Name: 'Selection',
     Extends: GObject.Object,

@@ -7,7 +7,7 @@ const Gtk = imports.gi.Gtk;
 const Module = imports.app.interfaces.module;
 
 /**
- * Module: Layout.Overlay
+ * Class: Overlay
  * Layout that can position other modules on top of one another
  *
  * This layout can be used to stack modules on top of one another.

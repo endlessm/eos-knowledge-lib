@@ -10,6 +10,9 @@ const Module = imports.app.interfaces.module;
 const SetMap = imports.app.setMap;
 const Xapian = imports.app.modules.selection.xapian;
 
+/**
+ * Class: SubsetsForSet
+ */
 const SubsetsForSet = new Module.Class({
     Name: 'Selection.SubsetsForSet',
     Extends: Xapian.Xapian,
