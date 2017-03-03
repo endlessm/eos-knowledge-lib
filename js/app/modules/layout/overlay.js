@@ -18,17 +18,21 @@ const Module = imports.app.interfaces.module;
  * properties, determine where they are arranged on top of the main module.
  * For example, a module with halign: end, valign: end, and in CSS margin: 10px
  * will be positioned 10px away from the bottom right corner.
- *
- * Slots:
- *   content - for the main module
- *   overlays - a list of other modules to be positioned on top of the content
  */
 const Overlay = new Module.Class({
     Name: 'Layout.Overlay',
     Extends: Gtk.Overlay,
 
     Slots: {
+        /**
+         * Slot: content
+         * For the main module
+         */
         'content': {},
+        /**
+         * Slot: overlays
+         * A list of other modules to be positioned on top of the content
+         */
         'overlays': {
             array: true,
         },

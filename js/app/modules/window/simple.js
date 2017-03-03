@@ -18,12 +18,6 @@ const Utils = imports.app.utils;
 /**
  * Class: Simple
  * Window with default functionality
- *
- * Slots:
- *   lightbox - optional
- *   navigation - optional
- *   pager
- *   search - optional
  */
 const Simple = new Module.Class({
     Name: 'Window.Simple',
@@ -31,6 +25,10 @@ const Simple = new Module.Class({
 
     Slots: {
         'content': {},
+        /**
+         * Slot: search
+         * Optional
+         */
         'search': {},
     },
 

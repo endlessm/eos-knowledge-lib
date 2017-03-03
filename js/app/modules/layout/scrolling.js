@@ -10,15 +10,16 @@ const HistoryStore = imports.app.historyStore;
 /**
  * Class: Scrolling
  * Layout template that allows its content to scroll vertically
- *
- * Slots:
- *   content - where to put the content
  */
 const Scrolling = new Module.Class({
     Name: 'Layout.Scrolling',
     Extends: Gtk.ScrolledWindow,
 
     Slots: {
+        /**
+         * Slot: content
+         * Where to put the content
+         */
         'content': {},
     },
 

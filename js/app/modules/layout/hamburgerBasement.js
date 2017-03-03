@@ -19,12 +19,6 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *
  * CSS Styles:
  *      hamburger-basement-template - on the template
- *
- * Slots:
- *   top
- *   middle
- *   bottom
- *   basement
  */
 const HamburgerBasement = new Module.Class({
     Name: 'Layout.HamburgerBasement',

@@ -22,11 +22,6 @@ const SlidingPanelOverlay = imports.app.widgets.slidingPanelOverlay;
  *
  * Implements:
  *   <Module>
- *
- * Slots:
- *   top-menu - The content in the menu that slides out
- *   content - Main content of the template
- *
  */
 const TopMenu = new Module.Class({
     Name: 'Layout.TopMenu',
@@ -38,7 +33,15 @@ const TopMenu = new Module.Class({
     },
 
     Slots: {
+        /**
+         * Slot: top-menu
+         * The content in the menu that slides out
+         */
         'top-menu': {},
+        /**
+         * Slot: content
+         * Main content of the template
+         */
         'content': {},
     },
 

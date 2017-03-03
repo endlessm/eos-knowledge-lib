@@ -18,9 +18,6 @@ const CSS_RESOURCE_PATH = '/com/endlessm/knowledge/data/css/';
  *
  * An Controller drives the flow of the application from page to page. It also
  * adds the pages to the app window’s page manager.
- *
- * Slots:
- *   window
  */
 const Controller = new Lang.Interface({
     Name: 'Controller',

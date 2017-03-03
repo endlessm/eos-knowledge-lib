@@ -20,9 +20,6 @@ const Module = imports.app.interfaces.module;
  *
  * Requires:
  *   <Module>
- *
- * Slots:
- *   sub-order
  */
 const Order = new Lang.Interface({
     Name: 'Order',

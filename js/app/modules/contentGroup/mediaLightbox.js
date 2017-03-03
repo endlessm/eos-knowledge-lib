@@ -12,11 +12,7 @@ const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 
 /**
  * Class: MediaLightbox
- *
  * A module which displays media content over other
- *
- * Slots:
- *   card
  */
 const MediaLightbox = new Module.Class({
     Name: 'ContentGroup.MediaLightbox',

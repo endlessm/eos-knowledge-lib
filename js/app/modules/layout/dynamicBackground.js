@@ -38,9 +38,6 @@ const _cssTemplate = '.LayoutDynamicBackground {\
  *
  * The tinted overlay color is extracted from thumbnail image of a
  * <ContentObjectModel>.
- *
- * Slots:
- *   content - a template module
  */
 const DynamicBackground = new Module.Class({
     Name: 'Layout.DynamicBackground',
@@ -53,6 +50,10 @@ const DynamicBackground = new Module.Class({
     },
 
     Slots: {
+        /**
+         * Slot: content
+         * A template module
+         */
         'content': {},
     },
     References: {

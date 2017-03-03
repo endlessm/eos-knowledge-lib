@@ -31,11 +31,6 @@ const _MENU_HOT_ZONE_WIDTH_PX = 3;
  * Implements:
  *   <Module>
  *
- * Slots:
- *   sidebar - The content in the menu that slides out (optional)
- *   context - Slot for content in the center of the context bar (optional)
- *   content - Main content of the template
- *
  * CSS classes:
  *   close-button - on the button that closes the menu
  *   context-bar - on the context bar
@@ -55,8 +50,20 @@ const SideMenu = new Module.Class({
     },
 
     Slots: {
+        /**
+         * Slot: content
+         * Main content of the template
+         */
         'content': {},
+        /**
+         * Slot: context
+         * Slot for content in the center of the context bar (optional)
+         */
         'context': {},
+        /**
+         * Slot: sidebar
+         * The content in the menu that slides out (optional)
+         */
         'sidebar': {},
     },
 
