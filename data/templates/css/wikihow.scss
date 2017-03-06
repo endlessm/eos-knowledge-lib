@@ -219,11 +219,10 @@ h2 + ol, h3 + ol, .steps_list_2 {
             box-sizing: border-box;
         }
         &:before {
-            $file: "object-view.png";
-            background: image-url($file) no-repeat center center;
+            background: url("../images/object-view.png") no-repeat center center;
             content: "";
             display: none;
-            height: image-height($file);
+            height: 43px;
             position: absolute;
             z-index: 10;
             box-sizing: border-box;
