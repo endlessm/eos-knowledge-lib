@@ -1,8 +1,6 @@
 @import "project-setup";
 @import "eos-no-link";
 
-@include global-reset;
-
 //////////////////////////////
 // Variables
 //////////////////////////////
@@ -260,7 +258,7 @@ $spacing-elements: 30px;
             float: none !important;
             margin-bottom: $spacing;
             width: 100% !important;
-            @include box-sizing(border-box);
+            box-sizing: border-box;
             p {
                 margin: 0 0 0 0 !important;
             }
@@ -434,7 +432,7 @@ $spacing-elements: 30px;
                 right: 10px;
                 top: 10px;
                 width: image-width($file);
-                @include box-sizing(border-box);
+                box-sizing: border-box;
             }
         }
         &:hover .magnify img {
