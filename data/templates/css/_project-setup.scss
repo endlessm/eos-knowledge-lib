@@ -1,7 +1,0 @@
-/* Copyright 2016 Endless Mobile, Inc. */
-
-@function no-cache-buster($url, $file) {
-    @return null;
-}
-
-$project-path: absolute-path("../../..");
