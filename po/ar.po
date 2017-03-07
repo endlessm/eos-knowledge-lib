@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-02-07 02:56+0000\n"
-"PO-Revision-Date: 2017-01-17 02:57+0000\n"
+"POT-Creation-Date: 2017-02-14 02:58+0000\n"
+"PO-Revision-Date: 2017-03-03 22:10+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -146,7 +146,7 @@ msgstr "المحتوى مهدى من {blog-link}، ومرخص بموجب {licens
 msgid "Results were found for “%s”"
 msgstr "النتائج التي عثرنا عليها لـ “%s”"
 
-#: js/app/interfaces/card.js:278
+#: js/app/interfaces/card.js:279
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
@@ -157,7 +157,7 @@ msgstr[3] "%s:%s دقائق"
 msgstr[4] "%s:%s دقائق"
 msgstr[5] "%s:%s دقائق "
 
-#: js/app/interfaces/card.js:341
+#: js/app/interfaces/card.js:342
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -190,7 +190,7 @@ msgstr "النتائج عن “%s”"
 
 #: js/app/modules/contentGroup/contentGroup.js:157
 msgid "See more"
-msgstr ""
+msgstr "شاهد المزيد"
 
 #: js/app/modules/contentGroup/noResultsMessage.js:52
 msgid "Sorry! :-("
