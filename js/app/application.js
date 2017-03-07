@@ -120,8 +120,13 @@ const Application = new Knowledge.Class({
         this._recompile_overrides = has_option('recompile-all') || has_option('recompile-theme-overrides');
         this._recompile_app_json = has_option('recompile-all') || has_option('recompile-app-json');
 
-        if (has_option('theme-overrides-path'))
+        if (has_option('theme-overrides-path')) {
+            if (this._theme) {
+                logError(new Error('Both a stock theme and overrides css set, ignoring theme.' + this._theme));
+                this._theme = undefined;
+            }
             this._overrides_path = get_option_string('theme-overrides-path');
+        }
         if (has_option('app-json-path'))
             this._app_json_path = get_option_string('app-json-path');
 
@@ -235,9 +240,8 @@ const Application = new Knowledge.Class({
             };
             if (this._theme)
                 controller_props.theme = this._theme;
-            let css = this._get_overrides_css();
-            if (css)
-                controller_props.css = css;
+            else
+                controller_props.css = this._get_overrides_css();
             this._controller = factory.create_root_module(controller_props);
             this._controller.make_ready();
         }
