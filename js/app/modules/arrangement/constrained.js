@@ -10,11 +10,11 @@ const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
 
-const _DEFAULT_CARD_COUNT = 10;
-const _DEFAULT_COLUMNS = 5;
-const _DEFAULT_ROWS = 6;
-const _CARD_MIN_WIDTH = Card.MinSize.B;
-const _CARD_MIN_HEIGHT = Card.MinSize.B;
+let _DEFAULT_CARD_COUNT = 10;
+let _DEFAULT_COLUMNS = 1;
+let _DEFAULT_ROWS = 10;
+let _CARD_MIN_WIDTH = Card.MinSize.B;
+let _CARD_MIN_HEIGHT = Card.MinSize.A;
 
 const _Placeholder = new Lang.Class({
     Name: 'Placeholder',
@@ -38,7 +38,7 @@ const _Placeholder = new Lang.Class({
  *
  * To extend this class override the Arrangement.get_max_cards() and
  * Constrained.get_description().
- */
+*/
 const Constrained = new Module.Class({
     Name: 'Arrangement.Constrained',
     Extends: Emeus.ConstraintLayout,
@@ -62,24 +62,6 @@ const Constrained = new Module.Class({
         this.remove(child);
     },
 
-    /**
-     * Method: get_description
-     * Get Emeus VFL description for this arrangement.
-     */
-    get_description: function () {
-        return [
-            'H:|[view0(view4 * 3)][view1(view4 * 2)]|',
-            'H:|[view0][view2(view4 * 2)]|',
-            'H:|[view3(view4 * 2)][view4][view2]|',
-            'H:|[view3][view5(view4 * 2)][view6(view4)]|',
-            'H:|[view8(view4)][view9(view4)][view5][view7(view4)]|',
-            'V:|[view0(view4 * 3)][view3(view4 * 2)][view8(view4)]|',
-            'V:[view3][view9(view4)]|',
-            'V:|[view0][view4][view5(view4 * 2)]|',
-            'V:|[view1(view4 * 2)][view2(view4 * 2)][view6(view4)][view7(view4)]|',
-        ];
-    },
-
     _setup_constraints: function () {
         // remove existing placeholders, if any
         let holders = this.get_children().filter(child => child.get_child() instanceof _Placeholder);
@@ -88,28 +70,121 @@ const Constrained = new Module.Class({
             this.unpack_card(placeholder);
         });
 
+        /*
+
         // create widgets map with existing cards
         let widgets = {};
+        let descriptions = [];
+        let h_description = 'H:|';
+        let h_loop_count = 0;
+        let v_loop_count = 0;
+        let v_col_0 = 'V:|';
+        let v_col_1 = 'V:|';
+        let v_col_2 = 'V:|';
+        let v_col_3 = 'V:|';
         this.get_children().forEach((child, index) => {
-            widgets['view' + index] = child.get_child();
+            let name_current = 'view' + index;
+            widgets[name_current] = child.get_child();
+
+            // Add H constraints to VFL
+            h_description += '[' + name_current + '(view0)' + ']';
+            if (h_loop_count == 3) {
+                h_description += '|';
+                descriptions.push(h_description);
+                h_description = 'H:|';
+                h_loop_count = 0;
+            } else {
+                h_loop_count++;
+            }
+
+
+            // update V constraint
+            // v_description += '[' + name_current + '(view0)' + ']';
+            if (v_loop_count == 0) {
+                v_col_0 += '[' + name_current + '(view0)' + ']';
+                v_loop_count++;
+            } 
+            else if (v_loop_count == 1) {
+                v_col_1 += '[' + name_current + '(view0)' + ']';
+                v_loop_count++;
+            } 
+            else if (v_loop_count == 2) {
+                v_col_2 += '[' + name_current + '(view0)' + ']';
+                v_loop_count++;
+            } 
+            else if (v_loop_count == 3) {
+                v_col_3 += '[' + name_current + '(view0)' + ']';
+                v_loop_count = 0;
+            }
         });
+        v_col_0 += '|';
+        v_col_1 += '|';
+        v_col_2 += '|';
+        v_col_3 += '|';
+        descriptions.push(v_col_0, v_col_1, v_col_2, v_col_3);
+        print(descriptions);
+
 
         // fill with placeholders in empty slots, if any
         let n_children = this.get_children().length;
-        for (let index = n_children; index < this.get_max_cards(); index++) {
-                let holder = new _Placeholder();
-                widgets['view' + index] = holder;
-                this.add(holder);
+        for (let index = n_children; index < n_children; index++) {
+            let holder = new _Placeholder();
+            widgets['view' + index] = holder;
+            this.add(holder);
         }
 
         // clear existing constraints and re-create new ones
         this.clear_constraints();
         let constraints = Emeus.create_constraints_from_description(
-            this.get_description(),
+            descriptions,
             0, 0,
             widgets,
             {});
         constraints.forEach(this.add_constraint, this);
+
+        */
+
+
+
+
+        // clear existing constraits and re-create new ones
+        this.clear_constraints();
+        let n_children = this.get_children().length;
+        let constraints = [];
+        let v_constraint = {};
+        let h_constraint = {};
+        for (let i = 0; i < n_children; i++) {
+            if (i === 0) {
+                let v_constraint = {
+                    target_object: this.get_children()[i],
+                    target_attribute: Emeus.ConstraintAttribute.START,
+                    source_object: this,
+                    source_attribute: Emeus.ConstraintAttribute.START,
+                }
+            }
+            else {
+                let v_constraint = {
+                    target_object: this.get_children()[i],
+                    target_attribute: Emeus.ConstraintAttribute.START,
+                    source_object: this.get_children()[i-1],
+                    source_attribute: Emeus.ConstraintAttribute.END,
+                };
+            }
+            let h_constraint = {
+                target_object: this.get_children()[i],
+                target_attribute: Emeus.ConstraintAttribute.WIDTH,
+                source_attribute: Emeus.ConstraintAttribute.WIDTH,
+            }
+            constraints.push(v_constraint, h_constraint);
+        }
+        constraints.forEach(this.add_constraint, this);
+
+
+        // fill with placeholders in empty slots, if any
+        for (let index = n_children; index < n_children; index++) {
+            let holder = new _Placeholder();
+            this.add(holder);
+        }
     },
 
     // XXX workaround for minimum size issues in Emeus
