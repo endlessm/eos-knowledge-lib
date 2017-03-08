@@ -15,6 +15,7 @@ static void EngineGetObjectCallback(GObject *source,
                                     gpointer user_data)
 {
   Isolate *isolate = Isolate::GetCurrent ();
+  HandleScope scope(isolate);
   CallbackData *data = (CallbackData *)user_data;
 
   GError *error = NULL;
@@ -30,6 +31,8 @@ static void EngineGetObjectCallback(GObject *source,
     Local<Function>::New(isolate, data->reject)->Call(isolate->GetCurrentContext()->Global(), argc, argv);
   }
 
+  /* XXX: For some reason we have to resolve microtasks to the promise wrappers to resolve. */
+  isolate->RunMicrotasks();
   data->resolve.Reset();
   data->reject.Reset();
   delete data;
@@ -54,6 +57,7 @@ static void EngineQueryCallback(GObject *source,
                                 gpointer user_data)
 {
   Isolate *isolate = Isolate::GetCurrent ();
+  HandleScope scope(isolate);
   CallbackData *data = (CallbackData *)user_data;
 
   GError *error = NULL;
@@ -69,6 +73,8 @@ static void EngineQueryCallback(GObject *source,
     Local<Function>::New(isolate, data->reject)->Call(isolate->GetCurrentContext()->Global(), argc, argv);
   }
 
+  /* XXX: For some reason we have to resolve microtasks to the promise wrappers to resolve. */
+  isolate->RunMicrotasks();
   data->resolve.Reset();
   data->reject.Reset();
   delete data;
