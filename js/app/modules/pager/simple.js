@@ -16,7 +16,7 @@ const SetMap = imports.app.setMap;
 const Utils = imports.app.utils;
 
 /**
- * Class: Pager.Simple
+ * Class: Simple
  * Handle transitions between pages in an app
  *
  * CSS classes:

@@ -23,6 +23,9 @@ const CONTENT_PAGE_NAME = 'content';
 const NO_RESULTS_PAGE_NAME = 'no-results';
 const ERROR_PAGE_NAME = 'error';
 
+/**
+ * Class: ContentGroup
+ */
 const ContentGroup = new Module.Class({
     Name: 'ContentGroup.ContentGroup',
     Extends: Gtk.Grid,

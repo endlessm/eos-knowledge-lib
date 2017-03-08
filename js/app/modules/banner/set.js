@@ -12,9 +12,6 @@ const Pages = imports.app.pages;
  *
  * A banner which shows a card for the model currently being displayed on the
  * set page.
- *
- * Slots:
- *   card
  */
 const Set = new Module.Class({
     Name: 'Banner.Set',

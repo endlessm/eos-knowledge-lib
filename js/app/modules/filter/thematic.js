@@ -9,7 +9,7 @@ const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 
 /**
- * Class: Filter.Thematic
+ * Class: Thematic
  *
  * If the current item in our history model is featured, filter for non-featured
  * models. If the current item in our history is not featured, filter for

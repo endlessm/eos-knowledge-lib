@@ -10,7 +10,7 @@ const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
 
 /**
- * Class: Layout.BrandPage
+ * Class: BrandPage
  * Display a brand screen for 2 seconds
  */
 const BrandPage = new Module.Class({

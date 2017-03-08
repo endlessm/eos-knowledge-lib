@@ -13,9 +13,6 @@ const Utils = imports.app.utils;
 /**
  * Class: ResponsiveMargins
  * A module that displays a window and has responsive margins.
- *
- * Slots:
- *   content
  */
 const ResponsiveMargins = new Module.Class({
     Name: 'Layout.ResponsiveMargins',

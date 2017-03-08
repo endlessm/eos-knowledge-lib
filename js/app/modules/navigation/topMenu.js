@@ -24,17 +24,21 @@ const TOP_MENU_HEIGHT = 50;
  *
  * Implements:
  *   <Module>
- *
- * Slots:
- *   banner - Typically an image previewer to display the logo
- *   menu - Module that contains the horizontal menu
  */
 const TopMenu = new Module.Class({
     Name: 'Navigation.TopMenu',
     Extends: Endless.CustomContainer,
 
     Slots: {
+        /**
+         * Slot: banner
+         * Typically an image previewer to display the logo
+         */
         'banner': {},
+        /**
+         * Slot: menu
+         * Module that contains the horizontal menu
+         */
         'menu': {},
     },
 

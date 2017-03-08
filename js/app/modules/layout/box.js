@@ -15,9 +15,6 @@ const Module = imports.app.interfaces.module;
  * **orientation** property is **Gtk.Orientation.HORIZONTAL**, the components
  * are placed next to each other. If the **orientation** property is
  * **Gtk.Orientation.VERTICAL**, the components are placed one below the other.
- *
- * Slots:
- *   - contents
  */
 const Box = new Module.Class({
     Name: 'Layout.Box',

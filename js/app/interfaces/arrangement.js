@@ -16,9 +16,6 @@ const Module = imports.app.interfaces.module;
  *
  * An arrangement controls how a group of cards are presented in the UI.
  * Examples of arrangements: a list, a grid, etc.
- *
- * Slots:
- *   card - controls how the card models are converted into cards
  */
 const Arrangement = new Lang.Interface({
     Name: 'Arrangement',
@@ -62,6 +59,10 @@ const Arrangement = new Lang.Interface({
     },
 
     Slots: {
+        /**
+         * Slot: card
+         * Controls how the card models are converted into cards
+         */
         'card': {
             multi: true,
         },

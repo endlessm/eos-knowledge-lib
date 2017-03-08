@@ -16,10 +16,6 @@ const Utils = imports.app.utils;
  * Class: Sidebar
  * Template with a sidebar and content area
  *
- * Slots:
- *   sidebar
- *   content
- *
  * CSS Styles:
  *   sidebar-template - on the template
  *   sidebar - a frame containing the sidebar module
