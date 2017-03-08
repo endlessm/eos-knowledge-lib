@@ -50,6 +50,13 @@ const MoltresEngine = new Lang.Class({
         }
     },
 
+    get_domain: function () {
+        const html = Utils.string_to_bytes('<html><body><p>Some content</p></body></html>');
+        return {
+            read_uri: () => [true, html, 'text/html']
+        }
+    },
+
     get_ekn_id: function () {},
 
     get_object_promise: function (id) {
@@ -208,7 +215,6 @@ placerat varius non id dui.',
         data.license = 'CC-BY-SA 3.0';
         data.ekn_id = 'ekn://moltres/article' + this._article_count++;
         let article = Eknc.ArticleObjectModel.new_from_props(data);
-        article.get_content_stream = () => { return Utils.string_to_stream('<html><body><p>Some content</p></body></html>'); };
 
         // Save this model. We can't just generate them on the fly and then
         // discard them because later the client could request this same article
