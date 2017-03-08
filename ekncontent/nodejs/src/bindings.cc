@@ -8,6 +8,7 @@
 #include "gobject.h"
 #include "engine.h"
 #include "domain.h"
+#include "mainloop.h"
 
 #include <string.h>
 
@@ -174,10 +175,6 @@ static void BoxedFieldSetter(const FunctionCallbackInfo<Value> &args) {
     g_base_info_unref (type_info);
 }
 
-static void Tick(const FunctionCallbackInfo<Value> &args) {
-    g_main_context_iteration (NULL, TRUE);
-}
-
 void InitModule(Local<Object> exports, Local<Value> module, void *priv) {
     Isolate *isolate = Isolate::GetCurrent ();
 
@@ -200,7 +197,7 @@ void InitModule(Local<Object> exports, Local<Value> module, void *priv) {
 
     exports->Set (String::NewFromUtf8 (isolate, "DomainReadURI"), FunctionTemplate::New (isolate, DomainReadURI)->GetFunction ());
 
-    exports->Set (String::NewFromUtf8 (isolate, "Tick"), FunctionTemplate::New (isolate, Tick)->GetFunction ());
+    exports->Set (String::NewFromUtf8 (isolate, "StartGLibMainloop"), FunctionTemplate::New (isolate, StartGLibMainloop)->GetFunction ());
 }
 
 NODE_MODULE(eknbindings, InitModule)

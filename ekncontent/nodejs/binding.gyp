@@ -10,6 +10,7 @@
         'src/boxed.cc',
         'src/engine.cc',
         'src/domain.cc',
+        'src/mainloop.cc',
       ],
       'cflags': [
         '<!@(pkg-config --cflags gobject-introspection-1.0 eos-knowledge-content-0)'
