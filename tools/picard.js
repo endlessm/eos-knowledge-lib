@@ -248,6 +248,15 @@ function get_module_menu () {
     return menu;
 }
 
+// Our sdk theme only resets widgets inside a window will css name EosWindow. We
+// will take advantage of that to make an adwaita themed topbar with endless
+// themed widgets inside.
+const ResetThemeBox = new Knowledge.Class({
+    Name: 'ResetTheme',
+    Extends: Gtk.Box,
+});
+Gtk.Widget.set_css_name.call(ResetThemeBox, 'EosWindow');
+
 function build_ui () {
     widgets.titlebar = new Gtk.HeaderBar({
         show_close_button: true,
@@ -292,6 +301,7 @@ function build_ui () {
         default_width: RESOLUTIONS[2][0],
         default_height: RESOLUTIONS[2][1],
     });
+    widgets.reset_theme_box = new ResetThemeBox();
     widgets.window.set_titlebar(widgets.titlebar);
     add_remove.add(widgets.add_box);
     add_remove.add(widgets.remove_box);
@@ -299,7 +309,8 @@ function build_ui () {
     widgets.titlebar.pack_start(widgets.clear);
     widgets.titlebar.pack_end(widgets.hamburger);
     widgets.titlebar.pack_start(widgets.module_selection);
-    widgets.window.add(widgets.scroll);
+    widgets.window.add(widgets.reset_theme_box);
+    widgets.reset_theme_box.add(widgets.scroll);
  }
 
 const ARTICLE_SYNOPSIS = 'Aenean sollicitudin, purus ac \
