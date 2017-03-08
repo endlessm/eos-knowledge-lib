@@ -86,8 +86,8 @@ let widgets = {};
 
 function main () {
     Gtk.init(null);
-
-    [CSS_DIR + 'picard.css', CSS_DIR + 'news.css'].map(Gio.File.new_for_uri).forEach((file) => {
+    let base_theme_uri = 'resource:///com/endlessm/sdk/css/endless-widgets.css';
+    [base_theme_uri, CSS_DIR + 'picard.css', CSS_DIR + 'news.css'].map(Gio.File.new_for_uri).forEach((file) => {
         Utils.add_css_provider_from_file(file, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     });
 
