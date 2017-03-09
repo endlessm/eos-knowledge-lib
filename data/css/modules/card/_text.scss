@@ -1,13 +1,15 @@
 .CardText {
     background-color: white;
-    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24);
+    box-shadow: 0px 2px 3px transparentize(black, 1 - 0.40);
     padding: 20px;
+    transition: padding 300ms ease-in-out;
 
     &__title {
         font-family: $title-font;
         font-weight: bold;
         color: $primary-medium-color;
-        font-size: 18px;
+        font-size: 16px;
+        transition: font-size 300ms ease-in-out;
     }
 
     &:hover &__title {
@@ -16,7 +18,6 @@
 
     &__synopsis {
         font-family: $body-font;
-        font-style: italic;
         color: $black-60-color;
         font-size: 16px;
     }
@@ -27,51 +28,69 @@
         font-style: normal;
         color: $primary-light-color;
         font-size: 14px;
+        margin-top: 20px;
     }
 
-    &.width-c {
-        padding: 30px;
+    &.height-a.width-b &__title,
+    &.height-a.width-c &__title,
+    &.height-a.width-d &__title,
+    &.height-a.width-e &__title,
+    &.height-a.width-f &__title,
+    &.height-a.width-g &__title {
+        font-size: 16px;
+    }
+
+    &.width-b &__title {
+        font-size: 18px;
     }
 
     &.width-c &__title {
-        font-size: 23px;
+        font-size: 23.04px;
     }
 
-    &.width-c.height-d,
-    &.width-d {
-        padding: 30px;
-    }
-    &.width-c.height-d &__title,
     &.width-d &__title {
-        font-size: 27px;
+        font-size: 27.2px;
     }
 
-    &.height-d,
-    &.width-e,
-    &.width-f.height-c {
-        padding: 40px;
-    }
-
-    &.width-d.height-d &__title,
     &.width-e &__title,
-    &.width-f.height-c &__title {
-        font-size: 37px;
+    &.width-f.height-b &__title,
+    &.width-g.height-b &__title,
+    &.width-h.height-b &__title {
+        font-size: 36.8px;
     }
 
-    &.width-e.height-d,
-    &.width-e.height-e,
-    &.width-f,
-    &.width-g,
-    &.width-h {
-        padding: 50px;
-    }
-
-    &.width-e.height-d &__title,
-    &.width-e.height-e &__title,
     &.width-f &__title,
     &.width-g &__title,
     &.width-h &__title {
-        font-size: 49px;
+        font-size: 40px;
+    }
+
+    &.height-a.width-b,
+    &.height-a.width-c,
+    &.height-a.width-d,
+    &.height-a.width-e,
+    &.height-a.width-f,
+    &.height-a.width-g,
+    &.width-b {
+        padding: 20px;
+    }
+
+    &.width-c,
+    &.width-d {
+        padding: 30px;
+    }
+
+    &.width-e,
+    &.width-f.height-b,
+    &.width-g.height-b,
+    &.width-h.height-b {
+        padding: 40px;
+    }
+
+    &.width-f,
+    &.width-g,
+    &.width-h {
+        padding: 60px;
     }
 
     &--highlighted {

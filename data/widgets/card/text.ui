@@ -24,9 +24,9 @@
             <property name="ellipsize">end</property>
             <property name="lines">3</property>
             <property name="xalign">0</property>
-            <property name="expand">True</property>
+            <property name="expand">False</property>
             <property name="halign">start</property>
-            <property name="valign">end</property>
+            <property name="valign">start</property>
             <style>
               <class name="CardText__title"/>
               <class name="Card__title"/>
@@ -43,7 +43,7 @@
             <property name="lines">5</property>
             <property name="xalign">0</property>
             <property name="expand">True</property>
-            <property name="valign">center</property>
+            <property name="valign">start</property>
             <style>
               <class name="CardText__synopsis"/>
               <class name="Card__synopsis"/>

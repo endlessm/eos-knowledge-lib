@@ -93,7 +93,6 @@ const Text = new Module.Class({
 
     _update_title: function (height, width) {
         let lines = 2;
-        let valign = Gtk.Align.END;
 
         if (width <= Card.MaxSize.B && height <= Card.MaxSize.A) {
             lines = 2;
@@ -105,12 +104,7 @@ const Text = new Module.Class({
             lines = 3;
         }
 
-        if (height <= Card.MaxSize.B) {
-            valign = Gtk.Align.START;
-        }
-
         this._title_label.lines = lines;
-        this._title_label.valign = valign;
     },
 
     _update_synopsis: function (height, width) {
