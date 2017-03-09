@@ -1,6 +1,6 @@
 .CardThumb {
     background-color: white;
-    box-shadow: 0px 5px 10px 0px transparentize(black, 1 - 0.22);
+    box-shadow: 0px 2px 3px transparentize(black, 1 - 0.40);
     border-color: transparent;  /* used for the triangle in the corner */
 
     &__title {
@@ -8,6 +8,7 @@
         font-weight: bold;
         color: $primary-medium-color;
         font-size: 18px;
+        transition: font-size 300ms ease-in-out;
     }
 
     &__context {
@@ -16,12 +17,53 @@
         font-style: normal;
         color: $primary-light-color;
         font-size: 14px;
+        margin-top: 20px;
     }
 
-    &.width-d.height-b &__contentFrame,
-    &.width-e.height-b &__contentFrame,
-    &.width-e.height-c &__contentFrame {
-        padding: 20px 30px 20px 30px;
+    &__synopsis {
+        font-size: 16px;
+    }
+
+    &__contentFrame {
+        transition: padding 300ms ease-in-out;
+    }
+
+    &.width-c &__title,
+    &.width-d.height-c &__title,
+    &.width-d.height-b &__title {
+        font-size: 18px;
+    }
+
+    &.width-d.height-d &__title,
+    &.width-e.height-b &__title,
+    &.width-e.height-c &__title {
+        font-size: 24px;
+    }
+
+    &.width-e.height-d &__title {
+        font-size: 30px;
+    }
+
+    &.width-d &__title,
+    &.width-e &__title,
+    &.width-f &__title,
+    &.width-g &__title,
+    &.width-h &__title {
+        font-size: 36.8px;
+    }
+    
+
+    &.width-d.height-d &__contentFrame,
+    &.width-d.height-e &__contentFrame,
+    &.width-e &__contentFrame,
+    &.width-f.height-e &__contentFrame {
+        padding: 30px;
+    }
+
+    &.width-f &__contentFrame,
+    &.width-g &__contentFrame,
+    &.width-h &__contentFrame {
+        padding: 40px;
     }
 
     .composite &__context {

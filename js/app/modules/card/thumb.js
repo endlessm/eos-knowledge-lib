@@ -11,12 +11,8 @@ const Utils = imports.app.utils;
 
 const SMALL_HEIGHT = 80;
 const MEDIUM_HEIGHT = 120;
-const LARGE_HEIGHT = 140;
+const LARGE_HEIGHT = 160;
 const X_LARGE_HEIGHT = 220;
-
-const SMALL_WIDTH = 190;
-const MEDIUM_WIDTH = 290;
-const LARGE_WIDTH = 390;
 
 const ThumbLayout = new Knowledge.Class({
     Name: 'Card.ThumbLayout',
@@ -63,8 +59,9 @@ const ThumbLayout = new Knowledge.Class({
             thumb_height = alloc.height - text_height;
         } else {
             thumb_height = text_height = alloc.height;
-            text_width = this._get_text_width(alloc) * text_scale;
-            thumb_width = alloc.width - text_width;
+            thumb_width = text_width = (alloc.width / 2);
+            // text_width = this._get_text_width(alloc) * text_scale;
+            // thumb_width = alloc.width - text_width;
         }
         return [thumb_width, thumb_height, text_width, text_height];
     },
@@ -80,19 +77,11 @@ const ThumbLayout = new Knowledge.Class({
         } else if (alloc.width <= Card.MaxSize.D) {
             if (alloc.height <= Card.MaxSize.C) {
                 return MEDIUM_HEIGHT;
+            } else if (alloc.height <= Card.MaxSize.D) {
+                return LARGE_HEIGHT;
             }
-            return LARGE_HEIGHT;
         }
         return X_LARGE_HEIGHT;
-    },
-
-    _get_text_width: function (alloc) {
-        if (alloc.width <= Card.MaxSize.D) {
-            return SMALL_WIDTH;
-        } else if (alloc.width <= Card.MaxSize.E) {
-            return MEDIUM_WIDTH;
-        }
-        return LARGE_WIDTH;
     },
 });
 
@@ -130,23 +119,25 @@ const Thumb = new Module.Class({
 
     vfunc_size_allocate: function (alloc) {
         let orientation = this._get_orientation(alloc.width, alloc.height);
-
         if (orientation === Gtk.Orientation.HORIZONTAL) {
-            this.text_halign = Gtk.Align.START;
-            this._title_label.lines = 3;
+            if (alloc.height <= Card.MinSize.C) {
+                this._title_label.lines = 2;
+            } else {
+                this._title_label.lines = 3;
+            }            
         } else {
-            this._title_label.lines = 1;
+            this._title_label.lines = 2;
         }
 
-        this._title_label.halign = this._synopsis_label.halign = this._context_widget.halign = this.text_halign;
-        this._title_label.justify = Utils.alignment_to_justification(this.text_halign);
-        this._title_label.xalign = Utils.alignment_to_xalign(this.text_halign);
+        this._context_widget.halign = Gtk.Align.START;
+        this._context_widget.valign = Gtk.Align.END;
 
         if (this._should_show_synopsis(alloc.width, alloc.height, orientation)) {
             this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
             this._title_label.valign = Gtk.Align.END;
+            this._synopsis_label.valign = Gtk.Align.START;
         } else {
-            this._title_label.valign = Gtk.Align.START;
+            this._title_label.valign = Gtk.Align.CENTER;
             this._synopsis_label.hide();
         }
 
@@ -158,7 +149,16 @@ const Thumb = new Module.Class({
 
         this._layout.orientation = orientation;
         this.parent(alloc);
-        this.update_card_sizing_classes(alloc.height, alloc.width);
+        /* 
+            FIXME: This is a fix toget rid of extra size the widget thinks it's taking up
+            because of margins between cards in the card CSS in certain arrangements.
+        */
+        let this_margin = this._get_margin();
+        let real_alloc = {
+                            height: (alloc.height - (this_margin.top + this_margin.bottom)),
+                            width: (alloc.width - (this_margin.left + this_margin.right))
+                        };
+        this.update_card_sizing_classes(real_alloc.height, real_alloc.width);
     },
 
     vfunc_draw: function (cr) {
@@ -170,7 +170,7 @@ const Thumb = new Module.Class({
 
     _get_orientation: function (width, height) {
         let horizontal = (width > Card.MaxSize.C && height < Card.MinSize.C) ||
-            (width > Card.MaxSize.D && height < Card.MinSize.D) ||
+            (width > Card.MaxSize.D && height < Card.MinSize.E) ||
             (width > Card.MaxSize.E && height < Card.MinSize.E) ||
             (width > Card.MaxSize.F);
         return horizontal ? Gtk.Orientation.HORIZONTAL : Gtk.Orientation.VERTICAL;
@@ -182,5 +182,22 @@ const Thumb = new Module.Class({
 
     _should_hide_context: function (width, height) {
         return width <= Card.MaxSize.B || (width <= Card.MaxSize.C && height <= Card.MaxSize.B);
+    },
+
+    _get_margin: function () {
+        let context = this._get_fresh_state_context();
+        let margin = context.get_margin(context.get_state());
+        context.restore();
+        return margin;
+    },
+
+    _get_fresh_state_context: function () {
+        let context = this.get_style_context();
+        let flags = this.get_state_flags();
+
+        context.save();
+        context.set_state(flags);
+
+        return context;
     },
 });
