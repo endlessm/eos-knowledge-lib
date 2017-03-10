@@ -20,6 +20,7 @@ const DummyReadingHistoryModel = new Knowledge.Class({
     Signals: {
         'changed': {},
     },
+    Extends: GObject.Object,
 
     mark_article_read: function () { },
     is_read_article: function () { return false; },
@@ -284,6 +285,7 @@ function build_ui () {
 
     widgets.scroll = new Gtk.ScrolledWindow({
         hscrollbar_policy: Gtk.PolicyType.NEVER,
+        expand: true,
     });
     widgets.window = new Gtk.Window({
         title: 'Picard',
