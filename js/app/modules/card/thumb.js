@@ -135,6 +135,7 @@ const Thumb = new Module.Class({
             this.text_halign = Gtk.Align.START;
             this._title_label.lines = 3;
         } else {
+            this.text_halign = Gtk.Align.CENTER;
             this._title_label.lines = 1;
         }
 
