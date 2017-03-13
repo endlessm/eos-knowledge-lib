@@ -3,6 +3,7 @@
 const Emeus = imports.gi.Emeus;
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
@@ -12,6 +13,12 @@ const Card = imports.app.interfaces.card;
 const Knowledge = imports.app.knowledge;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
+
+const CardType = {
+    LOW_RES_IMAGE: 0,
+    MED_RES_IMAGE: 1,
+    HIGH_RES_IMAGE: 2,
+};
 
 /**
  * Class: Thumb
@@ -25,7 +32,8 @@ const Thumb = new Module.Class({
     Implements: [Card.Card],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/thumb.ui',
-    InternalChildren: [ 'layout', 'text-layout',  'title-label', 'synopsis-label', 'grid', 'thumbnail-frame'],
+    InternalChildren: [ 'layout', 'text-layout', 'thumbnail-frame',
+                        'grid', 'title-label', 'synopsis-label', 'context-frame'],
 
     _init: function (props={}) {
         this.parent(props);
@@ -33,15 +41,21 @@ const Thumb = new Module.Class({
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
 
         this.set_title_label_from_model(this._title_label);
+
         this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
 
-        this._context_widget = this.create_context_widget_from_model();
-        this._context_widget.halign = Gtk.Align.START;
-        this._text_layout.add(this._context_widget);
+        this._context_frame.add(this.create_context_widget_from_model());
 
         this.show_all();
 
         Utils.set_hand_cursor_on_widget(this);
+        this._card_type = this._get_card_type();
+    },
+
+    // FIXME: This should examine the card's thumbnail to determine which card
+    // type to return.
+    _get_card_type: function () {
+        return GLib.random_int_range(CardType.LOW_RES_IMAGE, CardType.HIGH_RES_IMAGE + 1);
     },
 
     _get_constraints_horizontal: function (show_synopsis) {
@@ -81,18 +95,18 @@ const Thumb = new Module.Class({
                 source_attribute: Emeus.ConstraintAttribute.WIDTH,
             },
             {
-                target_object: this._context_widget,
+                target_object: this._context_frame,
                 target_attribute: Emeus.ConstraintAttribute.BOTTOM,
                 source_attribute: Emeus.ConstraintAttribute.BOTTOM,
             },
             {
-                target_object: this._context_widget,
+                target_object: this._context_frame,
                 target_attribute: Emeus.ConstraintAttribute.WIDTH,
                 source_object: this._title_label,
                 source_attribute: Emeus.ConstraintAttribute.WIDTH,
             },
             {
-                target_object: this._context_widget,
+                target_object: this._context_frame,
                 target_attribute: Emeus.ConstraintAttribute.LEFT,
                 source_object: this._title_label,
                 source_attribute: Emeus.ConstraintAttribute.LEFT,
@@ -119,24 +133,61 @@ const Thumb = new Module.Class({
                 source_attribute: Emeus.ConstraintAttribute.WIDTH,
             },
             {
-                target_object: this._context_widget,
+                target_object: this._context_frame,
                 target_attribute: Emeus.ConstraintAttribute.BOTTOM,
                 source_attribute: Emeus.ConstraintAttribute.BOTTOM,
             },
             {
-                target_object: this._context_widget,
+                target_object: this._context_frame,
                 target_attribute: Emeus.ConstraintAttribute.WIDTH,
                 source_attribute: Emeus.ConstraintAttribute.WIDTH,
             },
             {
-                target_object: this._context_widget,
+                target_object: this._context_frame,
                 target_attribute: Emeus.ConstraintAttribute.LEFT,
                 source_attribute: Emeus.ConstraintAttribute.LEFT,
             },
         ];
     },
 
-    _main_layout: function (image_portion_attr, image_full_attr) {
+    // PostCard never shows the synopsis.
+    _get_constraints_post_card: function (show_context) {
+        return [
+            {
+                target_object: this._title_label,
+                target_attribute: Emeus.ConstraintAttribute.BOTTOM,
+                source_attribute: show_context ? Emeus.ConstraintAttribute.TOP : Emeus.ConstraintAttribute.BOTTOM,
+                source_object: show_context ? this._context_frame : null,
+            },
+            {
+                target_object: this._title_label,
+                target_attribute: Emeus.ConstraintAttribute.WIDTH,
+                source_attribute: Emeus.ConstraintAttribute.WIDTH,
+            },
+            {
+                target_object: this._title_label,
+                target_attribute: Emeus.ConstraintAttribute.LEFT,
+                source_attribute: Emeus.ConstraintAttribute.LEFT,
+            },
+            {
+                target_object: this._context_frame,
+                target_attribute: Emeus.ConstraintAttribute.WIDTH,
+                source_attribute: Emeus.ConstraintAttribute.WIDTH,
+            },
+            {
+                target_object: this._context_frame,
+                target_attribute: Emeus.ConstraintAttribute.LEFT,
+                source_attribute: Emeus.ConstraintAttribute.LEFT,
+            },
+            {
+                target_object: this._context_frame,
+                target_attribute: Emeus.ConstraintAttribute.BOTTOM,
+                source_attribute: Emeus.ConstraintAttribute.BOTTOM,
+            },
+        ];
+    },
+
+    _main_layout: function (image_fraction, image_portion_attr, image_full_attr) {
         let constraints = [
             {
                 target_object: this._thumbnail_frame,
@@ -152,7 +203,7 @@ const Thumb = new Module.Class({
                 target_object: this._thumbnail_frame,
                 target_attribute: image_portion_attr,
                 source_attribute: image_portion_attr,
-                multiplier: 0.66,
+                multiplier: image_fraction,
             },
             {
                 target_object: this._thumbnail_frame,
@@ -173,7 +224,10 @@ const Thumb = new Module.Class({
                 target_object: this._grid,
                 target_attribute: image_portion_attr,
                 source_attribute: image_portion_attr,
-                multiplier: 0.34,
+                // In case where image takes up entire card (PostCard) or none
+                // of card (TextCard), then text section should sit on top of
+                // image.
+                multiplier: image_fraction < 1 && image_fraction > 0 ? 1 - image_fraction : 1,
             },
             {
                 target_object: this._grid,
@@ -187,21 +241,31 @@ const Thumb = new Module.Class({
     vfunc_size_allocate: function (alloc) {
         this._layout.clear_constraints();
         this._text_layout.clear_constraints();
+
         let orientation = this._get_orientation(alloc.width, alloc.height);
 
-        let show_synopsis = this._should_show_synopsis(alloc.width, alloc.height, orientation);
-
         let show_context = this._should_show_context(alloc.width, alloc.height);
-
+        let show_synopsis = this._should_show_synopsis(alloc.width, alloc.height, orientation);
         let text_constraints;
-        if (orientation === Gtk.Orientation.HORIZONTAL) {
-            this._main_layout(Emeus.ConstraintAttribute.WIDTH, Emeus.ConstraintAttribute.HEIGHT);
-            text_constraints = this._get_constraints_horizontal(show_synopsis);
-            this._title_label.lines = 3;
+        if (this._card_type === CardType.HIGH_RES_IMAGE) {
+            this.get_style_context().add_class('good-image')
+            show_synopsis = false;
+            this._title_label.lines = 2;
+            this._title_label.halign = Gtk.Align.CENTER;
+            this._title_label.justify = Gtk.Justification.CENTER;
+            this._title_label.xalign = 0.5;
+            this._main_layout(1, Emeus.ConstraintAttribute.WIDTH, Emeus.ConstraintAttribute.HEIGHT);
+            text_constraints = this._get_constraints_post_card(show_context);
         } else {
-            this._main_layout(Emeus.ConstraintAttribute.HEIGHT, Emeus.ConstraintAttribute.WIDTH);
-            text_constraints = this._get_constraints_vertical(show_context);
-            this._title_label.lines = 1;
+            if (orientation === Gtk.Orientation.HORIZONTAL) {
+                this._main_layout(0.66, Emeus.ConstraintAttribute.WIDTH, Emeus.ConstraintAttribute.HEIGHT);
+                text_constraints = this._get_constraints_horizontal(show_synopsis);
+                this._title_label.lines = 3;
+            } else {
+                this._main_layout(0.66, Emeus.ConstraintAttribute.HEIGHT, Emeus.ConstraintAttribute.WIDTH);
+                text_constraints = this._get_constraints_vertical(show_context);
+                this._title_label.lines = 1;
+            }
         }
 
         if (show_synopsis) {
@@ -210,7 +274,7 @@ const Thumb = new Module.Class({
             this._synopsis_label.hide();
         }
 
-        this._context_widget.visible = show_context;
+        this._context_frame.visible = show_context;
 
         text_constraints.forEach((props) => this._add_constraint(props, this._text_layout));
         this.parent(alloc);

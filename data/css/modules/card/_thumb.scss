@@ -34,4 +34,14 @@
         background-position: 20px 20px;
         background-size: 50px;
     }
+
+    &.good-image {
+        .CardThumb__title {
+            color: white;
+        }
+        .text-layout {
+            background-image: linear-gradient(to top, black 0%, transparentize(black, 1 - 0.69) 15%, transparentize(black, 1 - 0.5) 25%, transparentize(black, 1) 40%);
+            min-height: 50px;  /* 90px, compensated for 20px padding */
+        }
+    }
 }
