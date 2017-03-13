@@ -37,7 +37,7 @@ ekn-media-bin *.show {
   opacity: 1;
 }
 
-ekn-media-bin > stack > image {
+ekn-media-bin {
   background: black;
 }
 
