@@ -8,7 +8,12 @@ defines:
       homogeneous: true
     slots:
       card:
-        shortdef: 'Card.Thumb(background-size: "center")'
+        type: Card.DefaultFamily
+        properties:
+          background-size: "center"
+          excluded_types:
+          - 0
+          - 2
 - &footer
   shortdef: 'Layout.Box(orientation: vertical, halign: fill, hexpand: true)'
   styles:

@@ -6,16 +6,16 @@ Utils.register_gresource();
 
 const Compliance = imports.tests.compliance;
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const Post = imports.app.modules.card.post;
+const DefaultFamily = imports.app.modules.card.defaultFamily;
 
 Gtk.init(null);
 
-describe('Card.Post', function () {
+describe('Card.DefaultFamily', function () {
     let card;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
-        card = new Post.Post({
+        card = new DefaultFamily.DefaultFamily({
             model: Eknc.ContentObjectModel.new_from_props({
                 title: '!!!',
             }),
@@ -23,9 +23,10 @@ describe('Card.Post', function () {
     });
 
     it('has the correct style classes', function () {
-        expect(card).toHaveDescendantWithCssClass('CardPost__contentFrame');
-        expect(card).toHaveDescendantWithCssClass('CardPost__title');
-        expect(card).toHaveDescendantWithCssClass('CardPost__thumbnail');
+        expect(card).toHaveDescendantWithCssClass('CardDefaultFamily__synopsis');
+        expect(card).toHaveDescendantWithCssClass('CardDefaultFamily__context');
+        expect(card).toHaveDescendantWithCssClass('CardDefaultFamily__title');
+        expect(card).toHaveDescendantWithCssClass('CardDefaultFamily__thumbnail');
     });
 
     it('has labels that understand Pango markup', function () {
@@ -33,4 +34,4 @@ describe('Card.Post', function () {
     });
 });
 
-Compliance.test_card_compliance(Post.Post);
+Compliance.test_card_compliance(DefaultFamily.DefaultFamily);

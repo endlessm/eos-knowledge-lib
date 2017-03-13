@@ -89,15 +89,14 @@ scss_theme_banner_partials = \
 scss_theme_card_partials = \
 	$(srcdir)/data/css/modules/card/_base.scss \
 	$(srcdir)/data/css/modules/card/_deck.scss \
+	$(srcdir)/data/css/modules/card/_defaultFamily.scss \
 	$(srcdir)/data/css/modules/card/_knowledgeDocument.scss \
 	$(srcdir)/data/css/modules/card/_legacyPolaroid.scss \
 	$(srcdir)/data/css/modules/card/_legacyPost.scss \
 	$(srcdir)/data/css/modules/card/_list.scss \
 	$(srcdir)/data/css/modules/card/_media.scss \
-	$(srcdir)/data/css/modules/card/_post.scss \
 	$(srcdir)/data/css/modules/card/_sequence.scss \
 	$(srcdir)/data/css/modules/card/_text.scss \
-	$(srcdir)/data/css/modules/card/_thumb.scss \
 	$(srcdir)/data/css/modules/card/_title.scss \
 	$(srcdir)/data/css/modules/card/_video.scss \
 	$(NULL)
@@ -450,15 +449,14 @@ javascript_tests = \
 	tests/js/app/modules/banner/testSearch.js \
 	tests/js/app/modules/banner/testSet.js \
 	tests/js/app/modules/card/testDeck.js \
+	tests/js/app/modules/card/testDefaultFamily.js \
 	tests/js/app/modules/card/testKnowledgeDocument.js \
 	tests/js/app/modules/card/testLegacyPolaroid.js \
 	tests/js/app/modules/card/testLegacyPost.js \
 	tests/js/app/modules/card/testList.js \
 	tests/js/app/modules/card/testMedia.js \
-	tests/js/app/modules/card/testPost.js \
 	tests/js/app/modules/card/testSequence.js \
 	tests/js/app/modules/card/testText.js \
-	tests/js/app/modules/card/testThumb.js \
 	tests/js/app/modules/card/testTitle.js \
 	tests/js/app/modules/card/testVideo.js \
 	tests/js/app/modules/contentGroup/testContentGroup.js \
