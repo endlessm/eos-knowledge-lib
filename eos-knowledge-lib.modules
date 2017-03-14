@@ -130,21 +130,7 @@ use the latest stable release branch from GNOME if you prefer that.
   <systemmodule id="sass">
     <branch repo="system"/>
     <systemdependencies>
-      <dep type="path" name="scss"/>
-    </systemdependencies>
-  </systemmodule>
-
-  <systemmodule id="compass">
-    <branch repo="system"/>
-    <systemdependencies>
-      <dep type="path" name="compass"/>
-    </systemdependencies>
-  </systemmodule>
-
-  <systemmodule id="dbusmock">
-    <branch repo="system"/>
-    <systemdependencies>
-      <dep type="path" name="/usr/lib/python3/dist-packages/dbusmock/__init__.py"/>
+      <dep type="path" name="sassc"/>
     </systemdependencies>
   </systemmodule>
 
@@ -173,7 +159,6 @@ use the latest stable release branch from GNOME if you prefer that.
       <dep package="gobject-introspection"/>
       <dep package="naturaldocs"/>
       <dep package="webkit2gtk"/>
-      <dep package="dbusmock"/>
       <dep package="json-glib"/>
       <dep package="gjs"/>
       <dep package="glib"/>
@@ -190,7 +175,6 @@ use the latest stable release branch from GNOME if you prefer that.
       <dep package="libevince"/>
       <dep package="webkit2gtk"/>
       <dep package="sass"/>
-      <dep package="compass"/>
       <dep package="naturaldocs"/>
       <dep package="mathjax"/>
       <dep package="eos-shard"/>
