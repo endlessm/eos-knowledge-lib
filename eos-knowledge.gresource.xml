@@ -204,6 +204,7 @@
     <file>js/app/widgets/tableOfContents.js</file>
     <file>js/app/widgets/themeableImage.js</file>
     <file>js/app/widgetSurfaceCache.js</file>
+    <file>tools/basin.js</file>
     <file>tools/eminem.js</file>
     <file>tools/introspect.js</file>
     <file>tools/kermit.js</file>
