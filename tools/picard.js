@@ -302,6 +302,8 @@ function build_ui () {
         default_width: RESOLUTIONS[2][0],
         default_height: RESOLUTIONS[2][1],
     });
+    // Add the .WindowSimple class so we get styling on the scrollbars
+    widgets.window.get_style_context().add_class('WindowSimple');
     widgets.reset_theme_box = new ResetThemeBox();
     widgets.window.set_titlebar(widgets.titlebar);
     add_remove.add(widgets.add_box);
