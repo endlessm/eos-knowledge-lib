@@ -50,7 +50,7 @@ const OVERRIDES_CSS_URI = 'resource:///app/overrides.css';
 const OVERRIDES_SCSS_URI = 'resource:///app/overrides.scss';
 
 const AUTOBAHN_COMMAND = 'autobahn -I ' + Config.YAML_PRESET_DIR + ' ';
-const SCSS_COMMAND = 'scss --compass -E utf-8 --stop-on-error --sourcemap=none -I ' + Config.TOP_THEME_DIR + ' ';
+const SCSS_COMMAND = 'sassc -a -I ' + Config.TOP_THEME_DIR + ' ';
 
 /**
  * Class: Application

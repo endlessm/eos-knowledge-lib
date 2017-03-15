@@ -1,8 +1,4 @@
-@import "project-setup";
-@import "compass";
 @import "eos-no-link";
-
-@include global-reset;
 
 //////////////////////////////
 // Variables
@@ -261,7 +257,7 @@ $spacing-elements: 30px;
             float: none !important;
             margin-bottom: $spacing;
             width: 100% !important;
-            @include box-sizing(border-box);
+            box-sizing: border-box;
             p {
                 margin: 0 0 0 0 !important;
             }
@@ -425,17 +421,16 @@ $spacing-elements: 30px;
         .magnify {
             padding-top: 5px;
             img {
-                $file: "object-view.png";
-                background: image-url($file) no-repeat center center;
+                background: url("../images/object-view.png") no-repeat center center;
                 content: "";
                 display: none;
-                height: image-height($file);
-                padding-left: image-width($file);
+                height: 43px;
+                padding-left: 43px;
                 position: absolute;
                 right: 10px;
                 top: 10px;
-                width: image-width($file);
-                @include box-sizing(border-box);
+                width: 43px;
+                box-sizing: border-box;
             }
         }
         &:hover .magnify img {

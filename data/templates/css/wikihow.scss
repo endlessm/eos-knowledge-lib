@@ -1,8 +1,4 @@
-@import "project-setup";
-@import "compass";
 @import "eos-no-link";
-
-@include global-reset;
 
 //////////////////////////////
 // Variables
@@ -171,7 +167,11 @@ $spacing-elements: 30px;
 }
 
 .section {
-    @include pie-clearfix;
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
     li, ul {
         background-color: $section-color;
         padding: 40px;
@@ -197,8 +197,13 @@ h2 + ol, h3 + ol, .steps_list_2 {
     > li {
         clear: both;
         margin-bottom: 50px;
-        @include box-sizing(border-box);
-        @include pie-clearfix;
+        box-sizing: border-box;
+
+        &:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
     }
     .mwimg {
         margin: 0 auto;
@@ -210,17 +215,16 @@ h2 + ol, h3 + ol, .steps_list_2 {
             display: block;
             height: auto;
             width: 100%;
-            @include box-sizing(border-box);
+            box-sizing: border-box;
         }
         &:before {
-            $file: "object-view.png";
-            background: image-url($file) no-repeat center center;
+            background: url("../images/object-view.png") no-repeat center center;
             content: "";
             display: none;
-            height: image-height($file);
+            height: 43px;
             position: absolute;
             z-index: 10;
-            @include box-sizing(border-box);
+            box-sizing: border-box;
         }
         &:hover:before {
             display: block;
@@ -245,7 +249,7 @@ h2 + ol, h3 + ol, .steps_list_2 {
     padding-left: 10px;
     padding-right: 10px;
     width: (100% / 3);
-    @include box-sizing(border-box);
+    box-sizing: border-box;
 }
 
 .sd_thumb {
@@ -253,8 +257,8 @@ h2 + ol, h3 + ol, .steps_list_2 {
     background: #fff;
     line-height: 1.4;
     margin-bottom: $spacing-elements;
-    @include box-shadow(0 0 6px 0 rgba(#000, 0.3));
-    @include box-sizing(border-box);
+    box-shadow: 0 0 6px 0 rgba(#000, 0.3);
+    box-sizing: border-box;
     img {
         display: block;
         height: auto;
