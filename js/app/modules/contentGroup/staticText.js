@@ -8,6 +8,6 @@ const Module = imports.app.interfaces.module;
  * Class: StaticText
  */
 const StaticText = new Module.Class({
-    Name: 'StaticText',
+    Name: 'ContentGroup.StaticText',
     Extends: Gtk.Label,
 });
