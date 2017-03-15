@@ -11,7 +11,7 @@ const Module = imports.app.interfaces.module;
  * Class: DynamicTitle
  */
 const DynamicTitle = new Module.Class({
-    Name: 'DynamicTitle',
+    Name: 'ContentGroup.DynamicTitle',
     Extends: FormattableLabel.FormattableLabel,
 
     Properties: {

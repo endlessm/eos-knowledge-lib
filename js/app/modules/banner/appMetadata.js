@@ -16,7 +16,7 @@ const Utils = imports.app.utils;
  * appdata XML file, e.g. name, summary, or description.
  */
 const AppMetadata = new Module.Class({
-    Name: 'AppMetadata',
+    Name: 'Banner.AppMetadata',
     Extends: FormattableLabel.FormattableLabel,
 
     Properties: {
