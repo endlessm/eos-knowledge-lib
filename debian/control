@@ -39,8 +39,7 @@ Build-Depends: autotools-dev,
                python-lcov-cobertura (>= 1.5),
                python3-polib,
                python3-yaml,
-               ruby-compass,
-               ruby-sass
+               sassc
 Standards-Version: 3.9.4
 Section: non-free/libs
 Homepage: http://www.endlessm.com
