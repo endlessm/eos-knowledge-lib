@@ -1,0 +1,818 @@
+@media print {
+  .parameter_container table,
+  .member_container table,
+  .multi_return_value_container table {
+    border-collapse: collapse !important;
+  }
+  .parameter_container table td,
+  .parameter_container table th,
+  .member_container table td,
+  .member_container table th,
+  .multi_return_value_container table td,
+  .multi_return_value_container table th {
+    background-color: #fff !important;
+  }
+}
+.page_container {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.parameter_container table,
+.member_container table,
+.multi_return_value_container table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 22px;
+}
+.parameter_container table > thead > tr > th,
+.parameter_container table > tbody > tr > th,
+.parameter_container table > tfoot > tr > th,
+.parameter_container table > thead > tr > td,
+.parameter_container table > tbody > tr > td,
+.parameter_container table > tfoot > tr > td,
+.member_container table > thead > tr > th,
+.member_container table > tbody > tr > th,
+.member_container table > tfoot > tr > th,
+.member_container table > thead > tr > td,
+.member_container table > tbody > tr > td,
+.member_container table > tfoot > tr > td,
+.multi_return_value_container table > thead > tr > th,
+.multi_return_value_container table > tbody > tr > th,
+.multi_return_value_container table > tfoot > tr > th,
+.multi_return_value_container table > thead > tr > td,
+.multi_return_value_container table > tbody > tr > td,
+.multi_return_value_container table > tfoot > tr > td {
+  padding: 8px;
+  line-height: 1.42857143;
+  vertical-align: top;
+  border-top: 1px solid #ddd;
+}
+.parameter_container table > thead > tr > th,
+.member_container table > thead > tr > th,
+.multi_return_value_container table > thead > tr > th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #ddd;
+}
+.parameter_container table > caption + thead > tr:first-child > th,
+.parameter_container table > colgroup + thead > tr:first-child > th,
+.parameter_container table > thead:first-child > tr:first-child > th,
+.parameter_container table > caption + thead > tr:first-child > td,
+.parameter_container table > colgroup + thead > tr:first-child > td,
+.parameter_container table > thead:first-child > tr:first-child > td,
+.member_container table > caption + thead > tr:first-child > th,
+.member_container table > colgroup + thead > tr:first-child > th,
+.member_container table > thead:first-child > tr:first-child > th,
+.member_container table > caption + thead > tr:first-child > td,
+.member_container table > colgroup + thead > tr:first-child > td,
+.member_container table > thead:first-child > tr:first-child > td,
+.multi_return_value_container table > caption + thead > tr:first-child > th,
+.multi_return_value_container table > colgroup + thead > tr:first-child > th,
+.multi_return_value_container table > thead:first-child > tr:first-child > th,
+.multi_return_value_container table > caption + thead > tr:first-child > td,
+.multi_return_value_container table > colgroup + thead > tr:first-child > td,
+.multi_return_value_container table > thead:first-child > tr:first-child > td {
+  border-top: 0;
+}
+.parameter_container table > tbody + tbody,
+.member_container table > tbody + tbody,
+.multi_return_value_container table > tbody + tbody {
+  border-top: 2px solid #ddd;
+}
+.parameter_container table .parameter_container table,
+.member_container table .member_container table,
+.multi_return_value_container table .multi_return_value_container table {
+  background-color: #fff;
+}
+.parameter_container table > thead > tr > td.active,
+.parameter_container table > tbody > tr > td.active,
+.parameter_container table > tfoot > tr > td.active,
+.parameter_container table > thead > tr > th.active,
+.parameter_container table > tbody > tr > th.active,
+.parameter_container table > tfoot > tr > th.active,
+.parameter_container table > thead > tr.active > td,
+.parameter_container table > tbody > tr.active > td,
+.parameter_container table > tfoot > tr.active > td,
+.parameter_container table > thead > tr.active > th,
+.parameter_container table > tbody > tr.active > th,
+.parameter_container table > tfoot > tr.active > th,
+.member_container table > thead > tr > td.active,
+.member_container table > tbody > tr > td.active,
+.member_container table > tfoot > tr > td.active,
+.member_container table > thead > tr > th.active,
+.member_container table > tbody > tr > th.active,
+.member_container table > tfoot > tr > th.active,
+.member_container table > thead > tr.active > td,
+.member_container table > tbody > tr.active > td,
+.member_container table > tfoot > tr.active > td,
+.member_container table > thead > tr.active > th,
+.member_container table > tbody > tr.active > th,
+.member_container table > tfoot > tr.active > th,
+.multi_return_value_container table > thead > tr > td.active,
+.multi_return_value_container table > tbody > tr > td.active,
+.multi_return_value_container table > tfoot > tr > td.active,
+.multi_return_value_container table > thead > tr > th.active,
+.multi_return_value_container table > tbody > tr > th.active,
+.multi_return_value_container table > tfoot > tr > th.active,
+.multi_return_value_container table > thead > tr.active > td,
+.multi_return_value_container table > tbody > tr.active > td,
+.multi_return_value_container table > tfoot > tr.active > td,
+.multi_return_value_container table > thead > tr.active > th,
+.multi_return_value_container table > tbody > tr.active > th,
+.multi_return_value_container table > tfoot > tr.active > th {
+  background-color: #f5f5f5;
+}
+.parameter_container table > thead > tr > td.success,
+.parameter_container table > tbody > tr > td.success,
+.parameter_container table > tfoot > tr > td.success,
+.parameter_container table > thead > tr > th.success,
+.parameter_container table > tbody > tr > th.success,
+.parameter_container table > tfoot > tr > th.success,
+.parameter_container table > thead > tr.success > td,
+.parameter_container table > tbody > tr.success > td,
+.parameter_container table > tfoot > tr.success > td,
+.parameter_container table > thead > tr.success > th,
+.parameter_container table > tbody > tr.success > th,
+.parameter_container table > tfoot > tr.success > th,
+.member_container table > thead > tr > td.success,
+.member_container table > tbody > tr > td.success,
+.member_container table > tfoot > tr > td.success,
+.member_container table > thead > tr > th.success,
+.member_container table > tbody > tr > th.success,
+.member_container table > tfoot > tr > th.success,
+.member_container table > thead > tr.success > td,
+.member_container table > tbody > tr.success > td,
+.member_container table > tfoot > tr.success > td,
+.member_container table > thead > tr.success > th,
+.member_container table > tbody > tr.success > th,
+.member_container table > tfoot > tr.success > th,
+.multi_return_value_container table > thead > tr > td.success,
+.multi_return_value_container table > tbody > tr > td.success,
+.multi_return_value_container table > tfoot > tr > td.success,
+.multi_return_value_container table > thead > tr > th.success,
+.multi_return_value_container table > tbody > tr > th.success,
+.multi_return_value_container table > tfoot > tr > th.success,
+.multi_return_value_container table > thead > tr.success > td,
+.multi_return_value_container table > tbody > tr.success > td,
+.multi_return_value_container table > tfoot > tr.success > td,
+.multi_return_value_container table > thead > tr.success > th,
+.multi_return_value_container table > tbody > tr.success > th,
+.multi_return_value_container table > tfoot > tr.success > th {
+  background-color: #dff0d8;
+}
+.parameter_container table > thead > tr > td.info,
+.parameter_container table > tbody > tr > td.info,
+.parameter_container table > tfoot > tr > td.info,
+.parameter_container table > thead > tr > th.info,
+.parameter_container table > tbody > tr > th.info,
+.parameter_container table > tfoot > tr > th.info,
+.parameter_container table > thead > tr.info > td,
+.parameter_container table > tbody > tr.info > td,
+.parameter_container table > tfoot > tr.info > td,
+.parameter_container table > thead > tr.info > th,
+.parameter_container table > tbody > tr.info > th,
+.parameter_container table > tfoot > tr.info > th,
+.member_container table > thead > tr > td.info,
+.member_container table > tbody > tr > td.info,
+.member_container table > tfoot > tr > td.info,
+.member_container table > thead > tr > th.info,
+.member_container table > tbody > tr > th.info,
+.member_container table > tfoot > tr > th.info,
+.member_container table > thead > tr.info > td,
+.member_container table > tbody > tr.info > td,
+.member_container table > tfoot > tr.info > td,
+.member_container table > thead > tr.info > th,
+.member_container table > tbody > tr.info > th,
+.member_container table > tfoot > tr.info > th,
+.multi_return_value_container table > thead > tr > td.info,
+.multi_return_value_container table > tbody > tr > td.info,
+.multi_return_value_container table > tfoot > tr > td.info,
+.multi_return_value_container table > thead > tr > th.info,
+.multi_return_value_container table > tbody > tr > th.info,
+.multi_return_value_container table > tfoot > tr > th.info,
+.multi_return_value_container table > thead > tr.info > td,
+.multi_return_value_container table > tbody > tr.info > td,
+.multi_return_value_container table > tfoot > tr.info > td,
+.multi_return_value_container table > thead > tr.info > th,
+.multi_return_value_container table > tbody > tr.info > th,
+.multi_return_value_container table > tfoot > tr.info > th {
+  background-color: #d9edf7;
+}
+.parameter_container table > thead > tr > td.warning,
+.parameter_container table > tbody > tr > td.warning,
+.parameter_container table > tfoot > tr > td.warning,
+.parameter_container table > thead > tr > th.warning,
+.parameter_container table > tbody > tr > th.warning,
+.parameter_container table > tfoot > tr > th.warning,
+.parameter_container table > thead > tr.warning > td,
+.parameter_container table > tbody > tr.warning > td,
+.parameter_container table > tfoot > tr.warning > td,
+.parameter_container table > thead > tr.warning > th,
+.parameter_container table > tbody > tr.warning > th,
+.parameter_container table > tfoot > tr.warning > th,
+.member_container table > thead > tr > td.warning,
+.member_container table > tbody > tr > td.warning,
+.member_container table > tfoot > tr > td.warning,
+.member_container table > thead > tr > th.warning,
+.member_container table > tbody > tr > th.warning,
+.member_container table > tfoot > tr > th.warning,
+.member_container table > thead > tr.warning > td,
+.member_container table > tbody > tr.warning > td,
+.member_container table > tfoot > tr.warning > td,
+.member_container table > thead > tr.warning > th,
+.member_container table > tbody > tr.warning > th,
+.member_container table > tfoot > tr.warning > th,
+.multi_return_value_container table > thead > tr > td.warning,
+.multi_return_value_container table > tbody > tr > td.warning,
+.multi_return_value_container table > tfoot > tr > td.warning,
+.multi_return_value_container table > thead > tr > th.warning,
+.multi_return_value_container table > tbody > tr > th.warning,
+.multi_return_value_container table > tfoot > tr > th.warning,
+.multi_return_value_container table > thead > tr.warning > td,
+.multi_return_value_container table > tbody > tr.warning > td,
+.multi_return_value_container table > tfoot > tr.warning > td,
+.multi_return_value_container table > thead > tr.warning > th,
+.multi_return_value_container table > tbody > tr.warning > th,
+.multi_return_value_container table > tfoot > tr.warning > th {
+  background-color: #fcf8e3;
+}
+.parameter_container table > thead > tr > td.danger,
+.parameter_container table > tbody > tr > td.danger,
+.parameter_container table > tfoot > tr > td.danger,
+.parameter_container table > thead > tr > th.danger,
+.parameter_container table > tbody > tr > th.danger,
+.parameter_container table > tfoot > tr > th.danger,
+.parameter_container table > thead > tr.danger > td,
+.parameter_container table > tbody > tr.danger > td,
+.parameter_container table > tfoot > tr.danger > td,
+.parameter_container table > thead > tr.danger > th,
+.parameter_container table > tbody > tr.danger > th,
+.parameter_container table > tfoot > tr.danger > th,
+.member_container table > thead > tr > td.danger,
+.member_container table > tbody > tr > td.danger,
+.member_container table > tfoot > tr > td.danger,
+.member_container table > thead > tr > th.danger,
+.member_container table > tbody > tr > th.danger,
+.member_container table > tfoot > tr > th.danger,
+.member_container table > thead > tr.danger > td,
+.member_container table > tbody > tr.danger > td,
+.member_container table > tfoot > tr.danger > td,
+.member_container table > thead > tr.danger > th,
+.member_container table > tbody > tr.danger > th,
+.member_container table > tfoot > tr.danger > th,
+.multi_return_value_container table > thead > tr > td.danger,
+.multi_return_value_container table > tbody > tr > td.danger,
+.multi_return_value_container table > tfoot > tr > td.danger,
+.multi_return_value_container table > thead > tr > th.danger,
+.multi_return_value_container table > tbody > tr > th.danger,
+.multi_return_value_container table > tfoot > tr > th.danger,
+.multi_return_value_container table > thead > tr.danger > td,
+.multi_return_value_container table > tbody > tr.danger > td,
+.multi_return_value_container table > tfoot > tr.danger > td,
+.multi_return_value_container table > thead > tr.danger > th,
+.multi_return_value_container table > tbody > tr.danger > th,
+.multi_return_value_container table > tfoot > tr.danger > th {
+  background-color: #f2dede;
+}
+@media screen and (max-width: 767px) {
+  .table-responsive > .parameter_container table,
+  .table-responsive > .member_container table,
+  .table-responsive > .multi_return_value_container table {
+    margin-bottom: 0;
+  }
+  .table-responsive > .parameter_container table > thead > tr > th,
+  .table-responsive > .parameter_container table > tbody > tr > th,
+  .table-responsive > .parameter_container table > tfoot > tr > th,
+  .table-responsive > .parameter_container table > thead > tr > td,
+  .table-responsive > .parameter_container table > tbody > tr > td,
+  .table-responsive > .parameter_container table > tfoot > tr > td,
+  .table-responsive > .member_container table > thead > tr > th,
+  .table-responsive > .member_container table > tbody > tr > th,
+  .table-responsive > .member_container table > tfoot > tr > th,
+  .table-responsive > .member_container table > thead > tr > td,
+  .table-responsive > .member_container table > tbody > tr > td,
+  .table-responsive > .member_container table > tfoot > tr > td,
+  .table-responsive > .multi_return_value_container table > thead > tr > th,
+  .table-responsive > .multi_return_value_container table > tbody > tr > th,
+  .table-responsive > .multi_return_value_container table > tfoot > tr > th,
+  .table-responsive > .multi_return_value_container table > thead > tr > td,
+  .table-responsive > .multi_return_value_container table > tbody > tr > td,
+  .table-responsive > .multi_return_value_container table > tfoot > tr > td {
+    white-space: nowrap;
+  }
+}
+@media (min-width: 768px) {
+}
+@media (min-width: 768px) {
+}
+@media (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+@media (min-width: 768px) {
+}
+@media (max-width: 767px) {
+}
+@media (max-width: 767px) {
+}
+.sidenav-panel-body,
+.sidenav-main-panel-body {
+  padding: 15px;
+}
+.panel > .parameter_container table,
+.panel > .table-responsive > .parameter_container table,
+.panel > .panel-collapse > .parameter_container table,
+.panel > .member_container table,
+.panel > .table-responsive > .member_container table,
+.panel > .panel-collapse > .member_container table,
+.panel > .multi_return_value_container table,
+.panel > .table-responsive > .multi_return_value_container table,
+.panel > .panel-collapse > .multi_return_value_container table {
+  margin-bottom: 0;
+}
+.panel > .parameter_container table caption,
+.panel > .table-responsive > .parameter_container table caption,
+.panel > .panel-collapse > .parameter_container table caption,
+.panel > .member_container table caption,
+.panel > .table-responsive > .member_container table caption,
+.panel > .panel-collapse > .member_container table caption,
+.panel > .multi_return_value_container table caption,
+.panel > .table-responsive > .multi_return_value_container table caption,
+.panel > .panel-collapse > .multi_return_value_container table caption {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.panel > .parameter_container table:first-child,
+.panel > .table-responsive:first-child > .parameter_container table:first-child,
+.panel > .member_container table:first-child,
+.panel > .table-responsive:first-child > .member_container table:first-child,
+.panel > .multi_return_value_container table:first-child,
+.panel > .table-responsive:first-child > .multi_return_value_container table:first-child {
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+}
+.panel > .parameter_container table:first-child > thead:first-child > tr:first-child,
+.panel > .table-responsive:first-child > .parameter_container table:first-child > thead:first-child > tr:first-child,
+.panel > .parameter_container table:first-child > tbody:first-child > tr:first-child,
+.panel > .table-responsive:first-child > .parameter_container table:first-child > tbody:first-child > tr:first-child,
+.panel > .member_container table:first-child > thead:first-child > tr:first-child,
+.panel > .table-responsive:first-child > .member_container table:first-child > thead:first-child > tr:first-child,
+.panel > .member_container table:first-child > tbody:first-child > tr:first-child,
+.panel > .table-responsive:first-child > .member_container table:first-child > tbody:first-child > tr:first-child,
+.panel > .multi_return_value_container table:first-child > thead:first-child > tr:first-child,
+.panel > .table-responsive:first-child > .multi_return_value_container table:first-child > thead:first-child > tr:first-child,
+.panel > .multi_return_value_container table:first-child > tbody:first-child > tr:first-child,
+.panel > .table-responsive:first-child > .multi_return_value_container table:first-child > tbody:first-child > tr:first-child {
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.panel > .parameter_container table:first-child > thead:first-child > tr:first-child td:first-child,
+.panel > .table-responsive:first-child > .parameter_container table:first-child > thead:first-child > tr:first-child td:first-child,
+.panel > .parameter_container table:first-child > tbody:first-child > tr:first-child td:first-child,
+.panel > .table-responsive:first-child > .parameter_container table:first-child > tbody:first-child > tr:first-child td:first-child,
+.panel > .parameter_container table:first-child > thead:first-child > tr:first-child th:first-child,
+.panel > .table-responsive:first-child > .parameter_container table:first-child > thead:first-child > tr:first-child th:first-child,
+.panel > .parameter_container table:first-child > tbody:first-child > tr:first-child th:first-child,
+.panel > .table-responsive:first-child > .parameter_container table:first-child > tbody:first-child > tr:first-child th:first-child,
+.panel > .member_container table:first-child > thead:first-child > tr:first-child td:first-child,
+.panel > .table-responsive:first-child > .member_container table:first-child > thead:first-child > tr:first-child td:first-child,
+.panel > .member_container table:first-child > tbody:first-child > tr:first-child td:first-child,
+.panel > .table-responsive:first-child > .member_container table:first-child > tbody:first-child > tr:first-child td:first-child,
+.panel > .member_container table:first-child > thead:first-child > tr:first-child th:first-child,
+.panel > .table-responsive:first-child > .member_container table:first-child > thead:first-child > tr:first-child th:first-child,
+.panel > .member_container table:first-child > tbody:first-child > tr:first-child th:first-child,
+.panel > .table-responsive:first-child > .member_container table:first-child > tbody:first-child > tr:first-child th:first-child,
+.panel > .multi_return_value_container table:first-child > thead:first-child > tr:first-child td:first-child,
+.panel > .table-responsive:first-child > .multi_return_value_container table:first-child > thead:first-child > tr:first-child td:first-child,
+.panel > .multi_return_value_container table:first-child > tbody:first-child > tr:first-child td:first-child,
+.panel > .table-responsive:first-child > .multi_return_value_container table:first-child > tbody:first-child > tr:first-child td:first-child,
+.panel > .multi_return_value_container table:first-child > thead:first-child > tr:first-child th:first-child,
+.panel > .table-responsive:first-child > .multi_return_value_container table:first-child > thead:first-child > tr:first-child th:first-child,
+.panel > .multi_return_value_container table:first-child > tbody:first-child > tr:first-child th:first-child,
+.panel > .table-responsive:first-child > .multi_return_value_container table:first-child > tbody:first-child > tr:first-child th:first-child {
+  border-top-left-radius: 3px;
+}
+.panel > .parameter_container table:first-child > thead:first-child > tr:first-child td:last-child,
+.panel > .table-responsive:first-child > .parameter_container table:first-child > thead:first-child > tr:first-child td:last-child,
+.panel > .parameter_container table:first-child > tbody:first-child > tr:first-child td:last-child,
+.panel > .table-responsive:first-child > .parameter_container table:first-child > tbody:first-child > tr:first-child td:last-child,
+.panel > .parameter_container table:first-child > thead:first-child > tr:first-child th:last-child,
+.panel > .table-responsive:first-child > .parameter_container table:first-child > thead:first-child > tr:first-child th:last-child,
+.panel > .parameter_container table:first-child > tbody:first-child > tr:first-child th:last-child,
+.panel > .table-responsive:first-child > .parameter_container table:first-child > tbody:first-child > tr:first-child th:last-child,
+.panel > .member_container table:first-child > thead:first-child > tr:first-child td:last-child,
+.panel > .table-responsive:first-child > .member_container table:first-child > thead:first-child > tr:first-child td:last-child,
+.panel > .member_container table:first-child > tbody:first-child > tr:first-child td:last-child,
+.panel > .table-responsive:first-child > .member_container table:first-child > tbody:first-child > tr:first-child td:last-child,
+.panel > .member_container table:first-child > thead:first-child > tr:first-child th:last-child,
+.panel > .table-responsive:first-child > .member_container table:first-child > thead:first-child > tr:first-child th:last-child,
+.panel > .member_container table:first-child > tbody:first-child > tr:first-child th:last-child,
+.panel > .table-responsive:first-child > .member_container table:first-child > tbody:first-child > tr:first-child th:last-child,
+.panel > .multi_return_value_container table:first-child > thead:first-child > tr:first-child td:last-child,
+.panel > .table-responsive:first-child > .multi_return_value_container table:first-child > thead:first-child > tr:first-child td:last-child,
+.panel > .multi_return_value_container table:first-child > tbody:first-child > tr:first-child td:last-child,
+.panel > .table-responsive:first-child > .multi_return_value_container table:first-child > tbody:first-child > tr:first-child td:last-child,
+.panel > .multi_return_value_container table:first-child > thead:first-child > tr:first-child th:last-child,
+.panel > .table-responsive:first-child > .multi_return_value_container table:first-child > thead:first-child > tr:first-child th:last-child,
+.panel > .multi_return_value_container table:first-child > tbody:first-child > tr:first-child th:last-child,
+.panel > .table-responsive:first-child > .multi_return_value_container table:first-child > tbody:first-child > tr:first-child th:last-child {
+  border-top-right-radius: 3px;
+}
+.panel > .parameter_container table:last-child,
+.panel > .table-responsive:last-child > .parameter_container table:last-child,
+.panel > .member_container table:last-child,
+.panel > .table-responsive:last-child > .member_container table:last-child,
+.panel > .multi_return_value_container table:last-child,
+.panel > .table-responsive:last-child > .multi_return_value_container table:last-child {
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+.panel > .parameter_container table:last-child > tbody:last-child > tr:last-child,
+.panel > .table-responsive:last-child > .parameter_container table:last-child > tbody:last-child > tr:last-child,
+.panel > .parameter_container table:last-child > tfoot:last-child > tr:last-child,
+.panel > .table-responsive:last-child > .parameter_container table:last-child > tfoot:last-child > tr:last-child,
+.panel > .member_container table:last-child > tbody:last-child > tr:last-child,
+.panel > .table-responsive:last-child > .member_container table:last-child > tbody:last-child > tr:last-child,
+.panel > .member_container table:last-child > tfoot:last-child > tr:last-child,
+.panel > .table-responsive:last-child > .member_container table:last-child > tfoot:last-child > tr:last-child,
+.panel > .multi_return_value_container table:last-child > tbody:last-child > tr:last-child,
+.panel > .table-responsive:last-child > .multi_return_value_container table:last-child > tbody:last-child > tr:last-child,
+.panel > .multi_return_value_container table:last-child > tfoot:last-child > tr:last-child,
+.panel > .table-responsive:last-child > .multi_return_value_container table:last-child > tfoot:last-child > tr:last-child {
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+.panel > .parameter_container table:last-child > tbody:last-child > tr:last-child td:first-child,
+.panel > .table-responsive:last-child > .parameter_container table:last-child > tbody:last-child > tr:last-child td:first-child,
+.panel > .parameter_container table:last-child > tfoot:last-child > tr:last-child td:first-child,
+.panel > .table-responsive:last-child > .parameter_container table:last-child > tfoot:last-child > tr:last-child td:first-child,
+.panel > .parameter_container table:last-child > tbody:last-child > tr:last-child th:first-child,
+.panel > .table-responsive:last-child > .parameter_container table:last-child > tbody:last-child > tr:last-child th:first-child,
+.panel > .parameter_container table:last-child > tfoot:last-child > tr:last-child th:first-child,
+.panel > .table-responsive:last-child > .parameter_container table:last-child > tfoot:last-child > tr:last-child th:first-child,
+.panel > .member_container table:last-child > tbody:last-child > tr:last-child td:first-child,
+.panel > .table-responsive:last-child > .member_container table:last-child > tbody:last-child > tr:last-child td:first-child,
+.panel > .member_container table:last-child > tfoot:last-child > tr:last-child td:first-child,
+.panel > .table-responsive:last-child > .member_container table:last-child > tfoot:last-child > tr:last-child td:first-child,
+.panel > .member_container table:last-child > tbody:last-child > tr:last-child th:first-child,
+.panel > .table-responsive:last-child > .member_container table:last-child > tbody:last-child > tr:last-child th:first-child,
+.panel > .member_container table:last-child > tfoot:last-child > tr:last-child th:first-child,
+.panel > .table-responsive:last-child > .member_container table:last-child > tfoot:last-child > tr:last-child th:first-child,
+.panel > .multi_return_value_container table:last-child > tbody:last-child > tr:last-child td:first-child,
+.panel > .table-responsive:last-child > .multi_return_value_container table:last-child > tbody:last-child > tr:last-child td:first-child,
+.panel > .multi_return_value_container table:last-child > tfoot:last-child > tr:last-child td:first-child,
+.panel > .table-responsive:last-child > .multi_return_value_container table:last-child > tfoot:last-child > tr:last-child td:first-child,
+.panel > .multi_return_value_container table:last-child > tbody:last-child > tr:last-child th:first-child,
+.panel > .table-responsive:last-child > .multi_return_value_container table:last-child > tbody:last-child > tr:last-child th:first-child,
+.panel > .multi_return_value_container table:last-child > tfoot:last-child > tr:last-child th:first-child,
+.panel > .table-responsive:last-child > .multi_return_value_container table:last-child > tfoot:last-child > tr:last-child th:first-child {
+  border-bottom-left-radius: 3px;
+}
+.panel > .parameter_container table:last-child > tbody:last-child > tr:last-child td:last-child,
+.panel > .table-responsive:last-child > .parameter_container table:last-child > tbody:last-child > tr:last-child td:last-child,
+.panel > .parameter_container table:last-child > tfoot:last-child > tr:last-child td:last-child,
+.panel > .table-responsive:last-child > .parameter_container table:last-child > tfoot:last-child > tr:last-child td:last-child,
+.panel > .parameter_container table:last-child > tbody:last-child > tr:last-child th:last-child,
+.panel > .table-responsive:last-child > .parameter_container table:last-child > tbody:last-child > tr:last-child th:last-child,
+.panel > .parameter_container table:last-child > tfoot:last-child > tr:last-child th:last-child,
+.panel > .table-responsive:last-child > .parameter_container table:last-child > tfoot:last-child > tr:last-child th:last-child,
+.panel > .member_container table:last-child > tbody:last-child > tr:last-child td:last-child,
+.panel > .table-responsive:last-child > .member_container table:last-child > tbody:last-child > tr:last-child td:last-child,
+.panel > .member_container table:last-child > tfoot:last-child > tr:last-child td:last-child,
+.panel > .table-responsive:last-child > .member_container table:last-child > tfoot:last-child > tr:last-child td:last-child,
+.panel > .member_container table:last-child > tbody:last-child > tr:last-child th:last-child,
+.panel > .table-responsive:last-child > .member_container table:last-child > tbody:last-child > tr:last-child th:last-child,
+.panel > .member_container table:last-child > tfoot:last-child > tr:last-child th:last-child,
+.panel > .table-responsive:last-child > .member_container table:last-child > tfoot:last-child > tr:last-child th:last-child,
+.panel > .multi_return_value_container table:last-child > tbody:last-child > tr:last-child td:last-child,
+.panel > .table-responsive:last-child > .multi_return_value_container table:last-child > tbody:last-child > tr:last-child td:last-child,
+.panel > .multi_return_value_container table:last-child > tfoot:last-child > tr:last-child td:last-child,
+.panel > .table-responsive:last-child > .multi_return_value_container table:last-child > tfoot:last-child > tr:last-child td:last-child,
+.panel > .multi_return_value_container table:last-child > tbody:last-child > tr:last-child th:last-child,
+.panel > .table-responsive:last-child > .multi_return_value_container table:last-child > tbody:last-child > tr:last-child th:last-child,
+.panel > .multi_return_value_container table:last-child > tfoot:last-child > tr:last-child th:last-child,
+.panel > .table-responsive:last-child > .multi_return_value_container table:last-child > tfoot:last-child > tr:last-child th:last-child {
+  border-bottom-right-radius: 3px;
+}
+.panel > .panel-body + .parameter_container table,
+.panel > .parameter_container table + .panel-body,
+.panel > .panel-body + .member_container table,
+.panel > .member_container table + .panel-body,
+.panel > .panel-body + .multi_return_value_container table,
+.panel > .multi_return_value_container table + .panel-body {
+  border-top: 1px solid #ddd;
+}
+.panel > .parameter_container table > tbody:first-child > tr:first-child th,
+.panel > .parameter_container table > tbody:first-child > tr:first-child td,
+.panel > .member_container table > tbody:first-child > tr:first-child th,
+.panel > .member_container table > tbody:first-child > tr:first-child td,
+.panel > .multi_return_value_container table > tbody:first-child > tr:first-child th,
+.panel > .multi_return_value_container table > tbody:first-child > tr:first-child td {
+  border-top: 0;
+}
+body {
+  padding-top: 34px;
+}
+.section_headings {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  text-align: center;
+  padding-bottom: 4px;
+}
+.section_headings:before,
+.section_headings:after {
+  position: absolute;
+  top: 51%;
+  overflow: hidden;
+  width: 50%;
+  height: 1px;
+  content: '\a0';
+  background-color: #333333;
+}
+.section_headings:before {
+  margin-left: -51%;
+  text-align: right;
+}
+.section_headings:after {
+  margin-left: 1%;
+}
+a,
+a:active,
+a:focus {
+  outline: none !important;
+  cursor: pointer;
+}
+.base_symbol_container,
+.symbol_section,
+#page-description {
+  width: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+img {
+  max-width: 100%;
+}
+#page-description img {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.license-description {
+  width: 100%;
+  padding-bottom: 10px;
+}
+.license-description table {
+  width: 100%;
+}
+.license-description table tbody tr td:nth-child(2) {
+  text-align: right;
+}
+.license-description table tbody tr td:nth-child(2) a .license-logo {
+  max-width: 100px;
+}
+blockquote {
+  font-style: italic;
+}
+html,
+body {
+  height: 100%;
+  margin: 0pt;
+}
+html {
+  position: relative;
+}
+body {
+  display: table;
+  width: 100%;
+}
+.page-row {
+  display: table-row;
+  height: 1px;
+}
+.page-row-expanded {
+  height: 100%;
+}
+.hotdoc-navbar-brand {
+  height: 34px;
+  padding: 5px;
+  float: left;
+}
+.hotdoc-navbar-brand img {
+  max-height: 24px;
+  min-height: 24px;
+  min-width: 24px;
+}
+#sidenav-search {
+  width: 100%;
+  text-align: center;
+  padding: 25px;
+  background-color: #222;
+}
+#sidenav-lookup-field {
+  width: 100%;
+}
+#search_results {
+  display: none;
+}
+.tt-menu {
+  width: 100%;
+  text-align: left;
+  margin: 2px 0;
+  padding: 8px 0;
+  background-color: #fff;
+}
+.tt-suggestion {
+  padding: 3px 20px;
+  line-height: 24px;
+}
+.tt-suggestion:hover {
+  cursor: pointer;
+  color: #fff;
+  background-color: #555555;
+}
+.tt-suggestion.tt-cursor {
+  color: #fff;
+  background-color: #337ab7;
+}
+.tt-suggestion p {
+  margin: 0;
+}
+#sidenav-column {
+  padding: 0px;
+}
+#sidenav {
+  position: fixed;
+  top: 34px;
+  bottom: 0px;
+  left: 0px;
+  width: 25%;
+  margin-bottom: 0px;
+  background-color: #f8f8f8;
+  border: 0px;
+  border-radius: 0px;
+  color: #777;
+}
+@media (min-width: 1600px) {
+  #sidenav {
+    width: 16.66%;
+  }
+}
+#sitenav-wrapper {
+  overflow-y: auto;
+  height: 100%;
+}
+.sidenav-panel-body,
+.sidenav-main-panel-body {
+  padding: 0px;
+  padding-left: 5px;
+}
+.sidenav-main-panel-body {
+  padding: 0px;
+}
+.sidenav-panel-odd {
+  background-color: #f8f8f8;
+}
+.sidenav-panel-even {
+  background-color: #e6e6e6;
+}
+a[aria-expanded=true] .glyphicon-chevron-right {
+  display: none;
+}
+a[aria-expanded=false] .glyphicon-chevron-down {
+  display: none;
+}
+.scrollspy {
+  padding-left: 5px;
+}
+#sidenav-wrapper {
+  position: relative;
+}
+#sidenav-wrapper > .nav li {
+  width: 100%;
+}
+#sidenav-wrapper > .nav a {
+  font-style: italic;
+  color: #777;
+}
+#sidenav-wrapper > .nav li a:hover,
+#sidenav-wrapper > .nav li a:focus {
+  background-color: #d4d4d4;
+}
+#sidenav-wrapper > .nav .active {
+  font-weight: bold;
+  border-left: 5px solid black;
+  background-color: #d4d4d4;
+}
+#sidenav-wrapper > .nav .nav {
+  display: none;
+}
+#sidenav-wrapper > .nav .active .nav {
+  display: block;
+}
+#sidenav-wrapper > .nav > li > .nav-h2 {
+  padding-left: 15px;
+}
+#sidenav-wrapper > .nav > li > .nav-h3 {
+  padding-left: 35px;
+}
+#sidenav-wrapper > .panel-title {
+  font-size: 14px;
+}
+.parameter_container table thead tr td:nth-child(3),
+.member_container table thead tr td:nth-child(3),
+.multi_return_value_container table thead tr td:nth-child(3),
+.parameter_container table tbody tr td:nth-child(3),
+.member_container table tbody tr td:nth-child(3),
+.multi_return_value_container table tbody tr td:nth-child(3),
+.parameter_container table tfoot tr td:nth-child(3),
+.member_container table tfoot tr td:nth-child(3),
+.multi_return_value_container table tfoot tr td:nth-child(3) {
+  text-align: right;
+}
+.parameter_container table thead tr td:nth-child(4),
+.member_container table thead tr td:nth-child(4),
+.multi_return_value_container table thead tr td:nth-child(4),
+.parameter_container table tbody tr td:nth-child(4),
+.member_container table tbody tr td:nth-child(4),
+.multi_return_value_container table tbody tr td:nth-child(4),
+.parameter_container table tfoot tr td:nth-child(4),
+.member_container table tfoot tr td:nth-child(4),
+.multi_return_value_container table tfoot tr td:nth-child(4) {
+  text-align: right;
+}
+.base_symbol_container table,
+#page-description table,
+.csp-previewer table,
+.base_symbol_container .authors-description table,
+#page-description .authors-description table,
+.csp-previewer .authors-description table {
+  overflow: auto;
+  margin-bottom: 16px;
+  word-break: keep-all;
+  width: 100%;
+  display: block;
+}
+.base_symbol_container table thead tr,
+#page-description table thead tr,
+.csp-previewer table thead tr,
+.base_symbol_container .authors-description table thead tr,
+#page-description .authors-description table thead tr,
+.csp-previewer .authors-description table thead tr,
+.base_symbol_container table tbody tr,
+#page-description table tbody tr,
+.csp-previewer table tbody tr,
+.base_symbol_container .authors-description table tbody tr,
+#page-description .authors-description table tbody tr,
+.csp-previewer .authors-description table tbody tr,
+.base_symbol_container table tfoot tr,
+#page-description table tfoot tr,
+.csp-previewer table tfoot tr,
+.base_symbol_container .authors-description table tfoot tr,
+#page-description .authors-description table tfoot tr,
+.csp-previewer .authors-description table tfoot tr {
+  background-color: #fff;
+  border-top: 1px solid #CCC;
+}
+.base_symbol_container table thead tr th,
+#page-description table thead tr th,
+.csp-previewer table thead tr th,
+.base_symbol_container .authors-description table thead tr th,
+#page-description .authors-description table thead tr th,
+.csp-previewer .authors-description table thead tr th,
+.base_symbol_container table tbody tr th,
+#page-description table tbody tr th,
+.csp-previewer table tbody tr th,
+.base_symbol_container .authors-description table tbody tr th,
+#page-description .authors-description table tbody tr th,
+.csp-previewer .authors-description table tbody tr th,
+.base_symbol_container table tfoot tr th,
+#page-description table tfoot tr th,
+.csp-previewer table tfoot tr th,
+.base_symbol_container .authors-description table tfoot tr th,
+#page-description .authors-description table tfoot tr th,
+.csp-previewer .authors-description table tfoot tr th,
+.base_symbol_container table thead tr td,
+#page-description table thead tr td,
+.csp-previewer table thead tr td,
+.base_symbol_container .authors-description table thead tr td,
+#page-description .authors-description table thead tr td,
+.csp-previewer .authors-description table thead tr td,
+.base_symbol_container table tbody tr td,
+#page-description table tbody tr td,
+.csp-previewer table tbody tr td,
+.base_symbol_container .authors-description table tbody tr td,
+#page-description .authors-description table tbody tr td,
+.csp-previewer .authors-description table tbody tr td,
+.base_symbol_container table tfoot tr td,
+#page-description table tfoot tr td,
+.csp-previewer table tfoot tr td,
+.base_symbol_container .authors-description table tfoot tr td,
+#page-description .authors-description table tfoot tr td,
+.csp-previewer .authors-description table tfoot tr td {
+  padding: 6px 13px;
+  border: 1px solid #DDD;
+}
