@@ -506,29 +506,6 @@ function record_search_metric (query) {
         [query, app_id]));
 }
 
-// number of bytes to read from the stream at a time (chosen rather arbitrarily
-// to be 8KB)
-const CHUNK_SIZE = 1024 * 8;
-
-// synchronously read an entire GInputStream
-function read_stream_sync (stream, cancellable = null) {
-    try {
-        let total_read = '';
-
-        let buffer = stream.read_bytes(CHUNK_SIZE, cancellable);
-        while (buffer.get_size() !== 0) {
-            total_read += buffer.get_data().toString();
-            buffer = stream.read_bytes(CHUNK_SIZE, cancellable);
-        }
-        total_read += buffer.get_data().toString();
-
-        return total_read;
-    } catch (error) {
-        logError(error, 'Error reading steam');
-        return undefined;
-    }
-}
-
 function define_enum (values) {
     return values.reduce((obj, val, index) => {
         obj[val] = index;
@@ -560,7 +537,6 @@ function ensure_directory (dir) {
     }
 }
 
-function string_to_stream(string) {
-    let bytes = ByteArray.fromString(string).toGBytes();
-    return Gio.MemoryInputStream.new_from_bytes(bytes);
+function string_to_bytes(string) {
+    return ByteArray.fromString(string).toGBytes();
 }

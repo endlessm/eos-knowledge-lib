@@ -316,6 +316,8 @@ send_json_ld_request (EkncXapianBridge *self,
                       SoupURI *uri,
                       GTask *task)
 {
+  g_autofree gchar * uri_string = soup_uri_to_string (uri, FALSE);
+  g_debug ("Sending request to xapian-bridge at %s\n", uri_string);
   g_autoptr(SoupMessage) request = soup_message_new_from_uri (SOUP_METHOD_GET, uri);
 
   RequestState *state = g_task_get_task_data (task);

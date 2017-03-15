@@ -11,6 +11,7 @@
 #include <eos-shard/eos-shard-record.h>
 #include <eos-shard/eos-shard-dictionary.h>
 #include <eos-shard/eos-shard-shard-file.h>
+#include <string.h>
 
 GQuark
 eknc_domain_error_quark (void)
@@ -847,6 +848,55 @@ eknc_domain_query_finish (EkncDomain *self,
                        "upper-bound", state->upper_bound,
                        "models", state->models,
                        NULL);
+}
+
+/**
+ * eknc_domain_read_uri:
+ * @self: domain
+ * @uri: the ekn uri to read
+ * @bytes: (out) (transfer full) (allow-none): return location for the contents GBytes
+ * @mime_type: (out) (transfer full) (allow-none): return location for the content mime type
+ * @error: #GError for error reporting
+ *
+ * Reads the contents of a ekn uri and returns a GBytes of the contents and the
+ * contents mime type, if the ekn uri contents was found.
+ *
+ * Returns: true if the uri was successfully searched for, false if an error occurred
+ */
+gboolean
+eknc_domain_read_uri (EkncDomain *self,
+                      const gchar *uri,
+                      GBytes **bytes,
+                      const gchar **mime_type,
+                      GError **error)
+{
+  g_return_val_if_fail(uri && g_str_has_prefix (uri, "ekn://"), FALSE);
+  g_auto(GStrv) tokens = g_strsplit (uri + strlen("ekn://"), "/", -1);
+  g_return_val_if_fail(tokens && tokens[0] && tokens[1], FALSE);
+
+  g_autoptr(EosShardRecord) record = NULL;
+  /* iterate over all shards until we find a matching record */
+  for (GSList *l = self->shards; l && !record; l = g_slist_next (l))
+    record = eos_shard_shard_file_find_record_by_hex_name (l->data, tokens[1]);
+
+  if (!record)
+    return TRUE;
+
+  g_autoptr(EosShardBlob) blob = eos_shard_blob_ref (record->data);
+  /* Use resource, if present */
+  if (tokens[2])
+    blob = eos_shard_record_lookup_blob (record, tokens[2]);
+
+  if (!blob)
+    return TRUE;
+
+  if (mime_type)
+    *mime_type = g_strdup (eos_shard_blob_get_content_type (blob));
+
+  if (bytes)
+    *bytes = eos_shard_blob_load_contents (blob, error);
+
+  return TRUE;
 }
 
 /**

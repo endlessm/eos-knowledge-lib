@@ -131,8 +131,8 @@ const ArticleHTMLRenderer = new Knowledge.Class({
     },
 
     _get_html: function (model) {
-        let stream = model.get_content_stream();
-        return Utils.read_stream_sync(stream);
+        let [success, bytes, mime] = Eknc.Engine.get_default().get_domain().read_uri(model.ekn_id);
+        return bytes.get_data().toString();
     },
 
     _render_legacy_content: function (model) {

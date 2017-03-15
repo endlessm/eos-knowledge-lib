@@ -34,6 +34,7 @@ eknc_domain_get_fixed_query
 eknc_domain_get_fixed_query_finish
 eknc_domain_query
 eknc_domain_query_finish
+eknc_domain_read_uri
 EkncDomainError
 <SUBSECTION Standard>
 EkncDomain
