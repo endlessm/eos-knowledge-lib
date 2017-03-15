@@ -125,7 +125,13 @@ const ArticleStack = new Module.Class({
         for (let child of this.get_children()) {
             if (child !== this.visible_child) {
                 [child.previous_card, child.next_card, child].forEach(this.drop_submodule, this);
-                this.remove(child);
+
+                /* FIXME: Calling this.remove(child) does not destroy the widget
+                 * probably because we are holding a JS reference to it.
+                 * So to avoid having a WebKitWebView leak each time we show a
+                 * new article, we destroy the widget explicitly.
+                 */
+                child.destroy();
             }
         }
     },
