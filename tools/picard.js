@@ -82,7 +82,8 @@ const CSS = '\
     to { box-shadow: 0px 0px 7px 3px alpha(#729fcf, 0.4),\
                      inset 0px 0px 10px alpha(#729fcf, 0.8); }\
 }\
-.hint { animation: glow 1s infinite alternate; }';
+.hint { animation: glow 1s infinite alternate; }\
+EosWindow { background-color: lightgray; }'
 
 let widgets = {};
 
