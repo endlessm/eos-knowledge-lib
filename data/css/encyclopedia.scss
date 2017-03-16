@@ -150,7 +150,7 @@ $accent-light-color: #044a80 !default;
     separator {
         min-height: 15px;
         background-color: transparent;
-        background-image: image-url('separator.png');
+        background-image: url('resource:///com/endlessm/knowledge/data/images/separator.png');
         background-size: 100%;
         background-repeat: no-repeat;
     }
@@ -195,7 +195,7 @@ scrollbar {
 
 .paper-template {
     background-image: linear-gradient(to bottom, #ececec 0%, #ececec 100%),
-                      image-url('../templates/images/noise.png');
+                      url('resource:///com/endlessm/knowledge/data/templates/images/noise.png');
 
     .search-page & {
         padding: 0 45px;
