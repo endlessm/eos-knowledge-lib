@@ -15,5 +15,6 @@ js/app/modules/contentGroup/noResultsMessage.js
 js/app/modules/controller/buffet.js
 js/app/modules/layout/articleStack.js
 js/app/modules/layout/hamburgerBasement.js
+js/app/modules/layout/placeholder.js
 js/app/modules/navigation/searchBox.js
 js/app/utils.js

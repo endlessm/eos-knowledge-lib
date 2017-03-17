@@ -152,6 +152,7 @@
     <file>js/app/modules/layout/infiniteScrolling.js</file>
     <file>js/app/modules/layout/navigation.js</file>
     <file>js/app/modules/layout/overlay.js</file>
+    <file>js/app/modules/layout/placeholder.js</file>
     <file>js/app/modules/layout/responsiveMargins.js</file>
     <file>js/app/modules/layout/scrolling.js</file>
     <file>js/app/modules/layout/sidebar.js</file>

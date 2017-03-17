@@ -1,0 +1,12 @@
+.LayoutPlaceholder {
+    border: 10px solid red;
+    color: red;
+    font-family: $display-font;
+    font-size: 40px;
+    font-weight: bold;
+    background-color: rgba(255, 192, 192, 0.8);
+
+    label {
+        margin: 20px;
+    }
+}
