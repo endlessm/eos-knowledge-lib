@@ -96,7 +96,6 @@ scss_theme_card_partials = \
 	$(srcdir)/data/css/modules/card/_list.scss \
 	$(srcdir)/data/css/modules/card/_media.scss \
 	$(srcdir)/data/css/modules/card/_sequence.scss \
-	$(srcdir)/data/css/modules/card/_text.scss \
 	$(srcdir)/data/css/modules/card/_title.scss \
 	$(srcdir)/data/css/modules/card/_video.scss \
 	$(NULL)
@@ -456,7 +455,6 @@ javascript_tests = \
 	tests/js/app/modules/card/testList.js \
 	tests/js/app/modules/card/testMedia.js \
 	tests/js/app/modules/card/testSequence.js \
-	tests/js/app/modules/card/testText.js \
 	tests/js/app/modules/card/testTitle.js \
 	tests/js/app/modules/card/testVideo.js \
 	tests/js/app/modules/contentGroup/testContentGroup.js \

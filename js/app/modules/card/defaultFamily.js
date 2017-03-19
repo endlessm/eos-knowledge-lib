@@ -234,6 +234,59 @@ const DefaultFamily = new Module.Class({
         ];
     },
 
+    _get_constraints_no_image: function () {
+        return [
+            {
+                target_object: this._title_label,
+                target_attribute: Emeus.ConstraintAttribute.BOTTOM,
+                source_attribute: Emeus.ConstraintAttribute.CENTER_Y,
+            },
+            {
+                target_object: this._title_label,
+                target_attribute: Emeus.ConstraintAttribute.WIDTH,
+                source_attribute: Emeus.ConstraintAttribute.WIDTH,
+            },
+            {
+                target_object: this._title_label,
+                target_attribute: Emeus.ConstraintAttribute.LEFT,
+                source_attribute: Emeus.ConstraintAttribute.LEFT,
+            },
+            {
+                target_object: this._synopsis_label,
+                target_attribute: Emeus.ConstraintAttribute.TOP,
+                source_object: this._title_label,
+                source_attribute: Emeus.ConstraintAttribute.BOTTOM,
+            },
+            {
+                target_object: this._synopsis_label,
+                target_attribute: Emeus.ConstraintAttribute.LEFT,
+                source_object: this._title_label,
+                source_attribute: Emeus.ConstraintAttribute.LEFT,
+            },
+            {
+                target_object: this._synopsis_label,
+                target_attribute: Emeus.ConstraintAttribute.WIDTH,
+                source_object: this._title_label,
+                source_attribute: Emeus.ConstraintAttribute.WIDTH,
+            },
+            {
+                target_object: this._context_frame,
+                target_attribute: Emeus.ConstraintAttribute.WIDTH,
+                source_attribute: Emeus.ConstraintAttribute.WIDTH,
+            },
+            {
+                target_object: this._context_frame,
+                target_attribute: Emeus.ConstraintAttribute.LEFT,
+                source_attribute: Emeus.ConstraintAttribute.LEFT,
+            },
+            {
+                target_object: this._context_frame,
+                target_attribute: Emeus.ConstraintAttribute.BOTTOM,
+                source_attribute: Emeus.ConstraintAttribute.BOTTOM,
+            },
+        ];
+    },
+
     _main_layout: function (image_fraction, image_portion_attr, image_full_attr) {
         let constraints = [
             {
@@ -317,7 +370,11 @@ const DefaultFamily = new Module.Class({
                 this._title_label.lines = 1;
             }
         } else {
-            // text card
+            this._thumbnail_frame.hide();
+            this._title_label.lines = 3;
+            this._context_frame.halign = Gtk.Align.START;
+            this._main_layout(0, Emeus.ConstraintAttribute.HEIGHT, Emeus.ConstraintAttribute.WIDTH);
+            text_constraints = this._get_constraints_no_image();
         }
 
         if (show_synopsis) {
