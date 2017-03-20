@@ -3,6 +3,10 @@
     box-shadow: 0px 5px 10px 0px transparentize(black, 1 - 0.22);
     border-color: transparent;  /* used for the triangle in the corner */
 
+    .text-layout {
+        padding: 20px;
+    }
+
     &__title {
         font-family: $title-font;
         font-weight: bold;
@@ -16,12 +20,8 @@
         font-style: normal;
         color: $primary-light-color;
         font-size: 14px;
-    }
-
-    &.width-d.height-b &__contentFrame,
-    &.width-e.height-b &__contentFrame,
-    &.width-e.height-c &__contentFrame {
-        padding: 20px 30px 20px 30px;
+        border: none;
+        outline: none;
     }
 
     .composite &__context {

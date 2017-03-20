@@ -6,61 +6,65 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="receives_default">False</property>
-  </template>
-  <object class="GtkFrame" id="thumbnail-frame">
-    <property name="can_focus">False</property>
-    <style>
-      <class name="CardThumb__thumbnail"/>
-    </style>
-  </object>
-  <object class="GtkFrame" id="content-frame">
-    <property name="visible">True</property>
     <child>
-      <object class="GtkGrid" id="inner-grid">
-        <property name="orientation">vertical</property>
-        <property name="vexpand">True</property>
-        <property name="valign">fill</property>
+      <object class="EmeusConstraintLayout" id="layout">
+        <property name="expand">True</property>
         <property name="visible">True</property>
         <child>
-          <object class="EknFormattableLabel" id="title-label">
+          <object class="GtkFrame" id="thumbnail-frame">
             <property name="can_focus">False</property>
-            <property name="expand">True</property>
-            <property name="halign">center</property>
-            <property name="valign">center</property>
-            <property name="xalign">0</property>
-            <property name="use_markup">True</property>
-            <property name="wrap">True</property>
-            <property name="wrap_mode">word</property>
-            <property name="max_width_chars">25</property>
-            <property name="ellipsize">end</property>
-            <property name="lines">1</property>
             <style>
-              <class name="CardThumb__title"/>
-              <class name="Card__title"/>
+              <class name="CardThumb__thumbnail"/>
             </style>
           </object>
         </child>
         <child>
-          <object class="GtkLabel" id="synopsis-label">
-            <property name="can_focus">False</property>
+          <object class="GtkGrid" id="grid">
             <property name="expand">True</property>
-            <property name="halign">center</property>
-            <property name="use_markup">True</property>
-            <property name="wrap">True</property>
-            <property name="wrap_mode">word-char</property>
-            <property name="ellipsize">end</property>
-            <property name="lines">5</property>
+            <property name="visible">True</property>
+            <child>
+              <object class="EmeusConstraintLayout" id="text-layout">
+                <property name="expand">True</property>
+                <property name="visible">True</property>
+                <child>
+                  <object class="EknFormattableLabel" id="title-label">
+                    <property name="can_focus">False</property>
+                    <property name="expand">True</property>
+                    <property name="halign">fill</property>
+                    <property name="valign">center</property>
+                    <property name="xalign">0</property>
+                    <property name="use_markup">True</property>
+                    <property name="wrap">True</property>
+                    <property name="wrap_mode">word</property>
+                    <property name="max_width_chars">25</property>
+                    <property name="ellipsize">end</property>
+                    <property name="lines">1</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="synopsis-label">
+                    <property name="can_focus">False</property>
+                    <property name="expand">True</property>
+                    <property name="halign">center</property>
+                    <property name="use_markup">True</property>
+                    <property name="wrap">True</property>
+                    <property name="wrap_mode">word-char</property>
+                    <property name="ellipsize">end</property>
+                    <property name="lines">5</property>
+                    <style>
+                      <class name="CardThumb__synopsis"/>
+                      <class name="Card__synopsis"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
             <style>
-              <class name="CardThumb__synopsis"/>
-              <class name="Card__synopsis"/>
+              <class name="text-layout"/>
             </style>
           </object>
         </child>
       </object>
     </child>
-    <style>
-      <class name="CardThumb__contentFrame"/>
-      <class name="Card__contentFrame"/>
-    </style>
-  </object>
+  </template>
 </interface>
