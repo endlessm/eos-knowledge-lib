@@ -73,7 +73,8 @@ const DefaultFamily = new Module.Class({
 
         this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
 
-        this._context_frame.add(this.create_context_widget_from_model());
+        this._context_widget = this.create_context_widget_from_model();
+        this._context_frame.add(this._context_widget);
 
         this.set_size_request(Card.MinSize.B, Card.MinSize.B);
 
@@ -360,6 +361,7 @@ const DefaultFamily = new Module.Class({
             this._main_layout(1, Emeus.ConstraintAttribute.WIDTH, Emeus.ConstraintAttribute.HEIGHT);
             text_constraints = this._get_constraints_post_card(show_context);
         } else if (this._card_type === CardType.MED_RES_IMAGE) {
+            this._context_widget.halign = Gtk.Align.START;
             if (orientation === Gtk.Orientation.HORIZONTAL) {
                 this._main_layout(0.60, Emeus.ConstraintAttribute.WIDTH, Emeus.ConstraintAttribute.HEIGHT);
                 text_constraints = this._get_constraints_horizontal(show_synopsis);
