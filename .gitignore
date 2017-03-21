@@ -12,6 +12,7 @@
 /js/app/config.js.in
 /js/search/config.js
 /ekn-app-runner
+tools/basin
 tools/eminem
 tools/introspect
 tools/kermit

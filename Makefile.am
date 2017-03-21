@@ -340,6 +340,7 @@ subst = $(SED) \
 subst_files = \
 	ekn-app-runner \
 	js/app/config.js \
+	tools/basin \
 	tools/eminem \
 	tools/introspect \
 	tools/kermit \
@@ -356,6 +357,7 @@ EXTRA_DIST += $(patsubst %,%.in,$(subst_files))
 bin_SCRIPTS += \
 	ekn-app-runner \
 	tools/autobahn \
+	tools/basin \
 	tools/eminem \
 	tools/introspect \
 	tools/kermit \

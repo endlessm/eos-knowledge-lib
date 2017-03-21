@@ -39,6 +39,12 @@ find any records that have metadata that matches that regex.
 
 To get basic statistics and makeup of a shard file, use `kermit stat <path_to_shard_file>`.
 
+Basin
+--------
+Basin is a tool for creating content shards. It is included in the com.endlessm.Sdk flatpak runtime.
+
+To create a content shard, use `basin <path_to_input_json> <path_to_output_shard>`.
+
 Eminem
 ------
 Subscriptions are our mechanism for updating content in Knowledge Apps. A subscription

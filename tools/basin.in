@@ -1,0 +1,26 @@
+#!/bin/bash
+
+export GI_TYPELIB_PATH="%typelibdir%${GI_TYPELIB_PATH:+:$GI_TYPELIB_PATH}"
+export LD_LIBRARY_PATH="%pkglibdir%${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+
+if [ "$GJS_DEBUG_OUTPUT" == "" ]; then
+    export GJS_DEBUG_OUTPUT=stderr
+fi
+
+if [ "$GJS_DEBUG_TOPICS" == "" ]; then
+    export GJS_DEBUG_TOPICS="JS ERROR;JS LOG"
+fi
+
+DEBUG_COMMAND=""
+if [ "$RUN_DEBUG" != "" ]; then
+    DEBUG_COMMAND="gdb --args"
+fi
+
+SCRIPT="const Gio = imports.gi.Gio;
+Gio.Resource.load('%pkgdatadir%/eos-knowledge.gresource')._register();
+imports.searchPath.unshift('resource:///com/endlessm/knowledge/tools');
+
+const Basin = imports.basin;
+Basin.main();"
+
+exec $DEBUG_COMMAND gjs -c "$SCRIPT" "$@"
