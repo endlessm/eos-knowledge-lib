@@ -328,7 +328,7 @@ const ARTICLE_TITLE = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
 
 // These images are all in public domain and were retrieved from
 // http://publicdomainarchive.com
-const ARTICLE_IMAGES = ['people.jpg', 'food.jpg', 'forest.jpg'];
+const ARTICLE_IMAGES = ['people.jpg', 'food.jpg', 'forest.jpg', 'silverbars.jpg'];
 
 function clear_arrangement () {
     widgets.selection.clear();
