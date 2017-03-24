@@ -114,6 +114,7 @@ scss_theme_layout_partials = \
 	$(srcdir)/data/css/modules/layout/_hamburgerBasement.scss \
 	$(srcdir)/data/css/modules/layout/_infiniteScrolling.scss \
 	$(srcdir)/data/css/modules/layout/_navigation.scss \
+	$(srcdir)/data/css/modules/layout/_placeholder.scss \
 	$(srcdir)/data/css/modules/layout/_responsiveMargins.scss \
 	$(srcdir)/data/css/modules/layout/_scrolling.scss \
 	$(srcdir)/data/css/modules/layout/_sidebar.scss \
