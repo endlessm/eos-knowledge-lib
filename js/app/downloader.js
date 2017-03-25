@@ -10,6 +10,8 @@ const Soup = imports.gi.Soup;
 const Config = imports.app.config;
 const Utils = imports.app.utils;
 
+const CHUNK_SIZE = 1024 * 256;
+
 const FileDownloadRequest = new Lang.Class({
     Name: 'FileDownloadRequest',
 
@@ -42,7 +44,7 @@ const FileDownloader = new Lang.Class({
             let csum = new GLib.Checksum(GLib.ChecksumType.SHA256);
 
             function continue_checksum () {
-                stream.read_bytes_promise(Utils.CHUNK_SIZE, 0, cancellable)
+                stream.read_bytes_promise(CHUNK_SIZE, 0, cancellable)
                 .then((bytes) => {
                     csum.update(bytes.get_data());
                     if (bytes.get_size() !== 0)
