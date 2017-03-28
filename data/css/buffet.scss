@@ -2,20 +2,13 @@
 
 $primary-light-color: #49bde3 !default;
 $primary-medium-color: #044a80 !default;
-$accent-light-color: #044a80 !default;
-$accent-dark-color: #49bde3 !default;
-$background-light-color: #e7ecee !default;
-$background-dark-color: #ddddd5 !default;
+$accent-light-color: #49bde3 !default;
+$accent-dark-color: #044a80 !default;
+$background-light-color: #f6f6f6 !default;
+$background-dark-color: #e7ecee !default;
 
-$card-highlighted-color: #d9f0f8 !default;
-$group-background-color: #f6f6f6 !default;
-$separator-color: #999999 !default;
-$banner-color: #c4eefc !default;
-$banner-label-color: #666666 !default;
-$menu-hover-color: #5bc2e5 !default;
-$menu-separator-color: #cccccc !default;
-$menu-top-color: #f5f5f5 !default;
-$menu-bottom-color: #e9e9e9 !default;
+$contextbar-top-color: #f5f5f5 !default;
+$contextbar-bottom-color: #e9e9e9 !default;
 
 $title-font: Lato !default;
 $body-font: Lato !default;
@@ -24,97 +17,46 @@ $display-font: Lato !default;
 $support-font: Lato !default;
 $logo-font: Lato !default;
 
-$title-alt-font: 'Lato Thin' !default;
-
 @import "base";
 
-.LayoutScrolling,
-.LayoutInfiniteScrolling {
-    background-color: $background-light-color;
-}
-
-/* === Modules (Overrides) === */
-
-.Card {
-    &.highlighted &__title {
-        color: $primary-medium-color;
-    }
-
-    &__synopsis {
-        color: black;
-
-        &.highlighted {
-            background-color: $card-highlighted-color;
-        }
-    }
-
-    &__title.highlighted {
-        background-color: $card-highlighted-color;
-    }
-}
-
-.highlights {
-    margin: 15px 20px;
-    padding: 15px 20px;
-
-    /* FIXME: remove or update this after modularity issues are fixed */
-    .composite & .Card__title {
-        font-weight: normal;
-    }
-
-    /* Selects the nested ContentGroup inside the highlights content group */
+.ContentGroup--outercontainer {
     .ContentGroupContentGroup {
-        &__title, &__trigger {
-            color: $accent-light-color;
-            font-weight: 200;
-
-            &:hover {
-                color: $accent-dark-color;
-            }
-        }
-
-        /* FIXME can't use em because of .Card base size */
         &__title {
             font-size: 29.3px;
+            margin-left: 10px;
         }
 
         &__trigger {
-            .DecorationThemeableImage {
-                -gtk-icon-source: $arrow-recolored-icon;
+            font-size: 20px;
+            margin-right: 10px;
+            
+            .ThemeableImage {
                 min-height: 10px;
                 min-width: 11px;
                 margin-left: 5px;
                 margin-bottom: 5px;
             }
-
-            &:hover .DecorationThemeableImage {
-                -gtk-icon-source: $arrow-recolored-icon;
-            }
         }
 
-        margin: 20px 0px;
+        &__title,
+        &__trigger {
+            font-weight: 200;
+            margin-bottom: 10px;
+        }
+
+        &__title--clickable,
+        &__trigger {
+            color: $accent-dark-color;
+
+            &:hover {
+                color: $accent-light-color;
+            }
+        }
     }
 
-    .ArrangementList {
-        margin: 0px;
-    }
-}
-
-.search-results {
-    margin-top: 20px;
-    background-color: $background-light-color;
-
-    .search-page-suggestions .Card__contentFrame {
-        margin-top: -10px;
-    }
-
-    .suggested-categories,
-    .search-page-suggestions {
-        background-color: $group-background-color;
-    }
-
-    separator {
-        background-color: $separator-color;
+    .composite & .ContentGroupContentGroup__title,
+    .composite & .ContentGroupContentGroup__trigger {
+        font-weight: normal;
     }
 
     .CardList {
@@ -125,130 +67,10 @@ $title-alt-font: 'Lato Thin' !default;
             min-height: 120px;
         }
     }
-
-    .BannerSearch {
-        color: $primary-medium-color;
-        padding: 20px 60px 0px 60px;
-        padding-left: 60px;
-        padding-right: 60px;
-        font-size: 1.5em; /* 24px * 1/12 * 72/96 */
-    }
-
-    .results-message-subtitle {
-        color: $separator-color;
-        font-style: normal;
-        padding: 20px 60px 0px 60px;
-        padding-left: 60px;
-        padding-right: 60px;
-        padding-bottom: 40px;
-        font-size: 1.5em; /* 24px * 1/12 * 72/96 */
-    }
 }
 
-.thematic-group {
-    padding: 20px;
-
-    .ContentGroupContentGroup__title, .ContentGroupContentGroup__trigger {
-        color: #044a80;
-        font-weight: 200;
-        &:hover {
-            color: #49bde3;
-        }
-    }
-
-    .ContentGroupContentGroup__title {
-        font-size: 29.3px;
-    }
-
-    .ContentGroupContentGroup__trigger {
-        font-size: 20px;
-    }
-
-    .separator {
-        background-color: #999999;
-        min-height: 1px;
-        margin: 4px 0px 10px 0px;
-    }
-
-    .composite & .ContentGroupContentGroup__title {
-        font-weight: normal;
-    }
-    .ArrangementList {
-        margin: 0px;
-    }
-}
-
-.ContentGroupContentGroup__title, .ContentGroupContentGroup__trigger {
-    margin-bottom: 10px;
-}
-
-.ContentGroupContentGroup__trigger {
-    .DecorationThemeableImage {
-        -gtk-icon-source: $arrow-recolored-icon;
-        min-height: 10px;
-        min-width: 11px;
-        margin-left: 5px;
-        margin-bottom: 5px;
-    }
-
-    &:hover .DecorationThemeableImage {
-        -gtk-icon-source: $arrow-recolored-icon;
-    }
-}
-
-.suggested-categories {
-    margin: 15px 0px;
-    padding: 15px 20px;
-
-    /* FIXME clean-up ContentGroup theming after refactors */
-    .ContentGroupContentGroup__title,
-    .ContentGroupContentGroup__trigger {
-        color: $accent-light-color;
-        font-weight: 200;
-        font-size: 1.83em; /* 29.3px * 1/12 * 72/96 */
-
-        &:hover {
-            color: $accent-dark-color;
-        }
-    }
-
-    .ContentGroupContentGroup__trigger {
-        font-size: 1.25em; /* 20px * 1/12 * 72/96 */
-    }
-
-    .composite & .ContentGroupContentGroup__title,
-    .composite & .ContentGroupContentGroup__trigger {
-        font-weight: normal;
-    }
-}
-
-.search-page-suggestions {
+.LayoutResponsiveMargins--complementarycontent {
     background-color: $background-dark-color;
-
-    .ArrangementSquareGuys {
-        padding: 0 20px 20px 20px;
-    }
-
-    .ContentGroupContentGroup__title {
-        color: $accent-light-color;
-        font-weight: 200;
-        font-size: 1.83em; /* 29.3px * 1/12 * 72/96 */
-        padding: 0px 0px 30px 20px;
-    }
-}
-
-.browse-content .Card__title {
-    font-weight: 200;
-    font-size: 29.3px;
-    color: #999999;
-}
-
-.small-spaced-arrangement {
-    margin: -5px;
-
-    .Card {
-        margin: 5px;
-    }
 }
 
 .CardList,
@@ -291,83 +113,64 @@ $title-alt-font: 'Lato Thin' !default;
     &__context .FormattableLabel {
         -EknFormattableLabel-text-transform: 'uppercase';
     }
+
+    &__context {
+        font-style: italic;
+    }
 }
 
-.BannerApp {
-    color: $banner-color;
-
-    &__subtitle {
-        -EknFormattableLabel-text-transform: 'uppercase';
-    }
+.BannerApp__subtitle {
+    -EknFormattableLabel-text-transform: 'uppercase';
+    margin-top: 0;
 }
 
 .LayoutSideMenu {
     &__contextBar {
-        background-image: linear-gradient(to bottom,  $menu-top-color 0%, $menu-bottom-color 100%);
+        background-image: linear-gradient(to bottom,  $contextbar-top-color 0%, $contextbar-bottom-color 100%);
+
+        .BannerContext {
+            color: $primary-medium-color;
+            font-weight: 200;
+        }
     }
 
     &__menu {
         background-color: white;
 
-        .Card {
+        .ArrangementList .CardTitle {
+            border-bottom: none;
+
             &__title {
-                font-family: $title-alt-font;
-                color: $accent-light-color;
+                font-weight: 200;
             }
 
-            &:hover .Card__title {
-                color: $menu-hover-color;
-            }
-        }
+            &:active,
+            &.highlighted {
+                .CardTitle {
+                    background-color: transparent;
 
-        separator {
-            background-color: $menu-separator-color;
+                    &__title {
+                        color: $accent-dark-color;
+                        font-weight: bold;
+                    }
+                }
+            }
         }
     }
 
+    &__homeButton,
     &__closeButton,
-    &__menuButton {
-        color: $banner-label-color;
+    &__menuButton,
+    &__menu .ArrangementList .CardTitle__title {
+        color: $accent-dark-color;
+
         &:hover {
-            color: $accent-dark-color;
+            color: $accent-light-color;
         }
-    }
-
-    &__homeButton {
-        font-family: $title-alt-font;
-        color: $accent-light-color;
-        &:hover {
-            color: $accent-dark-color;
-        }
-    }
-}
-
-.BannerContext {
-    font-family: $title-alt-font;
-    color: $banner-label-color;
-}
-
-.Card__context {
-    font-style: italic;
-}
-
-.all-sets-page .ContentGroupContentGroup {
-    margin-top: 30px;
-}
-
-/* Changes for composite TVs */
-
-.composite {
-    .LayoutSideMenu__homeButton,
-    .LayoutSideMenu__menu .Card__title,
-    .BannerContext {
-        font-family: $title-font;
     }
 }
 
 .article-page {
-    background-color: $background-light-color;
-
     spinner {
         color: $accent-dark-color;
     }

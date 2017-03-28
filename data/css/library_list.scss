@@ -1,4 +1,4 @@
-@import 'mesh';
+@import "base";
 
 .CardLegacyPolaroid {
   box-shadow: 0px 2px 3px transparentize(black, 1 - 0.40);
@@ -30,55 +30,46 @@
   .DecorationThemeableImage {
     margin: 0 20px -20px 0;
   }
-
-  .NavigationSearchBox {
-    color: black;
-    caret-color: black;
-  }
 }
 
-.set-page {
-  .BannerSet {
-    margin-left: 5.0em;
-    .CardTitle {
-        &__title {
-          font-size: 60px;
-          font-weight: 900;
-          font-family: $title-font;
-        }
+.BannerSet .CardTitle__title,
+.subset-page .ContentGroupContentGroup__title,
+.BannerSearch__title {
+  font-weight: 900;
+  color: white;
+  font-family: $title-font;
+}
+
+.LayoutSidebar .sidebar {
+  background-color: transparentize(black, 1 - 0.80);
+
+  .CardTitle {
+    &__title {
+      font-family: $display-font;
+      font-weight: 400;
+    }
+
+    &:active,
+    &.highlighted {
+      .CardTitle__title {
+        background-color: black;
+      }
     }
   }
 }
 
-.set-page,
-.subset-page {
-  .sidebar .CardTitle__title {
-    font-family: $display-font;
-    font-weight: 400;
-    padding-right: 1.0em;
-  }
-}
-
-.subset-page,
-.article-page {
-  .sidebar {
-    padding-left: 60px;
-  }
+.PagerParallaxBackground--right .LayoutSidebar .sidebar {
+  margin-left: 60px;
 }
 
 .subset-page {
   .content {
     background-color: $primary-dark-color;
-    background-image: none;
   }
 
-  .ContentGroupContentGroup {
-    &__title {
-      font-size: 51px;
-      font-weight: 900;
-      font-family: $title-font;
-      margin: 30px 0;
-    }
+  .ContentGroupContentGroup__title {
+    font-size: 51px;
+    margin-top: 40px;
   }
 }
 
@@ -96,57 +87,19 @@
   }
 }
 
-.search-page {
-  .BannerSearch {
-    font-weight: 900;
-    padding: 1.0em 1.0em 0.50em 1.0em;
+.ContentGroupNoResultsMessage {
+  margin-top: -100px;
+  &__title,
+  &__subtitle {
+    text-shadow: 2px 8px 6px transparentize(black, 1 - 0.20);
   }
-}
-
-.search-results {
-  background-color: transparent;
-  .ContentGroupNoResultsMessage {
-    margin-top: 3.0em;
-    &__title,
-    &__subtitle {
-      font-size: 1.25em;
-      color: white;
-      padding: 0em 1.25em 0em 1.25em;
-      font-style: normal;
-    }
-    &__subtitle {
-      margin-top: 1.0em;
-    }
+  &__title {
+    color: white;
+    font-size: 2.5em;
   }
-}
-
-.sidebar {
-    scrollbar {
-        trough {
-            padding: 0px 3px;
-            background-color: transparentize(black, 1 - 0.90);
-            background-image: linear-gradient(89deg,
-                                              transparentize(white, 1 - 0.1) 0%,
-                                              transparentize(black, 1 - 0.1) 100%);
-            box-shadow: inset 1px 0px 0px 0px transparentize(black, 1 - 0.15);
-        }
-
-        slider {
-            background-color: transparentize(white, 1 - 0.5);
-        }
-    }
-
-    .ContentGroupContentGroup {
-        background-color: transparentize(black, 1 - 0.75);
-    }
-
-    .ContentGroupNoResultsMessage__title,
-    .ContentGroupNoResultsMessage__subtitle {
-        color:white;
-        font-size: 1.2em;
-        font-style: normal;
-        padding: 10px 25px;
-    }
+  &__subtitle {
+    color: transparentize(white, 1 - 0.80);
+  }
 }
 
 .composite {
@@ -165,13 +118,23 @@
     .BannerSet .CardTitle__title,
     .BannerSearch__title,
     .ContentGroupContentGroup__title {
-      font-family: $title-font-composite;
+      font-family: $display-font-composite;
       font-size: 30px;
     }
 
     .BannerSet {
       margin-left: 3.0em;
       margin-right: 1.0em;
+    }
+
+    .ContentGroupNoResultsMessage {
+      &__title,
+      &__subtitle {
+        font-size: 20px;
+      }
+      &__title {
+        font-weight: bold;
+      }
     }
   }
 
@@ -180,18 +143,6 @@
     .sidebar .CardTitle__title {
       font-family: $display-font-composite;
       padding-right: 0.5em;
-    }
-  }
-
-  .ContentGroupNoResultsMessage {
-    margin-top: 1.0em;
-    &__title {
-      padding: 0em;
-      font-size: 20px;
-    }
-    &__subtitle {
-      padding: 0em 0em 2.0em 0em;
-      font-size: 20px;
     }
   }
 }

@@ -24,8 +24,8 @@ defines:
 
 - &article-suggestions
   type: ContentGroup.ContentGroup
-  styles:
-    - search-page-suggestions
+  properties:
+    valign: center
   slots:
     title:
       type: ContentGroup.StaticText
@@ -33,7 +33,6 @@ defines:
         label: !translate 'You might be interested in...'
         halign: start
     arrangement:
-      # Note spacing different from all the other arrangements; on purpose?
       shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
       styles:
       - small-spaced-arrangement
@@ -46,8 +45,8 @@ defines:
 
 - &category-suggestions
   type: ContentGroup.ContentGroup
-  styles:
-    - suggested-categories
+  properties:
+    valign: center
   slots:
     title:
       type: ContentGroup.StaticText
@@ -101,15 +100,17 @@ defines:
       type: Layout.Scrolling
       slots:
         content:
-          type: Layout.ResponsiveMargins
+          shortdef: 'Layout.Box(orientation: vertical)'
+          styles:
+            - ContentGroup--outercontainer
           slots:
-            content:
-              shortdef: 'Layout.Box(orientation: vertical)'
+            contents:
+            - type: Layout.ResponsiveMargins
               slots:
-                contents:
-                - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
+                content:
+                  shortdef: 'ContentGroup.ContentGroup(halign: fill)'
                   styles:
-                    - highlights
+                    - ContentGroup--highlightsall
                   slots:
                     arrangement:
                       type: Arrangement.Windshield
@@ -124,9 +125,10 @@ defines:
                       type: Selection.FeaturedFirst
                       slots:
                         filter: Filter.Articles
-                - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
-                  styles:
-                    - highlights
+            - type: Layout.ResponsiveMargins
+              slots:
+                content:
+                  shortdef: 'ContentGroup.ContentGroup(halign: fill)'
                   slots:
                     arrangement:
                       type: Arrangement.List
@@ -135,6 +137,8 @@ defines:
                       slots:
                         card:
                           type: Card.ContentGroup
+                          styles:
+                            - ContentGroup--highlightsset
                           slots:
                             trigger: *see-more-trigger
                             title:
@@ -153,7 +157,12 @@ defines:
                                 filter: Filter.Articles
                     selection:
                       type: Selection.AllSets
-                - *category-suggestions
+            - type: Layout.ResponsiveMargins
+              styles:
+                - LayoutResponsiveMargins--complementarycontent
+              slots:
+                content:
+                  <<: *category-suggestions
 
 - &set-page
   <<: *page-with-menu
@@ -165,21 +174,23 @@ defines:
         lazy-load: thematic-sets
       slots:
         content:
-          type: Layout.ResponsiveMargins
+          shortdef: 'Layout.Box(orientation: vertical)'
+          styles:
+            - ContentGroup--outercontainer
           slots:
-            content:
-              shortdef: 'Layout.Box(orientation: vertical)'
+            contents:
+            - type: Layout.ResponsiveMargins
               slots:
-                contents:
-                - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
-                  styles:
-                    - thematic-group
+                content:
+                  shortdef: 'ContentGroup.ContentGroup(halign: fill)'
                   slots:
                     arrangement:
                       shortdef: 'Arrangement.List(homogeneous: false)'
                       slots:
                         card:
                           type: Card.ContentGroup
+                          styles:
+                            - ContentGroup--previewset
                           slots:
                             arrangement:
                               type: Arrangement.Half
@@ -201,7 +212,12 @@ defines:
                       slots:
                         filter:
                           type: Filter.Thematic
-                - *category-suggestions
+            - type: Layout.ResponsiveMargins
+              styles:
+                - LayoutResponsiveMargins--complementarycontent
+              slots:
+                content:
+                  <<: *category-suggestions
 
 - &search-page
   <<: *page-with-menu
@@ -214,16 +230,18 @@ defines:
       slots:
         content:
           type: Layout.ResponsiveMargins
+          styles:
+            - ContentGroup--outercontainer
           slots:
             content:
               type: ContentGroup.ContentGroup
-              styles:
-              - search-results
               properties:
                 halign: fill
               slots:
                 arrangement:
                   type: Arrangement.List
+                  styles:
+                    - ContentGroup--articles
                   slots:
                     card: Card.List
                 selection:
@@ -233,9 +251,19 @@ defines:
                   shortdef: 'Layout.Box(orientation: vertical)'
                   slots:
                     contents:
-                    - ContentGroup.NoResultsMessage
-                    - *article-suggestions
-                    - *category-suggestions
+                    - type: ContentGroup.NoResultsMessage
+                    - type: Layout.ResponsiveMargins
+                      styles:
+                        - LayoutResponsiveMargins--complementarycontent
+                      slots:
+                        content:
+                          <<: *article-suggestions
+                    - type: Layout.ResponsiveMargins
+                      styles:
+                        - LayoutResponsiveMargins--complementarycontent
+                      slots:
+                        content:
+                          <<: *category-suggestions
 
 - &all-sets-page
   <<: *page-with-menu
@@ -248,6 +276,8 @@ defines:
       slots:
         content:
           type: Layout.ResponsiveMargins
+          styles:
+            - ContentGroup--outercontainer
           slots:
             content:
               type: ContentGroup.ContentGroup

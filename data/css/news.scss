@@ -2,8 +2,8 @@
 
 $primary-light-color: #7297a7 !default;
 $primary-medium-color: #0f1b3c !default;
-$accent-light-color: #0f1b3c !default;
-$accent-dark-color: #7297a7 !default;
+$accent-light-color: #7297a7 !default;
+$accent-dark-color: #0f1b3c !default;
 $background-light-color: #e9e5e0 !default;
 $background-dark-color: #0f1b3c !default;
 
@@ -15,71 +15,34 @@ $support-font: 'Fira Sans' !default;
 
 @import "base";
 
-.LayoutScrolling,
-.LayoutInfiniteScrolling {
-    background-color: $background-light-color;
-}
-
-/* === Modules (Overrides) === */
-
-/* The home page consists of two 'highlights' modules. We want to
-   set a bottom margin on the second of these two (that is, the last
-   one). Note, we can't just set margin-bottom on the .highlights
-   class because that would also apply to the upper highlights module
-   on the page, which is not desired. */
-.highlights:last-child {
-    margin-bottom: 50px;
-}
-
-.hierarchical-set {
-    margin-top: 80px;
-    margin-bottom: 20px;
-}
-
-.hierarchical-articles {
-    margin-top: 20px;
-    margin-bottom: 20px;
+.BannerApp {
+    margin-top: 0;
 }
 
 .LayoutTopMenu__menu {
     background-color: #050c20;
-}
-
-.supplementary-articles {
-    margin: 50px 0 50px 20px;
-    padding: 0 20px 20px 0px;
-
-    .ContentGroupContentGroup__title {
-        font-family: $display-font;
-        font-weight: bold;
-        font-size: 40px;
-        padding-bottom: 30px;
-        color: white;
-    }
-}
-
-.dark-background {
-    background-color: $background-dark-color;
-}
-
-.ArrangementSideBySide {
     .CardTitle {
-        &:hover .CardTitle__title {
-            color: $accent-dark-color;
+        &__title {
+            font-weight: normal;
+            -EknFormattableLabel-text-transform: 'lowercase';
+        }
+        &.highlighted,
+        &:active {
+            background-color: darken($background-dark-color, 5%);
         }
     }
 }
 
-/* Selects the background around the suggested articles modules; cumbersome! */
-.vertical .LayoutResponsiveMargins.supplementary-articles,
-.search-results .vertical .LayoutResponsiveMargins {
-    background-color: $background-dark-color;
-}
+.set-page,
+.search-page {
+    .BannerSet, .BannerSearch {
+        margin-top: 95px;
+    }
 
-/* Adjust context frame in supplementary article and suggested article cards */
-.supplementary-articles .CardDefaultFamily frame:nth-child(2),
-.search-page-suggestions .Card__contentFrame {
-    margin-top: -10px;
+    .BannerSet .FormattableLabel,
+    .BannerSearch .FormattableLabel {
+        -EknFormattableLabel-text-transform: 'lowercase';
+    }
 }
 
 .ContentGroup--complementarycontent {
@@ -91,32 +54,36 @@ $support-font: 'Fira Sans' !default;
   }
 }
 
-.search-page-suggestions .ContentGroupContentGroup__title {
-    color: white;
+.set-page .ContentGroup--outercontainer,
+.search-page .ContentGroup--outercontainer {
+    margin-top: 100px;
 }
 
-.BannerSearch {
-    color: white;
-    margin-bottom: 25px;
-}
+.ContentGroup--outercontainer {
+    .ContentGroupContentGroup {
+        &__title {
+            margin-left: 10px;
+        }
 
-.search-page separator {
-    background-color: transparent;
-}
+        &__trigger {
+            margin-right: 10px;
+        }
 
-.BannerSet {
-    margin-top: 40px;
-    margin-bottom: 15px;
+        &__title .FormattableLabel,
+        &__trigger .FormattableLabel {
+            -EknFormattableLabel-text-transform: 'lowercase';
+        }
 
-    .Card__title {
-        color: white;
-        font-weight: bold;
-        padding-top: 50px;
+        &__title--clickable,
+        &__trigger {
+            color: $primary-dark-color;
+
+            &:hover {
+                color: $primary-light-color;
+            }
+        }
     }
-}
 
-.search-results, .set-page {
-    background-color: transparent;
     .CardList {
         &__thumbnail {
             min-height: 200px;
@@ -127,19 +94,23 @@ $support-font: 'Fira Sans' !default;
     }
 }
 
-.ContentGroupNoResultsMessage {
-    background-color: $background-light-color;
+.LayoutResponsiveMargins--complementarycontent {
+    background-color: $background-dark-color;
 
-    &__subtitle {
-        padding-left: 160px;
+    .ContentGroupContentGroup__title {
+        color: white;
     }
 }
 
+.ContentGroupNoResultsMessage__subtitle {
+    font-style: italic;
+}
+
 .home-page .LayoutDynamicBackground {
-    -EknLayout_DynamicBackground-background-height: 675px;
+    -EknLayout_DynamicBackground-background-height: 700px;
 
     &.small {
-        -EknLayout_DynamicBackground-background-height: 475px;
+        -EknLayout_DynamicBackground-background-height: 500px;
     }
 }
 
@@ -153,7 +124,6 @@ $support-font: 'Fira Sans' !default;
 
 .article-page {
     .CardList {
-        margin: 0 100px 10px 100px;
         &__thumbnail {
             min-height: 135px;
         }
@@ -174,12 +144,6 @@ $support-font: 'Fira Sans' !default;
 
 .CardDefaultFamily {
     &__context .FormattableLabel {
-        -EknFormattableLabel-text-transform: 'lowercase';
-    }
-}
-
-.CardTitle {
-    &__title {
         -EknFormattableLabel-text-transform: 'lowercase';
     }
 }

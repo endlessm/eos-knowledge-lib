@@ -1,10 +1,18 @@
-$body-font: 'Merriweather' !default;
-$display-font: 'Fira Sans' !default;
-$display-font-composite: 'Roboto' !default;
+$legacy-post-card-border-color: transparentize(black, 1 - 0.70) !default;
+$legacy-post-card-border-color-hover: white !default;
 
-@import 'mesh';
+@import "base";
+
+.PagerParallaxBackground {
+    -EknPager_Simple-transitions-style: 'slide-center';
+}
 
 .home-page {
+    .CardLegacyPost {
+        &__title {
+            font-weight: normal;
+        }
+    }
     .LayoutBox,
     .ContentGroupContentGroup {
         min-height: 240px;
@@ -24,63 +32,59 @@ $display-font-composite: 'Roboto' !default;
     }
 }
 
-.set-page,
-.search-page {
+.LayoutSidebar {
+    .sidebar {
+        background-color: transparentize(black, 1 - 0.80);
+
+        .CardTitle {
+            &__title {
+                font-family: $context-font;
+            }
+
+            &:hover .CardTitle__title {
+                color: white;
+            }
+
+            &:active,
+            &.highlighted {
+                .CardTitle__title {
+                    background-color: black;
+                }
+            }
+        }
+
+        .ContentGroupNoResultsMessage {
+            &__title {
+                color: white;
+                font-weight: bold;
+                font-size: 30px;
+            }
+
+            &__subtitle {
+                font-family: $display-font;
+                color: transparentize(white, 1 - 0.80);
+                font-size: 20px;
+            }
+        }
+    }
+
     .content {
-        .Card__title,
-        .BannerSearch {
-            font-size: 72px;
-            padding: 1.0em 0em 1.0em 1.25em;
-            color: white;
+        .BannerSet .CardTitle__title,
+        .BannerSearch_title {
+            font-family: $title-font;
             text-shadow: 2px 8px 6px transparentize(black, 1 - 0.20);
         }
     }
 }
 
-.sidebar {
-    scrollbar {
-        trough {
-            padding: 0px 3px;
-            background-color: transparentize(black, 1 - 0.90);
-            background-image: linear-gradient(89deg,
-                                              transparentize(white, 1 - 0.1) 0%,
-                                              transparentize(black, 1 - 0.1) 100%);
-            box-shadow: inset 1px 0px 0px 0px transparentize(black, 1 - 0.15);
-        }
-
-        slider {
-            background-color: transparentize(white, 1 - 0.5);
-        }
-    }
-
-    .ContentGroupContentGroup {
-        background-color: transparentize(black, 1 - 0.75);
-    }
-
-    .ContentGroupNoResultsMessage {
-        padding-top: 60px;
-        &__title,
-        &__subtitle {
-            font-size: 20px;
-            color: white;
-            padding: 0em 1.25em 0em 1.25em;
-            font-style: normal;
-            text-shadow: 2px 8px 6px transparentize(black, 1 - 0.20);
-        }
-        &__subtitle {
-            margin-top: 1.0em;
-        }
-    }
+.PagerParallaxBackground--right .LayoutSidebar .sidebar {
+    margin-left: 60px;
 }
 
 .article-page {
     .sidebar {
-        padding-left: 45px;
+        margin-left: 50px;
     }
-}
-
-.PagerParallaxBackground {
-    -EknPager_Simple-transitions-style: 'slide-center';
 }
 
 .window-small {
@@ -131,8 +135,17 @@ $display-font-composite: 'Roboto' !default;
     .search-page,
     .set-page,
     .article-page {
-        .ContentGroupContentGroup {
-            background-color: transparentize(black, 1 - 0.8);
+        .sidebar {
+            .ContentGroupContentGroup {
+                background-color: transparentize(black, 1 - 0.8);
+            }
+            .ContentGroupNoResultsMessage {
+                margin: 1.0em;
+                &__title,
+                &__subtitle {
+                    font-size: 20px;
+                }
+            }
         }
     }
 
@@ -141,16 +154,11 @@ $display-font-composite: 'Roboto' !default;
         .content {
             .Card__title,
             .BannerSearch {
-                font-family: $title-font-composite;
+                font-family: $display-font-composite;
                 font-size: 30px;
                 padding: 0.5em 0em 0em 1.5em;
                 color: white;
             }
         }
-    }
-
-    .ContentGroupNoResultsMessage {
-        padding-top: 15px;
-        font-size: 20px;
     }
 }

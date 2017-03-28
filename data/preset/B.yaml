@@ -18,7 +18,7 @@ defines:
     shortdef: 'Arrangement.List(orientation: vertical)'
     slots:
       card: Card.Title
-  no-results: 'ContentGroup.NoResultsMessage(valign: center)'
+  no-results: 'ContentGroup.NoResultsMessage(valign: center, halign: center, justify: center)'
 
 - &home-page
   shortdef: 'Layout.Box(orientation: vertical)'
