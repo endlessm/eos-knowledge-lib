@@ -491,6 +491,35 @@ eknc_engine_get_domain_for_app (EkncEngine *self,
 }
 
 /**
+ * eknc_engine_add_domain_for_path:
+ * @self: the engine
+ * @app_id: the id of the application to load the object from
+ * @path: the path to the content directory
+ * @error: #GError for error reporting.
+ *
+ * Adds a domain for an specific content path
+ */
+void
+eknc_engine_add_domain_for_path (EkncEngine *self,
+                                 const gchar *app_id,
+                                 const gchar *path,
+                                 GError **error)
+{
+  EkncDomain *domain;
+
+  g_return_if_fail (EKNC_IS_ENGINE (self));
+  g_return_if_fail (app_id && *app_id);
+  g_return_if_fail (path && *path);
+
+  if (g_hash_table_contains (self->domains, app_id))
+    return;
+
+  domain = eknc_domain_get_impl (app_id, path, self->xapian_bridge, NULL, error);
+
+  g_hash_table_insert (self->domains, g_strdup (app_id), domain);
+}
+
+/**
  * eknc_engine_get_default:
  *
  * Get the default engine object. Generally you should use this instead of
