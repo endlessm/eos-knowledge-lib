@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-02-14 02:58+0000\n"
+"POT-Creation-Date: 2017-03-21 01:58+0000\n"
 "PO-Revision-Date: 2017-01-26 07:49+0000\n"
 "Last-Translator: georgian balan <braila222@gmail.com>\n"
 "Language-Team: Romanian (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/ro/)\n"
@@ -54,7 +54,7 @@ msgid ""
 msgstr "Iti recomandam sa:\n\n•Verifici ortografia\n•Incearci sa folosesti cuvinte care inseamna acelasi lucru\n•Incearci sa folosesti cuvinte mai generale"
 
 #: data/widgets/layout/sideMenu.ui:95
-#: js/app/modules/layout/hamburgerBasement.js:57
+#: js/app/modules/layout/hamburgerBasement.js:51
 msgid "HOME"
 msgstr "ACASA"
 
@@ -62,11 +62,11 @@ msgstr "ACASA"
 msgid "View the license"
 msgstr "Vezi licenta"
 
-#: js/app/application.js:160
+#: js/app/application.js:165
 msgid "Oops! No content."
 msgstr "Oops! Nici un continut."
 
-#: js/app/application.js:161
+#: js/app/application.js:166
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -182,7 +182,7 @@ msgstr "Cauta rezultate pentru \"%s\""
 msgid "Results for “%s”"
 msgstr "Rezultate pentru \"%s\""
 
-#: js/app/modules/contentGroup/contentGroup.js:157
+#: js/app/modules/contentGroup/contentGroup.js:160
 msgid "See more"
 msgstr "Vezi mai multe"
 
@@ -194,7 +194,7 @@ msgstr "Ne pare rau! :-("
 msgid "There are no results that match your search.\n"
 msgstr "Nici un rezultate care corespunde cautarii.\n"
 
-#: js/app/modules/layout/hamburgerBasement.js:41
+#: js/app/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
 msgstr "VEZI TOATE CATEGORIILE"
 

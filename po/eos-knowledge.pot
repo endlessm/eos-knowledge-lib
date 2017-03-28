@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge 0.4.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2017-02-14 02:58+0000\n"
+"POT-Creation-Date: 2017-03-28 01:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,7 +55,7 @@ msgid ""
 msgstr ""
 
 #: data/widgets/layout/sideMenu.ui:95
-#: js/app/modules/layout/hamburgerBasement.js:57
+#: js/app/modules/layout/hamburgerBasement.js:51
 msgid "HOME"
 msgstr ""
 
@@ -63,11 +63,11 @@ msgstr ""
 msgid "View the license"
 msgstr ""
 
-#: js/app/application.js:160
+#: js/app/application.js:165
 msgid "Oops! No content."
 msgstr ""
 
-#: js/app/application.js:161
+#: js/app/application.js:166
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -181,7 +181,7 @@ msgstr ""
 msgid "Results for “%s”"
 msgstr ""
 
-#: js/app/modules/contentGroup/contentGroup.js:157
+#: js/app/modules/contentGroup/contentGroup.js:160
 msgid "See more"
 msgstr ""
 
@@ -193,8 +193,12 @@ msgstr ""
 msgid "There are no results that match your search.\n"
 msgstr ""
 
-#: js/app/modules/layout/hamburgerBasement.js:41
+#: js/app/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
+msgstr ""
+
+#: js/app/modules/layout/placeholder.js:25
+msgid "Placeholder"
 msgstr ""
 
 #: js/app/modules/navigation/searchBox.js:162

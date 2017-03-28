@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-02-14 02:58+0000\n"
+"POT-Creation-Date: 2017-03-21 01:58+0000\n"
 "PO-Revision-Date: 2017-03-03 22:07+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: French (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/fr/)\n"
@@ -55,7 +55,7 @@ msgid ""
 msgstr "Nous vous recommandons de :\n\n• Vérifier l'orthographe \n• Essayer d'autres mots voulant dire la même chose\n• Essayer d'utiliser des mots plus généraux"
 
 #: data/widgets/layout/sideMenu.ui:95
-#: js/app/modules/layout/hamburgerBasement.js:57
+#: js/app/modules/layout/hamburgerBasement.js:51
 msgid "HOME"
 msgstr "PAGE D'ACCUEIL "
 
@@ -63,11 +63,11 @@ msgstr "PAGE D'ACCUEIL "
 msgid "View the license"
 msgstr "Voir la licence"
 
-#: js/app/application.js:160
+#: js/app/application.js:165
 msgid "Oops! No content."
 msgstr "Oups ! Pas de contenu."
 
-#: js/app/application.js:161
+#: js/app/application.js:166
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -181,7 +181,7 @@ msgstr "Résultats de recherche pour “%s”"
 msgid "Results for “%s”"
 msgstr "Résultats pour « %s »"
 
-#: js/app/modules/contentGroup/contentGroup.js:157
+#: js/app/modules/contentGroup/contentGroup.js:160
 msgid "See more"
 msgstr "Afficher d'autres éléments"
 
@@ -193,7 +193,7 @@ msgstr "Désolé ! :-("
 msgid "There are no results that match your search.\n"
 msgstr "Il n'y a pas de résultats correspondant à votre recherche.\n"
 
-#: js/app/modules/layout/hamburgerBasement.js:41
+#: js/app/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
 msgstr "VOIR TOUTES LES CATÉGORIES"
 
