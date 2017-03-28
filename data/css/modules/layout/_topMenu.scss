@@ -1,7 +1,7 @@
 .LayoutTopMenu {
     &__menu {
-        background-color: $primary-medium-color;
-        box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.2);
+        background-color: $primary-dark-color;
+        box-shadow: 0px 0px 5px 0px transparentize(black, 1 - 0.60);
         padding: 0px 20px;
 
         .BannerApp .ThemeableImage {

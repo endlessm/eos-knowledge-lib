@@ -48,8 +48,7 @@ const NoResultsMessage = new Module.Class({
         this._message_title.halign = this._message_subtitle.halign = this.halign;
         // Set this in code rather than in the UI template, in order to avoid
         // including the Pango markup in the translatable string
-        this._message_title.label = "<span weight=\"bold\" size=\"x-large\">" +
-            _("Sorry! :-(") + "</span>\n\n" +
-            _("There are no results that match your search.\n");
+        this._message_title.label =
+            _("We're sorry, there are no results that match your search.");
     },
 });

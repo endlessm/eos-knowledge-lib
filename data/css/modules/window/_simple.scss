@@ -4,16 +4,12 @@
 
     scrollbar {
         padding: 3px;
-        background-color: $background-light-color;
+        background-color: transparentize(black, 1 - 0.20);
 
         slider {
             min-width: 8px;
-            background-color: #9b9b9b;
+            background-color: transparentize(white, 1 - 0.50);
             border-radius: 20px;
         }
     }
-}
-
-.search-page separator {
-    background-color: $black-20-color;
 }

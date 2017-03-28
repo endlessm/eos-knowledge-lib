@@ -1,5 +1,5 @@
 .BannerDynamic {
-    font-size: 1.19em; /* 19px / 12px/em * 72/96 */
+    font-size: 20px;
 
     &__subtitle {
         font-family: $support-font;
@@ -17,6 +17,6 @@
     }
 
     .composite & {
-        font-size: 22.3px;  /* 19px spec * 88% */
+        font-size: 22.3px;
     }
 }

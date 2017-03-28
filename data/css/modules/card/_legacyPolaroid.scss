@@ -4,15 +4,9 @@
     background-color: white;
 
     &__title {
-        padding: 8px;
-        color: $accent-dark-color;
         font-family: $title-font, sans-serif;
         font-size: 0.77em;
         font-weight: bold;
-
-        &.highlighted {
-            background-color: $background-dark-color;
-        }
     }
 
      &.highlighted &__title {
@@ -24,17 +18,14 @@
     }
 
     &__synopsis {
-        padding: 0px 0px 4px 0px;
         color: #666666;
         font-size: 0.68em;
         text-shadow: white 0px 1px 0px;
-
-        &.highlighted {
-            background-color: $background-dark-color;
-        }
     }
 
     &__label {
+        font-size: 16px;
+        color: transparentize(black, 1 - 0.60);
         padding: 0.50em 0em 0.50em 0.50em;
     }
 

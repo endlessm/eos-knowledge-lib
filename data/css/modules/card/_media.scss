@@ -2,21 +2,38 @@
     background-color: white;
 
     &__caption {
-        font-size: 20px;
+        font-size: 16px;
         font-family: $body-font;
-        color: #666666;
-        padding: 20px 20px 0px 20px;
+        color: transparentize(black, 1 - 0.60);
     }
 
     &__attributionText {
         font-weight: bold;
-        font-size: 16px;
-        font-family: $display-font;
+        font-size: 14px;
+        font-family: $support-font;
         color: $accent-light-color;
-        padding: 10px 20px 20px 20px;
 
         &:hover {
             color: $accent-dark-color;
+        }
+    }
+
+    &__caption,
+    &__attributionText {
+        padding: 25px;
+    }
+}
+
+// When both the caption & attribution are present in the lightbox,
+// edit padding to accommodate both
+.CardMedia--withCaption.CardMedia--withAttribution {
+    .CardMedia {
+        &__caption {
+            padding-bottom: 7px;
+        }
+
+        &__attributionText {
+            padding-top: 7px;
         }
     }
 }

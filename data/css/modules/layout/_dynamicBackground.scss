@@ -1,3 +1,8 @@
 .LayoutDynamicBackground {
     background-color: $background-light-color;
+
+    .BannerSet .CardTitle__title,
+    .BannerSearch__title {
+        color: white;
+    }
 }

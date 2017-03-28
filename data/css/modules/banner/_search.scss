@@ -1,9 +1,9 @@
 .BannerSearch {
+    margin-top: 50px;
     &__title {
-        padding: 50px 80px 0;
         font-family: $display-font;
         font-weight: bold;
         font-size: 54px;
-        background-color: transparent;
+        color: $primary-medium-color;
     }
 }

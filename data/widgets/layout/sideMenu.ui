@@ -92,7 +92,7 @@
     <property name="can_focus">False</property>
     <child>
       <object class="GtkButton" id="home-button">
-        <property name="label" translatable="yes">HOME</property>
+        <property name="label" translatable="yes">Home</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>

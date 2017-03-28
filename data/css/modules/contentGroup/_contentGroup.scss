@@ -1,68 +1,49 @@
-.search-page-suggestions {
-    margin: 50px 0;
-    padding-bottom: 20px;
-
-    .ContentGroupContentGroup__title {
+.ContentGroupContentGroup {
+    &__title {
         font-family: $display-font;
         font-weight: bold;
-        font-size: 40px;
-        color: $black-60-color;
-        padding-bottom: 30px;
+        font-size: 50px;
+        color: transparentize(black, 1 - 0.60);
+        margin-right: 10px;
     }
-}
 
-.highlights, .hierarchical-set {
-    margin-top: 50px;
-    .ContentGroupContentGroup__trigger {
-        margin-bottom: 15px;
+    &__trigger {
         font-family: $support-font;
-        font-size: 20px;
-        color: $accent-light-color;
-        /* FIXME: We want a 'text-transform: lowercase;' here once GTK
-         * CSS supports such a property, or once we figure out Dynamic
-         * Titles in T11907
-         */
+        font-size: 25px;
+        margin-left: 10px;
 
         .ThemeableImage {
             -gtk-icon-source: $arrow-recolored-icon;
             min-height: 14px;
             min-width: 14px;
-            margin-left: 5px;
-            margin-bottom: 5px;
-        }
-
-        &:hover {
-            color: $accent-dark-color;
-
-            .ThemeableImage {
-                -gtk-icon-source: $arrow-recolored-icon;
-            }
+            margin-left: 10px;
+            margin-bottom: 8px;
         }
     }
 
-    .ContentGroupContentGroup__title {
-        margin: 25px 0px 15px 0px;
+    &__title,
+    &__trigger {
+        margin-bottom: 30px;
+    }
+
+    &__title--clickable,
+    &__trigger {
         color: $accent-light-color;
-        font-family: $display-font;
-        font-weight: bold;
-        font-size: 40px;
 
         &:hover {
             color: $accent-dark-color;
         }
     }
-}
 
-.ContentGroupContentGroup {
     &__errorPage {
-        padding: 40px 30px;
-        background-color: $primary-dark-color;
+        padding: 40px;
+        background-color: transparentize($primary-dark-color, 1 - 0.8);
     }
 
     &__errorMessage {
-        font-size: 24px;
-        font-weight: bold;
-        padding-bottom: 12px;
+        font-family: $display-font;
+        font-size: 30px;
+        padding-bottom: 20px;
     }
 
     &__logButton {
@@ -107,22 +88,25 @@
     }
 }
 
-.search-results {
-    background-color: $background-light-color;
-
-    .no-results {
-        background-color: $primary-dark-color;
+.ContentGroup--outercontainer {
+    .CardContentGroup {
+        margin: 0;
     }
 
-    .ContentGroupNoResultsMessage__title {
-        padding: 50px 80px 30px 160px;
+    .Arrangement {
+        margin: 0;
     }
+}
 
-    spinner {
-        margin: 20px;
-    }
+.ContentGroup--highlightsall,
+.ContentGroup--highlightsset,
+.ContentGroup--previewset,
+.ContentGroup--complementarycontent,
+.ContentGroup--sets,
+.ContentGroup--articles {
+    padding: 50px 0;
+}
 
-    .composite & row {
-        padding: 0 40px;
-    }
+spinner {
+    margin: 20px;
 }

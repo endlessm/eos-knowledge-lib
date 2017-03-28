@@ -1,7 +1,13 @@
 .LayoutSideMenu {
     &__contextBar {
-        background-image: linear-gradient(to bottom, $primary-dark-color 0%, $primary-dark-color 100%);
-        box-shadow: 0px 2px 5px 0px transparentize(black, 1 - 0.15);
+        background-color: $primary-dark-color;
+        box-shadow: 0px 0px 5px 0px transparentize(black, 1 - 0.40);
+        .BannerContext {
+            font-size: 30px;
+            color: white;
+            font-weight: normal;
+            margin-top: 0;
+        }
     }
 
     &__contextBarShadow {
@@ -13,35 +19,44 @@
     }
 
     &__menu {
-        min-width: 199px;
+        min-width: 225px;
         background-color: $primary-medium-color;
-        box-shadow: 0px 1px 20px 0px transparentize(black, 1 - 0.5);
-        padding: 10px 10px 5px 10px;
+        box-shadow: 0px 0px 5px 0px transparentize(black, 1 - 0.60);
+        .ArrangementList {
+            margin: 0;
+            .CardTitle {
+                margin: 0;
+                border-bottom: 1px solid transparentize(black, 1 - 0.20);
+                font-weight: bold;
+                &__title {
+                    font-size: 20px;
+                    font-family: $title-font;
+                    color: transparentize(white, 1 - 0.60);
+                    padding: 15px;
+                }
 
-        .Card {
-            &__title {
-                font-size: 21.3px;
-                font-family: $title-font;
-                color: white;
-            }
+                &:hover .Card__title {
+                    color: $accent-light-color;
+                }
 
-            &:hover .Card__title {
-                color: $accent-light-color;
+                &:active,
+                &.highlighted {
+                    .CardTitle {
+                        &__title {
+                            color: white;
+                            background-color: $primary-dark-color;
+                        }
+                    }
+                }
             }
         }
 
         separator {
             min-height: 1px;
-            background-color: black;
-            margin-top: 5px;
+            background-color: transparentize(black, 1 - 0.20);
         }
 
         scrolledwindow {
-            padding-top: 10px;
-            background-color: transparent;
-        }
-
-        scrollbar {
             background-color: transparent;
         }
     }
@@ -50,9 +65,12 @@
     &__homeButton,
     &__menuButton {
         color: white;
-        &:hover {
-            color: $accent-light-color;
-        }
+    }
+
+    &__closeButton:hover,
+    &__homeButton:hover,
+    &__menuButton:hover {
+        color: $accent-light-color;
     }
 
     &__menuButton {
@@ -61,12 +79,12 @@
 
     &__homeButton {
         font-size: 21.3px;
-        font-family: $title-font;
+        font-family: $display-font;
         font-weight: bold;
     }
 
     &__homeButton,
     &__closeButton {
-        padding: 6px 0px;
+        padding: 15px;
     }
 }

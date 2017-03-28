@@ -33,20 +33,19 @@ const InArticleSearch = new Knowledge.Class({
         let entry_class = Utils.get_element_style_class(InArticleSearch, 'entry');
         this._search_entry.get_style_context().add_class(entry_class);
 
-        let button_class = Utils.get_element_style_class(InArticleSearch, 'button');
         let next_button = new Gtk.Button({
             image: Gtk.Image.new_from_icon_name('go-down-symbolic',
                                                 Gtk.IconSize.MENU),
         });
         next_button.connect('clicked', this.search_next.bind(this));
-        next_button.get_style_context().add_class(button_class);
+        next_button.get_style_context().add_class(Utils.get_element_style_class(InArticleSearch, 'next'));
 
         let previous_button = new Gtk.Button({
             image: Gtk.Image.new_from_icon_name('go-up-symbolic',
                                                 Gtk.IconSize.MENU),
         });
         previous_button.connect('clicked', this.search_previous.bind(this));
-        previous_button.get_style_context().add_class(button_class);
+        previous_button.get_style_context().add_class(Utils.get_element_style_class(InArticleSearch, 'previous'));
 
         let grid = new Gtk.Grid();
         grid.add(this._search_entry);

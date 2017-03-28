@@ -1,17 +1,30 @@
 .Lightbox {
-    &__navigationButton {
-        padding: 10px;
-        border-radius: 27px;
-        background-color: transparentize(white, 1 - 0.2);
+    &__navigationNext,
+    &__navigationPrevious {
+        border-radius: 50%;
+        background-color: transparentize(white, 1 - 0.15);
         box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 0, 0.24);
 
         &:hover {
-            background-color: transparentize(white, 1 - 0.4);
+            background-color: transparentize(white, 1 - 0.30);
         }
     }
 
-    &__shadow {
-        background-color: transparentize(black, 1 - 0.9);
+    &__navigationNext {
+        padding: 10px 8px 10px 12px;
+        /* FIXME: Temporary fix for the way that lightbox.js determines the
+        lightbox size with hard-coded margins; cuts off at bottom of screen */
+        margin-left: -10px;
+    }
+
+    &__navigationPrevious {
+        padding: 10px 12px 10px 8px;
+        /* FIXME: Temporary fix for the way that lightbox.js determines the
+        lightbox size with hard-coded margins; cuts off at bottom of screen */
+        margin-right: -10px;
     }
 }
 
+.LightboxContainer {
+    background-color: transparentize(black, 1 - 0.90);
+}

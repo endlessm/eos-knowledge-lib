@@ -82,6 +82,7 @@ const ContentGroup = new Module.Class({
                 let [title_button, trigger_button] = [this._title, this._trigger].map((module) => {
                     let button = new Gtk.Button({
                         halign: module.halign,
+                        valign: Gtk.Align.CENTER,
                     });
 
                     button.add(module);
@@ -92,6 +93,10 @@ const ContentGroup = new Module.Class({
 
                 // Style class needs to go on the button itself, so that we get :hover states and the like.
                 title_button.get_style_context().add_class(Utils.get_element_style_class(ContentGroup, 'title'));
+                /* Adding a class called title--clickable, when trigger is present,
+                 * in order to properly style the color differences between an
+                 * unclickable title & a clickable title. */
+                title_button.get_style_context().add_class(Utils.get_bem_style_class(ContentGroup, '', 'title', 'clickable'));
                 trigger_button.get_style_context().add_class(Utils.get_element_style_class(ContentGroup, 'trigger'));
                 this.attach(title_button, 0, 0, 1, 1);
                 this.attach(trigger_button, 1, 0, 1, 1);

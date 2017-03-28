@@ -1,12 +1,17 @@
 .Card {
-    font-size: 18.7px;
-
     &__title {
+        font-family: $title-font;
         color: $primary-medium-color;
     }
 
-    &.highlighted &__title {
-        color: white;
+    &__synopsis {
+        font-family: $body-font;
+        color: transparentize(black, 1 - 0.60);
+    }
+
+    &__context {
+        font-family: $context-font;
+        color: $primary-light-color;
     }
 
     &__contentFrame {
@@ -65,17 +70,4 @@
     &.width-h .Card__context {
         font-size: 18.7px;
     }
-}
-
-.Card__synopsis {
-    font-family: $body-font;
-    color: $black-60-color;
-    font-size: 18.7px;
-    padding-top: 30px;
-}
-
-.Card__context {
-    font-family: $context-font;
-    font-size: 16px;
-    color: $primary-light-color;
 }
