@@ -483,7 +483,7 @@ eknc_engine_get_domain_for_app (EkncEngine *self,
     return g_hash_table_lookup (self->domains, app_id);
 
   EkncDomain *domain;
-  if (!(domain = eknc_domain_get_impl (app_id, self->xapian_bridge, NULL, error)))
+  if (!(domain = eknc_domain_get_impl (app_id, NULL, self->xapian_bridge, NULL, error)))
     return NULL;
   // Hash table takes ownership of domain
   g_hash_table_insert (self->domains, g_strdup (app_id), domain);

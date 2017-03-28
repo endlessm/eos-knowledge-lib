@@ -22,6 +22,7 @@ G_DECLARE_FINAL_TYPE (EkncDomain, eknc_domain, EKNC, DOMAIN, GObject)
  * @EKNC_DOMAIN_ERROR_BAD_MANIFEST: Error found while parsing the manifest.json
  * @EKNC_DOMAIN_ERROR_BAD_RESULTS: Error found while parsing the results json from xapian
  * @EKNC_DOMAIN_ERROR_UNSUPPORTED_VERSION: Unsupported version of content found
+ * @EKNC_DOMAIN_ERROR_PATH_NOT_FOUND: Provided path was not found
  *
  * Error enumeration for domain related errors.
  */
@@ -32,6 +33,7 @@ typedef enum {
   EKNC_DOMAIN_ERROR_BAD_MANIFEST,
   EKNC_DOMAIN_ERROR_BAD_RESULTS,
   EKNC_DOMAIN_ERROR_UNSUPPORTED_VERSION,
+  EKNC_DOMAIN_ERROR_PATH_NOT_FOUND,
 } EkncDomainError;
 
 #define EKNC_DOMAIN_ERROR eknc_domain_error_quark ()

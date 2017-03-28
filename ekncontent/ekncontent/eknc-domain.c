@@ -36,6 +36,7 @@ struct _EkncDomain
   GObject parent_instance;
 
   gchar *app_id;
+  gchar *path;
   gchar *subscription_id;
 
   EkncXapianBridge *xapian_bridge;
@@ -58,6 +59,7 @@ G_DEFINE_TYPE_EXTENDED (EkncDomain,
 enum {
   PROP_0,
   PROP_APP_ID,
+  PROP_PATH,
   PROP_XAPIAN_BRIDGE,
   NPROPS
 };
@@ -76,6 +78,10 @@ eknc_domain_get_property (GObject    *object,
     {
     case PROP_APP_ID:
       g_value_set_string (value, self->app_id);
+      break;
+
+    case PROP_PATH:
+      g_value_set_string (value, self->path);
       break;
 
     case PROP_XAPIAN_BRIDGE:
@@ -102,6 +108,11 @@ eknc_domain_set_property (GObject *object,
       self->app_id = g_value_dup_string (value);
       break;
 
+    case PROP_PATH:
+      g_clear_pointer (&self->path, g_free);
+      self->path = g_value_dup_string (value);
+      break;
+
     case PROP_XAPIAN_BRIDGE:
       g_clear_object (&self->xapian_bridge);
       self->xapian_bridge = g_value_dup_object (value);
@@ -118,6 +129,7 @@ eknc_domain_finalize (GObject *object)
   EkncDomain *self = EKNC_DOMAIN (object);
 
   g_clear_pointer (&self->app_id, g_free);
+  g_clear_pointer (&self->path, g_free);
   g_clear_pointer (&self->subscription_id, g_free);
 
   g_clear_object (&self->xapian_bridge);
@@ -147,6 +159,16 @@ eknc_domain_class_init (EkncDomainClass *klass)
     g_param_spec_string ("app-id", "Application ID",
       "Application ID of the domain content",
       "", G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS);
+
+  /**
+   * EkncDomain:path:
+   *
+   * Path to the domain content.
+   */
+  eknc_domain_props[PROP_PATH] =
+    g_param_spec_string ("path", "Path",
+      "Path to the domain content",
+      "", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
    * EkncDomain:xapian-bridge:
@@ -294,23 +316,46 @@ eknc_domain_initable_init (GInitable *initable,
   EkncDomain *self = EKNC_DOMAIN (initable);
   GError *local_error = NULL;
 
-  if (self->app_id == NULL || *self->app_id == '\0')
+  gboolean has_app_id = (self->app_id != NULL && *self->app_id != '\0');
+  gboolean has_path = (self->path != NULL && *self->path != '\0');
+
+  g_autoptr(GFile) subscription_dir = NULL;
+  g_autoptr(GFile) bundle_dir = NULL;
+
+  if (has_path)
+    {
+      subscription_dir = g_file_new_for_path (self->path);
+      bundle_dir = g_file_dup (subscription_dir);
+
+      if (!g_file_query_exists (subscription_dir, cancellable))
+        {
+          g_set_error (error, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_PATH_NOT_FOUND,
+                       "You must provide an existing domain path");
+          return FALSE;
+        }
+    }
+  else if (has_app_id)
+    {
+      if (!eknc_parse_subscription_id (self, cancellable, error))
+        return FALSE;
+
+      g_autoptr(GFile) subscriptions_dir = NULL;
+      g_autoptr(GFile) bundle_subscriptions_dir = NULL;
+
+      self->content_dir = eknc_get_data_dir (self->app_id);
+      subscriptions_dir = eknc_get_subscriptions_dir ();
+      subscription_dir = g_file_get_child (subscriptions_dir, self->subscription_id);
+      bundle_subscriptions_dir = g_file_get_child (self->content_dir, "com.endlessm.subscriptions");
+      bundle_dir = g_file_get_child (bundle_subscriptions_dir, self->subscription_id);
+    }
+  else
     {
       g_set_error (error, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_APP_ID_NOT_SET,
-                   "You must set an app id to initialize a domain object");
+                   "You must set an app id or path to initialize a domain object");
       return FALSE;
     }
 
-  self->content_dir = eknc_get_data_dir (self->app_id);
-  if (!eknc_parse_subscription_id (self, cancellable, error))
-    return FALSE;
-
-  g_autoptr(GFile) subscriptions_dir = eknc_get_subscriptions_dir ();
-  g_autoptr(GFile) subscription_dir = g_file_get_child (subscriptions_dir, self->subscription_id);
   self->manifest_file = g_file_get_child (subscription_dir, "manifest.json");
-
-  g_autoptr(GFile) bundle_subscriptions_dir = g_file_get_child (self->content_dir, "com.endlessm.subscriptions");
-  g_autoptr(GFile) bundle_dir = g_file_get_child (bundle_subscriptions_dir, self->subscription_id);
 
   g_file_make_directory_with_parents (subscription_dir, cancellable, &local_error);
   if (local_error)
@@ -902,6 +947,7 @@ eknc_domain_read_uri (EkncDomain *self,
 /**
  * eknc_domain_get_impl:
  * @app_id: the domains app id
+ * @path: path to the content
  * @xapian_bridge: the xapian bridge instance to use to communicate to xapian
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting
@@ -914,6 +960,7 @@ eknc_domain_read_uri (EkncDomain *self,
  */
 EkncDomain *
 eknc_domain_get_impl (const gchar *app_id,
+                      const gchar *path,
                       EkncXapianBridge *xapian_bridge,
                       GCancellable *cancellable,
                       GError **error)
@@ -927,6 +974,7 @@ eknc_domain_get_impl (const gchar *app_id,
     {
       domain = g_object_new (EKNC_TYPE_DOMAIN,
                              "app-id", app_id,
+                             "path", path,
                              "xapian-bridge", xapian_bridge,
                              NULL);
     }
