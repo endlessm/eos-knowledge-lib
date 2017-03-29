@@ -91,7 +91,7 @@ defines:
                         arrangement:
                           type: Arrangement.List
                           properties:
-                            max-rows: 2
+                            max-rows: 4
                           slots:
                             card:
                               type: Card.ContentGroup
