@@ -111,8 +111,7 @@ Depends: eos-knowledge-0 (= ${binary:Version}),
          python3-yaml,
          libglib2.0-bin,
          pkg-config,
-         ruby-compass,
-         ruby-sass,
+         sassc,
          ${misc:Depends}
 Description: EndlessOS Knowledge Library Devel package
 
