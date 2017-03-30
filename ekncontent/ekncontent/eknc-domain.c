@@ -158,7 +158,7 @@ eknc_domain_class_init (EkncDomainClass *klass)
   eknc_domain_props[PROP_APP_ID] =
     g_param_spec_string ("app-id", "Application ID",
       "Application ID of the domain content",
-      "", G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS);
+      "", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
    * EkncDomain:path:
