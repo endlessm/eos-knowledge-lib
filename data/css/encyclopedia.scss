@@ -33,15 +33,6 @@ $accent-light-color: #044a80 !default;
     -EknPager_Simple-transitions-style: 'splash';
 }
 
-.BannerApp {
-    .search-page & .ThemeableImage,
-    .article-page & .ThemeableImage {
-        -EknThemeableImage-sizing: "size-min";
-        min-width: 345px;
-        min-height: 92px;
-    }
-}
-
 .BannerDynamic {
     .search-page &__logo,
     .article-page &__logo, {
