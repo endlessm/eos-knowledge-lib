@@ -3,6 +3,7 @@
 $body-font: 'Lato' !default;
 $display-font: 'Lato' !default;
 $title-font: 'Lato' !default;
+$logo-font: 'Libre Baskerville' !default;
 
 $background-light-color: #f5f5f5 !default;
 $accent-light-color: #044a80 !default;
@@ -39,12 +40,20 @@ $accent-light-color: #044a80 !default;
         min-width: 345px;
         min-height: 92px;
     }
+
+    .home-page &__logo {
+        min-width: 550px;
+    }
 }
 
 .NavigationSearchBox {
     .search-page &,
     .article-page & {
         min-width: 200px;
+    }
+
+    .home-page & {
+        margin-bottom: 60px;
     }
 }
 
