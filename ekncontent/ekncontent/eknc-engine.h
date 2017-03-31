@@ -68,6 +68,12 @@ eknc_engine_get_domain_for_app (EkncEngine *self,
                                 const gchar *app_id,
                                 GError **error);
 
+void
+eknc_engine_add_domain_for_path (EkncEngine *self,
+                                 const gchar *app_id,
+                                 const gchar *path,
+                                 GError **error);
+
 EkncEngine *
 eknc_engine_get_default (void);
 

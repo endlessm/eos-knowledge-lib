@@ -7,6 +7,7 @@ EKNC_MICRO_VERSION
 
 <SECTION>
 <FILE>engine</FILE>
+eknc_engine_add_domain_for_path
 eknc_engine_test_link
 eknc_engine_test_link_for_app
 eknc_engine_get_object

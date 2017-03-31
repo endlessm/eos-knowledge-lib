@@ -95,6 +95,8 @@ const Application = new Knowledge.Class({
                              'Path to a yaml or json file to use as a preset', null);
         this.add_main_option('dummy-content', 'C'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
                              'Whether to use dummy content from Moltres', null);
+        this.add_main_option('content-path', 'p'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
+                             'Path to the content directory', null);
     },
 
     vfunc_handle_local_options: function (options) {
@@ -132,6 +134,11 @@ const Application = new Knowledge.Class({
 
         if (has_option('dummy-content'))
             MoltresEngine.override_engine();
+
+        if (has_option('content-path')) {
+            let engine = Eknc.Engine.get_default();
+            engine.add_domain_for_path(this.application_id, get_option_string('content-path'));
+        }
 
         return -1;
     },
