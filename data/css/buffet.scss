@@ -254,8 +254,7 @@ $title-alt-font: 'Lato Thin' !default;
 }
 
 .CardList,
-.CardPost,
-.CardThumb {
+.CardDefaultFamily {
     &__title,
     &__context {
         font-weight: normal;
@@ -288,8 +287,7 @@ $title-alt-font: 'Lato Thin' !default;
 }
 
 .CardDeck,
-.CardPost,
-.CardThumb,
+.CardDefaultFamily,
 .CardTitle {
     &__title,
     &__context .FormattableLabel {

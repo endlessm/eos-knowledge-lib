@@ -4,7 +4,11 @@ defines:
 - &no-sets 'Filter.Sets(invert: true)'
 - &header-card Card.Title
 - &main-card
-  type: Card.Thumb
+  type: Card.DefaultFamily
+  properties:
+    excluded_types:
+    - 0
+    - 2
 - &set-card
   type: Card.Deck
 
@@ -109,7 +113,11 @@ defines:
                       type: Arrangement.Windshield
                       slots:
                         card:
-                          type: Card.Post
+                          type: Card.DefaultFamily
+                          properties:
+                            excluded_types:
+                            - 0
+                            - 1
                     selection:
                       type: Selection.AllHighlights
                 - shortdef: 'ContentGroup.ContentGroup(halign: fill)'

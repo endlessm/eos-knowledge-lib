@@ -84,7 +84,7 @@ $support-font: 'Fira Sans' !default;
 }
 
 /* Adjust context frame in supplementary article and suggested article cards */
-.supplementary-articles .CardThumb frame:nth-child(2),
+.supplementary-articles .CardDefaultFamily frame:nth-child(2),
 .ContentGroupSuggestedArticles .Card__contentFrame {
     margin-top: -10px;
 }
@@ -161,8 +161,7 @@ $support-font: 'Fira Sans' !default;
     }
 }
 
-.CardPost,
-.CardThumb {
+.CardDefaultFamily {
     &__context .FormattableLabel {
         -EknFormattableLabel-text-transform: 'lowercase';
     }

@@ -2,7 +2,11 @@
 defines:
 # Various one-liners
 - &main-card
-  shortdef: 'Card.Post(text-halign: start)'
+  type: Card.DefaultFamily
+  properties:
+    excluded_types:
+    - 0
+    - 1
 - &header-card Card.Title
 - &no-sets 'Filter.Sets(invert: true)'
 
@@ -48,7 +52,11 @@ defines:
   shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
   slots:
     card:
-      shortdef: 'Card.Thumb(text-halign: start)'
+      type: Card.DefaultFamily
+      properties:
+        excluded_types:
+        - 0
+        - 2
 
 # Pages
 - &home-page

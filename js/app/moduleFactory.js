@@ -70,6 +70,8 @@ const ModuleFactory = new Knowledge.Class({
 
     _parse_json_property: function (module_class, property_name, json_value) {
         let param_spec = GObject.Object.find_property.call(module_class, property_name);
+        if (Array.isArray(json_value))
+            return [true, json_value];
         if (param_spec === null) {
             logError(new Error('Could not find property for ' + module_class + ' named ' + property_name));
             return [false, null];

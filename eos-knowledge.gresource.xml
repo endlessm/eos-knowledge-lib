@@ -23,6 +23,7 @@
     <file>data/images/tools/football.jpg</file>
     <file>data/images/tools/forest.jpg</file>
     <file>data/images/tools/people.jpg</file>
+    <file>data/images/tools/silverbars.jpg</file>
     <file preprocess="xml-stripblanks" compressed="true">data/images/arrow-symbolic.svg</file>
     <file preprocess="xml-stripblanks">data/images/deckbg.svg</file>
     <file>data/images/separator.png</file>
@@ -50,15 +51,13 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/dynamic.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/search.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/deck.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/defaultFamily.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/knowledgeDocument.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/legacyPolaroid.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/legacyPost.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/list.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/media.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/post.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/sequence.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/text.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/thumb.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/title.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/video.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/contentGroup/noResultsMessage.ui</file>
@@ -116,15 +115,13 @@
     <file>js/app/modules/banner/set.js</file>
     <file>js/app/modules/card/contentGroup.js</file>
     <file>js/app/modules/card/deck.js</file>
+    <file>js/app/modules/card/defaultFamily.js</file>
     <file>js/app/modules/card/knowledgeDocument.js</file>
     <file>js/app/modules/card/legacyPolaroid.js</file>
     <file>js/app/modules/card/legacyPost.js</file>
     <file>js/app/modules/card/list.js</file>
     <file>js/app/modules/card/media.js</file>
-    <file>js/app/modules/card/post.js</file>
     <file>js/app/modules/card/sequence.js</file>
-    <file>js/app/modules/card/text.js</file>
-    <file>js/app/modules/card/thumb.js</file>
     <file>js/app/modules/card/title.js</file>
     <file>js/app/modules/card/video.js</file>
     <file>js/app/modules/contentGroup/contentGroup.js</file>
