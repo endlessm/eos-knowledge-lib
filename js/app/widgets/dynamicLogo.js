@@ -4,6 +4,7 @@
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const GObject = imports.gi.GObject;
 const Rsvg = imports.gi.Rsvg;
@@ -61,6 +62,22 @@ const DynamicLogo = new Knowledge.Class({
     },
 
     StyleProperties: {
+        /**
+         * Property: max-width
+         *
+         * -EknDynamicLogo-max-width:
+         *  * maximum width in pixels.
+         */
+        'max-width': GObject.ParamSpec.int('max-width', 'max-width', 'max-width',
+            GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0),
+        /**
+         * Property: max-height
+         *
+         * -EknDynamicLogo-max-height:
+         *  * maximum height in pixels.
+         */
+        'max-height': GObject.ParamSpec.int('max-height', 'max-height', 'max-height',
+            GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0),
         /**
          * Property: sizing
          *
@@ -135,13 +152,21 @@ const DynamicLogo = new Knowledge.Class({
     },
 
     _update_custom_style: function () {
-        this._sizing = EosKnowledgePrivate.style_context_get_custom_string(this.get_style_context(), 'sizing');
+        let context = this.get_style_context();
+
+        let width = EosKnowledgePrivate.style_context_get_custom_int(context, 'max-width');
+        this._update_max_width(width);
+
+        let height = EosKnowledgePrivate.style_context_get_custom_int(context, 'max-height');
+        this._update_max_height(height);
+
+        this._sizing = EosKnowledgePrivate.style_context_get_custom_string(context, 'sizing');
         if (['size-min', 'auto'].indexOf(this._sizing) == -1) {
             let error = new Error('Unrecognized style property value for EknDynamicLogo-sizing ' + this._sizing);
             logError(error);
         }
 
-        this._text_transform = EosKnowledgePrivate.style_context_get_custom_string(this.get_style_context(), 'text-transform');
+        this._text_transform = EosKnowledgePrivate.style_context_get_custom_string(context, 'text-transform');
         if (['none', 'uppercase', 'lowercase'].indexOf(this._text_transform) == -1) {
             let error = new Error('Unrecognized style property value for EknDynamicLogo-text-transform ' + this._text_transform);
             logError(error);
@@ -157,6 +182,22 @@ const DynamicLogo = new Knowledge.Class({
         } catch (e) {
             logError(e, 'Could not read image data');
         }
+    },
+
+    _update_max_width: function (width) {
+        if (width <= 0 || width === this._max_width)
+            return;
+
+        this._max_width = width;
+        this.queue_resize();
+    },
+
+    _update_max_height: function (height) {
+        if (height <= 0 || height === this._max_height)
+            return;
+
+        this._max_height = height;
+        this.queue_resize();
     },
 
     _update_text: function () {
@@ -204,7 +245,7 @@ const DynamicLogo = new Knowledge.Class({
                                                                   this.get_state_flags());
         min_width = min_width ? min_width : this.width_request;
         min_width = min_width > 0 ? min_width : Width.MIN;
-        this._max_width = Width.MAX < min_width ? min_width : Width.MAX;
+        this._max_width = this._max_width < min_width ? min_width : this._max_width;
         let nat_width = this._sizing === 'size-min' ? min_width : this._max_width;
 
         let margin = this._get_margin();
@@ -220,7 +261,7 @@ const DynamicLogo = new Knowledge.Class({
                                                                    this.get_state_flags());
         min_height = min_height ? min_height : this.height_request;
         min_height = min_height > 0 ? min_height : Height.MIN;
-        this._max_height = Height.MAX < min_height ? min_height : Height.MAX;
+        this._max_height = this._max_height < min_height ? min_height : this._max_height;
         let nat_height = this._sizing === 'size-min' ? min_height : this._max_height;
 
         let margin = this._get_margin();
