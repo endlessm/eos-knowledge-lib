@@ -7,18 +7,22 @@ defines:
       - shortdef: 'Layout.Box(orientation: vertical, halign: center, valign: center)'
         slots:
           contents:
-          - 'Banner.App(expand: true)'
+          - type: Banner.Dynamic
+            properties:
+              expand: true
+              mode: full
           - 'Navigation.SearchBox(halign: center, focus-on-map: true)'
 
   - &inner-page-layout
     shortdef: 'Layout.Box(vexpand: false, halign: fill, homogeneous: true)'
     slots:
       contents:
-      - type: Banner.App
+      - type: Banner.Dynamic
         properties:
           valign: start
           halign: center
           hexpand: true
+          mode: full
       - type: Navigation.SearchBox
         properties:
           halign: center
