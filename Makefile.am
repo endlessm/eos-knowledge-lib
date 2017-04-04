@@ -448,6 +448,7 @@ javascript_tests = \
 	tests/js/app/modules/banner/testDynamic.js \
 	tests/js/app/modules/banner/testSearch.js \
 	tests/js/app/modules/banner/testSet.js \
+	tests/js/app/modules/card/testAudio.js \
 	tests/js/app/modules/card/testDeck.js \
 	tests/js/app/modules/card/testDefaultFamily.js \
 	tests/js/app/modules/card/testKnowledgeDocument.js \
