@@ -10,6 +10,7 @@ G_BEGIN_DECLS
 
 /* Pull in other header files */
 #include "eknc-article-object-model.h"
+#include "eknc-audio-object-model.h"
 #include "eknc-content-object-model.h"
 #include "eknc-domain.h"
 #include "eknc-engine.h"
