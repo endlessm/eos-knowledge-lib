@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-03-21 01:58+0000\n"
-"PO-Revision-Date: 2017-03-06 05:38+0000\n"
-"Last-Translator: e2f_in c7 <e2f_in_c7@outlook.com>\n"
+"POT-Creation-Date: 2017-03-28 01:56+0000\n"
+"PO-Revision-Date: 2017-03-28 01:56+0000\n"
+"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Hindi (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/hi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -195,6 +195,10 @@ msgstr "आपकी खोज से मिलान करने वाले 
 #: js/app/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
 msgstr "सभी श्रेणियाँ देखें"
+
+#: js/app/modules/layout/placeholder.js:25
+msgid "Placeholder"
+msgstr ""
 
 #: js/app/modules/navigation/searchBox.js:162
 msgid "See more results"

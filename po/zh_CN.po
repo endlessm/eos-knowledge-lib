@@ -13,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-03-21 01:58+0000\n"
-"PO-Revision-Date: 2017-03-06 03:28+0000\n"
-"Last-Translator: CN C2 <e2f48d4sf5ds@outlook.com>\n"
+"POT-Creation-Date: 2017-03-28 01:56+0000\n"
+"PO-Revision-Date: 2017-03-28 01:56+0000\n"
+"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -198,6 +198,10 @@ msgstr "没有符合您搜索的结果。\n"
 #: js/app/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
 msgstr "展示全部类别"
+
+#: js/app/modules/layout/placeholder.js:25
+msgid "Placeholder"
+msgstr ""
 
 #: js/app/modules/navigation/searchBox.js:162
 msgid "See more results"
