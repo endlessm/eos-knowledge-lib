@@ -82,6 +82,9 @@ const ArticleStack = new Module.Class({
         'video': {
             multi: true,
         },
+        'audio': {
+            multi: true,
+        },
     },
 
     References: {
@@ -218,6 +221,8 @@ const ArticleStack = new Module.Class({
         let slot = 'card';
         if (model instanceof Eknc.VideoObjectModel) {
             slot = 'video';
+        } else if (model instanceof Eknc.AudioObjectModel) {
+            slot = 'audio';
         }
         let article_content = this.create_submodule(slot, article_content_props);
 
