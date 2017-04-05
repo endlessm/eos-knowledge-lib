@@ -1,7 +1,8 @@
 Source: eos-knowledge-lib
 Priority: standard
 Maintainer: Philip Chimento <philip@endlessm.com>
-Build-Depends: autotools-dev,
+Build-Depends: autoconf-archive,
+               autotools-dev,
                debhelper (>= 8.0.0),
                eos-node-modules-dev (>= 1.0.0),
                eos-sdk-0-dev,
