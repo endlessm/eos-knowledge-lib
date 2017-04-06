@@ -20,6 +20,7 @@
     <xi:include href="xml/version-information.xml"/>
     <xi:include href="xml/engine.xml"/>
     <xi:include href="xml/domain.xml"/>
+    <xi:include href="xml/audio-object-model.xml"/>
     <xi:include href="xml/content-object-model.xml"/>
     <xi:include href="xml/article-object-model.xml"/>
     <xi:include href="xml/set-object-model.xml"/>
