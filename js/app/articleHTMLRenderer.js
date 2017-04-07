@@ -66,6 +66,11 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         this._custom_css_files = custom_css_files;
     },
 
+    _get_app_override_css_files: function () {
+        let app = Gio.Application.get_default();
+        return app.get_web_overrides_css();
+    },
+
     _get_legacy_disclaimer: function (model) {
         switch (model.source) {
             case 'wikipedia':
@@ -270,6 +275,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         return Mustache.render(template, {
             'id': model.ekn_id,
             'css-files': css_files,
+            'custom-css-files': this._get_app_override_css_files(),
             'javascript-files': js_files,
             'copy-button-text': _("Copy"),
             'content': content,
