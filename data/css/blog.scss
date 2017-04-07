@@ -1,0 +1,126 @@
+@import "base";
+
+$highlighted-background-color: darken($background-dark-color, 5%) !default;
+
+.LayoutSidebar {
+  background-color: $background-dark-color;
+  -EknLayout_Sidebar-sidebar-width-small: 252px;
+  -EknLayout_Sidebar-sidebar-width-large: 252px;
+
+  .sidebar {
+    .main-menu {
+      margin: 58px 0px 0px 0px;
+    }
+
+    .CardTitle {
+      padding: 8px 0px 8px 40px;
+
+      &__title {
+        padding: 0px;
+        color: $primary-medium-color;
+      }
+
+      &.highlighted,
+      &.highlighted:hover {
+        background-color: $highlighted-background-color;
+
+        .CardTitle__title {
+          color: $primary-dark-color;
+        }
+      }
+
+      &:hover {
+        background-color: transparent;
+
+        .CardTitle__title {
+          color: $accent-light-color;
+        }
+      }
+    }
+  }
+}
+
+.PagerSimple {
+  background-color: $background-light-color;
+}
+
+.main-arrangement {
+  margin-bottom: 20px;
+}
+
+.CardDefaultFamily {
+  min-height: 400px;
+
+  &.width-f {
+    .CardDefaultFamily__title {
+      font-size: 32px;
+    }
+
+    .CardDefaultFamily__synopsis {
+      font-size: 16px;
+    }
+
+    .CardDefaultFamily__context {
+      font-size: 16px;
+    }
+  }
+}
+
+.home-page {
+  .BannerApp .ThemeableImage {
+      -EknThemeableImage-sizing: "size-min";
+      min-height: 96px;
+      min-width: 400px;
+      margin: 33px 0px;
+  }
+}
+
+.set-page {
+  .BannerSet {
+    margin: 33px 0px;
+    .CardTitle__title {
+      font-size: 56px;
+      font-weight: 700;
+      color: $primary-medium-color;
+    }
+  }
+}
+
+.search-page {
+  .BannerSearch__title {
+    padding: 0px;
+    margin: 33px 0px;
+    font-size: 56px;
+    font-weight: 700;
+    color: $primary-medium-color;
+  }
+
+  .CardList {
+    min-height: 200px;
+
+    &__title.highlighted,
+    &__synopsis.highlighted {
+      background-color: $highlighted-background-color;
+    }
+  }
+
+  .no-results-message {
+    font-size: 34px;
+    color: $primary-light-color;
+    margin: 0px 0px 33px 0px;
+  }
+
+  .ContentGroupContentGroup__title {
+    font-size: 46px;
+    font-weight: 900;
+    color: $primary-medium-color;
+    margin: 30px 0px 20px 0px;
+  }
+}
+
+.article-page {
+  .next {
+    min-height: 150px;
+    margin: 0px 50px 20px 50px;
+  }
+}
