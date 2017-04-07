@@ -93,7 +93,7 @@ const Application = new Knowledge.Class({
                              'Path to a overrides scss or css file to theme the application', null);
         this.add_main_option('app-json-path', 'J'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Path to a yaml or json file to use as a preset', null);
-        this.add_main_option('dummy-content', 'C'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
+        this.add_main_option('dummy-content', 'm'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
                              'Whether to use dummy content from Moltres', null);
         this.add_main_option('content-path', 'p'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Path to the content directory', null);
