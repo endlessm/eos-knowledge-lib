@@ -1,0 +1,45 @@
+@import "project-setup";
+
+$pages-background-color: gray;
+$menu-background-color: lavender;
+
+@import "base";
+
+.LayoutSidebar {
+  -EknLayout_Sidebar-sidebar-width-small: 200px;
+  -EknLayout_Sidebar-sidebar-width-large: 200px;
+}
+
+.main-menu {
+  background-color: $menu-background-color;
+}
+
+.home-page {
+  background-color: $pages-background-color;
+
+  .BannerApp .ThemeableImage {
+      -EknThemeableImage-sizing: "size-min";
+      min-width: 146px;
+      min-height: 30px;
+  }
+}
+
+.set-page {
+  background-color: $pages-background-color;
+
+  .BannerSet {
+    .CardTitle__title {
+      color: white;
+    }
+  }
+}
+
+.search-page {
+  background-color: $pages-background-color;
+
+  .BannerSearch {
+    .CardTitle__title {
+      color: white;
+    }
+  }
+}
