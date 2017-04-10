@@ -498,6 +498,7 @@ javascript_tests = \
 	tests/js/app/modules/selection/testSearch.js \
 	tests/js/app/modules/selection/testSuggestedArticles.js \
 	tests/js/app/modules/selection/testSupplementaryArticles.js \
+	tests/js/app/modules/selection/testStaticArticles.js \
 	tests/js/app/modules/window/testSimple.js \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testBuffetHistoryStore.js \
