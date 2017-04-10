@@ -280,9 +280,12 @@ const ContentGroup = new Module.Class({
 
     _on_history_changed: function () {
         let item = HistoryStore.get_default().get_current_item();
-        if (item.model)
+        if (item.model && this._selection._models_by_id.has(item.model.ekn_id)) {
             this._arrangement.highlight(item.model);
-        this._arrangement.highlight_string(item.query);
+            this._arrangement.highlight_string(item.query);
+        } else {
+            this._arrangement.clear_highlight();
+        }
     },
 
     _on_selection_error: function () {
