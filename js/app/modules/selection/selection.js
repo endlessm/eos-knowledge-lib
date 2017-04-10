@@ -84,6 +84,12 @@ const Selection = new Module.Class({
         this.notify('model');
     },
 
+    contains_model: function (model) {
+        if (!model)
+            return false;
+        return this._models_by_id.has(model.ekn_id);
+    },
+
     get needs_refresh () {
         return this._needs_refresh;
     },

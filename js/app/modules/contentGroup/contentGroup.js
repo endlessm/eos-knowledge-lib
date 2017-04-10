@@ -280,8 +280,12 @@ const ContentGroup = new Module.Class({
 
     _on_history_changed: function () {
         let item = HistoryStore.get_default().get_current_item();
-        if (item.model)
+
+        if (item.model && this._selection.contains_model(item.model))
             this._arrangement.highlight(item.model);
+        else
+            this._arrangement.clear_highlight();
+
         this._arrangement.highlight_string(item.query);
     },
 
