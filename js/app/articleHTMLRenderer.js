@@ -155,6 +155,32 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         });
     },
 
+    _render_blog_content: function (model) {
+        function get_extra_header_info() {
+            let tags = model.tags
+                .filter(tag => !tag.startsWith('Ekn'))
+                .map(tag => SetMap.get_set_for_tag(tag))
+                .filter(set => typeof set !== 'undefined')
+                .filter(set => !set.featured);
+
+            let retval = { 'context': '' };
+            tags.forEach((tag) => {
+              retval.context += ' ' +  _to_set_link(tag);
+            });
+
+            return retval;
+        }
+
+        let html = this._get_html(model);
+
+        let template = _load_template('blog-article.mst');
+
+        return Mustache.render(template, {
+            'body-html': this._strip_tags(html),
+            'extra-header-information': get_extra_header_info(),
+        });
+    },
+
     _render_prensa_libre_content: function (model) {
         function get_extra_header_info() {
             let featured_set = model.tags
@@ -222,6 +248,8 @@ const ArticleHTMLRenderer = new Knowledge.Class({
                 return this._render_legacy_content(model);
             case 'prensa-libre':
                 return this._render_prensa_libre_content(model);
+            case 'blog':
+                return this._render_blog_content(model);
             default:
                 return null;
             }

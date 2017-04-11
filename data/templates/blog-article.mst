@@ -1,0 +1,8 @@
+{{#extra-header-information}}
+<div class="extra-header">
+    <div class="context"><p>{{{context}}}</p></div>
+</div>
+{{/extra-header-information}}
+<section id="inside-content" class="section">
+    <div>{{{body-html}}}</div>
+</section>

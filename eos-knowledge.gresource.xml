@@ -27,6 +27,7 @@
     <file preprocess="xml-stripblanks" compressed="true">data/images/arrow-symbolic.svg</file>
     <file preprocess="xml-stripblanks">data/images/deckbg.svg</file>
     <file>data/images/separator.png</file>
+    <file compressed="true">data/templates/blog-article.mst</file>
     <file compressed="true">data/templates/legacy-article.mst</file>
     <file compressed="true">data/templates/news-article.mst</file>
     <file compressed="true">data/templates/article-wrapper.mst</file>
