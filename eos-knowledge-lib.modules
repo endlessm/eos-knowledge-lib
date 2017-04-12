@@ -153,12 +153,10 @@ use the latest stable release branch from GNOME if you prefer that.
 
   <!-- OFFLINE CONTENT PLATFORM -->
 
-  <autotools id="eos-sdk" autogenargs="--enable-strict-flags --enable-gtk-doc --enable-gir-doc --enable-js-doc --disable-metrics">
+  <autotools id="eos-sdk" autogenargs="--enable-strict-flags --enable-gtk-doc --enable-gir-doc --disable-metrics">
     <branch/>
     <dependencies>
       <dep package="gobject-introspection"/>
-      <dep package="naturaldocs"/>
-      <dep package="webkit2gtk"/>
       <dep package="json-glib"/>
       <dep package="gjs"/>
       <dep package="glib"/>
