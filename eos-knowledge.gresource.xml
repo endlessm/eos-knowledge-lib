@@ -175,6 +175,7 @@
     <file>js/app/modules/selection/subsetsForSet.js</file>
     <file>js/app/modules/selection/suggestedArticles.js</file>
     <file>js/app/modules/selection/supplementaryArticles.js</file>
+    <file>js/app/modules/selection/staticArticles.js</file>
     <file>js/app/modules/selection/xapian.js</file>
     <file>js/app/modules/window/simple.js</file>
     <file>js/app/moltresEngine.js</file>
