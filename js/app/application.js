@@ -91,9 +91,11 @@ const Application = new Knowledge.Class({
                              'Path to a different gresource to use with the application', null);
         this.add_main_option('theme-overrides-path', 'O'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Path to a overrides scss or css file to theme the application', null);
+        this.add_main_option('web-overrides-path', 'w'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
+                             'Path to a scss or css file to theme any rendered HTML', null);
         this.add_main_option('app-json-path', 'J'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Path to a yaml or json file to use as a preset', null);
-        this.add_main_option('dummy-content', 'C'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
+        this.add_main_option('dummy-content', 'm'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
                              'Whether to use dummy content from Moltres', null);
         this.add_main_option('content-path', 'p'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Path to the content directory', null);
@@ -138,6 +140,12 @@ const Application = new Knowledge.Class({
         if (has_option('content-path')) {
             let engine = Eknc.Engine.get_default();
             engine.add_domain_for_path(this.application_id, get_option_string('content-path'));
+        }
+
+        if (has_option('web-overrides-path')) {
+            this._web_overrides_path = get_option_string('web-overrides-path');
+            if (!this._web_overrides_path.endsWith('.scss'))
+                this._compiled_web_overrides_path = this._web_overrides_path;
         }
 
         return -1;
@@ -279,6 +287,25 @@ const Application = new Knowledge.Class({
             System.exit(1);
         }
         return stdout.toString();
+    },
+
+    get_web_overrides_css: function () {
+        if (!this._web_overrides_path)
+            return [];
+        if (this._compiled_web_overrides_uri)
+            return [this._compiled_web_overrides_uri];
+
+        // For now, we don't support gresource URIs here
+        let [file] = Gio.File.new_tmp('customXXXXXX.css');
+        this._compiled_web_overrides_uri = file.get_uri();
+        let command = SCSS_COMMAND + this._web_overrides_path + ' ' +
+            file.get_path();
+        let [,, stderr, status] = GLib.spawn_command_line_sync(command);
+        if (status !== 0) {
+            printerr(new Error(command + ': ' + stderr.toString()));
+            System.exit(1);
+        }
+        return [this._compiled_web_overrides_uri];
     },
 
     _get_app_json: function () {

@@ -5,6 +5,9 @@
         {{#css-files}}
         <link rel="stylesheet" type="text/css" href="resource:///com/endlessm/knowledge/data/templates/css/{{{.}}}"/>
         {{/css-files}}
+        {{#custom-css-files}}
+        <link rel="stylesheet" type="text/css" href="{{{.}}}"/>
+        {{/custom-css-files}}
     </head>
     <body>
         <div id="copy-button">{{copy-button-text}}</div>

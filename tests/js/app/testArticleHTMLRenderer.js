@@ -1,4 +1,5 @@
 const Eknc = imports.gi.EosKnowledgeContent;
+const Gio = imports.gi.Gio;
 
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const Utils = imports.tests.utils;
@@ -15,6 +16,9 @@ describe('Article HTML Renderer', function () {
         const html = AppUtils.string_to_bytes('<html><body><p>dummy html</p></body></html>');
         spyOn(engine, 'get_domain').and.returnValue({
             read_uri: () => [true, html, 'text/html']
+        });
+        spyOn(Gio.Application, 'get_default').and.returnValue({
+            get_web_overrides_css: function () { return []; },
         });
 
         renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
