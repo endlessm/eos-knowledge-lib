@@ -78,6 +78,8 @@ AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION([0.18.1])
 # GObject Introspection
 GOBJECT_INTROSPECTION_REQUIRE([1.30])
+# Documentation
+HOTDOC_CHECK([0.8.90], [hotdoc_modular_framework])
 # Various tools
 AC_PROG_AWK  # needed for TAP driver
 AC_PROG_SED  # needed for finding files for coverage

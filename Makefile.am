@@ -410,6 +410,31 @@ EXTRA_DIST += \
 	tools/autobahn \
 	data/eos-knowledge-0.pc.in
 
+# # # DOCUMENTATION # # #
+
+EXTRA_DIST += \
+	docs/api/domain.md \
+	docs/api/flatpak-bundle.md \
+	docs/api/hotdoc.json \
+	docs/api/index.md \
+	docs/api/sitemap.txt \
+	docs/framework/hotdoc.json \
+	docs/framework/index.md \
+	docs/framework/sitemap.txt \
+	docs/framework/tools.md \
+	$(NULL)
+
+HOTDOC_PROJECTS = docs/framework
+
+docs_framework_HOTDOC_FLAGS = \
+	--conf-file $(abs_srcdir)/docs/framework/hotdoc.json \
+	-o $(abs_builddir)/docs/framework/built \
+	$(NULL)
+
+if ENABLE_DOCUMENTATION
+-include $(HOTDOC_MAKEFILE)
+endif ENABLE_DOCUMENTATION
+
 # # # TESTS # # #
 
 javascript_tests = \
