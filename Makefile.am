@@ -339,7 +339,23 @@ $(subst_files): %: %.in Makefile
 	$(AM_V_GEN)$(MKDIR_P) $(@D) && \
 	$(subst) $< > $@
 
-CLEANFILES += $(subst_files)
+uninstalled_subst = $(SED) \
+	-e 's,%pkgdatadir%,$(abs_top_builddir),g' \
+	-e 's,%pkglibdir%,$(abs_top_builddir)/.libs,g' \
+	-e 's,%typelibdir%,$(abs_top_builddir),g' \
+	$(NULL)
+
+uninstalled_subst_files = \
+	tools/introspect-local \
+	$(NULL)
+
+$(uninstalled_subst_files): %-local: %.in Makefile
+	$(AM_V_GEN)$(MKDIR_P) $(@D) && \
+	$(uninstalled_subst) $< > $@.tmp && \
+	chmod +x $@.tmp && \
+	mv $@.tmp $@
+
+CLEANFILES += $(subst_files) $(uninstalled_subst_files)
 EXTRA_DIST += $(patsubst %,%.in,$(subst_files))
 
 bin_SCRIPTS += \
@@ -426,9 +442,15 @@ EXTRA_DIST += \
 
 HOTDOC_PROJECTS = docs/framework
 
+docs_framework_HOTDOC_EXTRA_DEPS = \
+	tools/introspect-local \
+	EosKnowledgePrivate-1.0.typelib \
+	eos-knowledge.gresource \
+	$(NULL)
 docs_framework_HOTDOC_FLAGS = \
 	--conf-file $(abs_srcdir)/docs/framework/hotdoc.json \
 	-o $(abs_builddir)/docs/framework/built \
+	--mf-introspect-utility $(abs_builddir)/tools/introspect-local \
 	$(NULL)
 
 if ENABLE_DOCUMENTATION
