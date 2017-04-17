@@ -451,6 +451,7 @@ docs_framework_HOTDOC_FLAGS = \
 	--conf-file $(abs_srcdir)/docs/framework/hotdoc.json \
 	-o $(abs_builddir)/docs/framework/built \
 	--mf-introspect-utility $(abs_builddir)/tools/introspect-local \
+	$(FRAMEWORK_EXTRA_HOTDOC_FLAGS) \
 	$(NULL)
 
 if ENABLE_DOCUMENTATION

@@ -168,6 +168,10 @@ AS_IF([test -n "$JASMINE_JUNIT_REPORTS_DIR"],
     AC_MSG_RESULT([nowhere])])
 AC_SUBST([JASMINE_REPORT_ARGUMENT])
 
+# Hotdoc extra options (for git-upload extension)
+AC_ARG_VAR([FRAMEWORK_EXTRA_HOTDOC_FLAGS],
+    [Extra Hotdoc options for building docs/framework (e.g. for git-upload)])
+
 # Required libraries
 # ------------------
 # Update these whenever you use a function that requires a certain API version
