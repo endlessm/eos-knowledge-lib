@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["framework-0/banner/appMetadata.html#AppMetadata:wrap", "framework-0/banner/search.html#Banner.Search:wrap", "framework-0/banner/context.html#Banner.Context:wrap", "framework-0/contentGroup/dynamicTitle.html#DynamicTitle:wrap", "framework-0/contentGroup/staticText.html#StaticText:wrap"], "token": "wide"});
+urls_downloaded_cb({"urls": ["banner/appMetadata.html#wrap", "banner/search.html#wrap", "banner/context.html#wrap", "contentGroup/dynamicTitle.html#wrap", "contentGroup/staticText.html#wrap"], "token": "wide"});

@@ -1,28 +1,37 @@
-<div class="hidden-xs hidden-sm col-md-3 col-xl-2" id="sidenav-column">
-	<div class="panel panel-collapse" id="sidenav" data-hotdoc-role="navigation">
-		<div id="sidenav-search" role="search">
-			<input type="text" class="form-control" placeholder="Fetching index" id="sidenav-lookup-field" disabled="disabled"/>
-		</div>
-		<div id="sitenav-wrapper" class="mCustomScrollbar" data-mcs-theme="minimal">
-			<div class="sidenav-main-panel-body">
-				<div id="site-navigation">
-				</div>
-			</div>
-			<!-- FIXME -->
-			<div style="height: 76px;"></div>
-		</div>
+<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-2" id="sidenav-column">
+	<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+		<sitemap>
+		</sitemap>
 	</div>
+	<button id="offcanvasleft" class="btn btn-xs" type="button" data-toggle="offcanvasleft">
+		<i class="glyphicon glyphicon-chevron-right" id="offcanvasleft-chevron"></i>
+	</button>
 </div>
 
-<div class="col-sm-12 col-md-9 col-xl-8">
+<div class="col-xs-12 col-sm-12 col-md-9 col-lg-7 col-xl-8" id="content-column">
 	<div id="main">
 		@def content():
 		@end
 		@content()
+		<subpages>
+		</subpages>
 	</div>
 	<div id="search_results">
 		<p>The results of the search are</p>
 	</div>
 </div>
-<div class="hidden-xs col-xl-2">
+<div class="hidden-xs hidden-sm hidden-md col-lg-2 col-xl-2">
+	<div id="toc-column">
+		@def edit_button():
+		@end
+		@(btn = edit_button())
+		@if btn:
+			<div class="edit-button">
+				@btn
+			</div>
+		@end
+		<div id="toc-wrapper">
+			<nav id="toc"></nav>
+		</div>
+	</div>
 </div>

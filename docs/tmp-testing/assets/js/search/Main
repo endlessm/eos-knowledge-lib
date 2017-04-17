@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["framework-0/layout/topMenu.html#Layout.TopMenu:content", "framework-0/layout/sideMenu.html#Layout.SideMenu:content"], "token": "Main"});
+urls_downloaded_cb({"urls": ["layout/topMenu.html#content", "layout/sideMenu.html#content"], "token": "Main"});

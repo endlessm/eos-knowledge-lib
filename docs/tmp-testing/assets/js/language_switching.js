@@ -2,7 +2,7 @@ var hd_language_switching = hd_language_switching || {};
 
 hd_language_switching.item_template = [
 	'<li>',
-	'<a href="{{{root}}}{{{project_name}}}/{{{language}}}/{{{basename}}}">',
+	'<a href="{{{root}}}{{{project_url_path}}}{{{language}}}/{{{basename}}}">',
 	'{{language}}',
 	'</a>',
 	'</li>'].join('\n');
@@ -28,7 +28,7 @@ $(document).ready(function() {
 			list_data.items.push(Mustache.to_html(
 						hd_language_switching.item_template, {
 							'root': utils.hd_context.hd_root,
-							'project_name': utils.hd_context.project_name,
+							'project_url_path': utils.hd_context.project_url_path,
 							'language': language,
 							'basename': utils.hd_context.hd_basename,
 						}));

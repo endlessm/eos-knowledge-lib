@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["framework-0/layout/dynamicBackground.html#Layout.DynamicBackground:label", "framework-0/banner/set.html#Banner.Set:label", "framework-0/card/media.html#Card.Media:label"], "token": "Text"});
+urls_downloaded_cb({"urls": ["layout/placeholder.html#label", "layout/dynamicBackground.html#label", "banner/set.html#label", "card/media.html#label"], "token": "Text"});

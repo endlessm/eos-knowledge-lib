@@ -10,13 +10,10 @@ function createTagsDropdown(tags_hashtable) {
 		if (title == 'deprecated') {
 			var menu = $("#menu");
 			var widget = '';
-			widget += '<li class="navbar-btn">';
-			widget += '<div class="checkbox">'
-			widget += '<label>';
-			widget += '<input type="checkbox" id="show-deprecated">';
-			widget += 'Deprecated symbols';
-			widget += '</label>';
-			widget += '</div>';
+			widget += '<li>';
+			widget += '<button type="button" id="show-deprecated" class="btn navbar-btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">'
+			widget += 'Show deprecated symbols';
+			widget += '</button>';
 			widget += '</li>';
 			menu.append(widget);
 		} else {
@@ -24,7 +21,7 @@ function createTagsDropdown(tags_hashtable) {
 			var widget = '<li class="dropdown">';
 			widget += '<a class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
 			widget += title.capitalizeFirstLetter() + ' ';
-			widget += '<span class="caret"></span></button>';
+			widget += '<span class="caret"></span></a>';
 			widget += '<ul class="dropdown-menu" id="' + key + '-menu">';
 
 			widget += '<li><a id="' + key + '">Reset</a></li>';
@@ -146,22 +143,23 @@ function doCompareDeprecated(all_values, filter_value, item_value) {
 
 function setupFilters() {
 	var mainEl = $('#main');
-	var tocEl = $("#table-of-contents");
 	var transitionDuration = 800;
 	var currentFilters = {};
 	var customCompareFunctions = {'since': doCompareVersions,
 		'stability': doCompareStability,
 		'deprecated': doCompareDeprecated};
 
+	var navSelector = '#toc';
+	var $myNav = $(navSelector);
+
 	var tags_hashtable = createTagsHashtable();
 	createTagsDropdown(tags_hashtable);
 	for (var key in tags_hashtable) {
 		currentFilters[key] = undefined;
 		if (key == 'deprecated') {
-			currentFilters[key] = $('#show-deprecated').prop('checked');
-			$('#show-deprecated').change(function() {
-				currentFilters["deprecated"] = $(this).prop('checked');
-				tocEl.isotope({filter: isotopeFilter});
+			currentFilters[key] = $(this).hasClass('active');
+			$('#show-deprecated').click(function() {
+				currentFilters["deprecated"] = !$(this).hasClass('active');
 				mainEl.isotope({filter: isotopeFilter});
 			})
 		} else {
@@ -172,7 +170,6 @@ function setupFilters() {
 				else
 					currentFilters[key] = $(this).text();
 
-				tocEl.isotope({filter: isotopeFilter});
 				mainEl.isotope({filter: isotopeFilter});
 			});
 		}
@@ -233,16 +230,7 @@ function setupFilters() {
 		return shouldBeVisible ($(this));
 	}
 
-	tocEl.isotope({
-		layoutMode: 'vertical',
-		animationEngine: 'best-available',
-		filter: isotopeFilter,
-		animationOptions: {
-			duration: transitionDuration
-		},
-	});
-
-	mainEl.isotope({
+	var $grid = mainEl.isotope({
 		layoutMode: 'vertical',
 		animationEngine: 'best-available',
 		containerStyle: "margin-left: 15px;",
@@ -252,15 +240,23 @@ function setupFilters() {
 		},
 	});
 
+	Toc.init($myNav);
+
 	function layoutTimer(){
 
 		setTimeout(function(){
 			mainEl.isotope('layout');
-			tocEl.isotope('layout');
 		}, transitionDuration);
 	}
 
 	layoutTimer();
+
+	$grid.on( 'arrangeComplete', function( event, filteredItems ) {
+		$("h1,h2,h3,h4,h5,h6").removeAttr("data-toc-skip");
+		$("h1:hidden,h2:hidden,h3:hidden,h4:hidden,h5:hidden,h6:hidden").attr("data-toc-skip", "true");
+		$myNav.empty();
+		Toc.init($myNav);
+	})
 
 	// Isotope messes with our anchors positions
 	var hash_index = window.location.href.indexOf("#");
@@ -271,4 +267,10 @@ function setupFilters() {
 
 	// From navbar_offset_scroller.js
 	scroll_if_anchor(window.location.hash);
+
+	$("#content-column").attrchange(function(attrName) {
+		if (attrName=='class') {
+			layoutTimer();
+		}
+	});
 }

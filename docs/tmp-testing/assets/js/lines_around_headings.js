@@ -4,7 +4,10 @@ function add_section_headings_class() {
 	if (headings.length < 2)
 		headings = $("h2:not(.symbol_section)");
 
-	headings.addClass("section_headings");
+	if (headings.length > 1)
+		headings.addClass("section_headings");
+	else
+		headings.attr("data-toc-skip", "true");
 }
 
 $(document).ready(function() {

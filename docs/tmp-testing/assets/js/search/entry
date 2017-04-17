@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["framework-0/navigation/searchBox.html#Navigation.SearchBox:max-length", "framework-0/navigation/searchBox.html#Navigation.SearchBox:width-chars", "framework-0/navigation/searchBox.html#Navigation.SearchBox:max-width-chars", "framework-0/navigation/searchBox.html#Navigation.SearchBox:placeholder-text"], "token": "entry"});
+urls_downloaded_cb({"urls": ["navigation/searchBox.html#maxlength", "navigation/searchBox.html#widthchars", "navigation/searchBox.html#maxwidthchars", "navigation/searchBox.html#placeholdertext"], "token": "entry"});

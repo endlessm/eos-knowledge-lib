@@ -85,26 +85,54 @@ utils.uri_is_in_this_page = (function(uri) {
 
 utils.HDContext = (class {
 	constructor(href) {
+		this.project_url_path;
 		this.parsedUri = utils.parseUri(href);
 		this.extension = $('#page-wrapper').attr('data-extension');
 		this.hd_basename = $('#page-wrapper').attr('data-hotdoc-ref');
 		this.project_name = $('#page-wrapper').attr('data-hotdoc-project');
+		this.in_toplevel = $('#page-wrapper').attr('data-hotdoc-in-toplevel');
 		if (this.parsedUri.file == '') {
 			this.parsedUri.file = 'index.html';
 			this.parsedUri.path += 'index.html';
 		}
 		this.hd_root = this.parsedUri['scheme'] + '://' + this.parsedUri['authority'] + this.parsedUri['path'];
 
+		if (this.in_toplevel == "True")
+			this.project_url_path = ''
+		else
+			this.project_url_path = this.project_name + '/';
 		if (this.extension == 'gi-extension') {
 			this.gi_language = $('#page-wrapper').attr('data-hotdoc-meta-gi-language');
 			this.gi_languages = $('#page-wrapper').attr('data-hotdoc-meta-gi-languages').split(',');
-			this.hd_root = this.hd_root.replace(new RegExp(this.project_name + '/' +
-						this.gi_language + '/' + this.hd_basename + "$"),'');
+			this.hd_root = this.hd_root.replace(new RegExp(this.project_url_path +
+				this.gi_language + '/' + this.hd_basename + "$"),'');
 		} else {
-			this.hd_root = this.hd_root.replace(new RegExp(this.project_name + '/' + this.hd_basename + "$"),'');
+			this.hd_root = this.hd_root.replace(new RegExp(this.project_url_path + this.hd_basename + "$"),'');
 		}
 	}
 });
+
+var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+
+$.fn.attrchange = function(callback) {
+    if (MutationObserver) {
+        var options = {
+            subtree: false,
+            attributes: true
+        };
+
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(e) {
+                callback.call(e.target, e.attributeName);
+            });
+        });
+
+        return this.each(function() {
+            observer.observe(this, options);
+        });
+
+    }
+}
 
 $(document).ready(function() {
 	utils.hd_context = new utils.HDContext(window.location.href);

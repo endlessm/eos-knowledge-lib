@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["framework-0/contentGroup/noResultsMessage.html#ContentGroup.NoResultsMessage:justify"], "token": "Gtk.Justification.LEFT"});
+urls_downloaded_cb({"urls": ["contentGroup/noResultsMessage.html#justify"], "token": "Gtk.Justification.LEFT"});

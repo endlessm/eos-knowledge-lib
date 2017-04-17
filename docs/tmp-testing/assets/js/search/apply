@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["framework-0/card/knowledgeDocument.html#Card.KnowledgeDocument:custom-css", "framework-0/card/video.html#Card.Video:custom-css"], "token": "apply"});
+urls_downloaded_cb({"urls": ["card/knowledgeDocument.html#customcss", "card/video.html#customcss", "card/audio.html#customcss"], "token": "apply"});

@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["framework-0/window/simple.html#Window.Simple:font-scaling-default-size", "framework-0/window/simple.html#Window.Simple:font-scaling-default-window-size", "framework-0/window/simple.html#Window.Simple:font-scaling-min-font-size"], "token": "widgets"});
+urls_downloaded_cb({"urls": ["window/simple.html#fontscalingdefaultsize", "window/simple.html#fontscalingdefaultwindowsize", "window/simple.html#fontscalingminfontsize"], "token": "widgets"});

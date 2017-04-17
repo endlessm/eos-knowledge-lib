@@ -1,4 +1,4 @@
-@require(page, assets_path, scripts, stylesheets)
+@require(page, meta, assets_path, scripts, stylesheets, in_toplevel)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,6 +6,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+@for key, value in meta:
+<meta data-hd-key="@str(key)" data-hd-value="@str(value)" />
+@end
 
 <title>@page.get_title()</title>
 
@@ -25,6 +29,7 @@
 <script src="@assets_path/js/isotope.pkgd.min.js"></script>
 <script src="@assets_path/js/compare-versions.js"></script>
 <script src="@assets_path/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="@assets_path/js/bootstrap-toc.min.js"></script>
 <script src="@assets_path/js/utils.js"></script>
 <script src="@assets_path/js/tag_filtering.js"></script>
 <script src="@assets_path/js/language_switching.js"></script>
@@ -40,12 +45,16 @@
 
 </head>
 
-<body data-spy="scroll" data-target=".scrollspy" data-offset="70">
+<body class="no-script" data-spy="scroll" data-target="#toc" data-offset="70">
+
+<script>
+$('body').removeClass('no-script');
+</script>
 
 @include("navbar.html")
 
 <main class="page-row page-row-expanded">
-<div data-extension="@str(page.extension_name)" data-hotdoc-project="@str(page.project_name)" data-hotdoc-ref="@str(page.link.ref)" class="page_container" id="page-wrapper"
+<div data-extension="@str(page.extension_name)" data-hotdoc-in-toplevel="@str(in_toplevel)" data-hotdoc-project="@str(page.project_name)" data-hotdoc-ref="@str(page.link.ref)" class="page_container" id="page-wrapper"
 @for key, value in page.meta.get('extra', {}).items():
 data-hotdoc-meta-@key="@str(value)"\
 @end
@@ -55,6 +64,7 @@ data-hotdoc-meta-@key="@str(value)"\
 	</div>
 </div>
 </main>
+
 
 <footer class="page-row">
 	@include("footer.html")

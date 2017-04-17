@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["framework-0/arrangement/piano.html#Arrangement.Piano:compact-mode", "framework-0/arrangement/thirdRock.html#Arrangement.ThirdRock:compact-mode"], "token": "but"});
+urls_downloaded_cb({"urls": ["arrangement/piano.html#compactmode", "arrangement/thirdRock.html#compactmode"], "token": "but"});

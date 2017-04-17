@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["framework-0/banner/appMetadata.html#AppMetadata:angle", "framework-0/banner/search.html#Banner.Search:angle", "framework-0/banner/context.html#Banner.Context:angle", "framework-0/contentGroup/dynamicTitle.html#DynamicTitle:angle", "framework-0/contentGroup/staticText.html#StaticText:angle"], "token": "Angle"});
+urls_downloaded_cb({"urls": ["banner/appMetadata.html#angle", "banner/search.html#angle", "banner/context.html#angle", "contentGroup/dynamicTitle.html#angle", "contentGroup/staticText.html#angle"], "token": "Angle"});

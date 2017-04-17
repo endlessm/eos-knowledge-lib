@@ -1,8 +1,13 @@
+var search = search || {};
+
+search.expected_tokens = [];
+search.matched_urls = {}
+
 function escapeRegExp(string) {
 	return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 }
 
-function ellipsize_fragment (fragment, term, size_goal) {
+function ellipsize_fragment (fragment, terms, size_goal) {
 	var words_remaining = 0;
 	var sentences = fragment.replace(/(\.+|\:|\!|\?)(\"*|\'*|\)*|}*|]*)(\s|\n|\r|\r\n)/gm, "$1$2|").split("|");
 
@@ -18,8 +23,15 @@ function ellipsize_fragment (fragment, term, size_goal) {
 		return fragment;
 	}
 
-	var regex = new RegExp(escapeRegExp(term), "gi");
+	escaped_terms = [];
+	for (var i = 0; i < terms.length; i++) {
+		if (terms[i].length > 3)
+			escaped_terms.push (escapeRegExp(terms[i]));
+	}
+
+	var regex = new RegExp(escaped_terms.join('|'), "gi");
 	var nmatches = (fragment.match(regex) || []).length;
+
 	var matches_goal = Math.min(nmatches, size_goal / 20);
 	var words_per_match = size_goal / matches_goal;
 	var max_lookback = words_per_match / 2;
@@ -35,7 +47,14 @@ function ellipsize_fragment (fragment, term, size_goal) {
 		var words = sentence.match(/\S+/g);
 		for (var j = 0; j < words.length; j++) {
 			var word = words[j];
-			var is_match = word.toLowerCase().indexOf(term) != -1;
+			var is_match = false;
+
+			for (var k = 0; k < escaped_terms.length; k++) {
+				if (word.toLowerCase().indexOf(escaped_terms[k]) != -1) {
+					is_match = true;
+					break;
+				}
+			}
 
 			if (is_match) {
 				matches_found += 1;
@@ -96,15 +115,21 @@ function ellipsize_fragment (fragment, term, size_goal) {
 	return result;
 }
 
-function do_search(trie, word) {
+function do_search(trie, query) {
 	var results = [];
-	var node = trie.lookup_node(word);
+	var words = query.split(/\s+/);
 
-	if (node && node.is_final) {
-		results.push (node.get_word());
+	for (var i = 0; i < words.length; i++) {
+		var word = words[i];
+		var node = trie.lookup_node(word);
+
+		if (node && node.is_final) {
+			results.push (node.get_word());
+		}
 	}
 
-	return results;
+	search.expected_tokens = results;
+	search.matched_urls = {}
 }
 
 function display_fragment_for_url(data) {
@@ -122,10 +147,10 @@ function display_fragment_for_url(data) {
 	var compact = $(html).text().match(/\S+/g).join(' ');
 
 	compact = $.parseHTML('<p>' +
-			ellipsize_fragment(compact, token, 40) +
+			ellipsize_fragment(compact, search.expected_tokens, 40) +
 			'</p>');
 
-	fragment_div.html($(compact).wrapInTag({tag: 'strong', words: [token]}));
+	fragment_div.html($(compact).wrapInTag({tag: 'strong', words: search.expected_tokens}));
 }
 
 function fragment_downloaded_cb(data) {
@@ -144,16 +169,14 @@ function display_fragments_for_urls(fragments, token) {
 
 
 function display_urls_for_token(data) {
-	var selector = '#' + CSS.escape(data.token) + '-result';
-
-	var token_results_div = $(selector);
+	var token_results_div = $("#actual_search_results");
 
 	if (token_results_div.length == 0) {
 		return;
 	}
 
 	var urls = data.urls;
-	var meat = "<h5>Search results for " + data.token + "</h5>";
+	var meat = "<h5>Search results for " + search.expected_tokens.join(" ") + "</h5>";
 	var url;
 	var final_urls = [];
 	for (var i = 0; i < urls.length; i++) {
@@ -164,11 +187,18 @@ function display_urls_for_token(data) {
 
 		var final_url = urls[i];
 
-		meat += '<div class="search_result">';
-		meat += '<a href="' + url + '">' + url + '</a>';
-		meat += '<div id="' + final_url + '-fragment"></div>';
-		meat += '</div>';
-		final_urls.push(final_url);
+		if (search.matched_urls[final_url])
+			search.matched_urls[final_url].push (data.token);
+		else
+			search.matched_urls[final_url] = [data.token];
+
+		if (search.matched_urls[final_url].length == search.expected_tokens.length) {
+			meat += '<div class="search_result">';
+			meat += '<a href="' + url + '">' + url + '</a>';
+			meat += '<div id="' + final_url + '-fragment"></div>';
+			meat += '</div>';
+			final_urls.push(final_url);
+		}
 	}
 
 	token_results_div.html(meat);
@@ -180,15 +210,19 @@ function urls_downloaded_cb(data) {
 	display_urls_for_token(data);
 }
 
-function display_urls_for_tokens(tokens) {
-	for (var i = 0; i < tokens.length; i++) {
-		var src = "assets/js/search/" + tokens[i];
-		inject_script(src);
+function display_urls_for_tokens() {
+	for (var i = 0; i < search.expected_tokens.length; i++) {
+		var words = search.expected_tokens[i].split(/\s+/);
+		for (var j = 0; j < words.length; j++) {
+			var src = "assets/js/search/" + words[j];
+			inject_script(src);
+		}
 	}
 }
 
-function prepare_results_view (tokens) {
+function prepare_results_view () {
 	var results_div = $("#search_results");
+
 	results_div.on("click", "a[href]", clearSearch);
 	$('#main').hide();
 	results_div.show();
@@ -196,10 +230,7 @@ function prepare_results_view (tokens) {
 	var skeleton = "<h3>Search results</h3>";
 	var token = null;
 
-	for (var i = 0; i < tokens.length; i++) {
-		token = tokens[i];
-		skeleton += '<div id="' + token + '-result"></div>'
-	}
+	skeleton += '<div id="actual_search_results"></div>';
 	results_div.html(skeleton);
 }
 
@@ -232,20 +263,32 @@ function getSortedKeys(obj) {
 
 function search_source (query, sync_results) {
 	var results = [];
+	var words = query.split(/\s+/);
+	var word;
 
-	var completions = this.source.search_trie.lookup_submatches(query, 5);
+	if (words.length == 0) {
+		return;
+	}
+
+	word = words.pop();
+
+	if (word.length < 3) {
+		return;
+	}
+
+	var completions = this.source.search_trie.lookup_submatches(word, 5);
 
 	results = completions.map(function (completion) {
-		return completion.get_word();
+		return words.concat(completion.get_word()).join(" ");
 	});
 
 	if (results.length == 0) {
-		var corrections = this.source.search_trie.search(query, 2);
+		var corrections = this.source.search_trie.search(word, 2);
 		var sorted_keys = getSortedKeys(corrections);
 
 		for (idx in sorted_keys) {
-			var word = sorted_keys[idx];
-			results.push(word);
+			var proposal = words.concat(sorted_keys[idx]).join(" ");
+			results.push(proposal);
 		}
 	}
 
@@ -289,13 +332,13 @@ function setupSearchXHR() {
 		var refresher = debounce(display_urls_for_tokens, 500);
 
 		search_input.on('input keyup typeahead:select', function () {
-			var word = $(this).val();
-			if (word.length == 0) {
+			var query = $(this).val();
+			if (query.length == 0) {
 				clearSearch()
 			} else {
-				var tokens = do_search(trie, word);
-				prepare_results_view(tokens);
-				refresher(tokens);
+				do_search(trie, query);
+				prepare_results_view();
+				refresher();
 			}
 		});
 	};
@@ -332,13 +375,13 @@ function setupSearchInject() {
 		var refresher = display_urls_for_tokens;
 
 		search_input.on('input keyup typeahead:select', function () {
-			var word = $(this).val();
-			if (word.length == 0) {
+			var query = $(this).val();
+			if (query.length == 0) {
 				clearSearch();
 			} else {
-				var tokens = do_search(trie, word);
-				prepare_results_view(tokens);
-				refresher(tokens);
+				do_search(trie, query);
+				prepare_results_view();
+				refresher();
 			}
 		});
 	};

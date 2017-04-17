@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["framework-0/arrangement/piano.html#Arrangement.Piano:compact-mode", "framework-0/arrangement/thirdRock.html#Arrangement.ThirdRock:compact-mode", "framework-0/arrangement/pianola.html#Arrangement.Pianola", "framework-0/arrangement/pianola.html#Arrangement.Pianola:compact-mode"], "token": "compact"});
+urls_downloaded_cb({"urls": ["arrangement/pianola.html#compactmode", "arrangement/thirdRock.html#compactmode", "arrangement/piano.html#compactmode", "arrangement/pianola.html#arrangementpianola1"], "token": "compact"});
