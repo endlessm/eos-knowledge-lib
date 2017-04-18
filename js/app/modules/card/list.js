@@ -30,11 +30,20 @@ const List = new Module.Class({
             'Show synopsis', 'Whether to show the synopsis label',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             true),
+        /**
+         * Property: show-context
+         * Whether to show the context label.
+         */
+        'show-context': GObject.ParamSpec.boolean('show-context',
+            'Show context', 'Whether to show the context label',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/list.ui',
     InternalChildren: [ 'thumbnail-frame', 'inner-content-grid', 'title-label',
-    'synopsis-label', 'navigation-context-label', 'checkmark', 'context-label'],
+    'synopsis-label', 'navigation-context-label', 'checkmark', 'context-label',
+    'context-box'],
 
     _init: function (props={}) {
         this.parent(props);
@@ -54,6 +63,13 @@ const List = new Module.Class({
         if (this.model.duration) {
             this.set_duration_label(this._context_label, this.model.duration);
         }
+
+        if (this.show_context) {
+            this._context_widget = this.create_context_widget_from_model();
+            this._context_box.add(this._context_widget);
+            this._context_box.show();
+        }
+
         this.update_card_sizing_classes(Card.MinSize.A, Card.MinSize.D);
         this._synopsis_label.visible = this.show_synopsis;
         this._title_label.vexpand = !this.show_synopsis;
