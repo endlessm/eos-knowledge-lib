@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-03-28 01:56+0000\n"
+"POT-Creation-Date: 2017-04-11 01:57+0000\n"
 "PO-Revision-Date: 2017-03-28 01:56+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Romanian (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/ro/)\n"
@@ -22,11 +22,11 @@ msgstr ""
 msgid "PDF"
 msgstr "PDF"
 
-#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:199
+#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:208
 msgid "Next Article"
 msgstr "Articolul Urmator"
 
-#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:182
+#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:191
 msgid "Previous Article"
 msgstr "Articolul Anterior"
 
@@ -62,11 +62,11 @@ msgstr "ACASA"
 msgid "View the license"
 msgstr "Vezi licenta"
 
-#: js/app/application.js:165
+#: js/app/application.js:172
 msgid "Oops! No content."
 msgstr "Oops! Nici un continut."
 
-#: js/app/application.js:166
+#: js/app/application.js:173
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
