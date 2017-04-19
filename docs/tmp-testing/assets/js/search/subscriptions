@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tools.html#eminem"], "token": "subscriptions"});
+urls_downloaded_cb({"token": "subscriptions", "urls": ["tools.html#eminem"]});

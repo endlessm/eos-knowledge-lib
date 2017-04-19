@@ -1,4 +1,4 @@
-@require(page, meta, assets_path, scripts, stylesheets, in_toplevel)
+@require(page, assets_path, scripts, stylesheets, in_toplevel)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,10 +6,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-@for key, value in meta:
-<meta data-hd-key="@str(key)" data-hd-value="@str(value)" />
-@end
 
 <title>@page.get_title()</title>
 
@@ -45,11 +41,7 @@
 
 </head>
 
-<body class="no-script" data-spy="scroll" data-target="#toc" data-offset="70">
-
-<script>
-$('body').removeClass('no-script');
-</script>
+<body data-spy="scroll" data-target="#toc" data-offset="70">
 
 @include("navbar.html")
 

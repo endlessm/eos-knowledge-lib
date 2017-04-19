@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["controller/course.html#controllercourse1"], "token": "Controller"});
+urls_downloaded_cb({"token": "Controller", "urls": ["controller/course.html#controllercourse1"]});

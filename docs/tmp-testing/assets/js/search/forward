@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["contentGroup/mediaLightbox.html#hasforwardbutton", "layout/navigation.html#forwardvisible"], "token": "forward"});
+urls_downloaded_cb({"token": "forward", "urls": ["contentGroup/mediaLightbox.html#hasforwardbutton", "layout/navigation.html#forwardvisible"]});

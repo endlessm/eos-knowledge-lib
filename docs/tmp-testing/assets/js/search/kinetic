@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["layout/infiniteScrolling.html#kineticscrolling", "layout/scrolling.html#kineticscrolling"], "token": "kinetic"});
+urls_downloaded_cb({"token": "kinetic", "urls": ["layout/infiniteScrolling.html#kineticscrolling", "layout/scrolling.html#kineticscrolling"]});

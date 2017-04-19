@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["layout/topMenu.html#transitionduration", "layout/sideMenu.html#transitionduration"], "token": "Duration"});
+urls_downloaded_cb({"token": "Duration", "urls": ["layout/topMenu.html#transitionduration", "layout/sideMenu.html#transitionduration"]});
