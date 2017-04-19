@@ -1,8 +1,0 @@
-/* Copyright 2016 Endless Mobile, Inc. */
-
-@function no-cache-buster($url, $file) {
-    @return null;
-}
-
-$images-path: 'resource:///com/endlessm/knowledge/data/images/';
-$project-path: absolute-path("../..");

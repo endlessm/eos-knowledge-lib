@@ -54,7 +54,6 @@ scss_theme_toplevels = \
 scss_theme_base_partials = \
 	$(srcdir)/data/css/_base.scss \
 	$(srcdir)/data/css/_assets.scss \
-	$(srcdir)/data/css/_project-setup.scss \
 	$(srcdir)/data/css/_colors.scss \
 	$(srcdir)/data/css/_typography.scss \
 	$(srcdir)/data/css/_mesh.scss \
