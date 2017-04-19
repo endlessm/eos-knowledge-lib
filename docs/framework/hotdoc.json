@@ -1,0 +1,11 @@
+{
+    "project_name": "framework",
+    "project_version": "0",
+
+    "index": "index.md",
+    "output": "built",
+    "sitemap": "sitemap.txt",
+
+    "mf_sources": ["../../js/app/modules/*/*.js"],
+    "mf_smart_index": true
+}

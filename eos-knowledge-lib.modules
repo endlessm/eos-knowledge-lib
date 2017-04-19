@@ -103,13 +103,6 @@ use the latest stable release branch from GNOME if you prefer that.
     <branch repo="system"/>
   </systemmodule>
 
-  <systemmodule id="naturaldocs">
-    <branch repo="system"/>
-    <systemdependencies>
-      <dep type="path" name="naturaldocs"/>
-    </systemdependencies>
-  </systemmodule>
-
   <systemmodule id="webkit2gtk">
     <pkg-config>webkit2gtk-4.0.pc</pkg-config>
     <branch repo="system"/>
@@ -165,7 +158,7 @@ use the latest stable release branch from GNOME if you prefer that.
     </dependencies>
   </autotools>
 
-  <autotools id="eos-knowledge-lib" autogenargs="--enable-strict-flags --enable-js-doc --disable-metrics">
+  <autotools id="eos-knowledge-lib" autogenargs="--enable-strict-flags --disable-metrics">
     <branch/>
     <dependencies>
       <dep package="eos-sdk"/>
@@ -173,7 +166,6 @@ use the latest stable release branch from GNOME if you prefer that.
       <dep package="libevince"/>
       <dep package="webkit2gtk"/>
       <dep package="sass"/>
-      <dep package="naturaldocs"/>
       <dep package="mathjax"/>
       <dep package="eos-shard"/>
       <dep package="polib"/>

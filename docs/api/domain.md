@@ -1,3 +1,6 @@
+---
+short-description: Domains
+...
 # Domains
 
 The convention used by this document is to explain paths in context of a
@@ -63,6 +66,8 @@ As an example of a metadata file, here's one:
 
 Fields like "@type" and "@id" are part of [JSON-LD](http://json-ld.org/),
 a specification for hypermedia-style linked data.
+We don't implement the JSON-LD specification entirely, but these schemas
+are roughly based on equivalents from schema.org.
 
 ## Subscriptions ##
 

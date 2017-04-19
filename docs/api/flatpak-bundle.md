@@ -1,3 +1,6 @@
+---
+short-description: Flatpak bundle
+...
 # Anatomy of a Knowledge App Flatpak Bundle
 
 Let's look at a simple knowledge app. Knowledge apps are shipped as part of a bundle, and
@@ -17,7 +20,7 @@ You can examine the files included by looking in `/var/lib/flatpak/app/com.endle
    service file which is
    used for launching the application.
  * share/ekn/data/com.endlessm.astronomy.es/ - the application's
-   content. The format is explained in `domain-versions.md`. In any case
+   content. The format is explained in [Domains](domain.md). In any case
    this includes a shard file containing all of the data in
    the application (HTML files, PDFs, images and videos, along with JSON-LD metadata
    describing each entry).
