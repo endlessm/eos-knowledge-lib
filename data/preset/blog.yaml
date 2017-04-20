@@ -1,0 +1,193 @@
+defines:
+- &main-arrangement
+  type: Arrangement.List
+  styles:
+    - main-arrangement
+
+- &main-card
+  type: Card.DefaultFamily
+  properties:
+    excluded_types:
+    - 0
+    - 2
+
+- &main-menu
+  type: Layout.Scrolling
+  slots:
+    content:
+      shortdef: 'Layout.Box(orientation: vertical)'
+      styles:
+        - main-menu
+      slots:
+        contents:
+        - type: ContentGroup.ContentGroup
+          slots:
+            arrangement:
+              type: Arrangement.List
+              slots:
+                card:
+                  type: Card.Title
+            selection:
+              type: Selection.AllSets
+              slots:
+                filter: Filter.Featured
+        - type: ContentGroup.ContentGroup
+          slots:
+            arrangement:
+              type: Arrangement.List
+              slots:
+                card:
+                  type: Card.Title
+            selection: Selection.StaticArticles
+
+- &home-page
+  shortdef: 'Layout.InfiniteScrolling(expand: true)'
+  references:
+    lazy-load: highlighted
+  slots:
+    content:
+      type: Layout.ResponsiveMargins
+      slots:
+        content:
+          shortdef: 'Layout.Box(orientation: vertical)'
+          slots:
+            contents:
+            - shortdef: 'Banner.App(show-subtitle: false)'
+            - type: ContentGroup.ContentGroup
+              properties:
+                halign: fill
+                expand: true
+              slots:
+                arrangement:
+                  <<: *main-arrangement
+                  slots:
+                    card: *main-card
+                selection:
+                  type: Selection.AllHighlights
+                  id: highlighted
+                  slots:
+                    filter: 'Filter.Sets(invert: true)'
+                    order: 'Order.PublishedDate(ascending: false)'
+
+- &article-page
+  type: Layout.ArticleStack
+  properties:
+    do-sliding-animation: false
+    allow-navigation: next
+  slots:
+    card: 'Card.KnowledgeDocument(show-titles: false, show-toc: false)'
+    nav-card: 'Card.List(show-synopsis: false)'
+
+- &set-page
+  shortdef: 'Layout.InfiniteScrolling(expand: true)'
+  references:
+    lazy-load: set-articles
+  slots:
+    content:
+      type: Layout.ResponsiveMargins
+      slots:
+        content:
+          shortdef: 'Layout.Box(orientation: vertical)'
+          slots:
+            contents:
+            - shortdef: 'Banner.Set(halign: start)'
+              slots:
+                card: 'Card.Title(halign: center)'
+            - type: ContentGroup.ContentGroup
+              properties:
+                halign: fill
+                expand: true
+              slots:
+                arrangement:
+                  <<: *main-arrangement
+                  slots:
+                    card: *main-card
+                selection:
+                  type: Selection.ArticlesForSet
+                  id: set-articles
+                  slots:
+                    order: 'Order.PublishedDate(ascending: false)'
+
+- &search-page
+  shortdef: 'Layout.InfiniteScrolling(expand: true)'
+  references:
+    lazy-load: search-results
+  slots:
+    content:
+      type: Layout.ResponsiveMargins
+      slots:
+        content:
+          shortdef: 'Layout.Box(orientation: vertical)'
+          slots:
+            contents:
+            - shortdef: 'Banner.Search(halign: start)'
+              slots:
+                card: 'Card.Title(halign: center)'
+            - type: ContentGroup.ContentGroup
+              properties:
+                halign: center
+              slots:
+                arrangement:
+                  <<: *main-arrangement
+                  slots:
+                    card: Card.List
+                selection:
+                  type: Selection.Search
+                  id: search-results
+                no-results:
+                  shortdef: 'Layout.Box(orientation: vertical)'
+                  slots:
+                    contents:
+                    - type: ContentGroup.StaticText
+                      styles:
+                        - no-results-message
+                      properties:
+                        label: !translate 'Sorry, there are no results that match your search.'
+                        halign: start
+                        justify: left
+                        wrap: true
+                        wrap-mode: word-char
+                    - type: ContentGroup.ContentGroup
+                      styles:
+                        - search-suggestions
+                      properties:
+                        valign: start
+                      slots:
+                        title:
+                          type: ContentGroup.StaticText
+                          properties:
+                            label: !translate 'Latest posts'
+                            halign: start
+                        arrangement:
+                          shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
+                          slots:
+                            card: *main-card
+                        selection:
+                          type: Selection.AllHighlights
+                          slots:
+                            filter: 'Filter.Sets(invert: true)'
+                            order: 'Order.PublishedDate(ascending: false)'
+
+root:
+  type: Controller.Buffet
+  slots:
+    window:
+      type: Window.Simple
+      slots:
+        search: Navigation.SearchBox
+        content:
+          type: ContentGroup.MediaLightbox
+          slots:
+            card: Card.Media
+            content:
+              type: Layout.Sidebar
+              slots:
+                sidebar:
+                  <<: *main-menu
+                content:
+                  type: Pager.Simple
+                  slots:
+                    home-page: *home-page
+                    set-page: *set-page
+                    search-page: *search-page
+                    article-page: *article-page

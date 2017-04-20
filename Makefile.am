@@ -40,6 +40,7 @@ scss_verbose_ = $(scss_verbose_@AM_DEFAULT_V@)
 scss_verbose_0 = @echo "  SCSS     $@";
 
 scss_theme_toplevels = \
+	$(srcdir)/data/css/blog.scss \
 	$(srcdir)/data/css/buffet.scss \
 	$(srcdir)/data/css/course.scss \
 	$(srcdir)/data/css/default.scss \
@@ -413,6 +414,7 @@ yamlpresetdir = $(pkgdatadir)/preset
 dist_yamlpreset_DATA = \
 	data/preset/A.yaml \
 	data/preset/B.yaml \
+	data/preset/blog.yaml \
 	data/preset/buffet.yaml \
 	data/preset/course.yaml \
 	data/preset/encyclopedia.yaml \
