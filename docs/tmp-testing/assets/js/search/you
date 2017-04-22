@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "you", "urls": ["layout/sideMenu.html#layoutsidemenu1", "selection/xapian.html#selectionxapian1"]});
+urls_downloaded_cb({"urls": ["layout/sideMenu.html#layoutsidemenu1", "selection/xapian.html#selectionxapian1"], "token": "you"});

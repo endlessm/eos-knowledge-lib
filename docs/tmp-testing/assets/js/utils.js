@@ -112,7 +112,27 @@ utils.HDContext = (class {
 	}
 });
 
-$(document).ready(function() {
-	utils.hd_context = new utils.HDContext(window.location.href);
-	console.log('The context is', utils.hd_context);
-});
+var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+
+$.fn.attrchange = function(callback) {
+    if (MutationObserver) {
+        var options = {
+            subtree: false,
+            attributes: true
+        };
+
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(e) {
+                callback.call(e.target, e.attributeName);
+            });
+        });
+
+        return this.each(function() {
+            observer.observe(this, options);
+        });
+
+    }
+}
+
+utils.hd_context = new utils.HDContext(window.location.href);
+console.log('The context is', utils.hd_context);

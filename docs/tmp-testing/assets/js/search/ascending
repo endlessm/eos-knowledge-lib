@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "ascending", "urls": ["order/featured.html#ascending", "order/publishedDate.html#ascending", "order/alphabetical.html#ascending"]});
+urls_downloaded_cb({"urls": ["order/featured.html#ascending", "order/publishedDate.html#ascending", "order/alphabetical.html#ascending"], "token": "ascending"});

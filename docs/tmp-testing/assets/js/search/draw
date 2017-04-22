@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "draw", "urls": ["card/title.html#decorateonhighlight"]});
+urls_downloaded_cb({"urls": ["card/title.html#decorateonhighlight"], "token": "draw"});

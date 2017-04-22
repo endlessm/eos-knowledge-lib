@@ -1,4 +1,4 @@
-<nav class="navbar navbar-fixed-top navbar-default">
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
@@ -7,7 +7,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a id="home-link" class="hotdoc-navbar-brand">
+			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
 				@include("brand-logo.html")
 			</a>
 		</div>
@@ -15,13 +15,13 @@
 			<ul class="nav navbar-nav" id="menu">
 				@include("navbar_links.html")
 			</ul>
+			@include("navbar_center.html")
 			<form action="" class="navbar-form navbar-right" id="navbar-search-form">
                                <div class="form-group has-feedback">
                                        <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled="disabled">
 				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
                                </div>
                        </form>
-
 		</div>
 	</div>
 </nav>

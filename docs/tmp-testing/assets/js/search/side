@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "side", "urls": ["layout/sideMenu.html#layoutsidemenu1", "layout/navigation.html#layoutnavigation1", "arrangement/piano.html#arrangementpiano1", "arrangement/piano.html#compactmode"]});
+urls_downloaded_cb({"urls": ["layout/sideMenu.html#layoutsidemenu1", "layout/navigation.html#layoutnavigation1", "arrangement/piano.html#arrangementpiano1", "arrangement/piano.html#compactmode"], "token": "side"});

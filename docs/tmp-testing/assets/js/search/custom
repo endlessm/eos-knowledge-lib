@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "custom", "urls": ["card/audio.html#customcss", "card/video.html#customcss", "card/knowledgeDocument.html#customcss", "tools.html#autobahn", "card/title.html#decorateonhighlight"]});
+urls_downloaded_cb({"urls": ["card/audio.html#customcss", "card/video.html#customcss", "card/knowledgeDocument.html#customcss", "tools.html#autobahn", "card/title.html#decorateonhighlight"], "token": "custom"});

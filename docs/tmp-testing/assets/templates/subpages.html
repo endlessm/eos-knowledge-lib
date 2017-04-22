@@ -1,0 +1,26 @@
+@require(page, subpages)
+
+@if not page.render_subpages:
+<div class="hide-if-js">
+@end
+
+<div id="subpages">
+	<table>
+		<tbody>
+			@for link, subpage in subpages.items():
+			<tr>
+				<td><a href="@link">@subpage.get_title()</a></td>
+				@if subpage.short_description:
+				<td>@subpage.short_description</td>
+				@else:
+				<td>No summary available</td>
+				@end
+			</tr>
+			@end
+		</tbody>
+	</table>
+</div>
+
+@if not page.render_subpages:
+</div>
+@end
