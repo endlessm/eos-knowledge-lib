@@ -79,6 +79,9 @@ const ArticleStack = new Module.Class({
         'nav-card': {
             multi: true,
         },
+        'nav-content': {
+            multi: true,
+        },
         'video': {
             multi: true,
         },
@@ -217,6 +220,9 @@ const ArticleStack = new Module.Class({
                 });
             }
         }
+
+        if (this.allow_navigation === Navigation.NEXT && !article_content_props.next_card)
+            article_content_props.nav_content = this.create_submodule('nav-content');
 
         let slot = 'card';
         if (model instanceof Eknc.VideoObjectModel) {

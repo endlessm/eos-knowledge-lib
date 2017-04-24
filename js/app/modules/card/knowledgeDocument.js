@@ -82,6 +82,12 @@ const KnowledgeDocument = new Module.Class({
         'next-card': GObject.ParamSpec.object('next-card',
             'Next Card', 'Next Card',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, Gtk.Widget),
+        /**
+         * Property: nav-content
+         */
+        'nav-content': GObject.ParamSpec.object('nav-content',
+            'Navigation Content', 'Navigation Content',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, Gtk.Widget),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/knowledgeDocument.ui',
@@ -124,6 +130,9 @@ const KnowledgeDocument = new Module.Class({
         if (this.next_card)
             this._next_panel = this._panel_overlay.add_panel_widget(this.next_card,
                                                                     Gtk.PositionType.BOTTOM);
+        if (this.nav_content)
+            this._content_panel = this._panel_overlay.add_panel_widget(this.nav_content,
+                                                                       Gtk.PositionType.BOTTOM);
         this.show_all();
 
         this._setup_toc();
@@ -276,6 +285,8 @@ const KnowledgeDocument = new Module.Class({
                 this._previous_panel.reveal_panel = exited_top_area && in_top_area;
             if (this._next_panel)
                 this._next_panel.reveal_panel = in_bottom_area;
+            if (this._content_panel)
+                this._content_panel.reveal_panel = in_bottom_area;
             if (!in_top_area)
                 exited_top_area = true;
         });
