@@ -130,7 +130,7 @@ defines:
                 arrangement:
                   <<: *main-arrangement
                   slots:
-                    card: Card.List
+                    card: 'Card.List(show-context: true)'
                 selection:
                   type: Selection.Search
                   id: search-results
