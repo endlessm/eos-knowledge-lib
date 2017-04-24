@@ -119,8 +119,14 @@ $highlighted-background-color: darken($background-dark-color, 5%) !default;
 }
 
 .article-page {
-  .next {
-    min-height: 150px;
+  .related-posts {
     margin: 0px 50px 20px 50px;
+
+    .ContentGroupContentGroup__title {
+      font-size: 46px;
+      font-weight: 900;
+      color: $primary-medium-color;
+      margin: 30px 0px 20px 0px;
+    }
   }
 }

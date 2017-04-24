@@ -73,10 +73,29 @@ defines:
   type: Layout.ArticleStack
   properties:
     do-sliding-animation: false
-    allow-navigation: next
   slots:
     card: 'Card.KnowledgeDocument(show-titles: false, show-toc: false)'
-    nav-card: 'Card.List(show-synopsis: false)'
+    nav-content:
+      type: ContentGroup.ContentGroup
+      styles:
+        - related-posts
+      properties:
+        valign: center
+      slots:
+        title:
+          type: ContentGroup.StaticText
+          properties:
+            label: !translate 'Related posts'
+            halign: start
+        arrangement:
+          shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
+          slots:
+            card: *main-card
+        selection:
+          type: Selection.RelatedArticles
+          slots:
+            filter: 'Filter.Sets(invert: true)'
+            order: 'Order.PublishedDate(ascending: false)'
 
 - &set-page
   shortdef: 'Layout.InfiniteScrolling(expand: true)'
