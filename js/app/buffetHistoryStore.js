@@ -70,15 +70,6 @@ const BuffetHistoryStore = new GObject.Class({
                     this.do_search(payload.query,
                         payload.timestamp || Gdk.CURRENT_TIME);
                     break;
-                case Actions.PREVIOUS_DOCUMENT_CLICKED:
-                case Actions.NEXT_DOCUMENT_CLICKED:
-                    let item = this.get_current_item();
-                    this.set_current_item_from_props({
-                        page_type: Pages.ARTICLE,
-                        model: payload.model,
-                        context: item.context,
-                    });
-                    break;
                 case Actions.LIGHTBOX_CLOSED:
                 case Actions.SEARCH_BOX_FOCUSED:
                     this.close_lightbox();
