@@ -1,0 +1,217 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Endless Mobile, Inc.
+# This file is distributed under the same license as the eos-knowledge package.
+# 
+# Translators:
+msgid ""
+msgstr ""
+"Project-Id-Version: eos-knowledge-lib\n"
+"Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
+"POT-Creation-Date: 2017-04-18 02:02+0000\n"
+"PO-Revision-Date: 2017-04-16 05:01+0000\n"
+"Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
+"Language-Team: Afrikaans (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/af/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: af\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: data/widgets/card/legacyPolaroid.ui:105
+msgid "PDF"
+msgstr ""
+
+#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:208
+msgid "Next Article"
+msgstr ""
+
+#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:191
+msgid "Previous Article"
+msgstr ""
+
+#: data/widgets/contentGroup/contentGroup.ui:26
+msgid "Oops! There was an error."
+msgstr ""
+
+#: data/widgets/contentGroup/contentGroup.ui:40
+msgid "Download support info"
+msgstr ""
+
+#: data/widgets/contentGroup/contentGroup.ui:44
+msgid ""
+"Click here to download a file with information that will help us track down "
+"the problem."
+msgstr ""
+
+#: data/widgets/contentGroup/noResultsMessage.ui:50
+msgid ""
+"We recommend that you:\n"
+"\n"
+"  •  Check your spelling\n"
+"  •  Try other words that mean the same thing\n"
+"  •  Try using more general words"
+msgstr ""
+
+#: data/widgets/layout/sideMenu.ui:95
+#: js/app/modules/layout/hamburgerBasement.js:51
+msgid "HOME"
+msgstr ""
+
+#: data/widgets/tooltips.ui:50
+msgid "View the license"
+msgstr ""
+
+#: js/app/application.js:180
+msgid "Oops! No content."
+msgstr ""
+
+#: js/app/application.js:181
+msgid ""
+"If you have an internet connection, we are downloading more content right "
+"now. Try again in a few minutes after this message disappears."
+msgstr ""
+
+#. TRANSLATORS: anything inside curly braces '{}' is going
+#. to be substituted in code. Please make sure to leave the
+#. curly braces around any words that have them and DO NOT
+#. translate words inside curly braces.
+#: js/app/articleHTMLRenderer.js:85
+msgid ""
+"This page contains content from {original-link}, available under a {license-"
+"link} license."
+msgstr ""
+
+#. TRANSLATORS: Replace this with a link to the homepage of
+#. wikiHow in your language.
+#: js/app/articleHTMLRenderer.js:92
+msgid "http://wikihow.com"
+msgstr ""
+
+#. TRANSLATORS: anything inside curly braces '{}' is going
+#. to be substituted in code. Please make sure to leave the
+#. curly braces around any words that have them and DO NOT
+#. translate words inside curly braces.
+#: js/app/articleHTMLRenderer.js:97
+msgid ""
+"See {wikihow-article-link} for more details, videos, pictures and "
+"attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
+"to do anything."
+msgstr ""
+
+#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:280
+msgid "Copy"
+msgstr ""
+
+#: js/app/articleHTMLRenderer.js:184
+msgid "Legal Notice and Intellectual Property Policy"
+msgstr ""
+
+#. TRANSLATORS: anything inside curly braces '{}' is going to be
+#. substituted in code. Please make sure to leave the curly
+#. braces around any words that have them, and do not translate
+#. words inside curly braces.
+#: js/app/articleHTMLRenderer.js:190
+msgid "Read more at {link}"
+msgstr ""
+
+#: js/app/articleHTMLRenderer.js:196
+msgid "DISCLAIMER PLACEHOLDER"
+msgstr ""
+
+#. TRANSLATORS: the text inside curly braces {blog-link} is going to be
+#. substituted in code. Please make sure that your translation contains
+#. {blog-link} and it is not translated.
+#: js/app/articleHTMLRenderer.js:319
+msgid "Content taken from {blog-link}."
+msgstr ""
+
+#. TRANSLATORS: the text inside curly braces {blog-link} is going to be
+#. substituted in code. Please make sure that your translation contains
+#. {blog-link} and it is not translated.
+#: js/app/articleHTMLRenderer.js:324
+msgid "Content courtesy of {blog-link}. Used with kind permission."
+msgstr ""
+
+#. TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
+#. is going to be substituted in code. Please make sure that your
+#. translation contains both {blog-link} and {license-link} and they are not
+#. translated.
+#: js/app/articleHTMLRenderer.js:331
+msgid "Content courtesy of {blog-link}, licensed under {license-link}."
+msgstr ""
+
+#: js/app/buffetHistoryStore.js:53
+#, javascript-format
+msgid "Results were found for “%s”"
+msgstr ""
+
+#: js/app/interfaces/card.js:279
+#, javascript-format
+msgid "%s:%s minute"
+msgid_plural "%s:%s minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/app/interfaces/card.js:342
+#, javascript-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/app/modules/banner/context.js:38 js/app/modules/banner/context.js:49
+msgid "Highlights"
+msgstr ""
+
+#: js/app/modules/banner/context.js:52
+msgid "All Categories"
+msgstr ""
+
+#. TRANSLATORS: %s will be replaced with the text the user
+#. searched for. Make sure to keep the %s token in your translation.
+#: js/app/modules/banner/context.js:61
+#, javascript-format
+msgid "Search results for “%s”"
+msgstr ""
+
+#: js/app/modules/banner/search.js:45
+#, javascript-format
+msgid "Results for “%s”"
+msgstr ""
+
+#: js/app/modules/contentGroup/contentGroup.js:160
+msgid "See more"
+msgstr ""
+
+#: js/app/modules/contentGroup/noResultsMessage.js:52
+msgid "Sorry! :-("
+msgstr ""
+
+#: js/app/modules/contentGroup/noResultsMessage.js:53
+msgid "There are no results that match your search.\n"
+msgstr ""
+
+#: js/app/modules/layout/hamburgerBasement.js:35
+msgid "SEE ALL CATEGORIES"
+msgstr ""
+
+#: js/app/modules/layout/placeholder.js:25
+msgid "Placeholder"
+msgstr ""
+
+#: js/app/modules/navigation/searchBox.js:162
+msgid "See more results"
+msgstr ""
+
+#. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
+#. in code. Please make sure to leave the curly braces around any words that
+#. have them and DO NOT translate words inside curly braces. Also, note: the
+#. "and" is used to join together the names of authors of a blog post. For
+#. example: "Jane Austen and Henry Miller and William Clifford"
+#: js/app/utils.js:101
+msgid "by {author}"
+msgstr ""
+
+#: js/app/utils.js:101
+msgid "and"
+msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-04-11 01:57+0000\n"
+"POT-Creation-Date: 2017-04-18 02:02+0000\n"
 "PO-Revision-Date: 2017-03-28 01:56+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: German (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/de/)\n"
@@ -62,11 +62,11 @@ msgstr "Persönlicher Ordner"
 msgid "View the license"
 msgstr "Lizenz lesen"
 
-#: js/app/application.js:172
+#: js/app/application.js:180
 msgid "Oops! No content."
 msgstr "Huch! Kein Inhalt."
 
-#: js/app/application.js:173
+#: js/app/application.js:181
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -76,7 +76,7 @@ msgstr "Wenn du eine Internet-Verbindung hast, dann sind wir gerade dabei neue D
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:80
+#: js/app/articleHTMLRenderer.js:85
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
@@ -84,7 +84,7 @@ msgstr "Diese Seite enthält Inhalte von {original-link} und steht unter derLize
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
-#: js/app/articleHTMLRenderer.js:87
+#: js/app/articleHTMLRenderer.js:92
 msgid "http://wikihow.com"
 msgstr "http://de.wikihow.com"
 
@@ -92,18 +92,18 @@ msgstr "http://de.wikihow.com"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:92
+#: js/app/articleHTMLRenderer.js:97
 msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
 msgstr "Auf der Seite {wikihow-article-link} sind weitere Details, Videos, Bilder und die Autoren vermerkt. Mit herzlichen Dank an {wikihow-link}, denn dort kann jeder einfach alles lernen."
 
-#: js/app/articleHTMLRenderer.js:150 js/app/articleHTMLRenderer.js:274
+#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:280
 msgid "Copy"
 msgstr "Kopie"
 
-#: js/app/articleHTMLRenderer.js:179
+#: js/app/articleHTMLRenderer.js:184
 msgid "Legal Notice and Intellectual Property Policy"
 msgstr "Rechtliche Hinweise und Markenrechte"
 
@@ -111,25 +111,25 @@ msgstr "Rechtliche Hinweise und Markenrechte"
 #. substituted in code. Please make sure to leave the curly
 #. braces around any words that have them, and do not translate
 #. words inside curly braces.
-#: js/app/articleHTMLRenderer.js:185
+#: js/app/articleHTMLRenderer.js:190
 msgid "Read more at {link}"
 msgstr "Weiterlesen bei {link}"
 
-#: js/app/articleHTMLRenderer.js:191
+#: js/app/articleHTMLRenderer.js:196
 msgid "DISCLAIMER PLACEHOLDER"
 msgstr ""
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:313
+#: js/app/articleHTMLRenderer.js:319
 msgid "Content taken from {blog-link}."
 msgstr "Die Inhalte stammen von {blog-link}"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:318
+#: js/app/articleHTMLRenderer.js:324
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "Die freundlicherweise überlassenen Inhalte stammen von {blog-link}."
 
@@ -137,7 +137,7 @@ msgstr "Die freundlicherweise überlassenen Inhalte stammen von {blog-link}."
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:325
+#: js/app/articleHTMLRenderer.js:331
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Die Inhalte stammen von {blog-link} und stehen unter der Lizenz: {license-link}"
 
