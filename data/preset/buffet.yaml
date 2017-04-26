@@ -260,7 +260,6 @@ defines:
       type: Layout.ArticleStack
       properties:
         do-sliding-animation: false
-        allow-navigation: next
       slots:
         card:
           type: Card.KnowledgeDocument
@@ -268,8 +267,23 @@ defines:
             show-titles: false
             show-toc: false
             custom-css: buffet-custom.css
-        nav-card:
-          shortdef: 'Card.Sequence(halign: center)'
+        nav-content:
+          type: ContentGroup.ContentGroup
+          properties:
+            track-context: true
+            valign: center
+          slots:
+            arrangement:
+              shortdef: 'Arrangement.List(max-rows: 1)'
+              slots:
+                card:
+                  type: Card.Sequence
+                  properties:
+                    halign: center
+                    sequence: 1
+                    navigation-context: !translate 'Next Article'
+            selection:
+              type: Selection.NextArticle
 
 root:
   shortdef: 'Controller.Buffet(theme: buffet)'

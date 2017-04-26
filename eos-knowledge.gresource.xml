@@ -172,6 +172,7 @@
     <file>js/app/modules/selection/articlesForSetCrossSection.js</file>
     <file>js/app/modules/selection/contentForSet.js</file>
     <file>js/app/modules/selection/relatedArticles.js</file>
+    <file>js/app/modules/selection/nextArticle.js</file>
     <file>js/app/modules/selection/search.js</file>
     <file>js/app/modules/selection/selection.js</file>
     <file>js/app/modules/selection/subsetsForSet.js</file>

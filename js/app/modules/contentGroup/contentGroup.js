@@ -68,6 +68,12 @@ const ContentGroup = new Module.Class({
             'The number of cards to be displayed per page.',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             1, GLib.MAXUINT16, 10),
+        /**
+         * Property: track-context
+         */
+        'track-context': GObject.ParamSpec.boolean('track-context', 'track-context', 'track-context',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
     },
 
     _init: function (props={}) {
@@ -103,10 +109,17 @@ const ContentGroup = new Module.Class({
 
         this._arrangement = this.create_submodule('arrangement');
         this._arrangement.connect('card-clicked', (arrangement, model) => {
+            // XXX we need to keep track of the original context
+            let context;
+            if (this.track_context)
+                context = HistoryStore.get_default().get_current_item().context;
+            if (!context)
+                context = this._selection.get_models();
+
             Dispatcher.get_default().dispatch({
                 action_type: Actions.ITEM_CLICKED,
                 model: model,
-                context: this._selection.get_models(),
+                context: context,
             });
         });
 

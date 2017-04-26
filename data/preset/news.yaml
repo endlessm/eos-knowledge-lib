@@ -282,10 +282,25 @@ defines:
       type: Layout.ArticleStack
       properties:
         do-sliding-animation: false
-        allow-navigation: next
       slots:
         card: 'Card.KnowledgeDocument(show-titles: false, show-toc: false)'
-        nav-card: 'Card.List(show-synopsis: false)'
+        nav-content:
+          type: ContentGroup.ContentGroup
+          properties:
+            track-context: true
+            valign: center
+          slots:
+            arrangement:
+              shortdef: 'Arrangement.List(max-rows: 1)'
+              slots:
+                card:
+                  type: Card.List
+                  properties:
+                    sequence: 1
+                    show-synopsis: false
+                    navigation-context: !translate 'Next Article'
+            selection:
+              type: Selection.NextArticle
 
 root:
   shortdef: 'Controller.Buffet(theme: news)'
