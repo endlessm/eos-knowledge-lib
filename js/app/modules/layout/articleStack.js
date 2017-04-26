@@ -21,13 +21,6 @@ const WebviewTooltipPresenter = imports.app.webviewTooltipPresenter;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
-const Navigation = {
-    PREVIOUS: 'previous',
-    NEXT: 'next',
-    BOTH: 'both',
-    NEITHER: 'neither',
-};
-
 /**
  * Class: ArticleStack
  *
@@ -59,24 +52,10 @@ const ArticleStack = new Module.Class({
             'Do Sliding Animation', 'Do Sliding Animation',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             true),
-        /**
-         * Property: allow-navigation
-         * What direction of navigation to allow.
-         *
-         * We can either allow 'previous', 'next', 'neither', or 'both' navigation
-         * from the current article.
-         */
-        'allow-navigation': GObject.ParamSpec.string('allow-navigation',
-            'Allow navigation', 'What direction of navigation to allow',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            Navigation.BOTH),
     },
 
     Slots: {
         'card': {
-            multi: true,
-        },
-        'nav-card': {
             multi: true,
         },
         'nav-content': {
@@ -170,7 +149,7 @@ const ArticleStack = new Module.Class({
         return Gtk.StackTransitionType.SLIDE_LEFT;
     },
 
-    _load_article_model: function (model, context) {
+    _load_article_model: function (model) {
         if (this.visible_child &&
             this.visible_child.model.ekn_id === model.ekn_id)
             return;
@@ -178,51 +157,10 @@ const ArticleStack = new Module.Class({
         let article_content_props = {
             model: model,
         };
-        let previous_model, next_model;
-        if (context) {
-            let index = context.indexOf(model);
-            if (index > 0)
-                previous_model = context[index - 1];
-            if (index < context.length - 1)
-                next_model = context[index + 1];
-        }
-        if (previous_model &&
-            (this.allow_navigation === Navigation.PREVIOUS || this.allow_navigation === Navigation.BOTH)) {
-            let card = this.create_submodule('nav-card', {
-                model: previous_model,
-                sequence: Card.Sequence.PREVIOUS,
-                navigation_context: _("Previous Article"),
-            });
-            if (card !== null) {
-                article_content_props.previous_card = card;
-                card.connect('clicked', () => {
-                    Dispatcher.get_default().dispatch({
-                        action_type: Actions.PREVIOUS_DOCUMENT_CLICKED,
-                        model: card.model,
-                    });
-                });
-            }
-        }
-        if (next_model &&
-            (this.allow_navigation === Navigation.NEXT || this.allow_navigation === Navigation.BOTH)) {
-            let card = this.create_submodule('nav-card', {
-                model: next_model,
-                sequence: Card.Sequence.NEXT,
-                navigation_context: _("Next Article"),
-            });
-            if (card !== null) {
-                article_content_props.next_card = card;
-                card.connect('clicked', () => {
-                    Dispatcher.get_default().dispatch({
-                        action_type: Actions.NEXT_DOCUMENT_CLICKED,
-                        model: card.model,
-                    });
-                });
-            }
-        }
 
-        if (this.allow_navigation === Navigation.NEXT && !article_content_props.next_card)
-            article_content_props.nav_content = this.create_submodule('nav-content');
+        let nav_content = this.create_submodule('nav-content');
+        if (nav_content)
+            article_content_props.nav_content = nav_content;
 
         let slot = 'card';
         if (model instanceof Eknc.VideoObjectModel) {
@@ -268,7 +206,7 @@ const ArticleStack = new Module.Class({
             this.get_children().forEach((view) => view.set_active(false));
             return;
         }
-        this._load_article_model(item.model, item.context);
+        this._load_article_model(item.model);
     },
 
     _on_show_tooltip: function (tooltip_presenter, tooltip, uri) {

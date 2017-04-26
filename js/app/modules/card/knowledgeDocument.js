@@ -69,20 +69,6 @@ const KnowledgeDocument = new Module.Class({
             GObject.ParamFlags.READABLE,
             TableOfContents.TableOfContents.$gtype),
         /**
-         * Property: previous-card
-         * Card linking to the previous document card.
-         */
-        'previous-card': GObject.ParamSpec.object('previous-card',
-            'Previous Card', 'Previous Card',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, Gtk.Widget),
-        /**
-         * Property: next-card
-         * Card linking to the next document card.
-         */
-        'next-card': GObject.ParamSpec.object('next-card',
-            'Next Card', 'Next Card',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, Gtk.Widget),
-        /**
          * Property: nav-content
          */
         'nav-content': GObject.ParamSpec.object('nav-content',
@@ -124,12 +110,6 @@ const KnowledgeDocument = new Module.Class({
         this.set_title_label_from_model(this._title_label);
         this.set_title_label_from_model(this._top_title_label);
 
-        if (this.previous_card)
-            this._previous_panel = this._panel_overlay.add_panel_widget(this.previous_card,
-                                                                        Gtk.PositionType.TOP);
-        if (this.next_card)
-            this._next_panel = this._panel_overlay.add_panel_widget(this.next_card,
-                                                                    Gtk.PositionType.BOTTOM);
         if (this.nav_content)
             this._content_panel = this._panel_overlay.add_panel_widget(this.nav_content,
                                                                        Gtk.PositionType.BOTTOM);
@@ -268,7 +248,7 @@ const KnowledgeDocument = new Module.Class({
         if (this.custom_css)
             webview.renderer.set_custom_css_files([this.custom_css]);
 
-        // If we ever want previous/next cards to work with PDFs we'll need to
+        // If we ever want nav-content to work with PDFs we'll need to
         // generalize the show panel logic here.
         let exited_top_area = false;
         Gio.DBus.session.signal_subscribe(null,
@@ -281,10 +261,6 @@ const KnowledgeDocument = new Module.Class({
             let [scroll_height, scroll_height_max] = variant.deep_unpack();
             let in_top_area = scroll_height < 25;
             let in_bottom_area = (scroll_height_max - scroll_height) < 25;
-            if (this._previous_panel)
-                this._previous_panel.reveal_panel = exited_top_area && in_top_area;
-            if (this._next_panel)
-                this._next_panel.reveal_panel = in_bottom_area;
             if (this._content_panel)
                 this._content_panel.reveal_panel = in_bottom_area;
             if (!in_top_area)

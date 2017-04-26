@@ -108,7 +108,7 @@ describe('Card.KnowledgeDocument', function () {
     });
 
     describe('with html model', function () {
-        let html_model, previous_card, next_card;
+        let html_model;
         beforeEach(function (done) {
             html_model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn:///foo/bar',
@@ -116,13 +116,9 @@ describe('Card.KnowledgeDocument', function () {
                 title: 'Html title',
                 table_of_contents: toc,
             });
-            previous_card = new Minimal.MinimalCard();
-            next_card = new Minimal.MinimalCard();
             card = new KnowledgeDocument.KnowledgeDocument({
                 model: html_model,
                 show_toc: true,
-                previous_card: previous_card,
-                next_card: next_card,
             });
             spyOn(card, '_create_webview').and.returnValue(new MockWidgets.MockEknWebview());
             card.load_content_promise().then(done);
@@ -130,11 +126,6 @@ describe('Card.KnowledgeDocument', function () {
         });
 
         it('can be loaded', function () {});
-
-        it('adds a previous/next card when set', function () {
-            expect(card).toHaveDescendant(previous_card);
-            expect(card).toHaveDescendant(next_card);
-        });
 
         describe('table of contents', function () {
             let win;

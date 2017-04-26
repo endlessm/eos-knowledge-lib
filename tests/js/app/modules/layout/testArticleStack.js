@@ -20,7 +20,7 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 Gtk.init(null);
 
 describe('Layout.ArticleStack', function () {
-    let module, card, selection, root, factory, dispatcher, article_model, previous_model, next_model;
+    let module, card, selection, root, factory, dispatcher, article_model;
     let store;
 
     beforeEach(function () {
@@ -41,7 +41,6 @@ describe('Layout.ArticleStack', function () {
                     },
                     slots: {
                         'card': { type: Minimal.MinimalDocumentCard },
-                        'nav-card': { type: Minimal.MinimalNavigationCard },
                     },
                 },
                 {
@@ -67,20 +66,14 @@ describe('Layout.ArticleStack', function () {
         spyOn(AppUtils, 'get_web_plugin_dbus_name').and.returnValue('test0');
 
         article_model = Eknc.ArticleObjectModel.new_from_props();
-        previous_model = Eknc.ArticleObjectModel.new_from_props({
-            title: 'foo',
-        });
-        next_model = Eknc.ArticleObjectModel.new_from_props({
-            title: 'bar',
-        });
         store.set_current_item_from_props({
             page_type: Pages.ARTICLE,
             model: article_model,
-            context: [previous_model, article_model, next_model],
         });
 
         selection = factory.get_last_created('contents.selection');
-        card = factory.get_last_created('contents.card.2');
+        card = factory.get_last_created('contents.card.0');
+
     });
 
     it('transitions in new content when state changes to article page', function () {
@@ -91,28 +84,11 @@ describe('Layout.ArticleStack', function () {
         expect(module.transition_type).toBe(Gtk.StackTransitionType.NONE);
     });
 
-    it('sets up a previous and next card if state has context list', function () {
-        expect(card.previous_card).toBeA(Minimal.MinimalNavigationCard);
-        expect(card.next_card).toBeA(Minimal.MinimalNavigationCard);
-    });
-
     it('dispatches article link clicked', function () {
         let id = 'ekn://foo/bar';
         card.emit('ekn-link-clicked', id);
         let payload = dispatcher.last_payload_with_type(Actions.ARTICLE_LINK_CLICKED);
         expect(payload.ekn_id).toBe(id);
-    });
-
-    it('dispatches previous clicked', function () {
-        card.previous_card.emit('clicked');
-        let payload = dispatcher.last_payload_with_type(Actions.PREVIOUS_DOCUMENT_CLICKED);
-        expect(payload.model).toBe(previous_model);
-    });
-
-    it('dispatches next clicked', function () {
-        card.next_card.emit('clicked');
-        let payload = dispatcher.last_payload_with_type(Actions.NEXT_DOCUMENT_CLICKED);
-        expect(payload.model).toBe(next_model);
     });
 
     it('loads a new article when selection changes', function () {
@@ -121,7 +97,7 @@ describe('Layout.ArticleStack', function () {
         selection.get_models.and.returnValue([different_article_model]);
         selection.emit('models-changed');
         Utils.update_gui();
-        let new_card = factory.get_created('contents.card.3')[0];
+        let new_card = factory.get_created('contents.card.1')[0];
         expect(new_card).toBeDefined();
         expect(module).toHaveDescendant(new_card);
     });
@@ -131,7 +107,6 @@ describe('Layout.ArticleStack', function () {
             type: ArticleStack.ArticleStack,
             slots: {
                 'card': { type: Minimal.MinimalDocumentCard },
-                'nav-card': { type: Minimal.MinimalNavigationCard },
             },
         });
         expect(module).toBeDefined();
