@@ -135,7 +135,7 @@ const MinimalDocumentCard = new Module.Class({
         };
     },
 
-    load_content_promise: function () { return new Promise(); },
+    load_content_promise: function () { return Promise.resolve(); },
     set_active: function () {},
 });
 
