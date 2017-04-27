@@ -1,27 +1,34 @@
 .ArrangementSideBySide {
     .CardTitle {
+        padding: 0px 8px;
+
         &__title {
             font-family: $title-font;
             color: $white-60-color;
-            padding: 13px 0px 3px 0px;
             font-size: 18px;
         }
 
         &:hover .CardTitle__title {
-            border-bottom: 1px solid $accent-light-color;
             color: $accent-light-color;
         }
 
         &.highlighted {
-            background-color: $primary-dark-color;
+            background-color: darken($background-dark-color, 5%);
 
             .CardTitle__title {
                 color: white;
             }
+        }
+    }
+    &__popover {
+        background-color: $primary-medium-color;
+        box-shadow: 2px 2px 6px black;
+        color: $white-60-color;
+        padding: .5em 0em;
+        min-width: 10em;
 
-            &:hover .CardTitle__title {
-                border-bottom: none;
-            }
+        .CardTitle {
+            padding: .4em 1em;
         }
     }
 }
