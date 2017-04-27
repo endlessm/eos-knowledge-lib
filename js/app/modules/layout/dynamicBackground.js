@@ -73,7 +73,8 @@ const DynamicBackground = new Module.Class({
         this._css_provider = new Gtk.CssProvider();
 
         let context = this.get_style_context();
-        context.add_provider(this._css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        context.add_provider(this._css_provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION - 1);
 
         this.reference_module('selection', selection => {
             selection.connect('models-changed',
