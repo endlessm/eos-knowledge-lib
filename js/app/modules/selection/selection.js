@@ -90,6 +90,10 @@ const Selection = new Module.Class({
         return this._models_by_id.has(model.ekn_id);
     },
 
+    provides_context: function () {
+        return true;
+    },
+
     get needs_refresh () {
         return this._needs_refresh;
     },

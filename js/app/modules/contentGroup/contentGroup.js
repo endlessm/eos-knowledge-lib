@@ -103,10 +103,16 @@ const ContentGroup = new Module.Class({
 
         this._arrangement = this.create_submodule('arrangement');
         this._arrangement.connect('card-clicked', (arrangement, model) => {
+            let context;
+            if (!this._selection.provides_context())
+                context = HistoryStore.get_default().get_current_item().context;
+            else
+                context = this._selection.get_models();
+
             Dispatcher.get_default().dispatch({
                 action_type: Actions.ITEM_CLICKED,
                 model: model,
-                context: this._selection.get_models(),
+                context: context,
             });
         });
 
