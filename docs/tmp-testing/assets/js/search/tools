@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tools.html#tools"], "token": "tools"});
+urls_downloaded_cb({"token": "tools", "urls": ["tools.html#tools", "index.html#modular-framework"]});

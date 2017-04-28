@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["card/legacyPost.html#cardlegacypost1", "card/legacyPost.html#cardlegacypost"], "token": "card.legacypost"});
+urls_downloaded_cb({"token": "card.legacypost", "urls": ["card/legacyPost.html#cardlegacypost1", "card/legacyPost.html#cardlegacypost"]});

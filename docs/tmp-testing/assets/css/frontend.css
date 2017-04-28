@@ -4,7 +4,32 @@
   padding-left: 15px;
   padding-right: 15px;
 }
+.base_symbol_container > table,
+#page-description > table,
+.csp-previewer > table,
+#subpages > table,
+.base_symbol_container .authors-description,
+#page-description .authors-description,
+.csp-previewer .authors-description,
+#subpages .authors-description {
+  overflow-x: auto;
+  min-height: 0.01%;
+}
 @media screen and (max-width: 767px) {
+  .base_symbol_container > table,
+  #page-description > table,
+  .csp-previewer > table,
+  #subpages > table,
+  .base_symbol_container .authors-description,
+  #page-description .authors-description,
+  .csp-previewer .authors-description,
+  #subpages .authors-description {
+    width: 100%;
+    margin-bottom: 15px;
+    overflow-y: hidden;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    border: 1px solid #DFD7CA;
+  }
 }
 @media (min-width: 768px) {
 }
@@ -84,16 +109,32 @@ button:focus {
   border-bottom-width: 1px;
   border-bottom-style: solid;
 }
-.base_symbol_container,
-.symbol_section,
-#page-description,
-#subpages {
+.base_symbol_container {
   width: 100%;
-  padding-left: 30px;
-  padding-right: 30px;
 }
-img {
+img,
+video {
   max-width: 100%;
+  height: auto;
+}
+video {
+  width: 100%;
+}
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 30px;
+  height: 0;
+  overflow: hidden;
+}
+.video-container iframe,
+.video-container object,
+.video-container embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 #page-description img {
   margin-left: auto;
@@ -118,45 +159,90 @@ img {
 blockquote {
   font-style: italic;
 }
-html,
 body {
-  height: 100%;
-  margin: 0pt;
+  overflow-x: hidden;
 }
-html {
-  position: relative;
+#body {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 16.66vw;
+  right: 16.66vw;
+  top: 50px;
+  bottom: 0px;
+  word-wrap: break-word;
 }
-body {
-  display: table;
+@media (max-width: 1200px) {
+  #body {
+    right: 0vw;
+    left: 25vw;
+  }
+}
+@media (max-width: 992px) {
+  #body {
+    left: 0vw;
+  }
+}
+body.full-width #body {
+  left: 0vw;
+  right: 0vw;
+}
+body.full-width #toc-toggle,
+body.full-width #sidenav-toggle {
+  display: none;
+}
+#main {
+  flex: 1 0 auto;
+}
+#main > * {
+  padding-left: 15px;
+  padding-right: 15px;
   width: 100%;
 }
-.page-row {
-  display: table-row;
-  height: 1px;
+#main::after {
+  content: '\00a0';
+  /* &nbsp; */
+  display: block;
+  margin-top: var(--space);
+  height: 0px;
+  visibility: hidden;
 }
-.page-row-expanded {
-  height: 100%;
+#footer {
+  flex: none;
+}
+#footer > * {
+  padding-left: 15px;
+  padding-right: 15px;
 }
 .hotdoc-navbar-brand {
   height: 50px;
   padding: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   float: left;
 }
 .hotdoc-navbar-brand img {
-  max-height: 40px;
-  min-height: 40px;
-  min-width: 40px;
+  max-height: 30px;
+  min-height: 30px;
+  min-width: 30px;
 }
 #sidenav-lookup-field,
 .twitter-typeahead input.form-control {
   width: 150px;
 }
-#sidenav-lookup-field:focus,
-.twitter-typeahead input.form-control {
-  width: 100%;
+@media (min-width: 992px) {
+  #sidenav-lookup-field:focus,
+  .twitter-typeahead input.form-control {
+    width: 100%;
+  }
 }
 #search_results {
+  flex: 1 0 auto;
   display: none;
+}
+#search_results > * {
+  padding-left: 15px;
+  padding-right: 15px;
 }
 .tt-menu {
   width: 100%;
@@ -186,66 +272,142 @@ body {
 }
 #sidenav {
   position: fixed;
-  top: 50px;
-  bottom: 0px;
-  left: 0px;
-  width: 25%;
+  height: 100vh;
+  left: 0vw;
   margin-bottom: 0px;
   background-color: #3E3F3A;
   border: 0px;
   border-radius: 0px;
   color: #8E8C84;
+  width: 16.66vw;
   z-index: 1;
 }
-@media (min-width: 1600px) {
+@media (max-width: 1200px) {
   #sidenav {
-    width: 16.66%;
+    width: 25vw;
   }
-}
-#sidenav.empty {
-  width: 0%;
 }
 @media (max-width: 992px) {
   #sidenav {
-    margin-left: 0%;
-    width: 50%;
+    margin-left: -80vw;
+    width: 80vw;
   }
-  #sidenav.oc-collapsed {
-    margin-left: -50%;
-  }
-}
-#sidenav + #offcanvasleft {
-  position: fixed;
-  top: 100px;
-  left: 50%;
-  /* We're fixed, and overlapping the padding of the center div which isn't */
-  z-index: 1;
-}
-#sidenav.oc-collapsed + #offcanvasleft {
-  left: 0%;
-}
-@media (min-width: 992px) {
-  #offcanvasleft {
-    display: none;
-  }
-}
-#sidenav.empty + #offcanvasleft {
-  display: none;
 }
 #toc-column {
   position: fixed;
-  top: 70px;
-  bottom: 0px;
-  right: 0px;
-  width: 16.66%;
+  height: 100vh;
+  right: 0vw;
+  background-color: #fff;
+  width: 16.66vw;
+  z-index: 1;
 }
-#toc-wrapper {
-  overflow-y: auto;
-  height: 100%;
+@media (max-width: 1200px) {
+  #toc-column {
+    margin-right: -50vw;
+    width: 50vw;
+  }
+}
+@media (max-width: 992px) {
+  #toc-column {
+    margin-right: -80vw;
+    width: 80vw;
+  }
+}
+#sidenav.empty {
+  width: 0vw;
+}
+#sidenav-toggle,
+#toc-toggle {
+  font-size: 20px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  color: #98978B;
+}
+#sidenav-toggle {
+  float: left;
+}
+@media (max-width: 765px) {
+  #sidenav-toggle {
+    padding-left: 15px;
+  }
+}
+@media (min-width: 992px) {
+  #sidenav-toggle {
+    display: none;
+  }
+}
+#toc-toggle {
+  float: right;
+}
+@media (min-width: 765px) {
+  #toc-toggle {
+    padding-right: 15px;
+  }
+}
+@media (min-width: 1200px) {
+  #toc-toggle {
+    display: none;
+  }
 }
 #sitenav-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 50px;
+  right: 0px;
   overflow-y: auto;
-  height: 100%;
+}
+#toc-wrapper {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  bottom: 50px;
+  overflow-y: auto;
+}
+@media (max-width: 1200px) {
+  #toc-column {
+    transition: right 0.4s ease-in-out, margin-right 0.4s ease-in-out, width 0.4s ease-in-out;
+  }
+}
+@media (max-width: 992px) {
+  #sidenav {
+    transition: left 0.4s ease-in-out, margin-left 0.4s ease-in-out, width 0.4s ease-in-out;
+  }
+}
+@media (max-width: 992px) {
+  body.sitenav-expanded #sidenav {
+    margin-left: 0vw;
+    left: 0vw;
+  }
+}
+@media (max-width: 1200px) {
+  body.sitenav-expanded #toc-column {
+    right: 0vw;
+  }
+}
+body.sitenav-expanded #sidenav-toggle .glyphicon-menu-right {
+  display: none;
+}
+body:not(.sitenav-expanded) #sidenav-toggle .glyphicon-menu-left {
+  display: none;
+}
+@media (max-width: 1200px) {
+  body.toc-expanded #toc-column {
+    margin-right: 0vw;
+    right: 0px;
+  }
+}
+@media (max-width: 992px) {
+  body.toc-expanded #sidenav {
+    left: 0vw;
+  }
+}
+body.toc-expanded #toc-toggle .glyphicon-menu-left {
+  display: none;
+}
+body:not(.toc-expanded) #toc-toggle .glyphicon-menu-right {
+  display: none;
 }
 nav[data-toggle='toc'] .nav > li > a {
   display: block;
@@ -436,6 +598,7 @@ a[data-hotdoc-role='edit-button']:hover .badge {
 .edit-button {
   text-align: center;
   min-height: 31px;
+  padding-top: 20px;
 }
 .sidenav-main-panel-body {
   padding: 0px;
@@ -460,50 +623,27 @@ span[aria-expanded=true] .glyphicon-chevron-right {
 span[aria-expanded=false] .glyphicon-chevron-down {
   display: none;
 }
-.parameter_container > table,
-.member_container > table,
-.multi_return_value_container > table {
-  border: none;
-  width: 100%;
+@media (min-width: 992px) {
+  .parameter-extra,
+  .return-value-extra,
+  .member-value,
+  .field-link {
+    text-align: right;
+  }
 }
-.parameter_container > table thead tr td,
-.member_container > table thead tr td,
-.multi_return_value_container > table thead tr td,
-.parameter_container > table tbody tr td,
-.member_container > table tbody tr td,
-.multi_return_value_container > table tbody tr td,
-.parameter_container > table tfoot tr td,
-.member_container > table tfoot tr td,
-.multi_return_value_container > table tfoot tr td {
-  padding-left: 10px;
-}
-.parameter_container > table thead tr td:nth-child(3),
-.member_container > table thead tr td:nth-child(3),
-.multi_return_value_container > table thead tr td:nth-child(3),
-.parameter_container > table tbody tr td:nth-child(3),
-.member_container > table tbody tr td:nth-child(3),
-.multi_return_value_container > table tbody tr td:nth-child(3),
-.parameter_container > table tfoot tr td:nth-child(3),
-.member_container > table tfoot tr td:nth-child(3),
-.multi_return_value_container > table tfoot tr td:nth-child(3) {
-  text-align: right;
-}
-.parameter_container > table thead tr td:nth-child(4),
-.member_container > table thead tr td:nth-child(4),
-.multi_return_value_container > table thead tr td:nth-child(4),
-.parameter_container > table tbody tr td:nth-child(4),
-.member_container > table tbody tr td:nth-child(4),
-.multi_return_value_container > table tbody tr td:nth-child(4),
-.parameter_container > table tfoot tr td:nth-child(4),
-.member_container > table tfoot tr td:nth-child(4),
-.multi_return_value_container > table tfoot tr td:nth-child(4) {
-  text-align: right;
-}
-.base_symbol_container,
-#page-description,
-.csp-previewer,
-#subpages {
-  word-wrap: break-word;
+@media (max-width: 992px) {
+  .parameter-description > *,
+  .return-value-description > *,
+  .return-value-link > *,
+  .parameter-extra > *,
+  .return-value-extra > *,
+  .field-description > *,
+  .field-link > *,
+  .member-description > *,
+  .member-value > *,
+  .subpage-description > * {
+    padding-left: 10px;
+  }
 }
 .base_symbol_container > table,
 #page-description > table,
@@ -513,10 +653,7 @@ span[aria-expanded=false] .glyphicon-chevron-down {
 #page-description .authors-description,
 .csp-previewer .authors-description,
 #subpages .authors-description {
-  overflow: auto;
-  margin-bottom: 16px;
-  word-break: keep-all;
-  width: 100%;
+  table-layout: fixed;
 }
 .base_symbol_container > table thead tr,
 #page-description > table thead tr,
@@ -604,6 +741,9 @@ span[aria-expanded=false] .glyphicon-chevron-down {
 #navbar-search-form {
   margin-top: 10px;
   margin-bottom: 10px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-right: 20px;
 }
 .navbar-center {
   position: absolute;
@@ -612,6 +752,9 @@ span[aria-expanded=false] .glyphicon-chevron-down {
   top: 0;
   text-align: center;
   z-index: -1;
+}
+.navbar-toggle {
+  margin-right: 0px;
 }
 body:not(.no-script) .hide-if-js {
   display: none;

@@ -1,6 +1,10 @@
 function scroll_if_anchor(href) {
 	var fromTop = parseInt($('body').css('padding-top'));
 	href = typeof(href) == "string" ? href : $(this).attr("href");
+
+	if (href == undefined)
+		return;
+
 	var dest = utils.parseUri(href);
 
 	if (utils.uri_is_in_this_page(href)) {

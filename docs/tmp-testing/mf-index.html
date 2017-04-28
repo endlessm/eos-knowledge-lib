@@ -25,20 +25,22 @@
 <script src="assets/js/compare-versions.js"></script>
 <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
 <script src="assets/js/tag_filtering.js"></script>
 <script src="assets/js/language_switching.js"></script>
 
 <script src="assets/js/lines_around_headings.js"></script>
 
+<script src="assets/js/trie.js"></script>
 <script src="assets/js/prism-core.js"></script>
 <script src="assets/js/prism-autoloader.js"></script>
 <script src="assets/js/prism_autoloader_path_override.js"></script>
-<script src="assets/js/trie.js"></script>
 
 
 </head>
 
-<body class="no-script" data-spy="scroll" data-target="#toc" data-offset="70">
+<body class="no-script
+" data-spy="scroll" data-target="#toc" data-offset="70">
 
 <script>
 $('body').removeClass('no-script');
@@ -46,13 +48,29 @@ $('body').removeClass('no-script');
 
 <nav class="navbar navbar-fixed-top navbar-default" id="topnav">
 	<div class="container-fluid">
-		<div class="navbar-header">
+		<div class="navbar-right">
+			<a id="toc-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
 				<span class="sr-only">Toggle navigation</span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
+			<form action="" class="navbar-form pull-right" id="navbar-search-form">
+                               <div class="form-group has-feedback">
+                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+                               </div>
+                        </form>
+		</div>
+		<div class="navbar-header">
+			<a id="sidenav-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
 			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
 				<img src="assets/images/home.svg" alt="Home" id="home">
 			</a>
@@ -60,31 +78,22 @@ $('body').removeClass('no-script');
 		<div class="navbar-collapse collapse" id="navbar-wrapper">
 			<ul class="nav navbar-nav" id="menu">
 							</ul>
-						<form action="" class="navbar-form navbar-right" id="navbar-search-form">
-                               <div class="form-group has-feedback">
-                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
-				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
-                               </div>
-                       </form>
+			<div class="hidden-xs hidden-sm navbar-text navbar-center">
+							</div>
 		</div>
 	</div>
 </nav>
 
-<main class="page-row page-row-expanded">
+<main>
 <div data-extension="hotdoc_modular_framework" data-hotdoc-in-toplevel="True" data-hotdoc-project="framework-0" data-hotdoc-ref="mf-index.html" class="page_container" id="page-wrapper">
 <script src="assets/js/utils.js"></script>
-	<div class="row">
-		<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-2" id="sidenav-column">
-	<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
-		<script src="assets/js/navigation.js"></script>
-		<script src="assets/js/sitemap.js"></script>
-	</div>
-	<button id="offcanvasleft" class="btn btn-xs" type="button" data-toggle="offcanvasleft">
-		<i class="glyphicon glyphicon-chevron-right" id="offcanvasleft-chevron"></i>
-	</button>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
 </div>
 
-<div class="col-xs-12 col-sm-12 col-md-9 col-lg-7 col-xl-8" id="content-column">
+<div id="body">
 	<div id="main">
 				
 <div id="page-description" data-hotdoc-source="mf-index" data-hotdoc-role="main">
@@ -92,389 +101,550 @@ $('body').removeClass('no-script');
 
 
 		<div id="subpages">
-	<table>
-		<tbody>
-						<tr>
-				<td><a href="arrangement/accordion.html">Arrangement.Accordion</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="arrangement/constrained.html">Arrangement.Constrained</a></td>
-								<td>Arrangement with featured cards on a irregular pattern</td>
-							</tr>
-						<tr>
-				<td><a href="arrangement/grid.html">Arrangement.Grid</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="arrangement/half.html">Arrangement.Half</a></td>
-								<td>Arrangement with two featured cards and as many supporting cards as desired</td>
-							</tr>
-						<tr>
-				<td><a href="arrangement/list.html">Arrangement.List</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="arrangement/overflow.html">Arrangement.Overflow</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="arrangement/piano.html">Arrangement.Piano</a></td>
-								<td>Arrangement with featured card on prominent spot and three supporting cards</td>
-							</tr>
-						<tr>
-				<td><a href="arrangement/pianola.html">Arrangement.Pianola</a></td>
-								<td>Helper class to be used with Picard to show the "compact mode" of the Piano arrangement.</td>
-							</tr>
-						<tr>
-				<td><a href="arrangement/quarter.html">Arrangement.Quarter</a></td>
-								<td>Arrangement with a row of (2-4) featured cards and as many supporting cards as desired</td>
-							</tr>
-						<tr>
-				<td><a href="arrangement/quilt.html">Arrangement.Quilt</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="arrangement/sideBySide.html">Arrangement.SideBySide</a></td>
-								<td>Arrangement to be used in horizontal menus</td>
-							</tr>
-						<tr>
-				<td><a href="arrangement/squareGuys.html">Arrangement.SquareGuys</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="arrangement/thirdRock.html">Arrangement.ThirdRock</a></td>
-								<td>Arrangement with three full-height cards.</td>
-							</tr>
-						<tr>
-				<td><a href="arrangement/thirties.html">Arrangement.Thirties</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="arrangement/tiledGrid.html">Arrangement.TiledGrid</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="arrangement/windshield.html">Arrangement.Windshield</a></td>
-								<td>Arrangement with featured card on prominent spot and three supporting cards</td>
-							</tr>
-						<tr>
-				<td><a href="banner/app.html">Banner.App</a></td>
-								<td>A module for the application's logo.</td>
-							</tr>
-						<tr>
-				<td><a href="banner/appMetadata.html">Banner.AppMetadata</a></td>
-								<td>A module to display the application metadata.</td>
-							</tr>
-						<tr>
-				<td><a href="banner/context.html">Banner.Context</a></td>
-								<td>Show some context about what is happening in the app</td>
-							</tr>
-						<tr>
-				<td><a href="banner/dynamic.html">Banner.Dynamic</a></td>
-								<td>A module for the application's dynamic logo.</td>
-							</tr>
-						<tr>
-				<td><a href="banner/search.html">Banner.Search</a></td>
-								<td>Banner with status information about search results</td>
-							</tr>
-						<tr>
-				<td><a href="banner/set.html">Banner.Set</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="card/audio.html">Card.Audio</a></td>
-								<td>A card for displaying audio content</td>
-							</tr>
-						<tr>
-				<td><a href="card/contentGroup.html">Card.ContentGroup</a></td>
-								<td>A content group subclass that implements the card interface.</td>
-							</tr>
-						<tr>
-				<td><a href="card/deck.html">Card.Deck</a></td>
-								<td>A card rendered as a bound-together deck of cards</td>
-							</tr>
-						<tr>
-				<td><a href="card/defaultFamily.html">Card.DefaultFamily</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="card/knowledgeDocument.html">Card.KnowledgeDocument</a></td>
-								<td>A card implementation for showing entire documents of content.</td>
-							</tr>
-						<tr>
-				<td><a href="card/legacyPolaroid.html">Card.LegacyPolaroid</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="card/legacyPost.html">Card.LegacyPost</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="card/list.html">Card.List</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="card/media.html">Card.Media</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="card/sequence.html">Card.Sequence</a></td>
-								<td>Card with a previous or next message.</td>
-							</tr>
-						<tr>
-				<td><a href="card/title.html">Card.Title</a></td>
-								<td>Class to show text-only cards in the knowledge lib UI</td>
-							</tr>
-						<tr>
-				<td><a href="card/video.html">Card.Video</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="contentGroup/contentGroup.html">ContentGroup.ContentGroup</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="contentGroup/dynamicTitle.html">ContentGroup.DynamicTitle</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="contentGroup/mediaLightbox.html">ContentGroup.MediaLightbox</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="contentGroup/noResultsMessage.html">ContentGroup.NoResultsMessage</a></td>
-								<td>NoResultsMessage results module</td>
-							</tr>
-						<tr>
-				<td><a href="contentGroup/staticText.html">ContentGroup.StaticText</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="controller/buffet.html">Controller.Buffet</a></td>
-								<td>Controller that presents all the content and lets the user choose</td>
-							</tr>
-						<tr>
-				<td><a href="controller/course.html">Controller.Course</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="controller/mesh.html">Controller.Mesh</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="decoration/separator.html">Decoration.Separator</a></td>
-								<td>Decoration widget that draws a separation line between other modules</td>
-							</tr>
-						<tr>
-				<td><a href="decoration/themeableImage.html">Decoration.ThemeableImage</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="filter/currentSet.html">Filter.CurrentSet</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="filter/featured.html">Filter.Featured</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="filter/otherGroup.html">Filter.OtherGroup</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="filter/seeMore.html">Filter.SeeMore</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="filter/sets.html">Filter.Sets</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="filter/thematic.html">Filter.Thematic</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="filter/unread.html">Filter.Unread</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="layout/articleStack.html">Layout.ArticleStack</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="layout/box.html">Layout.Box</a></td>
-								<td>Layout widget that places an arbitrary number components next to each other</td>
-							</tr>
-						<tr>
-				<td><a href="layout/brandPage.html">Layout.BrandPage</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="layout/dynamicBackground.html">Layout.DynamicBackground</a></td>
-								<td>Module for displaying a background</td>
-							</tr>
-						<tr>
-				<td><a href="layout/hamburgerBasement.html">Layout.HamburgerBasement</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="layout/infiniteScrolling.html">Layout.InfiniteScrolling</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="layout/navigation.html">Layout.Navigation</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="layout/overlay.html">Layout.Overlay</a></td>
-								<td>Layout that can position other modules on top of one another</td>
-							</tr>
-						<tr>
-				<td><a href="layout/placeholder.html">Layout.Placeholder</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="layout/responsiveMargins.html">Layout.ResponsiveMargins</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="layout/scrolling.html">Layout.Scrolling</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="layout/sidebar.html">Layout.Sidebar</a></td>
-								<td>Template with a sidebar and content area</td>
-							</tr>
-						<tr>
-				<td><a href="layout/sideMenu.html">Layout.SideMenu</a></td>
-								<td>A layout template that provides a context bar on top and a sliding side menu</td>
-							</tr>
-						<tr>
-				<td><a href="layout/topMenu.html">Layout.TopMenu</a></td>
-								<td>A layout template with a top menu bar that slides out over the content</td>
-							</tr>
-						<tr>
-				<td><a href="navigation/searchBox.html">Navigation.SearchBox</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="navigation/topMenu.html">Navigation.TopMenu</a></td>
-								<td>Module that shows a banner and a top menu.</td>
-							</tr>
-						<tr>
-				<td><a href="order/alphabetical.html">Order.Alphabetical</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="order/featured.html">Order.Featured</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="order/publishedDate.html">Order.PublishedDate</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="pager/parallaxBackground.html">Pager.ParallaxBackground</a></td>
-								<td>Pager that provides a parallax effect on its page backgrounds</td>
-							</tr>
-						<tr>
-				<td><a href="pager/simple.html">Pager.Simple</a></td>
-								<td>Handle transitions between pages in an app</td>
-							</tr>
-						<tr>
-				<td><a href="selection/selection.html">Selection</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="selection/allHighlights.html">Selection.AllHighlights</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="selection/allSets.html">Selection.AllSets</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="selection/articleContext.html">Selection.ArticleContext</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="selection/articlesForSet.html">Selection.ArticlesForSet</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="selection/articlesForSetCrossSection.html">Selection.ArticlesForSetCrossSection</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="selection/contentForSet.html">Selection.ContentForSet</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="selection/search.html">Selection.Search</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="selection/staticArticles.html">Selection.StaticArticles</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="selection/subsetsForSet.html">Selection.SubsetsForSet</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="selection/suggestedArticles.html">Selection.SuggestedArticles</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="selection/supplementaryArticles.html">Selection.SupplementaryArticles</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="selection/xapian.html">Selection.Xapian</a></td>
-								<td>No summary available</td>
-							</tr>
-						<tr>
-				<td><a href="window/simple.html">Window.Simple</a></td>
-								<td>No summary available</td>
-							</tr>
-					</tbody>
-	</table>
+	<h4>Subpages</h4>
+	<div class="container-fluid">
+		<div class="row">
+						<div class="col-sm-12 col-md-4">
+				<a href="arrangement/accordion.html">Arrangement.Accordion</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="arrangement/constrained.html">Arrangement.Constrained</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Arrangement with featured cards on a irregular pattern</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="arrangement/grid.html">Arrangement.Grid</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="arrangement/half.html">Arrangement.Half</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Arrangement with two featured cards and as many supporting cards as desired</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="arrangement/list.html">Arrangement.List</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="arrangement/overflow.html">Arrangement.Overflow</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="arrangement/piano.html">Arrangement.Piano</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Arrangement with featured card on prominent spot and three supporting cards</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="arrangement/pianola.html">Arrangement.Pianola</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Helper class to be used with Picard to show the "compact mode" of the Piano arrangement.</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="arrangement/quarter.html">Arrangement.Quarter</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Arrangement with a row of (2-4) featured cards and as many supporting cards as desired</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="arrangement/quilt.html">Arrangement.Quilt</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="arrangement/sideBySide.html">Arrangement.SideBySide</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Arrangement to be used in horizontal menus</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="arrangement/squareGuys.html">Arrangement.SquareGuys</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="arrangement/thirdRock.html">Arrangement.ThirdRock</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Arrangement with three full-height cards.</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="arrangement/thirties.html">Arrangement.Thirties</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="arrangement/tiledGrid.html">Arrangement.TiledGrid</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="arrangement/windshield.html">Arrangement.Windshield</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Arrangement with featured card on prominent spot and three supporting cards</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="banner/app.html">Banner.App</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>A module for the application's logo.</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="banner/appMetadata.html">Banner.AppMetadata</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>A module to display the application metadata.</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="banner/context.html">Banner.Context</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Show some context about what is happening in the app</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="banner/dynamic.html">Banner.Dynamic</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>A module for the application's dynamic logo.</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="banner/search.html">Banner.Search</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Banner with status information about search results</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="banner/set.html">Banner.Set</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="card/audio.html">Card.Audio</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>A card for displaying audio content</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="card/contentGroup.html">Card.ContentGroup</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>A content group subclass that implements the card interface.</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="card/deck.html">Card.Deck</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>A card rendered as a bound-together deck of cards</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="card/defaultFamily.html">Card.DefaultFamily</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="card/knowledgeDocument.html">Card.KnowledgeDocument</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>A card implementation for showing entire documents of content.</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="card/legacyPolaroid.html">Card.LegacyPolaroid</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="card/legacyPost.html">Card.LegacyPost</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="card/list.html">Card.List</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="card/media.html">Card.Media</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="card/sequence.html">Card.Sequence</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Card with a previous or next message.</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="card/title.html">Card.Title</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Class to show text-only cards in the knowledge lib UI</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="card/video.html">Card.Video</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="contentGroup/contentGroup.html">ContentGroup.ContentGroup</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="contentGroup/dynamicTitle.html">ContentGroup.DynamicTitle</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="contentGroup/mediaLightbox.html">ContentGroup.MediaLightbox</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="contentGroup/noResultsMessage.html">ContentGroup.NoResultsMessage</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>NoResultsMessage results module</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="contentGroup/staticText.html">ContentGroup.StaticText</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="controller/buffet.html">Controller.Buffet</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Controller that presents all the content and lets the user choose</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="controller/course.html">Controller.Course</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="controller/mesh.html">Controller.Mesh</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="decoration/separator.html">Decoration.Separator</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Decoration widget that draws a separation line between other modules</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="decoration/themeableImage.html">Decoration.ThemeableImage</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="filter/currentSet.html">Filter.CurrentSet</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="filter/featured.html">Filter.Featured</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="filter/otherGroup.html">Filter.OtherGroup</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="filter/seeMore.html">Filter.SeeMore</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="filter/sets.html">Filter.Sets</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="filter/thematic.html">Filter.Thematic</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="filter/unread.html">Filter.Unread</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="layout/articleStack.html">Layout.ArticleStack</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="layout/box.html">Layout.Box</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Layout widget that places an arbitrary number components next to each other</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="layout/brandPage.html">Layout.BrandPage</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="layout/dynamicBackground.html">Layout.DynamicBackground</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Module for displaying a background</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="layout/hamburgerBasement.html">Layout.HamburgerBasement</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="layout/infiniteScrolling.html">Layout.InfiniteScrolling</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="layout/navigation.html">Layout.Navigation</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="layout/overlay.html">Layout.Overlay</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Layout that can position other modules on top of one another</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="layout/placeholder.html">Layout.Placeholder</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="layout/responsiveMargins.html">Layout.ResponsiveMargins</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="layout/scrolling.html">Layout.Scrolling</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="layout/sidebar.html">Layout.Sidebar</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Template with a sidebar and content area</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="layout/sideMenu.html">Layout.SideMenu</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>A layout template that provides a context bar on top and a sliding side menu</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="layout/topMenu.html">Layout.TopMenu</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>A layout template with a top menu bar that slides out over the content</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="navigation/searchBox.html">Navigation.SearchBox</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="navigation/topMenu.html">Navigation.TopMenu</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Module that shows a banner and a top menu.</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="order/alphabetical.html">Order.Alphabetical</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="order/featured.html">Order.Featured</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="order/publishedDate.html">Order.PublishedDate</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="pager/parallaxBackground.html">Pager.ParallaxBackground</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Pager that provides a parallax effect on its page backgrounds</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="pager/simple.html">Pager.Simple</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Handle transitions between pages in an app</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="selection/selection.html">Selection</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="selection/allHighlights.html">Selection.AllHighlights</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="selection/allSets.html">Selection.AllSets</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="selection/articleContext.html">Selection.ArticleContext</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="selection/articlesForSet.html">Selection.ArticlesForSet</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="selection/articlesForSetCrossSection.html">Selection.ArticlesForSetCrossSection</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="selection/contentForSet.html">Selection.ContentForSet</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="selection/search.html">Selection.Search</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="selection/staticArticles.html">Selection.StaticArticles</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="selection/subsetsForSet.html">Selection.SubsetsForSet</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="selection/suggestedArticles.html">Selection.SuggestedArticles</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="selection/supplementaryArticles.html">Selection.SupplementaryArticles</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="selection/xapian.html">Selection.Xapian</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="window/simple.html">Window.Simple</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+					</div>
+	</div>
 </div>
 	</div>
 	<div id="search_results">
 		<p>The results of the search are</p>
 	</div>
-</div>
-<div class="hidden-xs hidden-sm hidden-md col-lg-2 col-xl-2">
-	<div id="toc-column">
+	<div id="footer">
 		
-					<div class="edit-button">
-				
 
-			</div>
-				<div id="toc-wrapper">
-			<nav id="toc"></nav>
-		</div>
 	</div>
 </div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		
+
 	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
 </div>
 </main>
-
-
-<footer class="page-row">
-	<div class="container-fluid">
-	<div class="row">
-		<div class="hidden-xs hidden-sm col-md-3 col-lg-3 col-xl-2" id="footer-left-column"></div>
-		<div class="col-xs-12 col-sm-12 col-md-9 col-lg-7 col-xl-8" id="footer-content-column">
-						
-
-		</div>
-		<div class="hidden-xs hidden-sm hidden-md col-lg-2 col-xl-2" id="footer-right-column"></div>
-	</div>
-</div>
-</footer>
 
 </body>
 

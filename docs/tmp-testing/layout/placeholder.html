@@ -25,20 +25,22 @@
 <script src="assets/js/compare-versions.js"></script>
 <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
 <script src="assets/js/tag_filtering.js"></script>
 <script src="assets/js/language_switching.js"></script>
 
 <script src="assets/js/lines_around_headings.js"></script>
 
+<script src="assets/js/trie.js"></script>
 <script src="assets/js/prism-core.js"></script>
 <script src="assets/js/prism-autoloader.js"></script>
 <script src="assets/js/prism_autoloader_path_override.js"></script>
-<script src="assets/js/trie.js"></script>
 
 
 </head>
 
-<body class="no-script" data-spy="scroll" data-target="#toc" data-offset="70">
+<body class="no-script
+" data-spy="scroll" data-target="#toc" data-offset="70">
 
 <script>
 $('body').removeClass('no-script');
@@ -46,13 +48,29 @@ $('body').removeClass('no-script');
 
 <nav class="navbar navbar-fixed-top navbar-default" id="topnav">
 	<div class="container-fluid">
-		<div class="navbar-header">
+		<div class="navbar-right">
+			<a id="toc-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
 				<span class="sr-only">Toggle navigation</span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
+			<form action="" class="navbar-form pull-right" id="navbar-search-form">
+                               <div class="form-group has-feedback">
+                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+                               </div>
+                        </form>
+		</div>
+		<div class="navbar-header">
+			<a id="sidenav-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
 			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
 				<img src="assets/images/home.svg" alt="Home" id="home">
 			</a>
@@ -60,31 +78,22 @@ $('body').removeClass('no-script');
 		<div class="navbar-collapse collapse" id="navbar-wrapper">
 			<ul class="nav navbar-nav" id="menu">
 							</ul>
-						<form action="" class="navbar-form navbar-right" id="navbar-search-form">
-                               <div class="form-group has-feedback">
-                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
-				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
-                               </div>
-                       </form>
+			<div class="hidden-xs hidden-sm navbar-text navbar-center">
+							</div>
 		</div>
 	</div>
 </nav>
 
-<main class="page-row page-row-expanded">
+<main>
 <div data-extension="hotdoc_modular_framework" data-hotdoc-in-toplevel="True" data-hotdoc-project="framework-0" data-hotdoc-ref="layout/placeholder.html" class="page_container" id="page-wrapper">
 <script src="assets/js/utils.js"></script>
-	<div class="row">
-		<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-2" id="sidenav-column">
-	<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
-		<script src="assets/js/navigation.js"></script>
-		<script src="assets/js/sitemap.js"></script>
-	</div>
-	<button id="offcanvasleft" class="btn btn-xs" type="button" data-toggle="offcanvasleft">
-		<i class="glyphicon glyphicon-chevron-right" id="offcanvasleft-chevron"></i>
-	</button>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
 </div>
 
-<div class="col-xs-12 col-sm-12 col-md-9 col-lg-7 col-xl-8" id="content-column">
+<div id="body">
 	<div id="main">
 				
 <div id="page-description" data-hotdoc-source="placeholder.js" data-hotdoc-role="main">
@@ -121,12 +130,12 @@ $('body').removeClass('no-script');
 
 
 <dl>
-    <dd>Default value</dd>
-    <dt>0</dt>
-</dl>
-<dl>
     <dd>Type</dd>
     <dt>GtkAlign</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>0</dt>
 </dl>
 
 </div>
@@ -142,12 +151,12 @@ $('body').removeClass('no-script');
 
 
 <dl>
-    <dd>Default value</dd>
-    <dt>0</dt>
-</dl>
-<dl>
     <dd>Type</dd>
     <dt>GtkAlign</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>0</dt>
 </dl>
 
 </div>
@@ -163,12 +172,12 @@ $('body').removeClass('no-script');
 
 
 <dl>
-    <dd>Default value</dd>
-    <dt>False</dt>
-</dl>
-<dl>
     <dd>Type</dd>
     <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
 </dl>
 
 </div>
@@ -184,12 +193,12 @@ $('body').removeClass('no-script');
 
 
 <dl>
-    <dd>Default value</dd>
-    <dt>False</dt>
-</dl>
-<dl>
     <dd>Type</dd>
     <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
 </dl>
 
 </div>
@@ -205,12 +214,12 @@ $('body').removeClass('no-script');
 
 
 <dl>
-    <dd>Default value</dd>
-    <dt>False</dt>
-</dl>
-<dl>
     <dd>Type</dd>
     <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
 </dl>
 
 </div>
@@ -226,12 +235,12 @@ $('body').removeClass('no-script');
 
 
 <dl>
-    <dd>Default value</dd>
-    <dt>None</dt>
-</dl>
-<dl>
     <dd>Type</dd>
     <dt>String</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>None</dt>
 </dl>
 
 </div>
@@ -247,12 +256,12 @@ $('body').removeClass('no-script');
 
 
 <dl>
-    <dd>Default value</dd>
-    <dt>Placeholder</dt>
-</dl>
-<dl>
     <dd>Type</dd>
     <dt>String</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>Placeholder</dt>
 </dl>
 
 </div>
@@ -263,36 +272,24 @@ $('body').removeClass('no-script');
 	<div id="search_results">
 		<p>The results of the search are</p>
 	</div>
-</div>
-<div class="hidden-xs hidden-sm hidden-md col-lg-2 col-xl-2">
-	<div id="toc-column">
+	<div id="footer">
 		
-					<div class="edit-button">
-				
 
-			</div>
-				<div id="toc-wrapper">
-			<nav id="toc"></nav>
-		</div>
 	</div>
 </div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		
+
 	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
 </div>
 </main>
-
-
-<footer class="page-row">
-	<div class="container-fluid">
-	<div class="row">
-		<div class="hidden-xs hidden-sm col-md-3 col-lg-3 col-xl-2" id="footer-left-column"></div>
-		<div class="col-xs-12 col-sm-12 col-md-9 col-lg-7 col-xl-8" id="footer-content-column">
-						
-
-		</div>
-		<div class="hidden-xs hidden-sm hidden-md col-lg-2 col-xl-2" id="footer-right-column"></div>
-	</div>
-</div>
-</footer>
 
 </body>
 

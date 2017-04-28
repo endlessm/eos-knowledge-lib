@@ -33,6 +33,7 @@
 <script src="assets/js/compare-versions.js"></script>
 <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
 <script src="assets/js/tag_filtering.js"></script>
 <script src="assets/js/language_switching.js"></script>
 
@@ -46,7 +47,11 @@
 
 </head>
 
-<body class="no-script" data-spy="scroll" data-target="#toc" data-offset="70">
+<body class="no-script
+@if page.meta.get('full-width'):
+full-width
+@end
+" data-spy="scroll" data-target="#toc" data-offset="70">
 
 <script>
 $('body').removeClass('no-script');
@@ -54,23 +59,16 @@ $('body').removeClass('no-script');
 
 @include("navbar.html")
 
-<main class="page-row page-row-expanded">
+<main>
 <div data-extension="@str(page.extension_name)" data-hotdoc-in-toplevel="@str(in_toplevel)" data-hotdoc-project="@str(page.project_name)" data-hotdoc-ref="@str(page.link.ref)" class="page_container" id="page-wrapper"
 @for key, value in page.meta.get('extra', {}).items():
 data-hotdoc-meta-@key="@str(value)"\
 @end
 >
 <script src="assets/js/utils.js"></script>
-	<div class="row">
-		@include("page_content.html")
-	</div>
+@include("page_content.html")
 </div>
 </main>
-
-
-<footer class="page-row">
-	@include("footer.html")
-</footer>
 
 </body>
 
