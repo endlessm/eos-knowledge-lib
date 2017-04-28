@@ -7,5 +7,7 @@
     "sitemap": "sitemap.txt",
 
     "mf_sources": ["../../js/app/modules/*/*.js"],
-    "mf_smart_index": true
+    "mf_smart_index": true,
+
+    "edit_on_github_repository": "https://github.com/endlessm/eos-knowledge-lib"
 }
