@@ -1,6 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Gdk = imports.gi.Gdk;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
@@ -41,6 +42,19 @@ const Title = new Module.Class({
             'Decorate on highlight', 'Whether to draw a custom decoration when the card is highlighted',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             false),
+
+        /**
+         * Property: max-title-lines
+         *
+         * The maximum numer of lines that the title label can wrap (given that
+         * it is ellipsizing and wrapping)
+         *
+         * A value of -1 allows unlimited number of lines.
+         */
+        'max-title-lines': GObject.ParamSpec.int('max-title-lines', 'Max Title Lines',
+            'The maximum number of lines that the title label can wrap (given that it is ellipsizing and wrapping)',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            -1, GLib.MAXINT32, 1),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/title.ui',
@@ -52,6 +66,8 @@ const Title = new Module.Class({
         Utils.set_hand_cursor_on_widget(this);
         this.set_title_label_from_model(this._title_label);
         this._title_label_text = this._title_label.label;
+
+        this._title_label.lines = this.max_title_lines;
     },
 
     vfunc_draw: function (cr) {
