@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "metadata", "urls": ["mf-index.html#page-description", "tools.html#kermit", "selection/xapian.html#selectionxapian1"]});
+urls_downloaded_cb({"urls": ["mf-index.html#page-description", "tools.html#kermit", "selection/xapian.html#selectionxapian1"], "token": "metadata"});
