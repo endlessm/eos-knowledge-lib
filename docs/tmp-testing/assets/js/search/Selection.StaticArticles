@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["selection/staticArticles.html#selectionstaticarticles1", "selection/staticArticles.html#selectionstaticarticles"], "token": "Selection.StaticArticles"});
+urls_downloaded_cb({"token": "Selection.StaticArticles", "urls": ["selection/staticArticles.html#selectionstaticarticles1", "selection/staticArticles.html#selectionstaticarticles"]});

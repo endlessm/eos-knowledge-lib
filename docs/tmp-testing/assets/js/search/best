@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tools.html#picard", "card/media.html#cardmedia1"], "token": "best"});
+urls_downloaded_cb({"token": "best", "urls": ["tools.html#picard", "card/media.html#cardmedia1"]});

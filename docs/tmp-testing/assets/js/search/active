@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["window/simple.html#fontscalingactive"], "token": "active"});
+urls_downloaded_cb({"token": "active", "urls": ["window/simple.html#fontscalingactive"]});

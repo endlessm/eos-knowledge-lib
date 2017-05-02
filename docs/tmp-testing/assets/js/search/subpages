@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["index.html#modular-framework", "mf-index.html#page-description"], "token": "subpages"});
+urls_downloaded_cb({"token": "subpages", "urls": ["index.html#modular-framework", "mf-index.html#page-description"]});
