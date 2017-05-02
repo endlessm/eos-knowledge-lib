@@ -51,7 +51,8 @@ defines:
     content:
       shortdef: 'Banner.Set(valign: center)'
       slots:
-        card: Card.Title
+        card:
+          shortdef: 'Card.Title(max-title-lines: 5)'
     sidebar:
       type: Layout.InfiniteScrolling
       references:
