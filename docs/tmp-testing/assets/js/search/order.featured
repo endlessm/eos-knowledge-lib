@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "order.featured", "urls": ["order/featured.html#orderfeatured1", "order/featured.html#orderfeatured"]});
+urls_downloaded_cb({"urls": ["order/featured.html#orderfeatured1", "order/featured.html#orderfeatured"], "token": "order.featured"});

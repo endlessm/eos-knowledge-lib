@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "grab", "urls": ["navigation/searchBox.html#focusonmap"]});
+urls_downloaded_cb({"urls": ["navigation/searchBox.html#focusonmap"], "token": "grab"});
