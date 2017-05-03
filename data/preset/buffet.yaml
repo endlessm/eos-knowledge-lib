@@ -281,10 +281,7 @@ root:
         content:
           type: Layout.BrandPage
           slots:
-            brand:
-              type: Banner.App
-              properties:
-                show-subtitle: true
+            brand: 'Banner.App(show-subtitle: true, halign: center, valign: center)'
             content:
               type: ContentGroup.MediaLightbox
               slots:
