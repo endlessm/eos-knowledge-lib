@@ -20,6 +20,7 @@ defines:
         - main-menu
       slots:
         contents:
+        - shortdef: 'Banner.App(show-subtitle: false)'
         - type: ContentGroup.ContentGroup
           slots:
             arrangement:
@@ -49,25 +50,21 @@ defines:
       type: Layout.ResponsiveMargins
       slots:
         content:
-          shortdef: 'Layout.Box(orientation: vertical)'
+          type: ContentGroup.ContentGroup
+          properties:
+            halign: fill
+            expand: true
           slots:
-            contents:
-            - shortdef: 'Banner.App(show-subtitle: false)'
-            - type: ContentGroup.ContentGroup
-              properties:
-                halign: fill
-                expand: true
+            arrangement:
+              <<: *main-arrangement
               slots:
-                arrangement:
-                  <<: *main-arrangement
-                  slots:
-                    card: *main-card
-                selection:
-                  type: Selection.AllHighlights
-                  id: highlighted
-                  slots:
-                    filter: 'Filter.Sets(invert: true)'
-                    order: 'Order.PublishedDate(ascending: false)'
+                card: *main-card
+            selection:
+              type: Selection.AllHighlights
+              id: highlighted
+              slots:
+                filter: 'Filter.Sets(invert: true)'
+                order: 'Order.PublishedDate(ascending: false)'
 
 - &article-page
   type: Layout.ArticleStack
