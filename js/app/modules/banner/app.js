@@ -48,6 +48,7 @@ const App = new Module.Class({
         let file = Gio.File.new_for_uri(TITLE_IMAGE_URI);
         if (file.query_exists(null)) {
             let image = new ThemeableImage.ThemeableImage({
+                visible: true,
                 image_uri: TITLE_IMAGE_URI,
             });
             this.attach(image, 0, 0, 1, 1);
