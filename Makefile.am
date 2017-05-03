@@ -341,8 +341,8 @@ $(subst_files): %: %.in Makefile
 
 uninstalled_subst = $(SED) \
 	-e 's,%pkgdatadir%,$(abs_top_builddir),g' \
-	-e 's,%pkglibdir%,$(abs_top_builddir)/.libs,g' \
-	-e 's,%typelibdir%,$(abs_top_builddir),g' \
+	-e 's,%pkglibdir%,$(abs_top_builddir)/.libs:$(abs_top_builddir)/ekncontent/.libs,g' \
+	-e 's,%typelibdir%,$(abs_top_builddir):$(abs_top_builddir)/ekncontent,g' \
 	$(NULL)
 
 uninstalled_subst_files = \
