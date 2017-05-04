@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "Selection.SuggestedArticles", "urls": ["selection/suggestedArticles.html#selectionsuggestedarticles1", "selection/suggestedArticles.html#selectionsuggestedarticles"]});
+urls_downloaded_cb({"urls": ["selection/suggestedArticles.html#selectionsuggestedarticles1", "selection/suggestedArticles.html#selectionsuggestedarticles"], "token": "Selection.SuggestedArticles"});
