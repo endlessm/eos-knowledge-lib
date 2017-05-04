@@ -271,6 +271,7 @@ dnl List files here that the configure script should output
 AC_CONFIG_FILES([
     Makefile
     data/eos-knowledge-0.pc
+    docs/Makefile
     po/Makefile.in
     js/app/config.js.in
 ])

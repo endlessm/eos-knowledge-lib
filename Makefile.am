@@ -8,7 +8,7 @@
 ## Please keep this file well-commented.
 
 # Subdirectories where we also want to run make
-SUBDIRS = @subdirs@ po .
+SUBDIRS = @subdirs@ po . docs
 
 # Our Autoconf macros are kept in the m4/ directory
 ACLOCAL_AMFLAGS = -I m4
@@ -341,8 +341,8 @@ $(subst_files): %: %.in Makefile
 
 uninstalled_subst = $(SED) \
 	-e 's,%pkgdatadir%,$(abs_top_builddir),g' \
-	-e 's,%pkglibdir%,$(abs_top_builddir)/.libs,g' \
-	-e 's,%typelibdir%,$(abs_top_builddir),g' \
+	-e 's,%pkglibdir%,$(abs_top_builddir)/.libs:$(abs_top_builddir)/ekncontent/.libs,g' \
+	-e 's,%typelibdir%,$(abs_top_builddir):$(abs_top_builddir)/ekncontent,g' \
 	$(NULL)
 
 uninstalled_subst_files = \
@@ -354,6 +354,8 @@ $(uninstalled_subst_files): %-local: %.in Makefile
 	$(uninstalled_subst) $< > $@.tmp && \
 	chmod +x $@.tmp && \
 	mv $@.tmp $@
+
+noinst_SCRIPTS = tools/introspect-local
 
 CLEANFILES += $(subst_files) $(uninstalled_subst_files)
 EXTRA_DIST += $(patsubst %,%.in,$(subst_files))
@@ -426,38 +428,6 @@ dist_yamlpreset_DATA = \
 EXTRA_DIST += \
 	tools/autobahn \
 	data/eos-knowledge-0.pc.in
-
-# # # DOCUMENTATION # # #
-
-EXTRA_DIST += \
-	docs/api/domain.md \
-	docs/api/flatpak-bundle.md \
-	docs/api/hotdoc.json \
-	docs/api/index.md \
-	docs/api/sitemap.txt \
-	docs/framework/hotdoc.json \
-	docs/framework/index.md \
-	docs/framework/sitemap.txt \
-	docs/framework/tools.md \
-	$(NULL)
-
-HOTDOC_PROJECTS = docs/framework
-
-docs_framework_HOTDOC_EXTRA_DEPS = \
-	tools/introspect-local \
-	EosKnowledgePrivate-1.0.typelib \
-	eos-knowledge.gresource \
-	$(NULL)
-docs_framework_HOTDOC_FLAGS = \
-	--conf-file $(abs_srcdir)/docs/framework/hotdoc.json \
-	-o $(abs_builddir)/docs/framework/built \
-	--mf-introspect-utility $(abs_builddir)/tools/introspect-local \
-	$(FRAMEWORK_EXTRA_HOTDOC_FLAGS) \
-	$(NULL)
-
-if ENABLE_DOCUMENTATION
--include $(HOTDOC_MAKEFILE)
-endif ENABLE_DOCUMENTATION
 
 # # # TESTS # # #
 
