@@ -367,7 +367,7 @@ on_query_fixed_finished (GObject *source,
  * @user_data: (closure): the data to pass to callback function.
  *
  * Asynchronously sends a request to xapian-bridge for a given #EkncQueryObject,
- * and return a list of matching models.
+ * and return a list of matching #EkncContentObjectModel objects.
  */
 void
 eknc_engine_query (EkncEngine *self,
