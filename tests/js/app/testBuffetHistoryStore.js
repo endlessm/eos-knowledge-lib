@@ -125,22 +125,15 @@ describe('BuffetHistoryStore', function () {
     });
 
     describe('when an article card is clicked', function () {
-        let prev_model, next_model;
         beforeEach(function () {
             let model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn://test/article',
-            });
-            prev_model = Eknc.ArticleObjectModel.new_from_props({
-                ekn_id: 'ekn://test/prev',
-            });
-            next_model = Eknc.ArticleObjectModel.new_from_props({
-                ekn_id: 'ekn://test/next',
             });
 
             dispatcher.dispatch({
                 action_type: Actions.ITEM_CLICKED,
                 model: model,
-                context: [prev_model, model, next_model],
+                context: [model],
                 context_label: 'Some Context',
             });
         });
@@ -148,26 +141,6 @@ describe('BuffetHistoryStore', function () {
         it('goes to article page', function () {
             let item = store.get_current_item();
             expect(item.page_type).toBe(Pages.ARTICLE);
-        });
-
-        it('handles previous card click', function () {
-            dispatcher.dispatch({
-                action_type: Actions.PREVIOUS_DOCUMENT_CLICKED,
-                model: prev_model,
-            });
-            let item = store.get_current_item();
-            expect(item.page_type).toBe(Pages.ARTICLE);
-            expect(item.model).toBe(prev_model);
-        });
-
-        it('handles next card click', function () {
-            dispatcher.dispatch({
-                action_type: Actions.NEXT_DOCUMENT_CLICKED,
-                model: next_model,
-            });
-            let item = store.get_current_item();
-            expect(item.page_type).toBe(Pages.ARTICLE);
-            expect(item.model).toBe(next_model);
         });
     });
 
