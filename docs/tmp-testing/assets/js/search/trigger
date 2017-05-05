@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["card/contentGroup.html#trigger", "contentGroup/contentGroup.html#trigger"], "token": "trigger"});
+urls_downloaded_cb({"token": "trigger", "urls": ["card/contentGroup.html#trigger", "contentGroup/contentGroup.html#trigger"]});
