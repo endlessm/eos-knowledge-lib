@@ -1,1 +1,0 @@
-fragment_downloaded_cb({"fragment": "Arrangement.Accordion \nArrangement which puts its cards into an accordion like widget. Each segment of the accordion has a title which is always visible and a revealer in which lives the actual card. Clicking on the title expands the corresponding revealer. \n", "url": "arrangement/accordion.html#arrangementaccordion1"});
