@@ -9,7 +9,12 @@ $highlighted-background-color: darken($background-dark-color, 5%) !default;
 
   .sidebar {
     .main-menu {
-      margin: 58px 0px 0px 0px;
+      .BannerApp .ThemeableImage {
+          -EknThemeableImage-sizing: "size-min";
+          min-height: 50px;
+          min-width: 172px;
+          margin: 33px 0px 32px 40px;
+      }
     }
 
     .CardTitle {
@@ -67,11 +72,8 @@ $highlighted-background-color: darken($background-dark-color, 5%) !default;
 }
 
 .home-page {
-  .BannerApp .ThemeableImage {
-      -EknThemeableImage-sizing: "size-min";
-      min-height: 96px;
-      min-width: 400px;
-      margin: 33px 0px;
+  .main-arrangement {
+    margin-top: 40px;
   }
 }
 
