@@ -730,7 +730,7 @@ eknc_domain_get_fixed_query_finish (EkncDomain *self,
 typedef struct
 {
   // List of EkncContentModel items
-  GSList *models;
+  GPtrArray *models;
   guint total_models;
   guint upper_bound;
 } QueryState;
@@ -739,8 +739,111 @@ static void
 query_state_free (gpointer data)
 {
   QueryState *state = data;
-  g_slist_free_full (state->models, g_object_unref);
+  g_clear_pointer (&state->models, g_ptr_array_unref);
   g_slice_free (QueryState, state);
+}
+
+typedef void (*ScatterTaskCountdownCompleteCallback)(gpointer user_data);
+typedef void (*ScatterTaskCountdownErrorCallback)(GError *error, gpointer user_data);
+
+typedef struct {
+  guint remaining;
+  ScatterTaskCountdownCompleteCallback callback;
+  ScatterTaskCountdownErrorCallback error_callback;
+  gpointer data;
+} ScatterTaskCountdown;
+
+static ScatterTaskCountdown *
+scatter_task_countdown_new (guint remaining,
+                            ScatterTaskCountdownCompleteCallback callback,
+                            ScatterTaskCountdownErrorCallback error_callback,
+                            gpointer data)
+{
+  ScatterTaskCountdown *countdown = g_new0(ScatterTaskCountdown, 1);
+  countdown->remaining = remaining;
+  countdown->callback = callback;
+  countdown->error_callback = error_callback;
+  countdown->data = data;
+
+  return countdown;
+}
+
+static void
+scatter_task_countdown_subtask_completed (ScatterTaskCountdown **countdown_ptr,
+                                          GError *error)
+{
+  ScatterTaskCountdown *countdown = *countdown_ptr;
+
+  /* If we received an error we should still continue to countdown, but
+   * allow the creator of the countdown to handle the error */
+  if (error && countdown->error_callback)
+    {
+      (*countdown->error_callback)(error, countdown->data);
+    }
+
+  if (--countdown->remaining == 0)
+    {
+      (*countdown->callback)(countdown->data);
+      g_free (countdown);
+      *countdown_ptr = NULL;
+    }
+}
+
+typedef struct {
+  /* Note that scatter_task_countdown_subtask_completed will free
+   * this member once the countdown has completed */
+  ScatterTaskCountdown *countdown;
+  EkncDomain *domain;
+  GPtrArray *models;
+  guint index;
+} ObjectResponseData;
+
+static ObjectResponseData *
+object_response_data_new (ScatterTaskCountdown *countdown,
+                          EkncDomain *domain,
+                          GPtrArray *models,
+                          guint index)
+{
+  ObjectResponseData *data = g_new0(ObjectResponseData, 1);
+  data->countdown = countdown;
+  data->domain = domain;
+  data->models = models;
+  data->index = index;
+  return data;
+}
+
+static void
+object_response_data_free (ObjectResponseData *data)
+{
+  g_free (data);
+}
+
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(ObjectResponseData, object_response_data_free);
+
+void
+on_received_all_model_objects (gpointer user_data)
+{
+  GTask *task = user_data;
+
+  /* We might have already been marked as completed earlier due to an
+   * error state. Don't return if that is the case */
+  if (g_task_get_completed (task))
+    return;
+
+  g_task_return_boolean (task, TRUE);
+  g_object_unref (task);
+}
+
+void
+on_receive_model_error (GError *error, gpointer user_data)
+{
+  GTask *task = user_data;
+
+  if (error != NULL)
+    {
+      g_task_return_error (task, error);
+      return;
+    }
 }
 
 void
@@ -748,27 +851,22 @@ on_object_response (GObject *source,
                     GAsyncResult *result,
                     gpointer user_data)
 {
-  g_autoptr(GTask) task = user_data;
-  EkncDomain *domain = g_task_get_source_object (task);
-  QueryState *state = g_task_get_task_data (task);
+  g_autoptr(ObjectResponseData) object_response_data = user_data;
+  EkncDomain *domain = object_response_data->domain;
   GError *error = NULL;
 
-  if (g_task_get_completed (task))
-    return;
-
   EkncContentObjectModel *model = eknc_domain_get_object_finish (domain, result, &error);
-  if (error != NULL)
-    {
-      g_task_return_error (task, error);
-      return;
-    }
 
-  state->models = g_slist_append (state->models, model);
+  *(&g_ptr_array_index (object_response_data->models, object_response_data->index)) = model;
+  scatter_task_countdown_subtask_completed (&object_response_data->countdown, error);
+}
 
-  if (g_slist_length (state->models) == state->total_models)
+void
+maybe_unref_object (gpointer data)
+{
+  if (data)
     {
-      g_task_return_boolean (task, TRUE);
-      return;
+      g_object_unref (G_OBJECT(data));
     }
 }
 
@@ -820,6 +918,16 @@ on_xapian_query_response (GObject *source,
       return;
     }
 
+  state->models = g_ptr_array_new_full (state->total_models, maybe_unref_object);
+  g_ptr_array_set_size (state->models, state->total_models);
+
+  /* We need to take a ref on the task here so that it is preserved until
+   * we are done receiving all model objects */
+  ScatterTaskCountdown *countdown = scatter_task_countdown_new (state->total_models,
+                                                                on_received_all_model_objects,
+                                                                on_receive_model_error,
+                                                                g_object_ref (task));
+
   for (guint i = 0; i < json_array_get_length (results_array); i++)
     {
       JsonNode *result_node = json_array_get_element (results_array, i);
@@ -830,8 +938,16 @@ on_xapian_query_response (GObject *source,
           return;
         }
 
+      /* Note that we pass another closure here instead of just the task
+       * containing the index of the response. This is done to preserve
+       * ordering since the callback order is not guaranteed. */
       eknc_domain_get_object (domain, json_node_get_string (result_node),
-                              cancellable, on_object_response, g_object_ref (task));
+                              cancellable,
+                              on_object_response,
+                              object_response_data_new (countdown,
+                                                        domain,
+                                                        state->models,
+                                                        i));
     }
 }
 
@@ -865,6 +981,25 @@ eknc_domain_query (EkncDomain *self,
                             cancellable, on_xapian_query_response, task);
 }
 
+static GList *
+ptr_array_to_list_deep (GPtrArray *array)
+{
+  GList *list = NULL;
+
+  /* If there's no array just return an empty list */
+  if (!array)
+    {
+      return list;
+    }
+
+  for (guint i = 0; i < array->len; ++i)
+    {
+      list = g_list_append (list, g_object_ref(g_ptr_array_index(array, i)));
+    }
+
+  return list;
+}
+
 /**
  * eknc_domain_query_finish:
  * @self: domain
@@ -891,7 +1026,7 @@ eknc_domain_query_finish (EkncDomain *self,
   QueryState *state = g_task_get_task_data (task);
   return g_object_new (EKNC_TYPE_QUERY_RESULTS,
                        "upper-bound", state->upper_bound,
-                       "models", state->models,
+                       "models", ptr_array_to_list_deep (state->models),
                        NULL);
 }
 
