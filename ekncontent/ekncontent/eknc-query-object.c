@@ -820,7 +820,7 @@ eknc_query_object_get_sort_value (EkncQueryObject *self)
 
   switch (self->sort)
     {
-    case EKNC_QUERY_OBJECT_MATCH_TITLE_SYNOPSIS:
+    case EKNC_QUERY_OBJECT_SORT_SEQUENCE_NUMBER:
       return XAPIAN_SEQUENCE_NUMBER_VALUE_NO;
       break;
 
