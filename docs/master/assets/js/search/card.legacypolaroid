@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["card/legacyPolaroid.html#cardlegacypolaroid1", "card/legacyPolaroid.html#cardlegacypolaroid"], "token": "card.legacypolaroid"});
+urls_downloaded_cb({"token": "card.legacypolaroid", "urls": ["card/legacyPolaroid.html#cardlegacypolaroid1", "card/legacyPolaroid.html#cardlegacypolaroid"]});
