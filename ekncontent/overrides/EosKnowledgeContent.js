@@ -44,6 +44,9 @@ function add_custom_model_constructors (model) {
         marshal_property(props, 'child-tags', function (v) {
             return new GLib.Variant('as', v);
         });
+        marshal_property(props, 'discovery-feed-content', function (v) {
+            return new GLib.Variant('a{sv}', v);
+        });
         marshal_property(props, 'table-of-contents', function (v) {
             // Mimic json_gvariant_deserialize
             let toc = [];
@@ -78,6 +81,12 @@ function _init() {
             let resources = this.get_resources();
             return resources ? resources.deep_unpack() : [];
         },
+    });
+    define_property(Eknc.ContentObjectModel, 'discovery-feed-content', {
+        get: function () {
+            let content = this.get_discovery_feed_content();
+            return content ? content.deep_unpack() : [];
+        }
     });
 
     define_property(Eknc.ArticleObjectModel, 'authors', {

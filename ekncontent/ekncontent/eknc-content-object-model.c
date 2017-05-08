@@ -30,6 +30,7 @@ typedef struct {
   gboolean featured;
   GVariant *tags;
   GVariant *resources;
+  GVariant *discovery_feed_content;
 } EkncContentObjectModelPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (EkncContentObjectModel,
@@ -53,6 +54,7 @@ enum {
   PROP_FEATURED,
   PROP_TAGS,
   PROP_RESOURCES,
+  PROP_DISCOVERY_FEED_CONTENT,
   NPROPS
 };
 
@@ -127,6 +129,10 @@ eknc_content_object_model_get_property (GObject    *object,
 
     case PROP_RESOURCES:
       g_value_set_variant (value, priv->resources);
+      break;
+
+    case PROP_DISCOVERY_FEED_CONTENT:
+      g_value_set_variant (value, priv->discovery_feed_content);
       break;
 
     default:
@@ -219,6 +225,11 @@ eknc_content_object_model_set_property (GObject *object,
       priv->resources = g_value_dup_variant (value);
       break;
 
+    case PROP_DISCOVERY_FEED_CONTENT:
+      g_clear_pointer (&priv->discovery_feed_content, g_variant_unref);
+      priv->discovery_feed_content = g_value_dup_variant (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -265,6 +276,7 @@ eknc_content_object_model_finalize (GObject *object)
   g_clear_pointer (&priv->license, g_free);
   g_clear_pointer (&priv->tags, g_variant_unref);
   g_clear_pointer (&priv->resources, g_variant_unref);
+  g_clear_pointer (&priv->discovery_feed_content, g_variant_unref);
 
   G_OBJECT_CLASS (eknc_content_object_model_parent_class)->finalize (object);
 }
@@ -435,6 +447,21 @@ eknc_content_object_model_class_init (EkncContentObjectModelClass *klass)
       G_VARIANT_TYPE ("as"), NULL,
       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
+  /**
+   * EkncContentObjectModel:discovery-feed-content:
+   *
+   * Content which is specific to the discovery-feed.
+   *
+   * This is effectively meant to be opaque to content applications
+   * and is parsed only by eos-knowledge-services when it generates the
+   * discovery feed.
+   */
+  eknc_content_object_model_props[PROP_DISCOVERY_FEED_CONTENT] =
+    g_param_spec_variant ("discovery-feed-content", "Discovery Feed Content",
+      "Content to be used by the Discovery Feed",
+      G_VARIANT_TYPE ("a{sv}"), NULL,
+      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+
   g_object_class_install_properties (object_class,
                                      NPROPS,
                                      eknc_content_object_model_props);
@@ -510,6 +537,9 @@ eknc_content_object_model_add_json_to_params (JsonNode *node,
                                            params);
   eknc_utils_append_gparam_from_json_node (json_object_get_member (object, "resources"),
                                            g_object_class_find_property (klass, "resources"),
+                                           params);
+  eknc_utils_append_gparam_from_json_node (json_object_get_member (object, "discoveryFeedContent"),
+                                           g_object_class_find_property (klass, "discovery-feed-content"),
                                            params);
   g_type_class_unref (klass);
 }
