@@ -161,7 +161,7 @@ $(scss_targets): $(scss_partials)
 
 # scss build rule
 .scss.css:
-	$(scss_verbose) $(MKDIR_P) $(dir $@) && $(SCSS) -a $< $@ || rm -f $@
+	$(scss_verbose)$(MKDIR_P) $(@D) && $(SCSS) -a $< $@
 
 EXTRA_DIST += $(scss_template_toplevels) $(scss_template_partials)
 CLEANFILES += $(scss_targets)
