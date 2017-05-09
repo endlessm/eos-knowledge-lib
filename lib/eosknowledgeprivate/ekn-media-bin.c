@@ -93,6 +93,7 @@ typedef struct
   GtkWidget      *info_box;
 
   GtkLabel *title_label;
+  GtkLabel *description_label;
   GtkLabel *info_column_label[INFO_N_COLUMNS];
   GtkLabel *duration_label;
 
@@ -1174,6 +1175,7 @@ ekn_media_bin_class_init (EknMediaBinClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, play_box);
   gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, volume_button);
   gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, title_label);
+  gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, description_label);
   gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, info_box);
   gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, duration_label);
   gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, top_revealer);
@@ -2026,6 +2028,8 @@ EMB_DEFINE_GETTER (const gchar *, description, NULL)
  * By default EknMediaBin will use the description from the media metadata
  */
 EMB_DEFINE_SETTER_STRING (description, DESCRIPTION,
+  gtk_label_set_label (priv->description_label, description);
+  gtk_widget_set_visible (GTK_WIDGET (priv->description_label), description != NULL);
   priv->description_user_set = TRUE;
 )
 
