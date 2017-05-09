@@ -82,4 +82,56 @@ const Filter = new Lang.Interface({
      * Don't call this method directly, instead write it in your implementation.
      */
     include_impl: Lang.Interface.UNIMPLEMENTED,
+
+
+    /**
+     * Method: modify_xapian_query
+     * Make any necessary modifications to the Xapian query
+     *
+     * If using a <Filter> with a <Selection.Xapian> subclass, you don't
+     * necessarily want to do filtering only after querying the Xapian database.
+     * Since database queries are carried out in batches, you want to specify
+     * your filtering criteria at query time.
+     * This method will make the necessary modifications to a passed-in query
+     * object.
+     *
+     * Don't override this method in your implementation; instead, implement
+     * <Filter.modify_xapian_query_impl>.
+     *
+     * Parameters:
+     *   query - an <EosKnowledgeContent.QueryObject>
+     *
+     * Returns:
+     *   a new <EosKnowledgeContent.QueryObject>, may be the same object
+     */
+    modify_xapian_query: function (query) {
+        let modified_query = query;
+        if (this.modify_xapian_query_impl)
+            modified_query = this.modify_xapian_query_impl(query);
+        if (this._sub_filter)
+            return this._sub_filter.modify_xapian_query(modified_query);
+        return modified_query;
+    },
+
+    /**
+     * Method: modify_xapian_query_impl
+     * Intended to be implemented
+     *
+     * Makes modifications to a query object for this <Filter> only.
+     * <Filter.modify_xapian_query> takes care of merging together modifications
+     * from sub-orders.
+     *
+     * Implementing this method is optional.
+     *
+     * This method might not be called at all if the <Filter> is used with a
+     * non-Xapian <Selection>.
+     * Your implementation must work correctly even if it is never called.
+     *
+     * Parameters:
+     *   query - an <EosKnowledgeContent.QueryObject>
+     *
+     * Returns:
+     *   a new <EosKnowledgeContent.QueryObject>, may be the same object
+     */
+    modify_xapian_query_impl: null,
 });
