@@ -108,6 +108,17 @@ const Order = new Lang.Interface({
     },
 
     /**
+     * Method: can_modify_xapian_query
+     * Whether the order can modify a Xapian query
+     *
+     * Returns:
+     *   true if <Order.modify_xapian_query_impl> is implemented
+     */
+    can_modify_xapian_query: function () {
+        return !!this.modify_xapian_query_impl;
+    },
+
+    /**
      * Method: modify_xapian_query_impl
      * Intended to be implemented
      *
