@@ -266,6 +266,36 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         });
     },
 
+    _get_metadata: function (model) {
+        let metadata = {
+            id: model.ekn_id,
+            title: model.title,
+            published: model.published,
+            authors: model.authors,
+            license: model.license,
+            source: model.source,
+            source_name: model.source_name,
+            original_uri: model.original_uri,
+            sets: [],
+        };
+
+        // augment sets data to make it useful
+        model.tags.forEach((tag) => {
+            if (tag.startsWith('Ekn'))
+                return;
+            let set = SetMap.get_set_for_tag(tag);
+            if (!set)
+                return;
+            metadata['sets'].push({
+                id: set.ekn_id,
+                title: set.title,
+                featured: set.featured,
+            });
+        });
+
+        return JSON.stringify(metadata);
+    },
+
     _render_wrapper: function (content, model) {
         let css_files = this._get_wrapper_css_files();
         let js_files = this._get_wrapper_js_files();
@@ -281,6 +311,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
             'content': content,
             'crosslink-data': this._get_crosslink_data(model),
             'chunk-data': this._get_chunk_data(model),
+            'content-metadata': this._get_metadata(model),
         });
     },
 

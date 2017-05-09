@@ -15,6 +15,9 @@
         <script type="text/javascript" src="resource:///com/endlessm/knowledge/data/templates/js/{{{.}}}"></script>
         {{/javascript-files}}
 
+        <script type="text/javascript">
+            window.contentMetadata = {{{content-metadata}}};
+        </script>
         {{{content}}}
         <script type="text/javascript">
             window.crosslink_init({{{crosslink-data}}});
