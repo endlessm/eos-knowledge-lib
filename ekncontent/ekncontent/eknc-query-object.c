@@ -543,7 +543,9 @@ get_title_clause (EkncQueryObject *self, gchar **terms)
       title_terms[i] = maybe_add_wildcard (self, title_term);
     }
   title_terms[length] = NULL;
-  return g_strjoinv (XAPIAN_OP_AND, title_terms);
+  // Join with spaces and let the query parser implicitly AND - that way
+  // stopwords get removed.
+  return g_strjoinv (" ", title_terms);
 }
 
 static gchar *
@@ -556,7 +558,9 @@ get_body_clause (EkncQueryObject *self, gchar **terms)
       body_terms[i] = maybe_add_wildcard (self, terms[i]);
     }
   body_terms[length] = NULL;
-  return g_strjoinv (XAPIAN_OP_AND, body_terms);
+  // Join with spaces and let the query parser implicitly AND - that way
+  // stopwords get removed.
+  return g_strjoinv (" ", body_terms);
 }
 
 static gchar *
