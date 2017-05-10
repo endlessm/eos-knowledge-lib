@@ -103,4 +103,35 @@ describe('Utilities:', function () {
             expect(components).toEqual(['hash', 'resource']);
         });
     });
+
+    describe('set operations', function () {
+        let a = [1, 2, 3, 4];
+        let b = [3, 4, 5, 6];
+
+        it('has a sane union operation', function () {
+            let union = Utils.union(a, b);
+            expect(union.length).toEqual(6);
+            [1, 2, 3, 4, 5, 6].forEach(item => {
+                expect(union).toContain(item);
+            });
+        });
+
+        it('handles falsy values in union operation', function () {
+            expect(Utils.union(a, null).length).toEqual(4);
+            expect(Utils.union(null, a).length).toEqual(4);
+        });
+
+        it('has a sane intersection operation', function () {
+            let intersection = Utils.intersection(a, b);
+            expect(intersection.length).toEqual(2);
+            [3, 4].forEach(item => {
+                expect(intersection).toContain(item);
+            });
+        });
+
+        it('handles falsy values in intersection operation', function () {
+            expect(Utils.intersection(a, null)).toEqual([]);
+            expect(Utils.intersection(null, a)).toEqual([]);
+        });
+    });
 });

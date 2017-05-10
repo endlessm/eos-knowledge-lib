@@ -45,6 +45,12 @@ describe('Order.PublishedDate', function () {
             expect(models.sort(order.compare.bind(order))
                 .map(model => model.published)).toEqual(SORTED_DATES);
         });
+
+        it('queries models by date', function () {
+            let query = order.modify_xapian_query(new Eknc.QueryObject());
+            expect(query.order).toEqual(Eknc.QueryObjectOrder.ASCENDING);
+            expect(query.sort).toEqual(Eknc.QueryObjectSort.DATE);
+        });
     });
 
     describe('descending', function () {
@@ -60,6 +66,12 @@ describe('Order.PublishedDate', function () {
         it('sorts models by published date', function () {
             expect(models.sort(order.compare.bind(order))
                 .map(model => model.published)).toEqual(SORTED_DATES.reverse());
+        });
+
+        it('queries models by date', function () {
+            let query = order.modify_xapian_query(new Eknc.QueryObject());
+            expect(query.order).toEqual(Eknc.QueryObjectOrder.DESCENDING);
+            expect(query.sort).toEqual(Eknc.QueryObjectSort.DATE);
         });
     });
 });

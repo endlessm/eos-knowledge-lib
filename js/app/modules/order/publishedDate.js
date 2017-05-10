@@ -2,6 +2,7 @@
 
 /* exported PublishedDate */
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const GObject = imports.gi.GObject;
 
 const Module = imports.app.interfaces.module;
@@ -24,5 +25,12 @@ const PublishedDate = new Module.Class({
         if (!right.published)
             return 1;
         return left.published.localeCompare(right.published);
+    },
+
+    modify_xapian_query_impl: function (query) {
+        return Eknc.QueryObject.new_from_object(query, {
+            order: Eknc.QueryObjectOrder[this.ascending? 'ASCENDING' : 'DESCENDING'],
+            sort: Eknc.QueryObjectSort.DATE,
+        });
     },
 });

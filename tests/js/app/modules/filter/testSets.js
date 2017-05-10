@@ -31,6 +31,11 @@ describe('Filter.Sets', function () {
             expect(filter.include(MODELS[0])).toBeFalsy();
             expect(filter.include(MODELS[1])).toBeTruthy();
         });
+
+        it('queries only sets', function () {
+            let query = filter.modify_xapian_query(new Eknc.QueryObject());
+            expect(query.tags_match_all).toContain('EknSetObject');
+        });
     });
 
     describe('inverse mode', function () {
@@ -46,6 +51,11 @@ describe('Filter.Sets', function () {
         it('filters out a set model', function () {
             expect(filter.include(MODELS[0])).toBeTruthy();
             expect(filter.include(MODELS[1])).toBeFalsy();
+        });
+
+        it('queries only non-sets', function () {
+            let query = filter.modify_xapian_query(new Eknc.QueryObject());
+            expect(query.excluded_tags).toContain('EknSetObject');
         });
     });
 });

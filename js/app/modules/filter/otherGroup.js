@@ -2,10 +2,12 @@
 
 /* exported OtherGroup */
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const GObject = imports.gi.GObject;
 
 const Filter = imports.app.interfaces.filter;
 const Module = imports.app.interfaces.module;
+const Utils = imports.app.utils;
 
 const OtherGroup = new Module.Class({
     Name: 'Filter.OtherGroup',
@@ -33,5 +35,18 @@ const OtherGroup = new Module.Class({
             return this._other_model_ids.indexOf(model.ekn_id) < 0;
         }
         return true;
+    },
+
+    // Filter implementation
+    modify_xapian_query_impl: function (query) {
+        if (this.invert) {
+            let ids = this._other_model_ids;
+            if (query.ids.length)
+                ids = Utils.intersection(query.ids, ids);
+            return Eknc.QueryObject.new_from_object(query, { ids: ids });
+        }
+        return Eknc.QueryObject.new_from_object(query, {
+            excluded_ids: Utils.union(query.excluded_ids, this._other_model_ids),
+        });
     },
 });
