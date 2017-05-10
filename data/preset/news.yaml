@@ -301,6 +301,7 @@ defines:
                     navigation-context: !translate 'Next Article'
             selection:
               type: Selection.NextArticle
+        video: 'Card.Video(show-title: false, show-synopsis: false)'
 
 root:
   shortdef: 'Controller.Buffet(theme: news)'
