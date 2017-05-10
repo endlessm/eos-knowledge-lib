@@ -104,11 +104,11 @@ utils.HDContext = (class {
 		if (this.extension == 'gi-extension') {
 			this.gi_language = $('#page-wrapper').attr('data-hotdoc-meta-gi-language');
 			this.gi_languages = $('#page-wrapper').attr('data-hotdoc-meta-gi-languages').split(',');
-			this.hd_root = this.hd_root.replace(new RegExp(this.project_url_path +
-				this.gi_language + '/' + this.hd_basename + "$"),'');
+			this.rel_path = this.project_url_path + this.gi_language + '/' + this.hd_basename;
 		} else {
-			this.hd_root = this.hd_root.replace(new RegExp(this.project_url_path + this.hd_basename + "$"),'');
+			this.rel_path = this.project_url_path + this.hd_basename;
 		}
+		this.hd_root = this.hd_root.replace(new RegExp(this.rel_path + "$"),'');
 	}
 });
 

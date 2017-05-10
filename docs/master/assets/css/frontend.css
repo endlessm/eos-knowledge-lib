@@ -769,3 +769,8 @@ body.no-script #site-navigation .glyphicon-chevron-right,
 body.no-script #site-navigation .glyphicon-chevron-down {
   display: none;
 }
+#main *[id]:hover > .anchorjs-link,
+#main .anchorjs-link:focus {
+  text-decoration: none;
+  opacity: 1;
+}
