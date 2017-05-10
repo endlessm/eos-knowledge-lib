@@ -1,37 +1,55 @@
-{{#extra-header-information}}
 <div class="extra-header">
-    <div class="context"><p>{{{context}}}</p></div>
+    <div class="context">
+        <a class="eos-show-link" id="context-link"></a>
+    </div>
     <div class="extra-header-right">
-        {{#date-published}}
-        <p class="date-published">{{.}}</p>
-        {{/date-published}}
-        {{#source-link}}
+        <p class="date-published" id="date-published"></p>
         <p class="source-link">
-            {{{.}}}
-            {{#author}}
-            &mdash; {{.}}
-            {{/author}}
+            <a class="eos-show-link" id="source-link">Prensalibre.com</a>
+            &mdash; <span id="authors"></span>
         </p>
-        {{/source-link}}
     </div>
 </div>
-{{/extra-header-information}}
+
 <section id="inside-content" class="section">
     <div>{{{body-html}}}</div>
     <hr>
-    {{#disclaimer}}
     <div class="disclaimer">
-        <p>{{{.}}}</p>
+        <p>
+        Leer más en <a class="eos-show-link" id="disclaimer-link">Prensalibre.com</a><br>
+        <a class="eos-modal-link" href="#modal"> Aviso Legal y Política de Propiedad Intelectual </a>
+        </p>
     </div>
-    {{/disclaimer}}
     <div class="eos-modal" id="modal">
         <a class="eos-modal-close-background" href="#close"></a>
         <div>
-            <a class="eos-modal-close-button" href="#close"> &times </a>
-            <p align="justify">{{disclaimer-window}}</p>
+            <a class="eos-modal-close-button" href="#close"> &times; </a>
+            <p align="justify">La presente aplicación incluye reportes de noticias de interés que han sido obtenidos automáticamente de sus respectivas fuentes por medio del formato RSS que cada una de ellas ha hecho públicamente disponibles. En cada una se hace constar el titular de los derechos de autor del contenido, incluyendo pero no limitado a las imágenes en ellos incluidas. Las opiniones e información expresadas en las distintas notas, artículos, anuncios o cartas son responsabilidad exclusiva de sus autores. Endless no se hace responsable de la veracidad, del contenido o calidad de la información, ni de los productos, servicios, ofertas, promociones u otras que puedan estar ahí incluidas. El contenido es proporcionado acá de manera gratuita para uso no comercial. El contenido de los mismos y la información ahí expresada es responsabilidad exclusiva de sus autores. No asumimos responsabilidad alguna por el contenido de los mismos ni por cualquier acción u omisión tomada con base en esa información. El contenido puede incluir vínculos a páginas web de terceros que no se encuentran bajo nuestro control. No nos hacemos responsables por el contenido de esas páginas ni la inclusión de la información o de los vínculos constituye aceptación de las mismas, de sus autores o de los medios de comunicación que las han hecho públicas. Nos reservamos el derecho de modificar, suspender o descontinuar cualquier aspecto de esta aplicación y la información acá contenida en cualquier momento.</p>
         </div>
     </div>
 </section>
+
+<script>
+let metadata = window.contentMetadata;
+
+let set = metadata.sets.filter(set => set.featured)[0];
+let set_link = document.getElementById('context-link');
+set_link.href = set.id;
+set_link.innerHTML = set.title.toLowerCase();
+
+let published = document.getElementById('date-published');
+published.innerHTML = new Date(metadata.published).toLocaleDateString();
+
+let source_link = document.getElementById('source-link');
+source_link.href = metadata.original_uri;
+
+let authors_field = document.getElementById('authors');
+authors_field.innerHTML = metadata.authors.join('—');
+
+let disclaimer_link = document.getElementById('disclaimer-link');
+disclaimer_link.href = metadata.original_uri;
+</script>
+
 {{#css-files}}
 <link rel="stylesheet" type="text/css" href="resource:///com/endlessm/knowledge/data/templates/css/{{{.}}}"/>
 {{/css-files}}
