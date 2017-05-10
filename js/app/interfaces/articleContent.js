@@ -35,6 +35,12 @@ const ArticleContent = new Lang.Interface({
             'Name of a custom CSS file to apply to web content',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
+        /**
+         * Property: nav-content
+         */
+        'nav-content': GObject.ParamSpec.object('nav-content',
+            'Navigation Content', 'Navigation Content',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, Gtk.Widget),
     },
 
     Signals: {

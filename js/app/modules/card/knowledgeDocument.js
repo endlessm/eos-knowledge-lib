@@ -68,12 +68,6 @@ const KnowledgeDocument = new Module.Class({
             'The table of contents widget to the left of the article page.',
             GObject.ParamFlags.READABLE,
             TableOfContents.TableOfContents.$gtype),
-        /**
-         * Property: nav-content
-         */
-        'nav-content': GObject.ParamSpec.object('nav-content',
-            'Navigation Content', 'Navigation Content',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, Gtk.Widget),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/knowledgeDocument.ui',
