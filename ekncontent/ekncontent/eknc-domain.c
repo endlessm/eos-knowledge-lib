@@ -812,7 +812,7 @@ object_response_data_new (ScatterTaskCountdown *countdown,
   return data;
 }
 
-void
+static void
 on_received_all_model_objects (gpointer user_data)
 {
   GTask *task = user_data;
@@ -826,7 +826,7 @@ on_received_all_model_objects (gpointer user_data)
   g_object_unref (task);
 }
 
-void
+static void
 on_receive_model_error (GError *error, gpointer user_data)
 {
   GTask *task = user_data;
@@ -838,7 +838,7 @@ on_receive_model_error (GError *error, gpointer user_data)
     }
 }
 
-void
+static void
 on_object_response (GObject *source,
                     GAsyncResult *result,
                     gpointer user_data)
@@ -853,7 +853,7 @@ on_object_response (GObject *source,
   scatter_task_countdown_subtask_completed (&object_response_data->countdown, error);
 }
 
-void
+static void
 maybe_unref_object (gpointer data)
 {
   if (data)
@@ -862,7 +862,7 @@ maybe_unref_object (gpointer data)
     }
 }
 
-void
+static void
 on_xapian_query_response (GObject *source,
                           GAsyncResult *result,
                           gpointer user_data)
