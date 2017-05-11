@@ -778,12 +778,12 @@ scatter_task_countdown_subtask_completed (ScatterTaskCountdown **countdown_ptr,
    * allow the creator of the countdown to handle the error */
   if (error && countdown->error_callback)
     {
-      (*countdown->error_callback)(error, countdown->data);
+      (*countdown->error_callback) (error, countdown->data);
     }
 
   if (--countdown->remaining == 0)
     {
-      (*countdown->callback)(countdown->data);
+      (*countdown->callback) (countdown->data);
       g_free (countdown);
       *countdown_ptr = NULL;
     }
