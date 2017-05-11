@@ -744,7 +744,7 @@ GVariant *
 eknc_query_object_get_excluded_ids (EkncQueryObject *self)
 {
   g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
-  return self->ids;
+  return self->excluded_ids;
 }
 
 /**
