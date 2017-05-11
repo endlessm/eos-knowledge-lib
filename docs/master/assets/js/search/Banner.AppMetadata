@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["banner/appMetadata.html#bannerappmetadata1", "banner/appMetadata.html#bannerappmetadata"], "token": "Banner.AppMetadata"});
+urls_downloaded_cb({"token": "Banner.AppMetadata", "urls": ["banner/appMetadata.html#bannerappmetadata1", "banner/appMetadata.html#bannerappmetadata"]});

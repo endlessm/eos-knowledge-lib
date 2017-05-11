@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["layout/navigation.html#forwardvisible"], "token": "Forward"});
+urls_downloaded_cb({"token": "Forward", "urls": ["layout/navigation.html#forwardvisible"]});

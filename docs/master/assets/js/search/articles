@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["mf-index.html#page-description", "selection/relatedArticles.html#selectionrelatedarticles1", "selection/staticArticles.html#selectionstaticarticles1", "layout/articleStack.html#doslidinganimation"], "token": "articles"});
+urls_downloaded_cb({"token": "articles", "urls": ["mf-index.html#page-description", "selection/relatedArticles.html#selectionrelatedarticles1", "selection/staticArticles.html#selectionstaticarticles1", "layout/articleStack.html#doslidinganimation"]});
