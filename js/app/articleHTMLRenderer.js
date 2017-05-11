@@ -161,40 +161,6 @@ const ArticleHTMLRenderer = new Knowledge.Class({
     },
 
     _render_prensa_libre_content: function (model) {
-        function get_extra_header_info() {
-            let featured_set = model.tags
-                .filter(tag => !tag.startsWith('Ekn'))
-                .map(tag => SetMap.get_set_for_tag(tag))
-                .filter(set => typeof set !== 'undefined')
-                .filter(set => set.featured)[0];
-
-            let retval = {
-                'date-published': new Date(model.published).toLocaleDateString(),
-                'source-link': _to_link(model.original_uri, 'Prensalibre.com'),
-                'author': model.authors.join('—'),
-            };
-
-            if (featured_set)
-                retval.context = _to_set_link(featured_set);
-            return retval;
-        }
-
-        function get_disclaimer_link() {
-            let article_link = _to_link(model.original_uri, 'Prensalibre.com');
-            let disclaimer_label = _("Legal Notice and Intellectual Property Policy");
-            let disclaimer_link = _to_modal_link(disclaimer_label);
-            // TRANSLATORS: anything inside curly braces '{}' is going to be
-            // substituted in code. Please make sure to leave the curly
-            // braces around any words that have them, and do not translate
-            // words inside curly braces.
-            let disclaimer = _("Read more at {link}")
-                .replace('{link}', article_link);
-            disclaimer += '<br>' + disclaimer_link;
-            return disclaimer;
-        }
-
-        let disclaimer_window = _("DISCLAIMER PLACEHOLDER");
-
         let html = this._get_html(model);
 
         let template = _load_template('news-article.mst');
@@ -202,9 +168,6 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         return Mustache.render(template, {
             'css-files': ['prensa-libre.css'],
             'body-html': this._strip_tags(html),
-            'disclaimer': get_disclaimer_link(),
-            'disclaimer-window': disclaimer_window,
-            'extra-header-information': get_extra_header_info(),
         });
     },
 
@@ -266,6 +229,36 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         });
     },
 
+    _get_metadata: function (model) {
+        let metadata = {
+            id: model.ekn_id,
+            title: model.title,
+            published: model.published,
+            authors: model.authors,
+            license: model.license,
+            source: model.source,
+            source_name: model.source_name,
+            original_uri: model.original_uri,
+            sets: [],
+        };
+
+        // augment sets data to make it useful
+        model.tags.forEach((tag) => {
+            if (tag.startsWith('Ekn'))
+                return;
+            let set = SetMap.get_set_for_tag(tag);
+            if (!set)
+                return;
+            metadata['sets'].push({
+                id: set.ekn_id,
+                title: set.title,
+                featured: set.featured,
+            });
+        });
+
+        return JSON.stringify(metadata);
+    },
+
     _render_wrapper: function (content, model) {
         let css_files = this._get_wrapper_css_files();
         let js_files = this._get_wrapper_js_files();
@@ -281,6 +274,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
             'content': content,
             'crosslink-data': this._get_crosslink_data(model),
             'chunk-data': this._get_chunk_data(model),
+            'content-metadata': this._get_metadata(model),
         });
     },
 
@@ -294,10 +288,6 @@ const ArticleHTMLRenderer = new Knowledge.Class({
     },
 });
 
-function _to_set_link (model) {
-    return '<a class="eos-show-link" href="' + model.ekn_id + '">' + Mustache.escape(model.title.toLowerCase()) + '</a>';
-}
-
 function _to_link(uri, text) {
     return '<a class="eos-show-link" href="' + uri + '">' + Mustache.escape(text) + '</a>';
 }
@@ -305,10 +295,6 @@ function _to_link(uri, text) {
 function _to_license_link (license) {
     return _to_link('license://' + GLib.uri_escape_string(license, null, false),
         Endless.get_license_display_name(license));
-}
-
-function _to_modal_link(text) {
-    return '<a class="eos-modal-link" href="#modal">' + Mustache.escape(text) + '</a>';
 }
 
 function _get_display_string_for_license(license) {

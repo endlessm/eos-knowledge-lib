@@ -74,8 +74,8 @@ describe('Article HTML Renderer', function () {
         let html_no_title = renderer.render(wikibooks_model);
         renderer.show_title = true;
         let html_with_title = renderer.render(wikibooks_model);
-        expect(html_with_title).toMatch('Wikibooks title');
-        expect(html_no_title).not.toMatch('Wikibooks title');
+        expect(html_with_title).toMatch('<h1>Wikibooks title</h1>');
+        expect(html_no_title).not.toMatch('<h1>Wikibooks title</h1>');
     });
 
     it('links to creative commons license on wikimedia pages', function () {
@@ -127,59 +127,13 @@ describe('Article HTML Renderer', function () {
     });
 
     describe('Prensa Libre source', function () {
-        let model, html, set_models;
+        let html;
 
         beforeEach(function () {
-            set_models = [
-                Eknc.SetObjectModel.new_from_props({
-                    tags: ['EknHomePageTag', 'EknSetObject'],
-                    title: 'Guatemala',
-                    child_tags: ['guatemala'],
-                    featured: true,
-                    ekn_id: 'ekn://prensalibre/1',
-                }),
-                Eknc.SetObjectModel.new_from_props({
-                    tags: ['guatemala', 'EknSetObject'],
-                    title: 'Comunitario',
-                    child_tags: ['guatemala/comunitario'],
-                    featured: false,
-                    ekn_id: 'ekn://prensalibre/2',
-                }),
-            ];
-
-            SetMap.init_map_with_models(set_models);
-            model = Eknc.ArticleObjectModel.new_from_props({
-                source_uri: 'http://www.prensalibre.com/internacional/el-papa-francisco-dice-que-trump-no-puede-proclamarse-cristiano',
-                original_uri: 'http://www.prensalibre.com/internacional/el-papa-francisco-dice-que-trump-no-puede-proclamarse-cristiano',
-                content_type: 'text/html',
+            let model = Eknc.ArticleObjectModel.new_from_props({
                 source: 'prensa-libre',
-                source_name: 'Prensa Libre',
-                license: 'Owner permission',
-                title: 'El papa Francisco dice que Trump no puede proclamarse cristiano',
-                authors: ['Por La Redacci\u00f3n'],
-                published: '2016-02-25T09:31:00',
-                tags: ['guatemala/comunitario', 'guatemala', 'EknArticleObject'],
             });
             html = renderer.render(model);
-        });
-
-        it('shows a link back to the original source', function () {
-            expect(html).toMatch('href="' + model.original_uri);
-        });
-
-        it('shows the date published', function () {
-            expect(html).toMatch('2016');
-            expect(html).toMatch('25');
-            // FIXME: Date formatting is locale-dependent. Should maybe check
-            // for the existence of a div, but that's not robust.
-        });
-
-        it('shows the main category (and link) the article is tagged with', function () {
-            expect(html).toMatch('guatemala');
-            expect(html).toMatch(set_models[0].ekn_id);
-
-            expect(html).not.toMatch('comunitario');
-            expect(html).not.toMatch(set_models[1].ekn_id);
         });
 
         it('loads the appropriate CSS file', function () {
