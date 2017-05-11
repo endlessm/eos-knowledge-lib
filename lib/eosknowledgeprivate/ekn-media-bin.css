@@ -63,6 +63,11 @@ ekn-media-bin label.title {
   font: 18px Sans;
 }
 
+ekn-media-bin label.description {
+  margin: 1ex 0ex;
+  font: 14px Sans;
+}
+
 ekn-media-bin box.bottom button {
   border: 0px;
   border-radius: 0px;

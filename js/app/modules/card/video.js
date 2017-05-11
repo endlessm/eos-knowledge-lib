@@ -30,6 +30,14 @@ const Video = new Module.Class({
         'show-title':  GObject.ParamSpec.boolean('show-title', 'Show Title Label',
             'Whether to show the title label',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
+        /**
+         * Property: show-synopsis
+         *
+         * Set true if the synopsis label should be visible.
+         */
+        'show-synopsis':  GObject.ParamSpec.boolean('show-synopsis', 'Show Synopsis Label',
+            'Whether to show the synopsis label',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/video.ui',
@@ -42,9 +50,14 @@ const Video = new Module.Class({
         this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
 
         this._title_label.visible = this.show_title;
-        let video_player = new EosKnowledgePrivate.MediaBin();
+        this._synopsis_label.visible = this.show_synopsis;
+        let video_player = new EosKnowledgePrivate.MediaBin( {
+            visible: true,
+            uri: this.model.ekn_id,
+            title: this.model.title,
+            description: this.model.synopsis,
+        });
         video_player.get_style_context().add_class(Utils.get_element_style_class(Video, 'player'));
-        video_player.set_uri(this.model.ekn_id)
         video_player.show_all();
         this.attach(video_player, 1, 1, 1, 1);
         this.content_view = video_player;
