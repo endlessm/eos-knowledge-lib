@@ -759,7 +759,7 @@ scatter_task_countdown_new (guint remaining,
                             ScatterTaskCountdownErrorCallback error_callback,
                             gpointer data)
 {
-  ScatterTaskCountdown *countdown = g_new0(ScatterTaskCountdown, 1);
+  ScatterTaskCountdown *countdown = g_new0 (ScatterTaskCountdown, 1);
   countdown->remaining = remaining;
   countdown->callback = callback;
   countdown->error_callback = error_callback;
@@ -804,7 +804,7 @@ object_response_data_new (ScatterTaskCountdown *countdown,
                           GPtrArray *models,
                           guint index)
 {
-  ObjectResponseData *data = g_new0(ObjectResponseData, 1);
+  ObjectResponseData *data = g_new0 (ObjectResponseData, 1);
   data->countdown = countdown;
   data->domain = domain;
   data->models = models;
