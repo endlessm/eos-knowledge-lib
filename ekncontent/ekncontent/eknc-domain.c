@@ -812,14 +812,6 @@ object_response_data_new (ScatterTaskCountdown *countdown,
   return data;
 }
 
-static void
-object_response_data_free (ObjectResponseData *data)
-{
-  g_free (data);
-}
-
-G_DEFINE_AUTOPTR_CLEANUP_FUNC(ObjectResponseData, object_response_data_free);
-
 void
 on_received_all_model_objects (gpointer user_data)
 {
@@ -851,7 +843,7 @@ on_object_response (GObject *source,
                     GAsyncResult *result,
                     gpointer user_data)
 {
-  g_autoptr(ObjectResponseData) object_response_data = user_data;
+  g_autofree ObjectResponseData *object_response_data = user_data;
   EkncDomain *domain = object_response_data->domain;
   GError *error = NULL;
 
