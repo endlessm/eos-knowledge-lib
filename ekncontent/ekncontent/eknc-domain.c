@@ -857,9 +857,7 @@ static void
 maybe_unref_object (gpointer data)
 {
   if (data)
-    {
-      g_object_unref (G_OBJECT(data));
-    }
+    g_object_unref (data);
 }
 
 static void
