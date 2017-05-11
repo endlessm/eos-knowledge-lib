@@ -743,8 +743,8 @@ query_state_free (gpointer data)
   g_slice_free (QueryState, state);
 }
 
-typedef void (*ScatterTaskCountdownCompleteCallback)(gpointer user_data);
-typedef void (*ScatterTaskCountdownErrorCallback)(GError *error, gpointer user_data);
+typedef void (*ScatterTaskCountdownCompleteCallback) (gpointer user_data);
+typedef void (*ScatterTaskCountdownErrorCallback) (GError *error, gpointer user_data);
 
 typedef struct {
   guint remaining;
