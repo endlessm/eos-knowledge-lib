@@ -17,7 +17,7 @@ const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 const Utils = imports.tests.utils;
 
-function test_card_compliance(CardClass) {
+function test_card_compliance(CardClass, setup=function () {}) {
     describe(CardClass.$gtype.name + ' implements Card correctly', function () {
         beforeEach(function () {
             jasmine.addMatchers(CssClassMatcher.customMatchers);
@@ -40,6 +40,7 @@ function test_card_compliance(CardClass) {
                     content_type: 'text/html',
                 }),
             });
+            setup(card);
             expect(card).not.toHaveCssClass('Card--pdf');
             expect(card).not.toHaveCssClass(pretty_name + '--pdf');
         });
@@ -57,6 +58,7 @@ function test_card_compliance(CardClass) {
                 model: model,
                 highlight_string: 'hippo',
             });
+            setup(card);
             synopsis_label = Gtk.test_find_label(card, '*@@@*');
         });
 
@@ -93,6 +95,7 @@ function test_card_compliance(CardClass) {
 
         it('by highlighting a search string', function () {
             card = new CardClass({ model: model });
+            setup(card);
             card.highlight_string = 'hippo';
             expect(get_spans(Gtk.test_find_label(card, '*!!!*'))
                 .every(elem => elem === 'hippo')).toBeTruthy();

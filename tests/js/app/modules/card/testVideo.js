@@ -23,6 +23,8 @@ describe('Card.Video', function () {
                 title: '!!!',
             }),
         });
+        card.content_view.title = '';
+        card.content_view.description = '';
     });
 
     it('has the correct style classes', function () {
@@ -44,4 +46,7 @@ describe('Card.Video', function () {
     });
 });
 
-Compliance.test_card_compliance(Video.Video);
+Compliance.test_card_compliance(Video.Video, function (card) {
+    card.content_view.title = '';
+    card.content_view.description = '';
+});
