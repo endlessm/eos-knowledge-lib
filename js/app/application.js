@@ -159,7 +159,8 @@ const Application = new Knowledge.Class({
 
     vfunc_dbus_unregister: function (connection, path) {
         this.parent(connection, path);
-        this._knowledge_search_impl.unexport_from_connection(connection);
+        if (this._knowledge_search_impl.has_connection(connection))
+            this._knowledge_search_impl.unexport_from_connection(connection);
     },
 
     _check_for_content: function () {
