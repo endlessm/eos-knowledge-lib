@@ -773,14 +773,12 @@ scatter_task_countdown_subtask_completed (ScatterTaskCountdown **countdown_ptr,
 
   /* If we received an error we should still continue to countdown, but
    * store the error so that the caller can deal with it */
-  if (!countdown->error)
-    countdown->error = error;
-  else
-    g_clear_error (&error);
+  if (!countdown->error && error)
+    countdown->error = g_error_copy (error);
 
   if (--countdown->remaining == 0)
     {
-      (*countdown->callback) (error, countdown->data);
+      (*countdown->callback) (countdown->error, countdown->data);
       g_free (countdown);
       *countdown_ptr = NULL;
     }
@@ -828,8 +826,11 @@ on_object_response (GObject *source,
 {
   g_autofree ObjectResponseData *object_response_data = user_data;
   EkncDomain *domain = object_response_data->domain;
-  GError *error = NULL;
+  g_autoptr(GError) error = NULL;
 
+  /* We take ownership of the returned error here and
+   * scatter_task_countdown_completed may make a copy of it if
+   * it needs to */
   EkncContentObjectModel *model = eknc_domain_get_object_finish (domain, result, &error);
 
   *(&g_ptr_array_index (object_response_data->models, object_response_data->index)) = model;
