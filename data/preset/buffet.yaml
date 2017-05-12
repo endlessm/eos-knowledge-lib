@@ -1,7 +1,6 @@
 ---
 defines:
 # A few small repeated elements
-- &no-sets 'Filter.Sets(invert: true)'
 - &header-card Card.Title
 - &main-card
   type: Card.DefaultFamily
