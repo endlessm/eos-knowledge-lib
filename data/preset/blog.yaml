@@ -39,7 +39,13 @@ defines:
               slots:
                 card:
                   type: Card.Title
-            selection: Selection.StaticArticles
+            selection:
+              type: Selection.All
+              slots:
+                filter:
+                  shortdef: 'Filter.Tagged(tag: EknStaticTag)'
+                  slots:
+                    sub-filter: Filter.Articles
 
 - &home-page
   shortdef: 'Layout.InfiniteScrolling(expand: true)'

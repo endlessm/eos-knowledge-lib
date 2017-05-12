@@ -501,6 +501,7 @@ javascript_tests = \
 	tests/js/app/modules/order/testPublishedDate.js \
 	tests/js/app/modules/pager/testParallaxBackground.js \
 	tests/js/app/modules/pager/testSimple.js \
+	tests/js/app/modules/selection/testAll.js \
 	tests/js/app/modules/selection/testAllSets.js \
 	tests/js/app/modules/selection/testArticleContext.js \
 	tests/js/app/modules/selection/testContentForSet.js \
@@ -511,7 +512,6 @@ javascript_tests = \
 	tests/js/app/modules/selection/testSetCrossSection.js \
 	tests/js/app/modules/selection/testSuggested.js \
 	tests/js/app/modules/selection/testSupplementary.js \
-	tests/js/app/modules/selection/testStaticArticles.js \
 	tests/js/app/modules/window/testSimple.js \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testBuffetHistoryStore.js \
