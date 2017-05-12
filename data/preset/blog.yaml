@@ -119,9 +119,10 @@ defines:
                   slots:
                     card: *main-card
                 selection:
-                  type: Selection.ArticlesForSet
+                  type: Selection.ContentForSet
                   id: set-articles
                   slots:
+                    filter: Filter.Articles
                     order: 'Order.PublishedDate(ascending: false)'
 
 - &search-page

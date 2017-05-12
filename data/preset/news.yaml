@@ -114,9 +114,10 @@ defines:
                                   slots:
                                     card: *main-card
                                 selection:
-                                  type: Selection.ArticlesForSet
+                                  type: Selection.ContentForSet
                                   slots:
                                     order: 'Order.PublishedDate(ascending: false)'
+                                    filter: Filter.Articles
                         selection:
                           type: Selection.AllSets
                           slots:
@@ -172,8 +173,9 @@ defines:
                                       slots:
                                         card: *main-card
                                     selection:
-                                      type: Selection.ArticlesForSet
+                                      type: Selection.ContentForSet
                                       slots:
+                                        filter: Filter.Articles
                                         order: 'Order.PublishedDate(ascending: false)'
                             selection:
                               type: Selection.SubsetsForSet
@@ -191,12 +193,14 @@ defines:
                               properties:
                                 row-spacing: 20
                             selection:
-                              type: Selection.ArticlesForSet
+                              type: Selection.ContentForSet
                               id: articles-for-set
                               slots:
                                 order: 'Order.PublishedDate(ascending: false)'
                                 filter:
                                   type: Filter.CurrentSet
+                                  slots:
+                                    sub-filter: Filter.Articles
                     - type: Layout.ResponsiveMargins
                       styles:
                         - dark-background

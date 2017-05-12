@@ -143,7 +143,9 @@ defines:
                               slots:
                                 card: *main-card
                             selection:
-                              type: Selection.ArticlesForSet
+                              type: Selection.ContentForSet
+                              slots:
+                                filter: Filter.Articles
                     selection:
                       type: Selection.AllSets
                 - *category-suggestions

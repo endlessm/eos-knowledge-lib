@@ -504,7 +504,6 @@ javascript_tests = \
 	tests/js/app/modules/selection/testAllHighlights.js \
 	tests/js/app/modules/selection/testAllSets.js \
 	tests/js/app/modules/selection/testArticleContext.js \
-	tests/js/app/modules/selection/testArticlesForSet.js \
 	tests/js/app/modules/selection/testArticlesForSetCrossSection.js \
 	tests/js/app/modules/selection/testContentForSet.js \
 	tests/js/app/modules/selection/testNextArticle.js \
