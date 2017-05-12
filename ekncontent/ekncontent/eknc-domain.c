@@ -981,7 +981,7 @@ ptr_array_to_list_deep (GPtrArray *array)
     return NULL;
 
   for (guint i = 0; i < array->len; ++i)
-    list = g_list_append (list, g_object_ref (g_ptr_array_index(array, i)));
+    list = g_list_append (list, g_object_ref (g_ptr_array_index (array, i)));
 
   return list;
 }
