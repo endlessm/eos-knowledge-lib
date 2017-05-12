@@ -743,26 +743,23 @@ query_state_free (gpointer data)
   g_slice_free (QueryState, state);
 }
 
-typedef void (*ScatterTaskCountdownCompleteCallback) (gpointer user_data);
-typedef void (*ScatterTaskCountdownErrorCallback) (GError *error, gpointer user_data);
+typedef void (*ScatterTaskCountdownCompleteCallback) (GError *error, gpointer user_data);
 
 typedef struct {
   guint remaining;
   ScatterTaskCountdownCompleteCallback callback;
-  ScatterTaskCountdownErrorCallback error_callback;
   gpointer data;
+  GError *error;
 } ScatterTaskCountdown;
 
 static ScatterTaskCountdown *
 scatter_task_countdown_new (guint remaining,
                             ScatterTaskCountdownCompleteCallback callback,
-                            ScatterTaskCountdownErrorCallback error_callback,
                             gpointer data)
 {
   ScatterTaskCountdown *countdown = g_new0 (ScatterTaskCountdown, 1);
   countdown->remaining = remaining;
   countdown->callback = callback;
-  countdown->error_callback = error_callback;
   countdown->data = data;
 
   return countdown;
@@ -775,15 +772,15 @@ scatter_task_countdown_subtask_completed (ScatterTaskCountdown **countdown_ptr,
   ScatterTaskCountdown *countdown = *countdown_ptr;
 
   /* If we received an error we should still continue to countdown, but
-   * allow the creator of the countdown to handle the error */
-  if (error && countdown->error_callback)
-    {
-      (*countdown->error_callback) (error, countdown->data);
-    }
+   * store the error so that the caller can deal with it */
+  if (!countdown->error)
+    countdown->error = error;
+  else
+    g_clear_error (&error);
 
   if (--countdown->remaining == 0)
     {
-      (*countdown->callback) (countdown->data);
+      (*countdown->callback) (error, countdown->data);
       g_free (countdown);
       *countdown_ptr = NULL;
     }
@@ -813,29 +810,15 @@ object_response_data_new (ScatterTaskCountdown *countdown,
 }
 
 static void
-on_received_all_model_objects (gpointer user_data)
+on_received_all_model_objects (GError *error, gpointer user_data)
 {
-  GTask *task = user_data;
+  g_autoptr(GTask) task = user_data;
 
-  /* We might have already been marked as completed earlier due to an
-   * error state. Don't return if that is the case */
-  if (g_task_get_completed (task))
-    return;
-
-  g_task_return_boolean (task, TRUE);
-  g_object_unref (task);
-}
-
-static void
-on_receive_model_error (GError *error, gpointer user_data)
-{
-  GTask *task = user_data;
-
-  if (error != NULL)
-    {
-      g_task_return_error (task, error);
-      return;
-    }
+  /* Received an error, propogate it to the caller */
+  if (error)
+    g_task_return_error (task, error);
+  else
+    g_task_return_boolean (task, TRUE);
 }
 
 static void
@@ -915,7 +898,6 @@ on_xapian_query_response (GObject *source,
    * we are done receiving all model objects */
   ScatterTaskCountdown *countdown = scatter_task_countdown_new (state->total_models,
                                                                 on_received_all_model_objects,
-                                                                on_receive_model_error,
                                                                 g_object_ref (task));
 
   for (guint i = 0; i < json_array_get_length (results_array); i++)
