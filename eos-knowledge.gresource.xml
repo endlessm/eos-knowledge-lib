@@ -163,7 +163,6 @@
     <file>js/app/modules/navigation/searchBox.js</file>
     <file>js/app/modules/navigation/topMenu.js</file>
     <file>js/app/modules/order/alphabetical.js</file>
-    <file>js/app/modules/order/featured.js</file>
     <file>js/app/modules/order/publishedDate.js</file>
     <file>js/app/modules/pager/parallaxBackground.js</file>
     <file>js/app/modules/pager/simple.js</file>

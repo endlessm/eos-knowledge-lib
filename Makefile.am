@@ -497,7 +497,6 @@ javascript_tests = \
 	tests/js/app/modules/navigation/testSearchBox.js \
 	tests/js/app/modules/navigation/testTopMenu.js \
 	tests/js/app/modules/order/testAlphabetical.js \
-	tests/js/app/modules/order/testFeatured.js \
 	tests/js/app/modules/order/testPublishedDate.js \
 	tests/js/app/modules/pager/testParallaxBackground.js \
 	tests/js/app/modules/pager/testSimple.js \

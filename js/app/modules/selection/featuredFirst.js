@@ -12,8 +12,9 @@ const Xapian = imports.app.modules.selection.xapian;
  * Class: FeaturedFirst
  * Selection that gets all featured content before non-featured content
  *
- * FIXME: This should be implemented as Selection.All plus Order.Featured, but
- * currently it is not possible to sort by featured status in one Xapian query.
+ * FIXME: This should be implemented as Selection.All plus (the not currently
+ * existing) Order.Featured, but currently it is not possible to sort by
+ * featured status in one Xapian query.
  *
  * When that becomes possible, this module will be removed.
  */
