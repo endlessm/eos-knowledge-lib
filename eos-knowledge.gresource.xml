@@ -142,6 +142,7 @@
     <file>js/app/modules/filter/otherGroup.js</file>
     <file>js/app/modules/filter/seeMore.js</file>
     <file>js/app/modules/filter/sets.js</file>
+    <file>js/app/modules/filter/tagged.js</file>
     <file>js/app/modules/filter/thematic.js</file>
     <file>js/app/modules/filter/unread.js</file>
     <file>js/app/modules/layout/articleStack.js</file>
