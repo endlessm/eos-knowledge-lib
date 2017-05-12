@@ -104,7 +104,9 @@ defines:
                   slots:
                     card: Card.Title
                 selection:
-                  shortdef: 'Selection.SubsetsForSet()'
+                  type: Selection.ContentForSet
+                  slots:
+                    filter: Filter.Sets
             - shortdef: 'ContentGroup.ContentGroup(expand: true)'
               slots:
                 arrangement:
@@ -120,7 +122,9 @@ defines:
                               shortdef: 'Card.List(hexpand: true, show-synopsis: false)'
                         selection: Selection.ContentForSet
                 selection:
-                  shortdef: 'Selection.SubsetsForSet(track-subset: true)'
+                  shortdef: 'Selection.ContentForSet(track-subset: true)'
+                  slots:
+                    filter: Filter.Sets
         - shortdef: 'ContentGroup.ContentGroup(paginate: true, cards-per-page: 3)'
           styles:
             - see-more

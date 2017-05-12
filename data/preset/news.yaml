@@ -177,7 +177,9 @@ defines:
                                         filter: Filter.Articles
                                         order: 'Order.PublishedDate(ascending: false)'
                             selection:
-                              type: Selection.SubsetsForSet
+                              type: Selection.ContentForSet
+                              slots:
+                                filter: Filter.Sets
                     - type: Layout.ResponsiveMargins
                       slots:
                         content:
