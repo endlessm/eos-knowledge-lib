@@ -8,7 +8,6 @@ defines:
     - 0
     - 1
 - &header-card Card.Title
-- &no-sets 'Filter.Sets(invert: true)'
 
 # Reused components
 - &menu
@@ -87,10 +86,10 @@ defines:
                           slots:
                             card: *main-card
                         selection:
-                          type: Selection.AllHighlights
+                          type: Selection.FeaturedFirst
                           id: highlighted
                           slots:
-                            filter: *no-sets
+                            filter: Filter.Articles
                             order: 'Order.PublishedDate(ascending: false)'
                     - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
                       styles:
@@ -218,7 +217,9 @@ defines:
                               styles:
                                 - content-group-title
                             selection:
-                              type: Selection.SupplementaryArticles
+                              type: Selection.Supplementary
+                              slots:
+                                filter: Filter.Articles
 
 - &search-page
   <<: *menu
@@ -276,7 +277,10 @@ defines:
                                         label: !translate 'you might be interested in...'
                                         halign: start
                                     arrangement: *suggestions-arrangement
-                                    selection: Selection.SuggestedArticles
+                                    selection:
+                                      type: Selection.Suggested
+                                      slots:
+                                        filter: Filter.Articles
 
 - &article-page
   <<: *menu
@@ -304,7 +308,7 @@ defines:
                     show-synopsis: false
                     navigation-context: !translate 'Next Article'
             selection:
-              type: Selection.NextArticle
+              type: Selection.Next
         video: 'Card.Video(show-title: false, show-synopsis: false)'
 
 root:

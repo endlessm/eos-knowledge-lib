@@ -28,6 +28,8 @@ const AllSets = new Module.Class({
         });
     },
 
+    // FIXME: This is the only thing preventing this Selection from being
+    // refactored into Selection.All + Filter.Sets
     show_more: function () {
         Dispatcher.get_default().dispatch({
             action_type: Actions.ALL_SETS_CLICKED,

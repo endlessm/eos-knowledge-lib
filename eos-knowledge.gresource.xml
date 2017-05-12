@@ -167,18 +167,18 @@
     <file>js/app/modules/order/publishedDate.js</file>
     <file>js/app/modules/pager/parallaxBackground.js</file>
     <file>js/app/modules/pager/simple.js</file>
-    <file>js/app/modules/selection/allHighlights.js</file>
     <file>js/app/modules/selection/allSets.js</file>
     <file>js/app/modules/selection/articleContext.js</file>
-    <file>js/app/modules/selection/articlesForSetCrossSection.js</file>
     <file>js/app/modules/selection/contentForSet.js</file>
-    <file>js/app/modules/selection/relatedArticles.js</file>
-    <file>js/app/modules/selection/nextArticle.js</file>
+    <file>js/app/modules/selection/featuredFirst.js</file>
+    <file>js/app/modules/selection/next.js</file>
+    <file>js/app/modules/selection/related.js</file>
     <file>js/app/modules/selection/search.js</file>
     <file>js/app/modules/selection/selection.js</file>
+    <file>js/app/modules/selection/setCrossSection.js</file>
     <file>js/app/modules/selection/subsetsForSet.js</file>
-    <file>js/app/modules/selection/suggestedArticles.js</file>
-    <file>js/app/modules/selection/supplementaryArticles.js</file>
+    <file>js/app/modules/selection/suggested.js</file>
+    <file>js/app/modules/selection/supplementary.js</file>
     <file>js/app/modules/selection/staticArticles.js</file>
     <file>js/app/modules/selection/xapian.js</file>
     <file>js/app/modules/window/simple.js</file>

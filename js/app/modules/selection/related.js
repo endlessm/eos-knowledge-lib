@@ -1,4 +1,4 @@
-/* exported RelatedArticles */
+/* exported Related */
 
 // Copyright 2017 Endless Mobile, Inc.
 
@@ -11,14 +11,14 @@ const Xapian = imports.app.modules.selection.xapian;
 const Pages = imports.app.pages;
 
 /**
- * Class: RelatedArticles
- * Retrieves related articles to the current article
+ * Class: Related
+ * Retrieves content related to the current article
  *
- * Retrieves articles that are related to the article that is
+ * Retrieves content that is related to the article that is
  * currently being displayed on the article page.
  */
-const RelatedArticles = new Module.Class({
-    Name: 'Selection.RelatedArticles',
+const Related = new Module.Class({
+    Name: 'Selection.Related',
     Extends: Xapian.Xapian,
 
     _init: function (props={}) {
@@ -37,9 +37,7 @@ const RelatedArticles = new Module.Class({
         let tags = item.model.tags.filter(tag => !tag.startsWith('Ekn'));
         let query_object_params = {
             limit: limit,
-            tags_match_all: ['EknArticleObject'],
             tags_match_any: tags,
-            excluded_ids: [...ReadingHistoryModel.get_default().get_read_articles()],
         };
 
         return Eknc.QueryObject.new_from_props(query_object_params);

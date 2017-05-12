@@ -501,16 +501,16 @@ javascript_tests = \
 	tests/js/app/modules/order/testPublishedDate.js \
 	tests/js/app/modules/pager/testParallaxBackground.js \
 	tests/js/app/modules/pager/testSimple.js \
-	tests/js/app/modules/selection/testAllHighlights.js \
 	tests/js/app/modules/selection/testAllSets.js \
 	tests/js/app/modules/selection/testArticleContext.js \
-	tests/js/app/modules/selection/testArticlesForSetCrossSection.js \
 	tests/js/app/modules/selection/testContentForSet.js \
-	tests/js/app/modules/selection/testNextArticle.js \
-	tests/js/app/modules/selection/testRelatedArticles.js \
+	tests/js/app/modules/selection/testFeaturedFirst.js \
+	tests/js/app/modules/selection/testNext.js \
+	tests/js/app/modules/selection/testRelated.js \
 	tests/js/app/modules/selection/testSearch.js \
-	tests/js/app/modules/selection/testSuggestedArticles.js \
-	tests/js/app/modules/selection/testSupplementaryArticles.js \
+	tests/js/app/modules/selection/testSetCrossSection.js \
+	tests/js/app/modules/selection/testSuggested.js \
+	tests/js/app/modules/selection/testSupplementary.js \
 	tests/js/app/modules/selection/testStaticArticles.js \
 	tests/js/app/modules/window/testSimple.js \
 	tests/js/app/testArticleHTMLRenderer.js \

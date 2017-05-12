@@ -1,4 +1,4 @@
-/* exported NextArticle */
+/* exported Next */
 
 // Copyright 2017 Endless Mobile, Inc.
 
@@ -11,11 +11,11 @@ const Xapian = imports.app.modules.selection.xapian;
 const Pages = imports.app.pages;
 
 /**
- * Class: NextArticle
- * Retrieves the next article in the current context
+ * Class: Next
+ * Retrieves the next item in the current context
  */
-const NextArticle = new Module.Class({
-    Name: 'Selection.NextArticle',
+const Next = new Module.Class({
+    Name: 'Selection.Next',
     Extends: Xapian.Xapian,
 
     _init: function (props={}) {
@@ -47,7 +47,6 @@ const NextArticle = new Module.Class({
         let query_object_params = {
             limit: 1,
             ids: [next_model.ekn_id],
-            tags_match_all: ['EknArticleObject'],
         };
 
         return Eknc.QueryObject.new_from_props(query_object_params);

@@ -1,4 +1,4 @@
-/* exported AllHighlights */
+/* exported FeaturedFirst */
 
 // Copyright 2016 Endless Mobile, Inc.
 
@@ -8,8 +8,17 @@ const GLib = imports.gi.GLib;
 const Module = imports.app.interfaces.module;
 const Xapian = imports.app.modules.selection.xapian;
 
-const AllHighlights = new Module.Class({
-    Name: 'Selection.AllHighlights',
+/**
+ * Class: FeaturedFirst
+ * Selection that gets all featured content before non-featured content
+ *
+ * FIXME: This should be implemented as Selection.All plus Order.Featured, but
+ * currently it is not possible to sort by featured status in one Xapian query.
+ *
+ * When that becomes possible, this module will be removed.
+ */
+const FeaturedFirst = new Module.Class({
+    Name: 'Selection.FeaturedFirst',
     Extends: Xapian.Xapian,
 
     _init: function (props={}) {
@@ -21,13 +30,11 @@ const AllHighlights = new Module.Class({
         if (query_index == 0) {
             return Eknc.QueryObject.new_from_props({
                 limit: limit,
-                tags_match_all: ['EknArticleObject', 'EknFeaturedTag'],
-                excluded_tags: [],
+                tags_match_all: ['EknFeaturedTag'],
             });
         } else if (query_index == 1) {
             return Eknc.QueryObject.new_from_props({
                 limit: limit,
-                tags_match_all: ['EknArticleObject'],
                 excluded_tags: ['EknFeaturedTag'],
             });
         }
