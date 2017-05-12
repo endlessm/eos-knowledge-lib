@@ -978,9 +978,7 @@ ptr_array_to_list_deep (GPtrArray *array)
 
   /* If there's no array just return an empty list */
   if (!array)
-    {
-      return list;
-    }
+    return NULL;
 
   for (guint i = 0; i < array->len; ++i)
     {
