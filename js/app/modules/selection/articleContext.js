@@ -1,4 +1,4 @@
-/* exported ArticlesForSet */
+/* exported ArticleContext */
 
 // Copyright 2016 Endless Mobile, Inc.
 

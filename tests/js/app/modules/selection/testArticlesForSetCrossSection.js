@@ -25,7 +25,7 @@ Compliance.test_selection_compliance(ArticlesForSetCrossSection.ArticlesForSetCr
 Compliance.test_xapian_selection_compliance(ArticlesForSetCrossSection.ArticlesForSetCrossSection,
     setup);
 
-describe('Selection.ArticlesForSet', function () {
+describe('Selection.ArticlesForSetCrossSection', function () {
     let factory, selection, dispatcher;
 
     beforeEach(function () {
