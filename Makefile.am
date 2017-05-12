@@ -473,6 +473,7 @@ javascript_tests = \
 	tests/js/app/modules/controller/testBuffet.js \
 	tests/js/app/modules/controller/testCourse.js \
 	tests/js/app/modules/controller/testMesh.js \
+	tests/js/app/modules/filter/testArticles.js \
 	tests/js/app/modules/filter/testCurrentSet.js \
 	tests/js/app/modules/filter/testFeatured.js \
 	tests/js/app/modules/filter/testOtherGroup.js \
