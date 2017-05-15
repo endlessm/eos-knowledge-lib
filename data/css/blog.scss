@@ -56,6 +56,12 @@ $highlighted-background-color: darken($background-dark-color, 5%) !default;
 .CardDefaultFamily {
   min-height: 400px;
 
+  &:hover {
+    .CardDefaultFamily__title {
+      color: $accent-light-color;
+    }
+  }
+
   &.width-f {
     .CardDefaultFamily__title {
       font-size: 32px;
