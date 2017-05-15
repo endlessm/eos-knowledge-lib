@@ -122,8 +122,9 @@ $highlighted-background-color: darken($background-dark-color, 5%) !default;
 
 .article-page {
   .related-posts {
-    margin: 0px 50px 20px 50px;
-
+    background-color: $background-light-color;
+    margin-right: 15px;
+    padding: 0px 50px 20px 50px;
     .ContentGroupContentGroup__title {
       font-size: 46px;
       font-weight: 900;
