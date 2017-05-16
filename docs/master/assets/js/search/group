@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "group", "urls": ["mf-index.html#page-description", "tools.html#picard", "contentGroup/contentGroup.html#paginate", "selection/subsetsForSet.html#tracksubset"]});
+urls_downloaded_cb({"urls": ["mf-index.html#page-description", "tools.html#picard", "contentGroup/contentGroup.html#paginate", "selection/subsetsForSet.html#tracksubset"], "token": "group"});
