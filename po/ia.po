@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-04-18 02:02+0000\n"
+"POT-Creation-Date: 2017-05-09 02:07+0000\n"
 "PO-Revision-Date: 2017-04-16 05:10+0000\n"
 "Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
 "Language-Team: Interlingua (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/ia/)\n"
@@ -21,11 +21,11 @@ msgstr ""
 msgid "PDF"
 msgstr ""
 
-#: data/widgets/card/sequence.ui:21 js/app/modules/layout/articleStack.js:208
+#: data/widgets/card/sequence.ui:21
 msgid "Next Article"
 msgstr ""
 
-#: data/widgets/card/sequence.ui:60 js/app/modules/layout/articleStack.js:191
+#: data/widgets/card/sequence.ui:60
 msgid "Previous Article"
 msgstr ""
 
@@ -179,7 +179,7 @@ msgstr ""
 msgid "Results for “%s”"
 msgstr ""
 
-#: js/app/modules/contentGroup/contentGroup.js:160
+#: js/app/modules/contentGroup/contentGroup.js:166
 msgid "See more"
 msgstr ""
 
