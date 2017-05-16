@@ -33,7 +33,7 @@ const MockEngine = new Lang.Class({
     },
 
     query_promise: function () {
-        return Promise.resolve();
+        return Promise.resolve({ models: [], upper_bound: 0 });
     },
 });
 

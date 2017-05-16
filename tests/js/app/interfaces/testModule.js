@@ -37,13 +37,21 @@ describe('Module interface', function () {
     });
 });
 
+const MinimalModuleWithSlots = new Module.Class({
+    Name: 'MinimalModuleWithSlots',
+    Extends: GObject.Object,
+    Slots: {
+        submodule1: {},
+        submodule2: {},
+    },
+});
 
 describe('Module with slots', function () {
     let module;
 
     beforeEach(function () {
         let factory = new MockFactory.MockFactory({
-            type: Minimal.MinimalModuleWithSlots,
+            type: MinimalModuleWithSlots,
             slots: {
                 submodule1: {type: Minimal.MinimalModule},
                 submodule2: {type: Minimal.MinimalModule},

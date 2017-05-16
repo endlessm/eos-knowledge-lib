@@ -89,15 +89,6 @@ const MinimalModule = new Module.Class({
     Extends: GObject.Object,
 });
 
-const MinimalModuleWithSlots = new Module.Class({
-    Name: 'MinimalModuleWithSlots',
-    Extends: GObject.Object,
-    Slots: {
-        submodule1: {},
-        submodule2: {},
-    },
-});
-
 const MinimalDocumentCard = new Module.Class({
     Name: 'MinimalDocumentCard',
     Extends: Gtk.Widget,

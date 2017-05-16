@@ -1,58 +1,78 @@
 const Eknc = imports.gi.EosKnowledgeContent;
 
 describe('QueryObject', function () {
+    const IDS = ['ekn://busters-es/0123456789012345',
+        'ekn://busters-es/fabaffacabacbafa'];
+    const EXCLUDED_IDS = ['ekn://busters-es/abcdefabcdef1234',
+        'ekn://busters-es/fedcba9876543210']
+    const TAGS_MATCH_ANY = ['Spengler', 'Stantz', 'Venkman', 'Zeddemore'];
+    const TAGS_MATCH_ALL = ['Gilbert', 'Holtzmann', 'Tolan', 'Yates'];
+    const EXCLUDED_TAGS = ['Zuul'];
+
     it('sets tags and ids objects properly', function () {
-        let ids = ['ekn://busters-es/0123456789012345',
-                   'ekn://busters-es/fabaffacabacbafa'];
-        let tags = ['Venkman', 'Stantz'];
         let query_obj = Eknc.QueryObject.new_from_props({
-            ids: ids,
-            tags_match_any: tags,
+            ids: IDS,
+            excluded_ids: EXCLUDED_IDS,
+            tags_match_any: TAGS_MATCH_ANY,
+            tags_match_all: TAGS_MATCH_ALL,
+            excluded_tags: EXCLUDED_TAGS,
         });
-        expect(ids).toEqual(query_obj.ids);
-        expect(tags).toEqual(query_obj.tags_match_any);
+        expect(query_obj.ids).toEqual(IDS);
+        expect(query_obj.excluded_ids).toEqual(EXCLUDED_IDS);
+        expect(query_obj.tags_match_any).toEqual(TAGS_MATCH_ANY);
+        expect(query_obj.tags_match_all).toEqual(TAGS_MATCH_ALL);
+        expect(query_obj.excluded_tags).toEqual(EXCLUDED_TAGS);
     });
 
     it('makes a deep copy of arrays passed into it', function () {
-        let ids = ['ekn://busters-es/0123456789012345',
-                   'ekn://busters-es/fabaffacabacbafa'];
-        let tags = ['Venkman', 'Stantz'];
+        let mutable_ids = ['ekn://busters-es/0123456789012345',
+                           'ekn://busters-es/fabaffacabacbafa'];
+        let mutable_tags = ['Venkman', 'Stantz'];
         let query_obj = Eknc.QueryObject.new_from_props({
-            ids: ids,
-            tags_match_any: tags,
+            ids: mutable_ids,
+            tags_match_any: mutable_tags,
         });
-        ids = ids.concat(['ekn://busters-es/0123456789abcdef']);
-        delete tags[1];
-        expect(query_obj.ids).not.toEqual(ids);
-        expect(query_obj.tags_match_any).not.toEqual(tags);
+        mutable_ids = mutable_ids.concat(['ekn://busters-es/0123456789abcdef']);
+        delete mutable_tags[1];
+        expect(query_obj.ids).not.toEqual(mutable_ids);
+        expect(query_obj.tags_match_any).not.toEqual(mutable_tags);
     });
 
     describe('new_from_object constructor', function () {
+        const QUERY = 'keymaster';
+        const QUERY_OBJ = Eknc.QueryObject.new_from_props({
+            tags_match_any: TAGS_MATCH_ANY,
+            query: QUERY,
+        });
+
         it('duplicates properties from source object', function () {
-            let tags = ['Venkman', 'Stantz'];
-            let query = 'keymaster';
-            let query_obj = Eknc.QueryObject.new_from_props({
-                tags_match_any: tags,
-                query: query,
-            });
-            let query_obj_copy = Eknc.QueryObject.new_from_object(query_obj);
-            expect(query_obj_copy.tags_match_any).toEqual(tags);
-            expect(query_obj_copy.query).toEqual(query);
+            let query_obj_copy = Eknc.QueryObject.new_from_object(QUERY_OBJ);
+            expect(query_obj_copy.tags_match_any).toEqual(TAGS_MATCH_ANY);
+            expect(query_obj_copy.query).toEqual(QUERY);
         });
 
         it('allows properties to be overridden', function () {
-            let tags = ['Venkman', 'Stantz'];
-            let query = 'keymaster';
-            let query_obj = Eknc.QueryObject.new_from_props({
-                tags_match_any: tags,
-                query: query,
-            });
             let new_query = 'gatekeeper';
-            let new_query_object = Eknc.QueryObject.new_from_object(query_obj, {
+            let new_query_object = Eknc.QueryObject.new_from_object(QUERY_OBJ, {
                 query: new_query
             });
-            expect(new_query_object.tags_match_any).toEqual(tags);
+            expect(new_query_object.tags_match_any).toEqual(TAGS_MATCH_ANY);
             expect(new_query_object.query).toEqual(new_query);
+        });
+
+        it('properly marshals arrays from the override object', function () {
+            let new_query_object = Eknc.QueryObject.new_from_object(QUERY_OBJ, {
+                ids: IDS,
+                excluded_ids: EXCLUDED_IDS,
+                tags_match_all: TAGS_MATCH_ALL,
+                tags_match_any: TAGS_MATCH_ANY,
+                excluded_tags: EXCLUDED_TAGS,
+            });
+            expect(new_query_object.ids).toEqual(IDS);
+            expect(new_query_object.excluded_ids).toEqual(EXCLUDED_IDS);
+            expect(new_query_object.tags_match_all).toEqual(TAGS_MATCH_ALL);
+            expect(new_query_object.tags_match_any).toEqual(TAGS_MATCH_ANY);
+            expect(new_query_object.excluded_tags).toEqual(EXCLUDED_TAGS);
         });
     });
 

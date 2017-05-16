@@ -39,34 +39,48 @@ describe('Filter.CurrentSet', function () {
 
     let filter, store;
 
-    function test_with_mode(mode, description, values) {
-        describe('Inversed mode set to ' + mode, function () {
-            beforeEach(function () {
-                SetMap.init_map_with_models(SETS);
+    function setup_filter(mode) {
+        SetMap.init_map_with_models(SETS);
 
-                store = new HistoryStore.HistoryStore();
-                HistoryStore.set_default(store);
+        let store = new HistoryStore.HistoryStore();
+        HistoryStore.set_default(store);
 
-                [filter] = MockFactory.setup_tree({
-                    type: CurrentSet.CurrentSet,
-                    properties: {
-                        invert: mode,
-                    }
-                });
-            });
-
-            it(description, function () {
-                store.set_current_item_from_props({
-                    page_type: Pages.SET,
-                    model: SETS[0],
-                });
-
-                expect(filter.include(ARTICLES[0])).toEqual(values[0]);
-                expect(filter.include(ARTICLES[1])).toEqual(values[1]);
-                expect(filter.include(ARTICLES[2])).toEqual(values[2]);
-            });
+        let [filter] = MockFactory.setup_tree({
+            type: CurrentSet.CurrentSet,
+            properties: {
+                invert: mode,
+            }
         });
+
+        store.set_current_item_from_props({
+            page_type: Pages.SET,
+            model: SETS[0],
+        });
+
+        return [store, filter];
     }
-    test_with_mode(false, 'filters out what does not belong to the set', [true, false, false]);
-    test_with_mode(true, 'filters out what does belong to the set', [false, true, true]);
+
+    describe('not inverted', function () {
+        beforeEach(function () {
+            [store, filter] = setup_filter(false);
+        });
+
+        it('filters out what does not belong to the set', function () {
+            expect(filter.include(ARTICLES[0])).toBeTruthy();
+            expect(filter.include(ARTICLES[1])).toBeFalsy();
+            expect(filter.include(ARTICLES[2])).toBeFalsy();
+        });
+    });
+
+    describe('inverted', function () {
+        beforeEach(function () {
+            [store, filter] = setup_filter(true);
+        });
+
+        it('filters out what does belong to the set', function () {
+            expect(filter.include(ARTICLES[0])).toBeFalsy();
+            expect(filter.include(ARTICLES[1])).toBeTruthy();
+            expect(filter.include(ARTICLES[2])).toBeTruthy();
+        });
+    });
 });
