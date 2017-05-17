@@ -32,38 +32,4 @@
         background-size: 100% 100%;
         border-width: 0px;
     }
-
-    &.width-c &__title,
-    &.width-d.height-c &__title,
-    &.width-d.height-b &__title {
-        font-size: 21.3px;
-    }
-
-    &.width-d.height-d &__title,
-    &.width-e.height-b &__title,
-    &.width-e.height-c &__title {
-        font-size: 30.7px;
-    }
-
-    &.width-d &__title,
-    &.width-e &__title,
-    &.width-f &__title,
-    &.width-g &__title,
-    &.width-h &__title {
-        font-size: 49.3px;
-    }
-
-    &.width-e &__contentFrame,
-    &.width-f &__contentFrame,
-    &.width-g &__contentFrame,
-    &.width-h &__contentFrame {
-        padding: 40px;
-    }
-
-    &.width-e.height-e .Card__context,
-    &.width-f .Card__context,
-    &.width-g .Card__context,
-    &.width-h .Card__context {
-        font-size: 18.7px;
-    }
 }
