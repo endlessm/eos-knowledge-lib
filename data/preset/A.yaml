@@ -53,23 +53,121 @@ defines:
               id: basement-sets
 
 - &set-page
-  shortdef: 'Layout.Box(orientation: vertical)'
+  type: Layout.InfiniteScrolling
+  references:
+    lazy-load: set-articles
   slots:
-    contents:
-    - shortdef: 'Banner.Set(halign: center)'
-      slots:
-        card: Card.Title
-    - type: Layout.InfiniteScrolling
-      references:
-        lazy-load: set-articles
+    content:
+      shortdef: Layout.ResponsiveMargins
       slots:
         content:
-          type: ContentGroup.ContentGroup
+          shortdef: 'Layout.Box(orientation: vertical)'
           slots:
-            <<: *main-arrangement-slot
-            selection:
-              type: Selection.ContentForSet
-              id: set-articles
+            contents:
+            - shortdef: 'Banner.Set(halign: center)'
+              slots:
+                card: Card.Title
+            # - type: Layout.InfiniteScrolling
+            # - shortdef: 'Layout.Box(orientation: vertical)'
+            #   slots:
+            #     contents:
+            - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
+              # references:
+              #   lazy-load: set-articles
+              slots:
+                arrangement:
+                  type: Arrangement.List
+                  properties:
+                    homogenous: false
+                  slots:
+                    card:
+                      type: Card.ContentGroup
+                      # styles:
+                      #   - ContentGroupHighlightsSet
+                      slots:
+                        # title:
+                        #   type: ContentGroup.DynamicTitle
+                        #   properties:
+                        #     halign: start
+                        # trigger: *see-more-trigger
+                        arrangement:
+                          shortdef: Arrangement.Constrained
+                          slots:
+                            card: 
+                              type: Card.DefaultFamily
+                              properties:
+                                excluded_types:
+                                  - 0
+                                  - 1
+                        selection:
+                          # type: Selection.ArticlesForSet
+                          type: Selection.ArticlesForSetCrossSection
+                          id: set-articles
+                          # slots:
+                            # order: 'Order.PublishedDate(ascending: false)'
+                selection:
+                  type: Selection.AllSets
+
+        # content:
+        #   type: ContentGroup.ContentGroup
+        #   slots:
+        #     <<: *main-arrangement-slot
+        #     selection:
+        #       type: Selection.ContentForSet
+        #       id: set-articles
+
+
+# shortdef: 'Layout.Box(orientation: vertical)'
+# styles:
+#   - ContentGroupContainer
+# slots:
+#   contents:
+#   - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
+#     styles:
+#       - ContentGroupHighlightsAll
+#     slots:
+#       arrangement:
+#         type: Arrangement.Piano
+#         slots:
+#           card: *main-card
+#       selection:
+#         type: Selection.AllHighlights
+#         id: highlighted
+#         slots:
+#           filter: *no-sets
+#           order: 'Order.PublishedDate(ascending: false)'
+#   - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
+#     slots:
+#       arrangement:
+#         type: Arrangement.List
+#         properties:
+#           max-rows: 4
+#           homogeneous: false
+#         slots:
+#           card:
+#             type: Card.ContentGroup
+#             styles:
+#               - ContentGroupHighlightsSet
+#             slots:
+#               title:
+#                 type: ContentGroup.DynamicTitle
+#                 properties:
+#                   halign: start
+#               trigger: *see-more-trigger
+#               arrangement:
+#                 shortdef: 'Arrangement.Thirties(max-rows: 1)'
+#                 slots:
+#                   card: *main-card
+#               selection:
+#                 type: Selection.ArticlesForSet
+#                 slots:
+#                   order: 'Order.PublishedDate(ascending: false)'
+#       selection:
+#         type: Selection.AllSets
+#         slots:
+#           filter: Filter.Featured
+
+
 
 - &search-page
   shortdef: 'Layout.Box(orientation: vertical)'
@@ -87,9 +185,7 @@ defines:
             selection:
               type: Selection.Search
               id: search-results
-            no-results: ContentGroup.NoResultsMessage
-          styles:
-          - search-results
+            no-results: 'ContentGroup.NoResultsMessage(valign: center, halign: center, justify: center)'
 
 - &article-page
   type: Layout.ArticleStack
