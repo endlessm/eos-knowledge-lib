@@ -1,7 +1,7 @@
 const Eknc = imports.gi.EosKnowledgeContent;
 const Gtk = imports.gi.Gtk;
 
-const NextArticle = imports.app.modules.selection.nextArticle;
+const Next = imports.app.modules.selection.next;
 const Pages = imports.app.pages;
 const Compliance = imports.tests.compliance;
 const HistoryStore = imports.app.historyStore;
@@ -28,7 +28,7 @@ function setup (store) {
     });
 }
 
-describe('Selection.NextArticle', function () {
+describe('Selection.Next', function () {
     let selection, engine;
 
     beforeEach(function () {
@@ -37,7 +37,7 @@ describe('Selection.NextArticle', function () {
         let store = new HistoryStore.HistoryStore();
         HistoryStore.set_default(store);
         [selection] = MockFactory.setup_tree({
-            type: NextArticle.NextArticle,
+            type: Next.Next,
         });
         setup(store);
     });
@@ -49,5 +49,5 @@ describe('Selection.NextArticle', function () {
     });
 });
 
-Compliance.test_selection_compliance(NextArticle.NextArticle, setup);
-Compliance.test_xapian_selection_compliance(NextArticle.NextArticle, setup);
+Compliance.test_selection_compliance(Next.Next, setup);
+Compliance.test_xapian_selection_compliance(Next.Next, setup);

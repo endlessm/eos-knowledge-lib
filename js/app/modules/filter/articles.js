@@ -1,18 +1,18 @@
-// Copyright 2016 Endless Mobile, Inc.
+// Copyright 2017 Endless Mobile, Inc.
 
-/* exported Sets */
+/* exported Articles */
 
 const Filter = imports.app.interfaces.filter;
 const Module = imports.app.interfaces.module;
 const Tagged = imports.app.modules.filter.tagged;
 
-const Sets = new Module.Class({
-    Name: 'Filter.Sets',
+const Articles = new Module.Class({
+    Name: 'Filter.Articles',
     Extends: Tagged.Tagged,
     Implements: [Filter.Filter],
 
     _init: function (props={}) {
-        props.tag = 'EknSetObject';
+        props.tag = 'EknArticleObject';
         this.parent(props);
     },
 });

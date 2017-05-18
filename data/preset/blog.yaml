@@ -39,7 +39,13 @@ defines:
               slots:
                 card:
                   type: Card.Title
-            selection: Selection.StaticArticles
+            selection:
+              type: Selection.All
+              slots:
+                filter:
+                  shortdef: 'Filter.Tagged(tag: EknStaticTag)'
+                  slots:
+                    sub-filter: Filter.Articles
 
 - &home-page
   shortdef: 'Layout.InfiniteScrolling(expand: true)'
@@ -60,10 +66,10 @@ defines:
               slots:
                 card: *main-card
             selection:
-              type: Selection.AllHighlights
+              type: Selection.FeaturedFirst
               id: highlighted
               slots:
-                filter: 'Filter.Sets(invert: true)'
+                filter: Filter.Articles
                 order: 'Order.PublishedDate(ascending: false)'
 
 - &article-page
@@ -89,9 +95,12 @@ defines:
           slots:
             card: *main-card
         selection:
-          type: Selection.RelatedArticles
+          type: Selection.Related
           slots:
-            filter: 'Filter.Sets(invert: true)'
+            filter:
+              type: Filter.Articles
+              slots:
+                sub-filter: Filter.Unread
             order: 'Order.PublishedDate(ascending: false)'
 
 - &set-page
@@ -119,9 +128,10 @@ defines:
                   slots:
                     card: *main-card
                 selection:
-                  type: Selection.ArticlesForSet
+                  type: Selection.ContentForSet
                   id: set-articles
                   slots:
+                    filter: Filter.Articles
                     order: 'Order.PublishedDate(ascending: false)'
 
 - &search-page
@@ -179,9 +189,9 @@ defines:
                           slots:
                             card: *main-card
                         selection:
-                          type: Selection.AllHighlights
+                          type: Selection.FeaturedFirst
                           slots:
-                            filter: 'Filter.Sets(invert: true)'
+                            filter: Filter.Articles
                             order: 'Order.PublishedDate(ascending: false)'
 
 root:

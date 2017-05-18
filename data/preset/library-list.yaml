@@ -165,10 +165,12 @@ defines:
           slots:
             <<: *sidebar-list-slots
             selection:
-              type: Selection.SubsetsForSet
+              type: Selection.ContentForSet
               properties:
                 track-parent: true
               id: subset-list
+              slots:
+                filter: Filter.Sets
 
 - &article-page
   type: Layout.ArticleStack

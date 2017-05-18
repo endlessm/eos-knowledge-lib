@@ -137,11 +137,13 @@
     <file>js/app/modules/controller/mesh.js</file>
     <file>js/app/modules/decoration/separator.js</file>
     <file>js/app/modules/decoration/themeableImage.js</file>
+    <file>js/app/modules/filter/articles.js</file>
     <file>js/app/modules/filter/currentSet.js</file>
     <file>js/app/modules/filter/featured.js</file>
     <file>js/app/modules/filter/otherGroup.js</file>
     <file>js/app/modules/filter/seeMore.js</file>
     <file>js/app/modules/filter/sets.js</file>
+    <file>js/app/modules/filter/tagged.js</file>
     <file>js/app/modules/filter/thematic.js</file>
     <file>js/app/modules/filter/unread.js</file>
     <file>js/app/modules/layout/articleStack.js</file>
@@ -161,24 +163,21 @@
     <file>js/app/modules/navigation/searchBox.js</file>
     <file>js/app/modules/navigation/topMenu.js</file>
     <file>js/app/modules/order/alphabetical.js</file>
-    <file>js/app/modules/order/featured.js</file>
     <file>js/app/modules/order/publishedDate.js</file>
     <file>js/app/modules/pager/parallaxBackground.js</file>
     <file>js/app/modules/pager/simple.js</file>
-    <file>js/app/modules/selection/allHighlights.js</file>
+    <file>js/app/modules/selection/all.js</file>
     <file>js/app/modules/selection/allSets.js</file>
     <file>js/app/modules/selection/articleContext.js</file>
-    <file>js/app/modules/selection/articlesForSet.js</file>
-    <file>js/app/modules/selection/articlesForSetCrossSection.js</file>
     <file>js/app/modules/selection/contentForSet.js</file>
-    <file>js/app/modules/selection/relatedArticles.js</file>
-    <file>js/app/modules/selection/nextArticle.js</file>
+    <file>js/app/modules/selection/featuredFirst.js</file>
+    <file>js/app/modules/selection/next.js</file>
+    <file>js/app/modules/selection/related.js</file>
     <file>js/app/modules/selection/search.js</file>
     <file>js/app/modules/selection/selection.js</file>
-    <file>js/app/modules/selection/subsetsForSet.js</file>
-    <file>js/app/modules/selection/suggestedArticles.js</file>
-    <file>js/app/modules/selection/supplementaryArticles.js</file>
-    <file>js/app/modules/selection/staticArticles.js</file>
+    <file>js/app/modules/selection/setCrossSection.js</file>
+    <file>js/app/modules/selection/suggested.js</file>
+    <file>js/app/modules/selection/supplementary.js</file>
     <file>js/app/modules/selection/xapian.js</file>
     <file>js/app/modules/window/simple.js</file>
     <file>js/app/moltresEngine.js</file>

@@ -1,4 +1,4 @@
-/* exported SupplementaryArticles */
+/* exported Supplementary */
 
 // Copyright 2016 Endless Mobile, Inc.
 
@@ -9,8 +9,8 @@ const HistoryStore = imports.app.historyStore;
 const ReadingHistoryModel = imports.app.readingHistoryModel;
 const Xapian = imports.app.modules.selection.xapian;
 
-const SupplementaryArticles = new Module.Class({
-    Name: 'Selection.SupplementaryArticles',
+const Supplementary = new Module.Class({
+    Name: 'Selection.Supplementary',
     Extends: Xapian.Xapian,
 
     _init: function (props={}) {
@@ -25,7 +25,6 @@ const SupplementaryArticles = new Module.Class({
         let tags = set ? set.child_tags : [];
         let query_object_params = {
             limit: limit,
-            tags_match_all: ['EknArticleObject'],
             excluded_tags: tags,
             sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,
         };

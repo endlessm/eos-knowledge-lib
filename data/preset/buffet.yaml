@@ -39,7 +39,10 @@ defines:
       - small-spaced-arrangement
       slots:
         card: *main-card
-    selection: Selection.SuggestedArticles
+    selection:
+      type: Selection.Suggested
+      slots:
+        filter: Filter.Articles
 
 - &category-suggestions
   type: ContentGroup.ContentGroup
@@ -118,7 +121,9 @@ defines:
                             - 0
                             - 1
                     selection:
-                      type: Selection.AllHighlights
+                      type: Selection.FeaturedFirst
+                      slots:
+                        filter: Filter.Articles
                 - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
                   styles:
                     - highlights
@@ -143,7 +148,9 @@ defines:
                               slots:
                                 card: *main-card
                             selection:
-                              type: Selection.ArticlesForSet
+                              type: Selection.ContentForSet
+                              slots:
+                                filter: Filter.Articles
                     selection:
                       type: Selection.AllSets
                 - *category-suggestions
@@ -185,7 +192,9 @@ defines:
                                 halign: start
                             trigger: *see-more-trigger
                             selection:
-                              type: Selection.ArticlesForSetCrossSection
+                              type: Selection.SetCrossSection
+                              slots:
+                                filter: Filter.Articles
                     selection:
                       type: Selection.AllSets
                       id: thematic-sets
@@ -281,7 +290,7 @@ defines:
                     sequence: 1
                     navigation-context: !translate 'Next Article'
             selection:
-              type: Selection.NextArticle
+              type: Selection.Next
 
 root:
   shortdef: 'Controller.Buffet(theme: buffet)'

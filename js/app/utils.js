@@ -1,7 +1,7 @@
 /* exported dbus_object_path_for_webview, get_css_for_title_and_module,
-get_web_plugin_dbus_name, get_web_plugin_dbus_name_for_webview,
+get_web_plugin_dbus_name, get_web_plugin_dbus_name_for_webview, intersection,
 record_search_metric, render_border_with_arrow, shows_descendant_with_type,
-split_out_conditional_knobs, vfunc_draw_background_default */
+split_out_conditional_knobs, union, vfunc_draw_background_default */
 
 const MockMetricsModule = {
     EventRecorder: {
@@ -539,4 +539,25 @@ function ensure_directory (dir) {
 
 function string_to_bytes(string) {
     return ByteArray.fromString(string).toGBytes();
+}
+
+// Set-like operations for arrays: union, intersection
+
+function union(a, b) {
+    if (!a)
+        return b;
+    if (!b)
+        return a;
+    let union = new Set([...a, ...b]);
+    return [...union];
+}
+
+function intersection(a, b) {
+    if (!a || !b)
+        return [];
+    let intersection = new Set();
+    let a_set = new Set(a);
+    b.filter(item => a_set.has(item))
+        .forEach(item => intersection.add(item));
+    return [...intersection];
 }

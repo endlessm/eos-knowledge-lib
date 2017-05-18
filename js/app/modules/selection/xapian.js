@@ -64,14 +64,28 @@ const Xapian = new Module.Class({
         let query = this._next_query;
 
         if (!query) {
-            let limit = num_desired;
-            if (this._filter)
-                limit *= 3;  // FIXME: Find a better heuristic for compensating for models lost to filter
-            query = this.construct_query_object(limit, this._query_index);
+            query = this.construct_query_object(num_desired, this._query_index);
             if (!query) {
                 this._set_needs_refresh(false);
                 return;
             }
+            if (this._order)
+                query = this._order.modify_xapian_query(query);
+            if (this._filter)
+                query = this._filter.modify_xapian_query(query);
+        }
+
+        // In the case where we can only do sorting and filtering after the
+        // fact, we need a workaround so that we get a reasonable number of
+        // results from the database that we can present after sorting and
+        // filtering, without having the UI jump around too much as new results
+        // come in.
+        // The heuristic of limit * 3 is a guess.
+        if ((this._order && !this._order.can_modify_xapian_query()) ||
+            (this._filter && !this._filter.can_modify_xapian_query())) {
+            query = Eknc.QueryObject.new_from_object(query, {
+                limit: query.limit * 3,
+            });
         }
 
         this._loading = true;
@@ -87,7 +101,7 @@ const Xapian = new Module.Class({
                 this.notify('in-error-state');
             }
 
-            // Since above, in the case of having a filter present, we
+            // Since above, in the case of the order/filter workaround, we
             // request 3 times our original num_desired, it is possible
             // that we end up with more results than we originally requested!
             // In that case we do not want to add those superfluous results to

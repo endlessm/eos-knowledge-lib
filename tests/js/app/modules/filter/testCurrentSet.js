@@ -70,6 +70,11 @@ describe('Filter.CurrentSet', function () {
             expect(filter.include(ARTICLES[1])).toBeFalsy();
             expect(filter.include(ARTICLES[2])).toBeFalsy();
         });
+
+        it('will match the set tag', function () {
+            let query = filter.modify_xapian_query(new Eknc.QueryObject());
+            expect(query.tags_match_any).toContain('set');
+        });
     });
 
     describe('inverted', function () {
@@ -81,6 +86,11 @@ describe('Filter.CurrentSet', function () {
             expect(filter.include(ARTICLES[0])).toBeFalsy();
             expect(filter.include(ARTICLES[1])).toBeTruthy();
             expect(filter.include(ARTICLES[2])).toBeTruthy();
+        });
+
+        it('will not match the set tag', function () {
+            let query = filter.modify_xapian_query(new Eknc.QueryObject());
+            expect(query.excluded_tags).toContain('set');
         });
     });
 });

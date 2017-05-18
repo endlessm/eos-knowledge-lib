@@ -1,4 +1,4 @@
-/* exported SuggestedArticles */
+/* exported Suggested */
 
 // Copyright 2016 Endless Mobile, Inc.
 
@@ -10,8 +10,8 @@ const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 const Xapian = imports.app.modules.selection.xapian;
 
-const SuggestedArticles = new Module.Class({
-    Name: 'Selection.SuggestedArticles',
+const Suggested = new Module.Class({
+    Name: 'Selection.Suggested',
     Extends: Xapian.Xapian,
 
     _init: function (props) {
@@ -34,7 +34,6 @@ const SuggestedArticles = new Module.Class({
         let random_query = Eknc.QueryObject.new_from_props({
             offset: this._hash % this._TOTAL_ARTICLES,
             limit: limit,
-            tags_match_any: ['EknArticleObject'],
         });
 
         return random_query;

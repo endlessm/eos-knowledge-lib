@@ -5,7 +5,7 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const Actions = imports.app.actions;
-const ArticlesForSetCrossSection = imports.app.modules.selection.articlesForSetCrossSection;
+const SetCrossSection = imports.app.modules.selection.setCrossSection;
 const Compliance = imports.tests.compliance;
 const HistoryStore = imports.app.historyStore;
 const MockDispatcher = imports.tests.mockDispatcher;
@@ -20,18 +20,17 @@ function setup (store) {
     });
 }
 
-Compliance.test_selection_compliance(ArticlesForSetCrossSection.ArticlesForSetCrossSection,
-    setup);
-Compliance.test_xapian_selection_compliance(ArticlesForSetCrossSection.ArticlesForSetCrossSection,
+Compliance.test_selection_compliance(SetCrossSection.SetCrossSection, setup);
+Compliance.test_xapian_selection_compliance(SetCrossSection.SetCrossSection,
     setup);
 
-describe('Selection.ArticlesForSetCrossSection', function () {
+describe('Selection.SetCrossSection', function () {
     let factory, selection, dispatcher;
 
     beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
         [selection, factory] = MockFactory.setup_tree({
-            type: ArticlesForSetCrossSection.ArticlesForSetCrossSection,
+            type: SetCrossSection.SetCrossSection,
         });
     });
 

@@ -2,12 +2,14 @@
 
 /* exported CurrentSet */
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const GObject = imports.gi.GObject;
 
 const Filter = imports.app.interfaces.filter;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const SetMap = imports.app.setMap;
+const Utils = imports.app.utils;
 
 const CurrentSet = new Module.Class({
     Name: 'Filter.CurrentSet',
@@ -47,5 +49,27 @@ const CurrentSet = new Module.Class({
         });
 
         return belongs_to_set && !belongs_to_subset;
+    },
+
+    // Filter override
+    // This Filter can modify the Xapian query, but it can't express its whole
+    // filtering logic in the Xapian query, so we still need to request more
+    // models in case some returned models must be dropped.
+    can_modify_xapian_query: function () {
+        return false;
+    },
+
+    // Filter implementation
+    modify_xapian_query_impl: function (query) {
+        if (this.invert) {
+            return Eknc.QueryObject.new_from_object(query, {
+                excluded_tags: Utils.union(query.excluded_tags,
+                    this._current_set.child_tags),
+            });
+        }
+        return Eknc.QueryObject.new_from_object(query, {
+            tags_match_any: Utils.union(query.tags_match_any,
+                this._current_set.child_tags)
+        });
     },
 });

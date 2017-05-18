@@ -1,4 +1,4 @@
-/* exported StaticArticles */
+/* exported All */
 
 // Copyright 2017 Endless Mobile, Inc.
 
@@ -9,12 +9,13 @@ const Module = imports.app.interfaces.module;
 const Xapian = imports.app.modules.selection.xapian;
 
 /**
- * Class: StaticArticles
+ * Class: All
+ * Retrieves all content
  *
- * Retrieves articles tagged with EknStaticTag
+ * This Selection is meant to be used with one or more Filters.
  */
-const StaticArticles = new Module.Class({
-    Name: 'Selection.StaticArticles',
+const All = new Module.Class({
+    Name: 'Selection.All',
     Extends: Xapian.Xapian,
 
     _init: function (props={}) {
@@ -27,8 +28,6 @@ const StaticArticles = new Module.Class({
             return null;
         return Eknc.QueryObject.new_from_props({
             limit: limit,
-            tags_match_all: ['EknArticleObject', 'EknStaticTag'],
-            excluded_tags: [],
         });
     },
 });

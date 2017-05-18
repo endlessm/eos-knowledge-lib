@@ -473,10 +473,13 @@ javascript_tests = \
 	tests/js/app/modules/controller/testBuffet.js \
 	tests/js/app/modules/controller/testCourse.js \
 	tests/js/app/modules/controller/testMesh.js \
+	tests/js/app/modules/filter/testArticles.js \
 	tests/js/app/modules/filter/testCurrentSet.js \
 	tests/js/app/modules/filter/testFeatured.js \
+	tests/js/app/modules/filter/testOtherGroup.js \
 	tests/js/app/modules/filter/testSeeMore.js \
 	tests/js/app/modules/filter/testSets.js \
+	tests/js/app/modules/filter/testTagged.js \
 	tests/js/app/modules/filter/testUnread.js \
 	tests/js/app/modules/layout/testArticleStack.js \
 	tests/js/app/modules/layout/testBox.js \
@@ -494,22 +497,20 @@ javascript_tests = \
 	tests/js/app/modules/navigation/testSearchBox.js \
 	tests/js/app/modules/navigation/testTopMenu.js \
 	tests/js/app/modules/order/testAlphabetical.js \
-	tests/js/app/modules/order/testFeatured.js \
 	tests/js/app/modules/order/testPublishedDate.js \
 	tests/js/app/modules/pager/testParallaxBackground.js \
 	tests/js/app/modules/pager/testSimple.js \
-	tests/js/app/modules/selection/testAllHighlights.js \
+	tests/js/app/modules/selection/testAll.js \
 	tests/js/app/modules/selection/testAllSets.js \
 	tests/js/app/modules/selection/testArticleContext.js \
-	tests/js/app/modules/selection/testArticlesForSet.js \
-	tests/js/app/modules/selection/testArticlesForSetCrossSection.js \
 	tests/js/app/modules/selection/testContentForSet.js \
-	tests/js/app/modules/selection/testNextArticle.js \
-	tests/js/app/modules/selection/testRelatedArticles.js \
+	tests/js/app/modules/selection/testFeaturedFirst.js \
+	tests/js/app/modules/selection/testNext.js \
+	tests/js/app/modules/selection/testRelated.js \
 	tests/js/app/modules/selection/testSearch.js \
-	tests/js/app/modules/selection/testSuggestedArticles.js \
-	tests/js/app/modules/selection/testSupplementaryArticles.js \
-	tests/js/app/modules/selection/testStaticArticles.js \
+	tests/js/app/modules/selection/testSetCrossSection.js \
+	tests/js/app/modules/selection/testSuggested.js \
+	tests/js/app/modules/selection/testSupplementary.js \
 	tests/js/app/modules/window/testSimple.js \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testBuffetHistoryStore.js \

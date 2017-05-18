@@ -75,4 +75,68 @@ const Order = new Lang.Interface({
      * Don't call this method directly, instead write it in your implementation.
      */
     compare_impl: Lang.Interface.UNIMPLEMENTED,
+
+    /**
+     * Method: modify_xapian_query
+     * Make any necessary modifications to the Xapian query
+     *
+     * If using an <Order> with a <Selection.Xapian> subclass, you don't
+     * necessarily want to do sorting only after querying the Xapian database.
+     * Since database queries are carried out in batches, you want to specify
+     * your sorting criteria at query time.
+     * This method will make the necessary modifications to a passed-in query
+     * object.
+     *
+     * Don't override this method in your implementation; instead, implement
+     * <Order.modify_xapian_query_impl>.
+     *
+     * Parameters:
+     *   query - an <EosKnowledgeContent.QueryObject>
+     *
+     * Returns:
+     *   a new <EosKnowledgeContent.QueryObject>, may be the same object
+     */
+    modify_xapian_query: function (query) {
+        // You can't sort by two things over xapian-bridge. In practice, we
+        // don't expect that case to occur.
+        if (!this.modify_xapian_query_impl) {
+            if (this._sub_order)
+                return this._sub_order.modify_xapian_query(query);
+            return query;
+        }
+        return this.modify_xapian_query_impl(query);
+    },
+
+    /**
+     * Method: can_modify_xapian_query
+     * Whether the order can modify a Xapian query
+     *
+     * Returns:
+     *   true if <Order.modify_xapian_query_impl> is implemented
+     */
+    can_modify_xapian_query: function () {
+        return !!this.modify_xapian_query_impl;
+    },
+
+    /**
+     * Method: modify_xapian_query_impl
+     * Intended to be implemented
+     *
+     * Makes modifications to a query object for this <Order> only.
+     * <Order.modify_xapian_query> takes care of merging together modifications
+     * from sub-orders.
+     *
+     * Implementing this method is optional.
+     *
+     * This method might not be called at all if the <Order> is used with a
+     * non-Xapian <Selection>.
+     * Your implementation must work correctly even if it is never called.
+     *
+     * Parameters:
+     *   query - an <EosKnowledgeContent.QueryObject>
+     *
+     * Returns:
+     *   a new <EosKnowledgeContent.QueryObject>, may be the same object
+     */
+    modify_xapian_query_impl: null,
 });

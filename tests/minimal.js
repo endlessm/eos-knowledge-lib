@@ -2,7 +2,7 @@
 
 /* exported add_cards, MinimalArrangement, MinimalBinModule, MinimalCard,
 MinimalDocumentCard, MinimalHomePage, MinimalModule, MinimalNavigationCard,
-MinimalOrder, TitleFilter */
+MinimalOrder, MinimalXapianFilter, MinimalXapianOrder, TitleFilter */
 
 const Eknc = imports.gi.EosKnowledgeContent;
 const GLib = imports.gi.GLib;
@@ -173,6 +173,18 @@ const MinimalOrder = new Module.Class({
     },
 });
 
+const MinimalXapianOrder = new Module.Class({
+    Name: 'MinimalXapianOrder',
+    Extends: MinimalOrder,
+    Implements: [Order.Order],
+
+    modify_xapian_query_impl: function (query) {
+        return Eknc.QueryObject.new_from_object(query, {
+            query: query.query + ' ' + this.model_prop
+        });
+    },
+});
+
 const TitleFilter = new Module.Class({
     Name: 'TitleFilter',
     Extends: GObject.Object,
@@ -180,6 +192,28 @@ const TitleFilter = new Module.Class({
 
     include_impl: function (model) {
         return model.title !== '0Filter me out';
+    },
+});
+
+const MinimalXapianFilter = new Module.Class({
+    Name: 'MinimalXapianFilter',
+    Extends: GObject.Object,
+    Implements: [Filter.Filter],
+
+    Properties: {
+        'tag-to-include': GObject.ParamSpec.string('tag-to-include', '', '',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            'EknIncludeMe'),
+    },
+
+    include_impl: function (model) {
+        return model.tags.indexOf(this.tag_to_include) !== -1;
+    },
+
+    modify_xapian_query_impl: function (query) {
+        return Eknc.QueryObject.new_from_object(query, {
+            tags_match_all: (query.tags_match_all || []).concat(this.tag_to_include),
+        });
     },
 });
 

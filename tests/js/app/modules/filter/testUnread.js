@@ -37,6 +37,12 @@ describe('Filter.Unread', function () {
             expect(filter.include(models[0])).toBeFalsy();
             expect(filter.include(models[1])).toBeTruthy();
         });
+
+        it('does not query read IDs', function () {
+            let query = filter.modify_xapian_query(new Eknc.QueryObject());
+            printerr('returned excluded ids =', query.excluded_ids);
+            expect(query.excluded_ids).toContain('read');
+        });
     });
 
     describe('inverse mode', function () {
@@ -52,6 +58,11 @@ describe('Filter.Unread', function () {
         it('filters out an unread card', function () {
             expect(filter.include(models[0])).toBeTruthy();
             expect(filter.include(models[1])).toBeFalsy();
+        });
+
+        it('queries only read IDs', function () {
+            let query = filter.modify_xapian_query(new Eknc.QueryObject());
+            expect(query.ids).toContain('read');
         });
     });
 });
