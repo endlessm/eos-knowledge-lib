@@ -32,10 +32,10 @@
 
 <script src="assets/js/lines_around_headings.js"></script>
 
+<script src="assets/js/trie.js"></script>
 <script src="assets/js/prism-core.js"></script>
 <script src="assets/js/prism-autoloader.js"></script>
 <script src="assets/js/prism_autoloader_path_override.js"></script>
-<script src="assets/js/trie.js"></script>
 
 
 </head>
@@ -370,6 +370,12 @@ $('body').removeClass('no-script');
 								<p>No summary available</p>
 							</div>
 						<div class="col-sm-12 col-md-4">
+				<a href="filter/articles.html">Filter.Articles</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
 				<a href="filter/currentSet.html">Filter.CurrentSet</a>
 			</div>
 			<div class="col-sm-12 col-md-8 subpage-description">
@@ -398,6 +404,12 @@ $('body').removeClass('no-script');
 			</div>
 			<div class="col-sm-12 col-md-8 subpage-description">
 								<p>No summary available</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="filter/tagged.html">Filter.Tagged</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Filter that includes only content tagged with a certain tag</p>
 							</div>
 						<div class="col-sm-12 col-md-4">
 				<a href="filter/thematic.html">Filter.Thematic</a>
@@ -514,12 +526,6 @@ $('body').removeClass('no-script');
 								<p>No summary available</p>
 							</div>
 						<div class="col-sm-12 col-md-4">
-				<a href="order/featured.html">Order.Featured</a>
-			</div>
-			<div class="col-sm-12 col-md-8 subpage-description">
-								<p>No summary available</p>
-							</div>
-						<div class="col-sm-12 col-md-4">
 				<a href="order/publishedDate.html">Order.PublishedDate</a>
 			</div>
 			<div class="col-sm-12 col-md-8 subpage-description">
@@ -544,10 +550,10 @@ $('body').removeClass('no-script');
 								<p>No summary available</p>
 							</div>
 						<div class="col-sm-12 col-md-4">
-				<a href="selection/allHighlights.html">Selection.AllHighlights</a>
+				<a href="selection/all.html">Selection.All</a>
 			</div>
 			<div class="col-sm-12 col-md-8 subpage-description">
-								<p>No summary available</p>
+								<p>Retrieves all content</p>
 							</div>
 						<div class="col-sm-12 col-md-4">
 				<a href="selection/allSets.html">Selection.AllSets</a>
@@ -562,34 +568,28 @@ $('body').removeClass('no-script');
 								<p>No summary available</p>
 							</div>
 						<div class="col-sm-12 col-md-4">
-				<a href="selection/articlesForSet.html">Selection.ArticlesForSet</a>
-			</div>
-			<div class="col-sm-12 col-md-8 subpage-description">
-								<p>No summary available</p>
-							</div>
-						<div class="col-sm-12 col-md-4">
-				<a href="selection/articlesForSetCrossSection.html">Selection.ArticlesForSetCrossSection</a>
-			</div>
-			<div class="col-sm-12 col-md-8 subpage-description">
-								<p>No summary available</p>
-							</div>
-						<div class="col-sm-12 col-md-4">
 				<a href="selection/contentForSet.html">Selection.ContentForSet</a>
 			</div>
 			<div class="col-sm-12 col-md-8 subpage-description">
 								<p>No summary available</p>
 							</div>
 						<div class="col-sm-12 col-md-4">
-				<a href="selection/nextArticle.html">Selection.NextArticle</a>
+				<a href="selection/featuredFirst.html">Selection.FeaturedFirst</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Selection that gets all featured content before non-featured content</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="selection/next.html">Selection.Next</a>
 			</div>
 			<div class="col-sm-12 col-md-8 subpage-description">
 								<p>No summary available</p>
 							</div>
 						<div class="col-sm-12 col-md-4">
-				<a href="selection/relatedArticles.html">Selection.RelatedArticles</a>
+				<a href="selection/related.html">Selection.Related</a>
 			</div>
 			<div class="col-sm-12 col-md-8 subpage-description">
-								<p>Retrieves related articles to the current article</p>
+								<p>Retrieves content related to the current article</p>
 							</div>
 						<div class="col-sm-12 col-md-4">
 				<a href="selection/search.html">Selection.Search</a>
@@ -598,25 +598,19 @@ $('body').removeClass('no-script');
 								<p>No summary available</p>
 							</div>
 						<div class="col-sm-12 col-md-4">
-				<a href="selection/staticArticles.html">Selection.StaticArticles</a>
+				<a href="selection/setCrossSection.html">Selection.SetCrossSection</a>
 			</div>
 			<div class="col-sm-12 col-md-8 subpage-description">
 								<p>No summary available</p>
 							</div>
 						<div class="col-sm-12 col-md-4">
-				<a href="selection/subsetsForSet.html">Selection.SubsetsForSet</a>
+				<a href="selection/suggested.html">Selection.Suggested</a>
 			</div>
 			<div class="col-sm-12 col-md-8 subpage-description">
 								<p>No summary available</p>
 							</div>
 						<div class="col-sm-12 col-md-4">
-				<a href="selection/suggestedArticles.html">Selection.SuggestedArticles</a>
-			</div>
-			<div class="col-sm-12 col-md-8 subpage-description">
-								<p>No summary available</p>
-							</div>
-						<div class="col-sm-12 col-md-4">
-				<a href="selection/supplementaryArticles.html">Selection.SupplementaryArticles</a>
+				<a href="selection/supplementary.html">Selection.Supplementary</a>
 			</div>
 			<div class="col-sm-12 col-md-8 subpage-description">
 								<p>No summary available</p>

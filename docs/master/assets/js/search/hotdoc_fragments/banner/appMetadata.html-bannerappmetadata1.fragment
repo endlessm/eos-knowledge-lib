@@ -1,1 +1,1 @@
-fragment_downloaded_cb({"url": "banner/appMetadata.html#bannerappmetadata1", "fragment": "Banner.AppMetadata \nThis module can display the contents of the application appdata XML file e.g. name summary or description. \n"});
+fragment_downloaded_cb({"fragment": "Banner.AppMetadata \nThis module can display the contents of the application appdata XML file e.g. name summary or description. \n", "url": "banner/appMetadata.html#bannerappmetadata1"});
