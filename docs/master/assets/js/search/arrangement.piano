@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "arrangement.piano", "urls": ["arrangement/piano.html#arrangementpiano1", "arrangement/piano.html#arrangementpiano"]});
+urls_downloaded_cb({"urls": ["arrangement/piano.html#arrangementpiano1", "arrangement/piano.html#arrangementpiano"], "token": "arrangement.piano"});
