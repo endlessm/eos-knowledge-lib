@@ -55,10 +55,6 @@ const TopMenu = new Module.Class({
         this.show_all();
     },
 
-    vfunc_get_request_mode: function () {
-        return Gtk.SizeRequestMode.CONSTANT_SIZE;
-    },
-
     vfunc_get_preferred_width: function () {
         let [, banner_nat] = this._banner.get_preferred_width();
         let [menu_min, menu_nat] = this._menu.get_preferred_width();
@@ -75,40 +71,25 @@ const TopMenu = new Module.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        let [, banner_nat_width] = this._banner.get_preferred_width();
-        let [, menu_nat_width] = this._menu.get_preferred_width();
-        let [, banner_nat_height] = this._banner.get_preferred_height();
-        let [, menu_nat_height] = this._menu.get_preferred_height();
+        let rect = new Gdk.Rectangle(alloc);
+        let [, banner_width] = this._banner.get_preferred_width();
+        let [menu_width, ] = this._menu.get_preferred_width();
 
-        let show_banner = (alloc.width >= banner_nat_width + menu_nat_width);
+        /* Allocate banner */
+        if (alloc.width >= menu_width + banner_width) {
+            rect.width = banner_width;
+            this._banner.size_allocate(rect);
+            this._banner.set_child_visible(true);
 
-        let x = alloc.x;
-        if (show_banner) {
-            let banner_rect = new Gdk.Rectangle({
-                x: x,
-                y: alloc.y + _get_centered_coord(alloc.height, banner_nat_height),
-                width: banner_nat_width,
-                height: banner_nat_height,
-            });
-            this._banner.size_allocate(banner_rect);
-            x += alloc.width - menu_nat_width;
+            /* Allocate remaining space to menu */
+            rect.x += banner_width;
+            rect.width = alloc.width - banner_width;
         } else {
-            x += Math.max(0, (alloc.width - menu_nat_width) / 2);
+            this._banner.set_child_visible(false);
         }
-        this._banner.set_child_visible(show_banner);
 
-        let menu_rect = new Gdk.Rectangle({
-            x: x,
-            y: alloc.y + _get_centered_coord(alloc.height, menu_nat_height),
-            width: Math.min(alloc.width, menu_nat_width),
-            height: menu_nat_height,
-        });
-        this._menu.size_allocate(menu_rect);
+        this._menu.size_allocate(rect);
 
         Utils.set_container_clip(this);
     },
 });
-
-function _get_centered_coord(total_height, module_height) {
-    return (total_height - module_height) / 2;
-}
