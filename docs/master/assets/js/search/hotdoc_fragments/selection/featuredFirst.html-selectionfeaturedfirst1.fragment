@@ -1,1 +1,0 @@
-fragment_downloaded_cb({"fragment": "Selection.FeaturedFirst \nFIXME This should be implemented as Selection.All plus the not currently existing Order.Featured but currently it is not possible to sort by featured status in one Xapian query. \nWhen that becomes possible this module will be removed. \n", "url": "selection/featuredFirst.html#selectionfeaturedfirst1"});

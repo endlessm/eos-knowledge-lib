@@ -1,1 +1,1 @@
-fragment_downloaded_cb({"fragment": "label \nThe text of the label \n", "url": "banner/appMetadata.html#label"});
+fragment_downloaded_cb({"url": "banner/appMetadata.html#label", "fragment": "label \nThe text of the label \n"});
