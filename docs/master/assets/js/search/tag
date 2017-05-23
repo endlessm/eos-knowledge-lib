@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "tag", "urls": ["card/defaultFamily.html#carddefaultfamily1"]});
+urls_downloaded_cb({"urls": ["filter/sets.html#tag", "filter/tagged.html#tag", "filter/articles.html#tag", "mf-index.html#page-description", "card/defaultFamily.html#carddefaultfamily1", "filter/tagged.html#filtertagged1"], "token": "tag"});

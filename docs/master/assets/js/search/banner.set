@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "banner.set", "urls": ["banner/set.html#bannerset1", "banner/set.html#bannerset"]});
+urls_downloaded_cb({"urls": ["banner/set.html#bannerset1", "banner/set.html#bannerset"], "token": "banner.set"});

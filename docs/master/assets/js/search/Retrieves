@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "Retrieves", "urls": ["mf-index.html#page-description", "selection/nextArticle.html#selectionnextarticle1", "selection/relatedArticles.html#selectionrelatedarticles1", "selection/staticArticles.html#selectionstaticarticles1"]});
+urls_downloaded_cb({"urls": ["mf-index.html#page-description", "selection/next.html#selectionnext1", "selection/related.html#selectionrelated1"], "token": "Retrieves"});

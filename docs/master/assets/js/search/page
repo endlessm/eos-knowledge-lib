@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "page", "urls": ["tools.html#picard", "selection/relatedArticles.html#selectionrelatedarticles1", "card/contentGroup.html#cardsperpage", "layout/navigation.html#layoutnavigation1", "banner/set.html#bannerset1"]});
+urls_downloaded_cb({"urls": ["tools.html#picard", "selection/related.html#selectionrelated1", "card/contentGroup.html#cardsperpage", "layout/navigation.html#layoutnavigation1", "banner/set.html#bannerset1"], "token": "page"});

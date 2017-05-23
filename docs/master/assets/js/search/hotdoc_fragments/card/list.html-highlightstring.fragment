@@ -1,1 +1,1 @@
-fragment_downloaded_cb({"fragment": "highlight string \nSubstring to be highlighted on card \n", "url": "card/list.html#highlightstring"});
+fragment_downloaded_cb({"url": "card/list.html#highlightstring", "fragment": "highlight string \nSubstring to be highlighted on card \n"});
