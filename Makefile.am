@@ -475,7 +475,6 @@ javascript_tests = \
 	tests/js/app/modules/filter/testCurrentSet.js \
 	tests/js/app/modules/filter/testFeatured.js \
 	tests/js/app/modules/filter/testOtherGroup.js \
-	tests/js/app/modules/filter/testSeeMore.js \
 	tests/js/app/modules/filter/testSets.js \
 	tests/js/app/modules/filter/testTagged.js \
 	tests/js/app/modules/filter/testUnread.js \
