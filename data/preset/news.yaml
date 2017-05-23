@@ -24,13 +24,13 @@ defines:
               shortdef: ContentGroup.ContentGroup
               slots:
                 arrangement:
-                  shortdef: 'Arrangement.SideBySide(halign: center)'
+                  shortdef: 'Arrangement.SideBySide(expand: true)'
                   slots:
                     card:
                       type: Card.Title
                       properties:
-                        halign: center
-                        decorate-on-highlight: true
+                        halign: fill
+                        vexpand: true
                 selection:
                   type: Selection.AllSets
                   slots:

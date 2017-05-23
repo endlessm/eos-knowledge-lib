@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.3 -->
+<!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <template class="EknCard_Title" parent="GtkButton">
@@ -8,7 +8,7 @@
     <property name="receives_default">False</property>
     <property name="hexpand">True</property>
     <child>
-      <object class="GtkGrid" id="grid">
+      <object class="GtkBox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
@@ -21,8 +21,9 @@
             </style>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -42,8 +43,9 @@
             </style>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">0</property>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
@@ -56,8 +58,9 @@
             </style>
           </object>
           <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">0</property>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>

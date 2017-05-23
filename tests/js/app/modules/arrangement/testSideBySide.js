@@ -47,7 +47,7 @@ describe('Arrangement.SideBySide', function () {
 
         function testSizingArrangementForDimensions(arr_width, visible_children, spacing, all_visible) {
             let message = 'handles arrangement for width=' + arr_width;
-            let x = 0;
+            let x = arr_width - (visible_children * (CHILD_WIDTH + spacing) - spacing);
 
             it (message, function () {
                 win.set_size_request(arr_width, 100);
@@ -58,33 +58,44 @@ describe('Arrangement.SideBySide', function () {
                 let cards = factory.get_created('card');
                 cards.forEach((card, i) => {
                     if (i < visible_children) {
-                        expect(card.get_child_visible()).toBe(true);
-                        expect(card.get_allocation().x).toBe(x);
-                        x += (CHILD_WIDTH + spacing);
+                        expect(card.is_visible()).toBe(true);
+
+                        // TODO: find an easy way to test responsive spacing
+                        if (all_visible) {
+                            expect(card.get_allocation().x).toBe(x);
+                            x += (CHILD_WIDTH + spacing);
+                        }
                     } else {
-                        expect(card.get_child_visible()).toBe(false);
+                        expect(card.is_visible()).toBe(false);
                     }
                 });
             });
         }
 
+        // The responsive layout will consist of a 2 times the spacing padding on
+        // the start then all the cards separated by spacing and an optional button
+        // for a dropdown menu if not every card fits
+        //
+        // 2*spacing [card1] spacing [card2] ... [cardN] [Dropdown button]
+
         // At width=2000px, all ten cards should be visible with 50px spacing
         testSizingArrangementForDimensions(2000, 10, 50, true);
-        // At width=1400px, all ten cards should be visible, with 40px spacing
-        testSizingArrangementForDimensions(1400, 10, 40, true);
-        // At width=1200px, all ten cards should be visible, with 20px spacing
-        testSizingArrangementForDimensions(1200, 10, 20, true);
-        // At width=1150px, all ten cards should be visible, with 15px spacing
-        testSizingArrangementForDimensions(1150, 10, 15, true);
+        // At width=1440px, all ten cards should be visible, with 40px spacing
+        testSizingArrangementForDimensions(1440, 10, 40, true);
+        // At width=1220px, all ten cards should be visible, with 20px spacing
+        testSizingArrangementForDimensions(1220, 10, 20, true);
+        // At width=1165px, all ten cards should be visible, with 15px spacing
+        testSizingArrangementForDimensions(1165, 10, 15, true);
         // At width=1000px, all ten cards should be visible, with 0px spacing
         testSizingArrangementForDimensions(1000, 10, 0, true);
-        // At width=900px, nine cards should be visible, with 0px spacing
-        testSizingArrangementForDimensions(900, 9, 0, false);
-        // At width=800px, eight cards should be visible, with 0px spacing
-        testSizingArrangementForDimensions(800, 8, 0, false);
-        // At width=720px, seven cards should be visible, with 0px spacing
-        testSizingArrangementForDimensions(720, 7, 0, false);
-        // At width=600px, six cards should be visible, with 0x spacing
-        testSizingArrangementForDimensions(600, 6, 0, false);
+        // At width=900px, eight cards should be visible
+        testSizingArrangementForDimensions(900, 8, 0, false);
+        // At width=800px, seven cards should be visible
+        testSizingArrangementForDimensions(800, 7, 0, false);
+        // At width=700px, six cards should be visible
+        testSizingArrangementForDimensions(700, 6, 0, false);
+        // At width=200px, six cards should be visible
+        testSizingArrangementForDimensions(200, 1, 0, false);
+
     });
 });
