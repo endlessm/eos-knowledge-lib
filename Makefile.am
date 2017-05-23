@@ -111,6 +111,7 @@ scss_theme_layout_partials = \
 	$(NULL)
 scss_theme_navigation_partials = \
 	$(srcdir)/data/css/modules/navigation/_searchBox.scss \
+	$(srcdir)/data/css/modules/navigation/_topMenu.scss \
 	$(NULL)
 scss_theme_pager_partials = \
 	$(srcdir)/data/css/modules/pager/_parallaxBackground.scss \

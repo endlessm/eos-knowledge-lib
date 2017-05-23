@@ -65,12 +65,7 @@ $support-font: 'Fira Sans' !default;
 .ArrangementSideBySide {
     .CardTitle {
         &:hover .CardTitle__title {
-            border-bottom: 1px solid $accent-dark-color;
             color: $accent-dark-color;
-        }
-
-        &.highlighted {
-            background-color: transparent;
         }
     }
 }
