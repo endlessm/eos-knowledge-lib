@@ -15,7 +15,6 @@ const MockMetricsModule = {
 
 const Config = imports.app.config;
 
-const AppStream = imports.gi.AppStream;
 const ByteArray = imports.byteArray;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EosMetrics = Config.metrics_enabled ? imports.gi.EosMetrics : MockMetricsModule;
@@ -343,33 +342,6 @@ function low_performance_mode () {
 function get_desktop_app_info () {
     let app_id = Gio.Application.get_default().application_id;
     return Gio.DesktopAppInfo.new(app_id + '.desktop');
-}
-
-function get_appdata () {
-    let data_dirs = GLib.get_system_data_dirs();
-    let id = Gio.Application.get_default().application_id;
-    let xml_path = 'app-info/xmls/${id}.appdata.xml'.replace('${id}', id);
-
-    let xml_file = null;
-    data_dirs.forEach((data_dir) => {
-        let file_path = GLib.build_filenamev([data_dir, xml_path]);
-        let file = Gio.File.new_for_path(file_path);
-
-        if (file.query_exists(null)) {
-            xml_file = file;
-            return;
-        }
-    });
-
-    if (!xml_file)
-        return null;
-
-    let metadata = new AppStream.Metadata();
-    metadata.set_format_style(AppStream.FormatStyle.COLLECTION);
-    metadata.parse_file(xml_file, AppStream.FormatKind.XML);
-
-    let component = metadata.get_component();
-    return component;
 }
 
 // XXX: The following two functions are knowingly quite draconian in their
