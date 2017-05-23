@@ -14,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-05-09 02:07+0000\n"
-"PO-Revision-Date: 2017-05-04 21:46+0000\n"
-"Last-Translator: Nuritzi Sanchez <ns@endlessm.com>\n"
+"POT-Creation-Date: 2017-05-16 02:02+0000\n"
+"PO-Revision-Date: 2017-05-16 02:04+0000\n"
+"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,11 +68,11 @@ msgstr "INICIO"
 msgid "View the license"
 msgstr "Ver la licencia"
 
-#: js/app/application.js:180
+#: js/app/application.js:181
 msgid "Oops! No content."
 msgstr "¡Lo sentimos! Noy hay contenido."
 
-#: js/app/application.js:181
+#: js/app/application.js:182
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -105,37 +105,21 @@ msgid ""
 "to do anything."
 msgstr "Ve {wikihow-article-link} para más detalles, videos, fotos y atribuciones. Por cortesía de {wikihow-link}, donde cualquier persona puede fácilmente aprender cómo hacer cualquier cosa."
 
-#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:280
+#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:273
 msgid "Copy"
 msgstr "Copiar"
-
-#: js/app/articleHTMLRenderer.js:184
-msgid "Legal Notice and Intellectual Property Policy"
-msgstr "Aviso Legal y Política de Propiedad Intelectual"
-
-#. TRANSLATORS: anything inside curly braces '{}' is going to be
-#. substituted in code. Please make sure to leave the curly
-#. braces around any words that have them, and do not translate
-#. words inside curly braces.
-#: js/app/articleHTMLRenderer.js:190
-msgid "Read more at {link}"
-msgstr "Leer más en {link}"
-
-#: js/app/articleHTMLRenderer.js:196
-msgid "DISCLAIMER PLACEHOLDER"
-msgstr "La presente aplicación incluye reportes de noticias de interés que han sido obtenidos automáticamente de sus respectivas fuentes por medio del formato RSS que cada una de ellas ha hecho públicamente disponibles. En cada una se hace constar el titular de los derechos de autor del contenido, incluyendo pero no limitado a las imágenes en ellos incluidas. Las opiniones e información expresadas en las distintas notas, artículos, anuncios o cartas son responsabilidad exclusiva de sus autores. Endless no se hace responsable de la veracidad, del contenido o calidad de la información, ni de los productos, servicios, ofertas, promociones u otras que puedan estar ahí incluidas. El contenido es proporcionado acá de manera gratuita para uso no comercial. El contenido de los mismos y la información ahí expresada es responsabilidad exclusiva de sus autores. No asumimos responsabilidad alguna por el contenido de los mismos ni por cualquier acción u omisión tomada con base en esa información. El contenido puede incluir vínculos a páginas web de terceros que no se encuentran bajo nuestro control. No nos hacemos responsables por el contenido de esas páginas ni la inclusión de la información o de los vínculos constituye aceptación de las mismas, de sus autores o de los medios de comunicación que las han hecho públicas. Nos reservamos el derecho de modificar, suspender o descontinuar cualquier aspecto de esta aplicación y la información acá contenida en cualquier momento."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:319
+#: js/app/articleHTMLRenderer.js:305
 msgid "Content taken from {blog-link}."
 msgstr "Contenido tomado de {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:324
+#: js/app/articleHTMLRenderer.js:310
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "Contenido por cortesía de {blog-link}. Usado con permiso generoso."
 
@@ -143,7 +127,7 @@ msgstr "Contenido por cortesía de {blog-link}. Usado con permiso generoso."
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:331
+#: js/app/articleHTMLRenderer.js:317
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Contenido por cortesía de {blog-link}, bajo la licencia {license-link}."
 

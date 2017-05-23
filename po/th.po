@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-05-09 02:07+0000\n"
-"PO-Revision-Date: 2017-04-27 07:13+0000\n"
+"POT-Creation-Date: 2017-05-16 02:02+0000\n"
+"PO-Revision-Date: 2017-05-16 02:04+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Thai (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/th/)\n"
 "MIME-Version: 1.0\n"
@@ -61,11 +61,11 @@ msgstr "โฮม"
 msgid "View the license"
 msgstr "ดูใบอนุญาต"
 
-#: js/app/application.js:180
+#: js/app/application.js:181
 msgid "Oops! No content."
 msgstr "อ๊ะ! ไม่มีเนื้อหา"
 
-#: js/app/application.js:181
+#: js/app/application.js:182
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -98,37 +98,21 @@ msgid ""
 "to do anything."
 msgstr "ดูรายละเอียด, วิดีโอ, ภาพ, และความเป็นเจ้าของเพิ่มเติมที่ {wikihow-article-link}  ขอขอบคุณ {wikihow-link} ในฐานะพื้นที่ที่ทุกคนสามารถเรียนรู้วิธีทำสิ่งต่างๆ ได้"
 
-#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:280
+#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:273
 msgid "Copy"
 msgstr "คัดลอก"
-
-#: js/app/articleHTMLRenderer.js:184
-msgid "Legal Notice and Intellectual Property Policy"
-msgstr "ข้อความเตือนและนโยบายทรัพย์สินทางปัญญา"
-
-#. TRANSLATORS: anything inside curly braces '{}' is going to be
-#. substituted in code. Please make sure to leave the curly
-#. braces around any words that have them, and do not translate
-#. words inside curly braces.
-#: js/app/articleHTMLRenderer.js:190
-msgid "Read more at {link}"
-msgstr "อ่านเพิ่มเติมที่ {link}"
-
-#: js/app/articleHTMLRenderer.js:196
-msgid "DISCLAIMER PLACEHOLDER"
-msgstr "พื้นที่ข้อความสงวนสิทธิ์"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:319
+#: js/app/articleHTMLRenderer.js:305
 msgid "Content taken from {blog-link}."
 msgstr "เนื้อหานำมาจาก {blog-link}"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:324
+#: js/app/articleHTMLRenderer.js:310
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "เนื้อหาจาก {blog-link}  นำมาใช้งานโดยได้รับอนุญาตแล้ว"
 
@@ -136,7 +120,7 @@ msgstr "เนื้อหาจาก {blog-link}  นำมาใช้งา�
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:331
+#: js/app/articleHTMLRenderer.js:317
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "เนื้อหาจาก {blog-link} สงวนลิขสิทธิ์ภายใต้ {license-link}"
 
