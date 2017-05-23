@@ -3,7 +3,6 @@
   <gresource prefix="/com/endlessm/knowledge">
     <file compressed="true">data/css/blog.css</file>
     <file compressed="true">data/css/buffet.css</file>
-    <file compressed="true">data/css/course.css</file>
     <file compressed="true">data/css/default.css</file>
     <file compressed="true">data/css/encyclopedia.css</file>
     <file compressed="true">data/css/escola.css</file>
