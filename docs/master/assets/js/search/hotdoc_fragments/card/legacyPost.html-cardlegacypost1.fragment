@@ -1,1 +1,1 @@
-fragment_downloaded_cb({"url": "card/legacyPost.html#cardlegacypost1", "fragment": "Card.LegacyPost \nA card implementation with sizing and styling specific to template B. Will only show a title and image. \n"});
+fragment_downloaded_cb({"fragment": "Card.LegacyPost \nA card implementation with sizing and styling specific to template B. Will only show a title and image. \n", "url": "card/legacyPost.html#cardlegacypost1"});
