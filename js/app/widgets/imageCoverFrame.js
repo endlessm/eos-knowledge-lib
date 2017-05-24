@@ -22,7 +22,6 @@ const ImageCoverFrame = new Knowledge.Class({
         this.parent(props);
         this.set_has_window(false);
 
-        this._stream = null;
         this._pixbuf = null;
         this._last_width = 0;
         this._last_height = 0;
@@ -33,17 +32,17 @@ const ImageCoverFrame = new Knowledge.Class({
     },
 
     set_content: function (stream) {
-        this._stream = stream;
-        this.queue_draw();
-        this._surface_cache.invalidate();
+        GdkPixbuf.Pixbuf.new_from_stream_async(stream, null, (obj, res) => {
+            this._pixbuf = GdkPixbuf.Pixbuf.new_from_stream_finish(res);
+            this.queue_draw();
+            this._surface_cache.invalidate();
+        });
     },
 
     _draw_scaled_pixbuf: function (cr) {
-        if (!this._stream)
+        if (!this._pixbuf)
             return;
 
-        if (!this._pixbuf)
-            this._pixbuf = GdkPixbuf.Pixbuf.new_from_stream(this._stream, null);
         let allocation = this.get_allocation();
 
         // Helps to read these transforms in reverse. We center the pixbuf at
@@ -60,7 +59,7 @@ const ImageCoverFrame = new Knowledge.Class({
     },
 
     vfunc_draw: function (cr) {
-        if (this._stream) {
+        if (this._pixbuf) {
             // This is just a static image, we should only need to redraw after a
             // resize of the contents is changed
             let allocation = this.get_allocation();
