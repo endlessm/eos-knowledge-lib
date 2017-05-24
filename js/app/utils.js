@@ -397,7 +397,7 @@ function squash_all_window_content_updates_heavy_handedly (window) {
 function unsquash_all_window_content_updates_heavy_handedly (window) {
     if (no_transition_provider) {
         Gtk.StyleContext.remove_provider_for_screen(Gdk.Screen.get_default(),
-            no_transition_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 10);
+            no_transition_provider);
     }
     Dispatcher.get_default().resume();
     window.get_child().sensitive = true;

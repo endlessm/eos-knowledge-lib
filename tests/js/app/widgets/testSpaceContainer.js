@@ -71,7 +71,7 @@ const ConstantAreaBox = new Knowledge.Class({
 
 function update_gui() {
     while (Gtk.events_pending())
-        Gtk.main_iteration(false);
+        Gtk.main_iteration();
 }
 
 describe('Space container', function () {

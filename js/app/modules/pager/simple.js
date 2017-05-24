@@ -174,7 +174,7 @@ const Simple = new Module.Class({
         let flags = this.get_state_flags();
         let transitions_style =
             EosKnowledgePrivate.style_context_get_custom_string(context,
-                'transitions-style', flags);
+                'transitions-style');
         this.transition_type = this._get_transition(new_page, old_page,
             transitions_style);
 

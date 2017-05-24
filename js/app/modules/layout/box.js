@@ -53,6 +53,6 @@ const Box = new Module.Class({
 
         // An array of submodules is expected
         this._contents = this.create_submodule('contents');
-        this._contents.forEach(this.add, this);
+        this._contents.forEach(item => this.add(item));
     },
 });
