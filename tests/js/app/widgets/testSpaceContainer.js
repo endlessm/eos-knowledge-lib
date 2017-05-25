@@ -2,6 +2,7 @@ const Gtk = imports.gi.Gtk;
 
 const Knowledge = imports.app.knowledge;
 const SpaceContainer = imports.app.widgets.spaceContainer;
+const Utils = imports.tests.utils;
 
 Gtk.init(null);
 
@@ -68,11 +69,6 @@ const ConstantAreaBox = new Knowledge.Class({
         return [width, width];
     }
 });
-
-function update_gui() {
-    while (Gtk.events_pending())
-        Gtk.main_iteration();
-}
 
 describe('Space container', function () {
     let win;
@@ -148,7 +144,7 @@ function addTestsForOrientation(primary, secondary, primary_pos, primary_align) 
 
     it('gives a single child its natural request if there is enough space', function () {
         let box = this.add_box(new IncompressibleBox(100));
-        update_gui();
+        Utils.update_gui();
 
         expect(box.get_allocation()[primary]).toBe(100);
         expect(box.get_child_visible()).toBe(true);
@@ -156,7 +152,7 @@ function addTestsForOrientation(primary, secondary, primary_pos, primary_align) 
 
     it('gives a single child as much space as it can', function () {
         let box = this.add_box(new CompressibleBox(400));
-        update_gui();
+        Utils.update_gui();
 
         expect(box.get_allocation()[primary]).toBe(TEST_WINDOW_SIZE);
         expect(box.get_child_visible()).toBe(true);
@@ -166,14 +162,14 @@ function addTestsForOrientation(primary, secondary, primary_pos, primary_align) 
     // from growing bigger due to its minimal size request.
     xit('shows no children if there is not enough space for a single child', function () {
         let box = this.add_box(new IncompressibleBox(800));
-        update_gui();
+        Utils.update_gui();
 
         expect(box.get_child_visible()).toBe(false);
     });
 
     it('shows only as many children as will fit', function () {
         let boxes = [200, 200].map((size) => this.add_box(new IncompressibleBox(size)));
-        update_gui();
+        Utils.update_gui();
 
         expect(boxes[0].get_child_visible()).toBe(true);
         expect(boxes[1].get_child_visible()).toBe(false);
@@ -181,7 +177,7 @@ function addTestsForOrientation(primary, secondary, primary_pos, primary_align) 
 
     it('shares out extra space equally among visible children', function () {
         let boxes = [200, 200].map((size) => this.add_box(new CompressibleBox(size)));
-        update_gui();
+        Utils.update_gui();
 
         expect(boxes[0].get_allocation()[primary]).toBe(150);
         expect(boxes[1].get_allocation()[primary]).toBe(150);
@@ -189,7 +185,7 @@ function addTestsForOrientation(primary, secondary, primary_pos, primary_align) 
 
     it('shares out extra space among visible children up to the natural size', function () {
         let boxes = [50, 50].map((size) => this.add_box(new CompressibleBox(size)));
-        update_gui();
+        Utils.update_gui();
 
         expect(boxes[0].get_allocation()[primary]).toBe(50);
         expect(boxes[1].get_allocation()[primary]).toBe(50);
@@ -197,7 +193,7 @@ function addTestsForOrientation(primary, secondary, primary_pos, primary_align) 
 
     it('does not share out extra space to invisible children', function () {
         let boxes = [200, 200, 400].map((size) => this.add_box(new CompressibleBox(size)));
-        update_gui();
+        Utils.update_gui();
 
         expect(boxes[0].get_allocation()[primary]).toBe(150);
         expect(boxes[1].get_allocation()[primary]).toBe(150);
@@ -209,7 +205,7 @@ function addTestsForOrientation(primary, secondary, primary_pos, primary_align) 
         boxes[0].expand = true;
         boxes[0].halign = Gtk.Align.FILL;
         boxes[0].valign = Gtk.Align.FILL;
-        update_gui();
+        Utils.update_gui();
 
         expect(boxes[0].get_allocation()[primary]).toBe(250);
         expect(boxes[1].get_allocation()[primary]).toBe(50);
@@ -243,7 +239,7 @@ function addTestsForOrientation(primary, secondary, primary_pos, primary_align) 
         let boxes = [150, 150, 150].map((size) => this.add_box(new IncompressibleBox(size)));
         boxes[1].hide();
         boxes.forEach((box) => spyOn(box, 'size_allocate'));
-        update_gui();
+        Utils.update_gui();
 
         expect(boxes[0].get_child_visible()).toBe(true);
         expect(boxes[2].get_child_visible()).toBe(true);
@@ -252,7 +248,7 @@ function addTestsForOrientation(primary, secondary, primary_pos, primary_align) 
 
     it('does not show children past the first non-fitting one, even if it fits', function () {
         let boxes = [200, 300, 50].map((size) => this.add_box(new IncompressibleBox(size)));
-        update_gui();
+        Utils.update_gui();
 
         expect(boxes[2].get_child_visible()).toBe(false);
     });
@@ -260,7 +256,7 @@ function addTestsForOrientation(primary, secondary, primary_pos, primary_align) 
     it('includes the spacing in its size request', function () {
         let boxes = [50, 50].map((size) => this.add_box(new IncompressibleBox(size)));
         this.container.spacing = 50;
-        update_gui();
+        Utils.update_gui();
 
         let [minimum, natural] = this.container['get_preferred_' + primary]();
         expect(natural).toBe(150);
@@ -269,7 +265,7 @@ function addTestsForOrientation(primary, secondary, primary_pos, primary_align) 
     it('can push its children off the end with spacing', function () {
         let boxes = [50, 50].map((size) => this.add_box(new IncompressibleBox(size)));
         this.container.spacing = 250;
-        update_gui();
+        Utils.update_gui();
 
         expect(boxes[0].get_child_visible()).toBe(true);
         expect(boxes[1].get_child_visible()).toBe(false);
@@ -277,46 +273,46 @@ function addTestsForOrientation(primary, secondary, primary_pos, primary_align) 
 
     it('tells that all children are visible', function () {
         let boxes = [100, 100].map((size) => this.add_box(new IncompressibleBox(size)));
-        update_gui();
+        Utils.update_gui();
 
         expect(this.container.all_visible).toBeTruthy();
     });
 
     it('tells that not all children are visible', function () {
         let boxes = [200, 200].map((size) => this.add_box(new IncompressibleBox(size)));
-        update_gui();
+        Utils.update_gui();
 
         expect(this.container.all_visible).toBeFalsy();
     });
 
     it('notifies when not all children are visible anymore', function (done) {
         let boxes = [150, 150].map((size) => this.add_box(new IncompressibleBox(size)));
-        update_gui();
+        Utils.update_gui();
 
         this.container.connect('notify::all-visible', () => {
             expect(this.container.all_visible).toBeFalsy();
             done();
         });
         this.add_box(new IncompressibleBox(150));
-        update_gui();
+        Utils.update_gui();
     });
 
     it('notifies when all children become visible', function (done) {
         let boxes = [200, 200].map((size) => this.add_box(new IncompressibleBox(size)));
-        update_gui();
+        Utils.update_gui();
 
         this.container.connect('notify::all-visible', () => {
             expect(this.container.all_visible).toBeTruthy();
             done();
         });
         this.container.remove(boxes[1]);
-        update_gui();
+        Utils.update_gui();
     });
 
     it('allocates leftover space to the end for Align.START', function () {
         this.container[primary_align] = Gtk.Align.START;
         let boxes = [200, 200].map((size) => this.add_box(new IncompressibleBox(size)));
-        update_gui();
+        Utils.update_gui();
 
         expect(boxes[0].get_allocation()[primary_pos]).toBe(0);
     });
@@ -324,7 +320,7 @@ function addTestsForOrientation(primary, secondary, primary_pos, primary_align) 
     it('allocates leftover space to both ends for Align.CENTER', function () {
         this.container[primary_align] = Gtk.Align.CENTER;
         let boxes = [200, 200].map((size) => this.add_box(new IncompressibleBox(size)));
-        update_gui();
+        Utils.update_gui();
 
         expect(boxes[0].get_allocation()[primary_pos]).toBe(50);
     });
@@ -332,7 +328,7 @@ function addTestsForOrientation(primary, secondary, primary_pos, primary_align) 
     it('allocates leftover space to both ends for Align.FILL', function () {
         this.container[primary_align] = Gtk.Align.FILL;
         let boxes = [200, 200].map((size) => this.add_box(new IncompressibleBox(size)));
-        update_gui();
+        Utils.update_gui();
 
         expect(boxes[0].get_allocation()[primary_pos]).toBe(50);
     });
@@ -340,7 +336,7 @@ function addTestsForOrientation(primary, secondary, primary_pos, primary_align) 
     it('allocates leftover space to the beginning for Align.END', function () {
         this.container[primary_align] = Gtk.Align.END;
         let boxes = [200, 200].map((size) => this.add_box(new IncompressibleBox(size)));
-        update_gui();
+        Utils.update_gui();
 
         expect(boxes[0].get_allocation()[primary_pos]).toBe(100);
     });
@@ -378,7 +374,7 @@ function addGeometryTestsForOrientationAndModes(primary, secondary, primary_for_
     it('allocates ' + primary + ' for ' + secondary, function () {
         let boxes = [100, 100, 100, 100].map((size) =>
             this.add_box(new ConstantAreaBox(size, primary_for_secondary)));
-        update_gui();
+        Utils.update_gui();
 
         expect(boxes[0].get_allocation()[primary]).toBe(100);
         expect(boxes[1].get_allocation()[primary]).toBe(100);
@@ -389,7 +385,7 @@ function addGeometryTestsForOrientationAndModes(primary, secondary, primary_for_
     it('allocates ' + secondary + ' for ' + primary, function () {
         let boxes = [100, 100, 100, 100].map((size) =>
             this.add_box(new ConstantAreaBox(size, secondary_for_primary)));
-        update_gui();
+        Utils.update_gui();
 
         expect(boxes[0].get_allocation()[primary]).toBe(75);
         expect(boxes[1].get_allocation()[primary]).toBe(75);
