@@ -42,7 +42,6 @@ scss_verbose_0 = @echo "  SCSS     $@";
 scss_theme_toplevels = \
 	$(srcdir)/data/css/blog.scss \
 	$(srcdir)/data/css/buffet.scss \
-	$(srcdir)/data/css/course.scss \
 	$(srcdir)/data/css/default.scss \
 	$(srcdir)/data/css/encyclopedia.scss \
 	$(srcdir)/data/css/escola.scss \
@@ -419,7 +418,6 @@ dist_yamlpreset_DATA = \
 	data/preset/B.yaml \
 	data/preset/blog.yaml \
 	data/preset/buffet.yaml \
-	data/preset/course.yaml \
 	data/preset/encyclopedia.yaml \
 	data/preset/escola.yaml \
 	data/preset/library-list.yaml \
@@ -478,7 +476,6 @@ javascript_tests = \
 	tests/js/app/modules/filter/testCurrentSet.js \
 	tests/js/app/modules/filter/testFeatured.js \
 	tests/js/app/modules/filter/testOtherGroup.js \
-	tests/js/app/modules/filter/testSeeMore.js \
 	tests/js/app/modules/filter/testSets.js \
 	tests/js/app/modules/filter/testTagged.js \
 	tests/js/app/modules/filter/testUnread.js \
