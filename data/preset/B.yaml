@@ -27,8 +27,9 @@ defines:
     - shortdef: 'Layout.Box(homogeneous: true, valign: start)'
       slots:
         contents:
-        - type: Banner.App
+        - type: Banner.Dynamic
           properties:
+            mode: full
             valign: center
             halign: center
         - type: Navigation.SearchBox

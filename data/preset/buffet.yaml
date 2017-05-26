@@ -302,7 +302,13 @@ root:
         content:
           type: Layout.BrandPage
           slots:
-            brand: 'Banner.App(show-subtitle: true, halign: center, valign: center)'
+            brand:
+              type: Banner.Dynamic
+              properties:
+                mode: full
+                show-subtitle: true
+                halign: center
+                valign: center
             content:
               type: ContentGroup.MediaLightbox
               slots:

@@ -23,7 +23,7 @@ defines:
         source-id: sets-group
         property: has-more-content
   slots:
-    top: 'Banner.App(halign: center)'
+    top: 'Banner.Dynamic(mode: full, halign: center)'
     middle: 'Navigation.SearchBox(halign: center, focus-on-map: true)'
     bottom:
       type: ContentGroup.ContentGroup
