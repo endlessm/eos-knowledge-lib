@@ -81,7 +81,7 @@ defines:
     nav-content:
       type: ContentGroup.ContentGroup
       styles:
-        - related-posts
+        - ContentGroup--complementarycontent
       properties:
         valign: center
       slots:
@@ -175,7 +175,7 @@ defines:
                         wrap-mode: word-char
                     - type: ContentGroup.ContentGroup
                       styles:
-                        - search-suggestions
+                        - ContentGroup--complementarycontent
                       properties:
                         valign: start
                       slots:
