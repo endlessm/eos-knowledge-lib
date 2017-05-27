@@ -27,7 +27,7 @@
               <class name="CardList__content_grid"/>
             </style>
             <child>
-              <object class="GtkLabel" id="navigation-context-label">
+              <object class="EknFormattableLabel" id="navigation-context-label">
                 <property name="can_focus">False</property>
                 <property name="use_markup">True</property>
                 <property name="visible">False</property>
@@ -77,7 +77,7 @@
               </object>
             </child>
             <child>
-              <object class="GtkLabel" id="context-label">
+              <object class="EknFormattableLabel" id="context-label">
                 <property name="can_focus">False</property>
                 <property name="visible">False</property>
                 <property name="no_show_all">True</property>
