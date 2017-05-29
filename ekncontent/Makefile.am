@@ -74,6 +74,7 @@ ekncontent_private_installed_headers = \
 	ekncontent/eknc-set-object-model.h \
 	ekncontent/eknc-utils.h \
 	ekncontent/eknc-video-object-model.h \
+	ekncontent/eknc-word-object-model.h \
 	ekncontent/eknc-xapian-bridge.h \
 	$(NULL)
 ekncontent_sources = \
@@ -94,6 +95,7 @@ ekncontent_sources = \
 	ekncontent/eknc-utils-private.h \
 	ekncontent/eknc-utils.c \
 	ekncontent/eknc-video-object-model.c \
+	ekncontent/eknc-word-object-model.c \
 	ekncontent/eknc-xapian-bridge.c \
 	$(NULL)
 
