@@ -294,24 +294,31 @@ defines:
         do-sliding-animation: false
       slots:
         card: 'Card.KnowledgeDocument(show-titles: false, show-toc: false)'
+        video: 'Card.Video(show-title: false, show-synopsis: false)'
         nav-content:
           type: ContentGroup.ContentGroup
+          styles:
+            - ContentGroup--complementarycontent
           properties:
             valign: center
-            halign: center
           slots:
+            title:
+              type: ContentGroup.StaticText
+              properties:
+                label: !translate 'Related posts'
+                halign: start
             arrangement:
-              shortdef: 'Arrangement.List(max-rows: 1)'
+              shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
               slots:
-                card:
-                  type: Card.List
-                  properties:
-                    sequence: 1
-                    show-synopsis: false
-                    navigation-context: !translate 'Next Article'
+                card: *main-card
             selection:
-              type: Selection.Next
-        video: 'Card.Video(show-title: false, show-synopsis: false)'
+              type: Selection.Related
+              slots:
+                filter:
+                  type: Filter.Articles
+                  slots:
+                    sub-filter: Filter.Unread
+                order: 'Order.PublishedDate(ascending: false)'
 
 root:
   shortdef: 'Controller.Buffet(theme: news)'
