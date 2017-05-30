@@ -82,6 +82,15 @@ $support-font: 'Fira Sans' !default;
     margin-top: -10px;
 }
 
+.ContentGroup--complementarycontent {
+  .ContentGroupContentGroup__title {
+    font-size: 46px;
+    font-weight: 900;
+    color: $primary-medium-color;
+    margin: 30px 0px 20px 0px;
+  }
+}
+
 .search-page-suggestions .ContentGroupContentGroup__title {
     color: white;
 }
@@ -150,6 +159,15 @@ $support-font: 'Fira Sans' !default;
         }
         .composite &__thumbnail {
             min-height: 100px;
+        }
+    }
+    .ContentGroup--complementarycontent {
+        background-color: $background-light-color;
+        margin-right: 14px;
+        padding: 0px 50px 20px 50px;
+
+        .composite & {
+          padding: 0px 0px 20px 0px;
         }
     }
 }
