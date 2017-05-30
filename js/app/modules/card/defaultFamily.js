@@ -411,10 +411,4 @@ const DefaultFamily = new Module.Class({
         return !(width <= Card.MaxSize.B || (width <= Card.MaxSize.C && height <= Card.MaxSize.B));
     },
 
-    vfunc_draw: function (cr) {
-        this.parent(cr);
-        Utils.render_border_with_arrow(this, cr);
-        cr.$dispose();  // workaround bug for not freeing cairo context
-        return Gdk.EVENT_PROPAGATE;
-    },
 });
