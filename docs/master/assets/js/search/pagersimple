@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["pager/simple.html#pagersimple1"], "token": "pagersimple"});
+urls_downloaded_cb({"token": "pagersimple", "urls": ["pager/simple.html#pagersimple1"]});

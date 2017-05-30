@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["contentGroup/staticText.html#contentgroupstatictext1", "contentGroup/staticText.html#contentgroupstatictext"], "token": "contentgroup.statictext"});
+urls_downloaded_cb({"token": "contentgroup.statictext", "urls": ["contentGroup/staticText.html#contentgroupstatictext1", "contentGroup/staticText.html#contentgroupstatictext"]});
