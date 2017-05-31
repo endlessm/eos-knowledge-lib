@@ -13,10 +13,6 @@
         padding: 20px;
     }
 
-    &.arrow {
-        -gtk-icon-source: none; /* kill the arrow that Gtk adds by default in Gtk.render_arrow() */
-    }
-
     &.invisible {
         opacity: 0.0;
     }

@@ -39,12 +39,6 @@ const Deck = new Module.Class({
         this.set_size_request(Card.MinSize.A, Card.MinSize.A);
 
         Utils.set_hand_cursor_on_widget(this);
-
-        this._thumbnail_frame.connect_after('draw', (widget, cr) => {
-            Utils.render_border_with_arrow(this._thumbnail_frame, cr);
-            cr.$dispose();  // workaround not freeing cairo context
-            return Gdk.EVENT_PROPAGATE;
-        });
     },
 
     vfunc_size_allocate: function (alloc) {

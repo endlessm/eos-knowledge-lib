@@ -1,6 +1,6 @@
 /* exported dbus_object_path_for_webview, get_css_for_title_and_module,
 get_web_plugin_dbus_name, get_web_plugin_dbus_name_for_webview, intersection,
-record_search_metric, render_border_with_arrow, shows_descendant_with_type,
+record_search_metric, shows_descendant_with_type,
 split_out_conditional_knobs, union, vfunc_draw_background_default */
 
 const MockMetricsModule = {
@@ -293,46 +293,6 @@ function set_container_clip (container) {
         }
     });
     container.set_clip(clip);
-}
-
-function render_border_with_arrow (widget, cr) {
-    let context = widget.get_style_context();
-    let state = widget.get_state_flags();
-
-    context.save();
-    context.set_state(state);
-    let margins = context.get_margin(context.get_state());
-
-    let width = widget.get_allocated_width() - margins.left - margins.right;
-    let height = widget.get_allocated_height() - margins.top - margins.bottom;
-
-    // Draw focus rectangle even when the widget is not focused, so we can
-    // style it with outline
-    Gtk.render_focus(context, cr, margins.left, margins.top, width, height);
-
-    // Render the triangle in the corner
-    // FIXME: gtk_style_context_get_border_color is deprecated; ideally we
-    // want to get the "outline" style rather than the "border" style, but
-    // that is private to GTK and can only be accessed with render_focus().
-    let color = context.get_border_color(context.get_state());
-    context.restore();
-
-    cr.save();
-    Gdk.cairo_set_source_rgba(cr, color);
-    let corner_x = margins.left + width;
-    let corner_y = margins.top + height;
-    let TRIANGLE_SIDE = 36;
-    cr.moveTo(corner_x, corner_y);
-    cr.lineTo(corner_x - TRIANGLE_SIDE, corner_y);
-    cr.lineTo(corner_x, corner_y - TRIANGLE_SIDE);
-    cr.fill();
-    cr.restore();
-
-    // Render the arrow on top of the triangle
-    context.save();
-    context.add_class('arrow');
-    Gtk.render_arrow(context, cr, 0, corner_x - 15, corner_y - 15, 12);
-    context.restore();
 }
 
 function low_performance_mode () {

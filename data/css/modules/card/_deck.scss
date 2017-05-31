@@ -15,14 +15,7 @@
     }
 
     &__thumbnail {
-        border: 0px solid transparent;  /* used for the triangle in the corner */
         margin: 13px;
-
-        &.arrow {
-            color: white;
-            -gtk-icon-source: $arrow-recolored-icon;
-            -gtk-icon-transform: rotate(45deg);
-        }
     }
 
     &:active {

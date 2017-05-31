@@ -258,19 +258,6 @@ $title-alt-font: 'Lato Thin' !default;
         font-weight: normal;
     }
 
-    &.arrow {
-        color: gray;
-        -gtk-icon-source: $arrow-recolored-icon;
-        -gtk-icon-transform: rotate(45deg);
-
-        &:hover,
-        &:active {
-            color: white;
-            -gtk-icon-source: $arrow-recolored-icon;
-            -gtk-icon-transform: rotate(45deg);
-        }
-    }
-
     &:hover,
     &:active {
         outline: 1px solid $primary-light-color;

@@ -148,11 +148,4 @@ const List = new Module.Class({
 
         this.update_card_sizing_classes(alloc.height, alloc.width);
     },
-
-    vfunc_draw: function (cr) {
-        this.parent(cr);
-        Utils.render_border_with_arrow(this, cr);
-        cr.$dispose();  // workaround bug for not freeing cairo context
-        return Gdk.EVENT_PROPAGATE;
-    },
 });
