@@ -55,44 +55,9 @@ $accent-light-color: #044a80 !default;
     }
 }
 
-/* WebKit creates GTK tooltips internally, so style them here */
-.tooltip {
-    border-radius: 5px;
-    background-color: transparentize(#212526, 1 - 0.90);
-}
-
-.search-results {
-    background-color: transparent;
-
-    color: #464646;
-
-    .search-page & {
-        margin-top: 20px;
-    }
-
-    .search-page & separator {
-        min-height: 1px;
-        background-image: none;
-        background-color: #888a85;
-    }
-
-    .ContentGroupNoResultsMessage__title,
-    .ContentGroupNoResultsMessage__subtitle {
-        color: $black-60-color;
-        font-size: 15px;  /* 15px / 12px/em */
-        font-style: normal;
-        font-weight: normal;
-        padding: 24px 0 0 0;
-    }
-
-    .results-message-background {
-        background-color:transparent;
-    }
-
-    .Card {
-        margin-top: 0px;
-        margin-bottom: 0px;
-        padding-bottom: 18px;
+.search-page {
+    .CardTitle {
+        margin-bottom: 10px;
 
         &__title {
             font-weight: normal;
@@ -104,18 +69,48 @@ $accent-light-color: #044a80 !default;
         &:hover .Card__title {
             text-decoration: underline;
         }
-    }
 
-    .CardTitle__before {
-        -gtk-icon-source: -gtk-icontheme("media-record-symbolic");
-        min-width: 6px;
-        min-height: 6px;
-        color: rgba(145, 145, 145, 0.5);
-        padding-right: 7px;
+        &__before {
+            -gtk-icon-source: -gtk-icontheme("media-record-symbolic");
+            min-width: 6px;
+            min-height: 6px;
+            color: rgba(145, 145, 145, 0.5);
+            padding-right: 7px;
+        }
     }
 
     .ArrangementList {
         padding: 0;
+    }
+
+    separator {
+        min-height: 15px;
+        background-color: transparent;
+        background-image: url('resource:///com/endlessm/knowledge/data/images/separator.png');
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
+
+    .title.query {
+        font-weight: normal;
+        color: black;
+    }
+
+    .BannerSearch {
+        margin: 0 0 20px 0;
+        font-weight: 300;
+        font-size: 24px;
+        color: transparentize(black, 1 - 0.40);
+
+        .ContentGroupContentGroup {
+            margin-top: 25px;
+        }
+
+        .composite & {
+            font-weight: normal;
+            font-size: 23.5px;
+            font-weight: bold;
+        }
     }
 
     .composite & {
@@ -129,48 +124,13 @@ $accent-light-color: #044a80 !default;
     }
 }
 
-.BannerSearch {
-    .search-page & {
-        font-weight: 300;
-        font-size: 24px;
-        color: #7e7e7e;
-        padding: 40px 0 20px;
+.ContentGroupNoResultsMessage {
+    &__title {
+        font-size: 25px;
     }
-
-    .composite .search-page & {
-        font-weight: normal;
-        font-size: 23.5px;  /* 20px spec * 88% */
-        font-weight: bold;
+    &__subtitle {
+        font-size: 15px;
     }
-}
-
-.search-page {
-    separator {
-        min-height: 15px;
-        background-color: transparent;
-        background-image: url('resource:///com/endlessm/knowledge/data/images/separator.png');
-        background-size: 100%;
-        background-repeat: no-repeat;
-    }
-
-    .title.query {
-        font-weight: normal;
-        color: black;
-    }
-}
-
-scrollbar {
-    padding: 0px 3px;
-
-    slider {
-        background-color: #9b9b9b;
-        border-radius: 20px;
-        min-width: 8px;
-    }
-}
-
-.WebviewTooltip__label {
-    font-size: 16px;
 }
 
 .LayoutResponsiveMargins {
@@ -196,10 +156,9 @@ scrollbar {
                       url('resource:///com/endlessm/knowledge/data/templates/images/noise.png');
 
     .search-page & {
-        padding: 0 45px;
+        padding: 50px;
     }
 }
-
 
 /* Changes for composite TVs */
 

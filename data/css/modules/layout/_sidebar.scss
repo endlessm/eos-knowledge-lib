@@ -1,57 +1,64 @@
 .LayoutSidebar {
+    .content {
+        .BannerSet,
+        .BannerSearch {
+            margin-top: 0;
+        }
+
+        .BannerSet .CardTitle__title,
+        .BannerSearch__title {
+            font-size: 72px;
+            color: white;
+            padding: 1.0em 0em 1.0em 1.25em;
+        }
+    }
+
     .sidebar {
+        background-color: $primary-medium-color;
+        box-shadow: 0px 0px 5px 0px transparentize(black, 1 - 0.40);
+
+        scrollbar {
+            background-color: transparentize(black, 1 - 0.20);
+
+            slider {
+                min-width: 10px;
+                background-color: transparentize(white, 1 - 0.40);
+            }
+        }
+
         .ArrangementList {
             margin: 0px;
         }
 
         .CardTitle {
-            margin: 0px;
-            padding: 10px;
-
+            margin: 0;
+            border-bottom: 1px solid transparentize(black, 1 - 0.20);
+            font-weight: bold;
             &__title {
-                padding: 0em 0em 0em 1.5em;
-                font-family: $display-font;
-                font-weight: 700;
                 font-size: 20px;
-                color: $primary-light-color;
+                font-family: $title-font;
+                color: transparentize(white, 1 - 0.60);
+                padding: 15px 15px 15px 30px;
             }
 
-            &:hover {
-                .Card__title {
-                    color: $primary-medium-color;
-                }
+            &:hover .Card__title {
+                color: $accent-light-color;
             }
 
-            &:active {
-                background: transparentize(black, 1 - 0.7);
-            }
-
+            &:active,
             &.highlighted {
-                background: transparentize(black, 1 - 0.5);
-                font-weight: 700;
-
-                .Card__title {
-                    color: white;
-                    transition-property: color;
-                    transition-timing-function: ease;
-                    transition-duration: 0.5s;
-                }
-
-                &:hover {
-                    background-color: transparentize(black, 1 - 0.6);
-                }
-
-                &:active {
-                    background: transparentize(black, 1 - 1);
-                    box-shadow: none;
-                    transition: none;
+                .CardTitle {
+                    &__title {
+                        background-color: $primary-dark-color;
+                        color: white;
+                    }
                 }
             }
         }
-    }
 
-    & .content {
-        background-image: linear-gradient(-180deg, rgba(0,0,0,0.0) 65%, rgba(0,0,0,0.30) 85%, rgba(0,0,0,0.70) 100%);
+        .ContentGroupNoResultsMessage {
+            margin: 2.0em;
+        }
     }
 }
 

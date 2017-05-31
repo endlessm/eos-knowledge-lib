@@ -8,17 +8,16 @@
     }
 
     &__title {
-        font-family: $title-font;
         font-weight: bold;
-        color: $primary-medium-color;
         font-size: 18px;
     }
 
+    &__synopsis {
+        font-size: 16px;
+    }
+
     &__context {
-        font-family: $context-font;
         font-weight: bold;
-        font-style: normal;
-        color: $primary-light-color;
         font-size: 14px;
         border: none;
         outline: none;

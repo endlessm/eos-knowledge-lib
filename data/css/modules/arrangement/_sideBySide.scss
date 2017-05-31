@@ -1,10 +1,11 @@
 .ArrangementSideBySide {
     .CardTitle {
-        padding: 0px 8px;
+        padding: .2em 1em;
 
         &__title {
             font-family: $title-font;
-            color: $white-60-color;
+            font-weight: bold;
+            color: transparentize(white, 1 - 0.60);
             font-size: 18px;
         }
 
@@ -12,8 +13,9 @@
             color: $accent-light-color;
         }
 
-        &.highlighted {
-            background-color: darken($background-dark-color, 5%);
+        &.highlighted,
+        &:active {
+            background-color: darken($primary-dark-color, 5%);
 
             .CardTitle__title {
                 color: white;
@@ -23,12 +25,8 @@
     &__popover {
         background-color: $primary-medium-color;
         box-shadow: 2px 2px 6px black;
-        color: $white-60-color;
+        color: transparentize(white, 1 - 0.60);
         padding: .5em 0em;
         min-width: 10em;
-
-        .CardTitle {
-            padding: .4em 1em;
-        }
     }
 }

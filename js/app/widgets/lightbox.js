@@ -228,8 +228,7 @@ const LightboxContainer = new Knowledge.Class({
         'navigation-next-clicked': {}
     },
 
-    _ICON_SIZE: 24,
-    _ICON_MARGIN: 10,
+    _ICON_SIZE: 22,
     _MIN_BORDER: 20,
 
     _init: function (params) {
@@ -256,7 +255,8 @@ const LightboxContainer = new Knowledge.Class({
         this._close_button = new Gtk.Button({
             halign: Gtk.Align.START,
             valign: Gtk.Align.START,
-            margin: this._ICON_MARGIN,
+            margin_top: 5,
+            margin_left: 15,
             image: img_close
         });
         Utils.set_hand_cursor_on_widget(this._close_button);
@@ -264,7 +264,6 @@ const LightboxContainer = new Knowledge.Class({
             this.emit('close-clicked');
         }.bind(this));
 
-        let nav_button_class = Utils.get_element_style_class(Lightbox, 'navigationButton');
         /**
          * Navigate previous button
          */
@@ -275,14 +274,14 @@ const LightboxContainer = new Knowledge.Class({
         this._previous_button = new Gtk.Button({
             halign: Gtk.Align.START,
             valign: Gtk.Align.START,
-            margin: this._ICON_MARGIN,
+            margin: 20,
             image: img_prev
         });
         Utils.set_hand_cursor_on_widget(this._previous_button);
         this._previous_button.connect('clicked', function () {
             this.emit('navigation-previous-clicked');
         }.bind(this));
-        this._previous_button.get_style_context().add_class(nav_button_class);
+        this._previous_button.get_style_context().add_class(Utils.get_element_style_class(Lightbox, 'navigationPrevious'));
 
         /**
          * Navigate next button
@@ -294,14 +293,14 @@ const LightboxContainer = new Knowledge.Class({
         this._next_button = new Gtk.Button({
             halign: Gtk.Align.START,
             valign: Gtk.Align.START,
-            margin: this._ICON_MARGIN,
+            margin: 20,
             image: img_next
         });
         Utils.set_hand_cursor_on_widget(this._next_button);
         this._next_button.connect('clicked', function () {
             this.emit('navigation-next-clicked');
         }.bind(this));
-        this._next_button.get_style_context().add_class(nav_button_class);
+        this._next_button.get_style_context().add_class(Utils.get_element_style_class(Lightbox, 'navigationNext'));
 
         this.add(this._close_button);
         this.add(this._next_button);

@@ -1,15 +1,11 @@
 .CardVideo {
     padding: 20px;
     &__title {
-        font-family: $title-font;
         font-weight: bold;
-        color: $primary-medium-color;
         font-size: 18px;
     }
     &__synopsis {
-        font-family: $body-font;
         font-style: italic;
-        color: $black-60-color;
         font-size: 16px;
     }
 }

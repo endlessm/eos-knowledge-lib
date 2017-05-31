@@ -1,8 +1,8 @@
-$body-font: 'Merriweather' !default;
-$display-font: 'Fira Sans' !default;
-$display-font-composite: 'Roboto' !default;
+@import "base";
 
-@import 'mesh';
+.PagerParallaxBackground {
+    -EknPager_Simple-transitions-style: 'slide-all';
+}
 
 .home-page {
     .CardLegacyPolaroid {
@@ -19,22 +19,18 @@ $display-font-composite: 'Roboto' !default;
     }
 }
 
-.CardTitle__title,
-.CardKnowledgeDocument__title {
-    color: white;
-}
-
-.BannerSet .Card {
-    background: none;
-}
-
 .set-page,
 .search-page {
+    .BannerSet,
+    .BannerSearch {
+        margin-bottom: 50px;
+    }
+
     .BannerSet .Card__title,
     .BannerSearch__title {
+        font-family: $title-font;
         color: white;
         font-size: 55px;
-        padding: 1.0em 1.0em 0.50em 1.0em;
         text-shadow: 2px 8px 6px transparentize(black, 1 - 0.20);
     }
 
@@ -51,50 +47,24 @@ $display-font-composite: 'Roboto' !default;
         }
     }
 
-    .ContentGroupContentGroup {
-        padding: 0px 60px 60px 60px;
+    .ContentGroup--articles {
+        padding-top: 0;
     }
 }
 
-.search-results {
-    background-color: transparent;
-
-    .ContentGroupNoResultsMessage {
-        margin-top: 3.0em;
-        &__title,
-        &__subtitle {
-            font-size: 1.25em;
-            color: white;
-            padding: 0em 1.25em 0em 1.25em;
-            font-style: normal;
-            text-shadow: 2px 8px 6px transparentize(black, 1 - 0.20);
-        }
-        &__subtitle {
-            margin-top: 1.0em;
-        }
+.ContentGroupNoResultsMessage {
+    margin-top: -100px;
+    &__title,
+    &__subtitle {
+        text-shadow: 2px 8px 6px transparentize(black, 1 - 0.20);
     }
-}
-
-.article-page {
-    .Card__title {
+    &__title {
         color: white;
+        font-size: 2.5em;
     }
-
-    .CardKnowledgeDocument {
-        &__contentFrame {
-            margin: 0px 0px 0px 50px;
-        }
-
-        &__toolbarFrame {
-            // margin-top: 60px;
-            // margin-left: 50px;
-            margin: 60px 0px 0px 50px;
-        }
+    &__subtitle {
+        color: transparentize(white, 1 - 0.80);
     }
-}
-
-.PagerParallaxBackground {
-    -EknPager_Simple-transitions-style: 'slide-all';
 }
 
 .composite {
@@ -119,7 +89,7 @@ $display-font-composite: 'Roboto' !default;
         .ContentGroupContentGroup__title,
         .BannerSet__title,
         .BannerSearch__title {
-            font-family: $title-font-composite;
+            font-family: $display-font-composite;
         }
 
         .CardLegacyPolaroid__title {
@@ -138,30 +108,15 @@ $display-font-composite: 'Roboto' !default;
         .ContentGroupContentGroup {
             padding: 0px 40px 20px 40px;
         }
-    }
 
-    .article-page {
-        .Card__title {
-            font-size: 30px;
-            padding: 1.0em 0.5em 0.5em 0.5em;
-        }
-
-        .CardKnowledgeDocument__contentFrame {
-            margin: 0px 0px 0px 0px;
-        }
-
-        .CardKnowledgeDocument__toolbarFrame {
-            margin: 0px 20px 0px 45px;
-        }
-    }
-
-    .ContentGroupNoResultsMessage {
-        font-size: 20px;
-        &__title {
-            padding: 0em;
-        }
-        &__subtitle {
-            padding: 0em 0em 2.0em 0em;
+        .ContentGroupNoResultsMessage {
+            &__title,
+            &__subtitle {
+                font-size: 20px;
+            }
+            &__title {
+                font-weight: bold;
+            }
         }
     }
 }

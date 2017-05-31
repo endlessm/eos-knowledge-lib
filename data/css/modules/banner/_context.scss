@@ -1,6 +1,7 @@
 .BannerContext {
     font-family: $display-font;
-    font-size: 29.3px;
-    color: white;
-    text-shadow: 0px 1px transparentize(white, 1 - 0.004);
+    font-weight: bold;
+    font-size: 54px;
+    color: $primary-medium-color;
+    margin-top: 50px;
 }

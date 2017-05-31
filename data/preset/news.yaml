@@ -75,11 +75,13 @@ defines:
               slots:
                 content:
                   shortdef: 'Layout.Box(orientation: vertical)'
+                  styles:
+                    - ContentGroup--outercontainer
                   slots:
                     contents:
                     - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
                       styles:
-                        - highlights
+                        - ContentGroup--highlightsall
                       slots:
                         arrangement:
                           type: Arrangement.Piano
@@ -92,16 +94,17 @@ defines:
                             filter: Filter.Articles
                             order: 'Order.PublishedDate(ascending: false)'
                     - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
-                      styles:
-                        - highlights
                       slots:
                         arrangement:
                           type: Arrangement.List
                           properties:
                             max-rows: 4
+                            homogeneous: false
                           slots:
                             card:
                               type: Card.ContentGroup
+                              styles:
+                                - ContentGroup--highlightsset
                               slots:
                                 title:
                                   type: ContentGroup.DynamicTitle
@@ -145,22 +148,23 @@ defines:
                 - shortdef: 'Banner.Set(halign: center)'
                   slots:
                     card: Card.Title
-                - Decoration.Separator
                 - shortdef: 'Layout.Box(orientation: vertical)'
+                  styles:
+                    - ContentGroup--outercontainer
                   slots:
                     contents:
                     - type: Layout.ResponsiveMargins
                       slots:
                         content:
                           shortdef: 'ContentGroup.ContentGroup(halign: center)'
-                          styles:
-                          - hierarchical-set
                           slots:
                             arrangement:
-                              shortdef: 'Arrangement.List(max-rows: 3)'
+                              shortdef: 'Arrangement.List(max-rows: 3, homogeneous: false)'
                               slots:
                                 card:
                                   type: Card.ContentGroup
+                                  styles:
+                                    - ContentGroup--previewset
                                   slots:
                                     title:
                                       type: ContentGroup.DynamicTitle
@@ -185,7 +189,7 @@ defines:
                         content:
                           shortdef: 'ContentGroup.ContentGroup(halign: center)'
                           styles:
-                          - hierarchical-articles
+                            - ContentGroup--articles
                           slots:
                             arrangement:
                               type: Arrangement.List
@@ -204,20 +208,16 @@ defines:
                                     sub-filter: Filter.Articles
                     - type: Layout.ResponsiveMargins
                       styles:
-                        - dark-background
+                        - LayoutResponsiveMargins--complementarycontent
                       slots:
                         content:
                           type: ContentGroup.ContentGroup
-                          styles:
-                            - supplementary-articles
                           properties:
-                            valign: end
+                            valign: center
                           slots:
                             arrangement: *suggestions-arrangement
                             title:
                               shortdef: 'ContentGroup.StaticText(label: !translate "other news", halign: start)'
-                              styles:
-                                - content-group-title
                             selection:
                               type: Selection.Supplementary
                               slots:
@@ -247,13 +247,15 @@ defines:
                     content:
                       type: ContentGroup.ContentGroup
                       styles:
-                      - search-results
+                        - ContentGroup--outercontainer
                       slots:
                         selection:
                           type: Selection.Search
                           id: search-results
                         arrangement:
                           type: Arrangement.List
+                          styles:
+                            - ContentGroup--articles
                           slots:
                             card: Card.List
                         no-results:
@@ -261,17 +263,14 @@ defines:
                           slots:
                             contents:
                             - type: ContentGroup.NoResultsMessage
-                              properties:
-                                halign: fill
-                                justify: left
                             - type: Layout.ResponsiveMargins
+                              styles:
+                                - LayoutResponsiveMargins--complementarycontent
                               slots:
                                 content:
                                   type: ContentGroup.ContentGroup
-                                  styles:
-                                    - search-page-suggestions
                                   properties:
-                                    valign: end
+                                    valign: center
                                   slots:
                                     title:
                                       type: ContentGroup.StaticText

@@ -1,6 +1,13 @@
 .BannerSet {
-    .Card__title {
-        font-size: 54px;
-        font-family: $title-font;
+    margin-top: 50px;
+    .CardTitle {
+        padding: 0;
+        margin: 0;
+        &__title {
+            font-family: $display-font;
+            font-weight: bold;
+            font-size: 54px;
+            color: $primary-medium-color;
+        }
     }
 }

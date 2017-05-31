@@ -1,14 +1,9 @@
 .DocumentCard {
-    WebKitWebView {
-        background-color: $background-light-color;
-        background-image: url('resource:///com/endlessm/knowledge/data/templates/images/noise.png');
-    }
-
     &__title {
         color: white;
         font-family: $title-font;
         font-size: 45px;
-        font-weight: 700;
+        font-weight: bold;
         text-shadow: 2px 8px 6px rgba(0,0,0,0.2),
                  0px -5px 35px rgba(255,255,255,0.1);
 

@@ -59,7 +59,7 @@ defines:
                       selection:
                         type: Selection.Search
                         id: search-results
-                      no-results: 'ContentGroup.NoResultsMessage(halign: start)'
+                      no-results: ContentGroup.NoResultsMessage
                     styles:
                     - search-results
 

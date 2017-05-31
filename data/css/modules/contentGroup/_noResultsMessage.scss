@@ -1,27 +1,29 @@
 .ContentGroupNoResultsMessage {
-    font-family: $body-font;
-
     &__title {
+        font-family: $display-font;
         color: $primary-light-color;
         font-size: 30px;
-        padding-bottom: 30px;
     }
 
     &__subtitle {
-        font-style: italic;
-        color: $black-60-color;
-        font-size: 22px;
-        padding-bottom: 50px;
+        font-family: $body-font;
+        color: transparentize(black, 1 - 0.60);
+        font-size: 20px;
+        margin-top: 2.0em;
     }
+}
+
+.ContentGroup--outercontainer .ContentGroupNoResultsMessage {
+    padding: 50px 0;
 }
 
 .composite {
     .ContentGroupNoResultsMessage {
         &__title {
-            font-family: $title-font-composite;
+            font-family: $support-font-composite;
         }
         &__subtitle {
-            font-family: $display-font-composite;
+            font-family: $body-font-composite;
         }
     }
 }

@@ -56,7 +56,6 @@ scss_theme_base_partials = \
 	$(srcdir)/data/css/_assets.scss \
 	$(srcdir)/data/css/_colors.scss \
 	$(srcdir)/data/css/_typography.scss \
-	$(srcdir)/data/css/_mesh.scss \
 	$(NULL)
 scss_theme_arrangement_partials = \
 	$(srcdir)/data/css/modules/arrangement/_constrained.scss \
@@ -85,7 +84,6 @@ scss_theme_card_partials = \
 	$(srcdir)/data/css/modules/card/_list.scss \
 	$(srcdir)/data/css/modules/card/_media.scss \
 	$(srcdir)/data/css/modules/card/_sequence.scss \
-	$(srcdir)/data/css/modules/card/_title.scss \
 	$(srcdir)/data/css/modules/card/_video.scss \
 	$(NULL)
 scss_theme_content_partials = \

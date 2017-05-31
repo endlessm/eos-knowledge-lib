@@ -6,6 +6,7 @@ const Gtk = imports.gi.Gtk;
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
 const Previewer = imports.app.widgets.previewer;
+const Utils = imports.app.utils;
 
 /**
  * Class: Media
@@ -20,7 +21,7 @@ const Media = new Module.Class({
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/media.ui',
     InternalChildren: [ 'caption-label', 'attribution-label', 'grid',
-        'attribution-button', 'separator' ],
+        'attribution-button'],
 
     _MIN_WIDTH: 200,
 
@@ -58,12 +59,17 @@ const Media = new Module.Class({
             attributions.push(this.model.copyright_holder);
         this.set_label_or_hide(this._attribution_label, attributions.map((s) => {
             return s.split('\n')[0];
-        }).join(' - ').toUpperCase());
+        }).join(' - '));
         this._attribution_button.visible = this._attribution_label.visible;
         this._attribution_button.connect('clicked', this._show_license_in_external_viewer.bind(this));
-
-        this._separator.visible = this._attribution_label.visible &&
-                                  this._caption_label.visible;
+        /* When both the caption & attribution are present in the lightbox,
+           add these classes so their spacing can be designed correctly. */
+        if (this._caption_label.visible) {
+            this.get_style_context().add_class(Utils.get_modifier_style_class(this.constructor, 'withCaption'));
+        }
+        if (this._attribution_label.visible) {
+            this.get_style_context().add_class(Utils.get_modifier_style_class(this.constructor, 'withAttribution'));
+        }
     },
 
     vfunc_get_preferred_width: function () {

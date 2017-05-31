@@ -13,7 +13,7 @@ const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
 const DEFAULT_COLOR = '#BBBCB6';
-const DEFAULT_HEIGHT = 100;
+const DEFAULT_HEIGHT = 140;
 
 const THRESHOLD_SMALL = 960;
 const THRESHOLD_MEDIUM = 1360;

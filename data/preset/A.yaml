@@ -65,6 +65,8 @@ defines:
       slots:
         content:
           type: ContentGroup.ContentGroup
+          styles:
+            - ContentGroup--articles
           slots:
             <<: *main-arrangement-slot
             selection:
@@ -87,9 +89,7 @@ defines:
             selection:
               type: Selection.Search
               id: search-results
-            no-results: ContentGroup.NoResultsMessage
-          styles:
-          - search-results
+            no-results: 'ContentGroup.NoResultsMessage(valign: center, halign: center, justify: center)'
 
 - &article-page
   type: Layout.ArticleStack

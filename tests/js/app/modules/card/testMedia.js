@@ -26,37 +26,6 @@ describe ('Card.Media', function () {
         imageObject.get_content_stream = () => null;
     });
 
-    it ('hides separator when caption or attribution not visible', function () {
-        let noCaption = Eknc.ImageObjectModel.new_from_props({
-            license: 'bar',
-            copyright_holder: 'baz',
-            content_type: 'image/jpeg',
-        });
-        noCaption.get_content_stream = () => null;
-
-        let noAttribution = Eknc.ImageObjectModel.new_from_props({
-            caption: 'foo',
-            content_type: 'image/jpeg',
-        });
-        noAttribution.get_content_stream = () => null;
-
-        let media_card = new Media.Media({
-            model: imageObject,
-        });
-        media_card.get_content_stream = () => null;
-        expect(media_card._separator.visible).toBe(true);
-        media_card = new Media.Media({
-            model: noCaption,
-        });
-        media_card.get_content_stream = () => null;
-        expect(media_card._separator.visible).toBe(false);
-        media_card = new Media.Media({
-            model: noAttribution,
-        });
-        media_card.get_content_stream = () => null;
-        expect(media_card._separator.visible).toBe(false);
-    });
-
     it('has labels that understand Pango markup', function () {
         let model = Eknc.ImageObjectModel.new_from_props({
             copyright_holder: '!!!',

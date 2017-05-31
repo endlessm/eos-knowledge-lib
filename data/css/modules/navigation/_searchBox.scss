@@ -1,5 +1,5 @@
 .NavigationSearchBox {
-    font-family: $display-font;
+    font-family: $context-font;
     font-weight: normal;
 
     .PagerSimple & {
@@ -9,15 +9,15 @@
                           linear-gradient(to bottom, white, white);
         background-clip: padding-box;
         padding: 0.75em 0.55em 0.75em 0.55em;
-        color: $primary-dark-color;
-        caret-color: $primary-dark-color;
+        color: transparentize(black, 1 - 0.80);
+        caret-color: transparentize(black, 1 - 0.80);
         font-size: 16px;
 
         border-style: solid;
         border-radius: 10em;
 
         border-width: .33em;
-        border-color: transparentize(black, 1 - 0.19);
+        border-color: transparentize(black, 1 - 0.20);
 
         min-width: 400px;
 
@@ -31,8 +31,8 @@
         }
 
         image {
-            color: #919191;
-            margin: 3px 5px;
+            color: transparentize(black, 1 - 0.40);
+            margin: 3px 7px 3px 5px;
         }
     }
 
@@ -49,7 +49,7 @@
     .view {
         padding: 10px;
         .cell {
-            color: $black-80-color;
+            color: transparentize(black, 1 - 0.80);
             border-bottom: 1px solid transparentize(black, 1 - 0.10);
 
             &:selected {

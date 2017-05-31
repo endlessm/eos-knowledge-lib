@@ -117,7 +117,7 @@ defines:
             selection:
               type: Selection.Search
               id: search-results
-            no-results: ContentGroup.NoResultsMessage
+            no-results: 'ContentGroup.NoResultsMessage(valign: center, halign: center, justify: center)'
           styles:
           - search-results
 

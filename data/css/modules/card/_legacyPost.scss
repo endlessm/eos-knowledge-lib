@@ -1,4 +1,4 @@
-$legacy-post-card-border-color: transparentize(black, 1 - 0.70);
+$legacy-post-card-border-color: black;
 $legacy-post-card-border-color-hover: white;
 
 .CardLegacyPost {
@@ -21,11 +21,12 @@ $legacy-post-card-border-color-hover: white;
     }
 
     &__title {
-        color: $primary-light-color;
+        color: white;
         font-family: $title-font;
+        font-weight: bold;
         font-size: 1.8em;
         padding: .9em 0em;
-        background-color: $legacy-post-card-border-color;
+        background-color: transparentize(black, 1 - 0.60);
         transition: color 150ms ease-in-out,
                     background-color 150ms ease-in-out;
     }
