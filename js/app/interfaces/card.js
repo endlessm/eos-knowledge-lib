@@ -285,6 +285,7 @@ const Card = new Lang.Interface({
     _create_contextual_tag_widget: function () {
         let widget = new SpaceContainer.SpaceContainer({
             orientation: Gtk.Orientation.HORIZONTAL,
+            halign: Gtk.Align.START,
         });
 
         // Sort the context tags from shortest to longest in order to
