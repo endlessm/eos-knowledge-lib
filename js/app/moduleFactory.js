@@ -128,7 +128,7 @@ const ModuleFactory = new Knowledge.Class({
         }
         if (styles) {
             let context = module.get_style_context();
-            styles.forEach(context.add_class, context);
+            styles.forEach(id => context.add_class(id));
         }
         if (id) {
             this._id_to_module.set(id, module);

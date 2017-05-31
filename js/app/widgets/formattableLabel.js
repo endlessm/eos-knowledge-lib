@@ -96,7 +96,7 @@ const FormattableLabel = new Knowledge.Class({
         if (this.use_markup) {
             // Pango.parse_markup returns an array where the third
             // element is the result of the parsing.
-            [, attrs, text] = Pango.parse_markup(text, -1, '\0', null);
+            [, attrs, text] = Pango.parse_markup(text, -1, '\0');
         }
 
         let formatted_label = this._format_capitals(text, transform);

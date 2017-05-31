@@ -31,7 +31,7 @@ function register_test_gresource() {
 
 function update_gui () {
     while (Gtk.events_pending())
-        Gtk.main_iteration(false);
+        Gtk.main_iteration();
 }
 
 // A provider which reset all theme. Useful for testing sizing, e.g.
