@@ -71,6 +71,7 @@ ekncontent_private_installed_headers = \
 	ekncontent/eknc-object-model.h \
 	ekncontent/eknc-query-object.h \
 	ekncontent/eknc-query-results.h \
+	ekncontent/eknc-quote-object-model.h \
 	ekncontent/eknc-set-object-model.h \
 	ekncontent/eknc-utils.h \
 	ekncontent/eknc-video-object-model.h \
@@ -91,6 +92,7 @@ ekncontent_sources = \
 	ekncontent/eknc-object-model.c \
 	ekncontent/eknc-query-object.c \
 	ekncontent/eknc-query-results.c \
+	ekncontent/eknc-quote-object-model.c \
 	ekncontent/eknc-set-object-model.c \
 	ekncontent/eknc-utils-private.h \
 	ekncontent/eknc-utils.c \
