@@ -134,10 +134,9 @@ $logo-font: Lato !default;
             &:active,
             &.highlighted {
                 .CardTitle {
-                    background-color: transparent;
-
                     &__title {
                         color: $accent-dark-color;
+                        background-color: transparent;
                         font-weight: bold;
                     }
                 }
