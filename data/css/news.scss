@@ -26,10 +26,6 @@ $support-font: 'Fira Sans' !default;
             font-weight: normal;
             -EknFormattableLabel-text-transform: 'lowercase';
         }
-        &.highlighted,
-        &:active {
-            background-color: darken($background-dark-color, 5%);
-        }
     }
 }
 
