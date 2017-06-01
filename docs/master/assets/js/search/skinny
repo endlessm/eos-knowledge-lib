@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "skinny", "urls": ["card/list.html#cardlist1"]});
+urls_downloaded_cb({"urls": ["card/list.html#cardlist1"], "token": "skinny"});
