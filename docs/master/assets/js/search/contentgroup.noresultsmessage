@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["contentGroup/noResultsMessage.html#contentgroupnoresultsmessage1", "contentGroup/noResultsMessage.html#contentgroupnoresultsmessage"], "token": "contentgroup.noresultsmessage"});
+urls_downloaded_cb({"token": "contentgroup.noresultsmessage", "urls": ["contentGroup/noResultsMessage.html#contentgroupnoresultsmessage1", "contentGroup/noResultsMessage.html#contentgroupnoresultsmessage"]});
