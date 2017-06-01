@@ -14,7 +14,6 @@ const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
-const SetMap = imports.app.setMap;
 
 const MockView = new Module.Class({
     Name: 'testBuffetController_MockView',
@@ -53,13 +52,5 @@ describe('Controller.Buffet', function () {
             },
         });
         store = HistoryStore.get_default();
-    });
-
-    it('initializes set map', function(done) {
-        buffet.make_ready(function () {
-            let child_set = set_models[0];
-            expect(SetMap.get_parent_set(child_set)).toBeDefined();
-            done();
-        });
     });
 });
