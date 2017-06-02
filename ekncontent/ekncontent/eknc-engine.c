@@ -355,7 +355,6 @@ on_query_fixed_finished (GObject *source,
       return;
     }
 
-  /* We're searching for tags without a query string. */
   eknc_domain_query (domain, query, cancellable, on_domain_query_finished, g_steal_pointer (&task));
 }
 
@@ -408,6 +407,7 @@ eknc_engine_query (EkncEngine *self,
       return;
     }
 
+  /* We're searching for tags without a query string. */
   eknc_domain_query (domain, query, cancellable, on_domain_query_finished, g_steal_pointer (&task));
 }
 
