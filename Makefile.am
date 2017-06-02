@@ -77,7 +77,7 @@ scss_theme_banner_partials = \
 scss_theme_card_partials = \
 	$(srcdir)/data/css/modules/card/_base.scss \
 	$(srcdir)/data/css/modules/card/_deck.scss \
-	$(srcdir)/data/css/modules/card/_defaultFamily.scss \
+	$(srcdir)/data/css/modules/card/_default.scss \
 	$(srcdir)/data/css/modules/card/_knowledgeDocument.scss \
 	$(srcdir)/data/css/modules/card/_legacyPolaroid.scss \
 	$(srcdir)/data/css/modules/card/_legacyPost.scss \
@@ -456,7 +456,7 @@ javascript_tests = \
 	tests/js/app/modules/banner/testSet.js \
 	tests/js/app/modules/card/testAudio.js \
 	tests/js/app/modules/card/testDeck.js \
-	tests/js/app/modules/card/testDefaultFamily.js \
+	tests/js/app/modules/card/testDefault.js \
 	tests/js/app/modules/card/testKnowledgeDocument.js \
 	tests/js/app/modules/card/testLegacyPolaroid.js \
 	tests/js/app/modules/card/testLegacyPost.js \
