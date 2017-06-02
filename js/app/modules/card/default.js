@@ -45,17 +45,17 @@ const CARD_POLAROID_VERTICAL_HEIGHTS = {
 };
 
 /**
- * Class: DefaultFamily
+ * Class: Default
  *
  * A card displaying a thumbnail with an area underneath for title and tag
  * information.
  */
-const DefaultFamily = new Module.Class({
-    Name: 'Card.DefaultFamily',
+const Default = new Module.Class({
+    Name: 'Card.Default',
     Extends: Gtk.Button,
     Implements: [Card.Card],
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/card/defaultFamily.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/card/default.ui',
     InternalChildren: [ 'layout', 'inner-content-grid', 'thumbnail-frame',
                         'grid', 'title-label', 'synopsis-label', 'context-frame'],
 

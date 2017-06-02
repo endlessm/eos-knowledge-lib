@@ -6,16 +6,16 @@ Utils.register_gresource();
 
 const Compliance = imports.tests.compliance;
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const DefaultFamily = imports.app.modules.card.defaultFamily;
+const Default = imports.app.modules.card.default;
 
 Gtk.init(null);
 
-describe('Card.DefaultFamily', function () {
+describe('Card.Default', function () {
     let card;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
-        card = new DefaultFamily.DefaultFamily({
+        card = new Default.Default({
             model: Eknc.ContentObjectModel.new_from_props({
                 title: '!!!',
             }),
@@ -23,10 +23,10 @@ describe('Card.DefaultFamily', function () {
     });
 
     it('has the correct style classes', function () {
-        expect(card).toHaveDescendantWithCssClass('CardDefaultFamily__synopsis');
-        expect(card).toHaveDescendantWithCssClass('CardDefaultFamily__context');
-        expect(card).toHaveDescendantWithCssClass('CardDefaultFamily__title');
-        expect(card).toHaveDescendantWithCssClass('CardDefaultFamily__thumbnail');
+        expect(card).toHaveDescendantWithCssClass('CardDefault__synopsis');
+        expect(card).toHaveDescendantWithCssClass('CardDefault__context');
+        expect(card).toHaveDescendantWithCssClass('CardDefault__title');
+        expect(card).toHaveDescendantWithCssClass('CardDefault__thumbnail');
     });
 
     it('has labels that understand Pango markup', function () {
@@ -34,4 +34,4 @@ describe('Card.DefaultFamily', function () {
     });
 });
 
-Compliance.test_card_compliance(DefaultFamily.DefaultFamily);
+Compliance.test_card_compliance(Default.Default);

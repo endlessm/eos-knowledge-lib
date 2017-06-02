@@ -2,7 +2,7 @@
 defines:
 # Various one-liners
 - &main-card
-  type: Card.DefaultFamily
+  type: Card.Default
   properties:
     excluded_types:
     - 0
@@ -51,7 +51,7 @@ defines:
   shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
   slots:
     card:
-      type: Card.DefaultFamily
+      type: Card.Default
       properties:
         excluded_types:
         - 0

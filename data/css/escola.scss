@@ -209,7 +209,7 @@ where they need to be */
   }
 }
 
-.CardDefaultFamily {
+.CardDefault {
   &.width-d.height-b &__contentFrame,
   &.width-e.height-b &__contentFrame,
   &.width-e.height-c &__contentFrame {
@@ -220,7 +220,7 @@ where they need to be */
 
 .ArrangementGrid {
   padding: 10px;
-  .CardDefaultFamily {
+  .CardDefault {
     margin: 12px;
     min-width: 360px;
     background-color: $background-dark-color;
@@ -234,7 +234,7 @@ where they need to be */
       font-weight: 500;
     }
     &.highlighted {
-        .CardDefaultFamily__title {
+        .CardDefault__title {
           color: $primary-medium-color;
         }
     }

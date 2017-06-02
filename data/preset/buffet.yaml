@@ -3,7 +3,7 @@ defines:
 # A few small repeated elements
 - &header-card Card.Title
 - &main-card
-  type: Card.DefaultFamily
+  type: Card.Default
   properties:
     excluded_types:
     - 0
@@ -116,7 +116,7 @@ defines:
                       type: Arrangement.Windshield
                       slots:
                         card:
-                          type: Card.DefaultFamily
+                          type: Card.Default
                           properties:
                             excluded_types:
                             - 0

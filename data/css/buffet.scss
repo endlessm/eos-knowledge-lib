@@ -74,7 +74,7 @@ $logo-font: Lato !default;
 }
 
 .CardList,
-.CardDefaultFamily {
+.CardDefault {
     &__title,
     &__context {
         font-weight: normal;
@@ -94,7 +94,7 @@ $logo-font: Lato !default;
 }
 
 .CardDeck,
-.CardDefaultFamily,
+.CardDefault,
 .CardTitle {
     &__title,
     &__context .FormattableLabel {

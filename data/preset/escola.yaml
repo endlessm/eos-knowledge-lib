@@ -8,7 +8,7 @@ defines:
       homogeneous: true
     slots:
       card:
-        type: Card.DefaultFamily
+        type: Card.Default
         properties:
           background-size: "center"
           excluded_types:
