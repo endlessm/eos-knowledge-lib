@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "arrangement.list", "urls": ["arrangement/list.html#arrangementlist1", "arrangement/list.html#arrangementlist"]});
+urls_downloaded_cb({"urls": ["arrangement/list.html#arrangementlist1", "arrangement/list.html#arrangementlist"], "token": "arrangement.list"});
