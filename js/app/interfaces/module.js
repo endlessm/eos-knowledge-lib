@@ -172,8 +172,18 @@ const Module = new Lang.Interface({
      */
     drop_submodule: function (submodule) {
         let index = this.get_submodules().indexOf(submodule);
-        if (index > -1)
+        if (index > -1) {
             this.get_submodules().splice(index, 1);
+            submodule.dropped();
+        }
+    },
+
+    /**
+     * Method: dropped
+     * Invoked when this submodule was dropped by its parent
+     *
+     */
+    dropped: function () {
     },
 
     /**
