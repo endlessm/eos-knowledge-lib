@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tools.html#picard"], "token": "combo"});
+urls_downloaded_cb({"token": "combo", "urls": ["tools.html#picard"]});
