@@ -327,17 +327,13 @@ root:
       slots:
         search: Navigation.SearchBox
         content:
-          type: Layout.BrandPage
+          type: ContentGroup.MediaLightbox
           slots:
-            brand: 'Banner.App(show-subtitle: true, halign: center, valign: center)'
+            card: Card.Media
             content:
-              type: ContentGroup.MediaLightbox
+              type: Pager.Simple
               slots:
-                card: Card.Media
-                content:
-                  type: Pager.Simple
-                  slots:
-                    home-page: *home-page
-                    set-page: *set-page
-                    search-page: *search-page
-                    article-page: *article-page
+                home-page: *home-page
+                set-page: *set-page
+                search-page: *search-page
+                article-page: *article-page
