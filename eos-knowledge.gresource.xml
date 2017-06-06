@@ -54,8 +54,6 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/deck.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/default.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/knowledgeDocument.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/legacyPolaroid.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/legacyPost.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/list.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/media.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/sequence.ui</file>
@@ -118,8 +116,6 @@
     <file>js/app/modules/card/deck.js</file>
     <file>js/app/modules/card/default.js</file>
     <file>js/app/modules/card/knowledgeDocument.js</file>
-    <file>js/app/modules/card/legacyPolaroid.js</file>
-    <file>js/app/modules/card/legacyPost.js</file>
     <file>js/app/modules/card/list.js</file>
     <file>js/app/modules/card/media.js</file>
     <file>js/app/modules/card/sequence.js</file>
