@@ -924,6 +924,21 @@ on_xapian_query_response (GObject *source,
     }
 }
 
+static void
+send_query_to_xapian_bridge (EkncDomain *domain,
+                             EkncXapianBridge *bridge,
+                             EkncQueryObject *query,
+                             GCancellable *cancellable,
+                             GTask *task)
+{
+  QueryState *state = g_slice_new0 (QueryState);
+  g_task_set_task_data (task, state, query_state_free);
+
+  g_autoptr(GHashTable) params = eknc_get_domain_query_params (domain);
+  eknc_xapian_bridge_query (bridge, query, params, cancellable,
+                            on_xapian_query_response, task);
+}
+
 void
 on_xapian_test_response (GObject *source,
                          GAsyncResult *result,
@@ -937,13 +952,8 @@ on_xapian_test_response (GObject *source,
   eknc_xapian_bridge_test_finish (bridge, result);
 
   EkncQueryObject *query = g_task_get_task_data (task);
-
-  QueryState *state = g_slice_new0 (QueryState);
-  g_task_set_task_data (task, state, query_state_free);
-
-  g_autoptr(GHashTable) params = eknc_get_domain_query_params (domain);
-  eknc_xapian_bridge_query (bridge, query, params, cancellable,
-                            on_xapian_query_response, g_steal_pointer (&task));
+  send_query_to_xapian_bridge (domain, bridge, query, cancellable,
+                               g_steal_pointer (&task));
 }
 
 /**
@@ -976,12 +986,8 @@ eknc_domain_query (EkncDomain *self,
       return;
     }
 
-  QueryState *state = g_slice_new0 (QueryState);
-  g_task_set_task_data (task, state, query_state_free);
-
-  g_autoptr(GHashTable) params = eknc_get_domain_query_params (self);
-  eknc_xapian_bridge_query (self->xapian_bridge, query, params,
-                            cancellable, on_xapian_query_response, task);
+  send_query_to_xapian_bridge (self, self->xapian_bridge, query, cancellable,
+                               task);
 }
 
 static GList *
