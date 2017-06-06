@@ -12,7 +12,7 @@ const Knowledge = imports.app.knowledge;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
-const SPACING_MAX = 50;
+const SPACING_MAX = 0;
 
 /**
  * Class: SideBySide
@@ -48,10 +48,11 @@ const SideBySide = new Module.Class({
         this._popover_button.connect("clicked", () => {
             this._popover.popup();
         });
+        this._popover_button.get_style_context().add_class(Utils.get_element_style_class(SideBySide, 'dropdown_button'));
 
         /* Classes needed for cards to have the same style */
         let context = this._popover.get_style_context();
-        context.add_class(Utils.get_element_style_class(SideBySide, 'popover'));
+        context.add_class(Utils.get_element_style_class(SideBySide, 'dropdown_menu'));
         context.add_class(SideBySide.get_style_class());
 
         /* Dropdown contents */
