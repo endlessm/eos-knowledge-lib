@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["navigation/searchBox.html#navigationsearchbox1", "navigation/searchBox.html#navigationsearchbox"], "token": "navigation.searchbox"});
+urls_downloaded_cb({"token": "navigation.searchbox", "urls": ["navigation/searchBox.html#navigationsearchbox1", "navigation/searchBox.html#navigationsearchbox"]});
