@@ -927,7 +927,7 @@ on_xapian_query_response (GObject *source,
 /**
  * eknc_domain_query:
  * @self: the domain
- * @query: the query object to fix
+ * @query: the query object
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @callback: (scope async): callback to call when the request is satisfied.
  * @user_data: (closure): the data to pass to callback function.
