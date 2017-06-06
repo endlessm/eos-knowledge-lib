@@ -17,7 +17,6 @@ if [[ "$(uname -m)" == arm* ]]; then
     export LOW_PERFORMANCE_MODE=1
 fi
 
-DEBUG_COMMAND=""
 if [ "$RUN_DEBUG" != "" ]; then
     DEBUG_COMMAND="gdb --args"
 fi
