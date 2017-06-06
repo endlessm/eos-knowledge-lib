@@ -379,26 +379,37 @@ eknc_xapian_bridge_test (EkncXapianBridge *self,
  * eknc_xapian_bridge_test_finish:
  * @self: the xapian bridge object
  * @result: the #GAsyncResult that was provided to the callback.
+ * @error: #GError for error reporting.
  *
  * Finish a eknc_xapian_bridge_test call.
+ *
+ * Returns: FALSE if there was an error (the internal state is set
+ * to indicate a xapian-bridge with no features so you can ignore
+ * the error and get graceful fall-back).
  */
-void
+gboolean
 eknc_xapian_bridge_test_finish (EkncXapianBridge *self,
-                                GAsyncResult *result)
+                                GAsyncResult *result,
+                                GError **error)
 {
-  g_return_if_fail (EKNC_IS_XAPIAN_BRIDGE (self));
-  g_return_if_fail (G_IS_ASYNC_RESULT (result));
+  /* Mark the feature test as done.  If there was an error, this means the
+   * caller can ignore it and we'll fall back to handling this as an old-style
+   * xapian-bridge. */
+  self->feature_test_done = TRUE;
+
+  g_return_val_if_fail (EKNC_IS_XAPIAN_BRIDGE (self), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
 
   GTask *task = G_TASK (result);
 
-  g_autoptr(GError) error = NULL;
-  g_autoptr(JsonNode) node = g_task_propagate_pointer (task, &error);
-  if (node == NULL || !JSON_NODE_HOLDS_ARRAY (node))
+  g_autoptr(JsonNode) node = g_task_propagate_pointer (task, error);
+  if (node == NULL)
+    return FALSE;
+  if (!JSON_NODE_HOLDS_ARRAY (node))
     {
-      /* Mark the feature test as done, and fall-back to handling this
-       * as an old-style xapian-bridge. */
-      self->feature_test_done = TRUE;
-      return;
+      g_set_error (error, EKNC_XAPIAN_BRIDGE_ERROR, EKNC_XAPIAN_BRIDGE_ERROR_BAD_JSON,
+                   "Expected json array from xapian bridge");
+      return FALSE;
     }
   JsonArray *array = json_node_get_array (node);
   guint array_length = json_array_get_length (array);
@@ -412,6 +423,7 @@ eknc_xapian_bridge_test_finish (EkncXapianBridge *self,
             self->has_default_op = TRUE;
         }
     }
+  return TRUE;
 }
 
 /**

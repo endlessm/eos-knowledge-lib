@@ -66,8 +66,9 @@ eknc_xapian_bridge_test (EkncXapianBridge *self,
                          GAsyncReadyCallback callback,
                          gpointer user_data);
 
-void
+gboolean
 eknc_xapian_bridge_test_finish (EkncXapianBridge *self,
-                                GAsyncResult *result);
+                                GAsyncResult *result,
+                                GError **error);
 
 G_END_DECLS

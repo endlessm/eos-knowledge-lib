@@ -949,7 +949,9 @@ on_xapian_test_response (GObject *source,
   EkncDomain *domain = g_task_get_source_object (task);
   GCancellable *cancellable = g_task_get_cancellable (task);
 
-  eknc_xapian_bridge_test_finish (bridge, result);
+  g_autoptr(GError) error = NULL;
+  eknc_xapian_bridge_test_finish (bridge, result, &error);
+  /* Ignore failures - older xapian-bridge doesn't support /test. */
 
   EkncQueryObject *query = g_task_get_task_data (task);
   send_query_to_xapian_bridge (domain, bridge, query, cancellable,
