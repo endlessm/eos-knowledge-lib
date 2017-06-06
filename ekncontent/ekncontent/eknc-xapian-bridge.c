@@ -12,6 +12,7 @@ eknc_xapian_bridge_error_quark (void)
 
 #define XB_FIX_ENDPOINT "/fix"
 #define XB_QUERY_ENDPOINT "/query"
+#define XB_TEST_ENDPOINT "/test"
 
 /**
  * SECTION:xapian-bridge
@@ -24,6 +25,9 @@ eknc_xapian_bridge_error_quark (void)
 struct _EkncXapianBridge
 {
   GObject parent_instance;
+
+  gboolean feature_test_done;
+  gboolean has_default_op;
 
   gchar *host;
   guint port;
@@ -187,6 +191,14 @@ eknc_xapian_bridge_get_soup_session (EkncXapianBridge *self)
   return self->session;
 }
 
+gboolean
+eknc_xapian_bridge_need_feature_test (EkncXapianBridge *self)
+{
+  g_return_val_if_fail (EKNC_IS_XAPIAN_BRIDGE (self), FALSE);
+
+  return !(self->feature_test_done);
+}
+
 static SoupURI *
 build_xapian_uri (EkncXapianBridge *self,
                   const gchar *endpoint,
@@ -197,7 +209,8 @@ build_xapian_uri (EkncXapianBridge *self,
   soup_uri_set_host (uri, self->host);
   soup_uri_set_port (uri, self->port);
   soup_uri_set_path (uri, endpoint);
-  soup_uri_set_query_from_form (uri, params);
+  if (params)
+    soup_uri_set_query_from_form (uri, params);
   return uri;
 }
 
@@ -264,6 +277,12 @@ get_xapian_query_uri (EkncXapianBridge *self,
   return build_xapian_uri (self, XB_QUERY_ENDPOINT, params);
 }
 
+static SoupURI *
+get_xapian_test_uri (EkncXapianBridge *self)
+{
+  return build_xapian_uri (self, XB_TEST_ENDPOINT, NULL);
+}
+
 static void
 json_ld_request_finished (SoupSession *session,
                           SoupMessage *request,
@@ -297,7 +316,8 @@ static void
 request_state_free (gpointer data)
 {
   RequestState *state = data;
-  g_object_unref (state->query);
+  if (state->query)
+    g_object_unref (state->query);
   g_object_unref (state->request);
   g_slice_free (RequestState, state);
 }
@@ -327,6 +347,72 @@ send_json_ld_request (EkncXapianBridge *self,
   GCancellable *cancellable = g_task_get_cancellable (task);
   if (cancellable)
       g_cancellable_connect (cancellable, G_CALLBACK (json_ld_request_cancelled), g_object_ref (task), g_object_unref);
+}
+
+/**
+ * eknc_xapian_bridge_test:
+ * @self: the xapian bridge object
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @callback: (scope async): callback to call when the request is satisfied.
+ * @user_data: (closure): the data to pass to callback function.
+ *
+ * Asynchronously check features of xapian bridge.
+ */
+void
+eknc_xapian_bridge_test (EkncXapianBridge *self,
+                         GCancellable *cancellable,
+                         GAsyncReadyCallback callback,
+                         gpointer user_data)
+{
+  g_return_if_fail (EKNC_IS_XAPIAN_BRIDGE (self));
+  g_return_if_fail (G_IS_CANCELLABLE (cancellable) || cancellable == NULL);
+
+  GTask *task = g_task_new (self, cancellable, callback, user_data);
+
+  RequestState *state = g_slice_new0 (RequestState);
+  g_task_set_task_data (task, state, request_state_free);
+
+  g_autoptr(SoupURI) uri = get_xapian_test_uri (self);
+  send_json_ld_request (self, uri, task);
+}
+
+/**
+ * eknc_xapian_bridge_test_finish:
+ * @self: the xapian bridge object
+ * @result: the #GAsyncResult that was provided to the callback.
+ *
+ * Finish a eknc_xapian_bridge_test call.
+ */
+void
+eknc_xapian_bridge_test_finish (EkncXapianBridge *self,
+                                GAsyncResult *result)
+{
+  g_return_if_fail (EKNC_IS_XAPIAN_BRIDGE (self));
+  g_return_if_fail (G_IS_ASYNC_RESULT (result));
+
+  GTask *task = G_TASK (result);
+
+  g_autoptr(GError) error = NULL;
+  g_autoptr(JsonNode) node = g_task_propagate_pointer (task, &error);
+  if (node == NULL || !JSON_NODE_HOLDS_ARRAY (node))
+    {
+      /* Mark the feature test as done, and fall-back to handling this
+       * as an old-style xapian-bridge. */
+      self->feature_test_done = TRUE;
+      return;
+    }
+  JsonArray *array = json_node_get_array (node);
+  guint array_length = json_array_get_length (array);
+  for (guint i = 0; i < array_length; i++)
+    {
+      JsonNode *elt = json_array_get_element (array, i);
+      const gchar *s = json_node_get_string (elt);
+      if (s)
+        {
+          if (g_strcmp0 (s, "query-param-defaultOp") == 0)
+            self->has_default_op = TRUE;
+        }
+    }
 }
 
 /**
