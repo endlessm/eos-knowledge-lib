@@ -316,8 +316,7 @@ static void
 request_state_free (gpointer data)
 {
   RequestState *state = data;
-  if (state->query)
-    g_object_unref (state->query);
+  g_clear_object (&state->query);
   g_object_unref (state->request);
   g_slice_free (RequestState, state);
 }
