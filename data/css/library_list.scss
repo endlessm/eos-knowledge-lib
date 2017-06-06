@@ -1,9 +1,5 @@
 @import "base";
 
-.CardLegacyPolaroid {
-  box-shadow: 0px 2px 3px transparentize(black, 1 - 0.40);
-}
-
 .home-page {
   .BannerDynamic {
     &__logo {
@@ -19,12 +15,12 @@
     }
   }
 
-  .CardLegacyPolaroid {
-    padding: 0px;
-    &__title {
-      font-size: 18px;
-      padding: 0.75em 0.50em;
-    }
+  .ArrangementOverflow .CardDefault {
+    margin: 5px;
+  }
+
+  .ArrangementSquareGuys {
+    margin-top: 50px;
   }
 
   .DecorationThemeableImage {
@@ -65,25 +61,15 @@
 .subset-page {
   .content {
     background-color: $primary-dark-color;
+
+    .ContentGroupContentGroup {
+      padding: 0 70px 50px 70px;
+    }
   }
 
   .ContentGroupContentGroup__title {
     font-size: 51px;
     margin-top: 40px;
-  }
-}
-
-.subset-page,
-.search-page {
-  .CardLegacyPolaroid {
-    padding: 11px;
-    &__title {
-      font-size: 1.0em;
-    }
-    &__synopsis {
-      font-size: 0.75em;
-      margin-top: 0.26em;
-    }
   }
 }
 
@@ -102,19 +88,18 @@
   }
 }
 
+.search-page {
+  .BannerSearch {
+    font-weight: 900;
+    padding: 1.0em 1.0em 0.50em 1.0em;
+  }
+}
+
 .composite {
   .home-page,
   .set-page,
   .subset-page,
   .search-page {
-    .CardLegacyPolaroid__title {
-      font-size: 1.0em;
-    }
-
-    .CardLegacyPolaroid__synopsis {
-      font-size: 1.0em;
-    }
-
     .BannerSet .CardTitle__title,
     .BannerSearch__title,
     .ContentGroupContentGroup__title {

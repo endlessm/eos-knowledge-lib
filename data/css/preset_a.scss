@@ -5,17 +5,15 @@
 }
 
 .home-page {
-    .CardLegacyPolaroid {
-        padding: 10px 10px 0px 10px;
-        box-shadow: 2px 8px 5px transparentize(black, 1 - 0.20);
-        &__title {
-            font-size: 0.85em;
-            padding: 10px;
+    .ArrangementOverflow {
+        margin: 0 150px;
+        .CardDefault {
+            margin: 5px;
         }
     }
 
-    .ArrangementOverflow {
-        padding: 60px 60px 40px 60px;
+    .ArrangementSquareGuys {
+        margin-top: 50px;
     }
 }
 
@@ -34,21 +32,8 @@
         text-shadow: 2px 8px 6px transparentize(black, 1 - 0.20);
     }
 
-    .CardLegacyPolaroid {
-        padding: 11px;
-        box-shadow: 2px 8px 5px transparentize(black, 1 - 0.20);
-        &__title {
-            font-size: 1.0em;
-        }
-
-        &__synopsis {
-            font-size: 0.75em;
-            margin-top: 0.26em;
-        }
-    }
-
     .ContentGroup--articles {
-        padding-top: 0;
+        padding: 0px 60px 60px 60px;
     }
 }
 
@@ -90,14 +75,6 @@
         .BannerSet__title,
         .BannerSearch__title {
             font-family: $display-font-composite;
-        }
-
-        .CardLegacyPolaroid__title {
-            font-size: 1.0em;
-        }
-
-        .CardLegacyPolaroid__synopsis {
-            font-size: 1.0em;
         }
 
         .BannerSet .Card__title,

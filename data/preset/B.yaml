@@ -43,7 +43,12 @@ defines:
         arrangement:
           type: Arrangement.TiledGrid
           slots:
-            card: Card.LegacyPost
+            card:
+              type: Card.Default
+              properties:
+                excluded_types:
+                  - 0
+                  - 1
         selection: Selection.AllSets
 
 - &set-page

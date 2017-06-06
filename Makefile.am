@@ -79,8 +79,6 @@ scss_theme_card_partials = \
 	$(srcdir)/data/css/modules/card/_deck.scss \
 	$(srcdir)/data/css/modules/card/_default.scss \
 	$(srcdir)/data/css/modules/card/_knowledgeDocument.scss \
-	$(srcdir)/data/css/modules/card/_legacyPolaroid.scss \
-	$(srcdir)/data/css/modules/card/_legacyPost.scss \
 	$(srcdir)/data/css/modules/card/_list.scss \
 	$(srcdir)/data/css/modules/card/_media.scss \
 	$(srcdir)/data/css/modules/card/_sequence.scss \
@@ -458,8 +456,6 @@ javascript_tests = \
 	tests/js/app/modules/card/testDeck.js \
 	tests/js/app/modules/card/testDefault.js \
 	tests/js/app/modules/card/testKnowledgeDocument.js \
-	tests/js/app/modules/card/testLegacyPolaroid.js \
-	tests/js/app/modules/card/testLegacyPost.js \
 	tests/js/app/modules/card/testList.js \
 	tests/js/app/modules/card/testMedia.js \
 	tests/js/app/modules/card/testSequence.js \
