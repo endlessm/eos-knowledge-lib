@@ -1,17 +1,15 @@
 ---
 defines:
 - &card
-  Card.LegacyPolaroid
+  Card.Default
 
 - &main-arrangement-slot
   arrangement:
-    type: Arrangement.Grid
+    type: Arrangement.SquareGuys
     properties:
       halign: center
       valign: start
       expand: true
-      max-children-per-line: 7
-      min-children-per-line: 3
     slots:
       card: *card
 
@@ -36,7 +34,12 @@ defines:
         arrangement:
           shortdef: 'Arrangement.Overflow(orientation: horizontal)'
           slots:
-            card: *card
+            card: 
+              type: *card
+              properties:
+                excluded_types:
+                  - 0
+                  - 2
         selection:
           type: Selection.AllSets
     basement:
@@ -47,7 +50,19 @@ defines:
         content:
           shortdef: 'ContentGroup.ContentGroup(expand: true)'
           slots:
-            <<: *main-arrangement-slot
+            arrangement:
+              type: Arrangement.SquareGuys
+              properties:
+                halign: center
+                valign: start
+                expand: true
+              slots:
+                card:
+                  type: *card
+                  properties:
+                    excluded_types:
+                      - 0
+                      - 2
             selection:
               type: Selection.AllSets
               id: basement-sets
@@ -68,7 +83,19 @@ defines:
           styles:
             - ContentGroup--articles
           slots:
-            <<: *main-arrangement-slot
+            arrangement:
+              type: Arrangement.SquareGuys
+              properties:
+                halign: center
+                valign: start
+                expand: true
+              slots:
+                card:
+                  type: *card
+                  properties:
+                    excluded_types:
+                      - 1
+                      - 2
             selection:
               type: Selection.ContentForSet
               id: set-articles
