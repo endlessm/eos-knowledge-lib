@@ -143,7 +143,7 @@ eknc_engine_init (EkncEngine *self)
 {
   self->xapian_bridge = g_object_new (EKNC_TYPE_XAPIAN_BRIDGE,
                                       "language", self->language,
-                                       NULL);
+                                      NULL);
   self->domains = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_object_unref);
 }
 
@@ -340,8 +340,8 @@ on_domain_query_finished (GObject *source,
 
 static void
 on_query_fixed_finished (GObject *source,
-                              GAsyncResult *result,
-                              gpointer user_data)
+                         GAsyncResult *result,
+                         gpointer user_data)
 {
   EkncDomain *domain = EKNC_DOMAIN (source);
   g_autoptr(GTask) task = user_data;
