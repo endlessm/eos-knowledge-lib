@@ -42,7 +42,7 @@ defines:
     contents:
     - type: ContentGroup.DynamicTitle
       properties:
-        format-string: !translate "see more from %s"
+        format-string: !translate "See more from %s"
         ellipsize: end
         hexpand: true
     - shortdef: 'Decoration.ThemeableImage(valign: end, halign: end)'

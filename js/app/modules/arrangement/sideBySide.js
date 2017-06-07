@@ -12,8 +12,6 @@ const Knowledge = imports.app.knowledge;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
-const SPACING_MAX = 50;
-
 /**
  * Class: SideBySide
  * Arrangement to be used in horizontal menus
@@ -48,10 +46,11 @@ const SideBySide = new Module.Class({
         this._popover_button.connect("clicked", () => {
             this._popover.popup();
         });
+        this._popover_button.get_style_context().add_class(Utils.get_element_style_class(SideBySide, 'dropdown_button'));
 
         /* Classes needed for cards to have the same style */
         let context = this._popover.get_style_context();
-        context.add_class(Utils.get_element_style_class(SideBySide, 'popover'));
+        context.add_class(Utils.get_element_style_class(SideBySide, 'dropdown_menu'));
         context.add_class(SideBySide.get_style_class());
 
         /* Dropdown contents */
@@ -90,10 +89,10 @@ const SideBySide = new Module.Class({
 
         nat += all_cards.slice(1).reduce((accum, card) => {
             let [, card_nat] = card.get_preferred_width();
-            return accum + card_nat + SPACING_MAX;
+            return accum + card_nat;
         }, 0);
 
-        return [min, SPACING_MAX * 2 + nat];
+        return [min, nat];
     },
 
     _ensure_card_parent: function (card, parent) {
@@ -149,18 +148,13 @@ const SideBySide = new Module.Class({
             cards_width += this._button_nat;
         }
 
-        /* Calculate proper spacing */
-        let leftover = width - cards_width;
-        let n_spacing = visible.length - 1;
-
-        let spacing = Math.min(Math.floor(leftover/(n_spacing + 2)), SPACING_MAX);
-        let x = alloc.x + (leftover - spacing * n_spacing);
+        /* Allocate children */
+        let x = alloc.x + (width - cards_width);
         let y = alloc.y;
 
-        /* Allocate children */
         visible.forEach ((child) => {
             Arrangement.place_card(child.child, x, y, child.nat, alloc.height);
-            x += child.nat + spacing;
+            x += child.nat;
         });
 
         this.parent(alloc);

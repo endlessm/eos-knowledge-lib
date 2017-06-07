@@ -1,32 +1,51 @@
 .ArrangementSideBySide {
-    .CardTitle {
-        padding: .2em 1em;
+    .CardTitle__title,
+    &__dropdown_button {
+        font-family: $title-font;
+        color: transparentize(white, 1 - 0.60);
+        font-size: 18px;
+    }
 
-        &__title {
-            font-family: $title-font;
-            font-weight: bold;
-            color: transparentize(white, 1 - 0.60);
-            font-size: 18px;
-        }
+    .CardTitle__title {
+        font-weight: bold;
+    }
 
-        &:hover .CardTitle__title {
+    .CardTitle,
+    &__dropdown_button {
+        &:hover .CardTitle__title,
+        &:hover {
             color: $accent-light-color;
         }
 
         &.highlighted,
         &:active {
-            background-color: darken($primary-dark-color, 5%);
-
-            .CardTitle__title {
+            .CardTitle__title,
+            .ArrangementSideBySide__dropdown_button {
                 color: white;
             }
         }
     }
-    &__popover {
-        background-color: $primary-medium-color;
-        box-shadow: 2px 2px 6px black;
-        color: transparentize(white, 1 - 0.60);
-        padding: .5em 0em;
+
+    .CardTitle.highlighted,
+    .CardTitle:active {
+        background-color: darken($primary-dark-color, 5%);
+    }
+
+    .CardTitle {
+        padding: .2em 2em;
+    }
+
+    &__dropdown_button {
+        font-size: 1.7em;
+        padding-left: .5em;
+    }
+
+    &__dropdown_menu {
+        background-color: $primary-dark-color;
+        box-shadow: 0px 0px 5px 0px transparentize(black, 1 - 0.60);
         min-width: 10em;
+        .CardTitle {
+            padding: 1em 2em;
+        }
     }
 }
