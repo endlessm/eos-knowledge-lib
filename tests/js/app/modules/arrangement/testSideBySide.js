@@ -59,14 +59,16 @@ describe('Arrangement.SideBySide', function () {
                 expect(arrangement.all_visible).toBe(all_visible);
 
                 let cards = factory.get_created('card');
+                let dropdown_cards = arrangement._popover_box.get_children();
                 cards.forEach((card, i) => {
+                    expect(card.get_visible()).toBe(true);
                     if (i < visible_children) {
                         expect(card.get_parent()).toBe(arrangement);
-                        expect(card.get_visible()).toBe(true);
                         expect(card.get_allocation().x).toBe(x);
                         x += CHILD_WIDTH;
                     } else {
-                        expect(card.get_parent()).not.toBe(arrangement);
+                        expect(card.get_parent()).toBe(arrangement._popover_box);
+                        expect(dropdown_cards.indexOf(card)).toBe(i-visible_children);
                     }
                 });
             });
