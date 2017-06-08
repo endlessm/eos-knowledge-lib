@@ -1,1 +1,1 @@
-fragment_downloaded_cb({"url": "window/simple.html#search", "fragment": "search \nOptional \n"});
+fragment_downloaded_cb({"fragment": "search \nOptional \n", "url": "window/simple.html#search"});
