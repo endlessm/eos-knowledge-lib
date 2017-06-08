@@ -121,14 +121,14 @@ const SideBySide = new Module.Class({
         let width = alloc.width;
         let cards_width = 0;
         let visible = [];
-        let i = 0;
+        let i = 1;
 
         /* Find how many cards we can fit in width */
         all_cards.forEach ((card) => {
             let [, card_nat] = card.get_preferred_width();
 
             if (this.all_visible &&
-                width >= cards_width + card_nat + ((++i < n_cards) ? this._button_nat : 0)) {
+                width >= cards_width + card_nat + ((i < n_cards) ? this._button_nat : 0)) {
                 cards_width += card_nat;
                 this._ensure_card_parent(card, this);
                 visible.push({ child: card, nat: card_nat });
@@ -139,6 +139,7 @@ const SideBySide = new Module.Class({
                 this._popover_box.reorder_child(card, i);
                 this.all_visible = false;
             }
+            i++;
         });
 
         if (this.all_visible) {
