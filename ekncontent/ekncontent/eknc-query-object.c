@@ -54,6 +54,8 @@ struct _EkncQueryObject
   gchar *stopword_free_query;
   gchar *literal_query;
   gchar *query_parser_string;
+  gchar *filter_string;
+  gchar *filterout_string;
   EkncQueryObjectMode mode;
   EkncQueryObjectMatch match;
   EkncQueryObjectSort sort;
@@ -547,6 +549,19 @@ get_title_clause (EkncQueryObject *self, gchar **terms)
 }
 
 static gchar *
+get_title_clause2 (EkncQueryObject *self, gchar **terms)
+{
+  guint length = g_strv_length (terms);
+  g_auto(GStrv) title_terms = g_new (gchar *, length + 1);
+  for (guint i = 0; i < length; i++)
+    {
+      title_terms[i] = g_strconcat (XAPIAN_PREFIX_TITLE, terms[i], NULL);
+    }
+  title_terms[length] = NULL;
+  return g_strjoinv (" ", title_terms);
+}
+
+static gchar *
 get_body_clause (EkncQueryObject *self, gchar **terms)
 {
   guint length = g_strv_length (terms);
@@ -599,6 +614,53 @@ get_query_clause (EkncQueryObject *self)
   if (self->match == EKNC_QUERY_OBJECT_MATCH_TITLE_SYNOPSIS)
     {
       g_autofree gchar *body_clause = get_body_clause (self, terms);
+      g_string_append (query_clause, XAPIAN_OP_OR);
+      g_string_append (query_clause, body_clause);
+    }
+
+  return g_string_free (query_clause, FALSE);
+}
+
+static gchar *
+get_query_clause2 (EkncQueryObject *self)
+{
+  if (self->literal_query && *(self->literal_query))
+    return self->literal_query;
+
+  g_auto(GStrv) raw_terms = get_terms (self->query);
+
+  if (g_strv_length (raw_terms) == 0)
+    return NULL;
+
+  // If we only have one character in our search, only look for an exact match.
+  // Fancier searching, particularly wildcard search, leads to performance
+  // problems.
+  if (g_strv_length (raw_terms) == 1 && g_utf8_strlen (raw_terms[0], -1) == 1)
+    {
+      g_autofree gchar *capitalized = capitalize (raw_terms[0]);
+      return g_strconcat (XAPIAN_PREFIX_EXACT_TITLE, capitalized, NULL);
+    }
+
+  GString *query_clause = g_string_new (NULL);
+
+  g_autofree gchar *exact_title_clause = get_exact_title_clause (self, raw_terms);
+  g_string_append (query_clause, exact_title_clause);
+
+  // If we were given a stopword free query, use its terms for the rest of the
+  // query clause. If not, we can assume the terms we already have are free of
+  // stopwords.
+  g_auto(GStrv) stopword_free_terms = get_terms (self->stopword_free_query);
+  GStrv terms = raw_terms;
+  if (stopword_free_terms && *stopword_free_terms)
+    terms = stopword_free_terms;
+
+  g_autofree gchar *title_clause = get_title_clause2 (self, terms);
+  g_string_append (query_clause, XAPIAN_OP_OR);
+  g_string_append (query_clause, title_clause);
+
+  if (self->match == EKNC_QUERY_OBJECT_MATCH_TITLE_SYNOPSIS)
+    {
+      g_autofree gchar *body_clause = g_strjoinv (" ", terms);
       g_string_append (query_clause, XAPIAN_OP_OR);
       g_string_append (query_clause, body_clause);
     }
@@ -687,6 +749,27 @@ eknc_query_object_ensure_query_parser_string (EkncQueryObject *self)
   self->query_parser_string = g_string_free (parser_string, FALSE);
 }
 
+static void
+eknc_query_object_ensure_query_parser_strings (EkncQueryObject *self)
+{
+  if (self->query_parser_string)
+    return;
+
+  GString *filter_string = g_string_new (NULL);
+  GString *filterout_string = g_string_new (NULL);
+
+  consume_clause (filter_string, get_tags_clause (self->tags_match_any, XAPIAN_OP_OR, FALSE));
+  consume_clause (filter_string, get_tags_clause (self->tags_match_all, XAPIAN_OP_AND, FALSE));
+  consume_clause (filter_string, get_ids_clause (self->ids, XAPIAN_OP_OR, FALSE));
+
+  consume_clause (filterout_string, get_tags_clause (self->excluded_tags, XAPIAN_OP_OR, FALSE));
+  consume_clause (filterout_string, get_ids_clause (self->excluded_ids, XAPIAN_OP_OR, FALSE));
+
+  self->query_parser_string = get_query_clause2 (self);
+  self->filter_string = g_string_free (filter_string, FALSE);
+  self->filterout_string = g_string_free (filterout_string, FALSE);
+}
+
 /**
  * eknc_query_object_get_tags_match_all:
  * @self: the model
@@ -766,7 +849,7 @@ eknc_query_object_get_excluded_tags (EkncQueryObject *self)
  * eknc_query_object_get_query_parser_string:
  * @self: the model
  *
- * Get the xapian query string to hand off to xapian bridge
+ * Get the old-style xapian query string to hand off to xapian bridge
  *
  * Returns: (transfer none): the query string to hand to xapian
  */
@@ -777,6 +860,36 @@ eknc_query_object_get_query_parser_string (EkncQueryObject *self)
 
   eknc_query_object_ensure_query_parser_string (self);
 
+  return self->query_parser_string;
+}
+
+/**
+ * eknc_query_object_get_query_parser_strings:
+ * @self: the model
+ * @filter: (out) (transfer none): filter query string
+ * @filterout: (out) (transfer none): excluding filter query string
+ *
+ * Get the new-style xapian query strings to hand off to xapian bridge.  The
+ * old-style query string is broken into three parts, which are combined like
+ * so:
+ *
+ * query OP_FILTER filter OP_AND_NOT filterout
+ *
+ * Returns: (transfer none): the query string to hand to xapian
+ */
+const gchar *
+eknc_query_object_get_query_parser_strings (EkncQueryObject *self,
+                                            const gchar **filter,
+                                            const gchar **filterout)
+{
+  g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
+  g_return_val_if_fail (filter != NULL, NULL);
+  g_return_val_if_fail (filterout != NULL, NULL);
+
+  eknc_query_object_ensure_query_parser_strings (self);
+
+  *filter = self->filter_string;
+  *filterout = self->filterout_string;
   return self->query_parser_string;
 }
 
