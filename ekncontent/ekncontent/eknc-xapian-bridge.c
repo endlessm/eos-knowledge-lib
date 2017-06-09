@@ -27,7 +27,7 @@ struct _EkncXapianBridge
   GObject parent_instance;
 
   gboolean feature_test_done;
-  gboolean has_default_op;
+  gboolean has_default_op, has_flags, has_filter;
 
   gchar *host;
   guint port;
@@ -421,6 +421,10 @@ eknc_xapian_bridge_test_finish (EkncXapianBridge *self,
         {
           if (g_strcmp0 (s, "query-param-defaultOp") == 0)
             self->has_default_op = TRUE;
+          else if (g_strcmp0 (s, "query-param-flags") == 0)
+            self->has_flags = TRUE;
+          else if (g_strcmp0 (s, "query-param-filter") == 0)
+            self->has_filter = TRUE;
         }
     }
   return TRUE;
