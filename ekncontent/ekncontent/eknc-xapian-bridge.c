@@ -233,6 +233,9 @@ get_xapian_fix_uri (EkncXapianBridge *self,
   g_object_get (query, "query", &query_string, NULL);
   g_hash_table_insert (params, "q", query_string);
 
+  // We rely on the default op being AND within each field (title, body).
+  g_hash_table_insert (params, "defaultOp", "and");
+
   if (extra_params)
     g_hash_table_foreach (extra_params, add_to_hash_table, params);
 
@@ -270,6 +273,9 @@ get_xapian_query_uri (EkncXapianBridge *self,
   g_object_get (query, "order", &order, NULL);
   g_hash_table_insert (params, "order",
                        order == EKNC_QUERY_OBJECT_ORDER_ASCENDING ? "asc" : "desc");
+
+  // We rely on the default op being AND within each field (title, body).
+  g_hash_table_insert (params, "defaultOp", "and");
 
   if (extra_params)
     g_hash_table_foreach (extra_params, add_to_hash_table, params);
