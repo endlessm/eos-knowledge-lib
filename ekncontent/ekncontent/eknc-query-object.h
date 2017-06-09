@@ -82,6 +82,11 @@ eknc_query_object_get_excluded_tags (EkncQueryObject *self);
 const gchar *
 eknc_query_object_get_query_parser_string (EkncQueryObject *self);
 
+const gchar *
+eknc_query_object_get_query_parser_strings (EkncQueryObject *self,
+                                            const gchar **filter,
+                                            const gchar **filterout);
+
 guint
 eknc_query_object_get_cutoff (EkncQueryObject *self);
 

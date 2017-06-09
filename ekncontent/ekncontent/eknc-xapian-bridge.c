@@ -233,6 +233,9 @@ get_xapian_fix_uri (EkncXapianBridge *self,
   g_object_get (query, "query", &query_string, NULL);
   g_hash_table_insert (params, "q", query_string);
 
+  if (self->has_default_op)
+    g_hash_table_insert (params, "defaultOp", "and");
+
   if (extra_params)
     g_hash_table_foreach (extra_params, add_to_hash_table, params);
 
@@ -245,7 +248,30 @@ get_xapian_query_uri (EkncXapianBridge *self,
                       GHashTable *extra_params)
 {
   g_autoptr(GHashTable) params = g_hash_table_new (g_str_hash, g_str_equal);
-  g_hash_table_insert (params, "q", (gpointer) eknc_query_object_get_query_parser_string (query));
+  const gchar *query_str;
+  if (self->has_default_op && self->has_filter && self->has_flags)
+    {
+      const gchar *filter, *filterout;
+      g_hash_table_insert (params, "defaultOp", "and");
+      g_hash_table_insert (params, "flags", "default,partial,spelling-correction");
+      query_str = eknc_query_object_get_query_parser_strings (query,
+                                                              &filter,
+                                                              &filterout);
+      if (filter && *filter)
+        g_hash_table_insert (params, "filter", (gpointer) filter);
+      if (filterout && *filterout)
+        g_hash_table_insert (params, "filterOut", (gpointer) filterout);
+    }
+  else
+    {
+      query_str = eknc_query_object_get_query_parser_string (query);
+    }
+
+  if (query_str)
+    g_hash_table_insert (params, "q", (gpointer) query_str);
+  else
+    g_hash_table_insert (params, "matchAll", "1");
+
   if (self->language && *self->language)
     g_hash_table_insert (params, "lang", self->language);
 
