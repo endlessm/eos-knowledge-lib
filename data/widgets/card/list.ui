@@ -12,8 +12,19 @@
         <property name="can_focus">False</property>
         <property name="orientation">horizontal</property>
         <child>
-          <object class="GtkFrame" id="thumbnail-frame">
+          <object class="GtkOverlay" id="thumbnail-frame">
             <property name="can_focus">False</property>
+            <child type="overlay">
+              <object class="GtkFrame" id="thumbnail-overlay">
+                <property name="can_focus">False</property>
+                <property name="visible">False</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+              </object>
+              <packing>
+                <property name="pass_through">True</property>
+              </packing>
+            </child>
             <style>
               <class name="CardList__thumbnail"/>
             </style>
