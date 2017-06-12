@@ -386,15 +386,36 @@ const Card = new Lang.Interface({
                               .filter((title, pos, self) => self.indexOf(title) === pos);
     },
 
+    _add_css_class: function (widget, name) {
+        let context = widget.get_style_context();
+        context.add_class(Utils.get_element_style_class('Card', name));
+        context.add_class(Utils.get_element_style_class(this.constructor, name));
+    },
+
+    _set_media_class_from_model: function (widget) {
+        /* Add media type class to frame */
+        if (this.model instanceof Eknc.VideoObjectModel)
+            widget.get_style_context().add_class('video');
+        else if (this.model instanceof Eknc.AudioObjectModel)
+            widget.get_style_context().add_class('audio');
+        else
+            return false;
+
+        return true;
+    },
+
     /**
      * Method: set_thumbnail_frame_from_model
      *
      * Sets up a frame to show the model's thumbnail uri.
      */
     set_thumbnail_frame_from_model: function (frame) {
-        frame.visible = false;
-        if (!this.model.thumbnail_uri)
+        frame.visible = this._set_media_class_from_model(frame);
+
+        if (!this.model.thumbnail_uri) {
+            this._add_css_class(frame, 'no_thumbnail');
             return;
+        }
         let file = Gio.File.new_for_uri(this.model.thumbnail_uri);
         let cancellable = null;
         let stream = file.read(cancellable);
@@ -412,10 +433,21 @@ const Card = new Lang.Interface({
         }
 
         frame.visible = true;
+        this._add_css_class(frame, 'thumbnail');
+    },
 
-        let context = frame.get_style_context();
-        context.add_class(Utils.get_element_style_class('Card', 'thumbnail'));
-        context.add_class(Utils.get_element_style_class(this.constructor, 'thumbnail'));
+    /**
+     * Method: set_media_overlay_from_model
+     *
+     * Sets up a widget as the media type overlay
+     */
+    set_media_overlay_from_model: function (overlay) {
+        if (!overlay)
+            return;
+        /* Setup thumbnail overlay CSS classes */
+        this._add_css_class(overlay, 'media_overlay');
+        this._set_media_class_from_model(overlay);
+        overlay.visible = true;
     },
 
     /**
