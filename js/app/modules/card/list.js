@@ -43,7 +43,7 @@ const List = new Module.Class({
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/list.ui',
     InternalChildren: [ 'thumbnail-frame', 'inner-content-grid', 'title-label',
     'synopsis-label', 'navigation-context-label', 'checkmark', 'context-label',
-    'context-box'],
+    'context-box', 'thumbnail-overlay'],
 
     _init: function (props={}) {
         this.parent(props);
@@ -55,6 +55,7 @@ const List = new Module.Class({
         if (this.navigation_context)
             this.set_label_or_hide(this._navigation_context_label, this.navigation_context);
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
+        this.set_media_overlay_from_model(this._thumbnail_overlay);
 
         // FIXME: It's not clear what should go in the context label if model
         // is not a video. This may need to be changed later on once we clarify
