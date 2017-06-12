@@ -33,8 +33,8 @@ const Media = new Module.Class({
         this._previewer = new Previewer.Previewer({
             visible: true,
         });
-        this._previewer.set_content(this.model.get_content_stream(),
-                                   this.model.content_type);
+
+        this._previewer.set_uri(this.model.ekn_id, this.model.content_type);
         this._grid.insert_row(0);
         this._grid.attach(this._previewer, 0, 0, 1, 1);
 
@@ -70,6 +70,10 @@ const Media = new Module.Class({
         if (this._attribution_label.visible) {
             this.get_style_context().add_class(Utils.get_modifier_style_class(this.constructor, 'withAttribution'));
         }
+    },
+
+    dropped: function () {
+        this._previewer.set_uri(null);
     },
 
     vfunc_get_preferred_width: function () {

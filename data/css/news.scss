@@ -20,15 +20,9 @@ $support-font: 'Fira Sans' !default;
 }
 
 .LayoutTopMenu__menu {
-    background-color: #050c20;
     .CardTitle {
         &__title {
             font-weight: normal;
-            -EknFormattableLabel-text-transform: 'lowercase';
-        }
-        &.highlighted,
-        &:active {
-            background-color: darken($background-dark-color, 5%);
         }
     }
 }
@@ -39,24 +33,13 @@ $support-font: 'Fira Sans' !default;
         margin-top: 95px;
     }
 
-    .BannerSet .FormattableLabel,
-    .BannerSearch .FormattableLabel {
-        -EknFormattableLabel-text-transform: 'lowercase';
+    .ContentGroup--outercontainer {
+        margin-top: 100px;
+        .ContentGroup--articles {
+            margin-left: 100px;
+            margin-right: 100px;
+        }
     }
-}
-
-.ContentGroup--complementarycontent {
-  .ContentGroupContentGroup__title {
-    font-size: 46px;
-    font-weight: 900;
-    color: $primary-medium-color;
-    margin: 30px 0px 20px 0px;
-  }
-}
-
-.set-page .ContentGroup--outercontainer,
-.search-page .ContentGroup--outercontainer {
-    margin-top: 100px;
 }
 
 .ContentGroup--outercontainer {
@@ -67,20 +50,6 @@ $support-font: 'Fira Sans' !default;
 
         &__trigger {
             margin-right: 10px;
-        }
-
-        &__title .FormattableLabel,
-        &__trigger .FormattableLabel {
-            -EknFormattableLabel-text-transform: 'lowercase';
-        }
-
-        &__title--clickable,
-        &__trigger {
-            color: $primary-dark-color;
-
-            &:hover {
-                color: $primary-light-color;
-            }
         }
     }
 
@@ -94,10 +63,12 @@ $support-font: 'Fira Sans' !default;
     }
 }
 
+.ContentGroup--complementarycontent,
 .LayoutResponsiveMargins--complementarycontent {
     background-color: $background-dark-color;
 
     .ContentGroupContentGroup__title {
+        font-size: 46px;
         color: white;
     }
 }
@@ -133,17 +104,16 @@ $support-font: 'Fira Sans' !default;
     }
     .ContentGroup--complementarycontent {
         background-color: $background-light-color;
+        // margin-right is to leave room for scrollbar
         margin-right: 14px;
-        padding: 0px 50px 20px 50px;
+        padding: 30px 50px 50px 50px;
+
+        .ContentGroupContentGroup__title {
+            color: transparentize(black, 1 - 0.60);
+        }
 
         .composite & {
           padding: 0px 0px 20px 0px;
         }
-    }
-}
-
-.CardDefaultFamily {
-    &__context .FormattableLabel {
-        -EknFormattableLabel-text-transform: 'lowercase';
     }
 }

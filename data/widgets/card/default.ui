@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.18.3 -->
 <interface domain="eos-knowledge">
   <requires lib="gtk+" version="3.12"/>
-  <template class="EknCard_DefaultFamily" parent="GtkButton">
+  <template class="EknCard_Default" parent="GtkButton">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="receives_default">False</property>
@@ -14,7 +14,7 @@
           <object class="GtkFrame" id="thumbnail-frame">
             <property name="can_focus">False</property>
             <style>
-              <class name="CardDefaultFamily__thumbnail"/>
+              <class name="CardDefault__thumbnail"/>
             </style>
           </object>
         </child>
@@ -22,7 +22,7 @@
           <object class="GtkFrame" id="grid">
             <property name="visible">True</property>
             <style>
-              <class name="CardDefaultFamily__content_grid"/>
+              <class name="CardDefault__content_grid"/>
             </style>
             <child>
               <object class="EmeusConstraintLayout" id="inner-content-grid">
@@ -46,7 +46,7 @@
                     <property name="ellipsize">end</property>
                     <property name="lines">5</property>
                     <style>
-                      <class name="CardDefaultFamily__synopsis"/>
+                      <class name="CardDefault__synopsis"/>
                       <class name="Card__synopsis"/>
                     </style>
                   </object>

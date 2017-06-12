@@ -11,19 +11,9 @@ const Media = imports.app.modules.card.media;
 Gtk.init(null);
 
 describe ('Card.Media', function () {
-    let imageObject;
 
-    beforeEach(function () {
-        jasmine.addMatchers(CssClassMatcher.customMatchers);
-        jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-
-        imageObject = Eknc.ImageObjectModel.new_from_props({
-            caption: 'foo',
-            license: 'bar',
-            copyright_holder: 'baz',
-            content_type: 'image/jpeg',
-        });
-        imageObject.get_content_stream = () => null;
+    Object.defineProperty(Eknc.ImageObjectModel.prototype, 'ekn_id', {
+        get: function() { return null; }
     });
 
     it('has labels that understand Pango markup', function () {
@@ -31,7 +21,7 @@ describe ('Card.Media', function () {
             copyright_holder: '!!!',
             caption: '@@@',
         });
-        model.get_content_stream = () => null;
+
         let card = new Media.Media({
             model: model,
         });
@@ -49,7 +39,6 @@ describe ('Card.Media', function () {
                 license: 'CC BY 4.0',
                 copyright_holder: copyright_holder,
             });
-            model.get_content_stream = () => null;
 
             card = new Media.Media({
                 model: model,
@@ -64,7 +53,6 @@ describe ('Card.Media', function () {
                 license: 'foobar',
                 copyright_holder: copyright_holder,
             });
-            model.get_content_stream = () => null;
 
             card = new Media.Media({
                 model: model,

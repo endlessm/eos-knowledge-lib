@@ -20,6 +20,7 @@ const Knowledge = imports.app.knowledge;
 const ModuleFactory = imports.app.moduleFactory;
 const MoltresEngine = imports.app.moltresEngine;
 const PromiseWrapper = imports.app.promiseWrapper;
+const SetMap = imports.app.setMap;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -215,6 +216,7 @@ const Application = new Knowledge.Class({
     vfunc_startup: function () {
         this.parent();
         this._check_for_content();
+        this._initialize_set_map();
     },
 
     LoadItem: function (ekn_id, query, timestamp) {
@@ -243,6 +245,23 @@ const Application = new Knowledge.Class({
             action_type: Actions.LAUNCHED_FROM_DESKTOP,
             timestamp: Gdk.CURRENT_TIME,
         });
+    },
+
+    _initialize_set_map: function () {
+        Eknc.Engine.get_default().query_promise(Eknc.QueryObject.new_from_props({
+            limit: GLib.MAXUINT32,
+            tags_match_all: ['EknSetObject'],
+        }))
+        .then((results) => {
+            SetMap.init_map_with_models(results.models);
+        })
+        .catch(function (error) {
+            logError(error, 'Failed to load sets from database');
+        });
+
+        // FIXME: until we can properly await for SetMap to be initialized
+        while(Gtk.events_pending())
+            Gtk.main_iteration();
     },
 
     _ensure_controller: function () {

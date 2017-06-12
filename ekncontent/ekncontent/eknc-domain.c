@@ -924,10 +924,44 @@ on_xapian_query_response (GObject *source,
     }
 }
 
+static void
+send_query_to_xapian_bridge (EkncDomain *domain,
+                             EkncXapianBridge *bridge,
+                             EkncQueryObject *query,
+                             GCancellable *cancellable,
+                             GTask *task)
+{
+  QueryState *state = g_slice_new0 (QueryState);
+  g_task_set_task_data (task, state, query_state_free);
+
+  g_autoptr(GHashTable) params = eknc_get_domain_query_params (domain);
+  eknc_xapian_bridge_query (bridge, query, params, cancellable,
+                            on_xapian_query_response, task);
+}
+
+void
+on_xapian_test_response (GObject *source,
+                         GAsyncResult *result,
+                         gpointer user_data)
+{
+  EkncXapianBridge *bridge = EKNC_XAPIAN_BRIDGE (source);
+  g_autoptr(GTask) task = user_data;
+  EkncDomain *domain = g_task_get_source_object (task);
+  GCancellable *cancellable = g_task_get_cancellable (task);
+
+  g_autoptr(GError) error = NULL;
+  eknc_xapian_bridge_test_finish (bridge, result, &error);
+  /* Ignore failures - older xapian-bridge doesn't support /test. */
+
+  EkncQueryObject *query = g_task_get_task_data (task);
+  send_query_to_xapian_bridge (domain, bridge, query, cancellable,
+                               g_steal_pointer (&task));
+}
+
 /**
  * eknc_domain_query:
  * @self: the domain
- * @query: the query object to fix
+ * @query: the query object
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @callback: (scope async): callback to call when the request is satisfied.
  * @user_data: (closure): the data to pass to callback function.
@@ -946,12 +980,16 @@ eknc_domain_query (EkncDomain *self,
   g_return_if_fail (G_IS_CANCELLABLE (cancellable) || cancellable == NULL);
 
   GTask *task = g_task_new (self, cancellable, callback, user_data);
-  QueryState *state = g_slice_new0 (QueryState);
-  g_task_set_task_data (task, state, query_state_free);
+  if (eknc_xapian_bridge_need_feature_test (self->xapian_bridge))
+    {
+      g_task_set_task_data (task, g_object_ref (query), g_object_unref);
+      eknc_xapian_bridge_test (self->xapian_bridge,
+                               cancellable, on_xapian_test_response, task);
+      return;
+    }
 
-  g_autoptr(GHashTable) params = eknc_get_domain_query_params (self);
-  eknc_xapian_bridge_query (self->xapian_bridge, query, params,
-                            cancellable, on_xapian_query_response, task);
+  send_query_to_xapian_bridge (self, self->xapian_bridge, query, cancellable,
+                               task);
 }
 
 static GList *

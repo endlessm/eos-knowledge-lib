@@ -15,9 +15,18 @@
             min-width: 146px;
             min-height: 30px;
         }
+
+        .BannerApp,
+        .BannerDynamic {
+            padding-right: 50px;
+        }
     }
 
     &__content {
         margin-top: 50px;
     }
+
+    /* FIXME: All CSS for the menu buttons & text are in Arrangement.SideBySide.
+    This seems a little unintuitive; we should move the code from
+    Arrangement.SideBySide to Layout.TopMenu in the future. */
 }

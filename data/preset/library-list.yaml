@@ -8,7 +8,17 @@ defines:
   no-results: 'ContentGroup.NoResultsMessage(valign: center)'
 
 - &card
-  Card.LegacyPolaroid
+  Card.Default
+
+- &main-arrangement-slot
+  arrangement:
+    type: Arrangement.SquareGuys
+    properties:
+      halign: center
+      valign: start
+      expand: true
+    slots:
+      card: *card
 
 - &home-page
   type: Layout.HamburgerBasement
@@ -37,7 +47,12 @@ defines:
             arrangement:
               shortdef: 'Arrangement.Overflow(orientation: horizontal)'
               slots:
-                card: *card
+                card:
+                  type: *card
+                  properties:
+                    excluded_types:
+                      - 0
+                      - 2
             selection:
               type: Selection.AllSets
               slots:
@@ -57,12 +72,18 @@ defines:
           shortdef: 'ContentGroup.ContentGroup(expand: true)'
           slots:
             arrangement:
-              type: Arrangement.Grid
-              slots:
-                card: *card
+              type: Arrangement.SquareGuys
               properties:
-                max-children-per-line: 7
-                min-children-per-line: 3
+                halign: center
+                valign: start
+                expand: true
+              slots:
+                card:
+                  type: *card
+                  properties:
+                    excluded_types:
+                      - 0
+                      - 2
             selection:
               type: Selection.AllSets
               id: basement-sets
@@ -104,16 +125,7 @@ defines:
         content:
           type: ContentGroup.ContentGroup
           slots:
-            arrangement:
-              type: Arrangement.Grid
-              properties:
-                halign: center
-                valign: start
-                expand: true
-                max-children-per-line: 7
-                min-children-per-line: 3
-              slots:
-                card: *card
+            <<: *main-arrangement-slot
             selection:
               type: Selection.Search
               id: search-results
@@ -142,16 +154,7 @@ defines:
                 wrap: true
                 halign: center
                 justify: center
-            arrangement:
-              type: Arrangement.Grid
-              properties:
-                halign: center
-                valign: start
-                expand: true
-                max-children-per-line: 5
-                min-children-per-line: 2
-              slots:
-                card: *card
+            <<: *main-arrangement-slot
             selection:
               type: Selection.ContentForSet
               id: article-list

@@ -56,6 +56,7 @@ const MediaLightbox = new Module.Class({
         if (this.lightbox_widget instanceof EosKnowledgePrivate.MediaBin) {
             this.lightbox_widget.stop();
         }
+        this.drop_submodule(this.lightbox_widget);
         this.lightbox_widget = null;
         Dispatcher.get_default().dispatch({
             action_type: Actions.LIGHTBOX_CLOSED,

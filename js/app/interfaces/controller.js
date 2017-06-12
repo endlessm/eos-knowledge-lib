@@ -8,7 +8,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
-const SetMap = imports.app.setMap;
 
 const CSS_RESOURCE_PATH = '/com/endlessm/knowledge/data/css/';
 
@@ -86,21 +85,8 @@ const Controller = new Lang.Interface({
         'window': {},
     },
 
-    initialize_set_map: function (cb) {
-        // Load all sets, with which to populate the set map
-        // FIXME: deduplicate this with Selection.AllSets
-        Eknc.Engine.get_default().query_promise(Eknc.QueryObject.new_from_props({
-            limit: GLib.MAXUINT32,
-            tags_match_all: ['EknSetObject'],
-        }))
-        .then((results) => {
-            SetMap.init_map_with_models(results.models);
-
-            this._window.make_ready(cb);
-        })
-        .catch(function (error) {
-            logError(error, 'Failed to load sets from database');
-        });
+    make_ready: function (cb) {
+        this._window.make_ready(cb);
     },
 
     load_theme: function () {

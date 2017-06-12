@@ -7,12 +7,28 @@ $legacy-post-card-border-color-hover: white !default;
     -EknPager_Simple-transitions-style: 'slide-center';
 }
 
+.BannerDynamic {
+    .home-page &__logo {
+        -EknDynamicLogo-max-width: 300px;
+        -EknDynamicLogo-max-height: 200px;
+    }
+}
+
 .home-page {
-    .CardLegacyPost {
-        &__title {
+    .CardDefault.CardPost {
+        .CardDefault__title {
             font-weight: normal;
         }
+        .CardDefault__content_grid {
+            padding: 26px;
+        }
+        .CardDefault:hover {
+            box-shadow: none;
+        }
+        box-shadow: none;
+        margin: 4px;
     }
+
     .LayoutBox,
     .ContentGroupContentGroup {
         min-height: 240px;
@@ -20,10 +36,9 @@ $legacy-post-card-border-color-hover: white !default;
 
     .ContentGroupContentGroup {
         background-color: black;
-        /* padding is a design decision that makes up for the double borders 
-        created by the Card.LegacyPost cards. This should be fixed with 
-        implementation of Constraint-Based cards. */
-        padding-top: 5px;
+        /* padding-top is a design decision that makes up for the incorrect spacing
+         * created by adding a margin to the cards */
+        padding-top: 4px;
     }
 
     .NavigationSearchBox {
@@ -89,7 +104,7 @@ $legacy-post-card-border-color-hover: white !default;
 
 .window-small {
     .home-page {
-        .CardLegacyPost {
+        .CardDefault {
             &__title {
                 font-size: 1.0em;
                 padding: 0.5em 0em;
@@ -107,11 +122,14 @@ $legacy-post-card-border-color-hover: white !default;
 
 .composite {
     .home-page {
-        .CardLegacyPost__title {
-            font-family: $title-font-composite;
-            font-size: 20px;
-            font-weight: 400;
-            padding: 0.5em 0.2em;
+        .CardDefault {
+            &__title {
+                font-family: $title-font-composite;
+                font-size: 20px;
+                font-weight: 400;
+                padding: 0.5em 0.2em;
+            }
+            margin: 2px;
         }
 
         .LayoutBox {
@@ -120,9 +138,8 @@ $legacy-post-card-border-color-hover: white !default;
 
         .ContentGroupContentGroup {
             min-height: 200px;
-            /* padding is a design decision that makes up for the double 
-            borders created by the Card.LegacyPost cards. This should be fixed 
-            with implementation of Constraint-Based cards. */
+            /* padding-top is a design decision that makes up for the incorrect spacing
+             * created by adding a margin to the cards */
             padding-top: 2px;
         }
 

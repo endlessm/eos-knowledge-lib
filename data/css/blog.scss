@@ -3,11 +3,12 @@
 $highlighted-background-color: darken($background-dark-color, 5%) !default;
 
 .LayoutSidebar {
-  background-color: $background-dark-color;
   -EknLayout_Sidebar-sidebar-width-small: 252px;
   -EknLayout_Sidebar-sidebar-width-large: 252px;
 
   .sidebar {
+    background-color: $background-dark-color;
+    box-shadow: none;
     .main-menu {
       .BannerApp .ThemeableImage {
           -EknThemeableImage-sizing: "size-min";
@@ -18,63 +19,51 @@ $highlighted-background-color: darken($background-dark-color, 5%) !default;
     }
 
     .CardTitle {
-      padding: 8px 0px 8px 40px;
-
+      border-bottom: none;
       &__title {
-        padding: 0px;
+        padding: 8px 0px 8px 40px;
         color: $primary-medium-color;
       }
 
+      &:active,
       &.highlighted,
       &.highlighted:hover {
-        background-color: $highlighted-background-color;
-
-        .CardTitle__title {
-          color: $primary-dark-color;
-        }
-      }
-
-      &:hover {
-        background-color: transparent;
-
-        .CardTitle__title {
-          color: $accent-light-color;
+        .CardTitle {
+          &__title {
+            color: $primary-dark-color;
+            background-color: $highlighted-background-color;
+          }
         }
       }
     }
   }
-}
 
-.PagerSimple {
-  background-color: $background-light-color;
+  /* Banner.Set & Banner.Search styling has to be put here in order
+   * to correctly override default theme styling in Layout.Sidebar.
+   * FIXME: This small change requires too-specific selectors;
+   * Layout.Sidebar needs to have less specific styling in the
+   * future. */
+  .content {
+    .BannerSet .CardTitle__title,
+    .BannerSearch__title {
+      font-size: 56px;
+      padding: 0;
+      color: $primary-medium-color;
+    }
+
+    .BannerSet,
+    .BannerSearch {
+      margin: 33px 0;
+    }
+  }
 }
 
 .main-arrangement {
   margin-bottom: 20px;
 }
 
-.CardDefaultFamily {
+.CardDefault {
   min-height: 400px;
-
-  &:hover {
-    .CardDefaultFamily__title {
-      color: $accent-light-color;
-    }
-  }
-
-  &.width-f {
-    .CardDefaultFamily__title {
-      font-size: 32px;
-    }
-
-    .CardDefaultFamily__synopsis {
-      font-size: 16px;
-    }
-
-    .CardDefaultFamily__context {
-      font-size: 16px;
-    }
-  }
 }
 
 .ContentGroup--complementarycontent {
@@ -92,26 +81,7 @@ $highlighted-background-color: darken($background-dark-color, 5%) !default;
   }
 }
 
-.set-page {
-  .BannerSet {
-    margin: 33px 0px;
-    .CardTitle__title {
-      font-size: 56px;
-      font-weight: 700;
-      color: $primary-medium-color;
-    }
-  }
-}
-
 .search-page {
-  .BannerSearch__title {
-    padding: 0px;
-    margin: 33px 0px;
-    font-size: 56px;
-    font-weight: 700;
-    color: $primary-medium-color;
-  }
-
   .CardList {
     min-height: 200px;
 

@@ -2,7 +2,7 @@
 defines:
 # Various one-liners
 - &main-card
-  type: Card.DefaultFamily
+  type: Card.Default
   properties:
     excluded_types:
     - 0
@@ -42,7 +42,7 @@ defines:
     contents:
     - type: ContentGroup.DynamicTitle
       properties:
-        format-string: !translate "see more from %s"
+        format-string: !translate "See more from %s"
         ellipsize: end
         hexpand: true
     - shortdef: 'Decoration.ThemeableImage(valign: end, halign: end)'
@@ -51,7 +51,7 @@ defines:
   shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
   slots:
     card:
-      type: Card.DefaultFamily
+      type: Card.Default
       properties:
         excluded_types:
         - 0
@@ -327,17 +327,13 @@ root:
       slots:
         search: Navigation.SearchBox
         content:
-          type: Layout.BrandPage
+          type: ContentGroup.MediaLightbox
           slots:
-            brand: 'Banner.App(show-subtitle: true, halign: center, valign: center)'
+            card: Card.Media
             content:
-              type: ContentGroup.MediaLightbox
+              type: Pager.Simple
               slots:
-                card: Card.Media
-                content:
-                  type: Pager.Simple
-                  slots:
-                    home-page: *home-page
-                    set-page: *set-page
-                    search-page: *search-page
-                    article-page: *article-page
+                home-page: *home-page
+                set-page: *set-page
+                search-page: *search-page
+                article-page: *article-page

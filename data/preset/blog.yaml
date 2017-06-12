@@ -1,11 +1,13 @@
 defines:
 - &main-arrangement
   type: Arrangement.List
+  properties:
+    valign: start
   styles:
     - main-arrangement
 
 - &main-card
-  type: Card.DefaultFamily
+  type: Card.Default
   properties:
     excluded_types:
     - 0
