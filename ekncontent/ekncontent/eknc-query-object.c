@@ -523,12 +523,11 @@ static gchar *
 get_exact_title_clause (EkncQueryObject *self, gchar **terms)
 {
   guint length = g_strv_length (terms);
-  g_auto(GStrv) capitalized_terms = g_new (gchar *, length + 1);
+  g_auto(GStrv) capitalized_terms = g_new0 (gchar *, length + 1);
   for (guint i = 0; i < length; i++)
     {
       capitalized_terms[i] = capitalize (terms[i]);
     }
-  capitalized_terms[length] = NULL;
   g_autofree gchar *joined = g_strjoinv ("_", capitalized_terms);
   g_autofree gchar *prefixed = g_strconcat (XAPIAN_PREFIX_EXACT_TITLE, joined, NULL);
   return maybe_add_wildcard (self, prefixed);
@@ -538,13 +537,12 @@ static gchar *
 get_title_clause (EkncQueryObject *self, gchar **terms)
 {
   guint length = g_strv_length (terms);
-  g_auto(GStrv) title_terms = g_new (gchar *, length + 1);
+  g_auto(GStrv) title_terms = g_new0 (gchar *, length + 1);
   for (guint i = 0; i < length; i++)
     {
       g_autofree gchar *title_term = g_strconcat (XAPIAN_PREFIX_TITLE, terms[i], NULL);
       title_terms[i] = maybe_add_wildcard (self, title_term);
     }
-  title_terms[length] = NULL;
   return g_strjoinv (XAPIAN_OP_AND, title_terms);
 }
 
@@ -552,12 +550,11 @@ static gchar *
 get_title_clause2 (EkncQueryObject *self, gchar **terms)
 {
   guint length = g_strv_length (terms);
-  g_auto(GStrv) title_terms = g_new (gchar *, length + 1);
+  g_auto(GStrv) title_terms = g_new0 (gchar *, length + 1);
   for (guint i = 0; i < length; i++)
     {
       title_terms[i] = g_strconcat (XAPIAN_PREFIX_TITLE, terms[i], NULL);
     }
-  title_terms[length] = NULL;
   return g_strjoinv (" ", title_terms);
 }
 
@@ -565,12 +562,11 @@ static gchar *
 get_body_clause (EkncQueryObject *self, gchar **terms)
 {
   guint length = g_strv_length (terms);
-  g_auto(GStrv) body_terms = g_new (gchar *, length + 1);
+  g_auto(GStrv) body_terms = g_new0 (gchar *, length + 1);
   for (guint i = 0; i < length; i++)
     {
       body_terms[i] = maybe_add_wildcard (self, terms[i]);
     }
-  body_terms[length] = NULL;
   return g_strjoinv (XAPIAN_OP_AND, body_terms);
 }
 
@@ -678,7 +674,7 @@ get_tags_clause (GVariant *variant, gchar *join_op, gboolean exclude)
   // match, e.g. [foo,bar,baz] => 'K:foo OR K:bar OR K:baz'
   gsize length;
   g_autofree const gchar **tags = g_variant_get_strv (variant, &length);
-  g_auto(GStrv) prefixed_tags = g_new (gchar *, length + 1);
+  g_auto(GStrv) prefixed_tags = g_new0 (gchar *, length + 1);
   for (guint i = 0; i < length; i++)
     {
       if (exclude)
@@ -686,7 +682,6 @@ get_tags_clause (GVariant *variant, gchar *join_op, gboolean exclude)
       else
         prefixed_tags[i] = g_strdup_printf ("%s\"%s\"", XAPIAN_PREFIX_TAG, tags[i]);
     }
-  prefixed_tags[length] = NULL;
   return g_strjoinv (join_op, prefixed_tags);
 }
 
@@ -697,7 +692,7 @@ get_ids_clause (GVariant *variant, gchar *join_op, gboolean exclude)
     return NULL;
   gsize length;
   g_autofree const gchar **ids = g_variant_get_strv (variant, &length);
-  g_auto(GStrv) prefixed_ids = g_new (gchar *, length + 1);
+  g_auto(GStrv) prefixed_ids = g_new0 (gchar *, length + 1);
   for (guint i = 0; i < length; i++)
     {
       const gchar *hash = eknc_utils_id_get_hash (ids[i]);
@@ -715,7 +710,6 @@ get_ids_clause (GVariant *variant, gchar *join_op, gboolean exclude)
           prefixed_ids[i] = g_strdup_printf ("%s%s", XAPIAN_PREFIX_ID, hash);
         }
     }
-  prefixed_ids[length] = NULL;
   return g_strjoinv (join_op, prefixed_ids);
 }
 
