@@ -54,6 +54,8 @@ struct _EkncQueryObject
   gchar *stopword_free_query;
   gchar *literal_query;
   gchar *query_parser_string;
+  gchar *filter_string;
+  gchar *filterout_string;
   EkncQueryObjectMode mode;
   EkncQueryObjectMatch match;
   EkncQueryObjectSort sort;
@@ -521,12 +523,11 @@ static gchar *
 get_exact_title_clause (EkncQueryObject *self, gchar **terms)
 {
   guint length = g_strv_length (terms);
-  g_auto(GStrv) capitalized_terms = g_new (gchar *, length + 1);
+  g_auto(GStrv) capitalized_terms = g_new0 (gchar *, length + 1);
   for (guint i = 0; i < length; i++)
     {
       capitalized_terms[i] = capitalize (terms[i]);
     }
-  capitalized_terms[length] = NULL;
   g_autofree gchar *joined = g_strjoinv ("_", capitalized_terms);
   g_autofree gchar *prefixed = g_strconcat (XAPIAN_PREFIX_EXACT_TITLE, joined, NULL);
   return maybe_add_wildcard (self, prefixed);
@@ -536,26 +537,36 @@ static gchar *
 get_title_clause (EkncQueryObject *self, gchar **terms)
 {
   guint length = g_strv_length (terms);
-  g_auto(GStrv) title_terms = g_new (gchar *, length + 1);
+  g_auto(GStrv) title_terms = g_new0 (gchar *, length + 1);
   for (guint i = 0; i < length; i++)
     {
       g_autofree gchar *title_term = g_strconcat (XAPIAN_PREFIX_TITLE, terms[i], NULL);
       title_terms[i] = maybe_add_wildcard (self, title_term);
     }
-  title_terms[length] = NULL;
   return g_strjoinv (XAPIAN_OP_AND, title_terms);
+}
+
+static gchar *
+get_title_clause2 (EkncQueryObject *self, gchar **terms)
+{
+  guint length = g_strv_length (terms);
+  g_auto(GStrv) title_terms = g_new0 (gchar *, length + 1);
+  for (guint i = 0; i < length; i++)
+    {
+      title_terms[i] = g_strconcat (XAPIAN_PREFIX_TITLE, terms[i], NULL);
+    }
+  return g_strjoinv (" ", title_terms);
 }
 
 static gchar *
 get_body_clause (EkncQueryObject *self, gchar **terms)
 {
   guint length = g_strv_length (terms);
-  g_auto(GStrv) body_terms = g_new (gchar *, length + 1);
+  g_auto(GStrv) body_terms = g_new0 (gchar *, length + 1);
   for (guint i = 0; i < length; i++)
     {
       body_terms[i] = maybe_add_wildcard (self, terms[i]);
     }
-  body_terms[length] = NULL;
   return g_strjoinv (XAPIAN_OP_AND, body_terms);
 }
 
@@ -607,6 +618,53 @@ get_query_clause (EkncQueryObject *self)
 }
 
 static gchar *
+get_query_clause2 (EkncQueryObject *self)
+{
+  if (self->literal_query && *(self->literal_query))
+    return self->literal_query;
+
+  g_auto(GStrv) raw_terms = get_terms (self->query);
+
+  if (g_strv_length (raw_terms) == 0)
+    return NULL;
+
+  // If we only have one character in our search, only look for an exact match.
+  // Fancier searching, particularly wildcard search, leads to performance
+  // problems.
+  if (g_strv_length (raw_terms) == 1 && g_utf8_strlen (raw_terms[0], -1) == 1)
+    {
+      g_autofree gchar *capitalized = capitalize (raw_terms[0]);
+      return g_strconcat (XAPIAN_PREFIX_EXACT_TITLE, capitalized, NULL);
+    }
+
+  GString *query_clause = g_string_new (NULL);
+
+  g_autofree gchar *exact_title_clause = get_exact_title_clause (self, raw_terms);
+  g_string_append (query_clause, exact_title_clause);
+
+  // If we were given a stopword free query, use its terms for the rest of the
+  // query clause. If not, we can assume the terms we already have are free of
+  // stopwords.
+  g_auto(GStrv) stopword_free_terms = get_terms (self->stopword_free_query);
+  GStrv terms = raw_terms;
+  if (stopword_free_terms && *stopword_free_terms)
+    terms = stopword_free_terms;
+
+  g_autofree gchar *title_clause = get_title_clause2 (self, terms);
+  g_string_append (query_clause, XAPIAN_OP_OR);
+  g_string_append (query_clause, title_clause);
+
+  if (self->match == EKNC_QUERY_OBJECT_MATCH_TITLE_SYNOPSIS)
+    {
+      g_autofree gchar *body_clause = g_strjoinv (" ", terms);
+      g_string_append (query_clause, XAPIAN_OP_OR);
+      g_string_append (query_clause, body_clause);
+    }
+
+  return g_string_free (query_clause, FALSE);
+}
+
+static gchar *
 get_tags_clause (GVariant *variant, gchar *join_op, gboolean exclude)
 {
   if (variant == NULL)
@@ -616,7 +674,7 @@ get_tags_clause (GVariant *variant, gchar *join_op, gboolean exclude)
   // match, e.g. [foo,bar,baz] => 'K:foo OR K:bar OR K:baz'
   gsize length;
   g_autofree const gchar **tags = g_variant_get_strv (variant, &length);
-  g_auto(GStrv) prefixed_tags = g_new (gchar *, length + 1);
+  g_auto(GStrv) prefixed_tags = g_new0 (gchar *, length + 1);
   for (guint i = 0; i < length; i++)
     {
       if (exclude)
@@ -624,7 +682,6 @@ get_tags_clause (GVariant *variant, gchar *join_op, gboolean exclude)
       else
         prefixed_tags[i] = g_strdup_printf ("%s\"%s\"", XAPIAN_PREFIX_TAG, tags[i]);
     }
-  prefixed_tags[length] = NULL;
   return g_strjoinv (join_op, prefixed_tags);
 }
 
@@ -635,7 +692,7 @@ get_ids_clause (GVariant *variant, gchar *join_op, gboolean exclude)
     return NULL;
   gsize length;
   g_autofree const gchar **ids = g_variant_get_strv (variant, &length);
-  g_auto(GStrv) prefixed_ids = g_new (gchar *, length + 1);
+  g_auto(GStrv) prefixed_ids = g_new0 (gchar *, length + 1);
   for (guint i = 0; i < length; i++)
     {
       const gchar *hash = eknc_utils_id_get_hash (ids[i]);
@@ -653,7 +710,6 @@ get_ids_clause (GVariant *variant, gchar *join_op, gboolean exclude)
           prefixed_ids[i] = g_strdup_printf ("%s%s", XAPIAN_PREFIX_ID, hash);
         }
     }
-  prefixed_ids[length] = NULL;
   return g_strjoinv (join_op, prefixed_ids);
 }
 
@@ -685,6 +741,27 @@ eknc_query_object_ensure_query_parser_string (EkncQueryObject *self)
   consume_clause (parser_string, get_tags_clause (self->excluded_tags, XAPIAN_OP_AND, TRUE));
   consume_clause (parser_string, get_ids_clause (self->excluded_ids, XAPIAN_OP_AND, TRUE));
   self->query_parser_string = g_string_free (parser_string, FALSE);
+}
+
+static void
+eknc_query_object_ensure_query_parser_strings (EkncQueryObject *self)
+{
+  if (self->query_parser_string)
+    return;
+
+  GString *filter_string = g_string_new (NULL);
+  GString *filterout_string = g_string_new (NULL);
+
+  consume_clause (filter_string, get_tags_clause (self->tags_match_any, XAPIAN_OP_OR, FALSE));
+  consume_clause (filter_string, get_tags_clause (self->tags_match_all, XAPIAN_OP_AND, FALSE));
+  consume_clause (filter_string, get_ids_clause (self->ids, XAPIAN_OP_OR, FALSE));
+
+  consume_clause (filterout_string, get_tags_clause (self->excluded_tags, XAPIAN_OP_OR, FALSE));
+  consume_clause (filterout_string, get_ids_clause (self->excluded_ids, XAPIAN_OP_OR, FALSE));
+
+  self->query_parser_string = get_query_clause2 (self);
+  self->filter_string = g_string_free (filter_string, FALSE);
+  self->filterout_string = g_string_free (filterout_string, FALSE);
 }
 
 /**
@@ -766,7 +843,7 @@ eknc_query_object_get_excluded_tags (EkncQueryObject *self)
  * eknc_query_object_get_query_parser_string:
  * @self: the model
  *
- * Get the xapian query string to hand off to xapian bridge
+ * Get the old-style xapian query string to hand off to xapian bridge
  *
  * Returns: (transfer none): the query string to hand to xapian
  */
@@ -777,6 +854,36 @@ eknc_query_object_get_query_parser_string (EkncQueryObject *self)
 
   eknc_query_object_ensure_query_parser_string (self);
 
+  return self->query_parser_string;
+}
+
+/**
+ * eknc_query_object_get_query_parser_strings:
+ * @self: the model
+ * @filter: (out) (transfer none): filter query string
+ * @filterout: (out) (transfer none): excluding filter query string
+ *
+ * Get the new-style xapian query strings to hand off to xapian bridge.  The
+ * old-style query string is broken into three parts, which are combined like
+ * so:
+ *
+ * query OP_FILTER filter OP_AND_NOT filterout
+ *
+ * Returns: (transfer none): the query string to hand to xapian
+ */
+const gchar *
+eknc_query_object_get_query_parser_strings (EkncQueryObject *self,
+                                            const gchar **filter,
+                                            const gchar **filterout)
+{
+  g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
+  g_return_val_if_fail (filter != NULL, NULL);
+  g_return_val_if_fail (filterout != NULL, NULL);
+
+  eknc_query_object_ensure_query_parser_strings (self);
+
+  *filter = self->filter_string;
+  *filterout = self->filterout_string;
   return self->query_parser_string;
 }
 
