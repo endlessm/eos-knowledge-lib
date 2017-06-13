@@ -191,6 +191,17 @@ eknc_xapian_bridge_get_soup_session (EkncXapianBridge *self)
   return self->session;
 }
 
+/**
+ * eknc_xapian_bridge_need_feature_test:
+ * @self: the xapian bridge object
+ *
+ * Tells whether a feature test has already been carried out.
+ * Since the feature test (see eknc_xapian_bridge_test()) is an asynchronous
+ * operation, you can use this synchronous function to avoid doing it when it
+ * has already been done.
+ *
+ * Returns: %TRUE if no feature test has been done yet, %FALSE otherwise.
+ */
 gboolean
 eknc_xapian_bridge_need_feature_test (EkncXapianBridge *self)
 {
