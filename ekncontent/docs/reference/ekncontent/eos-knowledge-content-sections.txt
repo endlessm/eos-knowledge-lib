@@ -74,6 +74,15 @@ EKNC_TYPE_ARTICLE_OBJECT_MODEL
 </SECTION>
 
 <SECTION>
+<FILE>dictionary-object-model</FILE>
+eknc_dictionary_object_model_new_from_json_node
+<SUBSECTION Standard>
+EkncDictionaryObjectModel
+EkncDictionaryObjectModelClass
+EKNC_TYPE_DICTIONARY_OBJECT_MODEL
+</SECTION>
+
+<SECTION>
 <FILE>audio-object-model</FILE>
 eknc_audio_object_model_new_from_json_node
 <SUBSECTION Standard>
