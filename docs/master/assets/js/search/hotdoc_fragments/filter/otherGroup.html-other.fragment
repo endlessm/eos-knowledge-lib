@@ -1,1 +1,1 @@
-fragment_downloaded_cb({"url": "filter/otherGroup.html#other", "fragment": "other \n"});
+fragment_downloaded_cb({"fragment": "other \n", "url": "filter/otherGroup.html#other"});
