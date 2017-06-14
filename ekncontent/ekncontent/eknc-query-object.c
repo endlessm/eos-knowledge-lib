@@ -51,6 +51,7 @@ struct _EkncQueryObject
 
   gchar *app_id;
   gchar *query;
+  gchar *corrected_query;
   gchar *stopword_free_query;
   gchar *literal_query;
   gchar *query_parser_string;
@@ -90,6 +91,7 @@ enum {
   PROP_IDS,
   PROP_EXCLUDED_IDS,
   PROP_EXCLUDED_TAGS,
+  PROP_CORRECTED_QUERY,
   NPROPS
 };
 
@@ -111,6 +113,10 @@ eknc_query_object_get_property (GObject    *object,
 
     case PROP_QUERY:
       g_value_set_string (value, self->query);
+      break;
+
+    case PROP_CORRECTED_QUERY:
+      g_value_set_string (value, self->corrected_query);
       break;
 
     case PROP_STOPWORD_FREE_QUERY:
@@ -190,6 +196,11 @@ eknc_query_object_set_property (GObject *object,
       self->query = g_value_dup_string (value);
       break;
 
+    case PROP_CORRECTED_QUERY:
+      g_clear_pointer (&self->corrected_query, g_free);
+      self->corrected_query = g_value_dup_string (value);
+      break;
+
     case PROP_STOPWORD_FREE_QUERY:
       g_clear_pointer (&self->stopword_free_query, g_free);
       self->stopword_free_query = g_value_dup_string (value);
@@ -261,6 +272,7 @@ eknc_query_object_finalize (GObject *object)
 
   g_clear_pointer (&self->app_id, g_free);
   g_clear_pointer (&self->query, g_free);
+  g_clear_pointer (&self->corrected_query, g_free);
   g_clear_pointer (&self->stopword_free_query, g_free);
   g_clear_pointer (&self->literal_query, g_free);
   g_clear_pointer (&self->query_parser_string, g_free);
@@ -302,6 +314,16 @@ eknc_query_object_class_init (EkncQueryObjectClass *klass)
   eknc_query_object_props[PROP_QUERY] =
     g_param_spec_string ("query", "Query string",
       "Query string with terms to search",
+      "", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+
+  /**
+   * EkncQueryObject:corrected-query:
+   *
+   * A corrected version of the query property (e.g. with typos corrected).
+   */
+  eknc_query_object_props[PROP_CORRECTED_QUERY] =
+    g_param_spec_string ("corrected-query", "Corrected query string",
+      "A version of query with typos, etc corrected",
       "", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
@@ -642,13 +664,12 @@ get_query_clause2 (EkncQueryObject *self)
   g_autofree gchar *exact_title_clause = get_exact_title_clause (self, raw_terms);
   g_string_append (query_clause, exact_title_clause);
 
-  // If we were given a stopword free query, use its terms for the rest of the
-  // query clause. If not, we can assume the terms we already have are free of
-  // stopwords.
-  g_auto(GStrv) stopword_free_terms = get_terms (self->stopword_free_query);
+  // If we were given a corrected query, use its terms for the rest of the
+  // query clause.
+  g_auto(GStrv) corrected_terms = get_terms (self->corrected_query);
   GStrv terms = raw_terms;
-  if (stopword_free_terms && *stopword_free_terms)
-    terms = stopword_free_terms;
+  if (corrected_terms && *corrected_terms)
+    terms = corrected_terms;
 
   g_autofree gchar *title_clause = get_title_clause2 (self, terms);
   g_string_append (query_clause, XAPIAN_OP_OR);

@@ -531,21 +531,48 @@ eknc_xapian_bridge_get_fixed_query_finish (EkncXapianBridge *self,
       return NULL;
     }
   JsonObject *object = json_node_get_object (node);
-  JsonNode *fixed_query_node = json_object_get_member (object, "stopWordCorrectedQuery");
+  JsonNode *stop_fixed_query_node = json_object_get_member (object, "stopWordCorrectedQuery");
+  JsonNode *spell_fixed_query_node = json_object_get_member (object, "spellCorrectedQuery");
   // If we didn't get a corrected query, we can just reuse the existing query object.
   RequestState *state = g_task_get_task_data (task);
-  if (fixed_query_node == NULL)
+  if (stop_fixed_query_node == NULL && spell_fixed_query_node == NULL)
     return state->query;
-  if (json_node_get_value_type (fixed_query_node) != G_TYPE_STRING)
+
+  const gchar *stop_fixed_query = NULL, *spell_fixed_query = NULL;
+  if (stop_fixed_query_node != NULL)
     {
-      g_set_error (error, EKNC_XAPIAN_BRIDGE_ERROR, EKNC_XAPIAN_BRIDGE_ERROR_BAD_JSON,
-                   "Unexpected value for stopWordCorrectedQuery");
-      return NULL;
+      if (json_node_get_value_type (stop_fixed_query_node) != G_TYPE_STRING)
+        {
+          g_set_error (error, EKNC_XAPIAN_BRIDGE_ERROR, EKNC_XAPIAN_BRIDGE_ERROR_BAD_JSON,
+                       "Unexpected value for stopWordCorrectedQuery");
+          return NULL;
+        }
+      stop_fixed_query = json_node_get_string (stop_fixed_query_node);
     }
-  const gchar *fixed_query = json_node_get_string (fixed_query_node);
-  return eknc_query_object_new_from_object (state->query,
-                                            "stopword-free-query", fixed_query,
-                                            NULL);
+  if (spell_fixed_query_node != NULL)
+    {
+      if (json_node_get_value_type (spell_fixed_query_node) != G_TYPE_STRING)
+        {
+          g_set_error (error, EKNC_XAPIAN_BRIDGE_ERROR, EKNC_XAPIAN_BRIDGE_ERROR_BAD_JSON,
+                       "Unexpected value for spellCorrectedQuery");
+          return NULL;
+        }
+      spell_fixed_query = json_node_get_string (spell_fixed_query_node);
+    }
+
+  if (stop_fixed_query != NULL && spell_fixed_query != NULL)
+    return eknc_query_object_new_from_object (state->query,
+                                              "stopword-free-query", stop_fixed_query,
+                                              "corrected-query", spell_fixed_query,
+                                              NULL);
+  else if (stop_fixed_query != NULL)
+    return eknc_query_object_new_from_object (state->query,
+                                              "stopword-free-query", stop_fixed_query,
+                                              NULL);
+  else
+    return eknc_query_object_new_from_object (state->query,
+                                              "corrected-query", spell_fixed_query,
+                                              NULL);
 }
 
 /**
