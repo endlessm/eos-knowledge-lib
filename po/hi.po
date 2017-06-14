@@ -4,23 +4,20 @@
 # 
 # Translators:
 # e2f_in c7 <e2f_in_c7@outlook.com>, 2016-2017
+# Philip Chimento <philip.chimento@gmail.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-05-30 02:01+0000\n"
-"PO-Revision-Date: 2017-05-16 02:04+0000\n"
-"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
+"POT-Creation-Date: 2017-06-14 22:54+0000\n"
+"PO-Revision-Date: 2017-06-14 23:05+0000\n"
+"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
 "Language-Team: Hindi (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/hi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: hi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: data/widgets/card/legacyPolaroid.ui:105
-msgid "PDF"
-msgstr "PDF"
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
@@ -44,29 +41,28 @@ msgid ""
 "the problem."
 msgstr "समस्या का ट्रैक रखने में हमारी मदद करने वाली जानकारी की फ़ाइल डाउनलोड करने के लिए यहाँ क्लिक करें."
 
-#: data/widgets/contentGroup/noResultsMessage.ui:50
+#: data/widgets/contentGroup/noResultsMessage.ui:37
 msgid ""
 "We recommend that you:\n"
 "\n"
-"  •  Check your spelling\n"
-"  •  Try other words that mean the same thing\n"
-"  •  Try using more general words"
-msgstr "हम अनुशंसा करते हैंं कि आप:\n\n  •  अपनी वर्तनी जाँचें\n  •  अन्य शब्दों को आज़माएँ जिनका अर्थ समान हो\n  •  अधिक सामान्य शब्द उपयोग करके देखें"
+"Check your spelling\n"
+"Try other words that mean the same thing\n"
+"Try using more general words"
+msgstr "हम अनुशंसा करते हैंं कि आप:\n\nअपनी वर्तनी जाँचें\nअन्य शब्दों को आज़माएँ जिनका अर्थ समान हो\nअधिक सामान्य शब्द उपयोग करके देखें"
 
 #: data/widgets/layout/sideMenu.ui:95
-#: js/app/modules/layout/hamburgerBasement.js:51
-msgid "HOME"
+msgid "Home"
 msgstr "मुखपृष्ठ"
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license"
 msgstr "लाइसेंस देखें"
 
-#: js/app/application.js:181
+#: js/app/application.js:182
 msgid "Oops! No content."
 msgstr "ओह! कोई सामग्री नहीं है."
 
-#: js/app/application.js:182
+#: js/app/application.js:183
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -137,7 +133,7 @@ msgid_plural "%s:%s minutes"
 msgstr[0] "%s:%s मिनट"
 msgstr[1] "%s:%s मिनट"
 
-#: js/app/interfaces/card.js:342
+#: js/app/interfaces/card.js:343
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -164,21 +160,21 @@ msgstr "“%s” के लिए परिणाम खोजें"
 msgid "Results for “%s”"
 msgstr "“%s” के लिए परिणाम"
 
-#: js/app/modules/contentGroup/contentGroup.js:166
+#: js/app/modules/contentGroup/contentGroup.js:171
 msgid "See more"
 msgstr "अधिक देखें"
 
 #: js/app/modules/contentGroup/noResultsMessage.js:52
-msgid "Sorry! :-("
-msgstr "क्षमा करें! :-("
-
-#: js/app/modules/contentGroup/noResultsMessage.js:53
-msgid "There are no results that match your search.\n"
-msgstr "आपकी खोज से मिलान करने वाले कोई परिणाम नहीं हैं\n"
+msgid "We're sorry, there are no results that match your search."
+msgstr "आपकी खोज से मिलान करने वाले कोई परिणाम नहीं हैं"
 
 #: js/app/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
 msgstr "सभी श्रेणियाँ देखें"
+
+#: js/app/modules/layout/hamburgerBasement.js:51
+msgid "HOME"
+msgstr "मुखपृष्ठ"
 
 #: js/app/modules/layout/placeholder.js:25
 msgid "Placeholder"

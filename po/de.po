@@ -3,24 +3,21 @@
 # This file is distributed under the same license as the eos-knowledge package.
 # 
 # Translators:
+# Philip Chimento <philip.chimento@gmail.com>, 2017
 # Stefan Schroeder <ondekoza@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-05-30 02:01+0000\n"
-"PO-Revision-Date: 2017-05-16 02:04+0000\n"
-"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
+"POT-Creation-Date: 2017-06-14 22:54+0000\n"
+"PO-Revision-Date: 2017-06-14 23:17+0000\n"
+"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: data/widgets/card/legacyPolaroid.ui:105
-msgid "PDF"
-msgstr "PDF"
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
@@ -44,29 +41,28 @@ msgid ""
 "the problem."
 msgstr "Hier klicken, um eine Datei zu laden, die uns helfen wird, das Problemzu beheben."
 
-#: data/widgets/contentGroup/noResultsMessage.ui:50
+#: data/widgets/contentGroup/noResultsMessage.ui:37
 msgid ""
 "We recommend that you:\n"
 "\n"
-"  •  Check your spelling\n"
-"  •  Try other words that mean the same thing\n"
-"  •  Try using more general words"
-msgstr "Wir empfehlen dir:\n\n• Überprüfe die Rechtschreibung\n• Versuche es mit anderen Wörtern, die das gleiche bedeuten\n• Versuche es mit einem allgemeineren Wort"
+"Check your spelling\n"
+"Try other words that mean the same thing\n"
+"Try using more general words"
+msgstr "Wir empfehlen dir:\n\nÜberprüfe die Rechtschreibung\nVersuche es mit anderen Wörtern, die das gleiche bedeuten\nVersuche es mit einem allgemeineren Wort"
 
 #: data/widgets/layout/sideMenu.ui:95
-#: js/app/modules/layout/hamburgerBasement.js:51
-msgid "HOME"
-msgstr "Persönlicher Ordner"
+msgid "Home"
+msgstr ""
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license"
 msgstr "Lizenz lesen"
 
-#: js/app/application.js:181
+#: js/app/application.js:182
 msgid "Oops! No content."
 msgstr "Huch! Kein Inhalt."
 
-#: js/app/application.js:182
+#: js/app/application.js:183
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -137,7 +133,7 @@ msgid_plural "%s:%s minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/app/interfaces/card.js:342
+#: js/app/interfaces/card.js:343
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -164,21 +160,21 @@ msgstr "Suchergebnisse für »%s«"
 msgid "Results for “%s”"
 msgstr "Ergebnisse für »%s«"
 
-#: js/app/modules/contentGroup/contentGroup.js:166
+#: js/app/modules/contentGroup/contentGroup.js:171
 msgid "See more"
 msgstr ""
 
 #: js/app/modules/contentGroup/noResultsMessage.js:52
-msgid "Sorry! :-("
-msgstr "Entschuldigung! :-("
-
-#: js/app/modules/contentGroup/noResultsMessage.js:53
-msgid "There are no results that match your search.\n"
-msgstr "Deine Suche lieferte keine Ergebnisse\n"
+msgid "We're sorry, there are no results that match your search."
+msgstr "Deine Suche lieferte keine Ergebnisse"
 
 #: js/app/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
 msgstr "ALLE KATEGORIEN ANSEHEN"
+
+#: js/app/modules/layout/hamburgerBasement.js:51
+msgid "HOME"
+msgstr "Persönlicher Ordner"
 
 #: js/app/modules/layout/placeholder.js:25
 msgid "Placeholder"

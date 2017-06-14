@@ -3,23 +3,20 @@
 # This file is distributed under the same license as the eos-knowledge package.
 # 
 # Translators:
+# Philip Chimento <philip.chimento@gmail.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-05-30 02:01+0000\n"
-"PO-Revision-Date: 2017-05-16 02:04+0000\n"
-"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
+"POT-Creation-Date: 2017-06-14 22:54+0000\n"
+"PO-Revision-Date: 2017-06-14 23:13+0000\n"
+"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-
-#: data/widgets/card/legacyPolaroid.ui:105
-msgid "PDF"
-msgstr "PDF"
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
@@ -43,29 +40,28 @@ msgid ""
 "the problem."
 msgstr "Nhấp vào đây để tải về một tệp với thông tin sẽ giúp chúng tôi lần ra vấn đề."
 
-#: data/widgets/contentGroup/noResultsMessage.ui:50
+#: data/widgets/contentGroup/noResultsMessage.ui:37
 msgid ""
 "We recommend that you:\n"
 "\n"
-"  •  Check your spelling\n"
-"  •  Try other words that mean the same thing\n"
-"  •  Try using more general words"
-msgstr "Chúng tôi khuyên bạn nên:\n\n  •  Kiểm tra chính tả\n  •  Thử dùng các từ ngữ khác có cùng ý nghĩa\n  •  Thử dùng các từ ngữ chung chung hơn"
+"Check your spelling\n"
+"Try other words that mean the same thing\n"
+"Try using more general words"
+msgstr "Chúng tôi khuyên bạn nên:\n\nKiểm tra chính tả\nThử dùng các từ ngữ khác có cùng ý nghĩa\nThử dùng các từ ngữ chung chung hơn"
 
 #: data/widgets/layout/sideMenu.ui:95
-#: js/app/modules/layout/hamburgerBasement.js:51
-msgid "HOME"
-msgstr "TRANG CHỦ"
+msgid "Home"
+msgstr "Trang chủ"
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license"
 msgstr "Xem giấy phép"
 
-#: js/app/application.js:181
+#: js/app/application.js:182
 msgid "Oops! No content."
 msgstr "Ối! Không có nội dung."
 
-#: js/app/application.js:182
+#: js/app/application.js:183
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -135,7 +131,7 @@ msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
 msgstr[0] "%s:%s phút"
 
-#: js/app/interfaces/card.js:342
+#: js/app/interfaces/card.js:343
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -161,21 +157,21 @@ msgstr "Kết quả tìm kiếm cho \"%s\""
 msgid "Results for “%s”"
 msgstr "Kết quả đối với “%s”"
 
-#: js/app/modules/contentGroup/contentGroup.js:166
+#: js/app/modules/contentGroup/contentGroup.js:171
 msgid "See more"
 msgstr "Xem thêm"
 
 #: js/app/modules/contentGroup/noResultsMessage.js:52
-msgid "Sorry! :-("
-msgstr "Rất tiếc! :-("
-
-#: js/app/modules/contentGroup/noResultsMessage.js:53
-msgid "There are no results that match your search.\n"
-msgstr "Không có kết quả nào phù hợp với tìm kiếm của bạn.\n"
+msgid "We're sorry, there are no results that match your search."
+msgstr "Không có kết quả nào phù hợp với tìm kiếm của bạn."
 
 #: js/app/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
 msgstr "XEM TẤT CẢ DANH MỤC"
+
+#: js/app/modules/layout/hamburgerBasement.js:51
+msgid "HOME"
+msgstr "TRANG CHỦ"
 
 #: js/app/modules/layout/placeholder.js:25
 msgid "Placeholder"

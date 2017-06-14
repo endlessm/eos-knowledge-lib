@@ -8,7 +8,7 @@
 # Mariana Barbosa <mariana@endlessm.com>, 2016-2017
 # Mariana Barbosa <mari@endlessm.com>, 2015-2016
 # Martin Abente Lahaye <tch@sugarlabs.org>, 2016
-# Philip Chimento <philip.chimento@gmail.com>, 2015
+# Philip Chimento <philip.chimento@gmail.com>, 2015,2017
 # Renato Peixoto Pinto <renato@endlessm.com>, 2014
 # Richard Vignais, 2014
 # mattdangerw <watson@endlessm.com>, 2015
@@ -16,19 +16,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-05-30 02:01+0000\n"
-"PO-Revision-Date: 2017-06-06 18:50+0000\n"
-"Last-Translator: Mariana Barbosa <mariana@endlessm.com>\n"
+"POT-Creation-Date: 2017-06-14 22:54+0000\n"
+"PO-Revision-Date: 2017-06-14 23:08+0000\n"
+"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
-#: data/widgets/card/legacyPolaroid.ui:105
-msgid "PDF"
-msgstr "PDF"
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
@@ -52,29 +48,28 @@ msgid ""
 "the problem."
 msgstr "Clique aqui para baixar um arquivo com dados que vão nos ajudar a identificar o problema."
 
-#: data/widgets/contentGroup/noResultsMessage.ui:50
+#: data/widgets/contentGroup/noResultsMessage.ui:37
 msgid ""
 "We recommend that you:\n"
 "\n"
-"  •  Check your spelling\n"
-"  •  Try other words that mean the same thing\n"
-"  •  Try using more general words"
-msgstr "Recomendamos que você:\n\n• Confira se a palavra foi escrita corretamente\n• Tente outras palavras com o mesmo significado\n• Tente usar palavras mais genéricas"
+"Check your spelling\n"
+"Try other words that mean the same thing\n"
+"Try using more general words"
+msgstr "Recomendamos que você:\n\nConfira se a palavra foi escrita corretamente\nTente outras palavras com o mesmo significado\nTente usar palavras mais genéricas"
 
 #: data/widgets/layout/sideMenu.ui:95
-#: js/app/modules/layout/hamburgerBasement.js:51
-msgid "HOME"
-msgstr "PÁGINA PRINCIPAL"
+msgid "Home"
+msgstr "Página principal"
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license"
 msgstr "Veja a licença"
 
-#: js/app/application.js:181
+#: js/app/application.js:182
 msgid "Oops! No content."
 msgstr "Opa! Sem conteúdo."
 
-#: js/app/application.js:182
+#: js/app/application.js:183
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -145,7 +140,7 @@ msgid_plural "%s:%s minutes"
 msgstr[0] "%s:%s minuto"
 msgstr[1] "%s:%s minutos"
 
-#: js/app/interfaces/card.js:342
+#: js/app/interfaces/card.js:343
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -172,21 +167,21 @@ msgstr "Resultados da pesquisa por “%s”"
 msgid "Results for “%s”"
 msgstr "Resultados para “%s”"
 
-#: js/app/modules/contentGroup/contentGroup.js:166
+#: js/app/modules/contentGroup/contentGroup.js:171
 msgid "See more"
 msgstr "Veja mais"
 
 #: js/app/modules/contentGroup/noResultsMessage.js:52
-msgid "Sorry! :-("
-msgstr "Desculpe! :-("
-
-#: js/app/modules/contentGroup/noResultsMessage.js:53
-msgid "There are no results that match your search.\n"
-msgstr "Não encontramos nenhum resultado para a sua busca.\n"
+msgid "We're sorry, there are no results that match your search."
+msgstr "Desculpe, mas não encontramos nenhum resultado para a sua busca."
 
 #: js/app/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
 msgstr "Ver todas as categorias"
+
+#: js/app/modules/layout/hamburgerBasement.js:51
+msgid "HOME"
+msgstr "PÁGINA PRINCIPAL"
 
 #: js/app/modules/layout/placeholder.js:25
 msgid "Placeholder"
