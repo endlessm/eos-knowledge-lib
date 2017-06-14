@@ -35,6 +35,10 @@
         transition: padding 150ms ease-in-out;
     }
 
+    &__thumbnail {
+        background-color: $background-dark-color;
+    }
+
     &:hover {
         box-shadow: 0px 4px 5px transparentize(black, 1 - 0.35);
         .CardList__title {
