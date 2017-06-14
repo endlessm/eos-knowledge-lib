@@ -70,6 +70,9 @@ on_document_loaded (WebKitWebPage  *page,
                                               G_CALLBACK (signal_scroll),
                                               FALSE,
                                               data);
+
+  // Always let the client know about the scroll status
+  signal_scroll (document, NULL, data);
 }
 
 static void
