@@ -986,6 +986,7 @@ eknc_query_object_new_from_object (EkncQueryObject *source,
       if (!pspec)
         {
           g_critical ("Failed to find property: %s", name);
+          va_end (args);
           return NULL;
         }
 
@@ -994,6 +995,7 @@ eknc_query_object_new_from_object (EkncQueryObject *source,
       if (error != NULL)
         {
           g_critical ("Failed to retrieve va_list value: %s", error);
+          va_end (args);
           return NULL;
         }
     }
