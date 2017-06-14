@@ -188,6 +188,9 @@ eknc_xapian_bridge_get_fixed_query_finish
 eknc_xapian_bridge_query
 eknc_xapian_bridge_query_finish
 eknc_xapian_bridge_get_soup_session
+eknc_xapian_bridge_need_feature_test
+eknc_xapian_bridge_test
+eknc_xapian_bridge_test_finish
 EkncXapianBridgeError
 <SUBSECTION Standard>
 EkncXapianBridge
