@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-05-30 02:01+0000\n"
-"PO-Revision-Date: 2017-05-16 02:04+0000\n"
+"POT-Creation-Date: 2017-06-14 22:54+0000\n"
+"PO-Revision-Date: 2017-06-14 22:56+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Hausa (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/ha/)\n"
 "MIME-Version: 1.0\n"
@@ -16,10 +16,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ha\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: data/widgets/card/legacyPolaroid.ui:105
-msgid "PDF"
-msgstr ""
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
@@ -43,29 +39,28 @@ msgid ""
 "the problem."
 msgstr ""
 
-#: data/widgets/contentGroup/noResultsMessage.ui:50
+#: data/widgets/contentGroup/noResultsMessage.ui:37
 msgid ""
 "We recommend that you:\n"
 "\n"
-"  •  Check your spelling\n"
-"  •  Try other words that mean the same thing\n"
-"  •  Try using more general words"
+"Check your spelling\n"
+"Try other words that mean the same thing\n"
+"Try using more general words"
 msgstr ""
 
 #: data/widgets/layout/sideMenu.ui:95
-#: js/app/modules/layout/hamburgerBasement.js:51
-msgid "HOME"
+msgid "Home"
 msgstr ""
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license"
 msgstr ""
 
-#: js/app/application.js:181
+#: js/app/application.js:182
 msgid "Oops! No content."
 msgstr ""
 
-#: js/app/application.js:182
+#: js/app/application.js:183
 msgid ""
 "If you have an internet connection, we are downloading more content right "
 "now. Try again in a few minutes after this message disappears."
@@ -136,7 +131,7 @@ msgid_plural "%s:%s minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/app/interfaces/card.js:342
+#: js/app/interfaces/card.js:343
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -163,20 +158,20 @@ msgstr ""
 msgid "Results for “%s”"
 msgstr ""
 
-#: js/app/modules/contentGroup/contentGroup.js:166
+#: js/app/modules/contentGroup/contentGroup.js:171
 msgid "See more"
 msgstr ""
 
 #: js/app/modules/contentGroup/noResultsMessage.js:52
-msgid "Sorry! :-("
-msgstr ""
-
-#: js/app/modules/contentGroup/noResultsMessage.js:53
-msgid "There are no results that match your search.\n"
+msgid "We're sorry, there are no results that match your search."
 msgstr ""
 
 #: js/app/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
+msgstr ""
+
+#: js/app/modules/layout/hamburgerBasement.js:51
+msgid "HOME"
 msgstr ""
 
 #: js/app/modules/layout/placeholder.js:25
