@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["window/simple.html#search", "layout/sideMenu.html#context", "layout/sideMenu.html#sidebar"], "token": "optional"});
+urls_downloaded_cb({"token": "optional", "urls": ["window/simple.html#search", "layout/sideMenu.html#context", "layout/sideMenu.html#sidebar"]});
