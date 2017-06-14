@@ -679,7 +679,7 @@ on_xapian_bridge_query_fixed (GObject *source,
  * @callback: (scope async): callback to call when the request is satisfied.
  * @user_data: (closure): the data to pass to callback function.
  *
- * Asynchronously sends a request for to xapian-bridge to correct a given
+ * Asynchronously sends a request to xapian-bridge to correct a given
  * query object. The corrections can be zero or more of the following:
  *      - the query with its stop words removed
  *      - the query which has had spelling correction applied to it.

@@ -15,7 +15,7 @@ const InfiniteScrolledWindow = new Knowledge.Class({
          * Property: bottom-buffer
          *
          * A integer value for the number of pixels of buffer the InfiniteScrolledWindow will still
-         * consider the bottom of the the scroll window. i.e. If button-buffer is 30 this widget will
+         * consider the bottom of the scroll window. i.e. If button-buffer is 30 this widget will
          * emit need-more-content when the user scrolls to 30 pixels before the
          * bottom.
          */
