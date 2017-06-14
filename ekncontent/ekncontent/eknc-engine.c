@@ -463,7 +463,7 @@ eknc_engine_get_domain (EkncEngine *self,
  * @app_id: the id of the application to load the object from
  * @error: #GError for error reporting.
  *
- * Get a #EkncDomain object for the a given app id.
+ * Get a #EkncDomain object for a given app id.
  *
  * Returns the domain if it has already been created, and synchronously creates
  * one if none exists. Returns an error if one occurred while initializing the

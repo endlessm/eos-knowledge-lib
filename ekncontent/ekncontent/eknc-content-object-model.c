@@ -341,7 +341,7 @@ eknc_content_object_model_class_init (EkncContentObjectModelClass *klass)
   /**
    * EkncContentObjectModel:thumbnail-uri:
    *
-   * URI of the the thumbnail image
+   * URI of the thumbnail image
    *
    * Usually the EKN ID of an #ImageObjectModel.
    */
@@ -548,7 +548,7 @@ eknc_content_object_model_add_json_to_params (JsonNode *node,
  * eknc_content_object_model_get_tags:
  * @self: the model
  *
- * Get the models tags.
+ * Get the model's tags.
  *
  * Returns: (transfer none): the resources GVariant
  */
@@ -565,7 +565,7 @@ eknc_content_object_model_get_tags (EkncContentObjectModel *self)
  * eknc_content_object_model_get_resources:
  * @self: the model
  *
- * Get the models resources.
+ * Get the model's resources.
  *
  * Returns: (transfer none): the resources GVariant
  */
@@ -583,7 +583,7 @@ eknc_content_object_model_get_resources (EkncContentObjectModel *self)
  * @self: the model
  * @error: set if an error occurred while loading the content
  *
- * Get the a stream for the models content.
+ * Get a stream for the model's content.
  *
  * Returns: (transfer full): a GFileInputStream for the content
  */

@@ -132,7 +132,7 @@ eknc_video_object_model_class_init (EkncVideoObjectModelClass *klass)
   /**
    * EkncVideoObjectModel:poster-uri:
    *
-   * URI of the the video's poster image
+   * URI of the video's poster image
    *
    * The EKN ID of an #ImageObjectModel.
    */
