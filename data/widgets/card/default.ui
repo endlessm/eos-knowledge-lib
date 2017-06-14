@@ -11,8 +11,19 @@
         <property name="expand">True</property>
         <property name="visible">True</property>
         <child>
-          <object class="GtkFrame" id="thumbnail-frame">
+          <object class="GtkOverlay" id="thumbnail-frame">
             <property name="can_focus">False</property>
+            <child type="overlay">
+              <object class="GtkFrame" id="thumbnail-overlay">
+                <property name="can_focus">False</property>
+                <property name="visible">False</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+              </object>
+              <packing>
+                <property name="pass_through">True</property>
+              </packing>
+            </child>
             <style>
               <class name="CardDefault__thumbnail"/>
             </style>
@@ -52,17 +63,33 @@
                   </object>
                 </child>
                 <child>
-                  <object class="EknFormattableLabel" id="title-label">
-                    <property name="can_focus">False</property>
-                    <property name="expand">True</property>
-                    <property name="halign">start</property>
-                    <property name="valign">start</property>
-                    <property name="xalign">0</property>
-                    <property name="use_markup">True</property>
-                    <property name="wrap">True</property>
-                    <property name="wrap_mode">word</property>
-                    <property name="ellipsize">end</property>
-                    <property name="lines">1</property>
+                    <object class="GtkBox" id="title-box">
+                      <property name="can_focus">False</property>
+                      <property name="expand">True</property>
+                      <property name="orientation">vertical</property>
+                      <child>
+                        <object class="GtkBox" id="content-overlay">
+                          <property name="can_focus">False</property>
+                          <property name="expand">True</property>
+                          <property name="visible">False</property>
+                          <property name="halign">center</property>
+                          <property name="valign">center</property>
+                        </object>
+                      </child>
+                      <child>
+                        <object class="EknFormattableLabel" id="title-label">
+                          <property name="can_focus">False</property>
+                          <property name="expand">False</property>
+                          <property name="halign">start</property>
+                          <property name="valign">end</property>
+                          <property name="xalign">0</property>
+                          <property name="use_markup">True</property>
+                          <property name="wrap">True</property>
+                          <property name="wrap_mode">word</property>
+                          <property name="ellipsize">end</property>
+                          <property name="lines">1</property>
+                        </object>
+                      </child>
                   </object>
                 </child>
               </object>
