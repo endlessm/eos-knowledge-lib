@@ -34,13 +34,19 @@ $accent-light-color: #044a80 !default;
 .BannerDynamic {
     .search-page &__logo,
     .article-page &__logo, {
-        -EknDynamicLogo-sizing: "size-min";
-        min-width: 345px;
-        min-height: 92px;
+        -EknDynamicLogo-max-width: 345px;
+        -EknDynamicLogo-max-height: 92px;
     }
 
     .home-page &__logo {
-        min-width: 550px;
+        margin: 20px 20px 0px 20px;
+        -EknDynamicLogo-max-width: 400px;
+        -EknDynamicLogo-max-height: 275px;
+
+         .composite & {
+            -EknDynamicLogo-max-width: 300px;
+            -EknDynamicLogo-max-height: 200px;
+         }
     }
 }
 
