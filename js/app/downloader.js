@@ -285,6 +285,10 @@ const SubscriptionDownloader = new Lang.Class({
                 this._app.release();
                 this._ongoing_downloads.delete(subscription_id);
                 return updated;
+            })
+            .catch((error) => {
+                this._app.release();
+                throw error;
             });
         });
     },
