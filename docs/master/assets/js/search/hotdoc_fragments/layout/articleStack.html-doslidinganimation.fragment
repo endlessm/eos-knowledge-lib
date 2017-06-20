@@ -1,1 +1,1 @@
-fragment_downloaded_cb({"url": "layout/articleStack.html#doslidinganimation", "fragment": "do sliding animation \nIf true the article stack module will transition new articles in from the left and old from the right. If false will just crossfade. \n"});
+fragment_downloaded_cb({"fragment": "do sliding animation \nIf true the article stack module will transition new articles in from the left and old from the right. If false will just crossfade. \n", "url": "layout/articleStack.html#doslidinganimation"});

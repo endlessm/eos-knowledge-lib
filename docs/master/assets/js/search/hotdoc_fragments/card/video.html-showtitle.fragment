@@ -1,1 +1,1 @@
-fragment_downloaded_cb({"url": "card/video.html#showtitle", "fragment": "show title \nWhether to show the title label \n"});
+fragment_downloaded_cb({"fragment": "show title \nWhether to show the title label \n", "url": "card/video.html#showtitle"});
