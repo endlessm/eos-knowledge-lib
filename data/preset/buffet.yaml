@@ -247,6 +247,8 @@ defines:
                 selection:
                   type: Selection.Search
                   id: search-results
+                  slots:
+                    filter: Filter.Articles
                 no-results:
                   shortdef: 'Layout.Box(orientation: vertical)'
                   slots:

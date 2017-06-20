@@ -59,6 +59,8 @@ defines:
                       selection:
                         type: Selection.Search
                         id: search-results
+                        slots:
+                          filter: Filter.Articles
                       no-results: ContentGroup.NoResultsMessage
                     styles:
                     - search-results

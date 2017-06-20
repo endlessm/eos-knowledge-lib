@@ -88,6 +88,8 @@ defines:
             selection:
               type: Selection.Search
               id: search-results
+              slots:
+                filter: Filter.Articles
 
 - &article-page
   type: Layout.Sidebar
