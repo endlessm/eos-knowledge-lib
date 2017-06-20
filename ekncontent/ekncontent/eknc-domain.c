@@ -953,7 +953,8 @@ on_xapian_test_response (GObject *source,
   eknc_xapian_bridge_test_finish (bridge, result, &error);
   /* Ignore failures - older xapian-bridge doesn't support /test. */
 
-  EkncQueryObject *query = g_task_get_task_data (task);
+  /* Take ref on query, because task data will be replaced */
+  g_autoptr(EkncQueryObject) query = g_object_ref (g_task_get_task_data (task));
   send_query_to_xapian_bridge (domain, bridge, query, cancellable,
                                g_steal_pointer (&task));
 }
