@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "explored", "urls": ["card/deck.html#carddeck1"]});
+urls_downloaded_cb({"urls": ["card/deck.html#carddeck1"], "token": "explored"});
