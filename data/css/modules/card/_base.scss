@@ -32,4 +32,20 @@
         background-size: 100% 100%;
         border-width: 0px;
     }
+
+    &__media_overlay.audio,
+    &__media_overlay.video {
+      min-width: 96px;
+      min-height: 96px;
+      border-radius: 50%;
+      background-color: rgba(#1e1e1e, .8);
+      background-position: center;
+      background-repeat: no-repeat;
+      background-image: url('resource:///com/endlessm/knowledge/data/images/play_icon.svg');
+    }
+
+    &__no_thumbnail.audio,
+    &__no_thumbnail.video {
+      background-image: linear-gradient(to top right, $primary-dark-color, $primary-medium-color);
+    }
 }

@@ -57,7 +57,8 @@ const Default = new Module.Class({
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/default.ui',
     InternalChildren: [ 'layout', 'inner-content-grid', 'thumbnail-frame',
-                        'grid', 'title-label', 'synopsis-label', 'context-frame'],
+                        'grid', 'title-label', 'synopsis-label', 'context-frame',
+                        'thumbnail-overlay', 'content-overlay', 'title-box'],
 
     _init: function (props={}) {
         Object.defineProperties(this, {
@@ -89,6 +90,11 @@ const Default = new Module.Class({
 
         Utils.set_hand_cursor_on_widget(this);
         this._card_type = this._get_card_type();
+
+        if (this._card_type === CardType.HIGH_RES_IMAGE)
+            this.set_media_overlay_from_model(this._content_overlay);
+        else
+            this.set_media_overlay_from_model(this._thumbnail_overlay);
     },
 
     _get_card_type: function () {
@@ -118,18 +124,18 @@ const Default = new Module.Class({
     _get_constraints_polaroid_card_horizontal: function (show_synopsis) {
         return [
             {
-                target_object: this._title_label,
+                target_object: this._title_box,
                 target_attribute: show_synopsis ? Emeus.ConstraintAttribute.BOTTOM : Emeus.ConstraintAttribute.CENTER_Y,
                 source_object: show_synopsis ? this._synopsis_label : null,
                 source_attribute: show_synopsis ? Emeus.ConstraintAttribute.TOP : Emeus.ConstraintAttribute.CENTER_Y,
             },
             {
-                target_object: this._title_label,
+                target_object: this._title_box,
                 target_attribute: Emeus.ConstraintAttribute.RIGHT,
                 source_attribute: Emeus.ConstraintAttribute.RIGHT,
             },
             {
-                target_object: this._title_label,
+                target_object: this._title_box,
                 target_attribute: Emeus.ConstraintAttribute.WIDTH,
                 source_attribute: Emeus.ConstraintAttribute.WIDTH,
             },
@@ -171,17 +177,17 @@ const Default = new Module.Class({
     get_constraints_polaroid_card_vertical: function (show_context) {
         return [
             {
-                target_object: this._title_label,
+                target_object: this._title_box,
                 target_attribute: show_context ? Emeus.ConstraintAttribute.TOP : Emeus.ConstraintAttribute.CENTER_Y,
                 source_attribute: show_context ? Emeus.ConstraintAttribute.TOP : Emeus.ConstraintAttribute.CENTER_Y,
             },
             {
-                target_object: this._title_label,
+                target_object: this._title_box,
                 target_attribute: Emeus.ConstraintAttribute.LEFT,
                 source_attribute: Emeus.ConstraintAttribute.LEFT,
             },
             {
-                target_object: this._title_label,
+                target_object: this._title_box,
                 target_attribute: Emeus.ConstraintAttribute.WIDTH,
                 source_attribute: Emeus.ConstraintAttribute.WIDTH,
             },
@@ -207,18 +213,23 @@ const Default = new Module.Class({
     _get_constraints_post_card: function (show_context) {
         return [
             {
-                target_object: this._title_label,
+                target_object: this._title_box,
+                target_attribute: Emeus.ConstraintAttribute.TOP,
+                source_attribute: Emeus.ConstraintAttribute.TOP,
+            },
+            {
+                target_object: this._title_box,
                 target_attribute: Emeus.ConstraintAttribute.BOTTOM,
                 source_object: show_context ? this._context_frame : null,
                 source_attribute: show_context ? Emeus.ConstraintAttribute.TOP : Emeus.ConstraintAttribute.BOTTOM,
             },
             {
-                target_object: this._title_label,
+                target_object: this._title_box,
                 target_attribute: Emeus.ConstraintAttribute.WIDTH,
                 source_attribute: Emeus.ConstraintAttribute.WIDTH,
             },
             {
-                target_object: this._title_label,
+                target_object: this._title_box,
                 target_attribute: Emeus.ConstraintAttribute.LEFT,
                 source_attribute: Emeus.ConstraintAttribute.LEFT,
             },
@@ -244,18 +255,18 @@ const Default = new Module.Class({
     _get_constraints_text_card: function (show_synopsis) {
         return [
             {
-                target_object: this._title_label,
+                target_object: this._title_box,
                 target_attribute: show_synopsis ? Emeus.ConstraintAttribute.BOTTOM : Emeus.ConstraintAttribute.CENTER_Y,
                 source_object: show_synopsis ? this._synopsis_label : null,
                 source_attribute: show_synopsis ? Emeus.ConstraintAttribute.TOP : Emeus.ConstraintAttribute.CENTER_Y,
             },
             {
-                target_object: this._title_label,
+                target_object: this._title_box,
                 target_attribute: Emeus.ConstraintAttribute.WIDTH,
                 source_attribute: Emeus.ConstraintAttribute.WIDTH,
             },
             {
-                target_object: this._title_label,
+                target_object: this._title_box,
                 target_attribute: Emeus.ConstraintAttribute.LEFT,
                 source_attribute: Emeus.ConstraintAttribute.LEFT,
             },
@@ -267,13 +278,13 @@ const Default = new Module.Class({
             {
                 target_object: this._synopsis_label,
                 target_attribute: Emeus.ConstraintAttribute.LEFT,
-                source_object: this._title_label,
+                source_object: this._title_box,
                 source_attribute: Emeus.ConstraintAttribute.LEFT,
             },
             {
                 target_object: this._synopsis_label,
                 target_attribute: Emeus.ConstraintAttribute.WIDTH,
-                source_object: this._title_label,
+                source_object: this._title_box,
                 source_attribute: Emeus.ConstraintAttribute.WIDTH,
             },
             {
