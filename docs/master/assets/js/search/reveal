@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["contentGroup/mediaLightbox.html#revealoverlays"], "token": "reveal"});
+urls_downloaded_cb({"token": "reveal", "urls": ["contentGroup/mediaLightbox.html#revealoverlays"]});
