@@ -36,19 +36,32 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 /* Not part of public API. Changes @widget's GdkWindow to have the 'hand' cursor
 indicating a clickable UI element. */
 function set_hand_cursor_on_widget(widget) {
+    if (widget._hand_cursor_handlers)
+        return;
+
     widget.add_events(Gdk.EventMask.ENTER_NOTIFY_MASK |
         Gdk.EventMask.LEAVE_NOTIFY_MASK);
 
-    widget.connect('enter-notify-event', function (widget) {
+    let enter_id = widget.connect('enter-notify-event', function (widget) {
         let cursor = Gdk.Cursor.new_for_display(Gdk.Display.get_default(),
             Gdk.CursorType.HAND1);
         widget.window.set_cursor(cursor);
         return Gdk.EVENT_PROPAGATE;
     });
-    widget.connect('leave-notify-event', function (widget) {
+    let leave_id = widget.connect('leave-notify-event', function (widget) {
         widget.window.set_cursor(null);
         return Gdk.EVENT_PROPAGATE;
     });
+
+    widget._hand_cursor_handlers = { enter_id: enter_id, leave_id: leave_id };
+}
+
+function unset_hand_cursor_on_widget(widget) {
+    if (widget._hand_cursor_handlers) {
+        widget.disconnect(widget._hand_cursor_handlers.enter_id);
+        widget.disconnect(widget._hand_cursor_handlers.leave_id);
+        delete widget._hand_cursor_handlers;
+    }
 }
 
 /* Helper function to load a JSON object from a file */
