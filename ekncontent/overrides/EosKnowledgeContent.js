@@ -124,6 +124,7 @@ function _init() {
 
     add_custom_model_constructors(Eknc.AudioObjectModel);
     add_custom_model_constructors(Eknc.ContentObjectModel);
+    add_custom_model_constructors(Eknc.DictionaryObjectModel);
     add_custom_model_constructors(Eknc.ArticleObjectModel);
     add_custom_model_constructors(Eknc.SetObjectModel);
     add_custom_model_constructors(Eknc.MediaObjectModel);

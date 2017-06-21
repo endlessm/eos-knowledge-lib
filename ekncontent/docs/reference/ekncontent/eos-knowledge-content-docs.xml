@@ -22,6 +22,7 @@
     <xi:include href="xml/domain.xml"/>
     <xi:include href="xml/audio-object-model.xml"/>
     <xi:include href="xml/content-object-model.xml"/>
+    <xi:include href="xml/dictionary-object-model.xml"/>
     <xi:include href="xml/article-object-model.xml"/>
     <xi:include href="xml/set-object-model.xml"/>
     <xi:include href="xml/media-object-model.xml"/>

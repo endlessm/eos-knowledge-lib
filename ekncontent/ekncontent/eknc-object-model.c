@@ -2,6 +2,7 @@
 
 #include "eknc-audio-object-model.h"
 #include "eknc-article-object-model.h"
+#include "eknc-dictionary-object-model.h"
 #include "eknc-set-object-model.h"
 #include "eknc-media-object-model.h"
 #include "eknc-image-object-model.h"
@@ -56,6 +57,10 @@ eknc_object_model_from_json_node (JsonNode *node,
   else if (g_strcmp0 (type, "ekn://_vocab/ArticleObject") == 0)
     {
       return eknc_article_object_model_new_from_json_node (node);
+    }
+  else if (g_strcmp0 (type, "ekn://_vocab/DictionaryObject") == 0)
+    {
+      return eknc_dictionary_object_model_new_from_json_node (node);
     }
   else if (g_strcmp0 (type, "ekn://_vocab/SetObject") == 0)
     {
