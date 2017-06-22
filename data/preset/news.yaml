@@ -252,6 +252,8 @@ defines:
                         selection:
                           type: Selection.Search
                           id: search-results
+                          slots:
+                            filter: Filter.Articles
                         arrangement:
                           type: Arrangement.List
                           styles:

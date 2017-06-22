@@ -129,6 +129,8 @@ defines:
             selection:
               type: Selection.Search
               id: search-results
+              slots:
+                filter: Filter.Articles
             no-results: 'ContentGroup.NoResultsMessage(valign: center, halign: center, justify: center)'
           styles:
           - search-results
