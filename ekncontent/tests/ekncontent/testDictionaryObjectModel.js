@@ -36,7 +36,7 @@ describe('Dictionary Object Model', function() {
         it('should marshal properties', function() {
             expect(dictionaryObject.word).toBe('entreaty');
             expect(dictionaryObject.definition).toBe('An earnest request or petition; a plea.');
-            expect(dictionaryObject.part-of-speech).toBe('noun');
+            expect(dictionaryObject.part_of_speech).toBe('noun');
         });
 
         it('should inherit properties set by parent class (ContentObjectModel)', function() {
