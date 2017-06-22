@@ -6,7 +6,11 @@ const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 
+const Actions = imports.app.actions;
+const Dispatcher = imports.app.dispatcher;
+const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
+const Pages = imports.app.pages;
 const Utils = imports.app.utils;
 
 // FIXME: Should be responsive and change to 60 after a width threshold is crossed
@@ -42,17 +46,40 @@ const TopMenu = new Module.Class({
         'menu': {},
     },
 
+    _on_history_changed: function () {
+        let item = HistoryStore.get_default().get_current_item();
+        this._in_home_page = (item && item.page_type === Pages.HOME);
+
+        if (this._in_home_page)
+            Utils.unset_hand_cursor_on_widget(this._banner);
+        else
+            Utils.set_hand_cursor_on_widget(this._banner);
+    },
+
+    _on_banner_clicked: function () {
+        if (this._in_home_page)
+            return;
+
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.HOME_CLICKED,
+        });
+    },
+
     _init: function (props={}) {
         this.hexpand = true;
         this.parent(props);
 
-        this._banner = this.create_submodule('banner');
+        this._banner = new Gtk.Button();
+        this._banner.connect ('clicked', this._on_banner_clicked.bind(this));
+        this._banner.add (this.create_submodule('banner'));
         this._menu = this.create_submodule('menu');
 
         this.add(this._banner);
         this.add(this._menu);
 
         this.show_all();
+
+        HistoryStore.get_default().connect ('changed', this._on_history_changed.bind(this));
     },
 
     vfunc_get_preferred_width: function () {
