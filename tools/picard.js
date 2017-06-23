@@ -90,7 +90,9 @@ let widgets = {};
 function main () {
     Gtk.init(null);
     let base_theme_uri = 'resource:///com/endlessm/sdk/css/endless-widgets.css';
-    [base_theme_uri, CSS_DIR + 'picard.css', CSS_DIR + 'default.css'].map(Gio.File.new_for_uri).forEach((file) => {
+    [base_theme_uri, CSS_DIR + 'picard.css', CSS_DIR + 'default.css']
+    .map(uri => Gio.File.new_for_uri(uri))
+    .forEach(file => {
         Utils.add_css_provider_from_file(file, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     });
 
@@ -348,7 +350,7 @@ function change_modules () {
 }
 
 function connect_signals () {
-    widgets.window.connect('destroy', Gtk.main_quit);
+    widgets.window.connect('destroy', () => Gtk.main_quit());
     widgets.window.connect('configure-event', () => {
         let [width, height] = widgets.window.get_size();
         widgets.titlebar.subtitle = width + 'x' + height;
