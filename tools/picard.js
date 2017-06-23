@@ -380,7 +380,7 @@ function connect_signals () {
         let model = Eknc.ArticleObjectModel.new_from_props({
             title: ARTICLE_TITLE,
             synopsis: ARTICLE_SYNOPSIS,
-            thumbnail_uri: IMAGES_DIR + ARTICLE_IMAGES[GLib.random_int_range(0, ARTICLE_IMAGES.length)],
+            thumbnail_uri: IMAGES_DIR + ARTICLE_IMAGES[GLib.random_int_range(0, ARTICLE_IMAGES.length - 1)],
             tags: ['Westeros', 'A Song of Ice and Fire', 'Dragons'],
         });
         widgets.selection.add(model);
