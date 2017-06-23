@@ -99,6 +99,8 @@ defines:
             selection:
               type: Selection.ContentForSet
               id: set-articles
+              slots:
+                order: Order.Alphabetical
 
 - &search-page
   shortdef: 'Layout.Box(orientation: vertical)'
