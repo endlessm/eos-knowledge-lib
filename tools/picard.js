@@ -74,6 +74,9 @@ const COLORS = ['fce94f', 'fcaf3e', 'e9b96e', '8ae234', '729fcf', 'ad7fa8',
 const SPACING_UNIT = 6;
 const DEFAULT_CARD_SPACING = 6;
 const MAX_CARD_SPACING = 24;
+
+const OBJECT_MODEL_TYPE = [ 'ArticleObjectModel', 'VideoObjectModel', 'AudioObjectModel' ];
+
 // A little animation to guide the eye where to click first.
 const CSS = '\
 @keyframes glow {\
@@ -244,9 +247,14 @@ function get_module_menu () {
     .sort()
     .forEach((name) => widgets.arrangement_combo_box.append_text(name));
 
+    widgets.object_model_combo_box = new Gtk.ComboBoxText();
+    OBJECT_MODEL_TYPE.forEach((name) => widgets.object_model_combo_box.append_text(name));
+    widgets.object_model_combo_box.set_active(0);
+
     widgets.arrangement_combo_box.set_active(0);
     menu_grid.add(widgets.card_combo_box);
     menu_grid.add(widgets.arrangement_combo_box);
+    menu_grid.add(widgets.object_model_combo_box);
     menu.add(menu_grid);
     menu_grid.show_all();
     return menu;
@@ -349,6 +357,28 @@ function change_modules () {
         widgets.clear.sensitive = widgets.remove_box.sensitive = true;
 }
 
+function change_models () {
+    let object_model = widgets.object_model_combo_box.get_active_text();
+    let models = widgets.selection.get_models();
+    clear_arrangement();
+    load_arrangement(widgets.arrangement_combo_box.get_active_text(),
+        widgets.card_combo_box.get_active_text());
+    models.forEach((model) => {
+        let new_model = Eknc[object_model].new_from_props({
+            title: model.title,
+            synopsis: model.synopsis,
+            thumbnail_uri: model.thumbnail_uri,
+            tags: model.tags,
+        });
+        widgets.selection.add(new_model);
+    });
+
+    // since clearing the arrangement above set it to false
+    if (models.length > 0)
+        widgets.clear.sensitive = widgets.remove_box.sensitive = true;
+}
+
+
 function connect_signals () {
     widgets.window.connect('destroy', () => Gtk.main_quit());
     widgets.window.connect('configure-event', () => {
@@ -377,10 +407,11 @@ function connect_signals () {
     SetMap.init_map_with_models(sets);
 
     widgets.add_box.connect('clicked', () => {
-        let model = Eknc.ArticleObjectModel.new_from_props({
+        let object_model = widgets.object_model_combo_box.get_active_text();
+        let model = Eknc[object_model].new_from_props({
             title: ARTICLE_TITLE,
             synopsis: ARTICLE_SYNOPSIS,
-            thumbnail_uri: IMAGES_DIR + ARTICLE_IMAGES[GLib.random_int_range(0, ARTICLE_IMAGES.length)],
+            thumbnail_uri: IMAGES_DIR + ARTICLE_IMAGES[GLib.random_int_range(0, ARTICLE_IMAGES.length - 1)],
             tags: ['Westeros', 'A Song of Ice and Fire', 'Dragons'],
         });
         widgets.selection.add(model);
@@ -401,6 +432,7 @@ function connect_signals () {
 
     widgets.arrangement_combo_box.connect('changed', change_modules);
     widgets.card_combo_box.connect('changed', change_modules);
+    widgets.object_model_combo_box.connect('changed', change_models);
 
     RESOLUTIONS.forEach((res, ix) => {
         let button = widgets.resize[ix];
