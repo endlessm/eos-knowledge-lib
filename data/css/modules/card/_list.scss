@@ -87,4 +87,19 @@
     .composite &.width-e &__synopsis {
         font-size: 18.8px;  /* 16px spec * 88% because spec was at 110% scale not 125% */
     }
+
+    // Video/audio icon sizing
+    &.width-f,
+    &.width-e,
+    &.width-d,
+    &.width-c,
+    &.width-b,
+    &.width-a {
+        .CardList__media_overlay.audio,
+        .CardList__media_overlay.video {
+            min-width: 60px;
+            min-height: 60px;
+            background-size: 18px 18px;
+        }
+    }
 }
