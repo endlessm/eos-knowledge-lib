@@ -12,6 +12,7 @@
     <file compressed="true">data/css/preset_a.css</file>
     <file compressed="true">data/css/preset_b.css</file>
     <file compressed="true">data/css/keybindings.css</file>
+    <file>data/icons/scalable/actions/eos-play-symbolic.svg</file>
     <file>data/images/background.png</file>
     <file>data/images/checkmark.png</file>
     <file>data/images/pdf-background.png</file>
