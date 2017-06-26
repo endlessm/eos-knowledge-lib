@@ -22,7 +22,7 @@
  */
 
 @define-color transparent-light rgba (1,1,1,.1);
-@define-color transparent-dark  rgba (.11,.11,.11,.8);
+@define-color transparent-dark  rgba (0,0,0,.6);
 @define-color highlight-color   #ff6835;
 @define-color audio-bg-color    #4c4c4c;
 
@@ -68,7 +68,7 @@ ekn-media-bin label.description {
   font: 14px Sans;
 }
 
-ekn-media-bin box.bottom button {
+ekn-media-bin button {
   border: 0px;
   border-radius: 0px;
   box-shadow: none;
@@ -77,13 +77,25 @@ ekn-media-bin box.bottom button {
   padding: 8px;
 }
 
-ekn-media-bin box.bottom button:hover {
+ekn-media-bin button:hover {
   box-shadow: none;
-  background: rgba (0,0,0,.6);
+}
+
+/* Icons */
+ekn-media-bin box.play-box > label,
+ekn-media-bin button image {
+  color: rgba (255,255,255,0.6);
+  text-shadow: none;
+}
+
+ekn-media-bin button:hover box.play-box > label,
+ekn-media-bin button:hover image {
+  color: white;
+  text-shadow: none;
 }
 
 /* Main play button */
-ekn-media-bin overlay > box {
+ekn-media-bin box.play-box {
   font-size: 18px;
   border: 0px;
   border-radius: 2em;
@@ -92,7 +104,7 @@ ekn-media-bin overlay > box {
   background: @transparent-dark;
 }
 
-ekn-media-bin overlay > box > label {
+ekn-media-bin box.play-box > label {
   padding-left: .64em;
 }
 

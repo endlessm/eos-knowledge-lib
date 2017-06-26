@@ -45,10 +45,10 @@
 
 #define EMB_ICON_SIZE            GTK_ICON_SIZE_BUTTON
 
-#define EMB_ICON_NAME_PLAY       "ekn-media-bin-play"
-#define EMB_ICON_NAME_PAUSE      "ekn-media-bin-pause"
-#define EMB_ICON_NAME_FULLSCREEN "ekn-media-bin-fullscreen"
-#define EMB_ICON_NAME_RESTORE    "ekn-media-bin-restore"
+#define EMB_ICON_NAME_PLAY       "ekn-media-bin-play-symbolic"
+#define EMB_ICON_NAME_PAUSE      "ekn-media-bin-pause-symbolic"
+#define EMB_ICON_NAME_FULLSCREEN "ekn-media-bin-fullscreen-symbolic"
+#define EMB_ICON_NAME_RESTORE    "ekn-media-bin-restore-symbolic"
 
 #define EMB_INITIAL_STATE        GST_STATE_PAUSED
 
