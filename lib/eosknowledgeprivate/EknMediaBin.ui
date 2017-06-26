@@ -5,13 +5,13 @@
   <object class="GtkImage" id="audio_playback_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="icon_name">ekn-media-bin-play</property>
+    <property name="icon_name">ekn-media-bin-play-symbolic</property>
   </object>
   <object class="GtkImage" id="fullscreen_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">18</property>
-    <property name="icon_name">ekn-media-bin-fullscreen</property>
+    <property name="icon_name">ekn-media-bin-fullscreen-symbolic</property>
   </object>
   <object class="GtkAdjustment" id="playback_adjustment">
     <property name="upper">128</property>
@@ -23,7 +23,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">18</property>
-    <property name="icon_name">ekn-media-bin-play</property>
+    <property name="icon_name">ekn-media-bin-play-symbolic</property>
   </object>
   <object class="GtkAdjustment" id="volume_adjustment">
     <property name="upper">1</property>
@@ -86,11 +86,11 @@
                     <child>
                       <object class="GtkLabel" id="description_label">
                         <property name="can_focus">False</property>
-                        <property name="ellipsize">end</property>
-                        <property name="justify">fill</property>
                         <property name="halign">start</property>
-                        <property name="lines">6</property>
+                        <property name="justify">fill</property>
                         <property name="wrap">True</property>
+                        <property name="ellipsize">end</property>
+                        <property name="lines">6</property>
                         <style>
                           <class name="description"/>
                         </style>
@@ -201,10 +201,10 @@
                             <property name="value">1</property>
                             <property name="size">large-toolbar</property>
                             <property name="adjustment">volume_adjustment</property>
-                            <property name="icons">ekn-media-bin-volume-muted
-ekn-media-bin-volume-high
-ekn-media-bin-volume-low
-ekn-media-bin-volume-medium</property>
+                            <property name="icons">ekn-media-bin-volume-muted-symbolic
+ekn-media-bin-volume-high-symbolic
+ekn-media-bin-volume-low-symbolic
+ekn-media-bin-volume-medium-symbolic</property>
                             <property name="use_symbolic">False</property>
                             <child internal-child="plus_button">
                               <object class="GtkButton">
@@ -254,39 +254,53 @@ ekn-media-bin-volume-medium</property>
               </packing>
             </child>
             <child type="overlay">
-              <object class="GtkBox" id="play_box">
+              <object class="GtkButton">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can_focus">True</property>
+                <property name="focus_on_click">False</property>
+                <property name="receives_default">True</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
+                <property name="relief">none</property>
+                <signal name="clicked" handler="ekn_media_bin_toggle_playback" swapped="yes"/>
                 <child>
-                  <object class="GtkImage" id="play_image">
+                  <object class="GtkBox" id="play_box">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="pixel_size">32</property>
-                    <property name="icon_name">ekn-media-bin-play</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <child>
+                      <object class="GtkImage" id="play_image">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="pixel_size">32</property>
+                        <property name="icon_name">ekn-media-bin-play-symbolic</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="duration_label">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">start</property>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <style>
+                      <class name="play-box"/>
+                    </style>
                   </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="duration_label">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="halign">start</property>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
                 </child>
               </object>
               <packing>
-                <property name="pass_through">True</property>
                 <property name="index">2</property>
               </packing>
             </child>
@@ -354,10 +368,10 @@ ekn-media-bin-volume-medium</property>
                     <property name="value">1</property>
                     <property name="size">large-toolbar</property>
                     <property name="adjustment">volume_adjustment</property>
-                    <property name="icons">ekn-media-bin-volume-muted
-ekn-media-bin-volume-high
-ekn-media-bin-volume-low
-ekn-media-bin-volume-medium</property>
+                    <property name="icons">ekn-media-bin-volume-muted-symbolic
+ekn-media-bin-volume-high-symbolic
+ekn-media-bin-volume-low-symbolic
+ekn-media-bin-volume-medium-symbolic</property>
                     <property name="use_symbolic">False</property>
                     <child internal-child="plus_button">
                       <object class="GtkButton">
