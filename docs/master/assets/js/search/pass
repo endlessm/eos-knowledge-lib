@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["controller/buffet.html#controllerbuffet1", "arrangement/pianola.html#arrangementpianola1"], "token": "pass"});
+urls_downloaded_cb({"token": "pass", "urls": ["controller/buffet.html#controllerbuffet1", "arrangement/pianola.html#arrangementpianola1"]});
