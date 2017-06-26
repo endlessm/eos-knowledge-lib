@@ -209,6 +209,19 @@
                 padding: 20px;
             }
         }
+
+        // Video/audio icon sizing
+        &.height-b.width-c,
+        &.height-b.width-b,
+        &.height-b.width-a,
+        &.height-a {
+            .CardDefault__media_overlay.audio,
+            .CardDefault__media_overlay.video {
+                min-width: 60px;
+                min-height: 60px;
+                background-size: 18px 18px;
+            }
+        }
     }
 
     &.CardPost {
@@ -291,6 +304,17 @@
             }
             .CardDefault__content_grid {
                 padding: 20px;
+            }
+        }
+
+        // Video/audio icon sizing
+        &.height-b,
+        &.height-a {
+            .CardDefault__media_overlay.audio,
+            .CardDefault__media_overlay.video {
+                min-width: 60px;
+                min-height: 60px;
+                background-size: 18px 18px;
             }
         }
     }
