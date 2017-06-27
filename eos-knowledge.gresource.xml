@@ -12,11 +12,11 @@
     <file compressed="true">data/css/preset_a.css</file>
     <file compressed="true">data/css/preset_b.css</file>
     <file compressed="true">data/css/keybindings.css</file>
+    <file preprocess="xml-stripblanks">data/icons/scalable/actions/eos-play-symbolic.svg</file>
     <file>data/images/background.png</file>
     <file>data/images/checkmark.png</file>
     <file>data/images/pdf-background.png</file>
     <file>data/images/pdf_icon.png</file>
-    <file>data/images/play_icon.svg</file>
     <file>data/images/tools/desk.jpg</file>
     <file>data/images/tools/give_that_man_a_knighthood.webm</file>
     <file>data/images/tools/house.jpg</file>

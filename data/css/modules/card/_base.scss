@@ -38,14 +38,23 @@
       min-width: 96px;
       min-height: 96px;
       border-radius: 50%;
-      background-color: rgba(#1e1e1e, .8);
+      color: rgba(white, .6);
+      background-color: rgba(black, .6);
+      background-size: 32px 32px;
       background-position: center;
       background-repeat: no-repeat;
-      background-image: url('resource:///com/endlessm/knowledge/data/images/play_icon.svg');
+      background-image: -gtk-icontheme('eos-play-symbolic');
     }
 
     &__no_thumbnail.audio,
     &__no_thumbnail.video {
       background-image: linear-gradient(to top right, $primary-dark-color, $primary-medium-color);
+    }
+}
+
+.Card:hover {
+    .Card__media_overlay.audio,
+    .Card__media_overlay.video {
+        color: white;
     }
 }
