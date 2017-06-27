@@ -76,8 +76,6 @@ const Application = new Knowledge.Class({
         this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
         this.image_attribution_file = Gio.File.new_for_uri(CREDITS_URI);
 
-        Gtk.IconTheme.get_default().add_resource_path('/com/endlessm/knowledge/data/icons');
-
         Eknc.Engine.get_default().default_app_id = this.application_id;
 
         this.add_main_option('theme-name', 't'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.STRING,
@@ -217,6 +215,7 @@ const Application = new Knowledge.Class({
 
     vfunc_startup: function () {
         this.parent();
+        Gtk.IconTheme.get_default().add_resource_path('/com/endlessm/knowledge/data/icons');
         this._check_for_content();
         this._initialize_set_map();
     },
