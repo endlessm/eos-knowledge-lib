@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "nav", "urls": ["layout/articleStack.html#navcontent"]});
+urls_downloaded_cb({"urls": ["layout/articleStack.html#navcontent"], "token": "nav"});
