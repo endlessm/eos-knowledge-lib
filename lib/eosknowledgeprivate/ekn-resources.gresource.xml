@@ -13,13 +13,13 @@
   </gresource>
 
   <gresource prefix="/com/endlessm/knowledge-private/scalable/actions">
-    <file preprocess="xml-stripblanks">ekn-media-bin-play.svg</file>
-    <file preprocess="xml-stripblanks">ekn-media-bin-pause.svg</file>
-    <file preprocess="xml-stripblanks">ekn-media-bin-fullscreen.svg</file>
-    <file preprocess="xml-stripblanks">ekn-media-bin-restore.svg</file>
-    <file preprocess="xml-stripblanks">ekn-media-bin-volume-muted.svg</file>
-    <file preprocess="xml-stripblanks">ekn-media-bin-volume-low.svg</file>
-    <file preprocess="xml-stripblanks">ekn-media-bin-volume-medium.svg</file>
-    <file preprocess="xml-stripblanks">ekn-media-bin-volume-high.svg</file>
+    <file preprocess="xml-stripblanks">ekn-media-bin-play-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">ekn-media-bin-pause-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">ekn-media-bin-fullscreen-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">ekn-media-bin-restore-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">ekn-media-bin-volume-muted-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">ekn-media-bin-volume-low-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">ekn-media-bin-volume-medium-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">ekn-media-bin-volume-high-symbolic.svg</file>
   </gresource>
 </gresources>
