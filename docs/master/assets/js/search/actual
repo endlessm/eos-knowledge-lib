@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["arrangement/accordion.html#arrangementaccordion1", "arrangement/pianola.html#arrangementpianola1"], "token": "actual"});
+urls_downloaded_cb({"token": "actual", "urls": ["arrangement/accordion.html#arrangementaccordion1", "arrangement/pianola.html#arrangementpianola1"]});
