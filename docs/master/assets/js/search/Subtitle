@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "Subtitle", "urls": ["banner/app.html#showsubtitle", "banner/dynamic.html#showsubtitle"]});
+urls_downloaded_cb({"urls": ["banner/app.html#showsubtitle", "banner/dynamic.html#showsubtitle"], "token": "Subtitle"});
