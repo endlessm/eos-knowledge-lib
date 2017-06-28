@@ -40,7 +40,7 @@ const Navigation = new Module.Class({
     },
 
     _on_history_changed: function () {
-        let item = HistoryStore.get_default().get_current_item();
-        this.back_visible = (item.page_type != Pages.HOME);
+        // The back button should only be visible if we can go back
+        this.back_visible = HistoryStore.get_default().can_go_back();
     },
 });

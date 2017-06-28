@@ -32,12 +32,20 @@ describe('Layout.Navigation', function () {
         expect(layout.forward_visible).toBeFalsy();
     });
 
-    it('disables the back arrow on the home page', function () {
+    it('disables the back arrow when the first page is an article', function () {
+        store.set_current_item_from_props({ page_type: Pages.ARTICLE });
+        expect(layout.back_visible).toBeFalsy();
+    });
+
+    it('disables the back arrow when the first page is home', function () {
         store.set_current_item_from_props({ page_type: Pages.HOME });
         expect(layout.back_visible).toBeFalsy();
     });
 
     it('enables the back arrow on other pages', function () {
+        // Note that we need to have at least one page on the history
+        // stack before this will work.
+        store.set_current_item_from_props({ page_type: Pages.HOME });
         store.set_current_item_from_props({ page_type: Pages.SET });
         expect(layout.back_visible).toBeTruthy();
         store.set_current_item_from_props({ page_type: Pages.SEARCH });
@@ -46,5 +54,11 @@ describe('Layout.Navigation', function () {
         expect(layout.back_visible).toBeTruthy();
         store.set_current_item_from_props({ page_type: Pages.ALL_SETS });
         expect(layout.back_visible).toBeTruthy();
+    });
+
+    it('enables the back button on the homepage if it appears later', function() {
+        store.set_current_item_from_props({ page_type: Pages.HOME });
+        store.set_current_item_from_props({ page_type: Pages.SET });
+        store.set_current_item_from_props({ page_type: Pages.HOME });
     });
 });
