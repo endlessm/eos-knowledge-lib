@@ -37,7 +37,7 @@ struct _EkncDomain
 
   gchar *app_id;
   gchar *path;
-  gchar *subscription_id;
+  GList *subscriptions;
 
   EkncXapianBridge *xapian_bridge;
   GFile *content_dir;
@@ -130,7 +130,7 @@ eknc_domain_finalize (GObject *object)
 
   g_clear_pointer (&self->app_id, g_free);
   g_clear_pointer (&self->path, g_free);
-  g_clear_pointer (&self->subscription_id, g_free);
+  g_list_free_full (self->subscriptions, g_free);
 
   g_clear_object (&self->xapian_bridge);
   g_clear_object (&self->content_dir);
@@ -191,10 +191,12 @@ eknc_domain_init (EkncDomain *self)
 }
 
 static gboolean
-eknc_parse_subscription_id (EkncDomain *self,
-                            GCancellable *cancellable,
-                            GError **error)
+eknc_parse_subscriptions (EkncDomain *self,
+                          GCancellable *cancellable,
+                          GError **error)
 {
+  g_autoptr(GList) subs = NULL;
+
   g_autoptr(JsonNode) subscriptions_node = NULL;
   if (!(subscriptions_node = eknc_get_subscriptions_json (self->app_id, cancellable, error)))
     return FALSE;
@@ -222,22 +224,21 @@ eknc_parse_subscription_id (EkncDomain *self,
       return FALSE;
     }
 
-  JsonNode *sub_node = json_array_get_element (subs_array, 0);
-  if (!JSON_NODE_HOLDS_OBJECT (sub_node))
+  GList *l;
+  subs = json_array_get_elements (subs_array);
+  for (l = subs; l; l = g_list_next (l))
     {
-      g_set_error (error, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_BAD_SUBSCRIPTIONS,
-                   "Malformed subscription entry in subscriptions file");
-      return FALSE;
+      JsonNode *node = json_object_get_member (json_node_get_object (l->data), "id");
+
+      if (node == NULL || json_node_get_value_type (node) != G_TYPE_STRING)
+        continue;
+
+      self->subscriptions = g_list_prepend (self->subscriptions,
+                                            g_strdup (json_node_get_string (node)));
     }
 
-  JsonNode *id_node = json_object_get_member (json_node_get_object (sub_node), "id");
-  if (id_node == NULL || json_node_get_value_type (id_node) != G_TYPE_STRING)
-    {
-      g_set_error (error, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_BAD_SUBSCRIPTIONS,
-                   "Malformed subscription entry in subscriptions file");
-      return FALSE;
-    }
-  self->subscription_id = g_strdup (json_node_get_string (id_node));
+  self->subscriptions = g_list_reverse (self->subscriptions);
+
   return TRUE;
 }
 
@@ -308,70 +309,34 @@ eknc_domain_setup_link_tables (EkncDomain *self,
   return TRUE;
 }
 
+#define eknc_return_if_error(local_error,error,retval)  if (local_error) \
+    { \
+      if (g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_EXISTS)) \
+        g_clear_error (&local_error); \
+      else \
+        { \
+          g_propagate_error (error, local_error); \
+          return retval; \
+        } \
+    }
+
 static gboolean
-eknc_domain_initable_init (GInitable *initable,
-                           GCancellable *cancellable,
-                           GError **error)
+eknc_domain_process_subscription (EkncDomain *self,
+                                  GFile *subscription_dir,
+                                  GFile *bundle_dir,
+                                  JsonArray *json_subscriptions,
+                                  const gchar *relative_path,
+                                  GCancellable *cancellable,
+                                  GError **error)
 {
-  EkncDomain *self = EKNC_DOMAIN (initable);
   GError *local_error = NULL;
 
-  gboolean has_app_id = (self->app_id != NULL && *self->app_id != '\0');
-  gboolean has_path = (self->path != NULL && *self->path != '\0');
-
-  g_autoptr(GFile) subscription_dir = NULL;
-  g_autoptr(GFile) bundle_dir = NULL;
-
-  if (has_path)
-    {
-      subscription_dir = g_file_new_for_path (self->path);
-      bundle_dir = g_file_dup (subscription_dir);
-
-      if (!g_file_query_exists (subscription_dir, cancellable))
-        {
-          g_set_error (error, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_PATH_NOT_FOUND,
-                       "You must provide an existing domain path");
-          return FALSE;
-        }
-    }
-  else if (has_app_id)
-    {
-      if (!eknc_parse_subscription_id (self, cancellable, error))
-        return FALSE;
-
-      g_autoptr(GFile) subscriptions_dir = NULL;
-      g_autoptr(GFile) bundle_subscriptions_dir = NULL;
-
-      self->content_dir = eknc_get_data_dir (self->app_id);
-      subscriptions_dir = eknc_get_subscriptions_dir ();
-      subscription_dir = g_file_get_child (subscriptions_dir, self->subscription_id);
-      bundle_subscriptions_dir = g_file_get_child (self->content_dir, "com.endlessm.subscriptions");
-      bundle_dir = g_file_get_child (bundle_subscriptions_dir, self->subscription_id);
-    }
-  else
-    {
-      g_set_error (error, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_APP_ID_NOT_SET,
-                   "You must set an app id or path to initialize a domain object");
-      return FALSE;
-    }
-
-  self->manifest_file = g_file_get_child (subscription_dir, "manifest.json");
+  g_autoptr(GFile) manifest_file = g_file_get_child (subscription_dir, "manifest.json");
 
   g_file_make_directory_with_parents (subscription_dir, cancellable, &local_error);
-  if (local_error)
-    {
-      if (g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_EXISTS))
-        {
-          g_clear_error (&local_error);
-        }
-      else
-        {
-          g_propagate_error (error, local_error);
-          return FALSE;
-        }
-    }
+  eknc_return_if_error (local_error, error, FALSE);
 
-  if (!g_file_query_exists (self->manifest_file, cancellable))
+  if (!g_file_query_exists (manifest_file, cancellable))
     {
       g_autoptr(GFile) bundle_manifest_file = g_file_get_child (bundle_dir, "manifest.json");
       if (!g_file_query_exists (bundle_manifest_file, cancellable))
@@ -381,27 +346,15 @@ eknc_domain_initable_init (GInitable *initable,
                        "Flatpak bundle. You must download a content update");
           return FALSE;
         }
-      g_file_make_symbolic_link (self->manifest_file,
+      g_file_make_symbolic_link (manifest_file,
                                  g_file_get_path (bundle_manifest_file),
                                  cancellable,
                                  &local_error);
-      if (local_error)
-        {
-          if (g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_EXISTS))
-            {
-              g_clear_error (&local_error);
-            }
-          else
-            {
-              g_propagate_error (error, local_error);
-              return FALSE;
-            }
-        }
+      eknc_return_if_error (local_error, error, FALSE);
     }
 
-
   g_autofree gchar *contents = NULL;
-  if (!g_file_load_contents (self->manifest_file, cancellable, &contents,
+  if (!g_file_load_contents (manifest_file, cancellable, &contents,
                              NULL, NULL, error))
     return FALSE;
 
@@ -416,7 +369,30 @@ eknc_domain_initable_init (GInitable *initable,
       return FALSE;
     }
 
-  JsonNode *shards_node = json_object_get_member (json_node_get_object (manifest_node), "shards");
+  JsonObject *json_manifest = json_node_get_object (manifest_node);
+
+  /* FIXME: Remove this hack */
+  if (json_subscriptions)
+    {
+      JsonArray *json_dbs = json_object_get_array_member (json_manifest, "xapian_databases");
+      g_autofree gchar *subscription_path = g_file_get_path (subscription_dir);
+      GList *dbs = json_array_get_elements (json_dbs), *l;
+
+      for (l = dbs; l; l = g_list_next (l))
+        {
+          JsonObject *json_db = json_node_get_object (l->data);
+          JsonObject *json_subscription = json_object_new ();
+          const gchar *json_path = json_object_get_string_member (json_db, "path");
+          g_autofree gchar *path = g_build_filename (relative_path, subscription_path, json_path, NULL);
+
+          json_object_set_int_member (json_subscription, "offset",
+                                      json_object_get_int_member (json_db, "offset"));
+          json_object_set_string_member (json_subscription, "path", path);
+          json_array_add_object_element (json_subscriptions, json_subscription);
+        }
+    }
+
+  JsonNode *shards_node = json_object_get_member (json_manifest, "shards");
 
   if (shards_node == NULL || !JSON_NODE_HOLDS_ARRAY (shards_node))
     {
@@ -445,32 +421,117 @@ eknc_domain_initable_init (GInitable *initable,
                        "Malformed shard entry in manifest");
           return FALSE;
         }
+
       g_autoptr(GFile) bundle_shard_file = g_file_get_child (bundle_dir, json_node_get_string (path_node));
       g_autoptr(GFile) subscription_shard_file = g_file_get_child (subscription_dir, json_node_get_string (path_node));
 
       // Make a symlink if necessary
       if (g_file_query_exists (bundle_shard_file, cancellable))
         {
+          g_autofree gchar *bundle_shard_file_path = g_file_get_path (bundle_shard_file);
           g_file_make_symbolic_link (subscription_shard_file,
-                                     g_file_get_path (bundle_shard_file),
+                                     bundle_shard_file_path,
                                      cancellable, &local_error);
-          if (local_error)
-            {
-              if (g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_EXISTS))
-                {
-                  g_clear_error (&local_error);
-                }
-              else
-                {
-                  g_propagate_error (error, local_error);
-                  return FALSE;
-                }
-            }
+          eknc_return_if_error (local_error, error, FALSE);
         }
+      g_autofree gchar *path = g_file_get_path (subscription_shard_file);
       EosShardShardFile *shard = g_object_new (EOS_SHARD_TYPE_SHARD_FILE,
-                                               "path", g_file_get_path (subscription_shard_file),
+                                               "path", path,
                                                NULL);
       self->shards = g_slist_append (self->shards, shard);
+    }
+
+  return TRUE;
+}
+
+static gboolean
+eknc_domain_initable_init (GInitable *initable,
+                           GCancellable *cancellable,
+                           GError **error)
+{
+  EkncDomain *self = EKNC_DOMAIN (initable);
+
+  gboolean has_app_id = (self->app_id != NULL && *self->app_id != '\0');
+  gboolean has_path = (self->path != NULL && *self->path != '\0');
+
+  if (has_path)
+    {
+      g_autoptr(GFile) subscription_dir = g_file_new_for_path (self->path);
+      self->manifest_file = g_file_get_child (subscription_dir, "manifest.json");
+
+      if (!g_file_query_exists (subscription_dir, cancellable))
+        {
+          g_set_error (error, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_PATH_NOT_FOUND,
+                       "You must provide an existing domain path");
+          return FALSE;
+        }
+
+      eknc_domain_process_subscription (self,
+                                        subscription_dir,
+                                        subscription_dir,
+                                        NULL,
+                                        NULL,
+                                        cancellable,
+                                        error);
+    }
+  else if (has_app_id)
+    {
+      g_autofree gchar *manifest_tmp = g_strconcat (g_get_user_data_dir (),
+                                                    G_DIR_SEPARATOR_S,
+                                                    "ekncontent.",
+                                                    self->app_id,
+                                                    ".manifest.json",
+                                                    NULL);
+
+      self->manifest_file = g_file_new_for_path (manifest_tmp);
+
+      if (!eknc_parse_subscriptions (self, cancellable, error))
+        return FALSE;
+
+      g_autoptr(GFile) subscriptions_dir = NULL;
+      g_autoptr(GFile) bundle_subscriptions_dir = NULL;
+      JsonArray *json_subscriptions = json_array_new ();
+
+      self->content_dir = eknc_get_data_dir (self->app_id);
+      subscriptions_dir = eknc_get_subscriptions_dir ();
+      bundle_subscriptions_dir = g_file_get_child (self->content_dir, "com.endlessm.subscriptions");
+
+      /* Find out root relative path from manifest file */
+      g_autoptr(GFile) p = g_file_get_parent (self->manifest_file);
+      g_autoptr(GString) relative_path = g_string_new ("");
+      while ((p = g_file_get_parent (p)))
+        g_string_append (relative_path, "../");
+
+      GList *l;
+      for (l = self->subscriptions; l; l = g_list_next (l))
+        {
+          const gchar *subscription_id = l->data;
+          g_autoptr(GFile) subscription_dir = g_file_get_child (subscriptions_dir, subscription_id);
+          g_autoptr(GFile) bundle_dir = g_file_get_child (bundle_subscriptions_dir, subscription_id);
+
+          eknc_domain_process_subscription (self,
+                                            subscription_dir,
+                                            bundle_dir,
+                                            json_subscriptions,
+                                            relative_path->str,
+                                            cancellable,
+                                            error);
+        }
+
+      g_autoptr(JsonGenerator) json_generator = json_generator_new ();
+      JsonNode *json_root_node = json_node_new (JSON_NODE_OBJECT);
+      JsonObject *json_root = json_object_new ();
+
+      json_object_set_array_member (json_root, "xapian_databases", json_subscriptions);
+      json_node_set_object (json_root_node, json_root);
+      json_generator_set_root (json_generator, json_root_node);
+      json_generator_to_file (json_generator, manifest_tmp, error);
+    }
+  else
+    {
+      g_set_error (error, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_APP_ID_NOT_SET,
+                   "You must set an app id or path to initialize a domain object");
+      return FALSE;
     }
 
   if (!eknc_utils_parallel_init (self->shards, 0, cancellable, error))
@@ -522,7 +583,7 @@ eknc_domain_get_subscription_id (EkncDomain *self)
 {
   g_return_val_if_fail (EKNC_IS_DOMAIN (self), NULL);
 
-  return self->subscription_id;
+  return (self->subscriptions) ? self->subscriptions->data : NULL;
 }
 
 /**
