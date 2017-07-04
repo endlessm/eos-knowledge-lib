@@ -175,7 +175,7 @@ const Application = new Knowledge.Class({
             Eknc.default_vfs_set_shards(shards);
         } catch (e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND)) {
             // No content. If updates are pending then show a nice dialog
-            let subs = engine.get_domain().get_subscription_entries();
+            let subs = Eknc.get_subscriptions_json(this.application_id, null).subscriptions;
             if (subs.some(entry => !entry.disable_updates)) {
                 let dialog = new Gtk.MessageDialog({
                     message_type: Gtk.MessageType.ERROR,
