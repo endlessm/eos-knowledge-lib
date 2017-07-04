@@ -14,7 +14,7 @@ const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
  * Class: MediaLightbox
  * A module which displays media content over other
  */
-const MediaLightbox = new Module.Class({
+var MediaLightbox = new Module.Class({
     Name: 'ContentGroup.MediaLightbox',
     Extends: Lightbox.Lightbox,
 

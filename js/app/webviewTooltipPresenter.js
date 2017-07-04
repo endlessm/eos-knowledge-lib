@@ -28,7 +28,7 @@ const WEBVIEW_OBJECT_PATH = '/com/endlessm/webview';
  * The WebviewTooltipPresenter handles the connection of the webview tooltip to
  * be added to a particular document card.
  */
-const WebviewTooltipPresenter = new Knowledge.Class({
+var WebviewTooltipPresenter = new Knowledge.Class({
     Name: 'WebviewTooltipPresenter',
     Extends: GObject.Object,
 

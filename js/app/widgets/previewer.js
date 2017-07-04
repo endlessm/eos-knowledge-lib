@@ -15,7 +15,7 @@ const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
  * you would like be previewed. If it is one of the supported types, it will
  * be loaded up for you, if not an error will be thrown.
  */
-const Previewer = new Knowledge.Class({
+var Previewer = new Knowledge.Class({
     Name: 'Previewer',
     Extends: Gtk.Bin,
     Properties: {

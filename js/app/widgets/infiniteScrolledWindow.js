@@ -7,7 +7,7 @@ const Knowledge = imports.app.knowledge;
 /**
  * Class: InfiniteScrolledWindow
  */
-const InfiniteScrolledWindow = new Knowledge.Class({
+var InfiniteScrolledWindow = new Knowledge.Class({
     Name: 'InfiniteScrolledWindow',
     Extends: Gtk.ScrolledWindow,
     Properties: {

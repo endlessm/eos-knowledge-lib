@@ -22,7 +22,7 @@ const Utils = imports.app.utils;
  * CSS classes:
  *   PagerSimple--animating - while a page transition is running
  */
-const Simple = new Module.Class({
+var Simple = new Module.Class({
     Name: 'Pager.Simple',
     Extends: Gtk.Stack,
 

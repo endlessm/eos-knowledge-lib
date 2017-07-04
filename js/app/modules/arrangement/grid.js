@@ -10,7 +10,7 @@ const Module = imports.app.interfaces.module;
 /**
  * Class: Grid
  */
-const Grid = new Module.Class({
+var Grid = new Module.Class({
     Name: 'Arrangement.Grid',
     Extends: Gtk.FlowBox,
     Implements: [Arrangement.Arrangement],

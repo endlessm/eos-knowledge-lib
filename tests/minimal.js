@@ -18,7 +18,7 @@ const NavigationCard = imports.app.interfaces.navigationCard;
 const Order = imports.app.interfaces.order;
 const Selection = imports.app.modules.selection.selection;
 
-const MinimalArrangement = new Module.Class({
+var MinimalArrangement = new Module.Class({
     Name: 'MinimalArrangement',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],
@@ -58,7 +58,7 @@ const MinimalArrangement = new Module.Class({
     },
 });
 
-const MinimalCard = new Module.Class({
+var MinimalCard = new Module.Class({
     Name: 'MinimalCard',
     Extends: Gtk.Button,
     Implements: [Card.Card],
@@ -78,18 +78,18 @@ const MinimalCard = new Module.Class({
     },
 });
 
-const MinimalNavigationCard = new Module.Class({
+var MinimalNavigationCard = new Module.Class({
     Name: 'MinimalNavigationCard',
     Extends: Gtk.Button,
     Implements: [Card.Card, NavigationCard.NavigationCard],
 });
 
-const MinimalModule = new Module.Class({
+var MinimalModule = new Module.Class({
     Name: 'MinimalModule',
     Extends: GObject.Object,
 });
 
-const MinimalDocumentCard = new Module.Class({
+var MinimalDocumentCard = new Module.Class({
     Name: 'MinimalDocumentCard',
     Extends: Gtk.Widget,
     Implements: [Card.Card, ArticleContent.ArticleContent],
@@ -130,12 +130,12 @@ const MinimalDocumentCard = new Module.Class({
     set_active: function () {},
 });
 
-const MinimalBinModule = new Module.Class({
+var MinimalBinModule = new Module.Class({
     Name: 'MinimalBinModule',
     Extends: Gtk.Frame,
 });
 
-const MinimalSelection = new Module.Class({
+var MinimalSelection = new Module.Class({
     Name: 'MinimalSelection',
     Extends: Selection.Selection,
 
@@ -157,7 +157,7 @@ const MinimalSelection = new Module.Class({
     },
 });
 
-const MinimalOrder = new Module.Class({
+var MinimalOrder = new Module.Class({
     Name: 'MinimalOrder',
     Extends: GObject.Object,
     Implements: [Order.Order],
@@ -173,7 +173,7 @@ const MinimalOrder = new Module.Class({
     },
 });
 
-const MinimalXapianOrder = new Module.Class({
+var MinimalXapianOrder = new Module.Class({
     Name: 'MinimalXapianOrder',
     Extends: MinimalOrder,
     Implements: [Order.Order],
@@ -185,7 +185,7 @@ const MinimalXapianOrder = new Module.Class({
     },
 });
 
-const TitleFilter = new Module.Class({
+var TitleFilter = new Module.Class({
     Name: 'TitleFilter',
     Extends: GObject.Object,
     Implements: [Filter.Filter],
@@ -195,7 +195,7 @@ const TitleFilter = new Module.Class({
     },
 });
 
-const MinimalXapianFilter = new Module.Class({
+var MinimalXapianFilter = new Module.Class({
     Name: 'MinimalXapianFilter',
     Extends: GObject.Object,
     Implements: [Filter.Filter],

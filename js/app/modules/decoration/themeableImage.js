@@ -12,7 +12,7 @@ const ThemeableImageWidget = imports.app.widgets.themeableImage;
  * Decoration widget that draws an image
  *
  */
-const ThemeableImage = new Module.Class({
+var ThemeableImage = new Module.Class({
     Name: 'Decoration.ThemeableImage',
     Extends: ThemeableImageWidget.ThemeableImage,
 });

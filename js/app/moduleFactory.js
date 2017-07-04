@@ -10,7 +10,7 @@ const ROOT_NAME = 'root';
 /**
  * Class: ModuleFactory
  */
-const ModuleFactory = new Knowledge.Class({
+var ModuleFactory = new Knowledge.Class({
     Name: 'ModuleFactory',
     Extends: GObject.Object,
     Properties: {

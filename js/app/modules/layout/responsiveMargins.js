@@ -14,7 +14,7 @@ const Utils = imports.app.utils;
  * Class: ResponsiveMargins
  * A module that displays a window and has responsive margins.
  */
-const ResponsiveMargins = new Module.Class({
+var ResponsiveMargins = new Module.Class({
     Name: 'Layout.ResponsiveMargins',
     Extends: Gtk.Bin,
 

@@ -21,7 +21,7 @@ const Utils = imports.app.utils;
  * Parent class:
  *   *Endless.CustomContainer*
  */
-const SpaceContainer = new Knowledge.Class({
+var SpaceContainer = new Knowledge.Class({
     Name: 'SpaceContainer',
     Extends: Endless.CustomContainer,
     Implements: [Gtk.Orientable],

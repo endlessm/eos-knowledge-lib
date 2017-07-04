@@ -39,7 +39,7 @@ const _cssTemplate = '.LayoutDynamicBackground {\
  * The tinted overlay color is extracted from thumbnail image of a
  * <ContentObjectModel>.
  */
-const DynamicBackground = new Module.Class({
+var DynamicBackground = new Module.Class({
     Name: 'Layout.DynamicBackground',
     Extends: Gtk.Frame,
 

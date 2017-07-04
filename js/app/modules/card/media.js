@@ -14,7 +14,7 @@ const Utils = imports.app.utils;
  * A card which display an image along with a caption and attribution text, best
  * used with a MediaObject Model.
  */
-const Media = new Module.Class({
+var Media = new Module.Class({
     Name: 'Card.Media',
     Extends: Gtk.Frame,
     Implements: [Card.Card],

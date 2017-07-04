@@ -107,7 +107,7 @@ const _ThirtiesLayout = new Knowledge.Class({
 /**
  * Class: Thirties
  */
-const Thirties = new Module.Class({
+var Thirties = new Module.Class({
     Name: 'Arrangement.Thirties',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],

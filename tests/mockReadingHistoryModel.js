@@ -5,7 +5,7 @@ const GObject = imports.gi.GObject;
 const Knowledge = imports.app.knowledge;
 const ReadingHistoryModel = imports.app.readingHistoryModel;
 
-const MockReadingHistoryModel = new Knowledge.Class({
+var MockReadingHistoryModel = new Knowledge.Class({
     Name: 'MockReadingHistoryModel',
     Extends: GObject.Object,
 
@@ -34,7 +34,7 @@ const MockReadingHistoryModel = new Knowledge.Class({
 
 // Creates a new MockReadingHistoryModel and sets it up as the singleton. Use
 // in a beforeEach to have a new history model each test iteration.
-let mock_default = () => {
+function mock_default() {
     let reading_history = new MockReadingHistoryModel();
     spyOn(ReadingHistoryModel, 'get_default').and.callFake(() => reading_history);
     return reading_history;

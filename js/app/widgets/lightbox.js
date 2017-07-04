@@ -27,7 +27,7 @@ const Utils = imports.app.utils;
  * lightbox. To respect the <reveal-overlays> property show_all() will not work
  * on the widget overlays.
  */
-const Lightbox = new Knowledge.Class({
+var Lightbox = new Knowledge.Class({
     Name: 'Lightbox',
     Extends: Gtk.Overlay,
     Properties: {

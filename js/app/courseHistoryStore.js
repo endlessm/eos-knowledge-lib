@@ -17,7 +17,7 @@ const SetMap = imports.app.setMap;
  * Class: CourseHistoryStore
  *
  */
-const CourseHistoryStore = new GObject.Class({
+var CourseHistoryStore = new GObject.Class({
     Name: 'CourseHistoryStore',
     Extends: HistoryStore.HistoryStore,
 

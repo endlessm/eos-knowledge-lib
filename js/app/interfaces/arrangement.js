@@ -17,7 +17,7 @@ const Module = imports.app.interfaces.module;
  * An arrangement controls how a group of cards are presented in the UI.
  * Examples of arrangements: a list, a grid, etc.
  */
-const Arrangement = new Lang.Interface({
+var Arrangement = new Lang.Interface({
     Name: 'Arrangement',
     GTypeName: 'EknArrangement',
     Requires: [ Gtk.Container, Module.Module ],

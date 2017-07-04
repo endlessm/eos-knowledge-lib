@@ -10,7 +10,7 @@ const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 const Xapian = imports.app.modules.selection.xapian;
 
-const Suggested = new Module.Class({
+var Suggested = new Module.Class({
     Name: 'Selection.Suggested',
     Extends: Xapian.Xapian,
 

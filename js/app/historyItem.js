@@ -13,7 +13,7 @@ const Knowledge = imports.app.knowledge;
  * and article pages.
  *
  */
-const HistoryItem = new Knowledge.Class({
+var HistoryItem = new Knowledge.Class({
     Name: 'HistoryItem',
     Extends: GObject.Object,
 

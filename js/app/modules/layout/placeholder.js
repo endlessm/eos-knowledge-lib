@@ -15,7 +15,7 @@ const _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  * Class: Placeholder
  * Module to occupy a slot while developing an app
  */
-const Placeholder = new Module.Class({
+var Placeholder = new Module.Class({
     Name: 'Layout.Placeholder',
     Extends: Gtk.Frame,
 

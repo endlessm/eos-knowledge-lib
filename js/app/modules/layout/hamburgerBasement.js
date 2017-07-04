@@ -20,7 +20,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  * CSS Styles:
  *      hamburger-basement-template - on the template
  */
-const HamburgerBasement = new Module.Class({
+var HamburgerBasement = new Module.Class({
     Name: 'Layout.HamburgerBasement',
     Extends: Gtk.Stack,
 

@@ -117,7 +117,7 @@ const _ThirdRockLayout = new Knowledge.Class({
  *  - Compact mode: a short version of the arrangement is presented, and the cards
  *    adjust accordingly.
  */
-const ThirdRock = new Module.Class({
+var ThirdRock = new Module.Class({
     Name: 'Arrangement.ThirdRock',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],

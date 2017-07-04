@@ -21,7 +21,7 @@ function _descendantHasClass(widget, styleClass) {
     return false;
 }
 
-const customMatchers = {
+var customMatchers = {
     // Usage:
     // expect(widget).toHaveCssClass(Gtk.STYLE_CLASS_LINKED);
     toHaveCssClass: function (util, customEqualityTesters) {

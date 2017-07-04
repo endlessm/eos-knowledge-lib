@@ -11,7 +11,7 @@ const Card = imports.app.interfaces.card;
  * Requires:
  *   <Card>
  */
-const ArticleContent = new Lang.Interface({
+var ArticleContent = new Lang.Interface({
     Name: 'ArticleContent',
     GTypeName: 'EknArticleContent',
     Requires: [ Card.Card ],

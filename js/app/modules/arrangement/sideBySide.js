@@ -19,7 +19,7 @@ const Utils = imports.app.utils;
  * This arrangement presents cards in a horizontal layout, and is intended to
  * display menu items.
  */
-const SideBySide = new Module.Class({
+var SideBySide = new Module.Class({
     Name: 'Arrangement.SideBySide',
     Extends: Endless.CustomContainer,
     Implements: [Arrangement.Arrangement],

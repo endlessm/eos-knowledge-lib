@@ -38,7 +38,7 @@ function should_enable_inspector() {
  * Parent class:
  *     WebKit2.WebView
  */
-const EknWebview = new Knowledge.Class({
+var EknWebview = new Knowledge.Class({
     Name: 'Webview',
     Extends: WebKit2.WebView,
 

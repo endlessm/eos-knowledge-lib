@@ -24,7 +24,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *
  * A search bar for querying information in the knowledge apps.
  */
-const SearchBox = new Module.Class({
+var SearchBox = new Module.Class({
     Name: 'Navigation.SearchBox',
     Extends: Endless.SearchBox,
 

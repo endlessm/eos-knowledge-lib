@@ -128,7 +128,7 @@ const _HalfLayout = new Knowledge.Class({
  * Each row of supporting cards packs either three or four, depending on the
  * total width of the arrangement.
  */
-const Half = new Module.Class({
+var Half = new Module.Class({
     Name: 'Arrangement.Half',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],

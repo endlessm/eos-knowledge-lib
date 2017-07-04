@@ -15,7 +15,7 @@ const Knowledge = imports.app.knowledge;
  *
  * Uses the widget's frame clock to update the tweening state.
  */
-const ToggleTweener = new Knowledge.Class({
+var ToggleTweener = new Knowledge.Class({
     Name: 'ToggleTweener',
     Extends: GObject.Object,
 

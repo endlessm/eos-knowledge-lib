@@ -56,7 +56,7 @@ const SCSS_COMMAND = 'sassc -a -I ' + Config.TOP_THEME_DIR + ' ';
 /**
  * Class: Application
  */
-const Application = new Knowledge.Class({
+var Application = new Knowledge.Class({
     Name: 'Application',
     Extends: Endless.Application,
 

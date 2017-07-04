@@ -20,7 +20,7 @@ const TITLE_IMAGE_URI = 'resource:///app/assets/titleImage';
  *   app-banner - on the module itself
  *   subtitle - on the label displaying the app's subtitle
  */
-const App = new Module.Class({
+var App = new Module.Class({
     Name: 'Banner.App',
     Extends: Gtk.Grid,
 

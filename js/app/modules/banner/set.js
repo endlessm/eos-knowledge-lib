@@ -13,7 +13,7 @@ const Pages = imports.app.pages;
  * A banner which shows a card for the model currently being displayed on the
  * set page.
  */
-const Set = new Module.Class({
+var Set = new Module.Class({
     Name: 'Banner.Set',
     Extends: Gtk.Frame,
 

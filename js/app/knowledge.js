@@ -41,7 +41,7 @@ const Lang = imports.lang;
  * >     -EknMyClass-foo-bar: 5;
  * > }
  */
-const Class = new Lang.Class({
+var Class = new Lang.Class({
     Name: 'Class',
     Extends: GObject.Class,
 

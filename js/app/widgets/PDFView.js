@@ -21,7 +21,7 @@ const _MAX_PDF_VIEW_WIDTH = 1300;
  * Parent class:
  *     Gtk.ScrolledWindow
  */
-const PDFView = new Knowledge.Class({
+var PDFView = new Knowledge.Class({
     Name: 'PDFView',
     Extends: Gtk.ScrolledWindow,
 

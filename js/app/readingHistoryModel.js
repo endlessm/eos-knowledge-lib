@@ -18,7 +18,7 @@ const Utils = imports.app.utils;
  * This set of article ID's is persisted in a JSON file in the user's home directory
  * and updated every time a new article is read.
  */
-const ReadingHistoryModel= new Knowledge.Class({
+var ReadingHistoryModel = new Knowledge.Class({
     Name: 'ReadingHistoryModel',
     Extends: GObject.Object,
 
@@ -107,7 +107,7 @@ const ReadingHistoryModel= new Knowledge.Class({
     },
 });
 
-let get_default = (function () {
+var get_default = (function () {
     let default_history_model;
     return function () {
         if (!default_history_model)

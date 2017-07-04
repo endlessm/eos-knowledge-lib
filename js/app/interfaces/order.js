@@ -21,7 +21,7 @@ const Module = imports.app.interfaces.module;
  * Requires:
  *   <Module>
  */
-const Order = new Lang.Interface({
+var Order = new Lang.Interface({
     Name: 'Order',
     Requires: [ Module.Module ],
 

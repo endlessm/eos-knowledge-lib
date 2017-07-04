@@ -24,7 +24,7 @@ const Module = imports.app.interfaces.module;
  * Requires:
  *   <Module>
  */
-const Filter = new Lang.Interface({
+var Filter = new Lang.Interface({
     Name: 'Filter',
     Requires: [ Module.Module ],
 

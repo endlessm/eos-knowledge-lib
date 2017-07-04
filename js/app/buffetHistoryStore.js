@@ -19,7 +19,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  * Class: BuffetHistoryStore
  *
  */
-const BuffetHistoryStore = new GObject.Class({
+var BuffetHistoryStore = new GObject.Class({
     Name: 'BuffetHistoryStore',
     Extends: HistoryStore.HistoryStore,
 

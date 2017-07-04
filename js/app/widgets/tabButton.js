@@ -6,7 +6,7 @@ const Knowledge = imports.app.knowledge;
 /**
  * Class: TabButton
  */
-const TabButton = new Knowledge.Class({
+var TabButton = new Knowledge.Class({
     Name: 'TabButton',
     Extends: Gtk.Button,
 

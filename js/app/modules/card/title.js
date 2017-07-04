@@ -25,7 +25,7 @@ const Utils = imports.app.utils;
  *   card, title-card - on the widget itself
  *   title - on the title label
  */
-const Title = new Module.Class({
+var Title = new Module.Class({
     Name: 'Card.Title',
     Extends: Gtk.Button,
     Implements: [Card.Card, NavigationCard.NavigationCard],

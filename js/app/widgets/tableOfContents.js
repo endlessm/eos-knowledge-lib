@@ -30,7 +30,7 @@ const Utils = imports.app.utils;
  * section entries if three are present. The <selected-section> will always be
  * among the visible section entries.
  */
-const TableOfContents = new Knowledge.Class({
+var TableOfContents = new Knowledge.Class({
     Name: 'TableOfContents',
     Extends: Endless.CustomContainer,
     Properties: {

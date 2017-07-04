@@ -19,7 +19,7 @@ const Utils = imports.app.utils;
  * Class: Simple
  * Window with default functionality
  */
-const Simple = new Module.Class({
+var Simple = new Module.Class({
     Name: 'Window.Simple',
     Extends: Endless.Window,
 

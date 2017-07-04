@@ -1,4 +1,4 @@
-const customMatchers = {
+var customMatchers = {
     toBeA: function (util, customEqualityTesters) {
         return {
             compare: function (widget, expectedType) {

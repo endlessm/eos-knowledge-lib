@@ -12,7 +12,7 @@ const Module = imports.app.interfaces.module;
 /**
  * Class: Selection
  */
-const Selection = new Module.Class({
+var Selection = new Module.Class({
     Name: 'Selection',
     Extends: GObject.Object,
     Abstract: true,

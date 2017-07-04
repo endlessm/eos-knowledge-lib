@@ -28,7 +28,7 @@ const Gtk = imports.gi.Gtk;
 const Dispatcher = imports.app.dispatcher;
 const Knowledge = imports.app.knowledge;
 
-const DEFAULT_PAGE_TRANSITION_DURATION = 500;
+var DEFAULT_PAGE_TRANSITION_DURATION = 500;
 
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);

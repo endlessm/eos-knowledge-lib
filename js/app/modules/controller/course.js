@@ -14,7 +14,7 @@ const Module = imports.app.interfaces.module;
  * Controller that presents content as a course to be consumed.
  *
  */
-const Course = new Module.Class({
+var Course = new Module.Class({
     Name: 'Controller.Course',
     Extends: GObject.Object,
     Implements: [Controller.Controller],

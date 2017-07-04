@@ -295,7 +295,7 @@ const SubscriptionDownloader = new Lang.Class({
 });
 
 let the_downloader = null;
-let get_default = function () {
+function get_default() {
     if (the_downloader === null) {
         let app = Gio.Application.get_default();
         the_downloader = new SubscriptionDownloader(app);

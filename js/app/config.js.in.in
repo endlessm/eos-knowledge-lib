@@ -1,11 +1,11 @@
 // Private module for configure-time constants
-const GETTEXT_PACKAGE = '@GETTEXT_PACKAGE@';
-const inspector_enabled = @inspector@;
-const metrics_enabled = @metrics@;
-const mathjax_path = '@MATHJAXDIR@';
+var GETTEXT_PACKAGE = '@GETTEXT_PACKAGE@';
+var inspector_enabled = @inspector@;
+var metrics_enabled = @metrics@;
+var mathjax_path = '@MATHJAXDIR@';
 // Substituted at make time rather than configure time
-const PKGDATADIR = '%pkgdatadir%';
-const DATADIR = '%datadir%';
-const WEB_EXTENSION_DIR = '%webextensiondir%';
-const YAML_PRESET_DIR = '%yamlpresetdir%';
-const TOP_THEME_DIR = '%themetopdir%';
+var PKGDATADIR = '%pkgdatadir%';
+var DATADIR = '%datadir%';
+var WEB_EXTENSION_DIR = '%webextensiondir%';
+var YAML_PRESET_DIR = '%yamlpresetdir%';
+var TOP_THEME_DIR = '%themetopdir%';

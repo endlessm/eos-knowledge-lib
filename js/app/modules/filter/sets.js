@@ -6,7 +6,7 @@ const Filter = imports.app.interfaces.filter;
 const Module = imports.app.interfaces.module;
 const Tagged = imports.app.modules.filter.tagged;
 
-const Sets = new Module.Class({
+var Sets = new Module.Class({
     Name: 'Filter.Sets',
     Extends: Tagged.Tagged,
     Implements: [Filter.Filter],

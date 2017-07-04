@@ -10,7 +10,7 @@ const Pages = imports.app.pages;
  *
  * A module which displays navigation arrows on either side of a page.
  */
-const Navigation = new Module.Class({
+var Navigation = new Module.Class({
     Name: 'Layout.Navigation',
     Extends: NavButtonOverlay.NavButtonOverlay,
 

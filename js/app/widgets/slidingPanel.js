@@ -40,7 +40,7 @@ const PanelFrame = new Knowledge.Class({
  * Class: SlidingPanel
  * A widget which can slide its contents visible or out of sight.
  */
-const SlidingPanel = new Knowledge.Class({
+var SlidingPanel = new Knowledge.Class({
     Name: 'SlidingPanel',
     Extends: Gtk.Stack,
 

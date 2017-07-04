@@ -12,7 +12,7 @@ const Card = imports.app.interfaces.card;
  * Requires:
  *   <Card>
  */
-const NavigationCard = new Lang.Interface({
+var NavigationCard = new Lang.Interface({
     Name: 'NavigationCard',
     GTypeName: 'EknNavigationCard',
     Requires: [ Card.Card ],

@@ -23,7 +23,7 @@ function _match_descendant (widget, match, cmp) {
     return false;
 }
 
-const customMatchers = {
+var customMatchers = {
     toHaveDescendant: function (util, customEqualityTesters) {
         return {
             compare: function (widget, expected) {

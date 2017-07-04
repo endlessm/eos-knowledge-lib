@@ -16,7 +16,7 @@ const Xapian = imports.app.modules.selection.xapian;
  * Class: ContentForSet
  * Selection that retrieves content related to the current set
  */
-const ContentForSet = new Module.Class({
+var ContentForSet = new Module.Class({
     Name: 'Selection.ContentForSet',
     Extends: Xapian.Xapian,
 

@@ -14,7 +14,7 @@ const Knowledge = imports.app.knowledge;
  * Unlike GtkImage this widget will size down its image to the available
  * space, which is where most of the complexity in this class comes from.
  */
-const ImagePreviewer = new Knowledge.Class({
+var ImagePreviewer = new Knowledge.Class({
     Name: 'ImagePreviewer',
     Extends: Gtk.Widget,
     Properties: {

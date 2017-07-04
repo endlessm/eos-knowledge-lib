@@ -21,7 +21,7 @@ const Utils = imports.app.utils;
  *   sidebar - a frame containing the sidebar module
  *   content - a frame containing the content module
  */
-const Sidebar = new Module.Class({
+var Sidebar = new Module.Class({
     Name: 'Layout.Sidebar',
     Extends: Endless.CustomContainer,
 

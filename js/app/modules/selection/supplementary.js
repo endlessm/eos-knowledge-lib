@@ -9,7 +9,7 @@ const HistoryStore = imports.app.historyStore;
 const ReadingHistoryModel = imports.app.readingHistoryModel;
 const Xapian = imports.app.modules.selection.xapian;
 
-const Supplementary = new Module.Class({
+var Supplementary = new Module.Class({
     Name: 'Selection.Supplementary',
     Extends: Xapian.Xapian,
 

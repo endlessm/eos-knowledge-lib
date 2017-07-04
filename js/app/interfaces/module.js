@@ -21,7 +21,7 @@ const Knowledge = imports.app.knowledge;
  * The <Module.Module> interface is implemented automatically even if you don't
  * specify it, since all modules must implement this interface.
  */
-const Class = new Lang.Class({
+var Class = new Lang.Class({
     Name: 'Class',
     Extends: Knowledge.Class,
 
@@ -104,7 +104,7 @@ function _freeze_recurse(o) {
 /**
  * Interface: Module
  */
-const Module = new Lang.Interface({
+var Module = new Lang.Interface({
     Name: 'Module',
     Requires: [ GObject.Object ],
 

@@ -12,7 +12,7 @@ const Module = imports.app.interfaces.module;
 /**
  * Class: List
  */
-const List = new Module.Class({
+var List = new Module.Class({
     Name: 'Arrangement.List',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],

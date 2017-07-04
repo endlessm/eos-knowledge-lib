@@ -20,7 +20,7 @@ const Utils = imports.app.utils;
  *   next-label - on the next label
  *   title - on the title label
  */
-const Sequence = new Module.Class({
+var Sequence = new Module.Class({
     Name: 'Card.Sequence',
     Extends: Gtk.Button,
     Implements: [Card.Card, NavigationCard.NavigationCard],

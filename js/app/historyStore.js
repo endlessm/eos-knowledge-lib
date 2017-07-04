@@ -14,7 +14,7 @@ const Pages = imports.app.pages;
 const ReadingHistoryModel = imports.app.readingHistoryModel;
 const Utils = imports.app.utils;
 
-const Direction = {
+var Direction = {
     BACKWARDS: 'backwards',
     FORWARDS: 'forwards',
 };
@@ -25,7 +25,7 @@ const Direction = {
  * A store containing the history state of the application.
  *
  */
-const HistoryStore = new Lang.Class({
+var HistoryStore = new Lang.Class({
     Name: 'HistoryStore',
     Extends: Gio.SimpleActionGroup,
 
@@ -331,7 +331,7 @@ const HistoryStore = new Lang.Class({
     },
 });
 
-let [get_default, set_default] = (function () {
+var [get_default, set_default] = (function () {
     let history_store = null;
     return [
         function () {

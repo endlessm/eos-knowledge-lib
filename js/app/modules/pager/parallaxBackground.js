@@ -30,7 +30,7 @@ const IMAGE_URI = 'resource:///app/assets/backgroundHome';
  *     ratio than the background image
  *   PagerParallaxBackground--right - when on the appropriate page
  */
-const ParallaxBackground = new Module.Class({
+var ParallaxBackground = new Module.Class({
     Name: 'Pager.ParallaxBackground',
     Extends: Simple.Simple,
 

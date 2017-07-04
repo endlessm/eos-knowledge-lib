@@ -2,7 +2,7 @@ const Eknc = imports.gi.EosKnowledgeContent;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const MockEngine = new Lang.Class({
+var MockEngine = new Lang.Class({
     Name: 'MockEngine',
     Extends: GObject.Object,
 
@@ -39,7 +39,7 @@ const MockEngine = new Lang.Class({
 
 // Creates a new MockEngine and sets it up as the engine singleton. Use
 // in a beforeEach to have a new engine each test iteration.
-let mock_default = () => {
+var mock_default = () => {
     let engine = new MockEngine();
     spyOn(Eknc.Engine, 'get_default').and.returnValue(engine);
     return engine;

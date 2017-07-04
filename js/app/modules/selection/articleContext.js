@@ -9,7 +9,7 @@ const HistoryStore = imports.app.historyStore;
 const Pages = imports.app.pages;
 const Xapian = imports.app.modules.selection.xapian;
 
-const ArticleContext = new Module.Class({
+var ArticleContext = new Module.Class({
     Name: 'Selection.ArticleContext',
     Extends: Xapian.Xapian,
 

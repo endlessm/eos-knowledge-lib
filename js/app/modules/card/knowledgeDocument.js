@@ -36,7 +36,7 @@ const CONTENT_PAGE_NAME = 'content';
  * The toolbar frame surrounds the <title> and <toc> on the right. The
  * content frame surrounds the <webview> on the left.
  */
-const KnowledgeDocument = new Module.Class({
+var KnowledgeDocument = new Module.Class({
     Name: 'Card.KnowledgeDocument',
     Extends: Endless.CustomContainer,
     Implements: [Card.Card, ArticleContent.ArticleContent],

@@ -16,7 +16,7 @@ const Module = imports.app.interfaces.module;
  * are placed next to each other. If the **orientation** property is
  * **Gtk.Orientation.VERTICAL**, the components are placed one below the other.
  */
-const Box = new Module.Class({
+var Box = new Module.Class({
     Name: 'Layout.Box',
     Extends: Gtk.Grid,
 

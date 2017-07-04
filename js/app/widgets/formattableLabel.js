@@ -31,7 +31,7 @@ const Knowledge = imports.app.knowledge;
  */
 // FIXME: This whole class should go away once we are able to support text-transform
 // natively through Gtk CSS.
-const FormattableLabel = new Knowledge.Class({
+var FormattableLabel = new Knowledge.Class({
     Name: 'FormattableLabel',
     Extends: Gtk.Label,
     Properties: {

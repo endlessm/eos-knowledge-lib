@@ -23,7 +23,7 @@ const SlidingPanelOverlay = imports.app.widgets.slidingPanelOverlay;
  * Implements:
  *   <Module>
  */
-const TopMenu = new Module.Class({
+var TopMenu = new Module.Class({
     Name: 'Layout.TopMenu',
     Extends: SlidingPanelOverlay.SlidingPanelOverlay,
 

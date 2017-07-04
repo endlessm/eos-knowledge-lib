@@ -14,7 +14,7 @@ const _DEFAULT_TRANSITION_MS = 250;
  * Class: SlidingPanelOverlay
  * Overlays a <SlidingPanel> above some content.
  */
-const SlidingPanelOverlay = new Knowledge.Class({
+var SlidingPanelOverlay = new Knowledge.Class({
     Name: 'SlidingPanelOverlay',
     Extends: Gtk.Overlay,
 

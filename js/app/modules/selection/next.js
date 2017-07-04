@@ -14,7 +14,7 @@ const Pages = imports.app.pages;
  * Class: Next
  * Retrieves the next item in the current context
  */
-const Next = new Module.Class({
+var Next = new Module.Class({
     Name: 'Selection.Next',
     Extends: Xapian.Xapian,
 

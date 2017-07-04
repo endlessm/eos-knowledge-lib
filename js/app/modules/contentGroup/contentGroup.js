@@ -26,7 +26,7 @@ const ERROR_PAGE_NAME = 'error';
 /**
  * Class: ContentGroup
  */
-const ContentGroup = new Module.Class({
+var ContentGroup = new Module.Class({
     Name: 'ContentGroup.ContentGroup',
     Extends: Gtk.Grid,
 

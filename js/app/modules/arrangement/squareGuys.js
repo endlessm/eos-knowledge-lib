@@ -104,7 +104,7 @@ const _SquareGuysLayout = new Knowledge.Class({
 /**
  * Class: SquareGuys
  */
-const SquareGuys = new Module.Class({
+var SquareGuys = new Module.Class({
     Name: 'Arrangement.SquareGuys',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],

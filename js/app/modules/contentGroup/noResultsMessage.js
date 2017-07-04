@@ -20,7 +20,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  * an error. Should be used in the 'no-results' slot of
  * <ContentGroup.ContentGroup>.
  */
-const NoResultsMessage = new Module.Class({
+var NoResultsMessage = new Module.Class({
     Name: 'ContentGroup.NoResultsMessage',
     Extends: Gtk.Grid,
 

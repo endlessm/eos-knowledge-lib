@@ -15,7 +15,7 @@ const Module = imports.app.interfaces.module;
  * This filter includes only content object models that are tagged with the
  * string in its `tag` property.
  */
-const Tagged = new Module.Class({
+var Tagged = new Module.Class({
     Name: 'Filter.Tagged',
     Extends: GObject.Object,
     Implements: [Filter.Filter],

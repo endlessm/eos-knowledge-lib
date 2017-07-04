@@ -8,7 +8,7 @@ const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const Xapian = imports.app.modules.selection.xapian;
 
-const Search = new Module.Class({
+var Search = new Module.Class({
     Name: 'Selection.Search',
     Extends: Xapian.Xapian,
 
