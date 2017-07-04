@@ -3,7 +3,7 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 
 function toUnderscore (string) {
-    return string.replace('-', '_', 'g');
+    return string.replace(/-/g, '_');
 }
 
 function define_property (klass, name, descriptor) {

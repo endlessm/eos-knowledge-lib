@@ -47,7 +47,7 @@ const Class = new Lang.Class({
 
     _construct: function (props={}) {
         if (!props.GTypeName)
-            props.GTypeName = 'Ekn' + props.Name.replace('.', '_', 'g');
+            props.GTypeName = 'Ekn' + props.Name.replace(/\./g, '_');
 
         props.Properties = props.Properties || {};
         props.Implements = props.Implements || [];
@@ -70,7 +70,7 @@ const Class = new Lang.Class({
         let metaclass = Lang.getMetaClass(props) || Lang.Class;
         let is_widget = metaclass === Gtk.Widget.prototype.__metaclass__;
         let old_init = props._init;
-        let style_class = props.Name.replace('.', '', 'g');
+        let style_class = props.Name.replace(/\./g, '');
         props._init = function () {
             if (old_init)
                 old_init.apply(this, arguments);
