@@ -81,13 +81,13 @@ describe('QueryObject', function () {
             query: 'tyrion wins',
             sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,
         });
-        let result = query_obj.get_sort_value(query_obj);
+        let result = query_obj.get_sort_value();
         expect(result).toBe(0);
 
         query_obj = Eknc.QueryObject.new_from_props({
             query: 'tyrion wins',
         });
-        let undefined_result = query_obj.get_sort_value(query_obj);
+        let undefined_result = query_obj.get_sort_value();
         expect(undefined_result).toBe(-1);
     });
 
@@ -96,14 +96,14 @@ describe('QueryObject', function () {
             query: 'tyrion wins',
             match: Eknc.QueryObjectMatch.TITLE_SYNOPSIS,
         });
-        let result = query_obj.get_cutoff(query_obj);
+        let result = query_obj.get_cutoff();
         expect(result).toBe(20);
 
         query_obj = Eknc.QueryObject.new_from_props({
             query: 'tyrion wins',
             match: Eknc.QueryObjectMatch.ONLY_TITLE,
         });
-        result = query_obj.get_cutoff(query_obj);
+        result = query_obj.get_cutoff();
         expect(result).toBe(10);
     });
 
@@ -112,7 +112,7 @@ describe('QueryObject', function () {
             let query_obj = Eknc.QueryObject.new_from_props({
                 query: 'foo bar baz',
             });
-            let result = query_obj.get_query_parser_string(query_obj);
+            let result = query_obj.get_query_parser_string();
             expect(result).toMatch('exact_title:Foo_Bar_Baz');
             expect(result).toMatch('title:foo');
             expect(result).toMatch('title:bar');
@@ -124,7 +124,7 @@ describe('QueryObject', function () {
                 query: 'foo bar baz',
                 stopword_free_query: 'oof rab zab',
             });
-            let result = query_obj.get_query_parser_string(query_obj);
+            let result = query_obj.get_query_parser_string();
             expect(result).toMatch('exact_title:Foo_Bar_Baz');
             expect(result).toMatch('title:oof');
             expect(result).toMatch('title:rab');
@@ -140,7 +140,7 @@ describe('QueryObject', function () {
                 query: 'foo',
                 mode: Eknc.QueryObjectMode.INCREMENTAL,
             });
-            let result = query_obj.get_query_parser_string(query_obj);
+            let result = query_obj.get_query_parser_string();
             expect(result).toMatch('exact_title:Foo\\*');
             expect(result).toMatch('title:foo\\*');
 
@@ -148,7 +148,7 @@ describe('QueryObject', function () {
                 query: 'foo',
                 mode: Eknc.QueryObjectMode.DELIMITED,
             });
-            result = query_obj.get_query_parser_string(query_obj);
+            result = query_obj.get_query_parser_string();
             expect(result).not.toMatch('exact_title:Foo\\*');
             expect(result).not.toMatch('title:foo\\*');
         });
@@ -158,7 +158,7 @@ describe('QueryObject', function () {
                 query: 'littl searc',
                 match: Eknc.QueryObjectMatch.TITLE_SYNOPSIS,
             });
-            let result = query_obj.get_query_parser_string(query_obj);
+            let result = query_obj.get_query_parser_string();
             expect(result).toMatch(/\(littl OR littl\*\) AND \(searc OR searc\*\)/);
         });
 
@@ -168,7 +168,7 @@ describe('QueryObject', function () {
                 stopword_free_query: 'no stopwords',
                 match: Eknc.QueryObjectMatch.TITLE_SYNOPSIS,
             });
-            let result = query_obj.get_query_parser_string(query_obj);
+            let result = query_obj.get_query_parser_string();
             expect(result).toMatch(/\(no OR no\*\) AND \(stopwords OR stopwords\*\)/);
             expect(result).not.toMatch(/\(littl OR littl\*\) AND \(searc OR searc\*\)/);
         });
@@ -178,7 +178,7 @@ describe('QueryObject', function () {
                 query: 'a',
                 mode: Eknc.QueryObjectMode.INCREMENTAL,
             });
-            let result = query_obj.get_query_parser_string(query_obj);
+            let result = query_obj.get_query_parser_string();
             expect(result).toMatch('exact_title:A');
             expect(result).not.toMatch('a\\*');
             expect(result).not.toMatch('title:a');
@@ -188,7 +188,7 @@ describe('QueryObject', function () {
             let query_obj = Eknc.QueryObject.new_from_props({
                 query: 'whoa      man',
             });
-            let result = query_obj.get_query_parser_string(query_obj);
+            let result = query_obj.get_query_parser_string();
             expect(result).toMatch('exact_title:Whoa_Man');
             expect(result).toMatch('title:whoa');
             expect(result).toMatch('title:man');
@@ -198,7 +198,7 @@ describe('QueryObject', function () {
             let query_obj = Eknc.QueryObject.new_from_props({
                 query: 'whoa;man',
             });
-            let result = query_obj.get_query_parser_string(query_obj);
+            let result = query_obj.get_query_parser_string();
             expect(result).toMatch('exact_title:Whoa_Man');
             expect(result).toMatch('title:whoa');
             expect(result).toMatch('title:man');
@@ -208,7 +208,7 @@ describe('QueryObject', function () {
             let query_obj = Eknc.QueryObject.new_from_props({
                 query: 'PENN AND tELLER',
             });
-            let result = query_obj.get_query_parser_string(query_obj);
+            let result = query_obj.get_query_parser_string();
             expect(result).toMatch('title:and');
         });
 
@@ -216,7 +216,7 @@ describe('QueryObject', function () {
             let query_obj = Eknc.QueryObject.new_from_props({
                 query: 'foo (bar) baz ((',
             });
-            let result = query_obj.get_query_parser_string(query_obj);
+            let result = query_obj.get_query_parser_string();
             expect(result).toMatch('exact_title:Foo_Bar_Baz');
         });
 
@@ -226,7 +226,7 @@ describe('QueryObject', function () {
                 ids: ['ekn://domain/0123456789abcdef',
                       'ekn://domain/fedcba9876543210'],
             });
-            let result = query_obj.get_query_parser_string(query_obj);
+            let result = query_obj.get_query_parser_string();
             expect(result).toMatch('id:0123456789abcdef OR id:fedcba9876543210');
         });
 
@@ -234,7 +234,7 @@ describe('QueryObject', function () {
             let query_obj = Eknc.QueryObject.new_from_props({
                 tags_match_any: ['cats', 'dogs', 'turtles'],
             });
-            let result = query_obj.get_query_parser_string(query_obj);
+            let result = query_obj.get_query_parser_string();
             expect(result).toMatch('tag:"cats" OR tag:"dogs" OR tag:"turtles"');
         });
 
@@ -242,7 +242,7 @@ describe('QueryObject', function () {
             let query_obj = Eknc.QueryObject.new_from_props({
                 tags_match_all: ['cats', 'dogs', 'turtles'],
             });
-            let result = query_obj.get_query_parser_string(query_obj);
+            let result = query_obj.get_query_parser_string();
             expect(result).toMatch('tag:"cats" AND tag:"dogs" AND tag:"turtles"');
         });
 
@@ -250,7 +250,7 @@ describe('QueryObject', function () {
             let query_obj = Eknc.QueryObject.new_from_props({
                 tags_match_any: ['cat zombies'],
             });
-            let result = query_obj.get_query_parser_string(query_obj);
+            let result = query_obj.get_query_parser_string();
             expect(result).toMatch('tag:"cat zombies"');
         });
 
@@ -263,7 +263,7 @@ describe('QueryObject', function () {
                 ],
                 excluded_tags: ['chicken', 'shop'],
             });
-            let result = query_obj.get_query_parser_string(query_obj);
+            let result = query_obj.get_query_parser_string();
             expect(result).toMatch('NOT id:cleganebowlfever');
             expect(result).toMatch('NOT id:errybodygethyped');
             expect(result).toMatch('NOT tag:"chicken"');
@@ -275,7 +275,7 @@ describe('QueryObject', function () {
             let query_obj = Eknc.QueryObject.new_from_props({
                 query: long_query,
             });
-            let result = query_obj.get_query_parser_string(query_obj);
+            let result = query_obj.get_query_parser_string();
             let limited_result = 'exact_title:Q' + 'q'.repeat(244);
             expect(result).toMatch(limited_result)
             // 245 is the term limit so adding an extra letter should not match
@@ -288,7 +288,7 @@ describe('QueryObject', function () {
             let query_obj = Eknc.QueryObject.new_from_props({
                 query: long_query,
             });
-            let result = query_obj.get_query_parser_string(query_obj);
+            let result = query_obj.get_query_parser_string();
             // Each ç is two bytes so we can only fit half as many. Then since
             // 245 is an odd number, this will leave us with a byte sequence
             // that does not correspond to a full character sequence so we
@@ -306,7 +306,7 @@ describe('QueryObject', function () {
                     app_id: 'com.endlessm.travel-es',
                     ids: ['ekn://travel-es/2e11617b6bce1e6d'],
                 });
-                let result = query_obj.get_query_parser_string(query_obj);
+                let result = query_obj.get_query_parser_string();
                 expect(result).toMatch('2e11617b6bce1e6d');
             });
 
@@ -315,7 +315,7 @@ describe('QueryObject', function () {
                     app_id: 'com.endlessm.travel-es',
                     ids: ['ekn://travel-es/2E11617B6BCE1E6D'],
                 });
-                let result = query_obj.get_query_parser_string(query_obj);
+                let result = query_obj.get_query_parser_string();
                 expect(result).toMatch('2E11617B6BCE1E6D');
             });
 
@@ -324,7 +324,7 @@ describe('QueryObject', function () {
                     app_id: 'com.endlessm.bad1',
                     ids: ['ekn://bad1/someha$h'],
                 });
-                let result = query_obj.get_query_parser_string(query_obj);
+                let result = query_obj.get_query_parser_string();
                 expect(result).not.toMatch('id:');
             });
 
@@ -333,7 +333,7 @@ describe('QueryObject', function () {
                     app_id: 'com.endlessm.bad1',
                     ids: ['bad1/2e11617b6bce1e6d'],
                 });
-                let result = query_obj.get_query_parser_string(query_obj);
+                let result = query_obj.get_query_parser_string();
                 expect(result).not.toMatch('id:');
             });
 
@@ -342,7 +342,7 @@ describe('QueryObject', function () {
                     app_id: 'com.endlessm.scuba-diving-es',
                     ids: ['ekn://scuba-diving-es'],
                 });
-                let result = query_obj.get_query_parser_string(query_obj);
+                let result = query_obj.get_query_parser_string();
                 expect(result).not.toMatch('id:');
             });
 
@@ -351,7 +351,7 @@ describe('QueryObject', function () {
                     app_id: 'ccom.endlessm.travel-es',
                     ids: ['ekn://travel-es/2e11617b6bce1e6d/too/many/parts'],
                 });
-                let result = query_obj.get_query_parser_string(query_obj);
+                let result = query_obj.get_query_parser_string();
                 expect(result).not.toMatch('id:');
             });
         });
