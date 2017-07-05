@@ -4,6 +4,29 @@ title: Contributing
 permalink: /contributing
 ---
 
+Flatpak runtime
+---------------
+
+To add the Flatpak repository, run:
+
+```sh
+flatpak remote-add --from eos-sdk http://endlessm.github.io/eos-knowledge-lib/eos-sdk.flatpakrepo
+```
+
+If you are running Endless OS 3.2 or later, you will already have the repository.
+
+Available runtimes:
+
+| ID                                | Description |
+|:----------------------------------|:----|
+| com.endlessm.apps.Platform        | Runtime |
+| com.endlessm.apps.Platform.Locale | Runtime translations (extension) |
+| com.endlessm.apps.Sdk             | SDK |
+| com.endlessm.apps.Sdk.Debug       | SDK debug information (extension) |
+| com.endlessm.apps.Sdk.Locale      | SDK translations (extension) |
+
+The runtimes are built from definitions in the [endless-sdk-flatpak](https://github.com/endlessm/endless-sdk-flatpak) Git repository.
+
 Building
 --------
 We recommend using [JHbuild] to build this code, especially if you are planning to make changes to it.
