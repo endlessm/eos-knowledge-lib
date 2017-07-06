@@ -63,6 +63,13 @@ describe('Domain', function () {
             });
         });
 
+        it('throws for an ID that is not valid', function (done) {
+            domain.get_object("ekn:///this-is-not-a-valid-id", null, function (domain, result) {
+                expect(() => domain.get_object_finish(result)).toThrow();
+                done();
+            });
+        });
+
         it('returns an object model for an ID in our database', function (done) {
             domain.get_object("ekn:///02463d24cb5690af2c8e898736ea8c80e0e77077", null, function (domain, result) {
                 let model = domain.get_object_finish(result);
