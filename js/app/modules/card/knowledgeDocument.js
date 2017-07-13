@@ -293,9 +293,13 @@ const KnowledgeDocument = new Module.Class({
 
             let [baseURI, hash] = decision.request.uri.split('#');
 
-            if (baseURI === this.model.ekn_id) {
+            if (baseURI.startsWith(this.model.ekn_id)) {
                 // If this check is true, then we are navigating to the current
                 // page or an anchor on the current page.
+
+                if (!webview.renderer.enable_scroll_manager)
+                    return false;
+
                 decision.use();
                 return true;
             } else {

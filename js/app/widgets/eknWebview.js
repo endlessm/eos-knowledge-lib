@@ -143,8 +143,12 @@ const EknWebview = new Knowledge.Class({
         let id = req.get_uri();
 
         let components = Utils.components_from_ekn_id(id);
-        if (components.length === 1) {
-            this._load_object(id)
+
+        print(id);
+        print(components);
+
+        if (components.length === 1 || components[1].startsWith('#')) {
+            this._load_object('ekn:///' + components[0])
             .then(([stream, content_type]) => {
                 req.finish(stream, -1, content_type);
             })

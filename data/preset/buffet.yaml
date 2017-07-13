@@ -305,7 +305,7 @@ defines:
           type: Card.KnowledgeDocument
           properties:
             show-titles: false
-            show-toc: false
+            show-toc: true
             custom-css: buffet-custom.css
         nav-content:
           type: ContentGroup.ContentGroup
