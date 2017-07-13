@@ -10,4 +10,3 @@ Documentation versions:
 - [Unstable development version (master)](master)
 - Old versions:
   - [eos3.1](eos3.1)
-  - [eos3.0](eos3.0)
