@@ -131,23 +131,9 @@ Translations
 Please don't do translations by directly editing the `.po` files in this repository.
 Instead, sign up at our [Transifex project][transifex] and translate there.
 
-Release schedule
-----------------
-As this codebase evolves, we will release new versions of it as Flatpak runtimes.
-The first public release was in com.endlessm.Platform version eos3.0, which was a unified runtime for all apps shipped with Endless OS 3.0.x.
-Subsequent releases will move to a separate runtime.
-
-Once code is released in a runtime branch, the Git repository will be branched and the API considered stable.
-Runtimes will receive bug fixes, but no new API and no API changes.
-
-When we add, change, or delete API, this will go in a new Flatpak runtime branch.
-It is not expected that apps built for one API release will run on a subsequent release without some porting.
-
-Future notes
-------------
-More and better documentation on all of this is incoming.
-
-For the next release, we may split this repository up into smaller units.
+Release schedule and future plans
+---------------------------------
+For more information, see the [release schedule].
 
 [JHbuild]: https://developer.gnome.org/jhbuild/stable/
 [eos-sdk]: https://github.com/endlessm/eos-sdk
@@ -156,3 +142,4 @@ For the next release, we may split this repository up into smaller units.
 [xapian-bridge]: https://github.com/endlessm/xapian-bridge
 [jasmine-gjs]: https://github.com/ptomato/jasmine-gjs
 [transifex]: https://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/
+[release schedule]: /eos-knowledge-lib/releases/schedule
