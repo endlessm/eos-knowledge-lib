@@ -92,13 +92,21 @@ Here's an overview of what's in each directory:
 
 - `data/`
   - `css/` - themes and parts of themes for UI modules
+  - `icons/` - parts of icon themes for UI modules
   - `images/` - miscellaneous UI assets
   - `preset/` - pre-built YAML UI description files
   - `templates/` - code for rendering HTML content; more or less deprecated
   - `widgets/` - GtkBuilder XML files for UI modules in `js/app/modules/`
 - `docs/`
-  - Various Markdown developer docs
-  - `reference/js/` - API reference; not useful right now, being rewritten.
+  - `api/` - API reference; not useful right now, being rewritten
+  - `framework/` - reference for UI modules
+- `ekncontent/` - library for accessing databases of offline content
+  - `docs/` - gtk-doc documentation
+  - `ekncontent/` - C sources
+  - `eknvfs/` - module for resolving `ekn://` URIs
+  - `m4/` - Autoconf code
+  - `overrides/` - additions for using ekncontent in Javascript code
+  - `tests/` - unit and integration tests
 - `js/` - Javascript library code
   - `app/` - the main UI library for creating apps
     - Various app library classes
@@ -106,17 +114,15 @@ Here's an overview of what's in each directory:
     - `libs/` - external JS code such as Mustache
     - `modules/` - the modular UI blocks (see below)
     - `widgets/` - some GTK widgets for UI code that are not modular UI blocks
-  - `search/` - library for accessing databases of offline content
 - `lib/` - C library code
   - `eosknowledgeprivate/` - introspectable C wrappers for `js/app/`
-  - `eosknowledgesearchprivate/` - introspectable C wrappers for `js/search/`
   - `web-extensions/` - WebKit web extensions for use when viewing documents
 - `m4/` - Autoconf code
 - `po/` - internationalization (see below)
 - `tests/` - unit and integration tests
   - Various utility code for tests
   - `autobahn/` - integration tests for the Autobahn YAML processor
-  - `js/` - unit tests for the `js/app` and `js/search` libraries
+  - `js/app/` - unit tests for the code in `js/app`
   - `test-content/` - sample content for some tests
 - `tools/` - various testing and development tools
 
