@@ -678,6 +678,13 @@ eknc_domain_get_object (EkncDomain *self,
   g_task_set_task_data (task, parser, g_object_unref);
 
   const gchar *hash = eknc_utils_id_get_hash (id);
+  if (hash == NULL)
+    {
+      g_task_return_new_error (task, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_ID_NOT_VALID,
+                               "Not a valid id %s", id);
+      return;
+    }
+
   g_autoptr(EosShardRecord) record = eknc_domain_load_record_from_hash_sync (self, hash);
   if (record == NULL)
     {
