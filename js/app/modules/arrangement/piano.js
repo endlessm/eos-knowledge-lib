@@ -45,14 +45,6 @@ const _PianoLayout = new Knowledge.Class({
         return this.get_children().length <= (1 + this._support_cards_shown);
     },
 
-    // Removing a visible widget should recalculate the positions of all widgets
-    vfunc_remove: function (widget) {
-        let needs_resize = widget.get_child_visible();
-        this.parent(widget);
-        if (needs_resize)
-            this.queue_resize();
-    },
-
     vfunc_get_request_mode: function () {
         return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
     },

@@ -358,12 +358,6 @@ const SpaceContainer = new Knowledge.Class({
     },
 
     vfunc_draw: Utils.vfunc_draw_background_default,
-
-    vfunc_remove: function (child) {
-        this.parent(child);
-        if (child.visible)
-            this.queue_resize();
-    },
 });
 
 function _sum(array) {

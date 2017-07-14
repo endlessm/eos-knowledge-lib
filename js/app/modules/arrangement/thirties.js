@@ -90,14 +90,6 @@ const _ThirtiesLayout = new Knowledge.Class({
         Utils.set_container_clip(this);
     },
 
-    // Removing a visible widget should recalculate the positions of all widgets
-    vfunc_remove: function (widget) {
-        let needs_resize = widget.get_child_visible();
-        this.parent(widget);
-        if (needs_resize)
-            this.queue_resize();
-    },
-
     _get_card_height: function (width) {
         let small_mode = (width < CARD_WIDTH_THRESHOLD * COL_COUNT);
         return small_mode ? CARD_HEIGHT_SMALL : CARD_HEIGHT_BIG;

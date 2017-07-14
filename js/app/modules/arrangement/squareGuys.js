@@ -32,12 +32,6 @@ const _SquareGuysLayout = new Knowledge.Class({
         this._three_column_mode = false;
     },
 
-    // Removing a widget should recalculate the positions of all widgets
-    vfunc_remove: function (widget) {
-        this.parent(widget);
-        this.queue_resize();
-    },
-
     vfunc_get_preferred_width: function () {
         return [CARD_SIZE_SMALL * COL_COUNT_MIN, CARD_SIZE_MAX * COL_COUNT_MAX];
     },

@@ -81,14 +81,6 @@ const _QuiltLayout = new Knowledge.Class({
         this.parent(props);
     },
 
-    // Removing a visible widget should recalculate the positions of all widgets
-    vfunc_remove: function (widget) {
-        let needs_resize = widget.get_child_visible();
-        this.parent(widget);
-        if (needs_resize)
-            this.queue_resize();
-    },
-
     vfunc_get_request_mode: function () {
         return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
     },

@@ -45,12 +45,6 @@ const _ThirdRockLayout = new Knowledge.Class({
         this.parent(props);
     },
 
-    // Removing a widget should recalculate the positions of all widgets
-    vfunc_remove: function (widget) {
-        this.parent(widget);
-        this.queue_resize();
-    },
-
     vfunc_get_request_mode: function () {
         return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
     },

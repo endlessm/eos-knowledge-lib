@@ -33,12 +33,6 @@ const _HalfLayout = new Knowledge.Class({
         this.parent(props);
     },
 
-    // Removal of any card should cause a recalculate
-    vfunc_remove: function (widget) {
-        this.parent(widget);
-        this.queue_resize();
-    },
-
     vfunc_get_preferred_width: function () {
         return [MINIMUM_ARRANGEMENT_WIDTH, FOUR_CARDS_THRESHOLD * 2];
     },
