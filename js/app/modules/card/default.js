@@ -528,6 +528,10 @@ const Default = new Module.Class({
             let c = new Emeus.Constraint(props);
             this._inner_content_grid.add_constraint(c);
         });
+
+        // Only one direct child, we give it all available space regardless of
+        // its request
+        void this._layout.get_preferred_width();
         this.parent(alloc);
         this.update_card_sizing_classes(real_alloc_height, real_alloc_width);
     },
