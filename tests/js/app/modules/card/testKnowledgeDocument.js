@@ -1,12 +1,14 @@
 const Eknc = imports.gi.EosKnowledgeContent;
 const EvinceDocument = imports.gi.EvinceDocument;
 const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const WebKit2 = imports.gi.WebKit2;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
+const Knowledge = imports.app.knowledge;
 const KnowledgeDocument = imports.app.modules.card.knowledgeDocument;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
@@ -19,6 +21,24 @@ Gtk.init(null);
 EvinceDocument.init();
 
 const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
+
+const MockEknWebviewDecision = new Knowledge.Class({
+    Name: 'MockEknWebviewDecision',
+    Extends: GObject.Object,
+    Properties: {
+        'uri': GObject.ParamSpec.string('uri', '', '',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ''),
+    },
+    _init: function (props={}) {
+        this.parent(props);
+        this.request = { uri: this.uri };
+    },
+    use: function () {
+    },
+    ignore: function () {
+    },
+});
 
 describe('Card.KnowledgeDocument', function () {
     let card, model, real_session_descriptor, toc;
@@ -164,6 +184,14 @@ describe('Card.KnowledgeDocument', function () {
                 win.show_all();
                 Utils.update_gui();
                 expect(card.toc.collapsed).toBe(true);
+            });
+
+            it('scrolls to the right section', function () {
+                let decision = new MockEknWebviewDecision({ uri: 'ekn:///foo/bar/#Baz'});
+                expect(card.toc.target_section).toBe(0);
+                card.content_view.emit('decide-policy', decision, WebKit2.PolicyDecisionType.NAVIGATION_ACTION);
+                Utils.update_gui();
+                expect(card.toc.target_section).toBe(2);
             });
         });
 

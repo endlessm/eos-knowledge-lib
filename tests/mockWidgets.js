@@ -5,6 +5,7 @@ MockScrolledLayout, MockSizeWidget */
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
+const WebKit2 = imports.gi.WebKit2;
 
 const Knowledge = imports.app.knowledge;
 const Minimal = imports.tests.minimal;
@@ -56,7 +57,7 @@ const MockEknWebview = new Knowledge.Class({
             param_types: [ GObject.TYPE_UINT, GObject.TYPE_STRING ],
         },
         'decide-policy': {
-            param_types: [ GObject.TYPE_OBJECT, GObject.TYPE_OBJECT ],
+            param_types: [ GObject.TYPE_OBJECT, WebKit2.PolicyDecisionType.$gtype ],
         },
     },
     _init: function (props={}) {

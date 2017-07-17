@@ -22,6 +22,7 @@ const Utils = imports.app.utils;
 
 const SPINNER_PAGE_NAME = 'spinner';
 const CONTENT_PAGE_NAME = 'content';
+const SCROLLED_PAST_PREFIX = 'scrolled-past-';
 
 /**
  * Class: KnowledgeDocument
@@ -224,6 +225,11 @@ const KnowledgeDocument = new Module.Class({
         this.content_view.run_javascript(script, null, null);
     },
 
+    _find_section_index: function (sectionName) {
+        return this._mainArticleSections.findIndex(section =>
+            section.hasContent.split('#')[1] === sectionName);
+    },
+
     // Keep separate function to mock out in tests
     _create_webview: function () {
         return new EknWebview.EknWebview({
@@ -237,7 +243,7 @@ const KnowledgeDocument = new Module.Class({
     _get_webview: function () {
         let webview = this._create_webview();
 
-        webview.renderer.enable_scroll_manager = this.show_toc;
+        webview.renderer.enable_scroll_manager = true;
         webview.renderer.show_title = !this.show_toc;
         if (this.custom_css)
             webview.renderer.set_custom_css_files([this.custom_css]);
@@ -266,16 +272,10 @@ const KnowledgeDocument = new Module.Class({
                 let hash = webview.uri.split('#')[1];
 
                 // if we scrolled past something, update the ToC
-                if (hash.indexOf('scrolled-past-') === 0) {
+                if (hash.startsWith(SCROLLED_PAST_PREFIX)) {
 
-                    let sectionName = hash.split('scrolled-past-')[1];
-                    let sectionIndex = -1;
-                    // Find the index corresponding to this section
-                    for (let index in this._mainArticleSections) {
-                        let thisName = this._mainArticleSections[index].hasContent.split("#")[1];
-                        if (thisName === sectionName)
-                            sectionIndex = index;
-                    }
+                    let sectionName = hash.split(SCROLLED_PAST_PREFIX)[1];
+                    let sectionIndex = this._find_section_index(sectionName);
 
                     if (sectionIndex !== -1 &&
                         this.toc.target_section === this.toc.selected_section) {
@@ -293,10 +293,20 @@ const KnowledgeDocument = new Module.Class({
 
             let [baseURI, hash] = decision.request.uri.split('#');
 
-            if (baseURI === this.model.ekn_id) {
+            if (baseURI.startsWith(this.model.ekn_id)) {
                 // If this check is true, then we are navigating to the current
-                // page or an anchor on the current page.
-                decision.use();
+                // page or an anchor on the current page. If the anchor comes
+                // from the original content just scroll to it.
+
+                if (hash && !hash.startsWith(SCROLLED_PAST_PREFIX)) {
+                    let index = this._find_section_index(hash);
+                    if (index !== -1)
+                        this._scroll_to_section(index);
+                    decision.ignore();
+                } else {
+                    decision.use();
+                }
+
                 return true;
             } else {
                 this.emit('ekn-link-clicked', baseURI);
