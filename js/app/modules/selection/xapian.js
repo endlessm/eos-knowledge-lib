@@ -56,6 +56,16 @@ const Xapian = new Module.Class({
         throw new Error('You should be implementing construct_query_object in your subclass');
     },
 
+    _modify_query_object(query) {
+        if (!query)
+            return null;
+        if (this._order)
+            query = this._order.modify_xapian_query(query);
+        if (this._filter)
+            query = this._filter.modify_xapian_query(query);
+        return query;
+    },
+
     queue_load_more: function (num_desired) {
         if (this.loading)
             return;
@@ -69,10 +79,7 @@ const Xapian = new Module.Class({
                 this._set_needs_refresh(false);
                 return;
             }
-            if (this._order)
-                query = this._order.modify_xapian_query(query);
-            if (this._filter)
-                query = this._filter.modify_xapian_query(query);
+            query = this._modify_query_object(query);
         }
 
         // In the case where we can only do sorting and filtering after the
@@ -140,6 +147,7 @@ const Xapian = new Module.Class({
                 this._query_index++;
                 new_query = true;
                 more_results_query = this.construct_query_object(num_desired, this._query_index);
+                more_results_query = this._modify_query_object(more_results_query);
             }
 
             this._next_query = more_results_query;
