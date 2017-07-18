@@ -205,4 +205,39 @@ function _init() {
         let json_node = this._get_subscriptions_json_real(app_id, cancellable);
         return JSON.parse(Json.to_string(json_node, false));
     };
+
+    Eknc.QueryObject.prototype.toString = function () {
+        let props = [];
+        if (this.app_id)
+            props.push(`app_id: "${this.app_id}"`);
+        if (this.query)
+            props.push(`query: "${this.query}"`);
+        if (this.corrected_query)
+            props.push(`corrected_query: "${this.corrected_query}"`);
+        if (this.stopword_free_query)
+            props.push(`stopword_free_query: "${this.stopword_free_query}"`);
+        if (this.literal_query)
+            props.push(`literal_query: "${this.literal_query}"`);
+        if (this.mode !== Eknc.QueryObjectMode.INCREMENTAL)
+            props.push(`mode: ${this.mode}`);
+        if (this.match !== Eknc.QueryObjectMatch.ONLY_TITLE)
+            props.push(`match: ${this.match}`);
+        if (this.sort !== Eknc.QueryObjectSort.RELEVANCE)
+            props.push(`sort: ${this.sort}`);
+        if (this.order !== Eknc.QueryObjectOrder.ASCENDING)
+            props.push(`order: ${this.order}`);
+        if (this.limit)
+            props.push(`limit: ${this.limit}`);
+        if (this.tags_match_all.length)
+            props.push(`tags_match_all: ${this.tags_match_all.toSource()}`);
+        if (this.tags_match_any.length)
+            props.push(`tags_match_any: ${this.tags_match_any.toSource()}`);
+        if (this.ids.length)
+            props.push(`ids: ${this.ids.toSource()}`);
+        if (this.excluded_ids.length)
+            props.push(`excluded_ids: ${this.excluded_ids.toSource()}`);
+        if (this.excluded_tags.length)
+            props.push(`excluded_tags: ${this.excluded_tags.toSource()}`);
+        return `QueryObject({${props.join(', ')}})`;
+    };
 }
