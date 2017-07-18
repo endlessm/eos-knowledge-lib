@@ -503,6 +503,7 @@ javascript_tests = \
 	tests/js/app/modules/selection/testSetCrossSection.js \
 	tests/js/app/modules/selection/testSuggested.js \
 	tests/js/app/modules/selection/testSupplementary.js \
+	tests/js/app/modules/selection/testXapian.js \
 	tests/js/app/modules/window/testSimple.js \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testBuffetHistoryStore.js \
