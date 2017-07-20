@@ -92,13 +92,21 @@ Here's an overview of what's in each directory:
 
 - `data/`
   - `css/` - themes and parts of themes for UI modules
+  - `icons/` - parts of icon themes for UI modules
   - `images/` - miscellaneous UI assets
   - `preset/` - pre-built YAML UI description files
   - `templates/` - code for rendering HTML content; more or less deprecated
   - `widgets/` - GtkBuilder XML files for UI modules in `js/app/modules/`
 - `docs/`
-  - Various Markdown developer docs
-  - `reference/js/` - API reference; not useful right now, being rewritten.
+  - `api/` - API reference; not useful right now, being rewritten
+  - `framework/` - reference for UI modules
+- `ekncontent/` - library for accessing databases of offline content
+  - `docs/` - gtk-doc documentation
+  - `ekncontent/` - C sources
+  - `eknvfs/` - module for resolving `ekn://` URIs
+  - `m4/` - Autoconf code
+  - `overrides/` - additions for using ekncontent in Javascript code
+  - `tests/` - unit and integration tests
 - `js/` - Javascript library code
   - `app/` - the main UI library for creating apps
     - Various app library classes
@@ -106,17 +114,15 @@ Here's an overview of what's in each directory:
     - `libs/` - external JS code such as Mustache
     - `modules/` - the modular UI blocks (see below)
     - `widgets/` - some GTK widgets for UI code that are not modular UI blocks
-  - `search/` - library for accessing databases of offline content
 - `lib/` - C library code
   - `eosknowledgeprivate/` - introspectable C wrappers for `js/app/`
-  - `eosknowledgesearchprivate/` - introspectable C wrappers for `js/search/`
   - `web-extensions/` - WebKit web extensions for use when viewing documents
 - `m4/` - Autoconf code
 - `po/` - internationalization (see below)
 - `tests/` - unit and integration tests
   - Various utility code for tests
   - `autobahn/` - integration tests for the Autobahn YAML processor
-  - `js/` - unit tests for the `js/app` and `js/search` libraries
+  - `js/app/` - unit tests for the code in `js/app`
   - `test-content/` - sample content for some tests
 - `tools/` - various testing and development tools
 
@@ -125,23 +131,9 @@ Translations
 Please don't do translations by directly editing the `.po` files in this repository.
 Instead, sign up at our [Transifex project][transifex] and translate there.
 
-Release schedule
-----------------
-As this codebase evolves, we will release new versions of it as Flatpak runtimes.
-The first public release was in com.endlessm.Platform version eos3.0, which was a unified runtime for all apps shipped with Endless OS 3.0.x.
-Subsequent releases will move to a separate runtime.
-
-Once code is released in a runtime branch, the Git repository will be branched and the API considered stable.
-Runtimes will receive bug fixes, but no new API and no API changes.
-
-When we add, change, or delete API, this will go in a new Flatpak runtime branch.
-It is not expected that apps built for one API release will run on a subsequent release without some porting.
-
-Future notes
-------------
-More and better documentation on all of this is incoming.
-
-For the next release, we may split this repository up into smaller units.
+Release schedule and future plans
+---------------------------------
+For more information, see the [release schedule].
 
 [JHbuild]: https://developer.gnome.org/jhbuild/stable/
 [eos-sdk]: https://github.com/endlessm/eos-sdk
@@ -150,3 +142,4 @@ For the next release, we may split this repository up into smaller units.
 [xapian-bridge]: https://github.com/endlessm/xapian-bridge
 [jasmine-gjs]: https://github.com/ptomato/jasmine-gjs
 [transifex]: https://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/
+[release schedule]: /eos-knowledge-lib/releases/schedule

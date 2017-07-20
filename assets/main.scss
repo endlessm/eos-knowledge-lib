@@ -44,3 +44,22 @@ h1, h2, h3, h4, h5, h6 {
 .highlighter-rouge .highlight, pre, code {
     background-color: $grey-color-light;
 }
+
+// Tables look off in the default theme
+table {
+    margin-bottom: $base-font-size * $base-line-height;
+}
+
+th, td {
+    margin: 2px;
+    padding: 5px;
+}
+
+th {
+    background-color: $grey-color-dark;
+    color: white;
+}
+
+td {
+    background-color: $grey-color-light;
+}
