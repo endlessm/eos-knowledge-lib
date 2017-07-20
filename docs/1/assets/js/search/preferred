@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "preferred", "urls": ["contentGroup/staticText.html#ellipsize", "contentGroup/dynamicTitle.html#ellipsize", "banner/appMetadata.html#ellipsize", "banner/context.html#ellipsize", "banner/search.html#ellipsize", "arrangement/pianola.html#arrangementpianola1"]});
+urls_downloaded_cb({"urls": ["contentGroup/staticText.html#ellipsize", "contentGroup/dynamicTitle.html#ellipsize", "banner/context.html#ellipsize", "banner/search.html#ellipsize", "arrangement/pianola.html#arrangementpianola1"], "token": "preferred"});
