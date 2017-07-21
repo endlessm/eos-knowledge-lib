@@ -30,7 +30,7 @@ app to run. Other than that, only tweak what you need to tweak!
 Kermit
 ------
 Shards are our atomic unit for content delivery in Knowledge Apps. The `kermit` tool
-inspects shards files. It is included in the com.endless.Platform flatpak runtime.
+inspects shards files. It is included in the com.endlessm.Platform flatpak runtime.
 
 To list all records in a shard, use `kermit list <path_to_shard_file>`.
 
@@ -46,7 +46,7 @@ Eminem
 ------
 Subscriptions are our mechanism for updating content in Knowledge Apps. A subscription
 consists of multiple shards. The `eminem` tool inspects and manipulates subscriptions.
-It is included in the com.endless.Platform flatpak runtime.
+It is included in the com.endlessm.Platform flatpak runtime.
 
 To retrieve the subscription ID(s) for a given app ID, use `eminem inspect-app-id <app_id>`.
 
