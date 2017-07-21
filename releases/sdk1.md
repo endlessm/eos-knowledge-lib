@@ -1,5 +1,6 @@
 ---
 layout: page
+title:
 permalink: /releases/1/
 ---
 
