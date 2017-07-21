@@ -119,7 +119,7 @@ be able to run this tool, so download some from the app store first.</p>
 app to run. Other than that, only tweak what you need to tweak!</p>
 <h2 id="kermit">Kermit</h2>
 <p>Shards are our atomic unit for content delivery in Knowledge Apps. The <code>kermit</code> tool
-inspects shards files. It is included in the com.endless.Platform flatpak runtime.</p>
+inspects shards files. It is included in the com.endlessm.Platform flatpak runtime.</p>
 <p>To list all records in a shard, use <code>kermit list &lt;path_to_shard_file&gt;</code>.</p>
 <p>To retrieve a blob in a record, use <code>kermit dump &lt;path_to_shard_file&gt; &lt;record_id&gt; &lt;blob_name&gt;</code>,
 where <code>&lt;blob_name&gt;</code> is commonly "data" or "metadata" to fetch those blobs for a given record.</p>
@@ -129,7 +129,7 @@ find any records that have metadata that matches that regex.</p>
 <h2 id="eminem">Eminem</h2>
 <p>Subscriptions are our mechanism for updating content in Knowledge Apps. A subscription
 consists of multiple shards. The <code>eminem</code> tool inspects and manipulates subscriptions.
-It is included in the com.endless.Platform flatpak runtime.</p>
+It is included in the com.endlessm.Platform flatpak runtime.</p>
 <p>To retrieve the subscription ID(s) for a given app ID, use <code>eminem inspect-app-id &lt;app_id&gt;</code>.</p>
 <p>After that, you can use <code>eminem freeze</code> and <code>eminem unfreeze</code> to marshal the state of
 the subscription to a file that can be passed around for debugging. If you're seeing

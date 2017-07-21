@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["card/contentGroup.html#cardcontentgroup1", "card/contentGroup.html#cardcontentgroup"], "token": "card.contentgroup"});
+urls_downloaded_cb({"token": "card.contentgroup", "urls": ["card/contentGroup.html#cardcontentgroup1", "card/contentGroup.html#cardcontentgroup"]});
