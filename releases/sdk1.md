@@ -27,4 +27,4 @@ permalink: /releases/1/
 
 ### SDK 1.0 (July 3, 2017) ###
 
-- This is the first release of the Endless Apps SDK! [Here's how to install it](/contributing#flatpak-runtime).
+- This is the first release of the Endless Apps SDK! [Here's how to install it](/eos-knowledge-lib/contributing#flatpak-runtime).
