@@ -1,6 +1,6 @@
 ---
 layout: page
-title: null
+title: ''
 permalink: /releases/2/
 ---
 
