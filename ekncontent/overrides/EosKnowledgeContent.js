@@ -38,6 +38,9 @@ function add_custom_model_constructors (model) {
         marshal_property(props, 'authors', function (v) {
             return new GLib.Variant('as', v);
         });
+        marshal_property(props, 'temporal-coverage', function (v) {
+            return new GLib.Variant('as', v);
+        });
         marshal_property(props, 'outgoing-links', function (v) {
             return new GLib.Variant('as', v);
         });
@@ -93,6 +96,12 @@ function _init() {
         get: function () {
             let authors = this.get_authors();
             return authors ? authors.deep_unpack() : [];
+        },
+    });
+    define_property(Eknc.ArticleObjectModel, 'temporal-coverage', {
+        get: function () {
+            let temporalCoverage = this.get_temporal_coverage();
+            return temporalCoverage ? temporalCoverage.deep_unpack() : [];
         },
     });
     define_property(Eknc.ArticleObjectModel, 'outgoing-links', {

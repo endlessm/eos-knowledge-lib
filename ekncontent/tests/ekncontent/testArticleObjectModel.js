@@ -13,6 +13,7 @@ describe ('Article Object Model', function () {
             'title': 'House Greyjoy',
             'synopsis': 'We Do Not Sow',
             'authors': ['Dalton Greyjoy', 'Dagon Greyjoy'],
+            'temporalCoverage': [new Date(2016, 1, 1).toISOString()],
             'tableOfContents': [
                 {
                     '@id': '_:1',
@@ -39,6 +40,10 @@ describe ('Article Object Model', function () {
 
         it('marshals an authors array', function () {
             expect(articleObject.authors).toEqual(jsonld['authors']);
+        });
+
+        it('marshals an temporalCoverage array', function () {
+            expect(articleObject.temporal_coverage).toEqual(jsonld['temporalCoverage']);
         });
 
         it('makes a deep copy of the authors array', function () {
