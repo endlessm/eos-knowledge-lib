@@ -19,6 +19,7 @@ typedef struct {
   guint word_count;
   gboolean is_server_templated;
   GVariant *authors;
+  GVariant *temporal_coverage;
   GVariant *outgoing_links;
   GVariant *table_of_contents;
 } EkncArticleObjectModelPrivate;
@@ -35,6 +36,7 @@ enum {
   PROP_WORD_COUNT,
   PROP_IS_SERVER_TEMPLATED,
   PROP_AUTHORS,
+  PROP_TEMPORAL_COVERAGE,
   PROP_OUTGOING_LINKS,
   PROP_TABLE_OF_CONTENTS,
   NPROPS
@@ -75,6 +77,10 @@ eknc_article_object_model_get_property (GObject    *object,
 
     case PROP_AUTHORS:
       g_value_set_variant (value, priv->authors);
+      break;
+
+    case PROP_TEMPORAL_COVERAGE:
+      g_value_set_variant (value, priv->temporal_coverage);
       break;
 
     case PROP_OUTGOING_LINKS:
@@ -129,6 +135,11 @@ eknc_article_object_model_set_property (GObject *object,
       priv->authors = g_value_dup_variant (value);
       break;
 
+    case PROP_TEMPORAL_COVERAGE:
+      g_clear_pointer (&priv->temporal_coverage, g_variant_unref);
+      priv->temporal_coverage = g_value_dup_variant (value);
+      break;
+
     case PROP_OUTGOING_LINKS:
       g_clear_pointer (&priv->outgoing_links, g_variant_unref);
       priv->outgoing_links = g_value_dup_variant (value);
@@ -154,6 +165,7 @@ eknc_article_object_model_finalize (GObject *object)
   g_clear_pointer (&priv->source_name, g_free);
   g_clear_pointer (&priv->published, g_free);
   g_clear_pointer (&priv->authors, g_variant_unref);
+  g_clear_pointer (&priv->temporal_coverage, g_variant_unref);
   g_clear_pointer (&priv->outgoing_links, g_variant_unref);
   g_clear_pointer (&priv->table_of_contents, g_variant_unref);
 
@@ -230,6 +242,17 @@ eknc_article_object_model_class_init (EkncArticleObjectModelClass *klass)
       G_VARIANT_TYPE ("as"), NULL,
       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
   /**
+   * EkncArticleObjectModel:temporal-coverage:
+   *
+   * A list of dates that the article being read refers to. The
+   * dates are all in ISO8601.
+   */
+  eknc_article_object_model_props[PROP_TEMPORAL_COVERAGE] =
+    g_param_spec_variant ("temporal-coverage", "Temporal Coverage",
+      "A list of dates that the article being read refers to",
+      G_VARIANT_TYPE ("as"), NULL,
+      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+  /**
    * EkncArticleObjectModel:outgoing-links:
    *
    * A list of the outbound links present in this article.
@@ -294,6 +317,9 @@ eknc_article_object_model_add_json_to_params (JsonNode *node,
   eknc_utils_append_gparam_from_json_node (json_object_get_member (object, "authors"),
                                            g_object_class_find_property (klass, "authors"),
                                            params);
+  eknc_utils_append_gparam_from_json_node (json_object_get_member (object, "temporalCoverage"),
+                                           g_object_class_find_property (klass, "temporal-coverage"),
+                                           params);
   eknc_utils_append_gparam_from_json_node (json_object_get_member (object, "outgoingLinks"),
                                            g_object_class_find_property (klass, "outgoing-links"),
                                            params);
@@ -318,6 +344,24 @@ eknc_article_object_model_get_authors (EkncArticleObjectModel *self)
 
   EkncArticleObjectModelPrivate *priv = eknc_article_object_model_get_instance_private (self);
   return priv->authors;
+}
+
+/**
+ * eknc_article_object_model_get_temporal_coverage:
+ * @self: the model
+ *
+ * Get the temporal coverage over the article.
+ *
+ * Since: 2
+ * Returns: (transfer none): the resources GVariant
+ */
+GVariant *
+eknc_article_object_model_get_temporal_coverage (EkncArticleObjectModel *self)
+{
+  g_return_val_if_fail (EKNC_IS_ARTICLE_OBJECT_MODEL (self), NULL);
+
+  EkncArticleObjectModelPrivate *priv = eknc_article_object_model_get_instance_private (self);
+  return priv->temporal_coverage;
 }
 
 /**

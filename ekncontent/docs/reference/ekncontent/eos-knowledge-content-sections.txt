@@ -65,6 +65,7 @@ eknc_content_object_model_add_json_to_params
 <SECTION>
 <FILE>article-object-model</FILE>
 eknc_article_object_model_get_authors
+eknc_article_object_model_get_temporal_coverage
 eknc_article_object_model_get_outgoing_links
 eknc_article_object_model_get_table_of_contents
 eknc_article_object_model_new_from_json_node
