@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["layout/articleStack.html#video", "card/video.html#cardvideo1"], "token": "video"});
+urls_downloaded_cb({"token": "video", "urls": ["layout/articleStack.html#video", "card/video.html#cardvideo1"]});

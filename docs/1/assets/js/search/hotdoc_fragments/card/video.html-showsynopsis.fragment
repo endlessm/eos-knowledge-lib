@@ -1,1 +1,1 @@
-fragment_downloaded_cb({"fragment": "show synopsis \nSet true if the synopsis label should be visible. \n", "url": "card/video.html#showsynopsis"});
+fragment_downloaded_cb({"url": "card/video.html#showsynopsis", "fragment": "show synopsis \nSet true if the synopsis label should be visible. \n"});
