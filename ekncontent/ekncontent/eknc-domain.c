@@ -466,13 +466,14 @@ eknc_domain_initable_init (GInitable *initable,
           return FALSE;
         }
 
-      eknc_domain_process_subscription (self,
-                                        subscription_dir,
-                                        subscription_dir,
-                                        NULL,
-                                        NULL,
-                                        cancellable,
-                                        error);
+      if (!eknc_domain_process_subscription (self,
+                                             subscription_dir,
+                                             subscription_dir,
+                                             NULL,
+                                             NULL,
+                                             cancellable,
+                                             error))
+          return FALSE;
     }
   else if (has_app_id)
     {
@@ -509,13 +510,14 @@ eknc_domain_initable_init (GInitable *initable,
           g_autoptr(GFile) subscription_dir = g_file_get_child (subscriptions_dir, subscription_id);
           g_autoptr(GFile) bundle_dir = g_file_get_child (bundle_subscriptions_dir, subscription_id);
 
-          eknc_domain_process_subscription (self,
-                                            subscription_dir,
-                                            bundle_dir,
-                                            json_subscriptions,
-                                            relative_path->str,
-                                            cancellable,
-                                            error);
+          if (!eknc_domain_process_subscription (self,
+                                                 subscription_dir,
+                                                 bundle_dir,
+                                                 json_subscriptions,
+                                                 relative_path->str,
+                                                 cancellable,
+                                                 error))
+              return FALSE;
         }
 
       g_autoptr(JsonGenerator) json_generator = json_generator_new ();
@@ -1196,6 +1198,7 @@ eknc_domain_get_impl (const gchar *app_id,
       return NULL;
     }
 
-  g_initable_init (G_INITABLE (domain), cancellable, error);
+  if (!g_initable_init (G_INITABLE (domain), cancellable, error))
+    g_clear_pointer (&domain, g_object_unref);
   return domain;
 }
