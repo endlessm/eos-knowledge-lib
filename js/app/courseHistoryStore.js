@@ -8,6 +8,7 @@ const GObject = imports.gi.GObject;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
+const EntryPoints = imports.app.entryPoints;
 const HistoryItem = imports.app.historyItem;
 const HistoryStore = imports.app.historyStore;
 const Pages = imports.app.pages;
@@ -47,7 +48,7 @@ var CourseHistoryStore = new GObject.Class({
                         this.set_current_item_from_props({
                             media_model: payload.model,
                             context: payload.context,
-                        });
+                        }, EntryPoints.LINK_CLICKED);
                     }
                 }
                     break;

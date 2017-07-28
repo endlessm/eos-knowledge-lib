@@ -10,6 +10,7 @@ const GObject = imports.gi.GObject;
 const Actions = imports.app.actions;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
+const EntryPoints = imports.app.entryPoints;
 const HistoryStore = imports.app.historyStore;
 const Pages = imports.app.pages;
 
@@ -59,7 +60,7 @@ var BuffetHistoryStore = new GObject.Class({
                             model: payload.model,
                             context: payload.context,
                             context_label: context_label,
-                        });
+                        }, EntryPoints.LINK_CLICKED);
                     }
                     break;
                 case Actions.ARTICLE_LINK_CLICKED:
