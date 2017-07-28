@@ -119,6 +119,27 @@ var HistoryStore = new Lang.Class({
 
     // Default signal handler
     on_changed: function () {
+        let old_item = this._direction === Direction.FORWARDS ?
+            this.get_previous_item() : this.get_next_item();
+        let item = this.get_current_item();
+
+        if (!(item.model instanceof Eknc.MediaObjectModel) &&
+            old_item && old_item.model && old_item.page_type === Pages.ARTICLE &&
+            (!item.model || old_item.model.ekn_id !== item.model.ekn_id))
+            Utils.record_content_access_metric(false,
+                                               old_item.model.ekn_id,
+                                               old_item.model.title ? old_item.model.title : '',
+                                               old_item.model.content_type ? old_item.model.content_type : '');
+
+        if (item.model && item.model instanceof Eknc.ArticleObjectModel &&
+            (!old_item || !old_item.model ||
+             old_item.model.ekn_id !== item.model.ekn_id)) {
+            Utils.record_content_access_metric(true,
+                                               item.model.ekn_id,
+                                               item.model.title ? item.model.title : '',
+                                               item.model.content_type ? item.model.content_type : '');
+        }
+
         this.change_action_state('article-search-visible',
             new GLib.Variant('b', false));
     },
@@ -148,6 +169,14 @@ var HistoryStore = new Lang.Class({
 
     get_current_item: function () {
         return this.get_items()[this.get_current_index()] || null;
+    },
+
+    get_previous_item: function () {
+        return this.get_items()[this.get_current_index() - 1] || null;
+    },
+
+    get_next_item: function () {
+        return this.get_items()[this.get_current_index() + 1] || null;
     },
 
     can_go_back: function () {

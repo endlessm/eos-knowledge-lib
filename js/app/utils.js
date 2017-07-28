@@ -1,6 +1,6 @@
 /* exported dbus_object_path_for_webview, get_css_for_title_and_module,
 get_web_plugin_dbus_name, get_web_plugin_dbus_name_for_webview, intersection,
-record_search_metric, shows_descendant_with_type,
+record_search_metric, record_content_access_metric, shows_descendant_with_type,
 split_out_conditional_knobs, union, vfunc_draw_background_default */
 
 const MockMetricsModule = {
@@ -449,6 +449,19 @@ function record_search_metric (query) {
     let recorder = EosMetrics.EventRecorder.get_default();
     recorder.record_event(SEARCH_METRIC_EVENT_ID, new GLib.Variant('(ss)',
         [query, app_id]));
+}
+
+const CONTENT_ACCESS_METRIC_EVENT_ID = 'fae00ef3-aad7-44ca-aff2-16555e45f0d9';
+// Should be mocked out during tests so that we don't actually send metrics
+function record_content_access_metric (open, ekn_id, title, content_type) {
+    let app_id = Gio.Application.get_default().application_id;
+    let recorder = EosMetrics.EventRecorder.get_default();
+    if (open)
+        recorder.record_start(CONTENT_ACCESS_METRIC_EVENT_ID, new GLib.Variant('s', ekn_id),
+            new GLib.Variant('(sss)', [app_id, title, content_type]));
+    else
+        recorder.record_stop(CONTENT_ACCESS_METRIC_EVENT_ID, new GLib.Variant('s', ekn_id),
+            null);
 }
 
 function define_enum (values) {
