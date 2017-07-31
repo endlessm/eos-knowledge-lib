@@ -1,10 +1,13 @@
 const Eknc = imports.gi.EosKnowledgeContent;
 
 const Actions = imports.app.actions;
+const AppUtils = imports.app.utils;
+const EntryPoints = imports.app.entryPoints;
 const HistoryStore = imports.app.historyStore;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const Pages = imports.app.pages;
+const Utils = imports.tests.utils;
 
 describe('History Store', function () {
     let history_store;
@@ -15,6 +18,7 @@ describe('History Store', function () {
         reading_history = MockReadingHistoryModel.mock_default();
 
         history_store = new HistoryStore.HistoryStore();
+        spyOn(AppUtils, 'record_content_access_metric');
     });
 
     it('can access a history item', function () {
@@ -99,6 +103,42 @@ describe('History Store', function () {
 
         dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
         expect(history_store.get_current_item().query).toBe('second');
+    });
+
+    it('records metrics when using nav buttons', function () {
+        model = Eknc.ArticleObjectModel.new_from_props({
+            ekn_id: 'ekn://article1',
+        });
+        history_store.set_current_item_from_props({
+            page_type: 'article',
+            model: model
+        });
+        expect(AppUtils.record_content_access_metric)
+            .toHaveBeenCalledWith(true, '', 'ekn://article1', '', '');
+
+        model = Eknc.ArticleObjectModel.new_from_props({
+            ekn_id: 'ekn://article2',
+        });
+        history_store.set_current_item_from_props({
+            page_type: 'article',
+            model: model
+        });
+        expect(AppUtils.record_content_access_metric)
+            .toHaveBeenCalledWith(false, '', 'ekn://article1', '', '');
+        expect(AppUtils.record_content_access_metric)
+            .toHaveBeenCalledWith(true, '', 'ekn://article2', '', '');
+
+        dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
+        expect(AppUtils.record_content_access_metric)
+            .toHaveBeenCalledWith(false, '', 'ekn://article2', '', '');
+        expect(AppUtils.record_content_access_metric)
+            .toHaveBeenCalledWith(true, EntryPoints.NAV_BUTTON_CLICKED, 'ekn://article1', '', '');
+
+        dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
+        expect(AppUtils.record_content_access_metric)
+            .toHaveBeenCalledWith(false, '', 'ekn://article1', '', '');
+        expect(AppUtils.record_content_access_metric)
+            .toHaveBeenCalledWith(true, EntryPoints.NAV_BUTTON_CLICKED, 'ekn://article2', '', '');
     });
 
     it('marks items as read', function () {
