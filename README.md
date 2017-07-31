@@ -80,40 +80,6 @@ The **content** is in the form of a shard file; see [eos-shard] for more informa
 We are working on tools that allow you to build shard files easily on your own machine.
 For now, you can include the --dummy-content option when running an app and it will load with sample content.
 
-Finding your way around
------------------------
-Here's an overview of what's in each directory:
-
-- `data/`
-  - `css/` - themes and parts of themes for UI modules
-  - `images/` - miscellaneous UI assets
-  - `preset/` - pre-built YAML UI description files
-  - `templates/` - code for rendering HTML content; more or less deprecated
-  - `widgets/` - GtkBuilder XML files for UI modules in `js/app/modules/`
-- `docs/`
-  - Various Markdown developer docs
-  - `reference/js/` - API reference; not useful right now, being rewritten.
-- `js/` - Javascript library code
-  - `app/` - the main UI library for creating apps
-    - Various app library classes
-    - `interfaces/` - interfaces which some UI modules implement
-    - `libs/` - external JS code such as Mustache
-    - `modules/` - the modular UI blocks (see below)
-    - `widgets/` - some GTK widgets for UI code that are not modular UI blocks
-  - `search/` - library for accessing databases of offline content
-- `lib/` - C library code
-  - `eosknowledgeprivate/` - introspectable C wrappers for `js/app/`
-  - `eosknowledgesearchprivate/` - introspectable C wrappers for `js/search/`
-  - `web-extensions/` - WebKit web extensions for use when viewing documents
-- `m4/` - Autoconf code
-- `po/` - internationalization (see below)
-- `tests/` - unit and integration tests
-  - Various utility code for tests
-  - `autobahn/` - integration tests for the Autobahn YAML processor
-  - `js/` - unit tests for the `js/app` and `js/search` libraries
-  - `test-content/` - sample content for some tests
-- `tools/` - various testing and development tools
-
 Modular UI blocks
 -----------------
 UI modules are GObjects, with a few extra features and a few restrictions.
@@ -180,6 +146,10 @@ Runtimes will receive bug fixes, but no new API and no API changes.
 When we add, change, or delete API, this will go in a new Flatpak runtime branch.
 It is not expected that apps built for one API release will run on a subsequent release without some porting.
 
+Documentation
+-------------
+See the [website] for more documentation.
+
 Future notes
 ------------
 More and better documentation on all of this is incoming.
@@ -193,3 +163,4 @@ For the next release, we may split this repository up into smaller units.
 [xapian-bridge]: https://github.com/endlessm/xapian-bridge
 [jasmine-gjs]: https://github.com/ptomato/jasmine-gjs
 [transifex]: https://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/
+[website]: http://endlessm.github.io/eos-knowledge-lib/
