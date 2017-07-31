@@ -8,6 +8,7 @@ const GObject = imports.gi.GObject;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
+const EntryPoints = imports.app.entryPoints;
 const HistoryItem = imports.app.historyItem;
 const HistoryStore = imports.app.historyStore;
 const Pages = imports.app.pages;
@@ -33,7 +34,8 @@ var MeshHistoryStore = new GObject.Class({
                     });
                     break;
                 case Actions.ITEM_CLICKED: {
-                    let props = { model: payload.model };
+                    let props = { entry_point: EntryPoints.LINK_CLICKED,
+                                  model: payload.model };
                     if (payload.model instanceof Eknc.SetObjectModel)
                         props['page_type'] = Pages.SET;
                     else

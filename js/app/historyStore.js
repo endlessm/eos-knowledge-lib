@@ -9,6 +9,7 @@ const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
+const EntryPoints = imports.app.entryPoints;
 const HistoryItem = imports.app.historyItem;
 const Pages = imports.app.pages;
 const ReadingHistoryModel = imports.app.readingHistoryModel;
@@ -91,9 +92,11 @@ var HistoryStore = new Lang.Class({
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
                 case Actions.HISTORY_BACK_CLICKED:
+                    this.get_previous_item().entry_point = EntryPoints.NAV_BUTTON_CLICKED;
                     this.go_back();
                     break;
                 case Actions.HISTORY_FORWARD_CLICKED:
+                    this.get_next_item().entry_point = EntryPoints.NAV_BUTTON_CLICKED;
                     this.go_forward();
                     break;
                 case Actions.ITEM_CLICKED:
@@ -127,6 +130,7 @@ var HistoryStore = new Lang.Class({
             old_item && old_item.model && old_item.page_type === Pages.ARTICLE &&
             (!item.model || old_item.model.ekn_id !== item.model.ekn_id))
             Utils.record_content_access_metric(false,
+                                               '',
                                                old_item.model.ekn_id,
                                                old_item.model.title ? old_item.model.title : '',
                                                old_item.model.content_type ? old_item.model.content_type : '');
@@ -135,6 +139,7 @@ var HistoryStore = new Lang.Class({
             (!old_item || !old_item.model ||
              old_item.model.ekn_id !== item.model.ekn_id)) {
             Utils.record_content_access_metric(true,
+                                               item.entry_point ? item.entry_point : '',
                                                item.model.ekn_id,
                                                item.model.title ? item.model.title : '',
                                                item.model.content_type ? item.model.content_type : '');
@@ -293,11 +298,13 @@ var HistoryStore = new Lang.Class({
         .then((model) => {
             if (model instanceof Eknc.ArticleObjectModel) {
                 this.set_current_item_from_props({
+                    entry_point: EntryPoints.ARTICLE_LINK_CLICKED,
                     page_type: Pages.ARTICLE,
                     model: model,
                 });
             } else if (model instanceof Eknc.SetObjectModel) {
                 this.set_current_item_from_props({
+                    entry_point: EntryPoints.ARTICLE_LINK_CLICKED,
                     page_type: Pages.SET,
                     model: model,
                     context_label: model.title,
@@ -305,6 +312,7 @@ var HistoryStore = new Lang.Class({
             } else if (model instanceof Eknc.MediaObjectModel) {
                 let old_item = this.get_current_item();
                 this.set_current_item_from_props({
+                    entry_point: EntryPoints.ARTICLE_LINK_CLICKED,
                     page_type: old_item.page_type,
                     model: old_item.model,
                     context: old_item.model ? old_item.model.resources : [],
@@ -322,6 +330,7 @@ var HistoryStore = new Lang.Class({
         .then((model) => {
             if (model instanceof Eknc.ArticleObjectModel) {
                 this.set_current_item_from_props({
+                    entry_point: EntryPoints.DBUS_CALL,
                     page_type: Pages.ARTICLE,
                     model: model,
                     query: query,
@@ -329,6 +338,7 @@ var HistoryStore = new Lang.Class({
                 });
             } else if (model instanceof Eknc.SetObjectModel) {
                 this.set_current_item_from_props({
+                    entry_point: EntryPoints.DBUS_CALL,
                     page_type: Pages.SET,
                     model: model,
                     context_label: model.title,
