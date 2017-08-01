@@ -39,6 +39,14 @@ const Audio = new Module.Class({
         'show-title':  GObject.ParamSpec.boolean('show-title', 'Show Title Label',
             'Whether to show the title label',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
+        /**
+         * Property: show-synopsis
+         *
+         * Set true if the synopsis label should be visible.
+         */
+        'show-synopsis':  GObject.ParamSpec.boolean('show-synopsis', 'Show Synopsis Label',
+            'Whether to show the synopsis label',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/audio.ui',
@@ -51,6 +59,7 @@ const Audio = new Module.Class({
         this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
 
         this._title_label.visible = this.show_title;
+        this._synopsis_label.visible = this.show_synopsis;
         let player = new EosKnowledgePrivate.MediaBin({ audio_mode: true });
         player.get_style_context().add_class(Utils.get_element_style_class(Audio, 'player'));
         player.set_uri(this.model.ekn_id)

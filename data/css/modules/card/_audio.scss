@@ -1,0 +1,11 @@
+.CardAudio {
+    padding: 25px;
+    &__title {
+        font-weight: bold;
+        font-size: 18px;
+    }
+    &__synopsis {
+        font-style: italic;
+        font-size: 16px;
+    }
+}

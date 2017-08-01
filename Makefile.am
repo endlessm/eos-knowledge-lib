@@ -75,6 +75,7 @@ scss_theme_banner_partials = \
 	$(srcdir)/data/css/modules/banner/_set.scss \
 	$(NULL)
 scss_theme_card_partials = \
+	$(srcdir)/data/css/modules/card/_audio.scss \
 	$(srcdir)/data/css/modules/card/_base.scss \
 	$(srcdir)/data/css/modules/card/_deck.scss \
 	$(srcdir)/data/css/modules/card/_default.scss \
