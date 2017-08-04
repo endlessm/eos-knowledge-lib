@@ -64,6 +64,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/list.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/sequence.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/title.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/pinterest.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/contentGroup/noResultsMessage.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/contentGroup/contentGroup.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/hamburgerBasement.ui</file>
@@ -129,6 +130,7 @@
     <file>js/app/modules/card/list.js</file>
     <file>js/app/modules/card/sequence.js</file>
     <file>js/app/modules/card/title.js</file>
+    <file>js/app/modules/card/pinterest.js</file>
     <file>js/app/modules/contentGroup/contentGroup.js</file>
     <file>js/app/modules/contentGroup/dynamicTitle.js</file>
     <file>js/app/modules/contentGroup/mediaLightbox.js</file>
@@ -196,6 +198,7 @@
     <file>js/app/utils.js</file>
     <file>js/app/warehouse.js</file>
     <file>js/app/webviewTooltipPresenter.js</file>
+    <file>js/app/widgets/dynamicImage.js</file>
     <file>js/app/widgets/dynamicLogo.js</file>
     <file>js/app/widgets/eknWebview.js</file>
     <file>js/app/widgets/formattableLabel.js</file>
