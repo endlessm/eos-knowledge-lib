@@ -56,7 +56,7 @@ const Xapian = new Module.Class({
         throw new Error('You should be implementing construct_query_object in your subclass');
     },
 
-    _modify_query_object(query) {
+    _modify_query_object: function(query) {
         if (!query)
             return null;
         if (this._order)
