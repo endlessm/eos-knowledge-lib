@@ -25,7 +25,7 @@ const dynamicImage = new Knowledge.Class({
         this.set_has_window(false);
     },
 
-    set_content (stream) {
+    set_content: function (stream) {
         this._pixbuf = GdkPixbuf.Pixbuf.new_from_stream(stream, null);
     },
 
