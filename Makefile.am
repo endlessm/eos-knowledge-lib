@@ -45,6 +45,7 @@ scss_theme_toplevels = \
 	$(srcdir)/data/css/default.scss \
 	$(srcdir)/data/css/encyclopedia.scss \
 	$(srcdir)/data/css/escola.scss \
+	$(srcdir)/data/css/gallery.scss \
 	$(srcdir)/data/css/library_list.scss \
 	$(srcdir)/data/css/news.scss \
 	$(srcdir)/data/css/picard.scss \
@@ -416,6 +417,7 @@ dist_yamlpreset_DATA = \
 	data/preset/buffet.yaml \
 	data/preset/encyclopedia.yaml \
 	data/preset/escola.yaml \
+	data/preset/gallery.yaml \
 	data/preset/library-list.yaml \
 	data/preset/news.yaml \
 	$(NULL)
