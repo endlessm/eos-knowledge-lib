@@ -58,6 +58,7 @@ var MoltresEngine = new Lang.Class({
         return {
             read_uri: () => [true, html, 'text/html'],
             get_shards: () => [],
+            get_subscription_ids: () => [],
         };
     },
 

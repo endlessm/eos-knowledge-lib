@@ -28,6 +28,7 @@ EKNC_TYPE_ENGINE
 <FILE>domain</FILE>
 eknc_domain_get_shards
 eknc_domain_get_subscription_id
+eknc_domain_get_subscription_ids
 eknc_domain_test_link
 eknc_domain_get_object
 eknc_domain_get_object_finish

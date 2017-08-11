@@ -491,6 +491,8 @@ eknc_get_domain_query_params (EkncDomain *self)
  * Gets subscription id of the domain
  *
  * Returns: (transfer none): the subscription id
+ *
+ * Deprecated: Use eknc_domain_get_subscription_ids() instead.
  */
 const gchar *
 eknc_domain_get_subscription_id (EkncDomain *self)
@@ -498,6 +500,28 @@ eknc_domain_get_subscription_id (EkncDomain *self)
   g_return_val_if_fail (EKNC_IS_DOMAIN (self), NULL);
 
   return (self->subscriptions) ? self->subscriptions->data : NULL;
+}
+
+/**
+ * eknc_domain_get_subscription_ids:
+ * @self: the domain
+ *
+ * Gets subscription IDs belonging to the domain.
+ *
+ * Returns: (transfer container): a list of the subscription IDs.
+ */
+gchar * const *
+eknc_domain_get_subscription_ids (EkncDomain *self)
+{
+  g_return_val_if_fail (EKNC_IS_DOMAIN (self), NULL);
+
+  guint num_subscriptions = g_list_length (self->subscriptions);
+  gchar **retval = g_new0 (gchar *, num_subscriptions + 1);
+  for (guint ix = 0; ix < num_subscriptions; ix++)
+    {
+      retval[ix] = g_list_nth_data (self->subscriptions, ix);
+    }
+  return retval;
 }
 
 /**

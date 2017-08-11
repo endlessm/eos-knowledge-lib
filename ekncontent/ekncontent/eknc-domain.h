@@ -44,6 +44,9 @@ GQuark eknc_domain_error_quark (void);
 const gchar *
 eknc_domain_get_subscription_id (EkncDomain *self);
 
+gchar * const *
+eknc_domain_get_subscription_ids (EkncDomain *self);
+
 GSList *
 eknc_domain_get_shards (EkncDomain *self);
 
