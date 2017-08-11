@@ -15,7 +15,6 @@ const System = imports.system;
 const Actions = imports.app.actions;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
-const Downloader = imports.app.downloader;
 const Knowledge = imports.app.knowledge;
 const ModuleFactory = imports.app.moduleFactory;
 const MoltresEngine = imports.app.moltresEngine;
@@ -164,59 +163,19 @@ var Application = new Knowledge.Class({
             this._knowledge_search_impl.unexport_from_connection(connection);
     },
 
-    _check_for_content: function () {
+    _initialize_vfs: function () {
         let engine = Eknc.Engine.get_default();
         if (engine instanceof MoltresEngine.MoltresEngine)
             return;
 
-        this._check_for_update();
-        try {
-            let shards = engine.get_domain().get_shards();
-            Eknc.default_vfs_set_shards(shards);
-        } catch (e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND)) {
-            // No content. If updates are pending then show a nice dialog
-            let subs = Eknc.get_subscriptions_json(this.application_id, null).subscriptions;
-            if (subs.some(entry => !entry.disable_updates)) {
-                let dialog = new Gtk.MessageDialog({
-                    message_type: Gtk.MessageType.ERROR,
-                    text: _("Oops! No content."),
-                    secondary_text: _("If you have an internet connection, we are downloading more content right now. Try again in a few minutes after this message disappears."),
-                    urgency_hint: true,
-                });
-                dialog.show();
-                this._controller = {};  // i.e. don't load the real controller
-            }
-            // if no updates pending, then proceed and let Xapian queries fail
-        }
-    },
-
-    _check_for_update: function () {
-        if (GLib.getenv('EKN_DISABLE_UPDATES'))
-            return;
-
-        let downloader = Downloader.get_default();
-        let subs = Eknc.get_subscriptions_json(this.application_id, null).subscriptions;
-        subs.forEach(function (entry) {
-            let id = entry.id;
-
-            if (entry.disable_updates)
-                return;
-
-            // Synchronously apply any update we have.
-            downloader.apply_update_sync(id);
-            // Regardless of whether or not we applied an update,
-            // let's see about fetching a new one...
-            downloader.fetch_update_promise(id)
-            .catch(function (error) {
-                logError(error, Format.vprintf("Could not update subscription ID: %s", [id]));
-            });
-        });
+        let shards = engine.get_domain().get_shards();
+        Eknc.default_vfs_set_shards(shards);
     },
 
     vfunc_startup: function () {
         this.parent();
         Gtk.IconTheme.get_default().add_resource_path('/com/endlessm/knowledge/data/icons');
-        this._check_for_content();
+        this._initialize_vfs();
         this._initialize_set_map();
     },
 

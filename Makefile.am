@@ -366,8 +366,6 @@ bin_SCRIPTS += \
 	tools/picard \
 	$(NULL)
 
-dist_pkgdata_DATA = data/downloader.ini
-
 # so clients can find our paths
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = data/eos-knowledge-0.pc

@@ -76,7 +76,6 @@
     <file>js/app/courseHistoryStore.js</file>
     <file>js/app/dispatcher.js</file>
     <file>js/app/dominantColor.js</file>
-    <file>js/app/downloader.js</file>
     <file>js/app/historyItem.js</file>
     <file>js/app/historyStore.js</file>
     <file>js/app/interfaces/arrangement.js</file>
