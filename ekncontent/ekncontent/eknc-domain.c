@@ -243,54 +243,6 @@ eknc_parse_subscriptions (EkncDomain *self,
 }
 
 static gboolean
-eknc_domain_clean_old_symlinks (EkncDomain *self,
-                                GFile *subscription_dir,
-                                GCancellable *cancellable,
-                                GError **error)
-{
-  GError *local_error = NULL;
-  g_autoptr(GFileEnumerator) enumerator = g_file_enumerate_children (subscription_dir,
-                                                                     "standard::name,standard::type",
-                                                                     G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
-                                                                     cancellable,
-                                                                     &local_error);
-  if (local_error != NULL)
-    {
-      g_propagate_error (error, local_error);
-      return FALSE;
-    }
-
-  gpointer info_ptr;
-  while ((info_ptr = g_file_enumerator_next_file (enumerator, cancellable, &local_error)))
-    {
-      g_autoptr(GFileInfo) info = info_ptr;
-      g_autoptr(GFile) file = g_file_enumerator_get_child (enumerator, info);
-      if (g_file_query_exists (file, cancellable))
-        continue;
-      g_file_delete (file, cancellable, &local_error);
-      if (local_error == NULL)
-        continue;
-      if (g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
-        {
-          g_clear_error (&local_error);
-        }
-      else
-        {
-          g_propagate_error (error, local_error);
-          return FALSE;
-        }
-    }
-
-  if (local_error != NULL)
-    {
-      g_propagate_error (error, local_error);
-      return FALSE;
-    }
-
-  return TRUE;
-}
-
-static gboolean
 eknc_domain_setup_link_tables (EkncDomain *self,
                                GError **error)
 {
@@ -309,20 +261,8 @@ eknc_domain_setup_link_tables (EkncDomain *self,
   return TRUE;
 }
 
-#define eknc_return_if_error(local_error,error,retval)  if (local_error) \
-    { \
-      if (g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_EXISTS)) \
-        g_clear_error (&local_error); \
-      else \
-        { \
-          g_propagate_error (error, local_error); \
-          return retval; \
-        } \
-    }
-
 static gboolean
 eknc_domain_process_subscription (EkncDomain *self,
-                                  GFile *subscription_dir,
                                   GFile *bundle_dir,
                                   JsonArray *json_subscriptions,
                                   const gchar *relative_path,
@@ -331,26 +271,13 @@ eknc_domain_process_subscription (EkncDomain *self,
 {
   GError *local_error = NULL;
 
-  g_autoptr(GFile) manifest_file = g_file_get_child (subscription_dir, "manifest.json");
-
-  g_file_make_directory_with_parents (subscription_dir, cancellable, &local_error);
-  eknc_return_if_error (local_error, error, FALSE);
-
+  g_autoptr(GFile) manifest_file = g_file_get_child (bundle_dir, "manifest.json");
   if (!g_file_query_exists (manifest_file, cancellable))
     {
-      g_autoptr(GFile) bundle_manifest_file = g_file_get_child (bundle_dir, "manifest.json");
-      if (!g_file_query_exists (bundle_manifest_file, cancellable))
-        {
-          g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
-                       "You have no manifest.json and are not running from a "
-                       "Flatpak bundle. You must download a content update");
-          return FALSE;
-        }
-      g_file_make_symbolic_link (manifest_file,
-                                 g_file_get_path (bundle_manifest_file),
-                                 cancellable,
-                                 &local_error);
-      eknc_return_if_error (local_error, error, FALSE);
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
+                   "You have no manifest.json and are not running from a "
+                   "Flatpak bundle. You must install some content");
+      return FALSE;
     }
 
   g_autofree gchar *contents = NULL;
@@ -375,7 +302,7 @@ eknc_domain_process_subscription (EkncDomain *self,
   if (json_subscriptions)
     {
       JsonArray *json_dbs = json_object_get_array_member (json_manifest, "xapian_databases");
-      g_autofree gchar *subscription_path = g_file_get_path (subscription_dir);
+      g_autofree gchar *subscription_path = g_file_get_path (bundle_dir);
       GList *dbs = json_array_get_elements (json_dbs), *l;
 
       for (l = dbs; l; l = g_list_next (l))
@@ -401,9 +328,6 @@ eknc_domain_process_subscription (EkncDomain *self,
       return FALSE;
     }
 
-  if (!eknc_domain_clean_old_symlinks (self, subscription_dir, cancellable, error))
-    return FALSE;
-
   JsonArray *shards_array = json_node_get_array (shards_node);
   for (guint i = 0; i < json_array_get_length (shards_array); i++)
     {
@@ -422,19 +346,10 @@ eknc_domain_process_subscription (EkncDomain *self,
           return FALSE;
         }
 
-      g_autoptr(GFile) bundle_shard_file = g_file_get_child (bundle_dir, json_node_get_string (path_node));
-      g_autoptr(GFile) subscription_shard_file = g_file_get_child (subscription_dir, json_node_get_string (path_node));
+      g_autoptr(GFile) shard_file = g_file_get_child (bundle_dir,
+                                                      json_node_get_string (path_node));
 
-      // Make a symlink if necessary
-      if (g_file_query_exists (bundle_shard_file, cancellable))
-        {
-          g_autofree gchar *bundle_shard_file_path = g_file_get_path (bundle_shard_file);
-          g_file_make_symbolic_link (subscription_shard_file,
-                                     bundle_shard_file_path,
-                                     cancellable, &local_error);
-          eknc_return_if_error (local_error, error, FALSE);
-        }
-      g_autofree gchar *path = g_file_get_path (subscription_shard_file);
+      g_autofree gchar *path = g_file_get_path (shard_file);
       EosShardShardFile *shard = g_object_new (EOS_SHARD_TYPE_SHARD_FILE,
                                                "path", path,
                                                NULL);
@@ -468,7 +383,6 @@ eknc_domain_initable_init (GInitable *initable,
 
       if (!eknc_domain_process_subscription (self,
                                              subscription_dir,
-                                             subscription_dir,
                                              NULL,
                                              NULL,
                                              cancellable,
@@ -490,12 +404,11 @@ eknc_domain_initable_init (GInitable *initable,
         return FALSE;
 
       g_autoptr(GFile) subscriptions_dir = NULL;
-      g_autoptr(GFile) bundle_subscriptions_dir = NULL;
       JsonArray *json_subscriptions = json_array_new ();
 
       self->content_dir = eknc_get_data_dir (self->app_id);
-      subscriptions_dir = eknc_get_subscriptions_dir ();
-      bundle_subscriptions_dir = g_file_get_child (self->content_dir, "com.endlessm.subscriptions");
+      subscriptions_dir = g_file_get_child (self->content_dir,
+                                            "com.endlessm.subscriptions");
 
       /* Find out root relative path from manifest file */
       g_autoptr(GFile) p = g_file_get_parent (self->manifest_file);
@@ -507,11 +420,10 @@ eknc_domain_initable_init (GInitable *initable,
       for (l = self->subscriptions; l; l = g_list_next (l))
         {
           const gchar *subscription_id = l->data;
-          g_autoptr(GFile) subscription_dir = g_file_get_child (subscriptions_dir, subscription_id);
-          g_autoptr(GFile) bundle_dir = g_file_get_child (bundle_subscriptions_dir, subscription_id);
+          g_autoptr(GFile) bundle_dir = g_file_get_child (subscriptions_dir,
+                                                          subscription_id);
 
           if (!eknc_domain_process_subscription (self,
-                                                 subscription_dir,
                                                  bundle_dir,
                                                  json_subscriptions,
                                                  relative_path->str,

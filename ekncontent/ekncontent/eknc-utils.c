@@ -142,25 +142,6 @@ eknc_utils_id_get_hash (const gchar *ekn_id)
 }
 
 /**
- * eknc_get_subscriptions_dir:
- *
- * Gets the user's subscription directory (not app specific one).
- *
- * Returns: (transfer full): a GFile pointing to the directory.
- */
-GFile *
-eknc_get_subscriptions_dir (void)
-{
-  g_autofree gchar *path = NULL;
-  if (eknc_get_running_under_flatpak ())
-    path = g_build_filename (g_get_home_dir (), ".local", "share",
-                             "com.endlessm.subscriptions", NULL);
-  else
-    path = g_build_filename (g_get_user_data_dir (), "com.endlessm.subscriptions", NULL);
-  return g_file_new_for_path (path);
-}
-
-/**
  * eknc_get_ekn_version:
  * @app_id: knowledge app id
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
