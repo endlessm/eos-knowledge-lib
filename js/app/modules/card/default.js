@@ -50,7 +50,7 @@ const CARD_POLAROID_VERTICAL_HEIGHTS = {
  * A card displaying a thumbnail with an area underneath for title and tag
  * information.
  */
-const Default = new Module.Class({
+var Default = new Module.Class({
     Name: 'Card.Default',
     Extends: Gtk.Button,
     Implements: [Card.Card],

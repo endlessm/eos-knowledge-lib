@@ -15,7 +15,7 @@ const Module = imports.app.interfaces.module;
  * A very exploratory controller, the content is organized into categories and
  * may have filters, but can be reached through many different paths.
  */
-const Mesh = new Module.Class({
+var Mesh = new Module.Class({
     Name: 'Controller.Mesh',
     Extends: GObject.Object,
     Implements: [Controller.Controller],

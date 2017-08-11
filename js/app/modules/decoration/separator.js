@@ -16,7 +16,7 @@ const Module = imports.app.interfaces.module;
  * Internally, this decoration module encapsulates a GtkSeparator as a module,
  * so that it can be used directly to create apps in our modular system.
  */
-const Separator = new Module.Class({
+var Separator = new Module.Class({
     Name: 'Decoration.Separator',
     Extends: Gtk.Separator,
 });

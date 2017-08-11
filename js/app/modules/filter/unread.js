@@ -10,7 +10,7 @@ const Module = imports.app.interfaces.module;
 const ReadingHistoryModel = imports.app.readingHistoryModel;
 const Utils = imports.app.utils;
 
-const Unread = new Module.Class({
+var Unread = new Module.Class({
     Name: 'Filter.Unread',
     Extends: GObject.Object,
     Implements: [Filter.Filter],

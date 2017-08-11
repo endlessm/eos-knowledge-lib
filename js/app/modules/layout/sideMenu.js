@@ -40,7 +40,7 @@ const _MENU_HOT_ZONE_WIDTH_PX = 3;
  *   menu - on the whole menu sidebar
  *   menu-button - on the button that opens the menu
  */
-const SideMenu = new Module.Class({
+var SideMenu = new Module.Class({
     Name: 'Layout.SideMenu',
     Extends: SlidingPanelOverlay.SlidingPanelOverlay,
 

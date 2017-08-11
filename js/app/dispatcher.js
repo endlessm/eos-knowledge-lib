@@ -6,7 +6,7 @@ const GObject = imports.gi.GObject;
 
 const Knowledge = imports.app.knowledge;
 
-const Dispatcher = new Knowledge.Class({
+var Dispatcher = new Knowledge.Class({
     Name: 'Dispatcher',
     Extends: GObject.Object,
 
@@ -87,7 +87,7 @@ const Dispatcher = new Knowledge.Class({
     },
 });
 
-let get_default = (function () {
+var get_default = (function () {
     let default_dispatcher;
     return function () {
         if (!default_dispatcher)

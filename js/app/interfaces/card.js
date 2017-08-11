@@ -32,7 +32,7 @@ let ngettext = Gettext.dngettext.bind(null, Config.GETTEXT_PACKAGE);
  * NEXT     - Next article in the sequence.
  * NONE     - Not part of a sequence.
  */
-const Sequence = Utils.define_enum(['PREVIOUS', 'NEXT', 'NONE']);
+var Sequence = Utils.define_enum(['PREVIOUS', 'NEXT', 'NONE']);
 
 /**
  * Constant: WIDTH_STYLE_CLASSES
@@ -40,7 +40,7 @@ const Sequence = Utils.define_enum(['PREVIOUS', 'NEXT', 'NONE']);
  * This object packs the different CSS classes that describe the width of a card
  * widget.
  */
-const WIDTH_STYLE_CLASSES = {
+var WIDTH_STYLE_CLASSES = {
     A: 'width-a',
     B: 'width-b',
     C: 'width-c',
@@ -57,7 +57,7 @@ const WIDTH_STYLE_CLASSES = {
  * This object packs the different CSS classes that describe the height of a card
  * widget.
  */
-const HEIGHT_STYLE_CLASSES = {
+var HEIGHT_STYLE_CLASSES = {
     A: 'height-a',
     B: 'height-b',
     C: 'height-c',
@@ -79,7 +79,7 @@ const HEIGHT_STYLE_CLASSES = {
  *  G - Currently width-only
  *  H - Currently width-only
  */
-const MinSize = {
+var MinSize = {
     A: 100,
     B: 200,
     C: 300,
@@ -106,7 +106,7 @@ const MinSize = {
  *  H - Currently width-only.
  *      Even cards that are wider than this will still get class H.
  */
-const MaxSize = {
+var MaxSize = {
     A: MinSize.B - 1,
     B: MinSize.C - 1,
     C: MinSize.D - 1,
@@ -127,7 +127,7 @@ const MaxSize = {
  * CSS classes:
  *   Card--pdf, <class>--pdf - Added when the card is displaying a PDF record
  */
-const Card = new Lang.Interface({
+var Card = new Lang.Interface({
     Name: 'Card',
     GTypeName: 'EknCard',
     Requires: [ Gtk.Widget, Module.Module ],

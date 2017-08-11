@@ -15,7 +15,7 @@ const ContentGroupSuper = imports.app.modules.contentGroup.contentGroup;
  * it would be backed by a model, and yet would create it's own arrangement
  * and child cards as well.
  */
-const ContentGroup = new Module.Class({
+var ContentGroup = new Module.Class({
     Name: 'Card.ContentGroup',
     Extends: ContentGroupSuper.ContentGroup,
     Implements: [Card.Card],

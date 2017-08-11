@@ -106,7 +106,7 @@ const _WindshieldLayout = new Knowledge.Class({
  * This arrangement shows a featured card in a very prominent spot, followed by
  * three secondary cards.
  */
-const Windshield = new Module.Class({
+var Windshield = new Module.Class({
     Name: 'Arrangement.Windshield',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],

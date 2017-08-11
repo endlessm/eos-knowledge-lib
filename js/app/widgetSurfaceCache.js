@@ -15,7 +15,7 @@ const Knowledge = imports.app.knowledge;
  *
  * Careful with this helper, only cache surfaces you know will not update!
  */
-const WidgetSurfaceCache = new Knowledge.Class({
+var WidgetSurfaceCache = new Knowledge.Class({
     Name: 'WidgetSurfaceCache',
     Extends: GObject.Object,
 

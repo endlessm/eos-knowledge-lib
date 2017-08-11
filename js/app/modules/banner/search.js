@@ -22,7 +22,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *   title - on the banner
  *   query - on the portion of the banner indicating a user query string
  */
-const Search = new Module.Class({
+var Search = new Module.Class({
     Name: 'Banner.Search',
     Extends: Gtk.Label,
 

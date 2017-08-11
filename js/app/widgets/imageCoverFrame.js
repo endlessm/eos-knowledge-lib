@@ -13,7 +13,7 @@ const WidgetSurfaceCache = imports.app.widgetSurfaceCache;
  * space it is allocated and then centered.
  *
  */
-const ImageCoverFrame = new Knowledge.Class({
+var ImageCoverFrame = new Knowledge.Class({
     Name: 'ImageCoverFrame',
     Extends: Gtk.Widget,
 

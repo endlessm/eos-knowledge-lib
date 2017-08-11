@@ -23,7 +23,7 @@ const LOGO_URI = 'resource:///app/assets/logo';
  *   logo - on the widget displaying the app's logo.
  *   subtitle - on the label displaying the app's subtitle
  */
-const Dynamic = new Module.Class({
+var Dynamic = new Module.Class({
     Name: 'Banner.Dynamic',
     Extends: Gtk.Grid,
 

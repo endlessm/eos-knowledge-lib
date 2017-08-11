@@ -17,7 +17,7 @@ const TRANSITION_DURATION = 500;
  * and a revealer, in which lives the actual card. Clicking on the title
  * expands the corresponding revealer.
  */
-const Accordion = new Module.Class({
+var Accordion = new Module.Class({
     Name: 'Arrangement.Accordion',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],

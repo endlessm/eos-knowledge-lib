@@ -26,7 +26,7 @@ const WidgetSurfaceCache = imports.app.widgetSurfaceCache;
  * If the value is 'size-down' the image will shrink from full to min size
  * If the value is 'size-min' the image will always appear at min size
  */
-const ThemeableImage = new Knowledge.Class({
+var ThemeableImage = new Knowledge.Class({
     Name: 'ThemeableImage',
     Extends: Gtk.Widget,
     Properties: {

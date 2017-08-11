@@ -10,7 +10,7 @@ const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const Xapian = imports.app.modules.selection.xapian;
 
-const SetCrossSection = new Module.Class({
+var SetCrossSection = new Module.Class({
     Name: 'Selection.SetCrossSection',
     Extends: Xapian.Xapian,
 

@@ -22,7 +22,7 @@ const Selection = imports.app.modules.selection.selection;
  * more content.
  *
  */
-const Xapian = new Module.Class({
+var Xapian = new Module.Class({
     Name: 'Selection.Xapian',
     Extends: Selection.Selection,
     Abstract: true,

@@ -66,7 +66,7 @@ const GrowButton = new Knowledge.Class({
  * Emits <back-clicked> and <forward-clicked> signals when the corresponding
  * button is clicked.
  */
-const NavButtonOverlay = new Knowledge.Class({
+var NavButtonOverlay = new Knowledge.Class({
     Name: 'NavButtonOverlay',
     Extends: Gtk.Overlay,
     Properties: {

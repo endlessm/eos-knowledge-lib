@@ -13,7 +13,7 @@ const Module = imports.app.interfaces.module;
  * Class: BrandPage
  * Display a brand screen for 2 seconds
  */
-const BrandPage = new Module.Class({
+var BrandPage = new Module.Class({
     Name: 'Layout.BrandPage',
     Extends: Gtk.Stack,
 

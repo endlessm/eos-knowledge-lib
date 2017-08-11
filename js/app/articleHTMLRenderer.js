@@ -29,7 +29,7 @@ function _load_template(template_filename) {
 /**
  * Class: ArticleHTMLRenderer
  */
-const ArticleHTMLRenderer = new Knowledge.Class({
+var ArticleHTMLRenderer = new Knowledge.Class({
     Name: "ArticleHTMLRenderer",
     Extends: GObject.Object,
 

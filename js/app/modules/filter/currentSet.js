@@ -11,7 +11,7 @@ const Module = imports.app.interfaces.module;
 const SetMap = imports.app.setMap;
 const Utils = imports.app.utils;
 
-const CurrentSet = new Module.Class({
+var CurrentSet = new Module.Class({
     Name: 'Filter.CurrentSet',
     Extends: GObject.Object,
     Implements: [Filter.Filter],

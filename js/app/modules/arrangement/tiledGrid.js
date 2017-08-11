@@ -7,7 +7,7 @@ const Gtk = imports.gi.Gtk;
 const Arrangement = imports.app.interfaces.arrangement;
 const Module = imports.app.interfaces.module;
 
-const TiledGrid = new Module.Class({
+var TiledGrid = new Module.Class({
     Name: 'Arrangement.TiledGrid',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],

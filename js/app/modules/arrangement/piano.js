@@ -136,7 +136,7 @@ const _PianoLayout = new Knowledge.Class({
  * This arrangement shows a featured card in a very prominent spot, followed by
  * three secondary cards at its right side.
  */
-const Piano = new Module.Class({
+var Piano = new Module.Class({
     Name: 'Arrangement.Piano',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],

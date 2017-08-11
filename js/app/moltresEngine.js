@@ -11,7 +11,7 @@ const ITEM_TYPES = ['EknArticleObject', 'EknVideoObject'];
 const VIDEO_FILENAME = 'give_that_man_a_knighthood.webm';
 const VIDEO_TITLE = 'Video Model';
 
-const MoltresEngine = new Lang.Class({
+var MoltresEngine = new Lang.Class({
     Name: 'MoltresEngine',
     Extends: GObject.Object,
 
@@ -226,7 +226,7 @@ placerat varius non id dui.',
 });
 
 // Override the default engine singleton with our own, moltres Engine.
-let override_engine = () => {
+function override_engine() {
     let engine = new MoltresEngine();
     Eknc.Engine.get_default = function () {
         return engine;

@@ -25,7 +25,7 @@ const Utils = imports.app.utils;
  *   CardAudio__synopsis - on the synopsis label
  *   CardAudio__player - on the audio player
  */
-const Audio = new Module.Class({
+var Audio = new Module.Class({
     Name: 'Card.Audio',
     Extends: Gtk.Grid,
     Implements: [Card.Card, ArticleContent.ArticleContent],

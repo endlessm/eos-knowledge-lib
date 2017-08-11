@@ -15,7 +15,7 @@ const Module = imports.app.interfaces.module;
  * models. If the current item in our history is not featured, filter for
  * featured models.
  */
-const Thematic = new Module.Class({
+var Thematic = new Module.Class({
     Name: 'Filter.Thematic',
     Extends: GObject.Object,
     Implements: [Filter.Filter],

@@ -16,7 +16,7 @@ const Utils = imports.app.utils;
  *
  * A long skinny card good for showing results in a vertical list format.
  */
-const List = new Module.Class({
+var List = new Module.Class({
     Name: 'Card.List',
     Extends: Gtk.Button,
     Implements: [Card.Card, NavigationCard.NavigationCard],

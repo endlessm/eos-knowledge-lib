@@ -39,7 +39,7 @@ const _Placeholder = new Lang.Class({
  * To extend this class override the Arrangement.get_max_cards() and
  * Constrained.get_description().
  */
-const Constrained = new Module.Class({
+var Constrained = new Module.Class({
     Name: 'Arrangement.Constrained',
     Extends: Emeus.ConstraintLayout,
     Implements: [Arrangement.Arrangement],

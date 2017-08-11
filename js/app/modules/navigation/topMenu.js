@@ -29,7 +29,7 @@ const TOP_MENU_HEIGHT = 50;
  * Implements:
  *   <Module>
  */
-const TopMenu = new Module.Class({
+var TopMenu = new Module.Class({
     Name: 'Navigation.TopMenu',
     Extends: Endless.CustomContainer,
 

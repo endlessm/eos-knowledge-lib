@@ -9,7 +9,7 @@ const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
 const Xapian = imports.app.modules.selection.xapian;
 
-const AllSets = new Module.Class({
+var AllSets = new Module.Class({
     Name: 'Selection.AllSets',
     Extends: Xapian.Xapian,
 

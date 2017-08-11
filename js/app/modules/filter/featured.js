@@ -7,7 +7,7 @@ const GObject = imports.gi.GObject;
 const Filter = imports.app.interfaces.filter;
 const Module = imports.app.interfaces.module;
 
-const Featured = new Module.Class({
+var Featured = new Module.Class({
     Name: 'Filter.Featured',
     Extends: GObject.Object,
     Implements: [Filter.Filter],

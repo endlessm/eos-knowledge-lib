@@ -145,7 +145,7 @@ const _QuarterLayout = new Knowledge.Class({
  * Each row of supporting cards packs either two or three, depending on the total
  * width of the arrangement.
  */
-const Quarter = new Module.Class({
+var Quarter = new Module.Class({
     Name: 'Arrangement.Quarter',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],

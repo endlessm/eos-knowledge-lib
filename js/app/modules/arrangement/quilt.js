@@ -180,7 +180,7 @@ const _QuiltLayout = new Knowledge.Class({
  * secondary card that is placed vertically next to the primary card. If width
  * is enough, a third column with two support cards is shown.
  */
-const Quilt = new Module.Class({
+var Quilt = new Module.Class({
     Name: 'Arrangement.Quilt',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],

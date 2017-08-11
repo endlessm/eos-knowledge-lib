@@ -17,7 +17,7 @@ const Pages = imports.app.pages;
  * Retrieves content that is related to the article that is
  * currently being displayed on the article page.
  */
-const Related = new Module.Class({
+var Related = new Module.Class({
     Name: 'Selection.Related',
     Extends: Xapian.Xapian,
 

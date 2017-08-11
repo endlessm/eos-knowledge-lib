@@ -8,7 +8,7 @@ const Utils = imports.app.utils;
 
 const ARTICLE_SEARCH_MAX_RESULTS = 200;
 
-const InArticleSearch = new Knowledge.Class({
+var InArticleSearch = new Knowledge.Class({
     Name: 'InArticleSearch',
     Extends: Gtk.SearchBar,
 

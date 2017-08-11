@@ -9,7 +9,7 @@ const Filter = imports.app.interfaces.filter;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
-const OtherGroup = new Module.Class({
+var OtherGroup = new Module.Class({
     Name: 'Filter.OtherGroup',
     Extends: GObject.Object,
     Implements: [Filter.Filter],

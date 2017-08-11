@@ -14,7 +14,7 @@ const Xapian = imports.app.modules.selection.xapian;
  *
  * This Selection is meant to be used with one or more Filters.
  */
-const All = new Module.Class({
+var All = new Module.Class({
     Name: 'Selection.All',
     Extends: Xapian.Xapian,
 

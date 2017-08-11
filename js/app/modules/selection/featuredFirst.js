@@ -18,7 +18,7 @@ const Xapian = imports.app.modules.selection.xapian;
  *
  * When that becomes possible, this module will be removed.
  */
-const FeaturedFirst = new Module.Class({
+var FeaturedFirst = new Module.Class({
     Name: 'Selection.FeaturedFirst',
     Extends: Xapian.Xapian,
 

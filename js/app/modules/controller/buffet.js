@@ -21,7 +21,7 @@ const Module = imports.app.interfaces.module;
  * Implements:
  *    <Module>, <Controller>
  */
-const Buffet = new Module.Class({
+var Buffet = new Module.Class({
     Name: 'Controller.Buffet',
     Extends: GObject.Object,
     Implements: [Controller.Controller],

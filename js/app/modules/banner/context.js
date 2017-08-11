@@ -30,7 +30,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  * Implements:
  *   <Module>
  */
-const Context = new Module.Class({
+var Context = new Module.Class({
     Name: 'Banner.Context',
     Extends: Gtk.Label,
 

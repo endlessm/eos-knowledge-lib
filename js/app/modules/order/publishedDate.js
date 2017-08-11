@@ -12,7 +12,7 @@ const Order = imports.app.interfaces.order;
  * Class: PublishedDate
  * Order that sorts object models by publication date
  */
-const PublishedDate = new Module.Class({
+var PublishedDate = new Module.Class({
     Name: 'Order.PublishedDate',
     Extends: GObject.Object,
     Implements: [Order.Order],

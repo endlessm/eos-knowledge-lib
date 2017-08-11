@@ -19,7 +19,7 @@ const Module = imports.app.interfaces.module;
  * For example, a module with halign: end, valign: end, and in CSS margin: 10px
  * will be positioned 10px away from the bottom right corner.
  */
-const Overlay = new Module.Class({
+var Overlay = new Module.Class({
     Name: 'Layout.Overlay',
     Extends: Gtk.Overlay,
 

@@ -16,7 +16,7 @@ const Pages = imports.app.pages;
  * Class: MeshHistoryStore
  *
  */
-const MeshHistoryStore = new GObject.Class({
+var MeshHistoryStore = new GObject.Class({
     Name: 'MeshHistoryStore',
     Extends: HistoryStore.HistoryStore,
 

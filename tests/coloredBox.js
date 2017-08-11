@@ -9,7 +9,7 @@ const Lang = imports.lang;
  * Widget with a random color and label showing the allocation size. Useful for
  * smoke tests.
  */
-const ColoredBox = new Lang.Class({
+var ColoredBox = new Lang.Class({
     Name: 'ColoredBox',
     Extends: Gtk.Frame,
 

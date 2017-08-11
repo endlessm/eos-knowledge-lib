@@ -28,7 +28,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  * card, starts an asynchronous load of the document content and transitions
  * in the content when its ready.
  */
-const ArticleStack = new Module.Class({
+var ArticleStack = new Module.Class({
     Name: 'Layout.ArticleStack',
     Extends: Gtk.Stack,
 

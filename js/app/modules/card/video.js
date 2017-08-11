@@ -16,7 +16,7 @@ const Utils = imports.app.utils;
  *
  * A card for displaying video content.
  */
-const Video = new Module.Class({
+var Video = new Module.Class({
     Name: 'Card.Video',
     Extends: Gtk.Grid,
     Implements: [Card.Card, ArticleContent.ArticleContent],

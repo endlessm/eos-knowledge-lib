@@ -18,7 +18,7 @@ const Piano = imports.app.modules.arrangement.piano;
  * Under normal circumstances, it would be preferred to call the actual Piano
  * arrangement and pass the `compact-mode` property as needed.
  */
-const Pianola = new Module.Class({
+var Pianola = new Module.Class({
     Name: 'Arrangement.Pianola',
     Extends: Piano.Piano,
 

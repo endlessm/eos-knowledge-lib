@@ -22,7 +22,7 @@ const Utils = imports.app.utils;
  *   - title - on the document title
  *   - thumbnail - on the image thumbnail
  */
-const Deck = new Module.Class({
+var Deck = new Module.Class({
     Name: 'Card.Deck',
     Extends: Gtk.Button,
     Implements: [Card.Card],

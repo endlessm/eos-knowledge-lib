@@ -12,7 +12,7 @@ const _BATCH_SIZE = 10;
  * Class: InfiniteScrolling
  * Layout template that allows its content to scroll vertically
  */
-const InfiniteScrolling = new Module.Class({
+var InfiniteScrolling = new Module.Class({
     Name: 'Layout.InfiniteScrolling',
     Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
 

@@ -6,7 +6,7 @@ const Arrangement = imports.app.interfaces.arrangement;
 const SpaceContainer = imports.app.widgets.spaceContainer;
 const Module = imports.app.interfaces.module;
 
-const Overflow = new Module.Class({
+var Overflow = new Module.Class({
     Name: 'Arrangement.Overflow',
     Extends: SpaceContainer.SpaceContainer,
     Implements: [Arrangement.Arrangement],

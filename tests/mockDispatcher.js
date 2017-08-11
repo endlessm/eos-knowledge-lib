@@ -7,7 +7,7 @@ const Knowledge = imports.app.knowledge;
 
 // Similar to our actual dispatcher, but entirely synchronous and does not catch
 // errors, which will make our tests easier to write and fail faster.
-const MockDispatcher = new Knowledge.Class({
+var MockDispatcher = new Knowledge.Class({
     Name: 'MockDispatcher',
     Extends: GObject.Object,
 
@@ -79,7 +79,7 @@ const MockDispatcher = new Knowledge.Class({
 
 // Creates a new MockDispatcher and sets it up as the dispatcher singleton. Use
 // in a beforeEach to have a new dispatcher each test iteration.
-let mock_default = () => {
+function mock_default() {
     let dispatcher = new MockDispatcher();
     spyOn(Dispatcher, 'get_default').and.callFake(() => dispatcher);
     return dispatcher;

@@ -33,7 +33,7 @@ const Height = {
  * switch between different layouts depending on the geometry of its
  * allocation.
  */
-const DynamicLogo = new Knowledge.Class({
+var DynamicLogo = new Knowledge.Class({
     Name: 'DynamicLogo',
     Extends: Gtk.Widget,
 
