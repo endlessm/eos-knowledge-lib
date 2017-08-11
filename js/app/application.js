@@ -165,9 +165,6 @@ var Application = new Knowledge.Class({
 
     _initialize_vfs: function () {
         let engine = Eknc.Engine.get_default();
-        if (engine instanceof MoltresEngine.MoltresEngine)
-            return;
-
         let shards = engine.get_domain().get_shards();
         Eknc.default_vfs_set_shards(shards);
     },
