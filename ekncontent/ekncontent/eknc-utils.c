@@ -311,28 +311,6 @@ database_dir_from_data_dir (const gchar *data_dir, const gchar *app_id)
 }
 
 /**
- * eknc_get_running_under_flatpak:
- *
- * Checks if we are running in a flatpak sandbox.
- *
- * Returns: true if we are running in a flatpak sandbox.
- */
-gboolean
-eknc_get_running_under_flatpak (void)
-{
-  g_autoptr(GError) error = NULL;
-  g_autofree gchar *path = g_build_filename (g_get_user_runtime_dir (),
-                                             "flatpak-info", NULL);
-  g_autoptr(GKeyFile) keyfile = g_key_file_new ();
-
-  g_key_file_load_from_file (keyfile, path, G_KEY_FILE_NONE, &error);
-  if (error)
-    return FALSE;
-
-  return TRUE;
-}
-
-/**
  * eknc_get_data_dir:
  * @app_id: knowledge app ID, such as "com.endlessm.health-es"
  *
@@ -348,40 +326,36 @@ eknc_get_data_dir (const gchar *app_id)
 {
   GFile *ret;
   // We may be asked for the data dir on behalf of another bundle, in
-  // the search provider case -- so detect if we're under flatpak and
-  // key off the app ID
-  if (eknc_get_running_under_flatpak ())
-    {
-      g_autofree gchar *flatpak_relative_path = NULL;
-      g_autofree gchar *user_path = NULL;
-      g_autofree gchar *system_path = NULL;
-      g_autofree gchar *split_path = NULL;
+  // the search provider case -- so key off the app ID
+  g_autofree gchar *flatpak_relative_path = NULL;
+  g_autofree gchar *user_path = NULL;
+  g_autofree gchar *system_path = NULL;
+  g_autofree gchar *split_path = NULL;
 
-      flatpak_relative_path = g_build_filename ("flatpak", "app", app_id,
-                                                "current", "active",
-                                                "files", "share", NULL);
+  flatpak_relative_path = g_build_filename ("flatpak", "app", app_id,
+                                            "current", "active",
+                                            "files", "share", NULL);
 
-      // Try the user flatpak location first
-      user_path = g_build_filename (g_get_home_dir (), ".local", "share",
-                                    flatpak_relative_path, NULL);
-      ret = database_dir_from_data_dir (user_path, app_id);
-      if (ret)
-        return ret;
+  // Try the user flatpak location first
+  user_path = g_build_filename (g_get_home_dir (), ".local", "share",
+                                flatpak_relative_path, NULL);
+  ret = database_dir_from_data_dir (user_path, app_id);
+  if (ret)
+    return ret;
 
-      // Try the system flatpak location next
-      system_path = g_build_filename ("/var", "lib", flatpak_relative_path,
-                                      NULL);
-      ret = database_dir_from_data_dir (system_path, app_id);
-      if (ret)
-        return ret;
+  // Try the system flatpak location next
+  system_path = g_build_filename ("/var", "lib", flatpak_relative_path,
+                                  NULL);
+  ret = database_dir_from_data_dir (system_path, app_id);
+  if (ret)
+    return ret;
 
-      // Try the split layout system flatpak location next
-      split_path = g_build_filename ("/var", "endless-extra",
-                                     flatpak_relative_path, NULL);
-      ret = database_dir_from_data_dir (split_path, app_id);
-      if (ret)
-        return ret;
-    }
+  // Try the split layout system flatpak location next
+  split_path = g_build_filename ("/var", "endless-extra",
+                                 flatpak_relative_path, NULL);
+  ret = database_dir_from_data_dir (split_path, app_id);
+  if (ret)
+    return ret;
 
   // Fall back to the XDG data dirs otherwise
   const gchar * const *dirs = g_get_system_data_dirs ();

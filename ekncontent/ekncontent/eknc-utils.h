@@ -32,9 +32,6 @@ gboolean
 eknc_default_vfs_set_shards (GSList *shards);
 
 gboolean
-eknc_get_running_under_flatpak (void);
-
-gboolean
 eknc_utils_is_valid_id (const gchar *ekn_id);
 
 GFile *
