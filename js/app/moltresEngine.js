@@ -202,7 +202,7 @@ placerat varius non id dui.',
         data.title = VIDEO_TITLE; // Override title so we can see which ones are videos
         // Extra slashes are ignored during the resource lookup so we always get the same
         // file. However this does ensure we have unique ekn_ids
-        data.ekn_id = IMAGES_DIR + VIDEO_FILENAME + new Array(this._video_count++).fill('/').join('');
+        data.ekn_id = IMAGES_DIR + VIDEO_FILENAME + '/'.repeat(this._video_count++);
         let video = Eknc.VideoObjectModel.new_from_props(data);
         this._video_models.push(video);
         return video;
