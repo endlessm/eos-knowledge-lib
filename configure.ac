@@ -63,9 +63,6 @@ AS_ALL_LINGUAS
 # --------------------
 # Make sure we can create directory hierarchies
 AC_PROG_MKDIR_P
-# Make sure we can symlink
-AC_PROG_LN_S
-AS_IF([test "$LN_S" = "ln -s"], [], [AC_MSG_ERROR([Symlink support required.])])
 # C compiler
 AC_PROG_CC
 AC_PROG_CC_C99
