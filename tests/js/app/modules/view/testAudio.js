@@ -4,49 +4,41 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const Compliance = imports.tests.compliance;
+const {Audio} = imports.app.modules.view.audio;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
-const Video = imports.app.modules.card.video;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
-describe('Card.Video', function () {
-    let card;
+describe('View.Audio', function () {
+    let view;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
-        card = new Video.Video({
+        view = new Audio({
             model: Eknc.ContentObjectModel.new_from_props({
                 title: '!!!',
             }),
         });
-        card.content_view.title = '';
-        card.content_view.description = '';
     });
 
     it('has the correct style classes', function () {
-        expect(card).toHaveDescendantWithCssClass('Card__synopsis');
-        expect(card).toHaveDescendantWithCssClass('CardVideo__title');
+        expect(view).toHaveDescendantWithCssClass('View__synopsis');
+        expect(view).toHaveDescendantWithCssClass('ViewAudio__title');
     });
 
     it('has labels that understand Pango markup', function () {
-        expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
+        expect(Gtk.test_find_label(view, '*!!!*').use_markup).toBeTruthy();
     });
 
-    it('has a video player', function () {
-        expect(card).toHaveDescendantWithClass(EosKnowledgePrivate.MediaBin);
+    it('has a audio player', function () {
+        expect(view).toHaveDescendantWithClass(EosKnowledgePrivate.MediaBin);
     });
 
     it('implements the ArticleContent interface', function (done) {
-        expect(() => card.set_active(false)).not.toThrow();
-        card.load_content_promise().then(done);
+        expect(() => view.set_active(false)).not.toThrow();
+        view.load_content_promise().then(done);
     });
-});
-
-Compliance.test_card_compliance(Video.Video, function (card) {
-    card.content_view.title = '';
-    card.content_view.description = '';
 });

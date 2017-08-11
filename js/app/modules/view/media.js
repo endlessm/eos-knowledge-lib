@@ -3,10 +3,10 @@ const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 
-const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
 const Previewer = imports.app.widgets.previewer;
 const Utils = imports.app.utils;
+const {View} = imports.app.interfaces.view;
 
 /**
  * Class: Media
@@ -15,11 +15,11 @@ const Utils = imports.app.utils;
  * used with a MediaObject Model.
  */
 var Media = new Module.Class({
-    Name: 'Card.Media',
+    Name: 'View.Media',
     Extends: Gtk.Frame,
-    Implements: [Card.Card],
+    Implements: [View],
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/card/media.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/view/media.ui',
     InternalChildren: [ 'caption-label', 'attribution-label', 'grid',
         'attribution-button'],
 

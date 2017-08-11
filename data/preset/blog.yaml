@@ -79,9 +79,9 @@ defines:
   properties:
     do-sliding-animation: false
   slots:
-    card: 'Card.KnowledgeDocument(show-titles: false, show-toc: false)'
-    video: 'Card.Video(show-title: false, show-synopsis: false)'
-    audio: 'Card.Audio(show-title: false, show-synopsis: false)'
+    article: 'View.Document(show-titles: false, show-toc: false)'
+    video: 'View.Video(show-title: false, show-synopsis: false)'
+    audio: 'View.Audio(show-title: false, show-synopsis: false)'
     nav-content:
       type: ContentGroup.ContentGroup
       styles:
@@ -210,7 +210,7 @@ root:
         content:
           type: ContentGroup.MediaLightbox
           slots:
-            card: Card.Media
+            view: View.Media
             content:
               type: Layout.Sidebar
               slots:

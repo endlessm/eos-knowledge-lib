@@ -2,19 +2,19 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const Card = imports.app.interfaces.card;
+const {View} = imports.app.interfaces.view;
 
 /**
  * Interface: ArticleContent
  * Interface for article content modules
  *
  * Requires:
- *   <Card>
+ *   <View>
  */
 var ArticleContent = new Lang.Interface({
     Name: 'ArticleContent',
     GTypeName: 'EknArticleContent',
-    Requires: [ Card.Card ],
+    Requires: [View],
 
     Properties: {
         /**

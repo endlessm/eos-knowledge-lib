@@ -7,41 +7,41 @@ Utils.register_gresource();
 const Compliance = imports.tests.compliance;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
-const Audio = imports.app.modules.card.audio;
+const {Video} = imports.app.modules.view.video;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
-describe('Card.Audio', function () {
-    let card;
+describe('View.Video', function () {
+    let view;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
-        card = new Audio.Audio({
+        view = new Video({
             model: Eknc.ContentObjectModel.new_from_props({
                 title: '!!!',
             }),
         });
+        view.content_view.title = '';
+        view.content_view.description = '';
     });
 
     it('has the correct style classes', function () {
-        expect(card).toHaveDescendantWithCssClass('Card__synopsis');
-        expect(card).toHaveDescendantWithCssClass('CardAudio__title');
+        expect(view).toHaveDescendantWithCssClass('View__synopsis');
+        expect(view).toHaveDescendantWithCssClass('ViewVideo__title');
     });
 
     it('has labels that understand Pango markup', function () {
-        expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
+        expect(Gtk.test_find_label(view, '*!!!*').use_markup).toBeTruthy();
     });
 
-    it('has a audio player', function () {
-        expect(card).toHaveDescendantWithClass(EosKnowledgePrivate.MediaBin);
+    it('has a video player', function () {
+        expect(view).toHaveDescendantWithClass(EosKnowledgePrivate.MediaBin);
     });
 
     it('implements the ArticleContent interface', function (done) {
-        expect(() => card.set_active(false)).not.toThrow();
-        card.load_content_promise().then(done);
+        expect(() => view.set_active(false)).not.toThrow();
+        view.load_content_promise().then(done);
     });
 });
-
-Compliance.test_card_compliance(Audio.Audio);

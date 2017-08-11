@@ -9,7 +9,6 @@ const Gtk = imports.gi.Gtk;
 const WebKit2 = imports.gi.WebKit2;
 
 const ArticleContent = imports.app.interfaces.articleContent;
-const Card = imports.app.interfaces.card;
 const EknWebview = imports.app.widgets.eknWebview;
 const HistoryStore = imports.app.historyStore;
 const InArticleSearch = imports.app.widgets.inArticleSearch;
@@ -19,28 +18,27 @@ const PDFView = imports.app.widgets.PDFView;
 const SlidingPanelOverlay = imports.app.widgets.slidingPanelOverlay;
 const TableOfContents = imports.app.widgets.tableOfContents;
 const Utils = imports.app.utils;
+const {View} = imports.app.interfaces.view;
 
 const SPINNER_PAGE_NAME = 'spinner';
 const CONTENT_PAGE_NAME = 'content';
 const SCROLLED_PAST_PREFIX = 'scrolled-past-';
 
 /**
- * Class: KnowledgeDocument
- *
- * A card implementation for showing entire documents of content.
+ * Class: Document
+ * A view of an HTML or PDF document, with scrolling
  *
  * This widget will handle toggling the <TableOfContents.collapsed> parameter
  * of the table of contents depending on available space. It provides two
- * internal frames with style classes
- * 'CardKnowledgeDocument__toolbarFrame' and
- * 'CardKnowledgeDocument__contentFrame' for theming purposes.
+ * internal frames with style classes `ViewDocument__toolbarFrame` and
+ * `ViewDocument__contentFrame` for theming purposes.
  * The toolbar frame surrounds the <title> and <toc> on the right. The
  * content frame surrounds the <webview> on the left.
  */
-var KnowledgeDocument = new Module.Class({
-    Name: 'Card.KnowledgeDocument',
+var Document = new Module.Class({
+    Name: 'View.Document',
     Extends: Endless.CustomContainer,
-    Implements: [Card.Card, ArticleContent.ArticleContent],
+    Implements: [View, ArticleContent.ArticleContent],
 
     Properties: {
         /**
@@ -71,7 +69,7 @@ var KnowledgeDocument = new Module.Class({
             TableOfContents.TableOfContents.$gtype),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/card/knowledgeDocument.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/view/document.ui',
     InternalChildren: [ 'title-label', 'top-title-label', 'toolbar-frame',
         'content-frame', 'content-grid', 'panel-overlay', 'spinner', 'stack' ],
     Children: [ 'toc' ],
@@ -335,7 +333,7 @@ var KnowledgeDocument = new Module.Class({
         }
         this._toolbar_frame.set_child_visible(true);
 
-        let collapsed_class = Utils.get_modifier_style_class('CardKnowledgeDocument__toolbarFrame', 'collapsed');
+        let collapsed_class = Utils.get_modifier_style_class('ViewDocument__toolbarFrame', 'collapsed');
         // Decide if toolbar should be collapsed
         if (this._should_collapse(alloc.width)) {
             if (!this.toc.collapsed) {

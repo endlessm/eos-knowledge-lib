@@ -8,6 +8,7 @@ const Gtk = imports.gi.Gtk;
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
+const {View} = imports.app.interfaces.view;
 
 /**
  * Class: Deck
@@ -25,7 +26,7 @@ const Utils = imports.app.utils;
 var Deck = new Module.Class({
     Name: 'Card.Deck',
     Extends: Gtk.Button,
-    Implements: [Card.Card],
+    Implements: [View, Card.Card],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/deck.ui',
     InternalChildren: ['overlay', 'shadow-frame', 'thumbnail-frame',

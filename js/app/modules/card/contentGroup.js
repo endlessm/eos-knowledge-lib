@@ -3,6 +3,7 @@
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
 const ContentGroupSuper = imports.app.modules.contentGroup.contentGroup;
+const {View} = imports.app.interfaces.view;
 
 /**
  * Class: ContentGroup
@@ -18,7 +19,7 @@ const ContentGroupSuper = imports.app.modules.contentGroup.contentGroup;
 var ContentGroup = new Module.Class({
     Name: 'Card.ContentGroup',
     Extends: ContentGroupSuper.ContentGroup,
-    Implements: [Card.Card],
+    Implements: [View, Card.Card],
 
     _init: function (props={}) {
         this.parent(props);

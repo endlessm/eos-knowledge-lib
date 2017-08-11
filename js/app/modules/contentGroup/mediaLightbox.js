@@ -19,7 +19,7 @@ var MediaLightbox = new Module.Class({
     Extends: Lightbox.Lightbox,
 
     Slots: {
-        'card': {
+        'view': {
             multi: true,
         },
         'content': {},
@@ -121,7 +121,7 @@ var MediaLightbox = new Module.Class({
             this.lightbox_widget = null;
         }
 
-        let widget = this.create_submodule('card', {
+        let widget = this.create_submodule('view', {
             model: media_object
         });
 

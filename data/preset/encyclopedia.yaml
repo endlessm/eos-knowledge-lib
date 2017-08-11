@@ -77,7 +77,7 @@ defines:
             styles:
               - paper-template
             slots:
-              card: 'Card.KnowledgeDocument(show-titles: false)'
+              article: 'View.Document(show-titles: false)'
 
 root:
   shortdef: 'Controller.Mesh(theme: encyclopedia)'
@@ -88,7 +88,7 @@ root:
         content:
           type: ContentGroup.MediaLightbox
           slots:
-            card: Card.Media
+            view: View.Media
             content:
               type: Pager.Simple
               slots:

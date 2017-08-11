@@ -6,12 +6,11 @@ const CssClassMatcher = imports.tests.CssClassMatcher;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const Media = imports.app.modules.card.media;
+const {Media} = imports.app.modules.view.media;
 
 Gtk.init(null);
 
-describe ('Card.Media', function () {
-
+describe('View.Media', function () {
     Object.defineProperty(Eknc.ImageObjectModel.prototype, 'ekn_id', {
         get: function() { return null; }
     });
@@ -22,15 +21,15 @@ describe ('Card.Media', function () {
             caption: '@@@',
         });
 
-        let card = new Media.Media({
+        let view = new Media({
             model: model,
         });
-        expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
-        expect(Gtk.test_find_label(card, '*@@@*').use_markup).toBeTruthy();
+        expect(Gtk.test_find_label(view, '*!!!*').use_markup).toBeTruthy();
+        expect(Gtk.test_find_label(view, '*@@@*').use_markup).toBeTruthy();
     });
 
     describe ('Attribution button', function () {
-        let card;
+        let view;
         let copyright_holder = '!!!';
         let attribution_button;
 
@@ -40,11 +39,11 @@ describe ('Card.Media', function () {
                 copyright_holder: copyright_holder,
             });
 
-            card = new Media.Media({
+            view = new Media({
                 model: model,
             });
 
-            attribution_button = Gtk.test_find_label(card, '*!!!*').get_parent();
+            attribution_button = Gtk.test_find_label(view, '*!!!*').get_parent();
             expect(attribution_button.sensitive).toBe(true);
         });
 
@@ -54,11 +53,11 @@ describe ('Card.Media', function () {
                 copyright_holder: copyright_holder,
             });
 
-            card = new Media.Media({
+            view = new Media({
                 model: model,
             });
 
-            attribution_button = Gtk.test_find_label(card, '*!!!*').get_parent();
+            attribution_button = Gtk.test_find_label(view, '*!!!*').get_parent();
             expect(attribution_button.sensitive).toBe(false);
         });
     });

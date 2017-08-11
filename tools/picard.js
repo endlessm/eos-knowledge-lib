@@ -14,6 +14,7 @@ const ReadingHistoryModel = imports.app.readingHistoryModel;
 const Selection = imports.app.modules.selection.selection;
 const SetMap = imports.app.setMap;
 const Utils = imports.app.utils;
+const {View} = imports.app.interfaces.view;
 
 // Patch in a reading history model that works without a GApplication.
 const DummyReadingHistoryModel = new Knowledge.Class({
@@ -163,12 +164,6 @@ function get_available_modules_for_type (type) {
     return arr;
 }
 
-const UNUSED_CARDS = [
-    'Card.ContentGroup',
-    'Card.KnowledgeDocument',
-    'Card.Media',
-];
-
 function get_dimensions_menu () {
     widgets.dimension_menu = new Gtk.Popover({
         border_width: SPACING_UNIT,
@@ -238,7 +233,8 @@ function get_module_menu () {
 
     widgets.card_combo_box = new Gtk.ComboBoxText();
 
-    let card_types = get_available_modules_for_type('Card').sort().filter((name) => UNUSED_CARDS.indexOf(name) < 0);
+    let card_types = get_available_modules_for_type('Card').sort()
+        .filter(name => name !== 'Card.ContentGroup');
     card_types.unshift('ColorBoxCard');
     card_types.forEach((name) => widgets.card_combo_box.append_text(name));
 
@@ -469,7 +465,7 @@ function format_card_class (size, use_height=false) {
 const ColorBox = new Module.Class({
     Name: 'ColorBox',
     Extends: Gtk.Frame,
-    Implements: [Card.Card],
+    Implements: [View, Card.Card],
 
     _init: function (props={}) {
         props.width_request = Card.MinSize.A;

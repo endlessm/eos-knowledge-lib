@@ -1,38 +1,29 @@
-// Copyright 2017 Endless Mobile, Inc.
+// Copyright 2016 Endless Mobile, Inc.
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const ArticleContent = imports.app.interfaces.articleContent;
-const Card = imports.app.interfaces.card;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Module = imports.app.interfaces.module;
+const {View} = imports.app.interfaces.view;
 
 // Make sure included for glade template
 const Utils = imports.app.utils;
 
 /**
- * Class: Audio
+ * Class: Video
  *
- * A card for displaying audio content
- *
- * This widget displays the title if enabled via properties, the synopsis if
- * included in the object model, and the player for reproducing the audio.
- *
- * Style classes:
- *   CardAudio - on the widget itself
- *   CardAudio__title - on the title label
- *   CardAudio__synopsis - on the synopsis label
- *   CardAudio__player - on the audio player
+ * A card for displaying video content.
  */
-var Audio = new Module.Class({
-    Name: 'Card.Audio',
+var Video = new Module.Class({
+    Name: 'View.Video',
     Extends: Gtk.Grid,
-    Implements: [Card.Card, ArticleContent.ArticleContent],
+    Implements: [View, ArticleContent.ArticleContent],
 
     Properties: {
         /**
-         * Property: show-title
+         * Property: show-titles
          *
          * Set true if the title label should be visible.
          */
@@ -49,7 +40,7 @@ var Audio = new Module.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/card/audio.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/view/video.ui',
     InternalChildren: [ 'title-label', 'synopsis-label' ],
 
     _init: function (props={}) {
@@ -60,12 +51,16 @@ var Audio = new Module.Class({
 
         this._title_label.visible = this.show_title;
         this._synopsis_label.visible = this.show_synopsis;
-        let player = new EosKnowledgePrivate.MediaBin({ audio_mode: true });
-        player.get_style_context().add_class(Utils.get_element_style_class(Audio, 'player'));
-        player.set_uri(this.model.ekn_id)
-        player.show_all();
-        this.attach(player, 0, 3, 1, 1);
-        this.content_view = player;
+        let video_player = new EosKnowledgePrivate.MediaBin( {
+            visible: true,
+            uri: this.model.ekn_id,
+            title: this.model.title,
+            description: this.model.synopsis,
+        });
+        video_player.get_style_context().add_class(Utils.get_element_style_class(Video, 'player'));
+        video_player.show_all();
+        this.attach(video_player, 1, 1, 1, 1);
+        this.content_view = video_player;
     },
 
     load_content_promise: function () {

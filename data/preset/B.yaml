@@ -97,12 +97,12 @@ defines:
     content:
       type: Layout.ArticleStack
       slots:
-        card:
-          type: Card.KnowledgeDocument
+        article:
+          type: View.Document
           properties:
             show-titles: false
-        video: 'Card.Video'
-        audio: 'Card.Audio(show-title: false, show-synopsis: false)'
+        video: View.Video
+        audio: 'View.Audio(show-title: false, show-synopsis: false)'
     sidebar:
       type: Layout.InfiniteScrolling
       references:
@@ -126,7 +126,7 @@ root:
         content:
           type: ContentGroup.MediaLightbox
           slots:
-            card: Card.Media
+            view: View.Media
             content:
               type: Layout.Navigation
               slots:

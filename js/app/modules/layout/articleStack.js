@@ -11,7 +11,6 @@ const Gtk = imports.gi.Gtk;
 const WebKit2 = imports.gi.WebKit2;
 
 const Actions = imports.app.actions;
-const Card = imports.app.interfaces.card;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const HistoryStore = imports.app.historyStore;
@@ -55,7 +54,7 @@ var ArticleStack = new Module.Class({
     },
 
     Slots: {
-        'card': {
+        'article': {
             multi: true,
         },
         'nav-content': {
@@ -162,7 +161,7 @@ var ArticleStack = new Module.Class({
         if (nav_content)
             article_content_props.nav_content = nav_content;
 
-        let slot = 'card';
+        let slot = 'article';
         if (model instanceof Eknc.VideoObjectModel) {
             slot = 'video';
         } else if (model instanceof Eknc.AudioObjectModel) {
