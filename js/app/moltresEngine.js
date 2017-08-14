@@ -53,8 +53,9 @@ var MoltresEngine = new Lang.Class({
     get_domain: function () {
         const html = Utils.string_to_bytes('<html><body><p>Some content</p></body></html>');
         return {
-            read_uri: () => [true, html, 'text/html']
-        }
+            read_uri: () => [true, html, 'text/html'],
+            get_shards: () => [],
+        };
     },
 
     get_ekn_id: function () {},
