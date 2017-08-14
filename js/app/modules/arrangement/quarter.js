@@ -34,12 +34,6 @@ const _QuarterLayout = new Knowledge.Class({
         this.parent(props);
     },
 
-    // Removal of any card should cause a recalculate
-    vfunc_remove: function (widget) {
-        this.parent(widget);
-        this.queue_resize();
-    },
-
     vfunc_get_request_mode: function () {
         return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
     },
