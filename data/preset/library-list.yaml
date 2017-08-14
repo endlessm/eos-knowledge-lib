@@ -182,6 +182,7 @@ defines:
   slots:
     card: 'Card.KnowledgeDocument(show-toc: false, show-titles: false)'
     video: 'Card.Video'
+    audio: 'Card.Audio(show-title: false, show-synopsis: false)'
 
 root:
   shortdef: 'Controller.Mesh(theme: library_list)'

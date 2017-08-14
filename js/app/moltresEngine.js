@@ -7,9 +7,10 @@ const Utils = imports.app.utils;
 const IMAGES_DIR = 'resource:///com/endlessm/knowledge/data/images/tools/';
 const NUM_TOP_LEVEL_SETS = 20;
 const NUM_SUBSETS_PER_SET = 3;
-const ITEM_TYPES = ['EknArticleObject', 'EknVideoObject'];
+const ITEM_TYPES = ['EknAudioObject', 'EknArticleObject', 'EknVideoObject'];
 const VIDEO_FILENAME = 'give_that_man_a_knighthood.webm';
 const VIDEO_TITLE = 'Video Model';
+const AUDIO_TITLE = 'Audio Model';
 
 var MoltresEngine = new Lang.Class({
     Name: 'MoltresEngine',
@@ -19,9 +20,11 @@ var MoltresEngine = new Lang.Class({
         this.parent();
         this._article_count = 0;
         this._video_count = 0;
+        this._audio_count = 0;
         this._set_models = [];
         this._article_models = [];
         this._video_models = [];
+        this._audio_models = [];
 
         // Sets must all be created up front and be fixed. We cannot create
         // them dynamically at runtime because otherwise the SetMap (which
@@ -64,6 +67,7 @@ var MoltresEngine = new Lang.Class({
         return Promise.resolve(this._set_models
         .concat(this._article_models)
         .concat(this._video_models)
+        .concat(this._audio_models)
         .find((model) => {
             return model.ekn_id === id;
         }));
@@ -90,7 +94,8 @@ var MoltresEngine = new Lang.Class({
                                                 return arr.concat(normalize(obj.title));
                                              }, [])
                                              .concat(normalize(this._SYNOPSIS))
-                                             .concat(normalize(VIDEO_TITLE));
+                                             .concat(normalize(VIDEO_TITLE))
+                                             .concat(normalize(AUDIO_TITLE));
         // If the query matches any article or set title, or the synopsis, return some content.
         // Otherwise, return nothing. If no query string was specified at all, we also want to
         // return content since this handles e.g. suggested articles modules.
@@ -121,6 +126,8 @@ var MoltresEngine = new Lang.Class({
                     model = this._generate_article_object(unique_data);
                 } else if (object_type === 'EknVideoObject') {
                     model = this._generate_video_object(unique_data);
+                } else if (object_type === 'EknAudioObject') {
+                    model = this._generate_audio_object(unique_data);
                 } else {
                     logError("Moltres does not support serving objects of type " + object_type);
                 }
@@ -138,6 +145,8 @@ var MoltresEngine = new Lang.Class({
             return Promise.resolve(this._get_items(query, 'EknArticleObject'));
         } else if (query.tags_match_all.indexOf('EknVideoObject') >= 0) {
             return Promise.resolve(this._get_items(query, 'EknVideoObject'));
+        } else if (query.tags_match_all.indexOf('EknAudioObject') >= 0) {
+            return Promise.resolve(this._get_items(query, 'EknAudioObject'));
         } else {
             return Promise.resolve(this._get_items(query, null));
         }
@@ -197,13 +206,23 @@ placerat varius non id dui.',
         return Eknc.SetObjectModel.new_from_props(data);
     },
 
+    _generate_audio_object: function (data) {
+        data.synopsis = this._SYNOPSIS;
+        data.content_type = 'audio/webm';
+        data.title = AUDIO_TITLE;
+        data.ekn_id = IMAGES_DIR + VIDEO_FILENAME + '/'.repeat(this._audio_count++);
+        let audio = Eknc.AudioObjectModel.new_from_props(data);
+        this._audio_models.push(audio);
+        return audio;
+    },
+
     _generate_video_object: function (data) {
         data.synopsis = this._SYNOPSIS;
         data.content_type = 'video/webm';
         data.title = VIDEO_TITLE; // Override title so we can see which ones are videos
         // Extra slashes are ignored during the resource lookup so we always get the same
         // file. However this does ensure we have unique ekn_ids
-        data.ekn_id = IMAGES_DIR + VIDEO_FILENAME + new Array(this._video_count++).fill('/').join('');
+        data.ekn_id = IMAGES_DIR + VIDEO_FILENAME + '/'.repeat(this._video_count++);
         let video = Eknc.VideoObjectModel.new_from_props(data);
         this._video_models.push(video);
         return video;

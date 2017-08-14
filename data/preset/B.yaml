@@ -102,6 +102,7 @@ defines:
           properties:
             show-titles: false
         video: 'Card.Video'
+        audio: 'Card.Audio(show-title: false, show-synopsis: false)'
     sidebar:
       type: Layout.InfiniteScrolling
       references:

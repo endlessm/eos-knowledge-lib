@@ -296,6 +296,7 @@ defines:
       slots:
         card: 'Card.KnowledgeDocument(show-titles: false, show-toc: false)'
         video: 'Card.Video(show-title: false, show-synopsis: false)'
+        audio: 'Card.Audio(show-title: false, show-synopsis: false)'
         nav-content:
           type: ContentGroup.ContentGroup
           styles:
