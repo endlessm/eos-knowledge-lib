@@ -35,7 +35,7 @@ let screen = Gdk.Screen.get_default();
 Gtk.StyleContext.add_provider_for_screen(screen, provider, 1000);
 
 let win = new Gtk.Window({
-    title: 'KA Customizer',
+    title: 'Kactus',
     type_hint: Gdk.WindowTypeHint.DIALOG,
     resizable: false,
 });
@@ -241,7 +241,7 @@ done_button.connect('clicked', () => {
         return;
     }
 
-    let args = ['./ka-customizer-runner'];
+    let args = ['./kactus-runner'];
     let branch = '';
     if (framework_version_chooser.get_active_id() === 'master')
         branch = 'master';

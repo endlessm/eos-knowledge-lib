@@ -13,24 +13,24 @@ for branch in master 1; do
 done
 
 mkdir -p $APPDIR
-cat <<EOF > $APPDIR/ka-customizer.desktop
+cat <<EOF > $APPDIR/kactus.desktop
 [Desktop Entry]
-Name=KA Customizer
+Name=Kactus
 Terminal=false
 Type=Application
 Path=$BINDIR
-Exec=$BINDIR/ka-customizer
+Exec=$BINDIR/kactus
 Icon=system-run
-StartupWMClass=KA Customizer
+StartupWMClass=Kactus
 EOF
 
 mkdir -p $BINDIR
-wget -O $BINDIR/ka-customizer https://raw.githubusercontent.com/endlessm/eos-knowledge-lib/master/tools/ka-customizer
-wget -O $BINDIR/ka-customizer-runner https://raw.githubusercontent.com/endlessm/eos-knowledge-lib/master/tools/ka-customizer-runner
-chmod +x $BINDIR/ka-customizer-runner $BINDIR/ka-customizer
+wget -O $BINDIR/kactus https://raw.githubusercontent.com/endlessm/eos-knowledge-lib/master/tools/kactus
+wget -O $BINDIR/kactus-runner https://raw.githubusercontent.com/endlessm/eos-knowledge-lib/master/tools/kactus-runner
+chmod +x $BINDIR/kactus-runner $BINDIR/kactus
 
 gdbus call --session \
     --dest org.gnome.Shell \
     --object-path /org/gnome/Shell \
     --method org.gnome.Shell.AppStore.AddApplication \
-    ka-customizer.desktop
+    kactus.desktop
