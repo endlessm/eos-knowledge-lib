@@ -3,12 +3,12 @@
 APPDIR=$HOME/.local/share/applications
 BINDIR=$HOME/.local/bin
 
-for branch in master eos3.1; do
-    if ! flatpak info --show-commit com.endlessm.Platform $branch; then
-        flatpak install eos-runtimes com.endlessm.Platform $branch
+for branch in master 1; do
+    if ! flatpak info --show-commit com.endlessm.apps.Platform $branch; then
+        flatpak install eos-sdk com.endlessm.apps.Platform $branch
     fi
-    if ! flatpak info --show-commit com.endlessm.Sdk $branch; then
-        flatpak install eos-runtimes com.endlessm.Sdk $branch
+    if ! flatpak info --show-commit com.endlessm.apps.Sdk $branch; then
+        flatpak install eos-sdk com.endlessm.apps.Sdk $branch
     fi
 done
 
