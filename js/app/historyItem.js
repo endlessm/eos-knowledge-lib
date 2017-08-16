@@ -84,14 +84,6 @@ var HistoryItem = new Knowledge.Class({
             'The timestamp of the user action that generated this item',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, GLib.MAXUINT32, 0),
-        /**
-         * Property: entry-point
-         *
-         * A string specifying how the user arrived at the content.
-         */
-        'entry-point': GObject.ParamSpec.string('entry-point', 'Entry point',
-            'The entry point describes how the user arrived at the content',
-            GObject.ParamFlags.READWRITE, ''),
     },
 
     _init: function (props={}) {

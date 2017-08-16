@@ -20,7 +20,8 @@ describe('MeshHistoryStore', function () {
         store = new MeshHistoryStore.MeshHistoryStore();
         store.set_current_item_from_props({ page_type: Pages.HOME });
         spyOn(AppUtils, 'record_search_metric');
-        spyOn(AppUtils, 'record_content_access_metric');
+        spyOn(AppUtils, 'start_content_access_metric');
+        spyOn(AppUtils, 'stop_content_access_metric');
     });
 
     it('goes back to the home page when home button is clicked', function () {
@@ -57,7 +58,9 @@ describe('MeshHistoryStore', function () {
             model: model,
         });
         expect(store.get_current_item().page_type).toBe(Pages.ARTICLE);
-        expect(AppUtils.record_content_access_metric).toHaveBeenCalledWith(true, EntryPoints.LINK_CLICKED, 'ekn://foo/bar', '', '');
+        expect(AppUtils.start_content_access_metric)
+            .toHaveBeenCalledWith(store.get_current_item().model,
+                EntryPoints.LINK_CLICKED);
     });
 
     it('goes back to the home page via the sidebar from search page', function () {
@@ -192,8 +195,9 @@ describe('MeshHistoryStore', function () {
         });
 
         it('records a metric', function () {
-            expect(AppUtils.record_content_access_metric)
-                .toHaveBeenCalledWith(true, EntryPoints.ARTICLE_LINK_CLICKED, 'ekn://foo/bar', '', '');
+            expect(AppUtils.start_content_access_metric)
+                .toHaveBeenCalledWith(jasmine.objectContaining({ekn_id: 'ekn://foo/bar'}),
+                    EntryPoints.ARTICLE_LINK_CLICKED);
         });
     });
 
@@ -258,8 +262,9 @@ describe('MeshHistoryStore', function () {
             });
             Utils.update_gui();
 
-            expect(AppUtils.record_content_access_metric)
-                .toHaveBeenCalledWith(true, EntryPoints.DBUS_CALL, 'ekn:///foo', '', '');
+            expect(AppUtils.start_content_access_metric)
+                .toHaveBeenCalledWith(jasmine.objectContaining({ekn_id: 'ekn:///foo'}),
+                    EntryPoints.DBUS_CALL);
         });
 
         it('goes to the set page if an article was opened', function () {

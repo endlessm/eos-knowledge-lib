@@ -20,6 +20,8 @@ describe('CourseHistoryStore', function () {
         store = new CourseHistoryStore.CourseHistoryStore();
         store.set_current_item_from_props({ page_type: Pages.HOME });
         spyOn(AppUtils, 'record_search_metric');
+        spyOn(AppUtils, 'start_content_access_metric');
+        spyOn(AppUtils, 'stop_content_access_metric');
         let data = [
             {
                 ekn_id: '1',

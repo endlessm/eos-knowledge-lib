@@ -18,7 +18,8 @@ describe('History Store', function () {
         reading_history = MockReadingHistoryModel.mock_default();
 
         history_store = new HistoryStore.HistoryStore();
-        spyOn(AppUtils, 'record_content_access_metric');
+        spyOn(AppUtils, 'start_content_access_metric');
+        spyOn(AppUtils, 'stop_content_access_metric');
     });
 
     it('can access a history item', function () {
@@ -113,8 +114,6 @@ describe('History Store', function () {
             page_type: 'article',
             model: model
         });
-        expect(AppUtils.record_content_access_metric)
-            .toHaveBeenCalledWith(true, '', 'ekn://article1', '', '');
 
         model = Eknc.ArticleObjectModel.new_from_props({
             ekn_id: 'ekn://article2',
@@ -123,22 +122,18 @@ describe('History Store', function () {
             page_type: 'article',
             model: model
         });
-        expect(AppUtils.record_content_access_metric)
-            .toHaveBeenCalledWith(false, '', 'ekn://article1', '', '');
-        expect(AppUtils.record_content_access_metric)
-            .toHaveBeenCalledWith(true, '', 'ekn://article2', '', '');
 
         dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
-        expect(AppUtils.record_content_access_metric)
-            .toHaveBeenCalledWith(false, '', 'ekn://article2', '', '');
-        expect(AppUtils.record_content_access_metric)
-            .toHaveBeenCalledWith(true, EntryPoints.NAV_BUTTON_CLICKED, 'ekn://article1', '', '');
+        expect(AppUtils.start_content_access_metric)
+            .toHaveBeenCalledWith(jasmine.objectContaining({ekn_id: 'ekn://article1'}),
+                EntryPoints.NAV_BUTTON_CLICKED);
 
         dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
-        expect(AppUtils.record_content_access_metric)
-            .toHaveBeenCalledWith(false, '', 'ekn://article1', '', '');
-        expect(AppUtils.record_content_access_metric)
-            .toHaveBeenCalledWith(true, EntryPoints.NAV_BUTTON_CLICKED, 'ekn://article2', '', '');
+        expect(AppUtils.stop_content_access_metric)
+            .toHaveBeenCalledWith(jasmine.objectContaining({ekn_id: 'ekn://article1'}));
+        expect(AppUtils.start_content_access_metric)
+            .toHaveBeenCalledWith(jasmine.objectContaining({ekn_id: 'ekn://article2'}),
+                EntryPoints.NAV_BUTTON_CLICKED);
     });
 
     it('marks items as read', function () {

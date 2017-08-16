@@ -44,7 +44,6 @@ var BuffetHistoryStore = new GObject.Class({
                 case Actions.ITEM_CLICKED:
                     if (payload.model instanceof Eknc.SetObjectModel) {
                         this.set_current_item_from_props({
-                            entry_point: EntryPoints.LINK_CLICKED,
                             page_type: Pages.SET,
                             model: payload.model,
                             context_label: payload.model.title,
@@ -57,12 +56,11 @@ var BuffetHistoryStore = new GObject.Class({
                             context_label = payload.context_label;
                         }
                         this.set_current_item_from_props({
-                            entry_point: EntryPoints.LINK_CLICKED,
                             page_type: Pages.ARTICLE,
                             model: payload.model,
                             context: payload.context,
                             context_label: context_label,
-                        });
+                        }, EntryPoints.LINK_CLICKED);
                     }
                     break;
                 case Actions.ARTICLE_LINK_CLICKED:

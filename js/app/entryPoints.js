@@ -3,7 +3,7 @@
 /* exported ARTICLE_LINK_CLICKED, DBUS_CALL, LINK_CLICKED, NAV_BUTTON_CLICKED */
 
 // Enum for all currently supported entry points
-const ARTICLE_LINK_CLICKED = 'article-link-clicked';
-const DBUS_CALL = 'dbus-call';
-const LINK_CLICKED = 'link-clicked';
-const NAV_BUTTON_CLICKED = 'nav-button-clicked';
+var ARTICLE_LINK_CLICKED = 'article-link-clicked';
+var DBUS_CALL = 'dbus-call';
+var LINK_CLICKED = 'link-clicked';
+var NAV_BUTTON_CLICKED = 'nav-button-clicked';

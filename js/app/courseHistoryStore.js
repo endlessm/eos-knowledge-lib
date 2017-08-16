@@ -37,8 +37,7 @@ var CourseHistoryStore = new GObject.Class({
                 case Actions.ITEM_CLICKED: {
                     if (payload.model instanceof Eknc.SetObjectModel) {
                         if (!SetMap.get_parent_set(payload.model)) {
-                            let props = { entry_point: EntryPoints.LINK_CLICKED,
-                                          model: payload.model };
+                            let props = { model: payload.model };
                             props['page_type'] = Pages.SET;
                             this.set_current_item_from_props(props);
                             this._load_first_subset(payload.model);
@@ -47,10 +46,9 @@ var CourseHistoryStore = new GObject.Class({
                         }
                     } else {
                         this.set_current_item_from_props({
-                            entry_point: EntryPoints.LINK_CLICKED,
                             media_model: payload.model,
                             context: payload.context,
-                        });
+                        }, EntryPoints.LINK_CLICKED);
                     }
                 }
                     break;

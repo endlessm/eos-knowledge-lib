@@ -92,11 +92,9 @@ var HistoryStore = new Lang.Class({
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
                 case Actions.HISTORY_BACK_CLICKED:
-                    this.get_previous_item().entry_point = EntryPoints.NAV_BUTTON_CLICKED;
                     this.go_back();
                     break;
                 case Actions.HISTORY_FORWARD_CLICKED:
-                    this.get_next_item().entry_point = EntryPoints.NAV_BUTTON_CLICKED;
                     this.go_forward();
                     break;
                 case Actions.ITEM_CLICKED:
@@ -120,6 +118,15 @@ var HistoryStore = new Lang.Class({
             win.insert_action_group('store', this));
     },
 
+    _start_content_access_metric: function(model, entry_point) {
+        let old_item = this._direction === Direction.FORWARDS ?
+            this.get_previous_item() : this.get_next_item();
+        if (old_item && old_item.model && old_item.model.ekn_id === model.ekn_id)
+            return;
+
+        Utils.start_content_access_metric(model, entry_point);
+    },
+
     // Default signal handler
     on_changed: function () {
         let old_item = this._direction === Direction.FORWARDS ?
@@ -129,21 +136,7 @@ var HistoryStore = new Lang.Class({
         if (!(item.model instanceof Eknc.MediaObjectModel) &&
             old_item && old_item.model && old_item.page_type === Pages.ARTICLE &&
             (!item.model || old_item.model.ekn_id !== item.model.ekn_id))
-            Utils.record_content_access_metric(false,
-                                               '',
-                                               old_item.model.ekn_id,
-                                               old_item.model.title ? old_item.model.title : '',
-                                               old_item.model.content_type ? old_item.model.content_type : '');
-
-        if (item.model && item.model instanceof Eknc.ArticleObjectModel &&
-            (!old_item || !old_item.model ||
-             old_item.model.ekn_id !== item.model.ekn_id)) {
-            Utils.record_content_access_metric(true,
-                                               item.entry_point ? item.entry_point : '',
-                                               item.model.ekn_id,
-                                               item.model.title ? item.model.title : '',
-                                               item.model.content_type ? item.model.content_type : '');
-        }
+            Utils.stop_content_access_metric(old_item.model);
 
         this.change_action_state('article-search-visible',
             new GLib.Variant('b', false));
@@ -255,6 +248,11 @@ var HistoryStore = new Lang.Class({
             return;
         this._direction = Direction.BACKWARDS;
         this._update_index(-1);
+
+        let item = this.get_current_item();
+        if (item && item.model)
+            this._start_content_access_metric(item.model,
+                EntryPoints.NAV_BUTTON_CLICKED);
     },
 
     go_forward: function () {
@@ -262,18 +260,26 @@ var HistoryStore = new Lang.Class({
             return;
         this._direction = Direction.FORWARDS;
         this._update_index(1);
+
+        let item = this.get_current_item();
+        if (item && item.model)
+            this._start_content_access_metric(item.model,
+                EntryPoints.NAV_BUTTON_CLICKED);
     },
 
-    set_current_item: function (item) {
+    set_current_item: function (item, entry_point) {
         if (!this.get_current_item() || !this.get_current_item().equals(item)) {
             this._items = this._items.slice(0, this._index + 1);
             this._items.push(item);
-            this.go_forward();
+            this._direction = Direction.FORWARDS;
+            this._update_index(1);
         }
+        if (entry_point && item && item.model)
+            this._start_content_access_metric(item.model, entry_point);
     },
 
-    set_current_item_from_props: function (props) {
-        this.set_current_item(new HistoryItem.HistoryItem(props));
+    set_current_item_from_props: function (props, entry_point) {
+        this.set_current_item(new HistoryItem.HistoryItem(props), entry_point);
     },
 
     do_search: function (query, timestamp) {
@@ -298,13 +304,11 @@ var HistoryStore = new Lang.Class({
         .then((model) => {
             if (model instanceof Eknc.ArticleObjectModel) {
                 this.set_current_item_from_props({
-                    entry_point: EntryPoints.ARTICLE_LINK_CLICKED,
                     page_type: Pages.ARTICLE,
                     model: model,
-                });
+                }, EntryPoints.ARTICLE_LINK_CLICKED);
             } else if (model instanceof Eknc.SetObjectModel) {
                 this.set_current_item_from_props({
-                    entry_point: EntryPoints.ARTICLE_LINK_CLICKED,
                     page_type: Pages.SET,
                     model: model,
                     context_label: model.title,
@@ -312,12 +316,11 @@ var HistoryStore = new Lang.Class({
             } else if (model instanceof Eknc.MediaObjectModel) {
                 let old_item = this.get_current_item();
                 this.set_current_item_from_props({
-                    entry_point: EntryPoints.ARTICLE_LINK_CLICKED,
                     page_type: old_item.page_type,
                     model: old_item.model,
                     context: old_item.model ? old_item.model.resources : [],
                     media_model: model,
-                });
+                }, EntryPoints.ARTICLE_LINK_CLICKED);
             }
         })
         .catch(function (error) {
@@ -330,15 +333,13 @@ var HistoryStore = new Lang.Class({
         .then((model) => {
             if (model instanceof Eknc.ArticleObjectModel) {
                 this.set_current_item_from_props({
-                    entry_point: EntryPoints.DBUS_CALL,
                     page_type: Pages.ARTICLE,
                     model: model,
                     query: query,
                     timestamp: timestamp || Gdk.CURRENT_TIME,
-                });
+                }, EntryPoints.DBUS_CALL);
             } else if (model instanceof Eknc.SetObjectModel) {
                 this.set_current_item_from_props({
-                    entry_point: EntryPoints.DBUS_CALL,
                     page_type: Pages.SET,
                     model: model,
                     context_label: model.title,
