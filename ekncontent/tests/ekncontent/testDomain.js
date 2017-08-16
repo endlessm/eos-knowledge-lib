@@ -70,14 +70,26 @@ describe('Domain', function () {
             });
         });
 
-        it('returns an object model for an ID in our database', function (done) {
-            domain.get_object("ekn:///02463d24cb5690af2c8e898736ea8c80e0e77077", null, function (domain, result) {
+        it('returns an object model for an ID in a second subscription', function (done) {
+            domain.get_object("ekn:///97f20ebedb1aaff93eb4043f0b181aa6ecd939f7", null, function (domain, result) {
                 let model = domain.get_object_finish(result);
                 expect(model).not.toBe(null);
                 expect(model).toBeA(Eknc.ArticleObjectModel);
                 done();
             });
         });
+    });
 
+    fdescribe('get_subscription_ids', function () {
+        beforeEach(function () {
+            domain.init(null);
+        });
+
+        it('returns an array of subscription IDs', function () {
+            let ids = domain.get_subscription_ids();
+            expect(ids.length).toBe(2);
+            expect(ids).toContain('1aa1fe392aa50a771ca5f8a6452a758896a21f7644225f4d1ddbefec77053c9b');
+            expect(ids).toContain('9db1104bdc122815029851172c7d2c5138130a6fb77af6dd2726686068a70541');
+        });
     });
 });

@@ -163,10 +163,48 @@ var Application = new Knowledge.Class({
             this._knowledge_search_impl.unexport_from_connection(connection);
     },
 
+    _remove_legacy_symlinks_from_path: function (path, id) {
+        let subscription_dir = GLib.build_filenamev([path, id]);
+        let subscription = Gio.File.new_for_path(subscription_dir);
+        return PromiseWrapper.wrapPromise(subscription, null,
+            'enumerate_children_async', 'standard::*',
+            Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, GLib.PRIORITY_LOW)
+        .then(enumerator => PromiseWrapper.wrapPromise(enumerator, null,
+            'next_files_async', GLib.MAXINT16, GLib.PRIORITY_LOW))
+        .then(infos =>
+            Promise.all(infos.map(info =>
+                PromiseWrapper.wrapPromise(subscription.get_child(info.get_name()),
+                    null, 'delete_async', GLib.PRIORITY_LOW))))
+        .then(() => PromiseWrapper.wrapPromise(subscription, null,
+            'delete_async', GLib.PRIORITY_LOW))
+        .catch(err => {
+            if (err.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
+                return;
+            logError(err, 'Warning: failed to delete legacy symlinks');
+        });
+    },
+
+    _remove_legacy_symlinks: function (ids) {
+        let home_path = GLib.build_filenamev([GLib.get_home_dir(), '.local',
+            'share', 'com.endlessm.subscriptions']);
+        let xdg_path = GLib.build_filenamev([GLib.get_user_data_dir(),
+            'com.endlessm.subscriptions']);
+        ids.forEach(id => {
+            this._remove_legacy_symlinks_from_path(home_path, id)
+            .then(() => this._remove_legacy_symlinks_from_path(xdg_path, id));
+        });
+    },
+
     _initialize_vfs: function () {
         let engine = Eknc.Engine.get_default();
-        let shards = engine.get_domain().get_shards();
+        let domain = engine.get_domain();
+        let shards = domain.get_shards();
         Eknc.default_vfs_set_shards(shards);
+
+        GLib.idle_add(GLib.PRIORITY_LOW, () => {
+            this._remove_legacy_symlinks(domain.get_subscription_ids());
+            return GLib.SOURCE_REMOVE;
+        });
     },
 
     vfunc_startup: function () {

@@ -28,6 +28,7 @@ EKNC_TYPE_ENGINE
 <FILE>domain</FILE>
 eknc_domain_get_shards
 eknc_domain_get_subscription_id
+eknc_domain_get_subscription_ids
 eknc_domain_test_link
 eknc_domain_get_object
 eknc_domain_get_object_finish
@@ -177,8 +178,6 @@ eknc_default_vfs_set_shards
 eknc_get_current_language
 eknc_get_data_dir
 eknc_get_ekn_version
-eknc_get_running_under_flatpak
-eknc_get_subscriptions_dir
 eknc_get_subscriptions_json
 EkncContentObjectError
 <SUBSECTION Standard>

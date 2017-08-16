@@ -1,0 +1,15 @@
+{
+  "version": "1",
+  "subscription_id": "9db1104bdc122815029851172c7d2c5138130a6fb77af6dd2726686068a70541",
+  "xapian_databases": [
+    {
+      "path": "output.shard",
+      "offset": 480
+    }
+  ],
+  "shards": [
+    {
+      "path": "output.shard"
+    }
+  ]
+}

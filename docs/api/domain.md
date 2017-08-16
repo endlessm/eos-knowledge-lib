@@ -97,22 +97,10 @@ The file simply contains a list of subscriptions, like:
 }
 ```
 
-While the `subscriptions.json` file gives the appearance that an
-application can support more than one subscription, currently, eos-knowledge-lib only supports one subscription.
-
-The shards are downloaded and stored in the user's home directory, in
-the directory `~/.local/share/com.endlessm.subscriptions/`. Each
-subscription ID is given its own directory for the manifest and shards.
-
-While subscriptions can be downloaded from Endless's servers at any
-given time, each bundle can also come preloaded with a set of
+Each bundle comes preloaded with a set of
 subscriptions, packed into the bundle at e.g.
 `/share/ekn/data/com.endlessm.prensa_libre.es_GT/com.endlessm.subscriptions`.
-On first start of the application, if missing, the manifest and shards
-will be symlinked into the user's home directory.
-
-At runtime, the user's computer checks for updates to each subscription
-and downloads new shards in the background.
+This set of subscriptions is often the only thing that changes in an application update.
 
 To help inspect applications and subscriptions, eos-knowledge-lib ships
 with a tool called `eminem`. Please run `eminem` for more details on
