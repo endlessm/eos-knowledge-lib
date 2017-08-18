@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["card/knowledgeDocument.html#cardknowledgedocument1"], "token": "surrounds"});
+urls_downloaded_cb({"token": "surrounds", "urls": ["view/document.html#viewdocument1"]});

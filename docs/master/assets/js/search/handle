@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["mf-index.html#page-description", "card/knowledgeDocument.html#cardknowledgedocument1"], "token": "handle"});
+urls_downloaded_cb({"token": "handle", "urls": ["mf-index.html#page-description", "view/document.html#viewdocument1"]});
