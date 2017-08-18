@@ -109,7 +109,7 @@ var Constrained = new Module.Class({
             0, 0,
             widgets,
             {});
-        constraints.forEach(this.add_constraint, this);
+        constraints.forEach(c => this.add_constraint(c));
     },
 
     // XXX workaround for minimum size issues in Emeus
