@@ -52,15 +52,11 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/app.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/dynamic.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/search.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/audio.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/deck.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/default.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/knowledgeDocument.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/list.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/media.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/sequence.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/title.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/card/video.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/contentGroup/noResultsMessage.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/contentGroup/contentGroup.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/hamburgerBasement.ui</file>
@@ -68,6 +64,10 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/sideMenu.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/topMenu.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/tooltips.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/view/audio.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/view/document.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/view/media.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/view/video.ui</file>
     <file>js/app/actions.js</file>
     <file>js/app/application.js</file>
     <file>js/app/articleHTMLRenderer.js</file>
@@ -86,6 +86,7 @@
     <file>js/app/interfaces/module.js</file>
     <file>js/app/interfaces/navigationCard.js</file>
     <file>js/app/interfaces/order.js</file>
+    <file>js/app/interfaces/view.js</file>
     <file>js/app/introspect.js</file>
     <file>js/app/knowledge.js</file>
     <file>js/app/libs/mustache.js</file>
@@ -112,16 +113,12 @@
     <file>js/app/modules/banner/dynamic.js</file>
     <file>js/app/modules/banner/search.js</file>
     <file>js/app/modules/banner/set.js</file>
-    <file>js/app/modules/card/audio.js</file>
     <file>js/app/modules/card/contentGroup.js</file>
     <file>js/app/modules/card/deck.js</file>
     <file>js/app/modules/card/default.js</file>
-    <file>js/app/modules/card/knowledgeDocument.js</file>
     <file>js/app/modules/card/list.js</file>
-    <file>js/app/modules/card/media.js</file>
     <file>js/app/modules/card/sequence.js</file>
     <file>js/app/modules/card/title.js</file>
-    <file>js/app/modules/card/video.js</file>
     <file>js/app/modules/contentGroup/contentGroup.js</file>
     <file>js/app/modules/contentGroup/dynamicTitle.js</file>
     <file>js/app/modules/contentGroup/mediaLightbox.js</file>
@@ -173,6 +170,10 @@
     <file>js/app/modules/selection/suggested.js</file>
     <file>js/app/modules/selection/supplementary.js</file>
     <file>js/app/modules/selection/xapian.js</file>
+    <file>js/app/modules/view/audio.js</file>
+    <file>js/app/modules/view/document.js</file>
+    <file>js/app/modules/view/media.js</file>
+    <file>js/app/modules/view/video.js</file>
     <file>js/app/modules/window/simple.js</file>
     <file>js/app/moltresEngine.js</file>
     <file>js/app/pages.js</file>

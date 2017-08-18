@@ -15,6 +15,7 @@ const Card = imports.app.interfaces.card;
 const Knowledge = imports.app.knowledge;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
+const {View} = imports.app.interfaces.view;
 
 const CardType = {
     LOW_RES_IMAGE: 0,
@@ -53,7 +54,7 @@ const CARD_POLAROID_VERTICAL_HEIGHTS = {
 var Default = new Module.Class({
     Name: 'Card.Default',
     Extends: Gtk.Button,
-    Implements: [Card.Card],
+    Implements: [View, Card.Card],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/default.ui',
     InternalChildren: [ 'layout', 'inner-content-grid', 'thumbnail-frame',

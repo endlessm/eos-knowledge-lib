@@ -27,7 +27,7 @@ var Warehouse = new Knowledge.Class({
                 let file_name = module_path.charAt(0).toLowerCase() + module_path.slice(1);
                 // If it's the last member of the path, then we need to add the module name to
                 // reference the actual class we want to retrieve.
-                // e.g. Card.Media --> card.media.Media
+                // e.g. View.Media --> view.media.Media
                 if (idx === arr.length - 1) {
                     return current_dir[file_name][module_path];
                 }

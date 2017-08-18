@@ -1,4 +1,4 @@
-.CardMedia {
+.ViewMedia {
     background-color: white;
 
     &__caption {
@@ -26,8 +26,8 @@
 
 // When both the caption & attribution are present in the lightbox,
 // edit padding to accommodate both
-.CardMedia--withCaption.CardMedia--withAttribution {
-    .CardMedia {
+.ViewMedia--withCaption.ViewMedia--withAttribution {
+    .ViewMedia {
         &__caption {
             padding-bottom: 7px;
         }
@@ -39,7 +39,7 @@
 }
 
 .composite {
-    .CardMedia {
+    .ViewMedia {
         &__caption {
             font-size: 20px;
         }

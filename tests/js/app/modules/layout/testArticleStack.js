@@ -20,7 +20,7 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 Gtk.init(null);
 
 describe('Layout.ArticleStack', function () {
-    let module, card, selection, root, factory, dispatcher, article_model;
+    let module, view, selection, root, factory, dispatcher, article_model;
     let store;
 
     beforeEach(function () {
@@ -40,7 +40,7 @@ describe('Layout.ArticleStack', function () {
                         'selection': 'selection',
                     },
                     slots: {
-                        'card': { type: Minimal.MinimalDocumentCard },
+                        'article': { type: Minimal.MinimalView },
                     },
                 },
                 {
@@ -72,11 +72,11 @@ describe('Layout.ArticleStack', function () {
         });
 
         selection = factory.get_last_created('contents.selection');
-        card = factory.get_last_created('contents.card.0');
+        view = factory.get_last_created('contents.article.0');
     });
 
     it('transitions in new content when state changes to article page', function () {
-        expect(module).toHaveDescendant(card);
+        expect(module).toHaveDescendant(view);
     });
 
     it('shows the article without animation when first loading the article page', function () {
@@ -85,7 +85,7 @@ describe('Layout.ArticleStack', function () {
 
     it('dispatches article link clicked', function () {
         let id = 'ekn://foo/bar';
-        card.emit('ekn-link-clicked', id);
+        view.emit('ekn-link-clicked', id);
         let payload = dispatcher.last_payload_with_type(Actions.ARTICLE_LINK_CLICKED);
         expect(payload.ekn_id).toBe(id);
     });
@@ -96,16 +96,16 @@ describe('Layout.ArticleStack', function () {
         selection.get_models.and.returnValue([different_article_model]);
         selection.emit('models-changed');
         Utils.update_gui();
-        let new_card = factory.get_created('contents.card.1')[0];
-        expect(new_card).toBeDefined();
-        expect(module).toHaveDescendant(new_card);
+        let new_view = factory.get_created('contents.article.1')[0];
+        expect(new_view).toBeDefined();
+        expect(module).toHaveDescendant(new_view);
     });
 
     it('still works without a selection reference', function () {
         [module, factory] = new MockFactory.setup_tree({
             type: ArticleStack.ArticleStack,
             slots: {
-                'card': { type: Minimal.MinimalDocumentCard },
+                'article': { type: Minimal.MinimalView },
             },
         });
         expect(module).toBeDefined();

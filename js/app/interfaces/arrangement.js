@@ -127,7 +127,7 @@ var Arrangement = new Lang.Interface({
         card.make_ready();
 
         // It's either this or have Card require Gtk.Button, but that would be
-        // very bad for DocumentCards.
+        // very bad for Card.ContentGroup.
         if (GObject.signal_lookup('clicked', card.constructor.$gtype) !== 0) {
             card.connect('clicked', card => {
                 this.emit('card-clicked', card.model);

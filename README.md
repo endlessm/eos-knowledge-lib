@@ -95,7 +95,7 @@ See `js/app/modules/` for the code.
 - **Arrangement** - These modules generally have a `card` slot which a **Card** can go into.
   They arrange a set of dynamically created cards on the screen.
 - **Banner** - These modules represent a piece of data which is presented to the user, such as an app's logo or a search term.
-- **Card** - These modules represent a document in the database of offline content.
+- **Card** - These modules represent a document in the database of offline content, but are not a full **View** of the document.
   They display its metadata (title, keywords) in various ways.
 - **ContentGroup** - This is the heart of displaying offline content.
   Content groups have `selection` and `arrangement` slots.
@@ -111,6 +111,7 @@ See `js/app/modules/` for the code.
   Pager modules contain submodules and display them one at a time, with optional animations between them.
 - **Selection** - These modules retrieve content records from the offline content database.
   A **Selection** serves records through a **ContentGroup** to an **Arrangement**, which turns the records into **Card**s.
+- **View** - These modules display the actual content.
 - **Window** - These modules are the toplevel windows which contain other modules.
 
 Here's a diagram of what contains what, roughly:
@@ -123,6 +124,7 @@ Controller
         Decoration
         Navigation
         (more) Layout
+        View
         ContentGroup
           Arrangement
             Card

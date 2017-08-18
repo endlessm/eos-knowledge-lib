@@ -8,8 +8,8 @@ const WebKit2 = imports.gi.WebKit2;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
+const {Document} = imports.app.modules.view.document;
 const Knowledge = imports.app.knowledge;
-const KnowledgeDocument = imports.app.modules.card.knowledgeDocument;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Minimal = imports.tests.minimal;
@@ -40,8 +40,8 @@ const MockEknWebviewDecision = new Knowledge.Class({
     },
 });
 
-describe('Card.KnowledgeDocument', function () {
-    let card, model, real_session_descriptor, toc;
+describe('View.Document', function () {
+    let view, model, real_session_descriptor, toc;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
@@ -68,7 +68,7 @@ describe('Card.KnowledgeDocument', function () {
             title: '!!!',
             table_of_contents: toc,
         });
-        card = new KnowledgeDocument.KnowledgeDocument({
+        view = new Document({
             model: model,
             show_toc: true,
         });
@@ -79,24 +79,24 @@ describe('Card.KnowledgeDocument', function () {
     });
 
     it('instantiates a table of contents widget', function () {
-        expect(card.toc).toBeA(TableOfContents.TableOfContents);
+        expect(view.toc).toBeA(TableOfContents.TableOfContents);
     });
 
     it('has labels that understand Pango markup', function () {
-        expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
+        expect(Gtk.test_find_label(view, '*!!!*').use_markup).toBeTruthy();
         // FIXME: the above line will find either title_label or top_title_label
         // but not both
     });
 
-    describe('Style class of document card', function () {
+    describe('Style class of document view', function () {
         it('has a descendant with title class', function () {
-            expect(card).toHaveDescendantWithCssClass('CardKnowledgeDocument__title');
+            expect(view).toHaveDescendantWithCssClass('ViewDocument__title');
         });
         it('has a descendant with toolbar frame class', function () {
-            expect(card).toHaveDescendantWithCssClass('CardKnowledgeDocument__toolbarFrame');
+            expect(view).toHaveDescendantWithCssClass('ViewDocument__toolbarFrame');
         });
         it('has an expanded table of contents by default', function () {
-            expect(card.toc).not.toHaveCssClass('CardKnowledgeDocument__toolbarFrame--collapsed');
+            expect(view.toc).not.toHaveCssClass('ViewDocument__toolbarFrame--collapsed');
         });
     });
 
@@ -114,16 +114,16 @@ describe('Card.KnowledgeDocument', function () {
                 return file.read(null);
             };
 
-            card = new KnowledgeDocument.KnowledgeDocument({
+            view = new Document({
                 model: pdf_model,
             });
-            card.load_content_promise().then(done);
+            view.load_content_promise().then(done);
         });
 
         it('can be loaded', function () {});
 
         it('never show a table of contents', function () {
-            expect(card.toc.visible).toBe(false);
+            expect(view.toc.visible).toBe(false);
         });
     });
 
@@ -136,13 +136,13 @@ describe('Card.KnowledgeDocument', function () {
                 title: 'Html title',
                 table_of_contents: toc,
             });
-            card = new KnowledgeDocument.KnowledgeDocument({
+            view = new Document({
                 model: html_model,
                 show_toc: true,
             });
-            spyOn(card, '_create_webview').and.returnValue(new MockWidgets.MockEknWebview());
-            card.load_content_promise().then(done);
-            card.content_view.emit('load-changed', WebKit2.LoadEvent.COMMITTED);
+            spyOn(view, '_create_webview').and.returnValue(new MockWidgets.MockEknWebview());
+            view.load_content_promise().then(done);
+            view.content_view.emit('load-changed', WebKit2.LoadEvent.COMMITTED);
         });
 
         it('can be loaded', function () {});
@@ -152,7 +152,7 @@ describe('Card.KnowledgeDocument', function () {
             const TOP_BOTTOM_BAR_HEIGHT = 36 + 30;
             beforeEach(function () {
                 win = new Gtk.OffscreenWindow();
-                win.add(card);
+                win.add(view);
             });
 
             it('section list is populated', function () {
@@ -168,14 +168,14 @@ describe('Card.KnowledgeDocument', function () {
                 win.set_size_request(800, 600 - TOP_BOTTOM_BAR_HEIGHT);
                 win.show_all();
                 Utils.update_gui();
-                expect(card.toc.collapsed).toBe(true);
+                expect(view.toc.collapsed).toBe(true);
             });
 
             it('does not collapse toc at XGA', function () {
                 win.set_size_request(1024, 768 - TOP_BOTTOM_BAR_HEIGHT);
                 win.show_all();
                 Utils.update_gui();
-                expect(card.toc.collapsed).toBe(false);
+                expect(view.toc.collapsed).toBe(false);
             });
 
             it('collapses in composite mode', function () {
@@ -183,36 +183,36 @@ describe('Card.KnowledgeDocument', function () {
                 win.set_size_request(1600, 1200 - TOP_BOTTOM_BAR_HEIGHT);
                 win.show_all();
                 Utils.update_gui();
-                expect(card.toc.collapsed).toBe(true);
+                expect(view.toc.collapsed).toBe(true);
             });
 
             it('scrolls to the right section', function () {
                 let decision = new MockEknWebviewDecision({ uri: 'ekn:///foo/bar/#Baz'});
-                expect(card.toc.target_section).toBe(0);
-                card.content_view.emit('decide-policy', decision, WebKit2.PolicyDecisionType.NAVIGATION_ACTION);
+                expect(view.toc.target_section).toBe(0);
+                view.content_view.emit('decide-policy', decision, WebKit2.PolicyDecisionType.NAVIGATION_ACTION);
                 Utils.update_gui();
-                expect(card.toc.target_section).toBe(2);
+                expect(view.toc.target_section).toBe(2);
             });
         });
 
         it('adds custom CSS if requested', function (done) {
-            card = new KnowledgeDocument.KnowledgeDocument({
+            view = new Document({
                 model: html_model,
                 custom_css: 'some_custom.css',
             });
-            spyOn(card, '_create_webview').and.callFake(() => {
+            spyOn(view, '_create_webview').and.callFake(() => {
                 let webview = new MockWidgets.MockEknWebview();
                 spyOn(webview.renderer, 'set_custom_css_files');
                 return webview;
             });
-            card.load_content_promise()
+            view.load_content_promise()
             .then(() => {
-                expect(card.content_view.renderer.set_custom_css_files)
+                expect(view.content_view.renderer.set_custom_css_files)
                     .toHaveBeenCalledWith(jasmine.arrayContaining(['some_custom.css']));
                 done();
             });
-            card.content_view.emit('load-changed', WebKit2.LoadEvent.COMMITTED);
-            card.content_view.emit('load-changed', WebKit2.LoadEvent.FINISHED);
+            view.content_view.emit('load-changed', WebKit2.LoadEvent.COMMITTED);
+            view.content_view.emit('load-changed', WebKit2.LoadEvent.FINISHED);
         });
     });
 });

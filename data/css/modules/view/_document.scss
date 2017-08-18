@@ -3,7 +3,7 @@ $toc-selected-color: transparentize(white, 1 - 0.10);
 /* This aligns the document title to the TOC entryTitle */
 $toc-align-padding: 15px;
 
-.CardKnowledgeDocument {
+.ViewDocument {
     &__contentFrame {
         padding: 0;
         margin: 0;
@@ -175,7 +175,7 @@ $toc-align-padding: 15px;
         }
     }
 
-    .CardKnowledgeDocument {
+    .ViewDocument {
         &__title {
             font-size: 30px;
             padding: 1.0em 0.5em 0.5em 0.5em;

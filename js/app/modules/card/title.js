@@ -11,6 +11,7 @@ const NavigationCard = imports.app.interfaces.navigationCard;
 // Make sure included for glade template
 const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
+const {View} = imports.app.interfaces.view;
 
 /**
  * Class: Title
@@ -28,7 +29,7 @@ const Utils = imports.app.utils;
 var Title = new Module.Class({
     Name: 'Card.Title',
     Extends: Gtk.Button,
-    Implements: [Card.Card, NavigationCard.NavigationCard],
+    Implements: [View, Card.Card, NavigationCard.NavigationCard],
 
     Properties: {
         /**

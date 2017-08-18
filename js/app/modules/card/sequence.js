@@ -6,6 +6,7 @@ const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
 const NavigationCard = imports.app.interfaces.navigationCard;
 const Utils = imports.app.utils;
+const {View} = imports.app.interfaces.view;
 
 /**
  * Class: Sequence
@@ -23,7 +24,7 @@ const Utils = imports.app.utils;
 var Sequence = new Module.Class({
     Name: 'Card.Sequence',
     Extends: Gtk.Button,
-    Implements: [Card.Card, NavigationCard.NavigationCard],
+    Implements: [View, Card.Card, NavigationCard.NavigationCard],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/card/sequence.ui',
     InternalChildren: [ 'title-label', 'next-label', 'previous-label' ],

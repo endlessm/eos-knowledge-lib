@@ -76,23 +76,16 @@ scss_theme_banner_partials = \
 	$(srcdir)/data/css/modules/banner/_set.scss \
 	$(NULL)
 scss_theme_card_partials = \
-	$(srcdir)/data/css/modules/card/_audio.scss \
 	$(srcdir)/data/css/modules/card/_base.scss \
 	$(srcdir)/data/css/modules/card/_deck.scss \
 	$(srcdir)/data/css/modules/card/_default.scss \
-	$(srcdir)/data/css/modules/card/_knowledgeDocument.scss \
 	$(srcdir)/data/css/modules/card/_list.scss \
-	$(srcdir)/data/css/modules/card/_media.scss \
 	$(srcdir)/data/css/modules/card/_sequence.scss \
-	$(srcdir)/data/css/modules/card/_video.scss \
 	$(NULL)
 scss_theme_content_partials = \
 	$(srcdir)/data/css/modules/contentGroup/_contentGroup.scss \
 	$(srcdir)/data/css/modules/contentGroup/_mediaLightbox.scss \
 	$(srcdir)/data/css/modules/contentGroup/_noResultsMessage.scss \
-	$(NULL)
-scss_theme_document_partials = \
-	$(srcdir)/data/css/modules/documentCard/_base.scss \
 	$(NULL)
 scss_theme_layout_partials = \
 	$(srcdir)/data/css/modules/layout/_dynamicBackground.scss \
@@ -114,6 +107,13 @@ scss_theme_pager_partials = \
 	$(srcdir)/data/css/modules/pager/_parallaxBackground.scss \
 	$(srcdir)/data/css/modules/pager/_simple.scss \
 	$(NULL)
+scss_theme_view_partials = \
+	$(srcdir)/data/css/modules/view/_audio.scss \
+	$(srcdir)/data/css/modules/view/_base.scss \
+	$(srcdir)/data/css/modules/view/_document.scss \
+	$(srcdir)/data/css/modules/view/_media.scss \
+	$(srcdir)/data/css/modules/view/_video.scss \
+	$(NULL)
 scss_theme_window_partials = \
 	$(srcdir)/data/css/modules/window/_simple.scss \
 	$(NULL)
@@ -128,10 +128,10 @@ scss_theme_partials = \
 	$(scss_theme_banner_partials) \
 	$(scss_theme_card_partials) \
 	$(scss_theme_content_partials) \
-	$(scss_theme_document_partials) \
 	$(scss_theme_layout_partials) \
 	$(scss_theme_navigation_partials) \
 	$(scss_theme_pager_partials) \
+	$(scss_theme_view_partials) \
 	$(scss_theme_window_partials) \
 	$(scss_theme_widgets_partials) \
 	$(NULL)
@@ -389,9 +389,6 @@ dist_themecard_DATA = $(scss_theme_card_partials)
 themecontentdir = $(thememodulesdir)/contentGroup
 dist_themecontent_DATA = $(scss_theme_content_partials)
 
-themedocumentdir = $(thememodulesdir)/documentCard
-dist_themedocument_DATA = $(scss_theme_document_partials)
-
 themelayoutdir = $(thememodulesdir)/layout
 dist_themelayout_DATA = $(scss_theme_layout_partials)
 
@@ -400,6 +397,9 @@ dist_themenavigation_DATA = $(scss_theme_navigation_partials)
 
 themepagerdir = $(thememodulesdir)/pager
 dist_themepager_DATA = $(scss_theme_pager_partials)
+
+themeviewdir = $(thememodulesdir)/view
+dist_themeview_DATA = $(scss_theme_view_partials)
 
 themewindowdir = $(thememodulesdir)/window
 dist_themewindow_DATA = $(scss_theme_window_partials)
@@ -453,15 +453,11 @@ javascript_tests = \
 	tests/js/app/modules/banner/testDynamic.js \
 	tests/js/app/modules/banner/testSearch.js \
 	tests/js/app/modules/banner/testSet.js \
-	tests/js/app/modules/card/testAudio.js \
 	tests/js/app/modules/card/testDeck.js \
 	tests/js/app/modules/card/testDefault.js \
-	tests/js/app/modules/card/testKnowledgeDocument.js \
 	tests/js/app/modules/card/testList.js \
-	tests/js/app/modules/card/testMedia.js \
 	tests/js/app/modules/card/testSequence.js \
 	tests/js/app/modules/card/testTitle.js \
-	tests/js/app/modules/card/testVideo.js \
 	tests/js/app/modules/contentGroup/testContentGroup.js \
 	tests/js/app/modules/contentGroup/testMediaLightbox.js \
 	tests/js/app/modules/controller/testBuffet.js \
@@ -505,6 +501,10 @@ javascript_tests = \
 	tests/js/app/modules/selection/testSuggested.js \
 	tests/js/app/modules/selection/testSupplementary.js \
 	tests/js/app/modules/selection/testXapian.js \
+	tests/js/app/modules/view/testAudio.js \
+	tests/js/app/modules/view/testDocument.js \
+	tests/js/app/modules/view/testMedia.js \
+	tests/js/app/modules/view/testVideo.js \
 	tests/js/app/modules/window/testSimple.js \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testBuffetHistoryStore.js \

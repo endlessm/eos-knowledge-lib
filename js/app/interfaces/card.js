@@ -21,6 +21,7 @@ const Module = imports.app.interfaces.module;
 const SetMap = imports.app.setMap;
 const SpaceContainer = imports.app.widgets.spaceContainer;
 const Utils = imports.app.utils;
+const {View} = imports.app.interfaces.view;
 
 String.prototype.format = Format.format;
 let ngettext = Gettext.dngettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -122,7 +123,7 @@ var MaxSize = {
  * Interface for card modules
  *
  * Requires:
- *   Gtk.Widget
+ *   Gtk.Widget, View
  *
  * CSS classes:
  *   Card--pdf, <class>--pdf - Added when the card is displaying a PDF record
@@ -130,27 +131,9 @@ var MaxSize = {
 var Card = new Lang.Interface({
     Name: 'Card',
     GTypeName: 'EknCard',
-    Requires: [ Gtk.Widget, Module.Module ],
+    Requires: [Gtk.Widget, Module.Module, View],
 
     Properties: {
-        /**
-         * Property: model
-         * Record backing this card
-         *
-         * Every card is backed by a record in the database.
-         * A card's record is represented by a <ContentObjectModel> or one of
-         * its subclasses.
-         *
-         * Type:
-         *   <ContentObjectModel>
-         *
-         * Flags:
-         *   Construct only
-         */
-        'model': GObject.ParamSpec.object('model', 'Model',
-            'Card model with which to create this card',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            Eknc.ContentObjectModel),
         /**
          * Property: highlight-string
          * A substring within a card's title or synopsis to get highlighted
@@ -259,16 +242,6 @@ var Card = new Lang.Interface({
     // Overridable in tests; otherwise keep synchronized with the CSS
     FADE_IN_TIME_MS: 1000,
     NUM_STYLE_VARIANTS: 3,
-
-    /**
-     * Method: set_label_or_hide
-     *
-     * Sets a label contents and hides if contents is empty.
-     */
-    set_label_or_hide: function (label, text) {
-        label.label = GLib.markup_escape_text(text, -1);
-        label.visible = !!text;
-    },
 
     set_duration_label: function (label, duration) {
         if (typeof duration !== 'undefined') {
@@ -485,18 +458,6 @@ var Card = new Lang.Interface({
         let span = Utils.style_context_to_markup_span(label.get_style_context(), Gtk.StateFlags.NORMAL);
         context.restore();
         label.label = title.replace(regex, span + '$1</span>');
-    },
-
-    /**
-     * Method: set_title_label_from_model
-     *
-     * Sets up a label to show the model's title.
-     */
-    set_title_label_from_model: function (label) {
-        this.set_label_or_hide(label, this.model.title);
-        let context = label.get_style_context();
-        context.add_class(Utils.get_element_style_class('Card', 'title'));
-        context.add_class(Utils.get_element_style_class(this.constructor, 'title'));
     },
 
     /**

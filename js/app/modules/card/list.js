@@ -10,6 +10,7 @@ const Module = imports.app.interfaces.module;
 const ReadingHistoryModel = imports.app.readingHistoryModel;
 const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
+const {View} = imports.app.interfaces.view;
 
 /**
  * Class: List
@@ -19,7 +20,7 @@ const Utils = imports.app.utils;
 var List = new Module.Class({
     Name: 'Card.List',
     Extends: Gtk.Button,
-    Implements: [Card.Card, NavigationCard.NavigationCard],
+    Implements: [View, Card.Card, NavigationCard.NavigationCard],
 
     Properties: {
         /**

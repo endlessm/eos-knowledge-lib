@@ -17,21 +17,15 @@
 @import 'modules/banner/search';
 @import 'modules/banner/set';
 
-@import 'modules/card/audio';
 @import 'modules/card/base';
 @import 'modules/card/deck';
 @import 'modules/card/default';
-@import 'modules/card/knowledgeDocument';
 @import 'modules/card/list';
-@import 'modules/card/media';
 @import 'modules/card/sequence';
-@import 'modules/card/video';
 
 @import 'modules/contentGroup/contentGroup';
 @import 'modules/contentGroup/mediaLightbox';
 @import 'modules/contentGroup/noResultsMessage';
-
-@import 'modules/documentCard/base';
 
 @import 'modules/layout/dynamicBackground';
 @import 'modules/layout/hamburgerBasement';
@@ -49,6 +43,12 @@
 
 @import 'modules/pager/parallaxBackground';
 @import 'modules/pager/simple';
+
+@import 'modules/view/audio';
+@import 'modules/view/base';
+@import 'modules/view/document';
+@import 'modules/view/media';
+@import 'modules/view/video';
 
 @import 'modules/window/simple';
 

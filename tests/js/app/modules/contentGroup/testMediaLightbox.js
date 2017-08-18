@@ -27,7 +27,7 @@ describe('ContentGroup.MediaLightbox', function () {
         [module, factory] = MockFactory.setup_tree({
             type: MediaLightbox.MediaLightbox,
             slots: {
-                'card': { type: Minimal.MinimalCard },
+                'view': { type: Minimal.MinimalCard },
                 'content': { type: null },
             },
         });
@@ -61,7 +61,7 @@ describe('ContentGroup.MediaLightbox', function () {
             context: article_model.resources,
             media_model: media_model,
         });
-        expect(factory.get_created('card').length).toBe(1);
+        expect(factory.get_created('view').length).toBe(1);
 
         let nonexistent_media_object = Eknc.MediaObjectModel.new_from_props({
             ekn_id: 'ekn://no/media',
@@ -71,7 +71,7 @@ describe('ContentGroup.MediaLightbox', function () {
             context: article_model.resources,
             media_model: nonexistent_media_object,
         });
-        expect(factory.get_created('card').length).toBe(1);
+        expect(factory.get_created('view').length).toBe(1);
     });
 
     it('closes the lightbox on history item without media model', function () {

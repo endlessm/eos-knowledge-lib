@@ -1,8 +1,8 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 /* exported add_cards, MinimalArrangement, MinimalBinModule, MinimalCard,
-MinimalDocumentCard, MinimalHomePage, MinimalModule, MinimalNavigationCard,
-MinimalOrder, MinimalXapianFilter, MinimalXapianOrder, TitleFilter */
+MinimalHomePage, MinimalModule, MinimalNavigationCard, MinimalOrder,
+MinimalView, MinimalXapianFilter, MinimalXapianOrder, TitleFilter */
 
 const Eknc = imports.gi.EosKnowledgeContent;
 const GLib = imports.gi.GLib;
@@ -17,6 +17,7 @@ const Module = imports.app.interfaces.module;
 const NavigationCard = imports.app.interfaces.navigationCard;
 const Order = imports.app.interfaces.order;
 const Selection = imports.app.modules.selection.selection;
+const {View} = imports.app.interfaces.view;
 
 var MinimalArrangement = new Module.Class({
     Name: 'MinimalArrangement',
@@ -61,7 +62,7 @@ var MinimalArrangement = new Module.Class({
 var MinimalCard = new Module.Class({
     Name: 'MinimalCard',
     Extends: Gtk.Button,
-    Implements: [Card.Card],
+    Implements: [View, Card.Card],
 
     _init: function (props={}) {
         this.parent(props);
@@ -81,7 +82,7 @@ var MinimalCard = new Module.Class({
 var MinimalNavigationCard = new Module.Class({
     Name: 'MinimalNavigationCard',
     Extends: Gtk.Button,
-    Implements: [Card.Card, NavigationCard.NavigationCard],
+    Implements: [View, Card.Card, NavigationCard.NavigationCard],
 });
 
 var MinimalModule = new Module.Class({
@@ -89,10 +90,10 @@ var MinimalModule = new Module.Class({
     Extends: GObject.Object,
 });
 
-var MinimalDocumentCard = new Module.Class({
-    Name: 'MinimalDocumentCard',
+var MinimalView = new Module.Class({
+    Name: 'MinimalView',
     Extends: Gtk.Widget,
-    Implements: [Card.Card, ArticleContent.ArticleContent],
+    Implements: [View, ArticleContent.ArticleContent],
 
     Properties: {
         'info-notice': GObject.ParamSpec.object('info-notice', '', '',

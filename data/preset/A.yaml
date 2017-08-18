@@ -125,9 +125,9 @@ defines:
 - &article-page
   type: Layout.ArticleStack
   slots:
-    card: 'Card.KnowledgeDocument(show-toc: true)'
-    video: 'Card.Video'
-    audio: 'Card.Audio(show-title: false, show-synopsis: false)'
+    article: 'View.Document(show-toc: true)'
+    video: View.Video
+    audio: 'View.Audio(show-title: false, show-synopsis: false)'
 
 root:
   shortdef: 'Controller.Mesh(theme: preset_a)'
@@ -139,7 +139,7 @@ root:
         content:
           type: ContentGroup.MediaLightbox
           slots:
-            card: Card.Media
+            view: View.Media
             content:
               type: Layout.Navigation
               slots:

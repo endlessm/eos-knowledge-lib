@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
-  <template class="EknCard_KnowledgeDocument" parent="EosCustomContainer">
+  <template class="EknView_Document" parent="EosCustomContainer">
     <property name="can_focus">False</property>
     <child>
       <object class="GtkFrame" id="toolbar-frame">
@@ -28,9 +28,8 @@
                 <property name="lines">5</property>
                 <property name="xalign">0</property>
                 <style>
-                  <class name="CardKnowledgeDocument__title"/>
-                  <class name="DocumentCard__title"/>
-                  <class name="Card__title"/>
+                  <class name="ViewDocument__title"/>
+                  <class name="View__title"/>
                 </style>
               </object>
               <packing>
@@ -54,7 +53,7 @@
           </object>
         </child>
         <style>
-          <class name="CardKnowledgeDocument__toolbarFrame"/>
+          <class name="ViewDocument__toolbarFrame"/>
         </style>
       </object>
     </child>
@@ -87,9 +86,8 @@
                     <property name="ellipsize">end</property>
                     <property name="max_width_chars">1</property>
                     <style>
-                      <class name="CardKnowledgeDocument__title"/>
-                      <class name="DocumentCard__title"/>
-                      <class name="Card__title"/>
+                      <class name="ViewDocument__title"/>
+                      <class name="View__title"/>
                       <class name="collapsed"/>
                     </style>
                   </object>
@@ -127,8 +125,8 @@
           </object>
         </child>
         <style>
-          <class name="CardKnowledgeDocument__contentFrame"/>
-          <class name="Card__contentFrame"/>
+          <class name="ViewDocument__contentFrame"/>
+          <class name="View__contentFrame"/>
         </style>
       </object>
     </child>

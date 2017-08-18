@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
-  <template class="EknCard_Media" parent="GtkFrame">
+  <template class="EknView_Media" parent="GtkFrame">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="label_xalign">0</property>
@@ -24,7 +24,7 @@
             <property name="lines">5</property>
             <property name="xalign">0</property>
             <style>
-              <class name="CardMedia__caption"/>
+              <class name="ViewMedia__caption"/>
             </style>
           </object>
           <packing>
@@ -49,7 +49,7 @@
               </object>
             </child>
             <style>
-              <class name="CardMedia__attributionText"/>
+              <class name="ViewMedia__attributionText"/>
             </style>
           </object>
           <packing>
