@@ -20,7 +20,7 @@ defines:
     content:
       type: Navigation.TopMenu
       slots:
-        banner: 'Banner.Dynamic(mode: full, show-subtitle: false)'
+        banner: 'Banner.Dynamic(mode: full, show-subtitle: false, valign: center)'
         menu:
           shortdef: ContentGroup.ContentGroup
           slots:
