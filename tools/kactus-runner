@@ -5,8 +5,8 @@ shift
 
 if [ "$1" = "update" ]; then
     shift
-    flatpak update "com.endlessm.Platform//$BRANCH"
-    flatpak update "com.endlessm.Sdk//$BRANCH"
+    flatpak update "com.endlessm.apps.Platform//$BRANCH"
+    flatpak update "com.endlessm.apps.Sdk//$BRANCH"
     flatpak update "$1"
 fi
 
