@@ -1,7 +1,8 @@
 /* exported dbus_object_path_for_webview, get_css_for_title_and_module,
 get_web_plugin_dbus_name, get_web_plugin_dbus_name_for_webview, intersection,
-record_search_metric, shows_descendant_with_type,
-split_out_conditional_knobs, union, vfunc_draw_background_default */
+record_search_metric, start_content_access_metric, stop_content_access_metric,
+shows_descendant_with_type, split_out_conditional_knobs, union,
+vfunc_draw_background_default */
 
 const MockMetricsModule = {
     EventRecorder: {
@@ -449,6 +450,34 @@ function record_search_metric (query) {
     let recorder = EosMetrics.EventRecorder.get_default();
     recorder.record_event(SEARCH_METRIC_EVENT_ID, new GLib.Variant('(ss)',
         [query, app_id]));
+}
+
+const CONTENT_ACCESS_METRIC_EVENT_ID = 'fae00ef3-aad7-44ca-aff2-16555e45f0d9';
+function start_content_access_metric(model, entry_point) {
+    let app = Gio.Application.get_default();
+    // GApplication is not required, e.g. in tests
+    if (!app)
+        return;
+
+    let app_id = app.application_id;
+    let recorder = EosMetrics.EventRecorder.get_default();
+    let title = model.title || '';
+    let content_type = model.content_type || '';
+    recorder.record_start(CONTENT_ACCESS_METRIC_EVENT_ID,
+        new GLib.Variant('s', model.ekn_id),
+        new GLib.Variant('(ssss)', [entry_point, app_id, title, content_type]));
+}
+
+function stop_content_access_metric(model) {
+    let app = Gio.Application.get_default();
+    // GApplication is not required, e.g. in tests
+    if (!app)
+        return;
+
+    let app_id = app.application_id;
+    let recorder = EosMetrics.EventRecorder.get_default();
+    recorder.record_stop(CONTENT_ACCESS_METRIC_EVENT_ID,
+        new GLib.Variant('s', model.ekn_id), null);
 }
 
 function define_enum (values) {

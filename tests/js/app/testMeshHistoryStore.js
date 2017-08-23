@@ -2,6 +2,7 @@ const Eknc = imports.gi.EosKnowledgeContent;
 
 const Actions = imports.app.actions;
 const AppUtils = imports.app.utils;
+const EntryPoints = imports.app.entryPoints;
 const MeshHistoryStore = imports.app.meshHistoryStore;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
@@ -11,6 +12,7 @@ const Utils = imports.tests.utils;
 
 describe('MeshHistoryStore', function () {
     let store, dispatcher, engine, reading_history;
+    let start_content_access_metric_spy;
 
     beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
@@ -19,6 +21,7 @@ describe('MeshHistoryStore', function () {
         store = new MeshHistoryStore.MeshHistoryStore();
         store.set_current_item_from_props({ page_type: Pages.HOME });
         spyOn(AppUtils, 'record_search_metric');
+        start_content_access_metric_spy = spyOn(AppUtils, 'start_content_access_metric');
     });
 
     it('goes back to the home page when home button is clicked', function () {
@@ -55,6 +58,9 @@ describe('MeshHistoryStore', function () {
             model: model,
         });
         expect(store.get_current_item().page_type).toBe(Pages.ARTICLE);
+        expect(AppUtils.start_content_access_metric)
+            .toHaveBeenCalledWith(store.get_current_item().model,
+                EntryPoints.LINK_CLICKED);
     });
 
     it('goes back to the home page via the sidebar from search page', function () {
@@ -172,7 +178,7 @@ describe('MeshHistoryStore', function () {
     test_search_action(Actions.DBUS_LOAD_QUERY_CALLED, 'desktop search opened');
 
     describe('when link in article clicked', function () {
-        it('goes to article page', function () {
+        beforeEach(function() {
             let model = Eknc.ArticleObjectModel.new_from_props({
                 ekn_id: 'ekn://foo/bar',
             });
@@ -182,10 +188,21 @@ describe('MeshHistoryStore', function () {
                 ekn_id: 'ekn://foo/bar',
             });
             Utils.update_gui();
+        });
+
+        it('goes to article page', function () {
             expect(store.get_current_item().page_type).toBe(Pages.ARTICLE);
         });
 
-        it('shows lightbox if link was media', function () {
+        it('records a metric', function () {
+            recent_start_call = start_content_access_metric_spy.calls.mostRecent();
+            expect(recent_start_call.args[0].ekn_id).toEqual('ekn://foo/bar');
+            expect(recent_start_call.args[1]).toEqual(EntryPoints.ARTICLE_LINK_CLICKED);
+        });
+    });
+
+    describe('when a media link in article clicked', function () {
+        it('shows lightbox', function () {
             let model = Eknc.MediaObjectModel.new_from_props({
                 ekn_id: 'ekn://foo/pix',
             });
@@ -231,6 +248,23 @@ describe('MeshHistoryStore', function () {
             Utils.update_gui();
 
             expect(store.get_current_item().page_type).toBe(Pages.ARTICLE);
+        });
+
+        it('records a metric if an article was opened', function () {
+            model = Eknc.ArticleObjectModel.new_from_props({
+                ekn_id: 'ekn:///foo',
+            });
+            engine.get_object_promise.and.returnValue(Promise.resolve(model));
+            dispatcher.dispatch({
+                action_type: Actions.DBUS_LOAD_ITEM_CALLED,
+                query: 'foo',
+                ekn_id: 'ekn:///foo',
+            });
+            Utils.update_gui();
+
+            recent_start_call = start_content_access_metric_spy.calls.mostRecent();
+            expect(recent_start_call.args[0].ekn_id).toEqual('ekn:///foo');
+            expect(recent_start_call.args[1]).toEqual(EntryPoints.DBUS_CALL);
         });
 
         it('goes to the set page if an article was opened', function () {

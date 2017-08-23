@@ -8,6 +8,7 @@ const GObject = imports.gi.GObject;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
+const EntryPoints = imports.app.entryPoints;
 const HistoryItem = imports.app.historyItem;
 const HistoryStore = imports.app.historyStore;
 const Pages = imports.app.pages;
@@ -34,13 +35,16 @@ var MeshHistoryStore = new GObject.Class({
                     break;
                 case Actions.ITEM_CLICKED: {
                     let props = { model: payload.model };
-                    if (payload.model instanceof Eknc.SetObjectModel)
+                    let entry_point = undefined;
+                    if (payload.model instanceof Eknc.SetObjectModel) {
                         props['page_type'] = Pages.SET;
-                    else
+                    } else {
                         props['page_type'] = Pages.ARTICLE;
+                        entry_point = EntryPoints.LINK_CLICKED;
+                    }
                     if (payload.query)
                         props['query'] = payload.query;
-                    this.set_current_item_from_props(props);
+                    this.set_current_item_from_props(props, entry_point);
                 }
                     break;
                 case Actions.NAV_BACK_CLICKED:

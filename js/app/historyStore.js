@@ -9,6 +9,7 @@ const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
+const EntryPoints = imports.app.entryPoints;
 const HistoryItem = imports.app.historyItem;
 const Pages = imports.app.pages;
 const ReadingHistoryModel = imports.app.readingHistoryModel;
@@ -117,8 +118,26 @@ var HistoryStore = new Lang.Class({
             win.insert_action_group('store', this));
     },
 
+    _start_content_access_metric: function(model, entry_point) {
+        let old_item = this._direction === Direction.FORWARDS ?
+            this.get_previous_item() : this.get_next_item();
+        if (old_item && old_item.model && old_item.model.ekn_id === model.ekn_id)
+            return;
+
+        Utils.start_content_access_metric(model, entry_point);
+    },
+
     // Default signal handler
     on_changed: function () {
+        let old_item = this._direction === Direction.FORWARDS ?
+            this.get_previous_item() : this.get_next_item();
+        let item = this.get_current_item();
+
+        if (!(item.model instanceof Eknc.MediaObjectModel) &&
+            old_item && old_item.model && old_item.page_type === Pages.ARTICLE &&
+            (!item.model || old_item.model.ekn_id !== item.model.ekn_id))
+            Utils.stop_content_access_metric(old_item.model);
+
         this.change_action_state('article-search-visible',
             new GLib.Variant('b', false));
     },
@@ -148,6 +167,14 @@ var HistoryStore = new Lang.Class({
 
     get_current_item: function () {
         return this.get_items()[this.get_current_index()] || null;
+    },
+
+    get_previous_item: function () {
+        return this.get_items()[this.get_current_index() - 1] || null;
+    },
+
+    get_next_item: function () {
+        return this.get_items()[this.get_current_index() + 1] || null;
     },
 
     can_go_back: function () {
@@ -221,6 +248,11 @@ var HistoryStore = new Lang.Class({
             return;
         this._direction = Direction.BACKWARDS;
         this._update_index(-1);
+
+        let item = this.get_current_item();
+        if (item && item.model && item.page_type === Pages.ARTICLE)
+            this._start_content_access_metric(item.model,
+                EntryPoints.NAV_BUTTON_CLICKED);
     },
 
     go_forward: function () {
@@ -228,18 +260,26 @@ var HistoryStore = new Lang.Class({
             return;
         this._direction = Direction.FORWARDS;
         this._update_index(1);
+
+        let item = this.get_current_item();
+        if (item && item.model && item.page_type === Pages.ARTICLE)
+            this._start_content_access_metric(item.model,
+                EntryPoints.NAV_BUTTON_CLICKED);
     },
 
-    set_current_item: function (item) {
+    set_current_item: function (item, entry_point) {
         if (!this.get_current_item() || !this.get_current_item().equals(item)) {
             this._items = this._items.slice(0, this._index + 1);
             this._items.push(item);
-            this.go_forward();
+            this._direction = Direction.FORWARDS;
+            this._update_index(1);
         }
+        if (entry_point && item && item.model && item.page_type === Pages.ARTICLE)
+            this._start_content_access_metric(item.model, entry_point);
     },
 
-    set_current_item_from_props: function (props) {
-        this.set_current_item(new HistoryItem.HistoryItem(props));
+    set_current_item_from_props: function (props, entry_point) {
+        this.set_current_item(new HistoryItem.HistoryItem(props), entry_point);
     },
 
     do_search: function (query, timestamp) {
@@ -266,7 +306,7 @@ var HistoryStore = new Lang.Class({
                 this.set_current_item_from_props({
                     page_type: Pages.ARTICLE,
                     model: model,
-                });
+                }, EntryPoints.ARTICLE_LINK_CLICKED);
             } else if (model instanceof Eknc.SetObjectModel) {
                 this.set_current_item_from_props({
                     page_type: Pages.SET,
@@ -280,7 +320,7 @@ var HistoryStore = new Lang.Class({
                     model: old_item.model,
                     context: old_item.model ? old_item.model.resources : [],
                     media_model: model,
-                });
+                }, EntryPoints.ARTICLE_LINK_CLICKED);
             }
         })
         .catch(function (error) {
@@ -297,7 +337,7 @@ var HistoryStore = new Lang.Class({
                     model: model,
                     query: query,
                     timestamp: timestamp || Gdk.CURRENT_TIME,
-                });
+                }, EntryPoints.DBUS_CALL);
             } else if (model instanceof Eknc.SetObjectModel) {
                 this.set_current_item_from_props({
                     page_type: Pages.SET,

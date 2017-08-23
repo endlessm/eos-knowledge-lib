@@ -15,11 +15,14 @@ const System = imports.system;
 const Actions = imports.app.actions;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
+const HistoryStore = imports.app.historyStore;
 const Knowledge = imports.app.knowledge;
 const ModuleFactory = imports.app.moduleFactory;
 const MoltresEngine = imports.app.moltresEngine;
+const Pages = imports.app.pages;
 const PromiseWrapper = imports.app.promiseWrapper;
 const SetMap = imports.app.setMap;
+const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -346,6 +349,12 @@ var Application = new Knowledge.Class({
     },
 
     vfunc_shutdown: function () {
+        // Record a content access metric before shutting down
+        let history = HistoryStore.get_default();
+        let last_item = history.get_current_item();
+        if (last_item && last_item.model && last_item.page_type === Pages.ARTICLE)
+            Utils.stop_content_access_metric(last_item.model);
+
         Dispatcher.get_default().pause();
         this.parent();
     },
