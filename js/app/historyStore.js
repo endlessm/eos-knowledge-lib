@@ -2,6 +2,7 @@
 
 const Eknc = imports.gi.EosKnowledgeContent;
 const Gdk = imports.gi.Gdk;
+const Gtk = imports.gi.Gtk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -15,9 +16,17 @@ const Pages = imports.app.pages;
 const ReadingHistoryModel = imports.app.readingHistoryModel;
 const Utils = imports.app.utils;
 
+let _ = imports.gettext.dgettext.bind(null, imports.app.config.GETTEXT_PACKAGE);
+
 var Direction = {
     BACKWARDS: 'backwards',
     FORWARDS: 'forwards',
+};
+
+var Network = {
+    FACEBOOK: 'facebook',
+    TWITTER: 'twitter',
+    WHATSAPP: 'whatsapp',
 };
 
 /**
@@ -99,6 +108,9 @@ var HistoryStore = new Lang.Class({
                     break;
                 case Actions.ITEM_CLICKED:
                     ReadingHistoryModel.get_default().mark_article_read(payload.model.ekn_id);
+                    break;
+                case Actions.SHARE:
+                    this.share(payload.network);
                     break;
             }
         });
@@ -368,6 +380,55 @@ var HistoryStore = new Lang.Class({
             };
         }
         this.set_current_item(HistoryItem.HistoryItem.new_from_object(target_item));
+    },
+
+    /**
+     * Method: can_share
+     *
+     * Returns whether the current item can be shared on social networks or not.
+     */
+    can_share: function () {
+        let item = this.get_current_item();
+        return (item !== null &&
+                item.model !== null &&
+                item.model instanceof Eknc.ContentObjectModel &&
+                item.model.original_uri !== null &&
+                item.model.original_uri !== "");
+    },
+
+    /**
+     * Method: share
+     *
+     * Share current item on a social network.
+     */
+    share: function (network) {
+        if (!this.can_share())
+            return;
+        let item = this.get_current_item();
+
+        let original_uri = encodeURIComponent(item.model.original_uri);
+        let uri = null;
+
+        switch(network) {
+            case Network.FACEBOOK:
+                uri = 'https://www.facebook.com/dialog/share?app_id=407909575958642&display=popup&hashtag=%23SharedFromEndless&href='
+                      + original_uri;
+                break;
+            case Network.TWITTER:
+                uri = 'https://twitter.com/intent/tweet?hashtags=SharedFromEndless&original_referer=https%3A%2F%2Fendlessos.com&url='
+                      + original_uri;
+                break;
+            case Network.WHATSAPP:
+                uri = 'https://api.whatsapp.com/send?text=' + original_uri +
+                      '%20' + encodeURIComponent (_("Shared from Endless"));
+                break;
+            default:
+                logError(new Error('Unknown social network '+ network));
+                return;
+        }
+
+        /* Open share uri in system browser */
+        Gtk.show_uri (null, uri, Gdk.CURRENT_TIME);
     },
 });
 

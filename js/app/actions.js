@@ -16,3 +16,4 @@ var DBUS_LOAD_QUERY_CALLED = 'dbus-load-query-called';
 var DBUS_LOAD_ITEM_CALLED = 'dbus-load-item-called';
 var SEARCH_BOX_FOCUSED = 'search-box-focused';
 var LIGHTBOX_CLOSED = 'lightbox-closed';
+var SHARE = 'share';
