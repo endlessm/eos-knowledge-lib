@@ -14,6 +14,9 @@
     <file compressed="true">data/css/preset_b.css</file>
     <file compressed="true">data/css/keybindings.css</file>
     <file preprocess="xml-stripblanks">data/icons/scalable/actions/eos-play-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">data/icons/scalable/apps/facebook-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">data/icons/scalable/apps/twitter-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">data/icons/scalable/apps/whatsapp-symbolic.svg</file>
     <file>data/images/background.png</file>
     <file>data/images/checkmark.png</file>
     <file>data/images/pdf-background.png</file>
