@@ -1,4 +1,4 @@
-# 
+#
 msgid ""
 msgstr ""
 "POT-Creation-Date: YYYY-MM-DD HH:MM+0000\n"

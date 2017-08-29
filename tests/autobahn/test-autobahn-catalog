@@ -3,4 +3,5 @@
 input="$G_TEST_SRCDIR/autobahn/basic.yaml"
 expected=${input/.yaml/.pot}
 cd "$G_TEST_SRCDIR/.."
-./tools/autobahn "$input" --catalog | diff -u "$expected" -I "POT-Creation-Date" -
+# Ignore change in '# ' comment in header, polib 1.0.7 and later
+./tools/autobahn "$input" --catalog | diff -u "$expected" -I "POT-Creation-Date" -I "^# ?$" -
