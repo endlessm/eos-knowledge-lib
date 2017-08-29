@@ -1,9 +1,16 @@
 const Eknc = imports.gi.EosKnowledgeContent;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 
 describe('Domain', function () {
-    let domain, bridge;
+    let domain, bridge, tempdir;
+
+    beforeAll(function () {
+        tempdir = GLib.Dir.make_tmp('ekncontent-test-domain-XXXXXX');
+        GLib.setenv('XDG_DATA_HOME', tempdir, true);
+    });
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
@@ -12,6 +19,25 @@ describe('Domain', function () {
             app_id: 'com.endlessm.fake_test_app.en',
             xapian_bridge: bridge,
         });
+    });
+
+    afterEach(function () {
+        function clean_out(file, cancellable) {
+            let enumerator = file.enumerate_children('standard::*',
+                Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, cancellable);
+            let info;
+            while ((info = enumerator.next_file(cancellable))) {
+                let child = enumerator.get_child(info);
+                if (info.get_file_type() === Gio.FileType.DIRECTORY)
+                    clean_out(child, cancellable);
+                child.delete(cancellable);
+            }
+        }
+        clean_out(Gio.File.new_for_path(tempdir), null);
+    });
+
+    afterAll(function () {
+        Gio.File.new_for_path(tempdir).delete(null);
     });
 
     describe('init', function () {
