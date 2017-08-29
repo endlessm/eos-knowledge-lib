@@ -26,19 +26,19 @@ describe('History Store', function () {
 
     it('can access a history item', function () {
         history_store.set_current_item_from_props({
-            page_type: 'search',
+            page_type: Pages.SEARCH,
         });
         let current_item = history_store.get_current_item();
-        expect(current_item.page_type).toBe('search');
+        expect(current_item.page_type).toBe(Pages.SEARCH);
     });
 
     it('does not duplicate the same item', function () {
         history_store.set_current_item_from_props({
-            page_type: 'search',
+            page_type: Pages.SEARCH,
             query: 'blah',
         });
         history_store.set_current_item_from_props({
-            page_type: 'search',
+            page_type: Pages.SEARCH,
             query: 'blah',
         });
         expect(history_store.get_items().length).toBe(1);
@@ -81,11 +81,11 @@ describe('History Store', function () {
     it('can go back', function () {
         history_store.set_current_item_from_props({
             query: 'first',
-            page_type: 'search',
+            page_type: Pages.SEARCH,
         });
         history_store.set_current_item_from_props({
             query: 'second',
-            page_type: 'search',
+            page_type: Pages.SEARCH,
         });
         dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
         let current_item = history_store.get_current_item();
@@ -95,11 +95,11 @@ describe('History Store', function () {
     it('can go forward', function () {
         history_store.set_current_item_from_props({
             query: 'first',
-            page_type: 'search',
+            page_type: Pages.SEARCH,
         });
         history_store.set_current_item_from_props({
             query: 'second',
-            page_type: 'search',
+            page_type: Pages.SEARCH,
         });
         dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
         expect(history_store.get_current_item().query).toBe('first');
@@ -113,7 +113,7 @@ describe('History Store', function () {
             ekn_id: 'ekn://article1',
         });
         history_store.set_current_item_from_props({
-            page_type: 'article',
+            page_type: Pages.ARTICLE,
             model: model
         });
 
@@ -121,7 +121,7 @@ describe('History Store', function () {
             ekn_id: 'ekn://article2',
         });
         history_store.set_current_item_from_props({
-            page_type: 'article',
+            page_type: Pages.ARTICLE,
             model: model
         });
 
