@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "font", "urls": ["window/simple.html#fontscalingminfontsize", "window/simple.html#fontscalingdefaultwindowsize", "window/simple.html#fontscalingdefaultsize", "window/simple.html#fontscalingactive"]});
+urls_downloaded_cb({"urls": ["window/simple.html#fontscalingminfontsize", "window/simple.html#fontscalingdefaultwindowsize", "window/simple.html#fontscalingdefaultsize", "window/simple.html#fontscalingactive"], "token": "font"});

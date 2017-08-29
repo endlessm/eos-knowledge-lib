@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "menubar", "urls": ["window/simple.html#showmenubar"]});
+urls_downloaded_cb({"urls": ["window/simple.html#showmenubar"], "token": "menubar"});
