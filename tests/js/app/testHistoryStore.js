@@ -1,4 +1,5 @@
 const Eknc = imports.gi.EosKnowledgeContent;
+const Gtk = imports.gi.Gtk;
 
 const Actions = imports.app.actions;
 const AppUtils = imports.app.utils;
@@ -25,19 +26,19 @@ describe('History Store', function () {
 
     it('can access a history item', function () {
         history_store.set_current_item_from_props({
-            page_type: 'search',
+            page_type: Pages.SEARCH,
         });
         let current_item = history_store.get_current_item();
-        expect(current_item.page_type).toBe('search');
+        expect(current_item.page_type).toBe(Pages.SEARCH);
     });
 
     it('does not duplicate the same item', function () {
         history_store.set_current_item_from_props({
-            page_type: 'search',
+            page_type: Pages.SEARCH,
             query: 'blah',
         });
         history_store.set_current_item_from_props({
-            page_type: 'search',
+            page_type: Pages.SEARCH,
             query: 'blah',
         });
         expect(history_store.get_items().length).toBe(1);
@@ -80,11 +81,11 @@ describe('History Store', function () {
     it('can go back', function () {
         history_store.set_current_item_from_props({
             query: 'first',
-            page_type: 'search',
+            page_type: Pages.SEARCH,
         });
         history_store.set_current_item_from_props({
             query: 'second',
-            page_type: 'search',
+            page_type: Pages.SEARCH,
         });
         dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
         let current_item = history_store.get_current_item();
@@ -94,11 +95,11 @@ describe('History Store', function () {
     it('can go forward', function () {
         history_store.set_current_item_from_props({
             query: 'first',
-            page_type: 'search',
+            page_type: Pages.SEARCH,
         });
         history_store.set_current_item_from_props({
             query: 'second',
-            page_type: 'search',
+            page_type: Pages.SEARCH,
         });
         dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
         expect(history_store.get_current_item().query).toBe('first');
@@ -112,7 +113,7 @@ describe('History Store', function () {
             ekn_id: 'ekn://article1',
         });
         history_store.set_current_item_from_props({
-            page_type: 'article',
+            page_type: Pages.ARTICLE,
             model: model
         });
 
@@ -120,7 +121,7 @@ describe('History Store', function () {
             ekn_id: 'ekn://article2',
         });
         history_store.set_current_item_from_props({
-            page_type: 'article',
+            page_type: Pages.ARTICLE,
             model: model
         });
 
@@ -160,5 +161,63 @@ describe('History Store', function () {
         });
         expect(history_store.get_action_state('article-search-visible').unpack())
             .toBeFalsy();
+    });
+
+    it('can share a history item', function () {
+        expect(history_store.can_share()).toBe(false);
+
+        history_store.set_current_item_from_props({
+            page_type: Pages.ARTICLE,
+            model: Eknc.ArticleObjectModel.new_from_props({
+                title: 'Endless OS',
+                ekn_id: 'ekn://article1',
+            }),
+        });
+        expect(history_store.can_share()).toBe(false);
+
+        history_store.set_current_item_from_props({
+            page_type: Pages.ARTICLE,
+            model: Eknc.ArticleObjectModel.new_from_props({
+                title: 'Endless OS',
+                ekn_id: 'ekn://article2',
+                original_uri: 'http://endlessm.com',
+            }),
+        });
+        expect(history_store.can_share()).toBe(true);
+    });
+
+    function test_share_action (network) {
+        history_store.set_current_item_from_props({
+            page_type: Pages.ARTICLE,
+            model: Eknc.ArticleObjectModel.new_from_props({
+                title: 'Endless OS',
+                ekn_id: 'ekn://article',
+                original_uri: 'http://endlessm.com',
+            }),
+        });
+        expect(history_store.can_share()).toBe(true);
+
+        spyOn(Gtk, 'show_uri').and.callFake(function(a,uri,c) {
+            expect(uri).toMatch('.*' + network + '.*');
+        });
+
+        dispatcher.dispatch({
+            action_type: Actions.SHARE,
+            network: network
+        });
+
+        expect(Gtk.show_uri).toHaveBeenCalled();
+    }
+
+    it('can share a history item on Facebook', function () {
+        test_share_action (HistoryStore.Network.FACEBOOK);
+    });
+
+    it('can share a history item on Twitter', function () {
+        test_share_action (HistoryStore.Network.TWITTER);
+    });
+
+    it('can share a history item on Whatsapp', function () {
+        test_share_action (HistoryStore.Network.WHATSAPP);
     });
 });

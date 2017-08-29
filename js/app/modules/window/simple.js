@@ -60,8 +60,15 @@ var Simple = new Module.Class({
         let button_box = new Gtk.Box({
             orientation: Gtk.Orientation.HORIZONTAL
         });
+        this._social_box = this._social_box_new();
+
         button_box.add(this._home_button);
         button_box.add(this._history_buttons);
+        button_box.add(this._social_box);
+
+        this._social_button_add (HistoryStore.Network.FACEBOOK);
+        this._social_button_add (HistoryStore.Network.TWITTER);
+        this._social_button_add (HistoryStore.Network.WHATSAPP);
 
         this._content = this.create_submodule('content');
         this.page_manager.add(this._content, {
@@ -114,8 +121,39 @@ var Simple = new Module.Class({
         this.get_child().show_all();
     },
 
+    _social_box_new: function () {
+        let revealer = new Gtk.Revealer({
+            transition_type: Gtk.RevealerTransitionType.CROSSFADE,
+            margin_start: 4,
+        });
+        let button_box = new Gtk.Box({
+            orientation: Gtk.Orientation.HORIZONTAL,
+            spacing: 2
+        });
+        revealer.add(button_box);
+        return revealer;
+    },
+
+    _social_button_add: function (network) {
+        let button = new Gtk.Button({
+            image: new Gtk.Image({ icon_name: network + '-symbolic' })
+        });
+
+        Utils.set_hand_cursor_on_widget(button);
+        this._social_box.get_child().add(button);
+
+        button.connect('clicked', () => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.SHARE,
+                network: network
+            });
+        });
+        button.show_all();
+    },
+
     _on_history_change: function (history) {
         this._home_button.sensitive = history.get_current_item().page_type !== Pages.HOME;
+        this._social_box.set_reveal_child(history.can_share());
         this._history_buttons.back_button.sensitive = history.can_go_back();
         this._history_buttons.forward_button.sensitive = history.can_go_forward();
         this._show_or_hide_search_box();
