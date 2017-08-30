@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["window/simple.html#windowsimple1"], "token": "functionality"});
+urls_downloaded_cb({"token": "functionality", "urls": ["window/simple.html#windowsimple1"]});

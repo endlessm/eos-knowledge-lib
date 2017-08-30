@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["contentGroup/mediaLightbox.html#contentgroupmedialightbox1"], "token": "media"});
+urls_downloaded_cb({"token": "media", "urls": ["contentGroup/mediaLightbox.html#contentgroupmedialightbox1"]});
