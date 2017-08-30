@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "Filter.Tagged", "urls": ["filter/tagged.html#filtertagged1", "filter/tagged.html#filtertagged"]});
+urls_downloaded_cb({"urls": ["filter/tagged.html#filtertagged1", "filter/tagged.html#filtertagged"], "token": "Filter.Tagged"});
