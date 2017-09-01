@@ -50,7 +50,7 @@ eknc_domain_get_subscription_ids (EkncDomain *self);
 GSList *
 eknc_domain_get_shards (EkncDomain *self);
 
-const gchar *
+gchar *
 eknc_domain_test_link (EkncDomain *self,
                        const gchar *link,
                        GError **error);

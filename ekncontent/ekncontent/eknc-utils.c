@@ -78,6 +78,7 @@ eknc_utils_append_gparam_from_json_node (JsonNode *node,
       else
         g_set_error (&error, EKNC_CONTENT_OBJECT_ERROR, EKNC_CONTENT_OBJECT_ERROR_BAD_FORMAT,
                      "Unexpected type %s", g_type_name (type));
+      g_value_unset(&value);
     }
   else
     {

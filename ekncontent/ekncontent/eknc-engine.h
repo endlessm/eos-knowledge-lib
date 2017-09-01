@@ -12,12 +12,12 @@ G_BEGIN_DECLS
 #define EKNC_TYPE_ENGINE eknc_engine_get_type ()
 G_DECLARE_FINAL_TYPE (EkncEngine, eknc_engine, EKNC, ENGINE, GObject)
 
-const gchar *
+gchar *
 eknc_engine_test_link (EkncEngine *self,
                        const gchar *link,
                        GError **error);
 
-const gchar *
+gchar *
 eknc_engine_test_link_for_app (EkncEngine *self,
                                const gchar *link,
                                const gchar *app_id,

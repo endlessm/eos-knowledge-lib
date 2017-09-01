@@ -303,7 +303,8 @@ eknc_domain_process_subscription (EkncDomain *self,
     {
       JsonArray *json_dbs = json_object_get_array_member (json_manifest, "xapian_databases");
       g_autofree gchar *subscription_path = g_file_get_path (bundle_dir);
-      GList *dbs = json_array_get_elements (json_dbs), *l;
+      g_autoptr(GList) dbs = json_array_get_elements (json_dbs);
+      GList *l;
 
       for (l = dbs; l; l = g_list_next (l))
         {
@@ -413,8 +414,14 @@ eknc_domain_initable_init (GInitable *initable,
       /* Find out root relative path from manifest file */
       g_autoptr(GFile) p = g_file_get_parent (self->manifest_file);
       g_autoptr(GString) relative_path = g_string_new ("");
-      while ((p = g_file_get_parent (p)))
-        g_string_append (relative_path, "../");
+      while (TRUE)
+        {
+          g_autoptr(GFile) old_p = g_steal_pointer (&p);
+          p = g_file_get_parent (old_p);
+          if (p == NULL)
+            break;
+          g_string_append (relative_path, "../");
+        }
 
       GList *l;
       for (l = self->subscriptions; l; l = g_list_next (l))
@@ -433,11 +440,11 @@ eknc_domain_initable_init (GInitable *initable,
         }
 
       g_autoptr(JsonGenerator) json_generator = json_generator_new ();
-      JsonNode *json_root_node = json_node_new (JSON_NODE_OBJECT);
+      g_autoptr(JsonNode) json_root_node = json_node_new (JSON_NODE_OBJECT);
       JsonObject *json_root = json_object_new ();
 
       json_object_set_array_member (json_root, "xapian_databases", json_subscriptions);
-      json_node_set_object (json_root_node, json_root);
+      json_node_take_object (json_root_node, json_root);
       json_generator_set_root (json_generator, json_root_node);
       json_generator_to_file (json_generator, manifest_tmp, error);
     }
@@ -549,9 +556,10 @@ eknc_domain_get_shards (EkncDomain *self)
  * Attempts to determine if the given link corresponds to content within
  * this domain.
  *
- * Returns: (transfer full): Returns an EKN URI to that content if so, and NULL otherwise.
+ * Returns: (transfer full) (nullable): Returns an EKN URI to that content if
+ * so, and %NULL otherwise.
  */
-const gchar *
+gchar *
 eknc_domain_test_link (EkncDomain *self,
                        const gchar *link,
                        GError **error)
@@ -631,7 +639,7 @@ eknc_domain_get_object (EkncDomain *self,
       return;
     }
 
-  GInputStream *stream = eos_shard_blob_get_stream (record->metadata);
+  g_autoptr(GInputStream) stream = eos_shard_blob_get_stream (record->metadata);
   json_parser_load_from_stream_async (parser, stream, cancellable, on_metadata_stream_parsed, g_steal_pointer (&task));
 }
 
