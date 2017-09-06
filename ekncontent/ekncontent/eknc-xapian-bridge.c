@@ -1,6 +1,7 @@
 /* Copyright 2016 Endless Mobile, Inc. */
 
 #include "eknc-xapian-bridge.h"
+#include "eknc-database-manager-private.h"
 
 #include <gio/gio.h>
 
@@ -25,6 +26,8 @@ eknc_xapian_bridge_error_quark (void)
 struct _EkncXapianBridge
 {
   GObject parent_instance;
+
+  EkncDatabaseManager *database_manager;
 
   gboolean feature_test_done;
   gboolean has_default_op, has_flags, has_filter;
@@ -110,9 +113,11 @@ eknc_xapian_bridge_finalize (GObject *object)
 {
   EkncXapianBridge *self = EKNC_XAPIAN_BRIDGE (object);
 
+  g_clear_object (&self->database_manager);
+  g_clear_object (&self->session);
+
   g_clear_pointer (&self->host, g_free);
   g_clear_pointer (&self->language, g_free);
-  g_clear_object (&self->session);
 
   G_OBJECT_CLASS (eknc_xapian_bridge_parent_class)->finalize (object);
 }
@@ -171,7 +176,7 @@ eknc_xapian_bridge_class_init (EkncXapianBridgeClass *klass)
 static void
 eknc_xapian_bridge_init (EkncXapianBridge *self)
 {
-  self->session = soup_session_new ();
+  self->database_manager = eknc_database_manager_new ();
 }
 
 /**
@@ -188,7 +193,7 @@ eknc_xapian_bridge_get_soup_session (EkncXapianBridge *self)
 {
   g_return_val_if_fail (EKNC_IS_XAPIAN_BRIDGE (self), NULL);
 
-  return self->session;
+  return NULL;
 }
 
 /**
@@ -207,7 +212,7 @@ eknc_xapian_bridge_need_feature_test (EkncXapianBridge *self)
 {
   g_return_val_if_fail (EKNC_IS_XAPIAN_BRIDGE (self), FALSE);
 
-  return !(self->feature_test_done);
+  return FALSE;
 }
 
 static SoupURI *
@@ -382,7 +387,7 @@ send_json_ld_request (EkncXapianBridge *self,
 
   GCancellable *cancellable = g_task_get_cancellable (task);
   if (cancellable)
-      g_cancellable_connect (cancellable, G_CALLBACK (json_ld_request_cancelled), g_object_ref (task), g_object_unref);
+    g_cancellable_connect (cancellable, G_CALLBACK (json_ld_request_cancelled), g_object_ref (task), g_object_unref);
 }
 
 /**

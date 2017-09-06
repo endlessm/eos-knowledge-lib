@@ -96,6 +96,8 @@ ekncontent_sources = \
 	ekncontent/eknc-utils-private.h \
 	ekncontent/eknc-utils.c \
 	ekncontent/eknc-video-object-model.c \
+	ekncontent/eknc-database-manager.c \
+	ekncontent/eknc-database-manager-private.h \
 	ekncontent/eknc-xapian-bridge.c \
 	$(NULL)
 
