@@ -28,12 +28,6 @@ typedef enum {
 #define EKNC_XAPIAN_BRIDGE_ERROR eknc_xapian_bridge_error_quark ()
 GQuark eknc_xapian_bridge_error_quark (void);
 
-SoupSession *
-eknc_xapian_bridge_get_soup_session (EkncXapianBridge *self);
-
-gboolean
-eknc_xapian_bridge_need_feature_test (EkncXapianBridge *self);
-
 void
 eknc_xapian_bridge_get_fixed_query (EkncXapianBridge *self,
                                     EkncQueryObject *query,
@@ -59,16 +53,5 @@ JsonNode *
 eknc_xapian_bridge_query_finish (EkncXapianBridge *self,
                                  GAsyncResult *result,
                                  GError **error);
-
-void
-eknc_xapian_bridge_test (EkncXapianBridge *self,
-                         GCancellable *cancellable,
-                         GAsyncReadyCallback callback,
-                         gpointer user_data);
-
-gboolean
-eknc_xapian_bridge_test_finish (EkncXapianBridge *self,
-                                GAsyncResult *result,
-                                GError **error);
 
 G_END_DECLS

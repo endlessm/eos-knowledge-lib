@@ -953,26 +953,6 @@ send_query_to_xapian_bridge (EkncDomain *domain,
                             on_xapian_query_response, task);
 }
 
-void
-on_xapian_test_response (GObject *source,
-                         GAsyncResult *result,
-                         gpointer user_data)
-{
-  EkncXapianBridge *bridge = EKNC_XAPIAN_BRIDGE (source);
-  g_autoptr(GTask) task = user_data;
-  EkncDomain *domain = g_task_get_source_object (task);
-  GCancellable *cancellable = g_task_get_cancellable (task);
-
-  g_autoptr(GError) error = NULL;
-  eknc_xapian_bridge_test_finish (bridge, result, &error);
-  /* Ignore failures - older xapian-bridge doesn't support /test. */
-
-  /* Take ref on query, because task data will be replaced */
-  g_autoptr(EkncQueryObject) query = g_object_ref (g_task_get_task_data (task));
-  send_query_to_xapian_bridge (domain, bridge, query, cancellable,
-                               g_steal_pointer (&task));
-}
-
 /**
  * eknc_domain_query:
  * @self: the domain
@@ -995,16 +975,8 @@ eknc_domain_query (EkncDomain *self,
   g_return_if_fail (G_IS_CANCELLABLE (cancellable) || cancellable == NULL);
 
   GTask *task = g_task_new (self, cancellable, callback, user_data);
-  if (eknc_xapian_bridge_need_feature_test (self->xapian_bridge))
-    {
-      g_task_set_task_data (task, g_object_ref (query), g_object_unref);
-      eknc_xapian_bridge_test (self->xapian_bridge,
-                               cancellable, on_xapian_test_response, task);
-      return;
-    }
 
-  send_query_to_xapian_bridge (self, self->xapian_bridge, query, cancellable,
-                               task);
+  send_query_to_xapian_bridge (self, self->xapian_bridge, query, cancellable, task);
 }
 
 static GList *
