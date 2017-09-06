@@ -38,9 +38,7 @@ struct _EkncXapianBridge
   SoupSession *session;
 };
 
-G_DEFINE_TYPE (EkncXapianBridge,
-               eknc_xapian_bridge,
-               G_TYPE_OBJECT)
+G_DEFINE_TYPE (EkncXapianBridge, eknc_xapian_bridge, G_TYPE_OBJECT)
 
 enum {
   PROP_0,
@@ -177,6 +175,10 @@ static void
 eknc_xapian_bridge_init (EkncXapianBridge *self)
 {
   self->database_manager = eknc_database_manager_new ();
+
+  self->has_default_op = TRUE;
+  self->has_flags = TRUE;
+  self->has_filter = TRUE;
 }
 
 /**
@@ -239,32 +241,15 @@ add_to_hash_table (gpointer key,
   g_hash_table_insert (hash_table, key, value);
 }
 
-static SoupURI *
-get_xapian_fix_uri (EkncXapianBridge *self,
-                    EkncQueryObject *query,
-                    GHashTable *extra_params)
+static GHashTable *
+get_xapian_query_params (EkncXapianBridge *self,
+                         EkncQueryObject *query,
+                         GHashTable *extra_params)
 {
-  g_autoptr(GHashTable) params = g_hash_table_new (g_str_hash, g_str_equal);
-  g_autofree gchar *query_string = NULL;
-  g_object_get (query, "query", &query_string, NULL);
-  g_hash_table_insert (params, "q", query_string);
+  GHashTable *params = g_hash_table_new (g_str_hash, g_str_equal);
 
-  if (self->has_default_op)
-    g_hash_table_insert (params, "defaultOp", "and");
-
-  if (extra_params)
-    g_hash_table_foreach (extra_params, add_to_hash_table, params);
-
-  return build_xapian_uri (self, XB_FIX_ENDPOINT, params);
-}
-
-static SoupURI *
-get_xapian_query_uri (EkncXapianBridge *self,
-                      EkncQueryObject *query,
-                      GHashTable *extra_params)
-{
-  g_autoptr(GHashTable) params = g_hash_table_new (g_str_hash, g_str_equal);
   const gchar *query_str;
+
   if (self->has_default_op && self->has_filter && self->has_flags)
     {
       const gchar *filter, *filterout;
@@ -316,7 +301,27 @@ get_xapian_query_uri (EkncXapianBridge *self,
   if (extra_params)
     g_hash_table_foreach (extra_params, add_to_hash_table, params);
 
-  return build_xapian_uri (self, XB_QUERY_ENDPOINT, params);
+  return params;
+}
+
+static GHashTable *
+get_xapian_query_fix_params (EkncXapianBridge *self,
+                             EkncQueryObject *query,
+                             GHashTable *extra_params)
+{
+  GHashTable *params = g_hash_table_new (g_str_hash, g_str_equal);
+
+  g_autofree gchar *query_string = NULL;
+  g_object_get (query, "query", &query_string, NULL);
+  g_hash_table_insert (params, "q", query_string);
+
+  if (self->has_default_op)
+    g_hash_table_insert (params, "defaultOp", "and");
+
+  if (extra_params)
+    g_hash_table_foreach (extra_params, add_to_hash_table, params);
+
+  return params;
 }
 
 static SoupURI *
@@ -352,124 +357,61 @@ typedef struct
 {
   EkncQueryObject *query;
   SoupMessage *request;
+
+  EkncDatabaseManager *db_manager;
+  EkncDatabase db;
+
+  GHashTable *params;
 } RequestState;
 
 static void
 request_state_free (gpointer data)
 {
   RequestState *state = data;
+
   g_clear_object (&state->query);
+
   g_object_unref (state->request);
+
+  g_clear_object (&state->db_manager);
+  g_clear_pointer (&state->params, g_hash_table_unref);
+
   g_slice_free (RequestState, state);
 }
 
 static void
-json_ld_request_cancelled (GCancellable *cancellable,
-                           GTask        *task)
+query_fix_task (GTask *task,
+                gpointer source_obj,
+                gpointer task_data,
+                GCancellable *cancellable)
 {
-  EkncXapianBridge *self = g_task_get_source_object (task);
-  RequestState *state = g_task_get_task_data (task);
-  soup_session_cancel_message (self->session, state->request, SOUP_STATUS_CANCELLED);
-}
+  RequestState *request = task_data;
+  GError *error = NULL;
 
-static void
-send_json_ld_request (EkncXapianBridge *self,
-                      SoupURI *uri,
-                      GTask *task)
-{
-  g_autofree gchar * uri_string = soup_uri_to_string (uri, FALSE);
-  g_debug ("Sending request to xapian-bridge at %s\n", uri_string);
-  g_autoptr(SoupMessage) request = soup_message_new_from_uri (SOUP_METHOD_GET, uri);
-
-  RequestState *state = g_task_get_task_data (task);
-  state->request = g_object_ref (request);
-  soup_session_queue_message (self->session, g_steal_pointer (&request), json_ld_request_finished, task);
-
-  GCancellable *cancellable = g_task_get_cancellable (task);
-  if (cancellable)
-    g_cancellable_connect (cancellable, G_CALLBACK (json_ld_request_cancelled), g_object_ref (task), g_object_unref);
-}
-
-/**
- * eknc_xapian_bridge_test:
- * @self: the xapian bridge object
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @callback: (scope async): callback to call when the request is satisfied.
- * @user_data: (closure): the data to pass to callback function.
- *
- * Asynchronously check features of xapian bridge.
- */
-void
-eknc_xapian_bridge_test (EkncXapianBridge *self,
-                         GCancellable *cancellable,
-                         GAsyncReadyCallback callback,
-                         gpointer user_data)
-{
-  g_return_if_fail (EKNC_IS_XAPIAN_BRIDGE (self));
-  g_return_if_fail (G_IS_CANCELLABLE (cancellable) || cancellable == NULL);
-
-  GTask *task = g_task_new (self, cancellable, callback, user_data);
-
-  RequestState *state = g_slice_new0 (RequestState);
-  g_task_set_task_data (task, state, request_state_free);
-
-  g_autoptr(SoupURI) uri = get_xapian_test_uri (self);
-  send_json_ld_request (self, uri, task);
-}
-
-/**
- * eknc_xapian_bridge_test_finish:
- * @self: the xapian bridge object
- * @result: the #GAsyncResult that was provided to the callback.
- * @error: #GError for error reporting.
- *
- * Finish a eknc_xapian_bridge_test call.
- *
- * Returns: FALSE if there was an error (the internal state is set
- * to indicate a xapian-bridge with no features so you can ignore
- * the error and get graceful fall-back).
- */
-gboolean
-eknc_xapian_bridge_test_finish (EkncXapianBridge *self,
-                                GAsyncResult *result,
-                                GError **error)
-{
-  /* Mark the feature test as done.  If there was an error, this means the
-   * caller can ignore it and we'll fall back to handling this as an old-style
-   * xapian-bridge. */
-  self->feature_test_done = TRUE;
-
-  g_return_val_if_fail (EKNC_IS_XAPIAN_BRIDGE (self), FALSE);
-  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
-
-  GTask *task = G_TASK (result);
-
-  g_autoptr(JsonNode) node = g_task_propagate_pointer (task, error);
-  if (node == NULL)
-    return FALSE;
-  if (!JSON_NODE_HOLDS_ARRAY (node))
+  if (g_task_return_error_if_cancelled (task))
     {
-      g_set_error (error, EKNC_XAPIAN_BRIDGE_ERROR, EKNC_XAPIAN_BRIDGE_ERROR_BAD_JSON,
-                   "Expected json array from xapian bridge");
-      return FALSE;
+      g_object_unref (task);
+      return;
     }
-  JsonArray *array = json_node_get_array (node);
-  guint array_length = json_array_get_length (array);
-  for (guint i = 0; i < array_length; i++)
+
+  JsonObject *result = eknc_database_manager_fix_query (request->db_manager,
+                                                        &request->db,
+                                                        request->params,
+                                                        &error);
+
+  if (result != NULL)
     {
-      JsonNode *elt = json_array_get_element (array, i);
-      const gchar *s = json_node_get_string (elt);
-      if (s)
-        {
-          if (g_strcmp0 (s, "query-param-defaultOp") == 0)
-            self->has_default_op = TRUE;
-          else if (g_strcmp0 (s, "query-param-flags") == 0)
-            self->has_flags = TRUE;
-          else if (g_strcmp0 (s, "query-param-filter") == 0)
-            self->has_filter = TRUE;
-        }
+      JsonNode *retval = json_node_new (JSON_NODE_OBJECT);
+      json_node_take_object (retval, result);
+
+      g_task_return_pointer (task, g_steal_pointer (&retval), (GDestroyNotify) json_node_unref);
     }
-  return TRUE;
+  else
+    {
+      g_task_return_error (task, error);
+    }
+
+  g_object_unref (task);
 }
 
 /**
@@ -499,11 +441,17 @@ eknc_xapian_bridge_get_fixed_query (EkncXapianBridge *self,
   GTask *task = g_task_new (self, cancellable, callback, user_data);
 
   RequestState *state = g_slice_new0 (RequestState);
+  state->db_manager = g_object_ref (self->database_manager);
+
+  state->db.path = g_hash_table_lookup (extra_params, "path");
+  state->db.manifest_path = g_hash_table_lookup (extra_params, "manifest_path");
+
   state->query = g_object_ref (query);
+  state->params = get_xapian_query_fix_params (self, query, extra_params);
+
   g_task_set_task_data (task, state, request_state_free);
 
-  g_autoptr(SoupURI) uri = get_xapian_fix_uri (self, query, extra_params);
-  send_json_ld_request (self, uri, task);
+  g_task_run_in_thread (task, query_fix_task);
 }
 
 /**
@@ -580,6 +528,40 @@ eknc_xapian_bridge_get_fixed_query_finish (EkncXapianBridge *self,
                                               NULL);
 }
 
+static void
+query_task (GTask *task,
+            gpointer source_object,
+            gpointer task_data,
+            GCancellable *cancellable)
+{
+  RequestState *request = task_data;
+  GError *error = NULL;
+
+  if (g_task_return_error_if_cancelled (task))
+    {
+      g_object_unref (task);
+      return;
+    }
+
+  JsonObject *result = eknc_database_manager_query_db (request->db_manager,
+                                                       &request->db,
+                                                       request->params,
+                                                       &error);
+  if (result != NULL)
+    {
+      JsonNode *retval = json_node_new (JSON_NODE_OBJECT);
+      json_node_take_object (retval, result);
+
+      g_task_return_pointer (task, g_steal_pointer (&retval), (GDestroyNotify) json_node_unref);
+    }
+  else
+    {
+      g_task_return_error (task, error);
+    }
+
+  g_object_unref (task);
+}
+
 /**
  * eknc_xapian_bridge_query:
  * @self: the xapian bridge object
@@ -606,11 +588,17 @@ eknc_xapian_bridge_query (EkncXapianBridge *self,
   GTask *task = g_task_new (self, cancellable, callback, user_data);
 
   RequestState *state = g_slice_new0 (RequestState);
+  state->db_manager = g_object_ref (self->database_manager);
+
+  state->db.path = g_hash_table_lookup (extra_params, "path");
+  state->db.manifest_path = g_hash_table_lookup (extra_params, "manifest_path");
+
   state->query = g_object_ref (query);
+  state->params = get_xapian_query_params (self, query, extra_params);
+
   g_task_set_task_data (task, state, request_state_free);
 
-  g_autoptr(SoupURI) uri = get_xapian_query_uri (self, query, extra_params);
-  send_json_ld_request (self, uri, task);
+  g_task_run_in_thread (task, query_task);
 }
 
 /**

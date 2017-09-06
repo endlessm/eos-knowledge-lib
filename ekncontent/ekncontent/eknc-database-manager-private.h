@@ -48,18 +48,18 @@ eknc_database_manager_new (void);
 
 gboolean
 eknc_database_manager_ensure_db (EkncDatabaseManager *self,
-                                 EkncDatabase db,
+                                 const EkncDatabase *db,
                                  GError **error_out);
 
 JsonObject *
 eknc_database_manager_query_db (EkncDatabaseManager *self,
-                                EkncDatabase db,
+                                const EkncDatabase *db,
                                 GHashTable *query,
                                 GError **error_out);
 
 JsonObject *
 eknc_database_manager_fix_query (EkncDatabaseManager *self,
-                                 EkncDatabase db,
+                                 const EkncDatabase *db,
                                  GHashTable *query,
                                  GError **error_out);
 

@@ -141,7 +141,7 @@ database_monitor_changed (GFileMonitor *monitor,
 
 static GFileMonitor *
 eknc_database_manager_monitor_db (EkncDatabaseManager *self,
-                                const gchar *path)
+                                  const gchar *path)
 {
   GFile *file;
   GFileMonitor *monitor;
@@ -168,8 +168,8 @@ eknc_database_manager_monitor_db (EkncDatabaseManager *self,
  */
 static void
 eknc_database_manager_add_queryparser_prefixes (EkncDatabaseManager *self,
-                                              XapianQueryParser *query_parser,
-                                              JsonObject *object)
+                                                XapianQueryParser *query_parser,
+                                                JsonObject *object)
 {
   JsonNode *element_node;
   JsonObject *element_object;
@@ -208,7 +208,7 @@ eknc_database_manager_add_queryparser_prefixes (EkncDatabaseManager *self,
 
 static void
 eknc_database_manager_add_queryparser_standard_prefixes (EkncDatabaseManager *self,
-                                                       XapianQueryParser *query_parser)
+                                                         XapianQueryParser *query_parser)
 {
   /* TODO: these should be configurable */
   static const struct {
@@ -314,9 +314,9 @@ eknc_database_manager_register_prefixes (EkncDatabaseManager *self,
 
 static gboolean
 eknc_database_manager_register_stopwords (EkncDatabaseManager *self,
-                                        XapianDatabase *db,
-                                        XapianQueryParser *query_parser,
-                                        GError **error_out)
+                                          XapianDatabase *db,
+                                          XapianQueryParser *query_parser,
+                                          GError **error_out)
 {
   XapianSimpleStopper *stopper;
   gchar *stopwords_json;
@@ -449,12 +449,14 @@ read_link (const char *path)
 }
 
 static char *
-eknc_database_path (EkncDatabase xbdb)
+eknc_database_path (const EkncDatabase *xbdb)
 {
-  if (xbdb.manifest_path)
-    return read_link (xbdb.manifest_path);
-  if (xbdb.path)
-    return read_link (xbdb.path);
+  if (xbdb->manifest_path != NULL)
+    return read_link (xbdb->manifest_path);
+
+  if (xbdb->path != NULL)
+    return read_link (xbdb->path);
+
   return NULL;
 }
 
@@ -463,8 +465,8 @@ eknc_database_path (EkncDatabase xbdb)
  */
 static DatabasePayload *
 eknc_database_manager_create_db_internal (EkncDatabaseManager *self,
-                                        EkncDatabase xbdb,
-                                        GError **error_out)
+                                          const EkncDatabase *xbdb,
+                                          GError **error_out)
 {
   EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
   XapianDatabase *db;
@@ -478,10 +480,10 @@ eknc_database_manager_create_db_internal (EkncDatabaseManager *self,
 
   g_assert (!g_hash_table_contains (priv->databases, path));
 
-  if (xbdb.manifest_path)
-    db = create_database_from_manifest (xbdb.manifest_path, &error);
+  if (xbdb->manifest_path)
+    db = create_database_from_manifest (xbdb->manifest_path, &error);
   else
-    db = xapian_database_new_with_path (xbdb.path, &error);
+    db = xapian_database_new_with_path (xbdb->path, &error);
 
   if (error != NULL)
     {
@@ -540,7 +542,7 @@ on_database_expire (DatabasePayload *payload)
 
 static DatabasePayload *
 ensure_db (EkncDatabaseManager *self,
-           EkncDatabase db,
+           const EkncDatabase *db,
            GError **error_out)
 {
   EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
@@ -572,19 +574,19 @@ ensure_db (EkncDatabaseManager *self,
 
 gboolean
 eknc_database_manager_ensure_db (EkncDatabaseManager *self,
-                               EkncDatabase db,
-                               GError **error_out)
+                                 const EkncDatabase *db,
+                                 GError **error_out)
 {
   return (ensure_db (self, db, error_out) != NULL);
 }
 
 static JsonObject *
 eknc_database_manager_fetch_results (EkncDatabaseManager *self,
-                                   XapianEnquire *enquire,
-                                   XapianQuery *query,
-                                   const gchar *query_str,
-                                   GHashTable *query_options,
-                                   GError **error_out)
+                                     XapianEnquire *enquire,
+                                     XapianQuery *query,
+                                     const gchar *query_str,
+                                     GHashTable *query_options,
+                                     GError **error_out)
 {
   const gchar *str;
   gchar *document_data;
@@ -831,9 +833,9 @@ parse_query_flags (const gchar *str,
 
 static JsonObject *
 eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
-                           DatabasePayload *payload,
-                           GHashTable *query_options,
-                           GError **error_out)
+                                          DatabasePayload *payload,
+                                          GHashTable *query_options,
+                                          GError **error_out)
 {
   gchar *spell_corrected_query_str = NULL, *no_stop_words = NULL;
   gchar **words = NULL, **words_iter = NULL;
@@ -920,9 +922,9 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
  */
 static JsonObject *
 eknc_database_manager_query (EkncDatabaseManager *self,
-                           DatabasePayload *payload,
-                           GHashTable *query_options,
-                           GError **error_out)
+                             DatabasePayload *payload,
+                             GHashTable *query_options,
+                             GError **error_out)
 {
   XapianQuery *parsed_query = NULL, *filter_query, *filterout_query;
   const gchar *filter_str, *filterout_str;
@@ -1105,7 +1107,7 @@ eknc_database_manager_query (EkncDatabaseManager *self,
 
 JsonObject *
 eknc_database_manager_fix_query (EkncDatabaseManager *self,
-                                 EkncDatabase db,
+                                 const EkncDatabase *db,
                                  GHashTable *query,
                                  GError **error_out)
 {
@@ -1137,7 +1139,7 @@ eknc_database_manager_fix_query (EkncDatabaseManager *self,
  */
 JsonObject *
 eknc_database_manager_query_db (EkncDatabaseManager *self,
-                                EkncDatabase db,
+                                const EkncDatabase *db,
                                 GHashTable *query,
                                 GError **error_out)
 {
