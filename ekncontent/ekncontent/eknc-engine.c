@@ -2,9 +2,8 @@
 
 #include "eknc-engine.h"
 
-#include "eknc-domain.h"
 #include "eknc-domain-private.h"
-#include "eknc-xapian-bridge.h"
+#include "eknc-xapian-bridge-private.h"
 #include "eknc-utils.h"
 
 /**
@@ -23,7 +22,7 @@ struct _EkncEngine
 
   gchar *default_app_id;
   gchar *language;
-  EkncXapianBridge *xapian_bridge;
+
   // Hash table with app id string keys, EkncDomain values
   GHashTable *domains;
 };
@@ -82,7 +81,6 @@ eknc_engine_set_property (GObject *object,
     case PROP_LANGUAGE:
       g_clear_pointer (&self->language, g_free);
       self->language = g_value_dup_string (value);
-      g_object_set (G_OBJECT (self->xapian_bridge), "language", self->language, NULL);
       break;
 
     default:
@@ -98,7 +96,6 @@ eknc_engine_finalize (GObject *object)
   g_clear_pointer (&self->default_app_id, g_free);
   g_clear_pointer (&self->language, g_free);
   g_clear_pointer (&self->domains, g_hash_table_unref);
-  g_clear_object (&self->xapian_bridge);
 
   G_OBJECT_CLASS (eknc_engine_parent_class)->finalize (object);
 }
@@ -141,9 +138,6 @@ eknc_engine_class_init (EkncEngineClass *klass)
 static void
 eknc_engine_init (EkncEngine *self)
 {
-  self->xapian_bridge = g_object_new (EKNC_TYPE_XAPIAN_BRIDGE,
-                                      "language", self->language,
-                                      NULL);
   self->domains = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_object_unref);
 }
 
@@ -482,14 +476,23 @@ eknc_engine_get_domain_for_app (EkncEngine *self,
   g_return_val_if_fail (app_id && *app_id, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  if (g_hash_table_contains (self->domains, app_id))
-    return g_hash_table_lookup (self->domains, app_id);
+  EkncDomain *domain = g_hash_table_lookup (self->domains, app_id);
 
-  EkncDomain *domain;
-  if (!(domain = eknc_domain_get_impl (app_id, NULL, self->xapian_bridge, NULL, error)))
+  if (domain != NULL)
+    return domain;
+
+  domain = eknc_domain_get_for_app_id (app_id, NULL, self->language, NULL, error);
+  if (domain == NULL)
     return NULL;
+
+  // Bind our own language property to the domain
+  g_object_bind_property (self, "language",
+                          domain, "language",
+                          G_BINDING_DEFAULT);
+
   // Hash table takes ownership of domain
   g_hash_table_insert (self->domains, g_strdup (app_id), domain);
+
   return domain;
 }
 
@@ -508,8 +511,6 @@ eknc_engine_add_domain_for_path (EkncEngine *self,
                                  const gchar *path,
                                  GError **error)
 {
-  EkncDomain *domain;
-
   g_return_if_fail (EKNC_IS_ENGINE (self));
   g_return_if_fail (app_id && *app_id);
   g_return_if_fail (path && *path);
@@ -517,8 +518,16 @@ eknc_engine_add_domain_for_path (EkncEngine *self,
   if (g_hash_table_contains (self->domains, app_id))
     return;
 
-  domain = eknc_domain_get_impl (app_id, path, self->xapian_bridge, NULL, error);
+  EkncDomain *domain = eknc_domain_get_for_app_id (app_id, path, self->language, NULL, error);
+  if (domain == NULL)
+    return;
 
+  // Bind our own language property to the domain
+  g_object_bind_property (self, "language",
+                          domain, "language",
+                          G_BINDING_DEFAULT);
+
+  // Hash table takes ownership of domain
   g_hash_table_insert (self->domains, g_strdup (app_id), domain);
 }
 

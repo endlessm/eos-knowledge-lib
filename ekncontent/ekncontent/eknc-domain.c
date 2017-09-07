@@ -1,10 +1,11 @@
 /* Copyright 2016 Endless Mobile, Inc. */
 
-#include "eknc-domain.h"
+#include "eknc-domain-private.h"
 
 #include "eknc-object-model.h"
 #include "eknc-utils.h"
 #include "eknc-utils-private.h"
+#include "eknc-xapian-bridge-private.h"
 
 // Consolidate header would be nice
 #include <eos-shard/eos-shard-blob.h>
@@ -39,7 +40,10 @@ struct _EkncDomain
   gchar *path;
   GList *subscriptions;
 
+  char *language;
+
   EkncXapianBridge *xapian_bridge;
+
   GFile *content_dir;
   GFile *manifest_file;
   // List of EosShardShardFile items
@@ -50,17 +54,16 @@ struct _EkncDomain
 
 static void initable_iface_init (GInitableIface *initable_iface);
 
-G_DEFINE_TYPE_EXTENDED (EkncDomain,
-                        eknc_domain,
-                        G_TYPE_OBJECT,
-                        0,
-                        G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, initable_iface_init))
+G_DEFINE_TYPE_WITH_CODE (EkncDomain,
+                         eknc_domain,
+                         G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, initable_iface_init))
 
 enum {
-  PROP_0,
-  PROP_APP_ID,
+  PROP_APP_ID = 1,
   PROP_PATH,
-  PROP_XAPIAN_BRIDGE,
+  PROP_LANGUAGE,
+
   NPROPS
 };
 
@@ -84,8 +87,8 @@ eknc_domain_get_property (GObject    *object,
       g_value_set_string (value, self->path);
       break;
 
-    case PROP_XAPIAN_BRIDGE:
-      g_value_set_object (value, self->xapian_bridge);
+    case PROP_LANGUAGE:
+      g_value_set_string (value, self->language);
       break;
 
     default:
@@ -104,18 +107,18 @@ eknc_domain_set_property (GObject *object,
   switch (prop_id)
     {
     case PROP_APP_ID:
-      g_clear_pointer (&self->app_id, g_free);
+      g_free (self->app_id);
       self->app_id = g_value_dup_string (value);
       break;
 
     case PROP_PATH:
-      g_clear_pointer (&self->path, g_free);
+      g_free (self->path);
       self->path = g_value_dup_string (value);
       break;
 
-    case PROP_XAPIAN_BRIDGE:
-      g_clear_object (&self->xapian_bridge);
-      self->xapian_bridge = g_value_dup_object (value);
+    case PROP_LANGUAGE:
+      g_free (self->language);
+      self->language = g_value_dup_string (value);
       break;
 
     default:
@@ -128,15 +131,18 @@ eknc_domain_finalize (GObject *object)
 {
   EkncDomain *self = EKNC_DOMAIN (object);
 
-  g_clear_pointer (&self->app_id, g_free);
-  g_clear_pointer (&self->path, g_free);
-  g_list_free_full (self->subscriptions, g_free);
+  g_free (self->app_id);
+  g_free (self->path);
+  g_free (self->language);
 
   g_clear_object (&self->xapian_bridge);
   g_clear_object (&self->content_dir);
   g_clear_object (&self->manifest_file);
+
+  g_list_free_full (self->subscriptions, g_free);
+
   g_slist_free_full (self->shards, g_object_unref);
-  g_slist_free_full (self->link_tables, (GDestroyNotify)eos_shard_dictionary_unref);
+  g_slist_free_full (self->link_tables, (GDestroyNotify) eos_shard_dictionary_unref);
 
   G_OBJECT_CLASS (eknc_domain_parent_class)->finalize (object);
 }
@@ -158,7 +164,8 @@ eknc_domain_class_init (EkncDomainClass *klass)
   eknc_domain_props[PROP_APP_ID] =
     g_param_spec_string ("app-id", "Application ID",
       "Application ID of the domain content",
-      "", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+      NULL,
+      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
    * EkncDomain:path:
@@ -168,17 +175,19 @@ eknc_domain_class_init (EkncDomainClass *klass)
   eknc_domain_props[PROP_PATH] =
     g_param_spec_string ("path", "Path",
       "Path to the domain content",
-      "", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+      NULL,
+      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
-   * EkncDomain:xapian-bridge:
+   * EkncDomain:language:
    *
-   * The xapian bridge object to use for querying xapian.
+   * The language used for the domain, as an ISO 639 locale code.
    */
-  eknc_domain_props[PROP_XAPIAN_BRIDGE] =
-    g_param_spec_object ("xapian-bridge", "Xapian Bridge",
-      "The xapian bridge object to use for querying xapian",
-      EKNC_TYPE_XAPIAN_BRIDGE, G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS);
+  eknc_domain_props[PROP_LANGUAGE] =
+    g_param_spec_string ("language", "Language",
+      "The language used by the domain, as an ISO 639 locale code",
+      NULL,
+      G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class,
                                      NPROPS,
@@ -454,6 +463,15 @@ eknc_domain_initable_init (GInitable *initable,
                    "You must set an app id or path to initialize a domain object");
       return FALSE;
     }
+
+  self->xapian_bridge = g_object_new (EKNC_TYPE_XAPIAN_BRIDGE,
+                                      "language", self->language,
+                                      NULL);
+
+  // Propagate changes for the domain language to the bridge
+  g_object_bind_property (self, "language",
+                          self->xapian_bridge, "language",
+                          G_BINDING_DEFAULT);
 
   if (!eknc_utils_parallel_init (self->shards, 0, cancellable, error))
     return FALSE;
@@ -1073,12 +1091,12 @@ eknc_domain_read_uri (EkncDomain *self,
   return TRUE;
 }
 
-/**
+/*< private >
  * eknc_domain_get_impl:
  * @app_id: the domains app id
  * @path: path to the content
- * @xapian_bridge: the xapian bridge instance to use to communicate to xapian
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @language: the language used by the domain
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting
  *
  * Gets a domain object for a given app id. Currently only EKN_VERSION 3 domains
@@ -1088,33 +1106,32 @@ eknc_domain_read_uri (EkncDomain *self,
  * Returns: (transfer full): the newly created domain object
  */
 EkncDomain *
-eknc_domain_get_impl (const gchar *app_id,
-                      const gchar *path,
-                      EkncXapianBridge *xapian_bridge,
-                      GCancellable *cancellable,
-                      GError **error)
+eknc_domain_get_for_app_id (const char *app_id,
+                            const char *path,
+                            const char *language,
+                            GCancellable *cancellable,
+                            GError **error)
 {
-  g_autofree gchar *ekn_version;
-  if (!(ekn_version = eknc_get_ekn_version (app_id, cancellable, error)))
+  g_autofree gchar *ekn_version = eknc_get_ekn_version (app_id, cancellable, error);
+
+  if (ekn_version == NULL)
     return NULL;
 
-  EkncDomain *domain = NULL;
-  if (g_strcmp0 (ekn_version, "3") == 0)
-    {
-      domain = g_object_new (EKNC_TYPE_DOMAIN,
-                             "app-id", app_id,
-                             "path", path,
-                             "xapian-bridge", xapian_bridge,
-                             NULL);
-    }
-  else
+  if (!g_str_equal (ekn_version, "3"))
     {
       g_set_error (error, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_UNSUPPORTED_VERSION,
                    "Invalid ekn version for app ID %s: %s", app_id, ekn_version);
       return NULL;
     }
 
+  EkncDomain *domain = g_object_new (EKNC_TYPE_DOMAIN,
+                                     "app-id", app_id,
+                                     "path", path,
+                                     "language", language,
+                                     NULL);
+
   if (!g_initable_init (G_INITABLE (domain), cancellable, error))
     g_clear_pointer (&domain, g_object_unref);
+
   return domain;
 }
