@@ -11,10 +11,6 @@ eknc_xapian_bridge_error_quark (void)
   return g_quark_from_static_string("eknc-xapian-bridge-error-quark");
 }
 
-#define XB_FIX_ENDPOINT "/fix"
-#define XB_QUERY_ENDPOINT "/query"
-#define XB_TEST_ENDPOINT "/test"
-
 /**
  * SECTION:xapian-bridge
  * @title: Xapian Bridge
@@ -29,21 +25,15 @@ struct _EkncXapianBridge
 
   EkncDatabaseManager *database_manager;
 
-  gboolean feature_test_done;
   gboolean has_default_op, has_flags, has_filter;
 
-  gchar *host;
-  guint port;
   gchar *language;
-  SoupSession *session;
 };
 
 G_DEFINE_TYPE (EkncXapianBridge, eknc_xapian_bridge, G_TYPE_OBJECT)
 
 enum {
   PROP_0,
-  PROP_HOST,
-  PROP_PORT,
   PROP_LANGUAGE,
   NPROPS
 };
@@ -60,14 +50,6 @@ eknc_xapian_bridge_get_property (GObject    *object,
 
   switch (prop_id)
     {
-    case PROP_HOST:
-      g_value_set_string (value, self->host);
-      break;
-
-    case PROP_PORT:
-      g_value_set_uint (value, self->port);
-      break;
-
     case PROP_LANGUAGE:
       g_value_set_string (value, self->language);
       break;
@@ -87,15 +69,6 @@ eknc_xapian_bridge_set_property (GObject *object,
 
   switch (prop_id)
     {
-    case PROP_HOST:
-      g_clear_pointer (&self->host, g_free);
-      self->host = g_value_dup_string (value);
-      break;
-
-    case PROP_PORT:
-      self->port = g_value_get_uint (value);
-      break;
-
     case PROP_LANGUAGE:
       g_clear_pointer (&self->language, g_free);
       self->language = g_value_dup_string (value);
@@ -112,9 +85,7 @@ eknc_xapian_bridge_finalize (GObject *object)
   EkncXapianBridge *self = EKNC_XAPIAN_BRIDGE (object);
 
   g_clear_object (&self->database_manager);
-  g_clear_object (&self->session);
 
-  g_clear_pointer (&self->host, g_free);
   g_clear_pointer (&self->language, g_free);
 
   G_OBJECT_CLASS (eknc_xapian_bridge_parent_class)->finalize (object);
@@ -128,32 +99,6 @@ eknc_xapian_bridge_class_init (EkncXapianBridgeClass *klass)
   object_class->get_property = eknc_xapian_bridge_get_property;
   object_class->set_property = eknc_xapian_bridge_set_property;
   object_class->finalize = eknc_xapian_bridge_finalize;
-
-  /**
-   * EkncXapianBridge:host:
-   *
-   * The hostname of the xapian bridge. You generally don't
-   * need to set this.
-   */
-  // FIXME: the default should just be localhost, but libsoup has a bug
-  // whereby it does not resolve localhost when it is offline:
-  // https://bugzilla.gnome.org/show_bug.cgi?id=692291
-  // Once this bug is fixed, we should change this to be localhost.
-  eknc_xapian_bridge_props[PROP_HOST] =
-    g_param_spec_string ("host", "Hostname",
-      "HTTP hostname for the xapian bridge service",
-      "127.0.0.1", G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS);
-
-  /**
-   * EkncXapianBridge:port:
-   *
-   * The port of the xapian bridge. You generally don't need
-   * to set this.
-   */
-  eknc_xapian_bridge_props[PROP_PORT] =
-    g_param_spec_uint ("port", "Port",
-      "The port of the xapian bridge service",
-      0, 65535, 3004, G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS);
 
   /**
    * EkncXapianBridge:language:
@@ -179,57 +124,6 @@ eknc_xapian_bridge_init (EkncXapianBridge *self)
   self->has_default_op = TRUE;
   self->has_flags = TRUE;
   self->has_filter = TRUE;
-}
-
-/**
- * eknc_xapian_bridge_get_soup_session:
- * @self: the xapian bridge object
- *
- * Exposes the soup session used for network communications with xapian bridge.
- * For testing, should not be needed for normal use.
- *
- * Returns: (transfer none): the soup session
- */
-SoupSession *
-eknc_xapian_bridge_get_soup_session (EkncXapianBridge *self)
-{
-  g_return_val_if_fail (EKNC_IS_XAPIAN_BRIDGE (self), NULL);
-
-  return NULL;
-}
-
-/**
- * eknc_xapian_bridge_need_feature_test:
- * @self: the xapian bridge object
- *
- * Tells whether a feature test has already been carried out.
- * Since the feature test (see eknc_xapian_bridge_test()) is an asynchronous
- * operation, you can use this synchronous function to avoid doing it when it
- * has already been done.
- *
- * Returns: %TRUE if no feature test has been done yet, %FALSE otherwise.
- */
-gboolean
-eknc_xapian_bridge_need_feature_test (EkncXapianBridge *self)
-{
-  g_return_val_if_fail (EKNC_IS_XAPIAN_BRIDGE (self), FALSE);
-
-  return FALSE;
-}
-
-static SoupURI *
-build_xapian_uri (EkncXapianBridge *self,
-                  const gchar *endpoint,
-                  GHashTable *params)
-{
-  SoupURI *uri = soup_uri_new (NULL);
-  soup_uri_set_scheme (uri, SOUP_URI_SCHEME_HTTP);
-  soup_uri_set_host (uri, self->host);
-  soup_uri_set_port (uri, self->port);
-  soup_uri_set_path (uri, endpoint);
-  if (params)
-    soup_uri_set_query_from_form (uri, params);
-  return uri;
 }
 
 static void
@@ -324,39 +218,9 @@ get_xapian_query_fix_params (EkncXapianBridge *self,
   return params;
 }
 
-static SoupURI *
-get_xapian_test_uri (EkncXapianBridge *self)
-{
-  return build_xapian_uri (self, XB_TEST_ENDPOINT, NULL);
-}
-
-static void
-json_ld_request_finished (SoupSession *session,
-                          SoupMessage *request,
-                          gpointer data)
-{
-  g_autoptr(GTask) task = data;
-  if (request->status_code != SOUP_STATUS_OK)
-    {
-      g_task_return_new_error (task, EKNC_XAPIAN_BRIDGE_ERROR, EKNC_XAPIAN_BRIDGE_ERROR_BAD_STATUS,
-                               "Bad status from xapian bridge: %d", request->status_code);
-      return;
-    }
-  g_autoptr(GError) error = NULL;
-  g_autoptr(JsonNode) node = json_from_string (request->response_body->data, &error);
-  if (error)
-    {
-      g_task_return_new_error (task, EKNC_XAPIAN_BRIDGE_ERROR, EKNC_XAPIAN_BRIDGE_ERROR_BAD_JSON,
-                               "Error parsing json from xapian: %s", error->message);
-      return;
-    }
-  g_task_return_pointer (task, g_steal_pointer (&node), (GDestroyNotify)json_node_unref);
-}
-
 typedef struct
 {
   EkncQueryObject *query;
-  SoupMessage *request;
 
   EkncDatabaseManager *db_manager;
   EkncDatabase db;
@@ -370,8 +234,6 @@ request_state_free (gpointer data)
   RequestState *state = data;
 
   g_clear_object (&state->query);
-
-  g_object_unref (state->request);
 
   g_clear_object (&state->db_manager);
   g_clear_pointer (&state->params, g_hash_table_unref);
