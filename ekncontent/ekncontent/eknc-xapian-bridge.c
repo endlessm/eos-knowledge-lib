@@ -1,15 +1,9 @@
 /* Copyright 2016 Endless Mobile, Inc. */
 
-#include "eknc-xapian-bridge.h"
+#include "eknc-xapian-bridge-private.h"
 #include "eknc-database-manager-private.h"
 
 #include <gio/gio.h>
-
-GQuark
-eknc_xapian_bridge_error_quark (void)
-{
-  return g_quark_from_static_string("eknc-xapian-bridge-error-quark");
-}
 
 /**
  * SECTION:xapian-bridge
@@ -339,12 +333,7 @@ eknc_xapian_bridge_get_fixed_query_finish (EkncXapianBridge *self,
   g_autoptr(JsonNode) node = g_task_propagate_pointer (task, error);
   if (node == NULL)
     return NULL;
-  if (!JSON_NODE_HOLDS_OBJECT (node))
-    {
-      g_set_error (error, EKNC_XAPIAN_BRIDGE_ERROR, EKNC_XAPIAN_BRIDGE_ERROR_BAD_JSON,
-                   "Non json object from xapian bridge");
-      return NULL;
-    }
+
   JsonObject *object = json_node_get_object (node);
   JsonNode *stop_fixed_query_node = json_object_get_member (object, "stopWordCorrectedQuery");
   JsonNode *spell_fixed_query_node = json_object_get_member (object, "spellCorrectedQuery");
@@ -355,25 +344,10 @@ eknc_xapian_bridge_get_fixed_query_finish (EkncXapianBridge *self,
 
   const gchar *stop_fixed_query = NULL, *spell_fixed_query = NULL;
   if (stop_fixed_query_node != NULL)
-    {
-      if (json_node_get_value_type (stop_fixed_query_node) != G_TYPE_STRING)
-        {
-          g_set_error (error, EKNC_XAPIAN_BRIDGE_ERROR, EKNC_XAPIAN_BRIDGE_ERROR_BAD_JSON,
-                       "Unexpected value for stopWordCorrectedQuery");
-          return NULL;
-        }
-      stop_fixed_query = json_node_get_string (stop_fixed_query_node);
-    }
+    stop_fixed_query = json_node_get_string (stop_fixed_query_node);
+
   if (spell_fixed_query_node != NULL)
-    {
-      if (json_node_get_value_type (spell_fixed_query_node) != G_TYPE_STRING)
-        {
-          g_set_error (error, EKNC_XAPIAN_BRIDGE_ERROR, EKNC_XAPIAN_BRIDGE_ERROR_BAD_JSON,
-                       "Unexpected value for spellCorrectedQuery");
-          return NULL;
-        }
-      spell_fixed_query = json_node_get_string (spell_fixed_query_node);
-    }
+    spell_fixed_query = json_node_get_string (spell_fixed_query_node);
 
   if (stop_fixed_query != NULL && spell_fixed_query != NULL)
     return eknc_query_object_new_from_object (state->query,

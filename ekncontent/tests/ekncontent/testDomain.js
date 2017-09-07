@@ -5,7 +5,7 @@ const GLib = imports.gi.GLib;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 
 describe('Domain', function () {
-    let domain, bridge, tempdir;
+    let domain, tempdir;
 
     beforeAll(function () {
         tempdir = GLib.Dir.make_tmp('ekncontent-test-domain-XXXXXX');
@@ -14,10 +14,8 @@ describe('Domain', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        bridge = new Eknc.XapianBridge();
         domain = new Eknc.Domain({
             app_id: 'com.endlessm.fake_test_app.en',
-            xapian_bridge: bridge,
         });
     });
 
@@ -48,7 +46,6 @@ describe('Domain', function () {
         it('errors for an invalid app id', function () {
             domain = new Eknc.Domain({
                 app_id: 'com.endlessm.invalid_app.en',
-                xapian_bridge: bridge,
             });
             expect(() => { domain.init(null); }).toThrow();
         });

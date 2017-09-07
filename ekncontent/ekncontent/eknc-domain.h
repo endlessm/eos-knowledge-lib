@@ -5,7 +5,6 @@
 #include "eknc-content-object-model.h"
 #include "eknc-query-object.h"
 #include "eknc-query-results.h"
-#include "eknc-xapian-bridge.h"
 
 #include <gio/gio.h>
 

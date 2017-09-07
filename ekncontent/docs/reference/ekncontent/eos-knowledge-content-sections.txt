@@ -189,24 +189,3 @@ eknc_content_object_error_quark
 eknc_utils_append_gparam_from_json_node
 eknc_utils_free_gparam_array
 </SECTION>
-
-<SECTION>
-<FILE>xapian-bridge</FILE>
-eknc_xapian_bridge_get_fixed_query
-eknc_xapian_bridge_get_fixed_query_finish
-eknc_xapian_bridge_query
-eknc_xapian_bridge_query_finish
-eknc_xapian_bridge_get_soup_session
-eknc_xapian_bridge_need_feature_test
-eknc_xapian_bridge_test
-eknc_xapian_bridge_test_finish
-EkncXapianBridgeError
-<SUBSECTION Standard>
-EkncXapianBridge
-EkncXapianBridgeClass
-EKNC_TYPE_XAPIAN_BRIDGE
-EKNC_XAPIAN_BRIDGE_ERROR
-EKNC_TYPE_XAPIAN_BRIDGE_ERROR
-<SUBSECTION Private>
-eknc_xapian_bridge_error_quark
-</SECTION>

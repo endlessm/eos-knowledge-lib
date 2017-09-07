@@ -2,13 +2,15 @@
 
 #pragma once
 
+#include "eknc-domain.h"
+
 G_BEGIN_DECLS
 
 EkncDomain *
-eknc_domain_get_impl (const gchar *app_id,
-                      const gchar *path,
-                      EkncXapianBridge *xapian_bridge,
-                      GCancellable *cancellable,
-                      GError **error);
+eknc_domain_get_for_app_id (const char *app_id,
+                            const char *path,
+                            const char *language,
+                            GCancellable *cancellable,
+                            GError **error);
 
 G_END_DECLS

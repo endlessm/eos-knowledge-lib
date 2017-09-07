@@ -75,7 +75,6 @@ ekncontent_private_installed_headers = \
 	ekncontent/eknc-set-object-model.h \
 	ekncontent/eknc-utils.h \
 	ekncontent/eknc-video-object-model.h \
-	ekncontent/eknc-xapian-bridge.h \
 	$(NULL)
 ekncontent_sources = \
 	ekncontent/eknc-article-object-model.c \
@@ -99,6 +98,7 @@ ekncontent_sources = \
 	ekncontent/eknc-database-manager.c \
 	ekncontent/eknc-database-manager-private.h \
 	ekncontent/eknc-xapian-bridge.c \
+	ekncontent/eknc-xapian-bridge-private.h \
 	$(NULL)
 
 glib_enum_headers = \
@@ -168,7 +168,6 @@ javascript_tests = \
 	tests/ekncontent/testSetObjectModel.js \
 	tests/ekncontent/testUtils.js \
 	tests/ekncontent/testVideoObjectModel.js \
-	tests/ekncontent/testXapianBridge.js \
 	$(NULL)
 
 test_content = \
