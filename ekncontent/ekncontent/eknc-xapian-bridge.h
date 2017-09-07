@@ -6,7 +6,6 @@
 
 #include <gio/gio.h>
 #include <json-glib/json-glib.h>
-#include <libsoup/soup.h>
 
 G_BEGIN_DECLS
 
