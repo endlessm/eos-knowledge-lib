@@ -52,9 +52,7 @@ typedef struct {
   XapianDatabase *db;
   XapianQueryParser *qp;
   EkncDatabaseManager *manager;
-  GFileMonitor *monitor;
-  gchar *path;
-  guint expiration_timeout;
+  char *path;
 } DatabasePayload;
 
 static void
@@ -63,12 +61,7 @@ database_payload_free (DatabasePayload *payload)
   g_clear_object (&payload->db);
   g_clear_object (&payload->qp);
 
-  g_file_monitor_cancel (payload->monitor);
-  g_clear_object (&payload->monitor);
   g_free (payload->path);
-
-  if (payload->expiration_timeout)
-    g_source_remove (payload->expiration_timeout);
 
   g_slice_free (DatabasePayload, payload);
 }
@@ -77,7 +70,6 @@ static DatabasePayload *
 database_payload_new (XapianDatabase *db,
                       XapianQueryParser *qp,
                       EkncDatabaseManager *manager,
-                      GFileMonitor *monitor,
                       const gchar *path)
 {
   DatabasePayload *payload;
@@ -86,7 +78,6 @@ database_payload_new (XapianDatabase *db,
   payload->db = g_object_ref (db);
   payload->qp = g_object_ref (qp);
   payload->manager = manager;
-  payload->monitor = g_object_ref (monitor);
   payload->path = g_strdup (path);
 
   return payload;
@@ -104,64 +95,6 @@ struct _EkncDatabaseManager {
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (EkncDatabaseManager, eknc_database_manager, G_TYPE_OBJECT)
-
-static void
-eknc_database_manager_invalidate_db (EkncDatabaseManager *self,
-                                   const gchar *path)
-{
-  if (self != NULL)
-    {
-      EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
-      g_hash_table_remove (priv->databases, path);
-    }
-}
-
-static void
-database_monitor_changed (GFileMonitor *monitor,
-                          GFile *file,
-                          GFile *other_file,
-                          GFileMonitorEvent event_type,
-                          gpointer user_data)
-{
-  DatabasePayload *payload = user_data;
-
-  switch (event_type)
-    {
-    case G_FILE_MONITOR_EVENT_CHANGED:
-    case G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
-    case G_FILE_MONITOR_EVENT_DELETED:
-    case G_FILE_MONITOR_EVENT_MOVED:
-    case G_FILE_MONITOR_EVENT_UNMOUNTED:
-      eknc_database_manager_invalidate_db (payload->manager, payload->path);
-      break;
-    default:
-      break;
-    }
-}
-
-static GFileMonitor *
-eknc_database_manager_monitor_db (EkncDatabaseManager *self,
-                                  const gchar *path)
-{
-  GFile *file;
-  GFileMonitor *monitor;
-  GError *error = NULL;
-
-  file = g_file_new_for_path (path);
-  monitor = g_file_monitor (file, G_FILE_MONITOR_NONE, NULL, &error);
-  g_object_unref (file);
-
-  if (error != NULL)
-    {
-      /* Non-fatal */
-      g_warning ("Could not monitor database at path %s: %s",
-                 path, error->message);
-      g_error_free (error);
-      return NULL;
-    }
-
-  return monitor;
-}
 
 /* Registers the prefixes and booleanPrefixes contained in the JSON object
  * to the query parser.
@@ -268,9 +201,9 @@ eknc_database_manager_init (EkncDatabaseManager *self)
 
 static gboolean
 eknc_database_manager_register_prefixes (EkncDatabaseManager *self,
-                                       XapianDatabase *db,
-                                       XapianQueryParser *query_parser,
-                                       GError **error_out)
+                                         XapianDatabase *db,
+                                         XapianQueryParser *query_parser,
+                                         GError **error_out)
 {
   gchar *metadata_json;
   GError *error = NULL;
@@ -469,17 +402,14 @@ eknc_database_manager_create_db_internal (EkncDatabaseManager *self,
                                           GError **error_out)
 {
   EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
-  XapianDatabase *db;
   GError *error = NULL;
-  XapianQueryParser *query_parser;
   DatabasePayload *payload;
-  GFileMonitor *monitor;
-  char *path;
 
-  path = eknc_database_path (xbdb);
+  g_autofree char *path = eknc_database_path (xbdb);
 
   g_assert (!g_hash_table_contains (priv->databases, path));
 
+  XapianDatabase *db;
   if (xbdb->manifest_path)
     db = create_database_from_manifest (xbdb->manifest_path, &error);
   else
@@ -498,7 +428,7 @@ eknc_database_manager_create_db_internal (EkncDatabaseManager *self,
   /* Create a XapianQueryParser for this particular database, stemming by its
    * registered language.
    */
-  query_parser = xapian_query_parser_new ();
+  XapianQueryParser *query_parser = xapian_query_parser_new ();
   xapian_query_parser_set_database (query_parser, db);
 
   if (!eknc_database_manager_register_prefixes (self, db, query_parser, &error))
@@ -517,27 +447,13 @@ eknc_database_manager_create_db_internal (EkncDatabaseManager *self,
       g_clear_error (&error);
     }
 
-  monitor = eknc_database_manager_monitor_db (self, path);
-  payload = database_payload_new (db, query_parser, self, monitor, path);
+  payload = database_payload_new (db, query_parser, self, path);
   g_hash_table_insert (priv->databases, g_strdup (path), payload);
 
-  g_signal_connect (monitor, "changed",
-                    G_CALLBACK (database_monitor_changed), payload);
-
-  g_object_unref (db);
   g_object_unref (query_parser);
-  g_object_unref (monitor);
-  g_free (path);
+  g_object_unref (db);
 
   return payload;
-}
-
-static gboolean
-on_database_expire (DatabasePayload *payload)
-{
-  payload->expiration_timeout = 0;
-  eknc_database_manager_invalidate_db (payload->manager, payload->path);
-  return G_SOURCE_REMOVE;
 }
 
 static DatabasePayload *
@@ -546,28 +462,20 @@ ensure_db (EkncDatabaseManager *self,
            GError **error_out)
 {
   EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
-  GError *error = NULL;
   DatabasePayload *payload;
-  char *path;
 
-  path = eknc_database_path (db);
+  g_autofree char *path = eknc_database_path (db);
   payload = g_hash_table_lookup (priv->databases, path);
+  if (payload != NULL)
+    return payload;
 
-  if (payload == NULL)
-    payload = eknc_database_manager_create_db_internal (self, db, &error);
-
+  GError *error = NULL;
+  payload = eknc_database_manager_create_db_internal (self, db, &error);
   if (error != NULL)
     {
       g_propagate_error (error_out, error);
       return NULL;
     }
-
-  if (payload->expiration_timeout)
-    g_source_remove (payload->expiration_timeout);
-  payload->expiration_timeout =
-    g_timeout_add_seconds (5, (GSourceFunc) on_database_expire, payload);
-
-  g_free (path);
 
   return payload;
 }
