@@ -252,6 +252,7 @@ eknc_content_object_model_constructed (GObject *object)
                                          (guchar *) &MOCKED_OBJECTS,
                                          sizeof (MOCKED_OBJECTS));
       MOCKED_OBJECTS++;
+      g_free (priv->ekn_id);
       priv->ekn_id = g_strconcat ("ekn:///", sum, NULL);
     }
 }

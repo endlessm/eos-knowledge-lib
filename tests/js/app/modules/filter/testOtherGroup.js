@@ -32,7 +32,7 @@ describe('Filter.OtherGroup', function () {
                         'arrangement': {
                             type: Minimal.MinimalArrangement,
                             slots: {
-                                'card': Minimal.MinimalCard,
+                                'card': { type: Minimal.MinimalCard },
                             },
                         },
                     },
@@ -57,7 +57,7 @@ describe('Filter.OtherGroup', function () {
                         'arrangement': {
                             type: Minimal.MinimalArrangement,
                             slots: {
-                                'card': Minimal.MinimalCard,
+                                'card': { type: Minimal.MinimalCard },
                             },
                         },
                     },

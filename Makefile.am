@@ -602,8 +602,11 @@ YAML_LOG_COMPILER = $(top_srcdir)/tests/autobahn/testautobahn.sh
 # libraries. We clobber GJS_PATH and include the js directory and the
 # $(top_srcdir) for including test helper files.
 # (May need to change to AM_TESTS_ENVIRONMENT in a later version of Automake)
+# FIXME: Re-enable JIT when moving to GNOME 3.26 or patching mozjs38 (see
+# https://phabricator.endlessm.com/T18981)
 TESTS_ENVIRONMENT = \
 	export NO_AT_BRIDGE=1; \
+	export GJS_DISABLE_JIT=1; \
 	export GJS_PATH="$(top_srcdir):$(top_srcdir)/js:$(top_builddir)/js:$(top_srcdir)/ekncontent:$(top_builddir)/ekncontent"; \
 	export GI_TYPELIB_PATH="$(top_builddir):$(top_builddir)/ekncontent$${GI_TYPELIB_PATH:+:$$GI_TYPELIB_PATH}"; \
 	export LD_LIBRARY_PATH="$(top_builddir)/.libs:$(top_builddir)/ekncontent/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \

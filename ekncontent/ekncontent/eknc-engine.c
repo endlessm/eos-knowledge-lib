@@ -156,9 +156,10 @@ eknc_engine_init (EkncEngine *self)
  * Attempts to determine if the given link corresponds to content within
  * the default domain.
  *
- * Returns: Returns an EKN URI to that content if so, and NULL otherwise.
+ * Returns: (transfer full) (nullable): Returns an EKN URI to that content if
+ * so, and %NULL otherwise.
  */
-const gchar *
+gchar *
 eknc_engine_test_link (EkncEngine *self,
                        const gchar *link,
                        GError **error)
@@ -178,9 +179,10 @@ eknc_engine_test_link (EkncEngine *self,
  * Attempts to determine if the given link corresponds to content within
  * the domain for the given application id.
  *
- * Returns: Returns an EKN URI to that content if so, and NULL otherwise.
+ * Returns: (transfer full) (nullable): Returns an EKN URI to that content if
+ * so, and %NULL otherwise.
  */
-const gchar *
+gchar *
 eknc_engine_test_link_for_app (EkncEngine *self,
                                const gchar *link,
                                const gchar *app_id,
