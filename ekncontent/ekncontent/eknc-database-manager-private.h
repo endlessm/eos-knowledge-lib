@@ -46,11 +46,6 @@ eknc_database_manager_get_type (void) G_GNUC_CONST;
 EkncDatabaseManager *
 eknc_database_manager_new (void);
 
-gboolean
-eknc_database_manager_ensure_db (EkncDatabaseManager *self,
-                                 const EkncDatabase *db,
-                                 GError **error_out);
-
 JsonObject *
 eknc_database_manager_query_db (EkncDatabaseManager *self,
                                 const EkncDatabase *db,

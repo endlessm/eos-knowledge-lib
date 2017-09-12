@@ -480,14 +480,6 @@ ensure_db (EkncDatabaseManager *self,
   return payload;
 }
 
-gboolean
-eknc_database_manager_ensure_db (EkncDatabaseManager *self,
-                                 const EkncDatabase *db,
-                                 GError **error_out)
-{
-  return (ensure_db (self, db, error_out) != NULL);
-}
-
 static JsonObject *
 eknc_database_manager_fetch_results (EkncDatabaseManager *self,
                                      XapianEnquire *enquire,
