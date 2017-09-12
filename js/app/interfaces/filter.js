@@ -54,6 +54,11 @@ const Filter = new Lang.Interface({
 
     _interface_init: function () {
         this._sub_filter = this.create_submodule('sub-filter');
+        if (this._sub_filter) {
+            this._sub_filter.connect('filter-changed', () => {
+                this.emit('filter-changed');
+            });
+        }
     },
 
     /**

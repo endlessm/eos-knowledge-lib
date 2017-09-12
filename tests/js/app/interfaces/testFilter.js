@@ -83,6 +83,23 @@ describe('Filter interface', function () {
         expect(query.tags_match_all).toEqual(['EknIncludeMe', 'EknAnotherTag']);
     });
 
+    it('lets the sub-filter filter-changed propagate upwards', function () {
+        let factory = new MockFactory.MockFactory({
+            type: Minimal.MinimalXapianFilter,
+            slots: {
+                'sub-filter': {
+                    type: Minimal.MinimalXapianFilter,
+                },
+            },
+        });
+        let filter = factory.create_root_module();
+        let subfilter = factory.get_last_created('sub-filter');
+        let on_filter_changed = jasmine.createSpy();
+        filter.connect('filter-changed', on_filter_changed);
+        subfilter.emit('filter-changed');
+        expect(on_filter_changed).toHaveBeenCalled();
+    });
+
     it('delegates modifying the Xapian query to the sub-filter if the top does not do it', function () {
         let factory = new MockFactory.MockFactory({
             type: AFilter,
