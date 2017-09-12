@@ -187,7 +187,7 @@ eknc_domain_class_init (EkncDomainClass *klass)
     g_param_spec_string ("language", "Language",
       "The language used by the domain, as an ISO 639 locale code",
       NULL,
-      G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS);
+      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class,
                                      NPROPS,
@@ -1158,7 +1158,7 @@ eknc_domain_read_uri (EkncDomain *self,
 }
 
 /*< private >
- * eknc_domain_get_impl:
+ * eknc_domain_get_for_app_id:
  * @app_id: the domains app id
  * @path: path to the content
  * @language: the language used by the domain
