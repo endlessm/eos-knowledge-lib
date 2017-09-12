@@ -3,7 +3,6 @@
 #include "eknc-engine.h"
 
 #include "eknc-domain-private.h"
-#include "eknc-xapian-bridge-private.h"
 #include "eknc-utils.h"
 
 /**
@@ -485,11 +484,6 @@ eknc_engine_get_domain_for_app (EkncEngine *self,
   if (domain == NULL)
     return NULL;
 
-  // Bind our own language property to the domain
-  g_object_bind_property (self, "language",
-                          domain, "language",
-                          G_BINDING_DEFAULT);
-
   // Hash table takes ownership of domain
   g_hash_table_insert (self->domains, g_strdup (app_id), domain);
 
@@ -521,11 +515,6 @@ eknc_engine_add_domain_for_path (EkncEngine *self,
   EkncDomain *domain = eknc_domain_get_for_app_id (app_id, path, self->language, NULL, error);
   if (domain == NULL)
     return;
-
-  // Bind our own language property to the domain
-  g_object_bind_property (self, "language",
-                          domain, "language",
-                          G_BINDING_DEFAULT);
 
   // Hash table takes ownership of domain
   g_hash_table_insert (self->domains, g_strdup (app_id), domain);

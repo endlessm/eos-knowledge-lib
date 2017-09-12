@@ -97,8 +97,6 @@ ekncontent_sources = \
 	ekncontent/eknc-video-object-model.c \
 	ekncontent/eknc-database-manager.c \
 	ekncontent/eknc-database-manager-private.h \
-	ekncontent/eknc-xapian-bridge.c \
-	ekncontent/eknc-xapian-bridge-private.h \
 	$(NULL)
 
 glib_enum_headers = \
