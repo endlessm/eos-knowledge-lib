@@ -480,7 +480,7 @@ ensure_db (EkncDatabaseManager *self,
   return payload;
 }
 
-static JsonObject *
+static JsonNode *
 eknc_database_manager_fetch_results (EkncDatabaseManager *self,
                                      XapianEnquire *enquire,
                                      XapianQuery *query,
@@ -495,8 +495,9 @@ eknc_database_manager_fetch_results (EkncDatabaseManager *self,
   XapianMSetIterator *iter;
   XapianDocument *document;
   GError *error = NULL;
-  JsonObject *retval;
+  JsonObject *results;
   JsonArray *results_array;
+  JsonNode *retval;
 
   str = g_hash_table_lookup (query_options, QUERY_PARAM_OFFSET);
   if (str == NULL)
@@ -540,15 +541,15 @@ eknc_database_manager_fetch_results (EkncDatabaseManager *self,
       return NULL;
     }
 
-  retval = json_object_new ();
-  json_object_set_int_member (retval, QUERY_RESULTS_MEMBER_NUM_RESULTS, xapian_mset_get_size (matches));
-  json_object_set_int_member (retval, QUERY_RESULTS_MEMBER_UPPER_BOUND, xapian_mset_get_matches_upper_bound (matches));
-  json_object_set_int_member (retval, QUERY_RESULTS_MEMBER_OFFSET, offset);
+  results = json_object_new ();
+  json_object_set_int_member (results, QUERY_RESULTS_MEMBER_NUM_RESULTS, xapian_mset_get_size (matches));
+  json_object_set_int_member (results, QUERY_RESULTS_MEMBER_UPPER_BOUND, xapian_mset_get_matches_upper_bound (matches));
+  json_object_set_int_member (results, QUERY_RESULTS_MEMBER_OFFSET, offset);
   if (query_str != NULL)
-      json_object_set_string_member (retval, QUERY_RESULTS_MEMBER_QUERYSTR, query_str);
+    json_object_set_string_member (results, QUERY_RESULTS_MEMBER_QUERYSTR, query_str);
 
   results_array = json_array_new ();
-  json_object_set_array_member (retval, QUERY_RESULTS_MEMBER_RESULTS, results_array);
+  json_object_set_array_member (results, QUERY_RESULTS_MEMBER_RESULTS, results_array);
 
   iter = xapian_mset_get_begin (matches);
   while (xapian_mset_iterator_next (iter))
@@ -570,6 +571,9 @@ eknc_database_manager_fetch_results (EkncDatabaseManager *self,
   g_object_unref (iter);
   g_object_unref (matches);
 
+  retval = json_node_new (JSON_NODE_OBJECT);
+  json_node_take_object (retval, results);
+
   return retval;
 }
 
@@ -583,17 +587,18 @@ database_is_empty (XapianDatabase *db)
   return xapian_database_get_doc_count (db) == 0;
 }
 
-static JsonObject *
+static JsonNode *
 create_empty_query_results (void)
 {
-  JsonObject *object;
-
-  object = json_object_new ();
+  JsonObject *object = json_object_new ();
   json_object_set_int_member (object, QUERY_RESULTS_MEMBER_NUM_RESULTS, 0);
   json_object_set_int_member (object, QUERY_RESULTS_MEMBER_OFFSET, 0);
   json_object_set_array_member (object, QUERY_RESULTS_MEMBER_RESULTS, json_array_new ());
 
-  return object;
+  JsonNode *node = json_node_new (JSON_NODE_OBJECT);
+  json_node_take_object (node, object);
+
+  return node;
 }
 
 static gboolean
@@ -731,25 +736,24 @@ parse_query_flags (const gchar *str,
   return TRUE;
 }
 
-static JsonObject *
+static JsonNode *
 eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
                                           DatabasePayload *payload,
                                           GHashTable *query_options,
                                           GError **error_out)
 {
-  gchar *spell_corrected_query_str = NULL, *no_stop_words = NULL;
-  gchar **words = NULL, **words_iter = NULL;
-  gchar **filtered_words = NULL, **filtered_iter = NULL;
   GError *error = NULL;
-  const gchar *query_str;
-  const gchar *match_all;
-  const gchar *default_op;
-  const gchar *flags_str;
+  const char *query_str;
+  const char *match_all;
+  const char *default_op;
+  const char *flags_str;
   XapianQueryParserFeature flags = QUERY_PARSER_FLAGS;
   XapianStopper *stopper;
-  JsonObject *retval;
 
-  retval = json_object_new ();
+  JsonObject *results = json_object_new ();
+  JsonNode *retval = json_node_new (JSON_NODE_OBJECT);
+
+  json_node_take_object (retval, results);
 
   query_str = g_hash_table_lookup (query_options, QUERY_PARAM_QUERYSTR);
   match_all = g_hash_table_lookup (query_options, QUERY_PARAM_MATCH_ALL);
@@ -761,20 +765,24 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
       g_set_error (error_out, EKNC_DATABASE_MANAGER_ERROR,
                   EKNC_DATABASE_MANAGER_ERROR_INVALID_PARAMS,
                   "Query parameter must be set, and must not be match all.");
-      goto out;
+      return NULL;
     }
   else if (stopper != NULL)
     {
-      words = g_strsplit (query_str, " ", -1);
-      filtered_words = g_new0 (gchar *, g_strv_length (words) + 1);
+      g_auto(GStrv) words = g_strsplit (query_str, " ", -1);
+      g_auto(GStrv) filtered_words = g_new0 (char *, g_strv_length (words) + 1);
 
-      filtered_iter = filtered_words;
+      char **filtered_iter = filtered_words;
+      char **words_iter;
       for (words_iter = words; *words_iter != NULL; words_iter++)
-        if (!xapian_stopper_is_stop_term (stopper, *words_iter))
-          *filtered_iter++ = *words_iter;
+        {
+          if (!xapian_stopper_is_stop_term (stopper, *words_iter))
+            *filtered_iter++ = *words_iter;
+        }
 
-      no_stop_words = g_strjoinv (" ", filtered_words);
-      json_object_set_string_member (retval, FIX_RESULTS_MEMBER_STOP_WORD_CORRECTED_RESULT,
+      g_autofree char *no_stop_words = g_strjoinv (" ", filtered_words);
+      json_object_set_string_member (results,
+                                     FIX_RESULTS_MEMBER_STOP_WORD_CORRECTED_RESULT,
                                      no_stop_words);
     }
 
@@ -787,8 +795,7 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
     goto out;
 
   /* Parse the user's query so we can request a spelling correction. */
-  xapian_query_parser_parse_query_full (payload->qp, query_str,
-                                        flags, "", &error);
+  xapian_query_parser_parse_query_full (payload->qp, query_str, flags, "", &error);
 
   if (error != NULL)
     {
@@ -796,19 +803,15 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
       goto out;
     }
 
-  spell_corrected_query_str = xapian_query_parser_get_corrected_query_string (payload->qp);
+  g_autofree char *spell_corrected_query_str = xapian_query_parser_get_corrected_query_string (payload->qp);
   if (spell_corrected_query_str != NULL && spell_corrected_query_str[0] != '\0')
     {
-      json_object_set_string_member (retval, FIX_RESULTS_MEMBER_SPELL_CORRECTED_RESULT,
+      json_object_set_string_member (results,
+                                     FIX_RESULTS_MEMBER_SPELL_CORRECTED_RESULT,
                                      spell_corrected_query_str);
     }
 
- out:
-  g_free (filtered_words);
-  g_free (no_stop_words);
-  g_free (spell_corrected_query_str);
-  g_strfreev (words);
-
+out:
   return retval;
 }
 
@@ -820,11 +823,11 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
  *   - results: an array of strings for every result document, sorted according
  *              to the query parameters
  */
-static JsonObject *
-eknc_database_manager_query (EkncDatabaseManager *self,
-                             DatabasePayload *payload,
-                             GHashTable *query_options,
-                             GError **error_out)
+static JsonNode *
+eknc_database_manager_query_internal (EkncDatabaseManager *self,
+                                      DatabasePayload *payload,
+                                      GHashTable *query_options,
+                                      GError **error_out)
 {
   XapianQuery *parsed_query = NULL, *filter_query, *filterout_query;
   const gchar *filter_str, *filterout_str;
@@ -839,7 +842,7 @@ eknc_database_manager_query (EkncDatabaseManager *self,
   const gchar *default_op;
   const gchar *flags_str;
   XapianQueryParserFeature flags = QUERY_PARSER_FLAGS;
-  JsonObject *results = NULL;
+  JsonNode *results;
 
   if (database_is_empty (payload->db))
     return create_empty_query_results ();
@@ -997,7 +1000,7 @@ eknc_database_manager_query (EkncDatabaseManager *self,
       goto out;
     }
 
- out:
+out:
   g_clear_object (&parsed_query);
   g_clear_object (&enquire);
   g_free (query_str);
@@ -1005,7 +1008,7 @@ eknc_database_manager_query (EkncDatabaseManager *self,
   return results;
 }
 
-JsonObject *
+JsonNode *
 eknc_database_manager_fix_query (EkncDatabaseManager *self,
                                  const EkncDatabase *db,
                                  GHashTable *query,
@@ -1037,7 +1040,7 @@ eknc_database_manager_fix_query (EkncDatabaseManager *self,
  *     "phrase", "elite-set" or "synonym"; if not specified the default is
  *     "or")
  */
-JsonObject *
+JsonNode *
 eknc_database_manager_query_db (EkncDatabaseManager *self,
                                 const EkncDatabase *db,
                                 GHashTable *query,
@@ -1053,7 +1056,7 @@ eknc_database_manager_query_db (EkncDatabaseManager *self,
       return FALSE;
     }
 
-  return eknc_database_manager_query (self, payload, query, error_out);
+  return eknc_database_manager_query_internal (self, payload, query, error_out);
 }
 
 EkncDatabaseManager *

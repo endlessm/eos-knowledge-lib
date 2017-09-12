@@ -46,13 +46,13 @@ eknc_database_manager_get_type (void) G_GNUC_CONST;
 EkncDatabaseManager *
 eknc_database_manager_new (void);
 
-JsonObject *
+JsonNode *
 eknc_database_manager_query_db (EkncDatabaseManager *self,
                                 const EkncDatabase *db,
                                 GHashTable *query,
                                 GError **error_out);
 
-JsonObject *
+JsonNode *
 eknc_database_manager_fix_query (EkncDatabaseManager *self,
                                  const EkncDatabase *db,
                                  GHashTable *query,
