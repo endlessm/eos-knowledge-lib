@@ -250,22 +250,15 @@ query_fix_task (GTask *task,
       return;
     }
 
-  JsonObject *result = eknc_database_manager_fix_query (request->db_manager,
-                                                        &request->db,
-                                                        request->params,
-                                                        &error);
+  JsonNode *result = eknc_database_manager_fix_query (request->db_manager,
+                                                      &request->db,
+                                                      request->params,
+                                                      &error);
 
   if (result != NULL)
-    {
-      JsonNode *retval = json_node_new (JSON_NODE_OBJECT);
-      json_node_take_object (retval, result);
-
-      g_task_return_pointer (task, g_steal_pointer (&retval), (GDestroyNotify) json_node_unref);
-    }
+    g_task_return_pointer (task, result, (GDestroyNotify) json_node_unref);
   else
-    {
-      g_task_return_error (task, error);
-    }
+    g_task_return_error (task, error);
 
   g_object_unref (task);
 }
@@ -379,21 +372,14 @@ query_task (GTask *task,
       return;
     }
 
-  JsonObject *result = eknc_database_manager_query_db (request->db_manager,
-                                                       &request->db,
-                                                       request->params,
-                                                       &error);
+  JsonNode *result = eknc_database_manager_query_db (request->db_manager,
+                                                     &request->db,
+                                                     request->params,
+                                                     &error);
   if (result != NULL)
-    {
-      JsonNode *retval = json_node_new (JSON_NODE_OBJECT);
-      json_node_take_object (retval, result);
-
-      g_task_return_pointer (task, g_steal_pointer (&retval), (GDestroyNotify) json_node_unref);
-    }
+    g_task_return_pointer (task, result, (GDestroyNotify) json_node_unref);
   else
-    {
-      g_task_return_error (task, error);
-    }
+    g_task_return_error (task, error);
 
   g_object_unref (task);
 }
