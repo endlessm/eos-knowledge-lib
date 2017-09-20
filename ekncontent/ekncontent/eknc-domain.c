@@ -464,7 +464,8 @@ eknc_domain_initable_init (GInitable *initable,
       return FALSE;
     }
 
-  self->db_manager = eknc_database_manager_new ();
+  g_autofree char *db_path = g_file_get_path (self->manifest_file);
+  self->db_manager = eknc_database_manager_new (db_path);
 
   if (!eknc_utils_parallel_init (self->shards, 0, cancellable, error))
     return FALSE;
@@ -719,7 +720,6 @@ typedef struct
   EkncQueryObject *query;
 
   EkncDatabaseManager *db_manager;
-  EkncDatabase db;
 
   GHashTable *params;
 
@@ -795,7 +795,9 @@ get_xapian_query_params (EkncDomain *domain,
   g_object_get (query, "order", &order, NULL);
 
   g_hash_table_insert (params, "order",
-                       order == EKNC_QUERY_OBJECT_ORDER_ASCENDING ? "asc" : "desc");
+                       order == EKNC_QUERY_OBJECT_ORDER_ASCENDING
+                         ? "asc"
+                         : "desc");
 
   return params;
 }
@@ -815,30 +817,23 @@ query_fix_task (GTask *task,
       return;
     }
 
-  g_autoptr(JsonNode) result =
+  g_autofree char *stop_fixed_query = NULL;
+  g_autofree char *spell_fixed_query = NULL;
+
+  gboolean result =
     eknc_database_manager_fix_query (request->db_manager,
-                                     &request->db,
                                      request->params,
+                                     &stop_fixed_query,
+                                     &spell_fixed_query,
                                      &error);
 
-  JsonObject *object = json_node_get_object (result);
-  JsonNode *stop_fixed_query_node = json_object_get_member (object, "stopWordCorrectedQuery");
-  JsonNode *spell_fixed_query_node = json_object_get_member (object, "spellCorrectedQuery");
-
   /* If we didn't get a corrected query, we can just reuse the existing query object */
-  if (stop_fixed_query_node == NULL && spell_fixed_query_node == NULL)
+  if (stop_fixed_query == NULL && spell_fixed_query == NULL)
     {
       g_task_return_pointer (task, g_object_ref (request->query), g_object_unref);
       g_object_unref (task);
       return;
     }
-
-  const gchar *stop_fixed_query = NULL, *spell_fixed_query = NULL;
-  if (stop_fixed_query_node != NULL)
-    stop_fixed_query = json_node_get_string (stop_fixed_query_node);
-
-  if (spell_fixed_query_node != NULL)
-    spell_fixed_query = json_node_get_string (spell_fixed_query_node);
 
   EkncQueryObject *query = NULL;
 
@@ -892,10 +887,6 @@ eknc_domain_get_fixed_query (EkncDomain *self,
   RequestState *state = g_slice_new0 (RequestState);
   state->domain = g_object_ref (self);
   state->db_manager = g_object_ref (self->db_manager);
-
-  state->db.path = NULL;
-  state->db.manifest_path = g_file_get_path (self->manifest_file);
-
   state->query = g_object_ref (query);
   state->params = get_xapian_query_params (self, query);
 
@@ -948,33 +939,25 @@ query_task (GTask *task,
       return;
     }
 
-  g_autoptr(JsonNode) result = eknc_database_manager_query_db (state->db_manager,
-                                                               &state->db,
-                                                               state->params,
-                                                               &error);
-  if (result == NULL)
+  g_autoptr(XapianMSet) results =
+    eknc_database_manager_query (state->db_manager, state->params, &error);
+
+  if (error != NULL)
     {
       g_task_return_error (task, error);
       g_object_unref (task);
       return;
     }
 
-  JsonNode *bound_node = json_object_get_member (json_node_get_object (result), "upperBound");
-  if (bound_node != NULL)
-    state->upper_bound = json_node_get_int (bound_node);
-
-  JsonNode *results_node = json_object_get_member (json_node_get_object (result), "results");
-
-  if (results_node == NULL || !JSON_NODE_HOLDS_ARRAY (results_node))
+  /* Empty results is valid */
+  if (results == NULL)
     {
-      g_task_return_new_error (task, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_BAD_RESULTS,
-                               "Xapian results with missing or malformed results property");
+      g_task_return_boolean (task, TRUE);
       g_object_unref (task);
       return;
     }
 
-  JsonArray *results_array = json_node_get_array (results_node);
-  state->total_models = json_array_get_length (results_array);
+  state->total_models = xapian_mset_get_size (results);
   if (state->total_models == 0)
     {
       g_task_return_boolean (task, TRUE);
@@ -982,10 +965,13 @@ query_task (GTask *task,
       return;
     }
 
+  state->upper_bound = xapian_mset_get_matches_upper_bound (results);
+
   state->models = g_ptr_array_new_full (state->total_models, maybe_unref_object);
   g_ptr_array_set_size (state->models, state->total_models);
 
-  for (guint i = 0; i < state->total_models; i++)
+  g_autoptr(XapianMSetIterator) iter = xapian_mset_get_begin (results);
+  while (xapian_mset_iterator_next (iter))
     {
       if (g_task_return_error_if_cancelled (task))
         {
@@ -993,27 +979,27 @@ query_task (GTask *task,
           return;
         }
 
-      JsonNode *result_node = json_array_get_element (results_array, i);
-      if (json_node_get_value_type (result_node) != G_TYPE_STRING)
+      XapianDocument *document = xapian_mset_iterator_get_document (iter, &error);
+      if (error != NULL)
         {
-          g_task_return_new_error (task, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_BAD_RESULTS,
-                                   "Malformed results entry");
+          g_task_return_error (task, error);
+          g_object_unref (task);
+          break;
+        }
+
+      g_autofree char *object_id = xapian_document_get_data (document);
+
+      EkncContentObjectModel *model =
+        eknc_domain_get_object_sync (state->domain, object_id, cancellable, &error);
+
+      if (model == NULL)
+        {
+          g_task_return_error (task, error);
           g_object_unref (task);
           return;
         }
 
-      EkncContentObjectModel *model =
-        eknc_domain_get_object_sync (state->domain,
-                                     json_node_get_string (result_node),
-                                     cancellable,
-                                     &error);
-      if (model == NULL)
-        {
-          g_task_return_error (task, error);
-          return;
-        }
-
-      g_ptr_array_insert (state->models, i, model);
+      g_ptr_array_add (state->models, model);
     }
 
   g_task_return_boolean (task, TRUE);
@@ -1046,10 +1032,6 @@ eknc_domain_query (EkncDomain *self,
   RequestState *state = g_slice_new0 (RequestState);
   state->domain = g_object_ref (self);
   state->db_manager = g_object_ref (self->db_manager);
-
-  state->db.path = NULL;
-  state->db.manifest_path = g_file_get_path (self->manifest_file);
-
   state->query = g_object_ref (query);
   state->params = get_xapian_query_params (self, query);
 
