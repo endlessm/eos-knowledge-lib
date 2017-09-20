@@ -26,11 +26,6 @@ G_BEGIN_DECLS
 #define EKNC_TYPE_DATABASE_MANAGER eknc_database_manager_get_type()
 G_DECLARE_FINAL_TYPE (EkncDatabaseManager, eknc_database_manager, EKNC, DATABASE_MANAGER, GObject)
 
-typedef struct {
-  const char *path;
-  const char *manifest_path;
-} EkncDatabase;
-
 typedef enum {
   EKNC_DATABASE_MANAGER_ERROR_NOT_FOUND,
   EKNC_DATABASE_MANAGER_ERROR_INVALID_PATH,
@@ -44,18 +39,18 @@ GType
 eknc_database_manager_get_type (void) G_GNUC_CONST;
 
 EkncDatabaseManager *
-eknc_database_manager_new (void);
+eknc_database_manager_new (const char *path);
 
-JsonNode *
-eknc_database_manager_query_db (EkncDatabaseManager *self,
-                                const EkncDatabase *db,
-                                GHashTable *query,
-                                GError **error_out);
+XapianMSet *
+eknc_database_manager_query (EkncDatabaseManager *self,
+                             GHashTable *params,
+                             GError **error_out);
 
-JsonNode *
+gboolean
 eknc_database_manager_fix_query (EkncDatabaseManager *self,
-                                 const EkncDatabase *db,
                                  GHashTable *query,
+                                 char **stop_fixed_query,
+                                 char **spell_fixed_query,
                                  GError **error_out);
 
 G_END_DECLS
