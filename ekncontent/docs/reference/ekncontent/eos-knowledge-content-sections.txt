@@ -172,7 +172,6 @@ eknc_query_results_new_for_testing
 <SECTION>
 <FILE>utils</FILE>
 eknc_utils_parallel_init
-eknc_utils_id_get_hash
 eknc_utils_is_valid_id
 eknc_default_vfs_set_shards
 eknc_get_current_language
