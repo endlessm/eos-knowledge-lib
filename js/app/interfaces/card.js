@@ -386,7 +386,9 @@ var Card = new Lang.Interface({
         frame.visible = this._set_media_class_from_model(frame);
 
         if (!this.model.thumbnail_uri) {
-            this._add_css_class(frame, 'no_thumbnail');
+            let placeholder = new Gtk.Frame({ visible: true });
+            this._add_css_class(placeholder, 'no_thumbnail');
+            frame.add(placeholder);
             return;
         }
         let file = Gio.File.new_for_uri(this.model.thumbnail_uri);
