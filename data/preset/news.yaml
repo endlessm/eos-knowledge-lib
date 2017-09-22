@@ -194,7 +194,7 @@ defines:
                             arrangement:
                               type: Arrangement.List
                               slots:
-                                card: Card.List
+                                card: 'Card.List(hexpand: true)'
                               properties:
                                 row-spacing: 20
                             selection:
@@ -259,7 +259,7 @@ defines:
                           styles:
                             - ContentGroup--articles
                           slots:
-                            card: Card.List
+                            card: 'Card.List(hexpand: true)'
                         no-results:
                           shortdef: 'Layout.Box(orientation: vertical, valign: start)'
                           slots:
