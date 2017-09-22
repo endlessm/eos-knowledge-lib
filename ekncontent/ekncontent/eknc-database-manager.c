@@ -536,9 +536,12 @@ database_is_empty (XapianDatabase *db)
 }
 
 static gboolean
-parse_default_op (XapianQueryParser *qp, const gchar *str, GError **error)
+parse_default_op (XapianQueryParser *qp,
+                  const gchar *str,
+                  GError **error)
 {
   XapianQueryOp op;
+
   if (g_str_equal (str, "and"))
     {
       op = XAPIAN_QUERY_OP_AND;
@@ -582,7 +585,9 @@ parse_default_op (XapianQueryParser *qp, const gchar *str, GError **error)
                    "defaultOp parameter must be \"and\", \"or\", \"near\", \"phrase\", \"elite-set\", \"synonym\" or \"max\".");
       return FALSE;
     }
+
   xapian_query_parser_set_default_op (qp, op);
+
   return TRUE;
 }
 
@@ -592,7 +597,11 @@ parse_query_flags (const gchar *str,
                    GError **error)
 {
   XapianQueryParserFeature flags = 0;
-  gchar **v = g_strsplit (str, ",", -1), **iter;
+
+  g_auto(GStrv) v = g_strsplit (str, ",", -1);
+
+  char **iter;
+
   for (iter = v; *iter != NULL; iter++)
     {
       if (g_str_equal (*iter, "boolean"))
@@ -648,7 +657,6 @@ parse_query_flags (const gchar *str,
           g_set_error (error, EKNC_DATABASE_MANAGER_ERROR,
                        EKNC_DATABASE_MANAGER_ERROR_INVALID_PARAMS,
                        "Query parser flag 'cjk-ngram' not supported by xapian-glib in use.");
-          g_strfreev (v);
           return FALSE;
 #endif
         }
@@ -661,12 +669,12 @@ parse_query_flags (const gchar *str,
           g_set_error (error, EKNC_DATABASE_MANAGER_ERROR,
                        EKNC_DATABASE_MANAGER_ERROR_INVALID_PARAMS,
                        "Unknown query parser flag.");
-          g_strfreev (v);
           return FALSE;
         }
     }
+
   *flags_ptr = flags;
-  g_strfreev (v);
+
   return TRUE;
 }
 
