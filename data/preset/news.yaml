@@ -21,7 +21,9 @@ defines:
           slots:
             banner: 'Banner.App(show-subtitle: false)'
             menu:
-              shortdef: ContentGroup.ContentGroup
+              type: ContentGroup.ContentGroup
+              properties:
+                cards-per-page: 50
               slots:
                 arrangement:
                   shortdef: 'Arrangement.SideBySide(expand: true)'
