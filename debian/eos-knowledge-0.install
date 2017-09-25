@@ -1,5 +1,4 @@
 usr/bin/ekn-app-runner
 usr/lib/*/eos-knowledge/*
 usr/share/eos-knowledge/eos-knowledge.gresource
-usr/share/eos-knowledge/downloader.ini
 usr/share/locale/*
