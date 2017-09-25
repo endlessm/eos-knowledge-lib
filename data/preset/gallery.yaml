@@ -22,7 +22,9 @@ defines:
       slots:
         banner: 'Banner.Dynamic(mode: full, show-subtitle: false, valign: center)'
         menu:
-          shortdef: ContentGroup.ContentGroup
+          type: ContentGroup.ContentGroup
+          properties:
+            cards-per-page: 50
           slots:
             arrangement:
               shortdef: 'Arrangement.SideBySide(expand: true)'

@@ -24,6 +24,8 @@ defines:
         contents:
         - shortdef: 'Banner.App(show-subtitle: false)'
         - type: ContentGroup.ContentGroup
+          properties:
+            cards-per-page: 50
           slots:
             arrangement:
               type: Arrangement.List
