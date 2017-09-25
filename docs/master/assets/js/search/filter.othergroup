@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["filter/otherGroup.html#filterothergroup1", "filter/otherGroup.html#filterothergroup"], "token": "filter.othergroup"});
+urls_downloaded_cb({"token": "filter.othergroup", "urls": ["filter/otherGroup.html#filterothergroup1", "filter/otherGroup.html#filterothergroup"]});
