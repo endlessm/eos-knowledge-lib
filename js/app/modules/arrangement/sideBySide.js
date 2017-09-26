@@ -59,6 +59,7 @@ const SideBySide = new Module.Class({
             hscrollbar_policy: Gtk.PolicyType.NEVER,
             propagate_natural_width: true,
             propagate_natural_height: true,
+            max_content_height: 400,
         });
         this._popover_box = new Gtk.Box({
             visible: true,
