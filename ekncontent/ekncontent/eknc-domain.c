@@ -370,6 +370,39 @@ eknc_domain_process_subscription (EkncDomain *self,
 }
 
 static gboolean
+eknc_domain_import_subscriptions (EkncDomain *self,
+                                  GFile *subscriptions_dir,
+                                  JsonArray *json_subscriptions,
+                                  const gchar *relative_path,
+                                  GCancellable *cancellable,
+                                  GError **error)
+{
+  g_autoptr(GFileEnumerator) subscriptions_iter = g_file_enumerate_children (subscriptions_dir, "",
+                                                                             G_FILE_QUERY_INFO_NONE,
+                                                                             cancellable, error);
+  while (TRUE)
+    {
+      GFile *dir = NULL;
+      GFileInfo *info = NULL;
+      if (!g_file_enumerator_iterate (subscriptions_iter, &info, &dir, cancellable, error))
+        return FALSE;
+      if (dir == NULL)
+        break;
+      if (g_file_info_get_file_type (info) != G_FILE_TYPE_DIRECTORY)
+        continue;
+      if (!eknc_domain_process_subscription (self,
+                                             dir,
+                                             json_subscriptions,
+                                             relative_path,
+                                             cancellable,
+                                             error))
+          return FALSE;
+    }
+
+  return TRUE;
+}
+
+static gboolean
 eknc_domain_initable_init (GInitable *initable,
                            GCancellable *cancellable,
                            GError **error)
@@ -413,12 +446,7 @@ eknc_domain_initable_init (GInitable *initable,
       if (!eknc_parse_subscriptions (self, cancellable, error))
         return FALSE;
 
-      g_autoptr(GFile) subscriptions_dir = NULL;
       JsonArray *json_subscriptions = json_array_new ();
-
-      self->content_dir = eknc_get_data_dir (self->app_id);
-      subscriptions_dir = g_file_get_child (self->content_dir,
-                                            "com.endlessm.subscriptions");
 
       /* Find out root relative path from manifest file */
       g_autoptr(GFile) p = g_file_get_parent (self->manifest_file);
@@ -432,20 +460,37 @@ eknc_domain_initable_init (GInitable *initable,
           g_string_append (relative_path, "../");
         }
 
-      GList *l;
-      for (l = self->subscriptions; l; l = g_list_next (l))
+      /* Import subscriptions from data directory */
+      g_autoptr(GFile) subscriptions_dir = NULL;
+      self->content_dir = eknc_get_data_dir (self->app_id);
+      subscriptions_dir = g_file_get_child (self->content_dir,
+                                            "com.endlessm.subscriptions");
+      if (g_file_query_exists (subscriptions_dir, NULL))
         {
-          const gchar *subscription_id = l->data;
-          g_autoptr(GFile) bundle_dir = g_file_get_child (subscriptions_dir,
-                                                          subscription_id);
-
-          if (!eknc_domain_process_subscription (self,
-                                                 bundle_dir,
+          if (!eknc_domain_import_subscriptions (self,
+                                                 subscriptions_dir,
                                                  json_subscriptions,
                                                  relative_path->str,
                                                  cancellable,
                                                  error))
               return FALSE;
+        }
+
+      /* Import subscriptions from extensions directories */
+      g_autoptr(GList) extensions_dirs = eknc_get_extensions_dirs (self->app_id);
+      for (GList *l = extensions_dirs; l != NULL; l = l->next)
+        {
+          GFile *extension_dir = l->data;
+          if (g_file_query_exists(extension_dir, cancellable))
+            {
+              if (!eknc_domain_import_subscriptions (self,
+                                                     extension_dir,
+                                                     json_subscriptions,
+                                                     relative_path->str,
+                                                     cancellable,
+                                                     error))
+                  return FALSE;
+            }
         }
 
       g_autoptr(JsonGenerator) json_generator = json_generator_new ();

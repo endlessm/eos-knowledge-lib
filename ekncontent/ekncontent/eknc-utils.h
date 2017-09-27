@@ -37,6 +37,9 @@ eknc_utils_is_valid_id (const gchar *ekn_id);
 GFile *
 eknc_get_data_dir (const gchar *app_id);
 
+GList *
+eknc_get_extensions_dirs (const gchar *app_id);
+
 gchar *
 eknc_get_ekn_version (const gchar *app_id,
                       GCancellable *cancellable,
