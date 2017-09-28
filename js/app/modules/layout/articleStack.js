@@ -180,6 +180,7 @@ const ArticleStack = new Module.Class({
         this.add(article_content);
         article_content.show_all();
 
+        this.visible_child.set_active(false);
         article_content.load_content_promise()
         .then(() => {
             if (article_content.get_parent() === null)
