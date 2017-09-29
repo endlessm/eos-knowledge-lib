@@ -774,12 +774,13 @@ get_xapian_query_params (EkncDomain *domain,
   guint limit, offset;
   g_object_get (query, "limit", &limit, "offset", &offset, NULL);
 
-  g_autofree char *offset_string = g_strdup_printf ("%u", offset);
-  g_autofree char *limit_string = g_strdup_printf ("%u", limit);
-
   if (limit > 0)
-    g_hash_table_insert (params, "limit", limit_string);
+    {
+      g_autofree char *limit_string = g_strdup_printf ("%u", limit);
+      g_hash_table_insert (params, "limit", limit_string);
+    }
 
+  g_autofree char *offset_string = g_strdup_printf ("%u", offset);
   g_hash_table_insert (params, "offset", offset_string);
 
   guint cutoff = eknc_query_object_get_cutoff (query);
