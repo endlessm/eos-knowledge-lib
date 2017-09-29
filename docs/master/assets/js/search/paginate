@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "paginate", "urls": ["card/contentGroup.html#paginate", "contentGroup/contentGroup.html#paginate"]});
+urls_downloaded_cb({"urls": ["card/contentGroup.html#paginate", "contentGroup/contentGroup.html#paginate"], "token": "paginate"});
