@@ -950,19 +950,17 @@ query_task (GTask *task,
       return;
     }
 
-  /* No results */
-  state->total_models = xapian_mset_get_size (results);
-  if (state->total_models == 0)
-    {
-      g_task_return_boolean (task, TRUE);
-      g_object_unref (task);
-      return;
-    }
+  int n_results = xapian_mset_get_size (results);
 
   state->upper_bound = xapian_mset_get_matches_upper_bound (results);
-
-  state->models = g_ptr_array_new_full (state->total_models, maybe_unref_object);
+  state->models = g_ptr_array_new_full (n_results, maybe_unref_object);
   g_ptr_array_set_size (state->models, state->total_models);
+
+  const char *filter, filterout;
+  g_debug ("Found %d results (upper-bound: %d) for query '%s'",
+           n_results,
+           state->upper_bound,
+           eknc_query_object_get_query_parser_strings (state->query, &filter, &filterout));
 
   g_autoptr(XapianMSetIterator) iter = xapian_mset_get_begin (results);
   while (xapian_mset_iterator_next (iter))
@@ -995,6 +993,8 @@ query_task (GTask *task,
 
       g_ptr_array_add (state->models, model);
     }
+
+  state->total_models = state->models->len;
 
   g_task_return_boolean (task, TRUE);
   g_object_unref (task);
