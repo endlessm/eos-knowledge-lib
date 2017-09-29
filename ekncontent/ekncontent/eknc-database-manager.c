@@ -489,7 +489,7 @@ eknc_database_manager_fetch_results (EkncDatabaseManager *self,
       return NULL;
     }
 
-  offset = (guint) g_ascii_strtod (str, NULL);
+  offset = CLAMP (g_ascii_strtod (str, NULL), 0, G_MAXUINT);
 
   str = g_hash_table_lookup (query_options, QUERY_PARAM_LIMIT);
   if (str == NULL)
