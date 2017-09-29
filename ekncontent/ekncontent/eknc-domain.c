@@ -976,9 +976,9 @@ query_task (GTask *task,
       XapianDocument *document = xapian_mset_iterator_get_document (iter, &error);
       if (error != NULL)
         {
-          g_task_return_error (task, error);
-          g_object_unref (task);
-          return;
+          g_debug ("INTERNAL: Unable to fetch document from iterator: %s", error->message);
+          g_clear_error (&error);
+          continue;
         }
 
       g_autofree char *object_id = xapian_document_get_data (document);
