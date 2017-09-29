@@ -259,6 +259,16 @@ revealer_timeout (gpointer data)
   return G_SOURCE_REMOVE;
 }
 
+static inline void
+ensure_no_timeout(EknMediaBinPrivate *priv)
+{
+  if (!priv->timeout_id)
+    return;
+
+  g_source_remove (priv->timeout_id);
+  priv->timeout_id = 0;
+}
+
 static void
 ekn_media_bin_revealer_timeout (EknMediaBin *self, gboolean activate)
 {
@@ -276,11 +286,7 @@ ekn_media_bin_revealer_timeout (EknMediaBin *self, gboolean activate)
    {
       GdkWindow *window = gtk_widget_get_window (priv->overlay);
 
-      if (priv->timeout_id)
-        {
-          g_source_remove (priv->timeout_id);
-          priv->timeout_id = 0;
-        }
+      ensure_no_timeout (priv);
 
       if (window)
         gdk_window_set_cursor (window, NULL);
@@ -869,6 +875,9 @@ ekn_media_bin_dispose (GObject *object)
   EknMediaBin *self = EKN_MEDIA_BIN (object);
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
 
+  /* Remove controls timeout */
+  ensure_no_timeout (priv);
+
   /* Finalize gstreamer related objects */
   ekn_media_bin_deinit_video_sink (self);
 
@@ -896,10 +905,6 @@ ekn_media_bin_finalize (GObject *object)
 
   /* Remove frame clock tick callback */
   ekn_media_bin_set_tick_enabled (self, FALSE);
-
-  /* Remove controls timeout */
-  if (priv->timeout_id)
-    g_source_remove (priv->timeout_id);
 
   /* Clear tag lists */
   g_clear_pointer (&priv->audio_tags, gst_tag_list_unref);
