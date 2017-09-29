@@ -949,14 +949,7 @@ query_task (GTask *task,
       return;
     }
 
-  /* Empty results is valid */
-  if (results == NULL)
-    {
-      g_task_return_boolean (task, TRUE);
-      g_object_unref (task);
-      return;
-    }
-
+  /* No results */
   state->total_models = xapian_mset_get_size (results);
   if (state->total_models == 0)
     {
@@ -984,7 +977,7 @@ query_task (GTask *task,
         {
           g_task_return_error (task, error);
           g_object_unref (task);
-          break;
+          return;
         }
 
       g_autofree char *object_id = xapian_document_get_data (document);
