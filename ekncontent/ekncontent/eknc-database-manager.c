@@ -785,19 +785,20 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
                                       GError **error_out)
 {
   EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
-  const gchar *filter_str, *filterout_str;
   GError *error = NULL;
   const gchar *lang;
   XapianStem *stem;
   const gchar *str;
-  const gchar *match_all;
-  const gchar *default_op;
-  const gchar *flags_str;
   XapianQueryParserFeature flags = QUERY_PARSER_FLAGS;
   JsonNode *results;
 
   if (database_is_empty (priv->database))
-    return NULL;
+    {
+      g_set_error (error_out, EKNC_DATABASE_MANAGER_ERROR,
+                   EKNC_DATABASE_MANAGER_ERROR_NOT_FOUND,
+                   "Empty database found");
+      return NULL;
+    }
 
   g_autofree char *query_str = NULL;
 
@@ -838,18 +839,18 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
       return NULL;
     }
 
-  match_all = g_hash_table_lookup (query_options, QUERY_PARAM_MATCH_ALL);
+  const char *match_all = g_hash_table_lookup (query_options, QUERY_PARAM_MATCH_ALL);
   if (match_all != NULL && str == NULL)
     {
       /* Handled below. */
     }
   else if (str != NULL && match_all == NULL)
     {
-      default_op = g_hash_table_lookup (query_options, QUERY_PARAM_DEFAULT_OP);
+      const char *default_op = g_hash_table_lookup (query_options, QUERY_PARAM_DEFAULT_OP);
       if (default_op != NULL && !parse_default_op (priv->query_parser, default_op, error_out))
         return NULL;
 
-      flags_str = g_hash_table_lookup (query_options, QUERY_PARAM_FLAGS);
+      const char *flags_str = g_hash_table_lookup (query_options, QUERY_PARAM_FLAGS);
       if (flags_str != NULL && !parse_query_flags (flags_str, &flags, error_out))
         return NULL;
 
@@ -873,8 +874,7 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
     }
 
   /* Parse the filters (if any) and combine. */
-
-  filter_str = g_hash_table_lookup (query_options, QUERY_PARAM_FILTER);
+  const char *filter_str = g_hash_table_lookup (query_options, QUERY_PARAM_FILTER);
   if (filter_str != NULL)
     {
       g_autoptr(XapianQuery) filter_query =
@@ -905,7 +905,7 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
       parsed_query = xapian_query_new_match_all ();
     }
 
-  filterout_str = g_hash_table_lookup (query_options, QUERY_PARAM_FILTER_OUT);
+  const char *filterout_str = g_hash_table_lookup (query_options, QUERY_PARAM_FILTER_OUT);
   if (filterout_str != NULL)
     {
       g_autoptr(XapianQuery) filterout_query =
