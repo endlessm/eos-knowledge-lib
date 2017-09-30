@@ -163,19 +163,20 @@ describe('History Store', function () {
             .toBeFalsy();
     });
 
-    function test_share_action (network) {
+    function test_share_action (network, network_uri_matcher) {
         history_store.set_current_item_from_props({
             page_type: Pages.ARTICLE,
             model: Eknc.ArticleObjectModel.new_from_props({
                 title: 'Endless OS',
-                ekn_id: 'ekn://article',
+                ekn_id: 'ekn:///043fd69fe153ac69a05000b60bfea9cff110f14c',
                 original_uri: 'http://endlessm.com',
             }),
         });
 
         spyOn(Gtk, 'show_uri').and.callFake(function(a,uri,c) {
-            expect(uri).toMatch('.*' + network + '.*');
+            expect(uri).toMatch('.*' + network_uri_matcher + '.*');
         });
+        spyOn(AppUtils, 'record_share_metric');
 
         dispatcher.dispatch({
             action_type: Actions.SHARE,
@@ -183,17 +184,19 @@ describe('History Store', function () {
         });
 
         expect(Gtk.show_uri).toHaveBeenCalled();
+        expect(AppUtils.record_share_metric)
+            .toHaveBeenCalledWith(history_store.get_current_item().model, network);
     }
 
     it('can share a history item on Facebook', function () {
-        test_share_action (HistoryStore.Network.FACEBOOK);
+        test_share_action(HistoryStore.Network.FACEBOOK, 'facebook\\.com');
     });
 
     it('can share a history item on Twitter', function () {
-        test_share_action (HistoryStore.Network.TWITTER);
+        test_share_action(HistoryStore.Network.TWITTER, 'twitter\\.com');
     });
 
     it('can share a history item on Whatsapp', function () {
-        test_share_action (HistoryStore.Network.WHATSAPP);
+        test_share_action(HistoryStore.Network.WHATSAPP, 'api\\.whatsapp\\.com');
     });
 });

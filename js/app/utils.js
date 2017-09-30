@@ -480,6 +480,31 @@ function stop_content_access_metric(model) {
         new GLib.Variant('s', model.ekn_id), null);
 }
 
+function ekn_id_to_byte_array(ekn_id) {
+    let bytes = [];
+    for (let pos = 'ekn:///'.length; pos < ekn_id.length; pos += 2)
+        bytes.push(Number.parseInt(ekn_id.substr(pos, 2), 16));
+    if (bytes.length !== 20)
+        throw new Error(`Invalid EKN ID ${ekn_id}`);
+    return bytes;
+}
+
+const SHARE_METRIC_EVENT_ID = '6775771a-afe7-4158-b7bb-6296fcc7b70d';
+function record_share_metric(model, social_network, was_cancelled) {
+    void was_cancelled;  // FIXME add when webview dialog available
+
+    let app_id = Gio.Application.get_default().application_id;
+    let id = ekn_id_to_byte_array(model.ekn_id);
+    let recorder = EosMetrics.EventRecorder.get_default();
+    recorder.record_event(SHARE_METRIC_EVENT_ID, new GLib.Variant('(sayssu)', [
+        app_id,
+        id,
+        model.title || '',
+        model.original_uri,
+        social_network,
+    ]));
+}
+
 function define_enum (values) {
     return values.reduce((obj, val, index) => {
         obj[val] = index;

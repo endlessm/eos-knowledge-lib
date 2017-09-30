@@ -23,11 +23,7 @@ var Direction = {
     FORWARDS: 'forwards',
 };
 
-var Network = {
-    FACEBOOK: 'facebook',
-    TWITTER: 'twitter',
-    WHATSAPP: 'whatsapp',
-};
+var Network = Utils.define_enum(['FACEBOOK', 'TWITTER', 'WHATSAPP']);
 
 /**
  * Class: HistoryStore
@@ -415,6 +411,9 @@ var HistoryStore = new Lang.Class({
 
         /* Open share uri in system browser */
         Gtk.show_uri (null, uri, Gdk.CURRENT_TIME);
+
+        // FIXME: Determine whether item was actually shared, or cancelled
+        Utils.record_share_metric(item.model, network);
     },
 });
 
