@@ -84,6 +84,14 @@ var HistoryItem = new Knowledge.Class({
             'The timestamp of the user action that generated this item',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, GLib.MAXUINT32, 0),
+
+        /**
+         * Property: can-share
+         * Whether the item can be shared on social networks or not
+         */
+        'can-share': GObject.ParamSpec.boolean('can-share', 'Can share',
+            'Whether the item can be shared on social networks or not',
+            GObject.ParamFlags.READABLE, false),
     },
 
     _init: function (props={}) {
@@ -103,6 +111,10 @@ var HistoryItem = new Knowledge.Class({
         delete props.context;
 
         this.parent(props);
+    },
+
+    get can_share() {
+        return this.model && this.model.original_uri;
     },
 
     equals: function (item) {

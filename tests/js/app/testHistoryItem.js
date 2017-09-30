@@ -1,6 +1,7 @@
 const Eknc = imports.gi.EosKnowledgeContent;
 
 const HistoryItem = imports.app.historyItem;
+const Pages = imports.app.pages;
 
 describe('History Item', function () {
     describe('equals method', function () {
@@ -60,5 +61,27 @@ describe('History Item', function () {
         let item2 = new HistoryItem.HistoryItem.new_from_object(item1);
         expect(item1).not.toBe(item2);
         expect(item1.equals(item2)).toBeTruthy();
+    });
+
+
+    it('determines whether it can be shared', function () {
+        let item1 = new HistoryItem.HistoryItem({
+            page_type: Pages.ARTICLE,
+            model: Eknc.ArticleObjectModel.new_from_props({
+                title: 'Endless OS',
+                ekn_id: 'ekn:///043fd69fe153ac69a05000b60bfea9cff110f14c',
+            }),
+        });
+        expect(item1.can_share).toBeFalsy();
+
+        let item2 = new HistoryItem.HistoryItem({
+            page_type: Pages.ARTICLE,
+            model: Eknc.ArticleObjectModel.new_from_props({
+                title: 'Endless OS',
+                ekn_id: 'ekn:///043fd69fe153ac69a06000b60bfea9cff110f14e',
+                original_uri: 'http://endlessm.com',
+            }),
+        });
+        expect(item2.can_share).toBeTruthy();
     });
 });

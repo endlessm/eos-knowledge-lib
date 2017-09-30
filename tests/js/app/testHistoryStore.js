@@ -163,29 +163,6 @@ describe('History Store', function () {
             .toBeFalsy();
     });
 
-    it('can share a history item', function () {
-        expect(history_store.can_share()).toBe(false);
-
-        history_store.set_current_item_from_props({
-            page_type: Pages.ARTICLE,
-            model: Eknc.ArticleObjectModel.new_from_props({
-                title: 'Endless OS',
-                ekn_id: 'ekn://article1',
-            }),
-        });
-        expect(history_store.can_share()).toBe(false);
-
-        history_store.set_current_item_from_props({
-            page_type: Pages.ARTICLE,
-            model: Eknc.ArticleObjectModel.new_from_props({
-                title: 'Endless OS',
-                ekn_id: 'ekn://article2',
-                original_uri: 'http://endlessm.com',
-            }),
-        });
-        expect(history_store.can_share()).toBe(true);
-    });
-
     function test_share_action (network) {
         history_store.set_current_item_from_props({
             page_type: Pages.ARTICLE,
@@ -195,7 +172,6 @@ describe('History Store', function () {
                 original_uri: 'http://endlessm.com',
             }),
         });
-        expect(history_store.can_share()).toBe(true);
 
         spyOn(Gtk, 'show_uri').and.callFake(function(a,uri,c) {
             expect(uri).toMatch('.*' + network + '.*');

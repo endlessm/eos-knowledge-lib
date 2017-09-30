@@ -383,28 +383,14 @@ var HistoryStore = new Lang.Class({
     },
 
     /**
-     * Method: can_share
-     *
-     * Returns whether the current item can be shared on social networks or not.
-     */
-    can_share: function () {
-        let item = this.get_current_item();
-        return (item !== null &&
-                item.model !== null &&
-                item.model instanceof Eknc.ContentObjectModel &&
-                item.model.original_uri !== null &&
-                item.model.original_uri !== "");
-    },
-
-    /**
      * Method: share
      *
      * Share current item on a social network.
      */
     share: function (network) {
-        if (!this.can_share())
-            return;
         let item = this.get_current_item();
+        if (!item || !item.can_share)
+            return;
 
         let original_uri = encodeURIComponent(item.model.original_uri);
         let uri = null;
