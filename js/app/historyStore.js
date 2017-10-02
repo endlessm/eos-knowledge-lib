@@ -15,6 +15,7 @@ const HistoryItem = imports.app.historyItem;
 const Pages = imports.app.pages;
 const ReadingHistoryModel = imports.app.readingHistoryModel;
 const Utils = imports.app.utils;
+const WebShareDialog = imports.app.widgets.webShareDialog;
 
 let _ = imports.gettext.dgettext.bind(null, imports.app.config.GETTEXT_PACKAGE);
 
@@ -388,13 +389,16 @@ var HistoryStore = new Lang.Class({
         if (!item || !item.can_share)
             return;
 
+        let app = Gio.Application.get_default();
         let original_uri = encodeURIComponent(item.model.original_uri);
+        let redirect_uri = null;
         let uri = null;
 
         switch(network) {
             case Network.FACEBOOK:
-                uri = 'https://www.facebook.com/dialog/share?app_id=407909575958642&display=popup&hashtag=%23SharedFromEndless&href='
-                      + original_uri;
+                redirect_uri = 'https://www.facebook.com/connect/login_success.html';
+                uri = 'https://www.facebook.com/dialog/share?app_id=407909575958642&display=popup&quote=Shared%20from%20Endless&href='
+                      + original_uri + '&redirect_uri=' + encodeURIComponent(redirect_uri);
                 break;
             case Network.TWITTER:
                 uri = 'https://twitter.com/intent/tweet?hashtags=SharedFromEndless&original_referer=https%3A%2F%2Fendlessos.com&url='
@@ -409,8 +413,21 @@ var HistoryStore = new Lang.Class({
                 return;
         }
 
-        /* Open share uri in system browser */
-        Gtk.show_uri (null, uri, Gdk.CURRENT_TIME);
+        if (network === Network.FACEBOOK) {
+            let dialog = new WebShareDialog.WebShareDialog ({
+                transient_for: (app) ? app.get_active_window() : null,
+                modal: true,
+                provider: 'facebook',
+                redirect_uri: redirect_uri,
+                uri: uri,
+            });
+
+            dialog.show();
+        }
+        else if (app) {
+            /* Open share uri in system browser */
+            Gtk.show_uri_on_window (app.get_active_window(), uri, Gdk.CURRENT_TIME);
+        }
 
         // FIXME: Determine whether item was actually shared, or cancelled
         Utils.record_share_metric(item.model, network);
