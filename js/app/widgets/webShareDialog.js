@@ -1,0 +1,264 @@
+// Copyright 2017 Endless Mobile, Inc.
+
+/* exported WebShareDialog */
+
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const Goa = imports.gi.Goa;
+const GObject = imports.gi.GObject;
+const Gtk = imports.gi.Gtk;
+const Soup = imports.gi.Soup;
+const WebKit2 = imports.gi.WebKit2;
+
+const Lang = imports.lang;
+
+/* Template needs WebView type */
+GObject.type_ensure( WebKit2.WebView.$gtype);
+
+/**
+ * Class: WebShareDialog
+ *
+ * A dialog containing a webview with sessions cookies obtained from GOA
+ */
+var WebShareDialog = new Lang.Class({
+    Name: 'WebShareDialog',
+    Extends: Gtk.Dialog,
+
+    Properties: {
+        'provider': GObject.ParamSpec.string('provider',
+            'Provider',
+            'GOA provider type to use',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            null),
+
+        'uri': GObject.ParamSpec.string('uri',
+            'URI to load',
+            'The URI to load in the webview',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            null),
+
+        'redirect-uri': GObject.ParamSpec.string('redirect-uri',
+            'Redirect URI',
+            'The redirect URI to know when the operation ended',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            null),
+
+        'mobile': GObject.ParamSpec.boolean('mobile',
+            'Mobile user agent',
+            'Use a mobile user agent for the webview',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
+    },
+
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/websharedialog.ui',
+    InternalChildren: [ 'stack', 'overlay', 'webview', 'spinner', 'accountbox' ],
+
+    _init: function (props) {
+        this._provider = null;
+        this._uri = null;
+
+        /* Create an unique cookie path for this instance */
+        this._cookies_path_init();
+
+        /* Get GOA client */
+        this._goa_client = Goa.Client.new_sync(null);
+
+        /* Chain Up */
+        this.parent(props);
+
+        if (this.mobile) {
+            let settings = this._webview.get_settings();
+            settings.set_user_agent("Mozilla/5.0 (EndlessOS not Android;) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile");
+
+            /* Also use a mobile size */
+            this.default_width = 320;
+            this.default_height = 480;
+        }
+        else {
+            /* Based on facebook share dialog size */
+            this.default_width = 560;
+            this.default_height = 600;
+        }
+
+        /* Bind WebView and Dialog title */
+        this._webview.connect("notify::title", () => {
+            this.title = this._webview.title;
+        });
+
+        /* Handle spinner */
+        this._webview.connect('load-changed', this._onLoadChanged.bind(this));
+
+        /* Handle redirect-uri transaction end */
+        this._webview.connect('decide-policy', this._onDecidePolicy.bind(this));
+
+        /* Remove cookies from disk */
+        this.connect('delete-event', () => {
+            this._cookies_path_remove();
+            return false;
+        });
+
+        /* Get GOA account for this.provider */
+        this._update_goa_account();
+
+        /* Set webview uri */
+        this._update_uri();
+    },
+
+    _onLoadChanged: function (webview, event) {
+        if (event == WebKit2.LoadEvent.STARTED)
+            this._spinner.visible = this._spinner.active = true;
+        else if (event == WebKit2.LoadEvent.FINISHED)
+            this._spinner.visible = this._spinner.active = false;
+    },
+
+    _onDecidePolicy: function (webview, decision, decision_type) {
+        if (this.redirect_uri &&
+            decision_type === WebKit2.PolicyDecisionType.NAVIGATION_ACTION &&
+            GLib.str_has_prefix(decision.request.uri, this.redirect_uri)) {
+
+            /* Make sure we get rid of the webview */
+            this._webview.destroy();
+
+            /* And close the dialog */
+            this.close();
+            return true;
+        }
+        return false;
+    },
+
+    _cookies_path_init: function () {
+        let dir = GLib.dir_make_tmp('WebShareDialog-XXXXXX');
+
+        if (dir)
+            this._cookies_path = GLib.build_filenamev ([dir, 'cookies.sqlite']);
+        else
+            logError(new Error('Can not create tmp dir to share cookies with webview'));
+    },
+
+    _cookies_path_remove: function () {
+
+        if (!this._cookies_path)
+            return;
+
+        let info;
+        let dirname = GLib.path_get_dirname(this._cookies_path);
+        let dir = Gio.File.new_for_path(dirname);
+        let iter = dir.enumerate_children('cookies.sqlite*',
+                                          Gio.FileQueryInfoFlags.NONE,
+                                          null);
+        while ((info = iter.next_file(null)))
+            GLib.unlink(iter.get_child(info).get_path());
+
+        GLib.rmdir(dirname);
+        delete this._cookies_path;
+    },
+
+    _webview_set_cookies: function (variant) {
+        let retval = variant.get_child_value(0);
+        let cookies = retval.deep_unpack();
+
+        let jar = new Soup.CookieJarDB ({
+            filename: this._cookies_path,
+            read_only: false
+        });
+
+        cookies.forEach((c) => {
+            /* deep_unpack() wont unpack variants */
+            for (let key in c)
+                c[key] = c[key].unpack();
+
+            let cookie = new Soup.Cookie (c.name, c.value, c.domain, c.path, -1);
+
+            /* Set extra parameters */
+            cookie.set_expires(Soup.Date.new_from_time_t (c.expires));
+            cookie.set_secure(c.secure);
+            cookie.set_http_only(c.http_only);
+
+            /* Add cookie to Jar */
+            jar.add_cookie(cookie);
+        });
+
+        jar = null;
+
+        /* Set WebView cookie manager persistent storage */
+        let manager = this._webview.get_context().get_website_data_manager().get_cookie_manager();
+        manager.set_persistent_storage(this._cookies_path,
+                                       WebKit2.CookiePersistentStorage.SQLITE);
+    },
+
+    _update_goa_account: function () {
+        if (!this._goa_client || !this._webview)
+            return;
+
+        let accounts = this._goa_client.get_accounts();
+        let matching_accounts = [];
+
+        accounts.forEach ((obj) => {
+            let account = obj.get_account();
+
+            if (account.provider_type === this._provider)
+                matching_accounts.push(obj);
+        });
+
+        switch (matching_accounts.length) {
+            case 0:
+                /* TODO: open GOA to create a new account */
+            break;
+            case 1:
+                this._goa_oauth2 = matching_accounts[0].get_oauth2_based();
+            break;
+            default:
+                /* TODO: Create a list of accounts and let the user choose which one to use */
+            break;
+        }
+
+        if (this._goa_oauth2 &&
+            this._goa_oauth2.g_interface_info.lookup_method("GetSessionCookies") !== null ) {
+            let cookies = this._goa_oauth2.call_sync("GetSessionCookies", null, 0, -1, null);
+            this._webview_set_cookies(cookies);
+        }
+        else {
+            /* GetSessionCookies is not suported (We are not running in EOS) */
+            /* TODO: store cookies in libsecret and implement login here???? */
+        }
+    },
+
+    _update_uri: function () {
+        if (!this._webview)
+            return;
+
+        if (this._uri)
+            this._webview.load_uri(this._uri);
+        else
+            this._webview.stop_loading();
+    },
+
+    get provider () {
+        return this._provider;
+    },
+
+    set provider (value) {
+        if (this._provider === value)
+            return;
+
+        this._provider = value;
+        this._update_goa_account();
+
+        this.notify('provider');
+    },
+
+    get uri () {
+        return this._uri;
+    },
+
+    set uri (value) {
+        if (this._uri === value)
+            return;
+
+        this._uri = value;
+        this._update_uri();
+
+        this.notify('uri');
+    },
+});
+
