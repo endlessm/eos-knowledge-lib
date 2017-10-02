@@ -41,6 +41,7 @@
 
   <index id="api-index-full">
     <title>API Index</title>
+    <xi:include href="xml/api-index-2.xml"/>
     <xi:include href="xml/api-index-full.xml"><xi:fallback /></xi:include>
   </index>
 
