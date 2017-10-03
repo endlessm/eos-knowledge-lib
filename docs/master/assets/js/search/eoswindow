@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["window/simple.html#fontscalingactive"], "token": "eoswindow"});
+urls_downloaded_cb({"token": "eoswindow", "urls": ["window/simple.html#fontscalingactive"]});

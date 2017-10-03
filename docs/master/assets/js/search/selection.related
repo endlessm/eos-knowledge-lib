@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["selection/related.html#selectionrelated1", "selection/related.html#selectionrelated"], "token": "selection.related"});
+urls_downloaded_cb({"token": "selection.related", "urls": ["selection/related.html#selectionrelated1", "selection/related.html#selectionrelated"]});
