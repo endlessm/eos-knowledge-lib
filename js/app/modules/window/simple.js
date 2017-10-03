@@ -152,8 +152,9 @@ var Simple = new Module.Class({
     },
 
     _on_history_change: function (history) {
-        this._home_button.sensitive = history.get_current_item().page_type !== Pages.HOME;
-        this._social_box.set_reveal_child(history.can_share());
+        let item = history.get_current_item();
+        this._home_button.sensitive = item.page_type !== Pages.HOME;
+        this._social_box.set_reveal_child(item.can_share);
         this._history_buttons.back_button.sensitive = history.can_go_back();
         this._history_buttons.forward_button.sensitive = history.can_go_forward();
         this._show_or_hide_search_box();
