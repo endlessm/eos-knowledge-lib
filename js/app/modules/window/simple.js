@@ -66,9 +66,9 @@ var Simple = new Module.Class({
         button_box.add(this._history_buttons);
         button_box.add(this._social_box);
 
-        this._social_button_add (HistoryStore.Network.FACEBOOK);
-        this._social_button_add (HistoryStore.Network.TWITTER);
-        this._social_button_add (HistoryStore.Network.WHATSAPP);
+        this._social_button_add (HistoryStore.Network.FACEBOOK, 'facebook-symbolic');
+        this._social_button_add (HistoryStore.Network.TWITTER, 'twitter-symbolic');
+        this._social_button_add (HistoryStore.Network.WHATSAPP, 'whatsapp-symbolic');
 
         this._content = this.create_submodule('content');
         this.page_manager.add(this._content, {
@@ -134,9 +134,9 @@ var Simple = new Module.Class({
         return revealer;
     },
 
-    _social_button_add: function (network) {
+    _social_button_add: function (network, icon_name) {
         let button = new Gtk.Button({
-            image: new Gtk.Image({ icon_name: network + '-symbolic' })
+            image: new Gtk.Image({ icon_name: icon_name })
         });
 
         Utils.set_hand_cursor_on_widget(button);
