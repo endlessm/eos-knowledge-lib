@@ -149,12 +149,6 @@ const ContentGroup = new Module.Class({
             stack.set_clip(stack_clip);
         });
 
-        let spinner = new Gtk.Spinner({
-            visible: false,
-            no_show_all: true,
-            vexpand: true,
-        });
-
         let content_grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
             visible: true,
@@ -194,9 +188,6 @@ const ContentGroup = new Module.Class({
         this._selection.connect('models-changed',
             this._on_models_changed.bind(this));
         this._selection.connect('notify::loading', () => {
-            // When the spinner is not being shown on screen, set it to
-            // be inactive to help with performance.
-            spinner.active = spinner.visible = this._selection.loading;
             this._error_page.visible = !!this._selection.error;
             if (this._selection.error)
                 this._stack.visible_child_name = ERROR_PAGE_NAME;
@@ -208,7 +199,6 @@ const ContentGroup = new Module.Class({
         this._selection.connect('notify::needs-refresh', this._ensure_synced.bind(this));
 
         this.attach(this._stack, 0, 1, 2, 1);
-        this.attach(spinner, 0, 2, 2, 1);
 
         [[this._selection, 'can-load-more'], [this._arrangement, 'all-visible']].forEach((arr) => {
             let obj = arr[0];
