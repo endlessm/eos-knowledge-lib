@@ -45,6 +45,8 @@ typedef struct {
 
   char *manifest_path;
 
+  GMutex db_lock;
+
   XapianQueryParser *query_parser;
   XapianDatabase *database;
 } EkncDatabaseManagerPrivate;
@@ -68,9 +70,9 @@ G_DEFINE_TYPE_WITH_PRIVATE (EkncDatabaseManager, eknc_database_manager, G_TYPE_O
  */
 static void
 eknc_database_manager_add_queryparser_prefixes (EkncDatabaseManager *self,
-                                                XapianQueryParser *query_parser,
                                                 JsonObject *object)
 {
+  EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
   JsonNode *element_node;
   JsonObject *element_object;
   JsonArray *array;
@@ -83,7 +85,8 @@ eknc_database_manager_add_queryparser_prefixes (EkncDatabaseManager *self,
     {
       element_node = l->data;
       element_object = json_node_get_object (element_node);
-      xapian_query_parser_add_prefix (query_parser,
+
+      xapian_query_parser_add_prefix (priv->query_parser,
                                       json_object_get_string_member (element_object, "field"),
                                       json_object_get_string_member (element_object, "prefix"));
     }
@@ -97,7 +100,8 @@ eknc_database_manager_add_queryparser_prefixes (EkncDatabaseManager *self,
     {
       element_node = l->data;
       element_object = json_node_get_object (element_node);
-      xapian_query_parser_add_boolean_prefix (query_parser,
+
+      xapian_query_parser_add_boolean_prefix (priv->query_parser,
                                               json_object_get_string_member (element_object, "field"),
                                               json_object_get_string_member (element_object, "prefix"),
                                               FALSE);
@@ -107,8 +111,7 @@ eknc_database_manager_add_queryparser_prefixes (EkncDatabaseManager *self,
 }
 
 static void
-eknc_database_manager_add_queryparser_standard_prefixes (EkncDatabaseManager *self,
-                                                         XapianQueryParser *query_parser)
+eknc_database_manager_add_queryparser_standard_prefixes (EkncDatabaseManager *self)
 {
   /* TODO: these should be configurable */
   static const struct {
@@ -121,15 +124,18 @@ eknc_database_manager_add_queryparser_standard_prefixes (EkncDatabaseManager *se
     { "tag", "K" },
     { "id", "Q" },
   };
-  gint idx;
+
+  EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
+
+  int idx;
 
   for (idx = 0; idx < G_N_ELEMENTS (standard_prefixes); idx++)
-    xapian_query_parser_add_prefix (query_parser,
+    xapian_query_parser_add_prefix (priv->query_parser,
                                     standard_prefixes[idx].field,
                                     standard_prefixes[idx].prefix);
 
   for (idx = 0; idx < G_N_ELEMENTS (standard_boolean_prefixes); idx++)
-    xapian_query_parser_add_boolean_prefix (query_parser,
+    xapian_query_parser_add_boolean_prefix (priv->query_parser,
                                             standard_boolean_prefixes[idx].field,
                                             standard_boolean_prefixes[idx].prefix,
                                             FALSE);
@@ -182,7 +188,12 @@ eknc_database_manager_finalize (GObject *object)
   EkncDatabaseManager *self = EKNC_DATABASE_MANAGER (object);
   EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
 
+  g_mutex_clear (&priv->db_lock);
+
   g_free (priv->manifest_path);
+
+  g_clear_object (&priv->database);
+  g_clear_object (&priv->query_parser);
 
   g_clear_pointer (&priv->stemmers, g_hash_table_unref);
 
@@ -215,119 +226,108 @@ eknc_database_manager_init (EkncDatabaseManager *self)
 
   priv->stemmers = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_object_unref);
   g_hash_table_insert (priv->stemmers, g_strdup ("none"), xapian_stem_new ());
+
+  g_mutex_init (&priv->db_lock);
 }
 
 static gboolean
 eknc_database_manager_register_prefixes (EkncDatabaseManager *self,
-                                         XapianDatabase *db,
-                                         XapianQueryParser *query_parser,
                                          GError **error_out)
 {
-  gchar *metadata_json;
+  EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
   GError *error = NULL;
-  JsonParser *parser = NULL;
   JsonNode *root;
   gboolean ret = FALSE;
 
   /* Attempt to read the database's custom prefix association metadata */
-  metadata_json = xapian_database_get_metadata (db, PREFIX_METADATA_KEY, &error);
+  g_autofree char *metadata_json =
+    xapian_database_get_metadata (priv->database, PREFIX_METADATA_KEY, &error);
+
   if (error != NULL)
     {
+      eknc_database_manager_add_queryparser_standard_prefixes (self);
       g_propagate_error (error_out, error);
-      goto out;
+      return FALSE;
     }
 
-  parser = json_parser_new ();
+  g_autoptr(JsonParser) parser = json_parser_new_immutable ();
   json_parser_load_from_data (parser, metadata_json, -1, &error);
   if (error != NULL)
     {
+      eknc_database_manager_add_queryparser_standard_prefixes (self);
       g_propagate_error (error_out, error);
-      goto out;
+      return FALSE;
     }
 
   root = json_parser_get_root (parser);
   if (root != NULL)
-    eknc_database_manager_add_queryparser_prefixes (self, query_parser,
-                                                  json_node_get_object (root));
+    eknc_database_manager_add_queryparser_prefixes (self, json_node_get_object (root));
+  else
+    eknc_database_manager_add_queryparser_standard_prefixes (self);
 
-  ret = TRUE;
-
- out:
-  /* If there was an error, just use the "standard" prefix map */
-  if (error != NULL)
-    eknc_database_manager_add_queryparser_standard_prefixes (self, query_parser);
-
-  g_clear_error (&error);
-  g_clear_object (&parser);
-  g_free (metadata_json);
-  return ret;
+  return TRUE;
 }
 
 static gboolean
 eknc_database_manager_register_stopwords (EkncDatabaseManager *self,
-                                          XapianDatabase *db,
-                                          XapianQueryParser *query_parser,
                                           GError **error_out)
 {
-  XapianSimpleStopper *stopper;
-  gchar *stopwords_json;
+  EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
   GError *error = NULL;
-  JsonParser *parser;
-  JsonNode *node;
-  JsonArray *array;
-  GList *elements, *l;
-  const gchar *stopword;
-  gchar *stopword_chomped;
 
-  stopwords_json = xapian_database_get_metadata (db, STOPWORDS_METADATA_KEY, &error);
+  g_autofree char *stopwords_json =
+    xapian_database_get_metadata (priv->database, STOPWORDS_METADATA_KEY, &error);
+
   if (error != NULL)
     {
       g_propagate_error (error_out, error);
       return FALSE;
     }
 
-  parser = json_parser_new ();
+  g_autoptr(JsonParser) parser = json_parser_new_immutable ();
   json_parser_load_from_data (parser, stopwords_json, -1, &error);
+
   if (error != NULL)
     {
       g_propagate_error (error_out, error);
-      g_object_unref (parser);
       return FALSE;
     }
 
   /* empty JSON is not an error */
-  node = json_parser_get_root (parser);
-  if (node != NULL)
+  JsonNode *node = json_parser_get_root (parser);
+  if (node == NULL)
+    return TRUE;
+
+  JsonArray *array = json_node_get_array (node);
+  GList *elements = json_array_get_elements (array);
+
+  g_autoptr(XapianSimpleStopper) stopper = xapian_simple_stopper_new ();
+
+  for (GList *l = elements; l != NULL; l = l->next)
     {
-      array = json_node_get_array (node);
-      elements = json_array_get_elements (array);
+      const char *stopword = json_node_get_string (l->data);
 
-      stopper = xapian_simple_stopper_new ();
-      for (l = elements; l != NULL; l = l->next)
+      /* In older databases, each stopword had a newline appended.
+       * This has now been fixed, but to avoid having to rebuild
+       * everything, we check for and remove such newlines.
+       */
+      if (g_str_has_suffix (stopword, "\n"))
         {
-          stopword = json_node_get_string (l->data);
-          /* In older databases, each stopword had a newline appended.
-           * This has now been fixed, but to avoid having to rebuild
-           * everything, we check for and remove such newlines.
-           */
-          if (g_str_has_suffix (stopword, "\n"))
-            {
-              stopword_chomped = g_strdup (stopword);
-              g_strchomp (stopword_chomped);
-              xapian_simple_stopper_add (stopper, stopword_chomped);
-              g_free (stopword_chomped);
-            }
-          else
-            {
-              xapian_simple_stopper_add (stopper, stopword);
-            }
-        }
+          g_autofree char *stopword_chomped = g_strdup (stopword);
 
-      xapian_query_parser_set_stopper (query_parser, XAPIAN_STOPPER (stopper));
-      g_object_unref (stopper);
+          g_strchomp (stopword_chomped);
+
+          xapian_simple_stopper_add (stopper, stopword_chomped);
+        }
+      else
+        {
+          xapian_simple_stopper_add (stopper, stopword);
+        }
     }
 
-  g_object_unref (parser);
+  g_list_free (elements);
+
+  xapian_query_parser_set_stopper (priv->query_parser, XAPIAN_STOPPER (stopper));
 
   return TRUE;
 }
@@ -337,25 +337,30 @@ create_database_from_manifest (const char  *manifest_path,
                                GError     **error_out)
 {
   GError *error = NULL;
-  g_autofree char *manifest_dir_path = NULL;
-  XapianDatabase *db = NULL;
 
-  JsonParser *parser = json_parser_new ();
+  g_autoptr(JsonParser) parser = json_parser_new_immutable ();
   if (!json_parser_load_from_file (parser, manifest_path, &error))
-    goto out;
+    {
+      g_propagate_error (error_out, error);
+      return NULL;
+    }
 
-  db = xapian_database_new (&error);
+  XapianDatabase *db = xapian_database_new (&error);
   if (error != NULL)
-    goto out;
+    {
+      g_propagate_error (error_out, error);
+      return NULL;
+    }
 
   JsonNode *node = json_parser_get_root (parser);
   JsonObject *json_manifest = json_node_get_object (node);
   JsonArray *json_dbs = json_object_get_array_member (json_manifest, "xapian_databases");
 
-  manifest_dir_path = g_path_get_dirname (manifest_path);
+  g_autofree char *manifest_dir_path = g_path_get_dirname (manifest_path);
 
-  GList *dbs = json_array_get_elements (json_dbs), *l;
-  for (l = dbs; l != NULL; l = l->next)
+  GList *dbs = json_array_get_elements (json_dbs);
+
+  for (GList *l = dbs; l != NULL; l = l->next)
     {
       JsonObject *json_db = json_node_get_object (l->data);
 
@@ -364,27 +369,24 @@ create_database_from_manifest (const char  *manifest_path,
       const char *relpath = json_object_get_string_member (json_db, "path");
       g_autofree char *db_path = g_build_filename (manifest_dir_path, relpath, NULL);
 
-      XapianDatabase *internal_db = g_initable_new (XAPIAN_TYPE_DATABASE,
-                                                    NULL, &error,
-                                                    "path", db_path,
-                                                    "offset", db_offset,
-                                                    NULL);
+      g_autoptr(XapianDatabase) internal_db =
+        g_initable_new (XAPIAN_TYPE_DATABASE,
+                        NULL, &error,
+                        "path", db_path,
+                        "offset", db_offset,
+                        NULL);
 
       if (error != NULL)
-        goto out;
+        {
+          g_propagate_error (error_out, error);
+          g_clear_object (&db);
+          break;
+        }
 
       xapian_database_add_database (db, internal_db);
-      g_object_unref (internal_db);
     }
 
- out:
-  g_clear_object (&parser);
-
-  if (error)
-    {
-      g_propagate_error (error_out, error);
-      g_clear_object (&db);
-    }
+  g_list_free (dbs);
 
   return db;
 }
@@ -408,6 +410,9 @@ eknc_database_manager_create_db_internal (EkncDatabaseManager *self,
                                           GError **error_out)
 {
   EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
+
+  g_autoptr(GMutexLocker) db_lock = g_mutex_locker_new (&priv->db_lock);
+
   GError *error = NULL;
 
   priv->database = create_database_from_manifest (path, &error);
@@ -427,10 +432,7 @@ eknc_database_manager_create_db_internal (EkncDatabaseManager *self,
   priv->query_parser = xapian_query_parser_new ();
   xapian_query_parser_set_database (priv->query_parser, priv->database);
 
-  if (!eknc_database_manager_register_prefixes (self,
-                                                priv->database,
-                                                priv->query_parser,
-                                                &error))
+  if (!eknc_database_manager_register_prefixes (self, &error))
     {
       /* Non-fatal */
       g_warning ("Could not register prefixes for database %s: %s",
@@ -438,10 +440,7 @@ eknc_database_manager_create_db_internal (EkncDatabaseManager *self,
       g_clear_error (&error);
     }
 
-  if (!eknc_database_manager_register_stopwords (self,
-                                                 priv->database,
-                                                 priv->query_parser,
-                                                 &error))
+  if (!eknc_database_manager_register_stopwords (self, &error))
     {
       /* Non-fatal */
       g_warning ("Could not add stop words for database %s: %s.",
@@ -470,14 +469,11 @@ static XapianMSet *
 eknc_database_manager_fetch_results (EkncDatabaseManager *self,
                                      XapianEnquire *enquire,
                                      XapianQuery *query,
-                                     const gchar *query_str,
                                      GHashTable *query_options,
                                      GError **error_out)
 {
   const gchar *str;
-  gchar *document_data;
   guint limit, offset;
-  XapianMSet *matches;
   GError *error = NULL;
 
   str = g_hash_table_lookup (query_options, QUERY_PARAM_OFFSET);
@@ -515,7 +511,8 @@ eknc_database_manager_fetch_results (EkncDatabaseManager *self,
   }
 
   xapian_enquire_set_query (enquire, query, xapian_query_get_length (query));
-  matches = xapian_enquire_get_mset (enquire, offset, limit, &error);
+
+  XapianMSet *matches = xapian_enquire_get_mset (enquire, offset, limit, &error);
   if (error != NULL)
     {
       g_propagate_error (error_out, error);
@@ -694,6 +691,8 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
   XapianQueryParserFeature flags = QUERY_PARSER_FLAGS;
   XapianStopper *stopper;
 
+  g_autoptr(GMutexLocker) db_lock = g_mutex_locker_new (&priv->db_lock);
+
   query_str = g_hash_table_lookup (query_options, QUERY_PARAM_QUERYSTR);
   match_all = g_hash_table_lookup (query_options, QUERY_PARAM_MATCH_ALL);
 
@@ -707,21 +706,23 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
       return FALSE;
     }
 
-  if (stopper != NULL)
+  if (stopper != NULL && stop_fixed_query_out != NULL)
     {
       g_auto(GStrv) words = g_strsplit (query_str, " ", -1);
-      g_auto(GStrv) filtered_words = g_new0 (char *, g_strv_length (words) + 1);
+
+      /* This is not a GStrv, as we don't copy the words, just their pointer */
+      g_autofree char **filtered_words = g_new0 (char *, g_strv_length (words) + 1);
 
       char **filtered_iter = filtered_words;
       char **words_iter;
+
       for (words_iter = words; *words_iter != NULL; words_iter++)
         {
           if (!xapian_stopper_is_stop_term (stopper, *words_iter))
             *filtered_iter++ = *words_iter;
         }
 
-      if (stop_fixed_query_out != NULL)
-        *stop_fixed_query_out = g_strjoinv (" ", filtered_words);
+      *stop_fixed_query_out = g_strjoinv (" ", filtered_words);
     }
 
   default_op = g_hash_table_lookup (query_options, QUERY_PARAM_DEFAULT_OP);
@@ -733,7 +734,10 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
     return FALSE;
 
   /* Parse the user's query so we can request a spelling correction. */
-  xapian_query_parser_parse_query_full (priv->query_parser, query_str, flags, "", &error);
+  xapian_query_parser_parse_query_full (priv->query_parser,
+                                        query_str != NULL ? query_str : "",
+                                        flags, "",
+                                        &error);
   if (error != NULL)
     {
       g_propagate_error (error_out, error);
@@ -792,6 +796,8 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
   XapianQueryParserFeature flags = QUERY_PARSER_FLAGS;
   JsonNode *results;
 
+  g_autoptr(GMutexLocker) db_lock = g_mutex_locker_new (&priv->db_lock);
+
   if (database_is_empty (priv->database))
     {
       g_set_error (error_out, EKNC_DATABASE_MANAGER_ERROR,
@@ -831,13 +837,14 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
   xapian_query_parser_set_stemmer (priv->query_parser, stem);
   xapian_query_parser_set_stemming_strategy (priv->query_parser, XAPIAN_STEM_STRATEGY_STEM_SOME);
 
-  g_autoptr(XapianQuery) parsed_query = NULL;
   g_autoptr(XapianEnquire) enquire = xapian_enquire_new (priv->database, &error);
   if (error != NULL)
     {
       g_propagate_error (error_out, error);
       return NULL;
     }
+
+  g_autoptr(XapianQuery) parsed_query = NULL;
 
   const char *match_all = g_hash_table_lookup (query_options, QUERY_PARAM_MATCH_ALL);
   if (match_all != NULL && str == NULL)
@@ -854,10 +861,10 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
       if (flags_str != NULL && !parse_query_flags (flags_str, &flags, error_out))
         return NULL;
 
-      /* save the query string aside */
-      query_str = g_strdup (str);
-      parsed_query = xapian_query_parser_parse_query_full (priv->query_parser, query_str,
-                                                           flags, "", &error);
+      parsed_query = xapian_query_parser_parse_query_full (priv->query_parser,
+                                                           str,
+                                                           flags, "",
+                                                           &error);
 
       if (error != NULL)
         {
@@ -895,9 +902,11 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
         }
       else
         {
-          parsed_query = xapian_query_new_for_pair (XAPIAN_QUERY_OP_FILTER,
-                                                    parsed_query,
-                                                    filter_query);
+          g_autoptr(XapianQuery) full_query =
+            xapian_query_new_for_pair (XAPIAN_QUERY_OP_FILTER, parsed_query, filter_query);
+
+          g_object_unref (parsed_query);
+          parsed_query = g_steal_pointer (&full_query);
         }
     }
   else if (parsed_query == NULL)
@@ -912,21 +921,26 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
         xapian_query_parser_parse_query_full (priv->query_parser,
                                               filterout_str,
                                               XAPIAN_QUERY_PARSER_FEATURE_DEFAULT,
-                                              "", &error);
+                                              "",
+                                              &error);
       if (error != NULL)
         {
           g_propagate_error (error_out, error);
           return NULL;
         }
 
-      parsed_query = xapian_query_new_for_pair (XAPIAN_QUERY_OP_AND_NOT,
-                                                parsed_query,
-                                                filterout_query);
+      g_autoptr(XapianQuery) full_query =
+        xapian_query_new_for_pair (XAPIAN_QUERY_OP_AND_NOT,
+                                   parsed_query,
+                                   filterout_query);
+
+      g_object_unref (parsed_query);
+      parsed_query = g_steal_pointer (&full_query);
     }
 
   str = g_hash_table_lookup (query_options, QUERY_PARAM_COLLAPSE_KEY);
   if (str != NULL)
-    xapian_enquire_set_collapse_key (enquire, (guint) g_ascii_strtod (str, NULL));
+    xapian_enquire_set_collapse_key (enquire, CLAMP (g_ascii_strtod (str, NULL), 0, G_MAXUINT));
 
   str = g_hash_table_lookup (query_options, QUERY_PARAM_SORT_BY);
   if (str != NULL)
@@ -937,18 +951,19 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
       order = g_hash_table_lookup (query_options, QUERY_PARAM_ORDER);
       reverse_order = (g_strcmp0 (order, "desc") == 0);
       xapian_enquire_set_sort_by_value (enquire,
-                                        (guint) g_ascii_strtod (str, NULL),
+                                        CLAMP (g_ascii_strtod (str, NULL), 0, G_MAXUINT),
                                         reverse_order);
     }
   else
     {
       str = g_hash_table_lookup (query_options, QUERY_PARAM_CUTOFF);
       if (str != NULL)
-        xapian_enquire_set_cutoff (enquire, (guint) g_ascii_strtod (str, NULL));
+        xapian_enquire_set_cutoff (enquire, CLAMP (g_ascii_strtod (str, NULL), 0, G_MAXUINT));
     }
 
-  return eknc_database_manager_fetch_results (self, enquire, parsed_query,
-                                              query_str, query_options,
+  return eknc_database_manager_fetch_results (self, enquire,
+                                              parsed_query,
+                                              query_options,
                                               error_out);
 }
 
