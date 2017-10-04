@@ -149,7 +149,7 @@ var ContentGroup = new Module.Class({
             stack.set_clip(stack_clip);
         });
 
-        let spinner = new Gtk.Spinner({
+        let spinner = new SpinnerReplacement({
             visible: false,
             no_show_all: true,
             vexpand: true,
@@ -345,4 +345,24 @@ var ContentGroup = new Module.Class({
             cards_to_load = max_cards;
         this._selection.queue_load_more(cards_to_load);
     },
+});
+
+const SpinnerReplacement = GObject.registerClass(class SpinnerReplacement extends Gtk.Revealer {
+    _init(props={}) {
+        props.transition_duration = 200;
+        props.transition_type = Gtk.RevealerTransitionType.CROSSFADE;
+        super._init(props);
+
+        let fake_spinner = Gtk.Image.new_from_icon_name('content-loading-symbolic',
+            Gtk.IconSize.DIALOG);
+        this.add(fake_spinner);
+    }
+
+    get active() {
+        return this.reveal_child;
+    }
+
+    set active(v) {
+        this.reveal_child = v;
+    }
 });
