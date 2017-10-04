@@ -663,11 +663,9 @@ eknc_domain_get_object_finish (EkncDomain *self,
                                GError **error)
 {
   g_return_val_if_fail (EKNC_IS_DOMAIN (self), NULL);
-  g_return_val_if_fail (G_IS_TASK (result), NULL);
-  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+  g_return_val_if_fail (g_task_is_valid (result, self), NULL);
 
-  GTask *task = G_TASK (result);
-  return g_task_propagate_pointer (task, error);
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 static EkncContentObjectModel *
@@ -692,7 +690,7 @@ eknc_domain_get_object_sync (EkncDomain *self,
       return NULL;
     }
 
-  GInputStream *stream = eos_shard_blob_get_stream (record->metadata);
+  g_autoptr(GInputStream) stream = eos_shard_blob_get_stream (record->metadata);
 
   g_autoptr(JsonParser) parser = json_parser_new_immutable ();
   GError *internal_error = NULL;
@@ -703,8 +701,10 @@ eknc_domain_get_object_sync (EkncDomain *self,
       return NULL;
     }
 
-  EkncContentObjectModel *model = eknc_object_model_from_json_node (json_parser_get_root (parser), &internal_error);
-  if (model == NULL)
+  EkncContentObjectModel *model =
+    eknc_object_model_from_json_node (json_parser_get_root (parser), &internal_error);
+
+  if (internal_error != NULL)
     {
       g_propagate_error (error, internal_error);
       return NULL;
@@ -723,9 +723,8 @@ typedef struct
 
   GHashTable *params;
 
-  GPtrArray *models;
-  guint total_models;
-  guint upper_bound;
+  char *fixed_stop_query;
+  char *fixed_spell_query;
 } RequestState;
 
 static void
@@ -733,13 +732,14 @@ request_state_free (gpointer data)
 {
   RequestState *state = data;
 
+  g_free (state->fixed_stop_query);
+  g_free (state->fixed_spell_query);
+
   g_clear_object (&state->domain);
   g_clear_object (&state->query);
   g_clear_object (&state->db_manager);
 
   g_clear_pointer (&state->params, g_hash_table_unref);
-
-  g_clear_pointer (&state->models, g_ptr_array_unref);
 
   g_slice_free (RequestState, state);
 }
@@ -748,57 +748,59 @@ static GHashTable *
 get_xapian_query_params (EkncDomain *domain,
                          EkncQueryObject *query)
 {
-  GHashTable *params = g_hash_table_new (g_str_hash, g_str_equal);
+  GHashTable *params = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
 
-  g_hash_table_insert (params, "defaultOp", "and");
-  g_hash_table_insert (params, "flags", "default,partial,spelling-correction");
+  g_hash_table_insert (params, "defaultOp", g_strdup ("and"));
+  g_hash_table_insert (params, "flags", g_strdup ("default,partial,spelling-correction"));
 
   const char *filter, *filterout;
   const char *query_str = eknc_query_object_get_query_parser_strings (query,
                                                                       &filter,
                                                                       &filterout);
   if (filter != NULL && *filter != '\0')
-    g_hash_table_insert (params, "filter", (gpointer) filter);
+    g_hash_table_insert (params, "filter", g_strdup (filter));
 
   if (filterout != NULL && *filterout != '\0')
-    g_hash_table_insert (params, "filterOut", (gpointer) filterout);
+    g_hash_table_insert (params, "filterOut", g_strdup (filterout));
 
-  if (query_str)
-    g_hash_table_insert (params, "q", (gpointer) query_str);
+  if (query_str != NULL)
+    g_hash_table_insert (params, "q", g_strdup (query_str));
   else
-    g_hash_table_insert (params, "matchAll", "1");
+    g_hash_table_insert (params, "matchAll", g_strdup ("1"));
 
   if (domain->language != NULL && *domain->language != '\0')
-    g_hash_table_insert (params, "lang", domain->language);
+    g_hash_table_insert (params, "lang", g_strdup (domain->language));
 
   guint limit, offset;
   g_object_get (query, "limit", &limit, "offset", &offset, NULL);
 
   if (limit > 0)
     {
-      g_autofree char *limit_string = g_strdup_printf ("%u", limit);
+      char *limit_string = g_strdup_printf ("%u", limit);
       g_hash_table_insert (params, "limit", limit_string);
     }
 
-  g_autofree char *offset_string = g_strdup_printf ("%u", offset);
+  char *offset_string = g_strdup_printf ("%u", offset);
   g_hash_table_insert (params, "offset", offset_string);
 
   guint cutoff = eknc_query_object_get_cutoff (query);
-  g_autofree char *cutoff_string = g_strdup_printf ("%u", cutoff);
+  char *cutoff_string = g_strdup_printf ("%u", cutoff);
   g_hash_table_insert (params, "cutoff", cutoff_string);
 
-  gint sort_value = eknc_query_object_get_sort_value (query);
-  g_autofree char *sort_string = g_strdup_printf ("%d", sort_value);
+  int sort_value = eknc_query_object_get_sort_value (query);
   if (sort_value > -1)
-    g_hash_table_insert (params, "sortBy", sort_string);
+    {
+      char *sort_string = g_strdup_printf ("%d", sort_value);
+      g_hash_table_insert (params, "sortBy", sort_string);
+    }
 
   EkncQueryObjectOrder order;
   g_object_get (query, "order", &order, NULL);
 
   g_hash_table_insert (params, "order",
                        order == EKNC_QUERY_OBJECT_ORDER_ASCENDING
-                         ? "asc"
-                         : "desc");
+                         ? g_strdup ("asc")
+                         : g_strdup ("desc"));
 
   return params;
 }
@@ -809,51 +811,25 @@ query_fix_task (GTask *task,
                 gpointer task_data,
                 GCancellable *cancellable)
 {
-  RequestState *request = task_data;
+  RequestState *request = g_task_get_task_data (task);
   GError *error = NULL;
 
   if (g_task_return_error_if_cancelled (task))
-    {
-      g_object_unref (task);
-      return;
-    }
-
-  g_autofree char *stop_fixed_query = NULL;
-  g_autofree char *spell_fixed_query = NULL;
+    return;
 
   gboolean result =
     eknc_database_manager_fix_query (request->db_manager,
                                      request->params,
-                                     &stop_fixed_query,
-                                     &spell_fixed_query,
+                                     &request->fixed_stop_query,
+                                     &request->fixed_spell_query,
                                      &error);
-
-  /* If we didn't get a corrected query, we can just reuse the existing query object */
-  if (stop_fixed_query == NULL && spell_fixed_query == NULL)
+  if (error != NULL)
     {
-      g_task_return_pointer (task, g_object_ref (request->query), g_object_unref);
-      g_object_unref (task);
+      g_task_return_error (task, error);
       return;
     }
 
-  EkncQueryObject *query = NULL;
-
-  if (stop_fixed_query != NULL && spell_fixed_query != NULL)
-    query = eknc_query_object_new_from_object (request->query,
-                                               "stopword-free-query", stop_fixed_query,
-                                               "corrected-query", spell_fixed_query,
-                                               NULL);
-  else if (stop_fixed_query != NULL)
-    query = eknc_query_object_new_from_object (request->query,
-                                               "stopword-free-query", stop_fixed_query,
-                                               NULL);
-  else
-    query = eknc_query_object_new_from_object (request->query,
-                                               "corrected-query", spell_fixed_query,
-                                               NULL);
-
-  g_task_return_pointer (task, query, g_object_unref);
-  g_object_unref (task);
+  g_task_return_boolean (task, TRUE);
 }
 
 /**
@@ -894,6 +870,7 @@ eknc_domain_get_fixed_query (EkncDomain *self,
   g_task_set_task_data (task, state, request_state_free);
 
   g_task_run_in_thread (task, query_fix_task);
+  g_object_unref (task);
 }
 
 /**
@@ -915,14 +892,32 @@ eknc_domain_get_fixed_query_finish (EkncDomain *self,
   g_return_val_if_fail (G_IS_TASK (result), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  return g_task_propagate_pointer (G_TASK (result), error);
-}
+  gboolean success = g_task_propagate_boolean (G_TASK (result), error);
 
-static void
-maybe_unref_object (gpointer data)
-{
-  if (G_LIKELY (data != NULL))
-    g_object_unref (data);
+  if (success)
+    {
+      RequestState *request = g_task_get_task_data (G_TASK (result));
+
+      /* If we didn't get a corrected query, we can just reuse the existing query object */
+      if (request->fixed_stop_query == NULL && request->fixed_spell_query == NULL)
+        return g_object_ref (request->query);
+
+      if (request->fixed_stop_query != NULL && request->fixed_spell_query != NULL)
+        return eknc_query_object_new_from_object (request->query,
+                                                  "stopword-free-query", request->fixed_stop_query,
+                                                  "corrected-query", request->fixed_spell_query,
+                                                  NULL);
+      else if (request->fixed_stop_query != NULL)
+        return eknc_query_object_new_from_object (request->query,
+                                                  "stopword-free-query", request->fixed_stop_query,
+                                                  NULL);
+      else
+        return eknc_query_object_new_from_object (request->query,
+                                                  "corrected-query", request->fixed_spell_query,
+                                                  NULL);
+    }
+
+  return NULL;
 }
 
 static void
@@ -935,10 +930,7 @@ query_task (GTask *task,
   GError *error = NULL;
 
   if (g_task_return_error_if_cancelled (task))
-    {
-      g_object_unref (task);
-      return;
-    }
+    return;
 
   g_autoptr(XapianMSet) results =
     eknc_database_manager_query (state->db_manager, state->params, &error);
@@ -946,58 +938,55 @@ query_task (GTask *task,
   if (error != NULL)
     {
       g_task_return_error (task, error);
-      g_object_unref (task);
       return;
     }
 
   int n_results = xapian_mset_get_size (results);
+  int upper_bound = xapian_mset_get_matches_upper_bound (results);
 
-  state->upper_bound = xapian_mset_get_matches_upper_bound (results);
-  state->models = g_ptr_array_new_full (n_results, maybe_unref_object);
-  g_ptr_array_set_size (state->models, state->total_models);
+  g_debug ("Found %d results (upper bound: %d)\n", n_results, upper_bound);
 
-  const char *filter, filterout;
-  g_debug ("Found %d results (upper-bound: %d) for query '%s'",
-           n_results,
-           state->upper_bound,
-           eknc_query_object_get_query_parser_strings (state->query, &filter, &filterout));
+  GList *models = NULL;
 
   g_autoptr(XapianMSetIterator) iter = xapian_mset_get_begin (results);
   while (xapian_mset_iterator_next (iter))
     {
-      if (g_task_return_error_if_cancelled (task))
-        {
-          g_object_unref (task);
-          return;
-        }
+      GError *internal_error = NULL;
 
-      XapianDocument *document = xapian_mset_iterator_get_document (iter, &error);
-      if (error != NULL)
+      XapianDocument *document = xapian_mset_iterator_get_document (iter, &internal_error);
+      if (internal_error != NULL)
         {
-          g_debug ("INTERNAL: Unable to fetch document from iterator: %s", error->message);
-          g_clear_error (&error);
+          g_debug ("INTERNAL: Unable to fetch document from iterator: %s",
+                   internal_error->message);
+          g_error_free (internal_error);
           continue;
         }
 
       g_autofree char *object_id = xapian_document_get_data (document);
 
-      EkncContentObjectModel *model =
-        eknc_domain_get_object_sync (state->domain, object_id, cancellable, &error);
+      g_debug ("Retrieving document object '%s'\n", object_id);
 
-      if (model == NULL)
+      EkncContentObjectModel *model =
+        eknc_domain_get_object_sync (state->domain, object_id, NULL, &internal_error);
+
+      if (internal_error != NULL)
         {
-          g_task_return_error (task, error);
-          g_object_unref (task);
+          g_task_return_error (task, internal_error);
           return;
         }
 
-      g_ptr_array_add (state->models, model);
+      models = g_list_prepend (models, model);
     }
 
-  state->total_models = state->models->len;
+  g_debug ("Models found: %d of %d matches", g_list_length (models), n_results);
 
-  g_task_return_boolean (task, TRUE);
-  g_object_unref (task);
+  EkncQueryResults *query_results =
+    g_object_new (EKNC_TYPE_QUERY_RESULTS,
+                  "upper-bound", upper_bound,
+                  "models", g_list_reverse (models),
+                  NULL);
+
+  g_task_return_pointer (task, query_results, g_object_unref);
 }
 
 /**
@@ -1032,26 +1021,7 @@ eknc_domain_query (EkncDomain *self,
   g_task_set_task_data (task, state, request_state_free);
 
   g_task_run_in_thread (task, query_task);
-}
-
-static GList *
-ptr_array_to_list_deep (GPtrArray *array)
-{
-  GList *list = NULL;
-
-  /* If there's no array just return an empty list */
-  if (array == NULL)
-    return NULL;
-
-  /* Walk the list backwards so we can use prepend() to get constant
-   * time insertion in the results list, instead of having to use
-   * append(), or to use prepend() and then reverse() before returning
-   * it at the end
-   */
-  for (guint i = array->len - 1; i >= 0; i--)
-    list = g_list_prepend (list, g_object_ref (g_ptr_array_index (array, i)));
-
-  return list;
+  g_object_unref (task);
 }
 
 /**
@@ -1073,15 +1043,7 @@ eknc_domain_query_finish (EkncDomain *self,
   g_return_val_if_fail (G_IS_TASK (result), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  GTask *task = G_TASK (result);
-  if (!g_task_propagate_boolean (task, error))
-    return NULL;
-
-  RequestState *state = g_task_get_task_data (task);
-  return g_object_new (EKNC_TYPE_QUERY_RESULTS,
-                       "upper-bound", state->upper_bound,
-                       "models", ptr_array_to_list_deep (state->models),
-                       NULL);
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 /**
