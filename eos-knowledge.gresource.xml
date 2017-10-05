@@ -72,6 +72,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/view/document.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/view/media.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/view/video.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/websharedialog.ui</file>
     <file>js/app/actions.js</file>
     <file>js/app/application.js</file>
     <file>js/app/articleHTMLRenderer.js</file>
@@ -206,6 +207,7 @@
     <file>js/app/widgets/tabButton.js</file>
     <file>js/app/widgets/tableOfContents.js</file>
     <file>js/app/widgets/themeableImage.js</file>
+    <file>js/app/widgets/webShareDialog.js</file>
     <file>js/app/widgetSurfaceCache.js</file>
     <file>tools/eminem.js</file>
     <file>tools/introspect.js</file>
