@@ -1,1 +1,1 @@
-fragment_downloaded_cb({"url": "view/document.html#showtoc", "fragment": "show toc \nSet true if the toc should be visible. \n"});
+fragment_downloaded_cb({"fragment": "show toc \nSet true if the toc should be visible. \n", "url": "view/document.html#showtoc"});

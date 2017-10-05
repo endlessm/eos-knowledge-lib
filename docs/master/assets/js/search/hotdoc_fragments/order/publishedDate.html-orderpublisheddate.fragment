@@ -1,1 +1,1 @@
-fragment_downloaded_cb({"url": "order/publishedDate.html#orderpublisheddate", "fragment": "Order.PublishedDate \n"});
+fragment_downloaded_cb({"fragment": "Order.PublishedDate \n", "url": "order/publishedDate.html#orderpublisheddate"});
