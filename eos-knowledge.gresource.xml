@@ -37,6 +37,7 @@
     <file compressed="true">data/templates/news-article.mst</file>
     <file compressed="true">data/templates/article-wrapper.mst</file>
     <file compressed="true">data/templates/css/clipboard.css</file>
+    <file compressed="true">data/templates/css/share-actions.css</file>
     <file compressed="true">data/templates/css/prensa-libre.css</file>
     <file compressed="true">data/templates/css/buffet-custom.css</file>
     <file compressed="true">data/templates/css/wikihow.css</file>
@@ -53,6 +54,7 @@
     <file compressed="true">data/templates/js/hide-broken-images.js</file>
     <file compressed="true">data/templates/js/jquery-min.js</file>
     <file compressed="true">data/templates/js/scroll-manager.js</file>
+    <file compressed="true">data/templates/js/share-actions.js</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/app.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/dynamic.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/search.ui</file>

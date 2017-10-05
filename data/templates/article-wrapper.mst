@@ -18,10 +18,12 @@
         <script type="text/javascript">
             window.contentMetadata = {{{content-metadata}}};
         </script>
+        {{{share-actions}}}
         {{{content}}}
         <script type="text/javascript">
             window.crosslink_init({{{crosslink-data}}});
             window.chunk_init({{{chunk-data}}});
+            window.share_actions_init();
         </script>
     </body>
 </html>

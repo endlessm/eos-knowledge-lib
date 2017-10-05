@@ -8,7 +8,9 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const WebKit2 = imports.gi.WebKit2;
 
+const Actions = imports.app.actions;
 const ArticleContent = imports.app.interfaces.articleContent;
+const Dispatcher = imports.app.dispatcher;
 const EknWebview = imports.app.widgets.eknWebview;
 const HistoryStore = imports.app.historyStore;
 const InArticleSearch = imports.app.widgets.inArticleSearch;
@@ -228,13 +230,31 @@ var Document = new Module.Class({
             section.hasContent.split('#')[1] === sectionName);
     },
 
+    _register_share_message: function (network, message_name) {
+        this._manager.connect(`script-message-received::${message_name}`, () => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.SHARE,
+                network: network
+            });
+        });
+        this._manager.register_script_message_handler(message_name);
+    },
+
     // Keep separate function to mock out in tests
     _create_webview: function () {
+        this._manager = new WebKit2.UserContentManager ();
+
+        /* Handle share message */
+        this._register_share_message(HistoryStore.Network.FACEBOOK, 'share_on_facebook');
+        this._register_share_message(HistoryStore.Network.TWITTER, 'share_on_twitter');
+        this._register_share_message(HistoryStore.Network.WHATSAPP, 'share_on_whatsapp');
+
         return new EknWebview.EknWebview({
             expand: true,
             visible: true,
             width_request: this.MIN_CONTENT_WIDTH,
             height_request: this.MIN_CONTENT_HEIGHT,
+            user_content_manager: this._manager,
         });
     },
 
