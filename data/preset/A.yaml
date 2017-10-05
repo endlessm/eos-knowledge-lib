@@ -92,10 +92,6 @@ defines:
               slots:
                 card:
                   type: *card
-                  properties:
-                    excluded_types:
-                      - 1
-                      - 2
             selection:
               type: Selection.ContentForSet
               id: set-articles
