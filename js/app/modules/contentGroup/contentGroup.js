@@ -8,6 +8,7 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
+const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Config = imports.app.config;
@@ -149,7 +150,7 @@ var ContentGroup = new Module.Class({
             stack.set_clip(stack_clip);
         });
 
-        let spinner = new Gtk.Spinner({
+        let spinner = new SpinnerReplacement({
             visible: false,
             no_show_all: true,
             vexpand: true,
@@ -344,5 +345,29 @@ var ContentGroup = new Module.Class({
         if (max_cards > -1)
             cards_to_load = max_cards;
         this._selection.queue_load_more(cards_to_load);
+    },
+});
+
+const SpinnerReplacement = new Lang.Class({
+    Name: 'SpinnerReplacement',
+    Extends: Gtk.Revealer,
+
+    _init(props={}) {
+        props.transition_duration = 200;
+        props.transition_type = Gtk.RevealerTransitionType.CROSSFADE;
+        this.parent(props);
+
+        let fake_spinner = Gtk.Image.new_from_icon_name('content-loading-symbolic',
+            Gtk.IconSize.DIALOG);
+        fake_spinner.show();
+        this.add(fake_spinner);
+    },
+
+    get active() {
+        return this.reveal_child;
+    },
+
+    set active(v) {
+        this.reveal_child = v;
     },
 });
