@@ -4,11 +4,12 @@
 
     scrollbar {
         padding: 3px;
-        background-color: transparentize(black, 1 - 0.20);
+        background-color: #c3c4c4;
+        border: 1px solid #b6b6b2;
 
         slider {
-            min-width: 8px;
-            background-color: transparentize(white, 1 - 0.50);
+            min-width: 6px;
+            background-color: #787c7d;
             border-radius: 20px;
         }
     }
