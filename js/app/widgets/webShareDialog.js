@@ -4,7 +4,6 @@
 
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Goa = imports.gi.Goa;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Soup = imports.gi.Soup;
@@ -60,8 +59,20 @@ var WebShareDialog = new Lang.Class({
         /* Create an unique cookie path for this instance */
         this._cookies_path_init();
 
-        /* Get GOA client */
-        this._goa_client = Goa.Client.new_sync(null);
+        /* Get GOA object manager */
+        this._dbus_manager = Gio.DBusObjectManagerClient.new_for_bus_sync(
+            Gio.BusType.SESSION,
+            Gio.DBusObjectManagerClientFlags.NONE,
+            'org.gnome.OnlineAccounts',
+            '/org/gnome/OnlineAccounts',
+            null,
+            null
+        );
+
+        /* Assume GetSessionCookies is present.
+         * It will be updated the first time we try to call it.
+         */
+        this._has_get_session_cookies = true;
 
         /* Chain Up */
         this.parent(props);
@@ -187,37 +198,56 @@ var WebShareDialog = new Lang.Class({
     },
 
     _update_goa_account: function () {
-        if (!this._goa_client || !this._webview)
+        if (!this._dbus_manager || !this._webview)
             return;
 
-        let accounts = this._goa_client.get_accounts();
-        let matching_accounts = [];
+        let objects = this._dbus_manager.get_objects();
+        let accounts = [];
 
-        accounts.forEach ((obj) => {
-            let account = obj.get_account();
+        objects.forEach ((obj) => {
+            let account = obj.get_interface('org.gnome.OnlineAccounts.Account');
 
-            if (account.provider_type === this._provider)
-                matching_accounts.push(obj);
+            if (account) {
+                let provider = account.get_cached_property('ProviderType');
+
+                if (provider && provider.unpack() === this.provider)
+                    accounts.push(obj);
+            }
         });
 
-        switch (matching_accounts.length) {
+        switch (accounts.length) {
             case 0:
                 /* TODO: open GOA to create a new account */
             break;
             case 1:
-                this._goa_oauth2 = matching_accounts[0].get_oauth2_based();
+                this._goa_oauth2 = accounts[0].get_interface('org.gnome.OnlineAccounts.OAuth2Based');
+                this._update_cookies();
             break;
             default:
-                /* TODO: Create a list of accounts and let the user choose which one to use */
+                /* TODO: Create a list of accounts and let the user choose which one to use
+                 * in the meantime, use the first one!
+                 */
+                this._goa_oauth2 = accounts[0].get_interface('org.gnome.OnlineAccounts.OAuth2Based');
+                this._update_cookies();
             break;
         }
+    },
 
-        if (this._goa_oauth2 &&
-            this._goa_oauth2.g_interface_info.lookup_method("GetSessionCookies") !== null ) {
-            let cookies = this._goa_oauth2.call_sync("GetSessionCookies", null, 0, -1, null);
-            this._webview_set_cookies(cookies);
+    _update_cookies: function () {
+        if (!this._goa_oauth2)
+            return;
+
+        if (this._has_get_session_cookies) {
+            try {
+                let cookies = this._goa_oauth2.call_sync("GetSessionCookies", null, 0, -1, null);
+                this._webview_set_cookies(cookies);
+            } catch (error) {
+                if (error.matches(Gio.DBusError, Gio.DBusError.UNKNOWN_METHOD))
+                    this._has_get_session_cookies = false;
+            }
         }
-        else {
+
+        if (!this._has_get_session_cookies) {
             /* GetSessionCookies is not suported (We are not running in EOS) */
             /* TODO: store cookies in libsecret and implement login here???? */
         }
