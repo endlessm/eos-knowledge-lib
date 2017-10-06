@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "Template", "urls": ["mf-index.html#page-description", "controller/mesh.html#templatetype", "controller/buffet.html#templatetype", "controller/course.html#templatetype"]});
+urls_downloaded_cb({"urls": ["mf-index.html#page-description", "controller/mesh.html#templatetype", "controller/buffet.html#templatetype", "controller/course.html#templatetype"], "token": "Template"});

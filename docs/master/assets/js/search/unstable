@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "unstable", "urls": ["tools.html#installing"]});
+urls_downloaded_cb({"urls": ["tools.html#installing"], "token": "unstable"});
