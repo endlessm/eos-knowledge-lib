@@ -114,7 +114,8 @@ var HistoryItem = new Knowledge.Class({
     },
 
     get can_share() {
-        return this.model && this.model.original_uri;
+        let model = this.media_model || this.model;
+        return model && model.original_uri && model.original_uri.length;
     },
 
     equals: function (item) {
