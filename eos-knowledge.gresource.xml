@@ -203,6 +203,7 @@
     <file>js/app/widgets/navButtonOverlay.js</file>
     <file>js/app/widgets/PDFView.js</file>
     <file>js/app/widgets/previewer.js</file>
+    <file>js/app/widgets/shareActionBox.js</file>
     <file>js/app/widgets/slidingPanel.js</file>
     <file>js/app/widgets/slidingPanelOverlay.js</file>
     <file>js/app/widgets/spaceContainer.js</file>
