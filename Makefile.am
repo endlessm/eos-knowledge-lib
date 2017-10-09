@@ -142,6 +142,7 @@ scss_template_toplevels = \
 	$(srcdir)/data/templates/css/wikihow.scss \
 	$(srcdir)/data/templates/css/wikimedia.scss \
 	$(srcdir)/data/templates/css/clipboard.scss \
+	$(srcdir)/data/templates/css/share-actions.scss \
 	$(NULL)
 
 scss_template_partials = \

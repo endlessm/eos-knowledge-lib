@@ -197,7 +197,7 @@ var ArticleHTMLRenderer = new Knowledge.Class({
     },
 
     _get_wrapper_css_files: function () {
-        return ['clipboard.css'].concat(this._custom_css_files);
+        return ['clipboard.css', 'share-actions.css'].concat(this._custom_css_files);
     },
 
     _get_wrapper_js_files: function () {
@@ -206,6 +206,7 @@ var ArticleHTMLRenderer = new Knowledge.Class({
             'clipboard-manager.js',
             'crosslink.js',
             'chunk.js',
+            'share-actions.js',
         ];
     },
 
@@ -259,6 +260,24 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         return JSON.stringify(metadata);
     },
 
+    _get_share_actions_markup: function (model) {
+
+        if (!model.original_uri || model.original_uri === '')
+            return '';
+
+        function get_button_markup (network) {
+            let file = Gio.file_new_for_uri(`resource:///com/endlessm/knowledge/data/icons/scalable/apps/${network}-symbolic.svg`);
+            let [success, svg] = file.load_contents(null);
+            return `<a class="share-action" onclick="window.webkit.messageHandlers.share_on_${network}.postMessage(0)"><img>${svg.toString()}</img></a>`;
+        }
+
+        let facebook = get_button_markup('facebook');
+        let twitter = get_button_markup('twitter');
+        let whatsapp = get_button_markup('whatsapp');
+
+        return `<div id="default-share-actions" style="visibility: hidden;">${facebook}${twitter}${whatsapp}</div>`;
+    },
+
     _render_wrapper: function (content, model) {
         let css_files = this._get_wrapper_css_files();
         let js_files = this._get_wrapper_js_files();
@@ -271,6 +290,7 @@ var ArticleHTMLRenderer = new Knowledge.Class({
             'custom-css-files': this._get_app_override_css_files(),
             'javascript-files': js_files,
             'copy-button-text': _("Copy"),
+            'share-actions': this._get_share_actions_markup(model),
             'content': content,
             'crosslink-data': this._get_crosslink_data(model),
             'chunk-data': this._get_chunk_data(model),

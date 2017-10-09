@@ -1,0 +1,41 @@
+/* Theme default share actions container */
+#default-share-actions {
+    position: fixed;
+    right: 0;
+    bottom: 45%;
+    border-radius: 1.4em 0 0 1.4em;
+    box-shadow: -1px 2px 3px rgba(0, 0, 0, 0.15);
+
+    padding: 0.7em 0;
+    background-color: white;
+    line-height: 1;
+
+    /* We want buttons under each other */
+    a {
+        display: block;
+        padding: 13px 18px 9px 18px;
+
+        svg {
+            fill: rgba(0, 0, 0, 0.60);
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+    }
+}
+
+/* Theme action items */
+.share-action {
+
+    svg.facebook:hover {
+        fill: #3b5998 !important;;
+    }
+
+    svg.twitter:hover {
+        fill: #00aced !important;;
+    }
+
+    svg.whatsapp:hover {
+        fill: #25d366 !important;;
+    }
+}
