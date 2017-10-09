@@ -80,23 +80,6 @@ Each subscription contains a number of shard files, and a manifest to
 list each of the shards as well as various metadata about the
 subscription.
 
-The plumbing that contains the "tie" between an application and its set
-of subscriptions is in a file called `subscriptions.json`, placed in the
-same directory as `EKN_VERSION`. For instance, for the Prensa Libre app,
-our first subscriptions-based application, the `subscriptions.json` file
-is located in
-`/share/ekn/data/com.endlessm.prensa_libre.es_GT/subscriptions.json`.
-
-The file simply contains a list of subscriptions, like:
-
-```
-{
-    "subscriptions": [
-        {"id": "10521bb3a18b573f088f84e59c9bbb6c2e2a1a67"}
-    ]
-}
-```
-
 Each bundle comes preloaded with a set of
 subscriptions, packed into the bundle at e.g.
 `/share/ekn/data/com.endlessm.prensa_libre.es_GT/com.endlessm.subscriptions`.

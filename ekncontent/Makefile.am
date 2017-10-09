@@ -170,7 +170,6 @@ javascript_tests = \
 
 test_content = \
 	tests/testcontent/ekn/data/com.endlessm.fake_test_app.en/EKN_VERSION \
-	tests/testcontent/ekn/data/com.endlessm.fake_test_app.en/subscriptions.json \
 	tests/testcontent/ekn/data/com.endlessm.fake_test_app.en/com.endlessm.subscriptions/1aa1fe392aa50a771ca5f8a6452a758896a21f7644225f4d1ddbefec77053c9b/manifest.json \
 	tests/testcontent/ekn/data/com.endlessm.fake_test_app.en/com.endlessm.subscriptions/1aa1fe392aa50a771ca5f8a6452a758896a21f7644225f4d1ddbefec77053c9b/test.shard \
 	tests/testcontent/ekn/data/com.endlessm.fake_test_app.en/com.endlessm.subscriptions/9db1104bdc122815029851172c7d2c5138130a6fb77af6dd2726686068a70541/manifest.json \

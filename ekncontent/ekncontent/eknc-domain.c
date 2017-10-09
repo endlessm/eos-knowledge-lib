@@ -200,58 +200,6 @@ eknc_domain_init (EkncDomain *self)
 }
 
 static gboolean
-eknc_parse_subscriptions (EkncDomain *self,
-                          GCancellable *cancellable,
-                          GError **error)
-{
-  g_autoptr(GList) subs = NULL;
-
-  g_autoptr(JsonNode) subscriptions_node = NULL;
-  if (!(subscriptions_node = eknc_get_subscriptions_json (self->app_id, cancellable, error)))
-    return FALSE;
-
-  if (!JSON_NODE_HOLDS_OBJECT (subscriptions_node))
-    {
-      g_set_error (error, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_BAD_SUBSCRIPTIONS,
-                   "Subscriptions file does not hold a json object");
-      return FALSE;
-    }
-
-  JsonNode *child_node = json_object_get_member (json_node_get_object (subscriptions_node), "subscriptions");
-  if (child_node == NULL || !JSON_NODE_HOLDS_ARRAY (child_node))
-    {
-      g_set_error (error, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_BAD_SUBSCRIPTIONS,
-                   "Malformed subscriptions file");
-      return FALSE;
-    }
-
-  JsonArray *subs_array = json_node_get_array (child_node);
-  if (json_array_get_length (subs_array) == 0)
-    {
-      g_set_error (error, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_BAD_SUBSCRIPTIONS,
-                   "No subscriptions in subscriptions file");
-      return FALSE;
-    }
-
-  GList *l;
-  subs = json_array_get_elements (subs_array);
-  for (l = subs; l; l = g_list_next (l))
-    {
-      JsonNode *node = json_object_get_member (json_node_get_object (l->data), "id");
-
-      if (node == NULL || json_node_get_value_type (node) != G_TYPE_STRING)
-        continue;
-
-      self->subscriptions = g_list_prepend (self->subscriptions,
-                                            g_strdup (json_node_get_string (node)));
-    }
-
-  self->subscriptions = g_list_reverse (self->subscriptions);
-
-  return TRUE;
-}
-
-static gboolean
 eknc_domain_setup_link_tables (EkncDomain *self,
                                GError **error)
 {
@@ -397,6 +345,8 @@ eknc_domain_import_subscriptions (EkncDomain *self,
                                              cancellable,
                                              error))
           return FALSE;
+
+      self->subscriptions = g_list_prepend (self->subscriptions, g_strdup (g_file_info_get_name (info)));
     }
 
   return TRUE;
@@ -442,10 +392,6 @@ eknc_domain_initable_init (GInitable *initable,
                                                     NULL);
 
       self->manifest_file = g_file_new_for_path (manifest_tmp);
-
-      if (!eknc_parse_subscriptions (self, cancellable, error))
-        return FALSE;
-
       JsonArray *json_subscriptions = json_array_new ();
 
       /* Find out root relative path from manifest file */

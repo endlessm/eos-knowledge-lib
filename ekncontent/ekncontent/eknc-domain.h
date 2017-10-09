@@ -17,7 +17,6 @@ G_DECLARE_FINAL_TYPE (EkncDomain, eknc_domain, EKNC, DOMAIN, GObject)
  * EkncDomainError:
  * @EKNC_DOMAIN_ERROR_APP_ID_NOT_SET: App id property not set on object
  * @EKNC_DOMAIN_ERROR_ID_NOT_FOUND: Requested ekn id object not found
- * @EKNC_DOMAIN_ERROR_BAD_SUBSCRIPTIONS: Error found while parsing the subscriptions.json
  * @EKNC_DOMAIN_ERROR_BAD_MANIFEST: Error found while parsing the manifest.json
  * @EKNC_DOMAIN_ERROR_BAD_RESULTS: Error found while parsing the results json from xapian
  * @EKNC_DOMAIN_ERROR_UNSUPPORTED_VERSION: Unsupported version of content found
@@ -29,7 +28,6 @@ G_DECLARE_FINAL_TYPE (EkncDomain, eknc_domain, EKNC, DOMAIN, GObject)
 typedef enum {
   EKNC_DOMAIN_ERROR_APP_ID_NOT_SET,
   EKNC_DOMAIN_ERROR_ID_NOT_FOUND,
-  EKNC_DOMAIN_ERROR_BAD_SUBSCRIPTIONS,
   EKNC_DOMAIN_ERROR_BAD_MANIFEST,
   EKNC_DOMAIN_ERROR_BAD_RESULTS,
   EKNC_DOMAIN_ERROR_UNSUPPORTED_VERSION,
