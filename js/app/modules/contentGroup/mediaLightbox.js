@@ -1,5 +1,6 @@
 const Eknc = imports.gi.EosKnowledgeContent;
 const Gdk = imports.gi.Gdk;
+const Gtk = imports.gi.Gtk;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -7,6 +8,7 @@ const HistoryStore = imports.app.historyStore;
 const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
 const PDFView = imports.app.widgets.PDFView;
+const ShareActionBox = imports.app.widgets.shareActionBox;
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 
@@ -40,6 +42,10 @@ var MediaLightbox = new Module.Class({
         this.connect('close-clicked', this._on_close.bind(this));
         this.connect('navigation-previous-clicked', () => this._on_previous_clicked());
         this.connect('navigation-next-clicked', () => this._on_next_clicked());
+
+        this.extra_widget = new ShareActionBox.ShareActionBox ({
+            orientation: Gtk.Orientation.VERTICAL
+        });
     },
 
     _on_history_changed: function () {
@@ -152,5 +158,6 @@ var MediaLightbox = new Module.Class({
         this.reveal_overlays = true;
         this.has_back_button = this._current_index > 0;
         this.has_forward_button = this._current_index < resources.length - 1;
+        this.extra_widget.visible = media_object.original_uri && media_object.original_uri.length;
     },
 });
