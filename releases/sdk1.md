@@ -16,10 +16,20 @@ permalink: /releases/1/
 | Thu Sep 7 2017  | SDK1.3 bugfix release
 | Wed Sep 27 2017 | SDK1.4 release (irregular hotfix)
 | Thu Sep 28 2017 | SDK1.5 hard code freeze
-| Thu Oct 5 2017  | SDK1.5 bugfix release
+| Tue Oct 10 2017 | SDK1.5 bugfix release
 | Thu Nov 2 2017  | EOL
 
 ## Release notes ##
+
+### SDK 1.5 (October 10, 2017) ###
+
+- Modular framework: Fixed a crash that would sometimes happen when clicking on a video.
+- Modular framework: Bug fixed whereby some apps with videos might lock up when navigating to other pages.
+- Modular framework: Bug fixed whereby the overflow menu of `Arrangement.SideBySide` would not load all the items it was supposed to have.
+- Modular framework: Bug fixed whereby filters in the `sub-filter` slot of `Filter` modules would not propagate their changes up to the parent filters.
+- Modular framework: The width of `Card.List` is now independent of the length of the synopsis of the content displayed within. This fixes bugs where cards would have staggered sizes.
+- Modular framework: Cards now have a `no_thumbnail` modifier style class (e.g., `.CardDefault__no_thumbnail` to indicate when there is no thumbnail image present.)
+- Modular framework: Altered preset `A` so that cards in sets will show a thumbnail image if one is present.
 
 ### SDK 1.4 (September 27, 2017) ###
 
