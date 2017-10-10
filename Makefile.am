@@ -120,6 +120,7 @@ scss_theme_window_partials = \
 
 scss_theme_widgets_partials = \
 	$(srcdir)/data/css/widgets/_eknMediaBin.scss \
+	$(srcdir)/data/css/widgets/_shareActionBox.scss \
 	$(NULL)
 
 scss_theme_partials = \

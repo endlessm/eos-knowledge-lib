@@ -84,7 +84,16 @@ var Lightbox = new Knowledge.Class({
         'has-back-button': GObject.ParamSpec.boolean('has-back-button',
             'Has Back Button',
             'Boolean property to manage whether the lightbox\'s back button should be shown. Defaults to true',
-            GObject.ParamFlags.READWRITE, true)
+            GObject.ParamFlags.READWRITE, true),
+
+        /**
+         * Property: extra-widget
+         * The widget to display under the close button
+         */
+        'extra-widget': GObject.ParamSpec.object('extra-widget',
+            'Extra widget',
+            'An extra widget to display under the close button',
+            GObject.ParamFlags.READWRITE, Gtk.Widget)
     },
     Signals: {
         'navigation-previous-clicked': {},
@@ -95,6 +104,7 @@ var Lightbox = new Knowledge.Class({
     _init: function (params) {
         // Property values
         this._lightbox_widget = null;
+        this._extra_widget = null;
         this._reveal_overlays = false;
         this._transition_duration = 0;
         this._has_close_button = true;
@@ -165,6 +175,21 @@ var Lightbox = new Knowledge.Class({
 
     get lightbox_widget () {
         return this._lightbox_widget;
+    },
+
+    set extra_widget (v) {
+        if (this._extra_widget === v)
+            return;
+        if (this._extra_widget !== null)
+            this._lightbox_container.remove_extra_widget(this._extra_widget);
+        this._extra_widget = v;
+        if (this._extra_widget !== null)
+            this._lightbox_container.add_extra_widget(this._extra_widget);
+        this.notify('extra-widget');
+    },
+
+    get extra_widget () {
+        return this._extra_widget;
     },
 
     set transition_duration (v) {
@@ -240,6 +265,7 @@ const LightboxContainer = new Knowledge.Class({
         this.forward_arrow_visible = true;
         this.back_arrow_visible = true;
         this._lightbox_widget = null;
+        this._extra_widget = null;
 
         this.set_events(Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK | Gdk.EventMask.KEY_PRESS_MASK);
         this.set_has_window(true);
@@ -444,6 +470,31 @@ const LightboxContainer = new Knowledge.Class({
         }
         this._next_button.set_child_visible(this.forward_arrow_visible);
         this._previous_button.set_child_visible(this.back_arrow_visible);
+
+        if (this._extra_widget) {
+            this._extra_widget.set_child_visible(true);
+
+            let h = this._extra_widget.get_preferred_height()[1];
+
+            // Share actions go under the close button
+            let share_alloc = new Gdk.Rectangle({
+                x: this._frame_allocation.x + this._frame_allocation.width,
+                y: this._frame_allocation.y + ((this._frame_allocation.height - close_height - h) / 2),
+                width: this._extra_widget.get_preferred_width()[1],
+                height: h
+            });
+            this._extra_widget.size_allocate(share_alloc);
+        }
+    },
+
+    add_extra_widget: function (widget) {
+        this._extra_widget = widget;
+        this.add(this._extra_widget);
+    },
+
+    remove_extra_widget: function () {
+        this.remove(this._extra_widget);
+        this._extra_widget = null;
     },
 
     add_lightbox_widget: function (widget) {

@@ -27,4 +27,7 @@
 
 .LightboxContainer {
     background-color: transparentize(black, 1 - 0.90);
+    .ShareActionBox {
+        margin-left: 12px;
+    }
 }

@@ -389,8 +389,9 @@ var HistoryStore = new Lang.Class({
         if (!item || !item.can_share)
             return;
 
+        let model = item.media_model || item.model;
         let app = Gio.Application.get_default();
-        let original_uri = encodeURIComponent(item.model.original_uri);
+        let original_uri = encodeURIComponent(model.original_uri);
         let redirect_uri = null;
         let uri = null;
 
@@ -429,8 +430,8 @@ var HistoryStore = new Lang.Class({
             Gtk.show_uri_on_window (app.get_active_window(), uri, Gdk.CURRENT_TIME);
         }
 
-        // FIXME: Determine whether item was actually shared, or cancelled
-        Utils.record_share_metric(item.model, network);
+        // FIXME: Determine whether model was actually shared, or cancelled
+        Utils.record_share_metric(model, network);
     },
 });
 

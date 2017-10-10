@@ -1,0 +1,20 @@
+.ShareActionBox {
+    margin-left: 12px;
+
+    button {
+        margin: 3px;
+        padding: 4px;
+    }
+
+    button.facebook:hover {
+        color: #3b5998;
+    }
+
+    button.twitter:hover {
+        color: #00aced;
+    }
+
+    button.whatsapp:hover {
+        color: #25d366;
+    }
+}
