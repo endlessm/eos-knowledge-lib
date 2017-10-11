@@ -423,15 +423,33 @@ var HistoryStore = new Lang.Class({
                 uri: uri,
             });
 
+            /*
+             * If the user shares the link we get a redirect uri with the post id
+             *   https://www.facebook.com/connect/login_success.html?post_id=10155405629303127#_=_
+             *
+             * Or an error code if the user canceled the dialog
+             *   https://www.facebook.com/connect/login_success.html?error_code=4201&error_message=User%20canceled%20the%20Dialog%20flow#_=_
+             */
+            dialog.connect('transaction-done', (obj, redirect_uri) => {
+                if (redirect_uri) {
+                    let uri = Utils.parse_uri (redirect_uri, true);
+                    let canceled = !(uri && uri.query && uri.query.post_id);
+                    Utils.record_share_metric(model, network, canceled);
+                } else {
+                    /* A null redirect_uri means the dialog was closed */
+                    Utils.record_share_metric(model, network, true);
+                }
+            });
+
             dialog.show();
         }
-        else if (app) {
+        else {
             /* Open share uri in system browser */
-            Gtk.show_uri_on_window (app.get_active_window(), uri, Gdk.CURRENT_TIME);
-        }
+            Gtk.show_uri_on_window (app ? app.get_active_window() : null, uri, Gdk.CURRENT_TIME);
 
-        // FIXME: Determine whether model was actually shared, or cancelled
-        Utils.record_share_metric(model, network);
+            /* We have no way to know if sharing was performed or not */
+            Utils.record_share_metric(model, network);
+        }
     },
 });
 
