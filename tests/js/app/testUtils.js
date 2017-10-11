@@ -134,4 +134,53 @@ describe('Utilities:', function () {
             expect(Utils.intersection(null, a)).toEqual([]);
         });
     });
+
+    describe('parse_uri', function () {
+        /* scheme:[//[user[:password]@]host[:port]][/path][?query][#fragment] */
+        it('can handle an empty URI', function () {
+            let uri = Utils.parse_uri('');
+            expect(uri).toEqual(null);
+        });
+
+        it('can handle a null URI', function () {
+            let uri = Utils.parse_uri(null);
+            expect(uri).toEqual(null);
+        });
+
+        it('can handle an undefined URI', function () {
+            let uri = Utils.parse_uri();
+            expect(uri).toEqual(null);
+        });
+
+        it('can handle malformed URI', function () {
+            let uri = Utils.parse_uri("hostnameWithNoScheme");
+            expect(uri).toEqual(null);
+        });
+
+        it('can parse a full URI', function () {
+            let uri = Utils.parse_uri('https://username:qwerty@endlessm.com:8080/a/random/path.html?param1=value1&param2=value2#_=_');
+            expect(uri.scheme).toEqual('https');
+            expect(uri.user).toEqual('username');
+            expect(uri.password).toEqual('qwerty');
+            expect(uri.host).toEqual('endlessm.com');
+            expect(uri.path).toEqual('/a/random/path.html');
+            expect(uri.port).toEqual(8080);
+            expect(uri.query).toEqual('param1=value1&param2=value2');
+            expect(uri.fragment).toEqual('_=_');
+        });
+
+        it('can parse URI with empty query', function () {
+            let uri = Utils.parse_uri('https://endlessm.com/random/path.html#_=_', true);
+            expect(uri.scheme).toEqual('https');
+            expect(uri.host).toEqual('endlessm.com');
+            expect(uri.path).toEqual('/random/path.html');
+            expect(uri.query).toEqual(null);
+        });
+
+        it('can parse URI query parameters', function () {
+            let uri = Utils.parse_uri('https://endlessm.com/random/path.html?param1=value1&param2=value2#_=_', true);
+            expect(uri.query.param1).toEqual('value1');
+            expect(uri.query.param2).toEqual('value2');
+        });
+    });
 });

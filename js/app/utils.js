@@ -25,6 +25,7 @@ const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
+const Soup = imports.gi.Soup;
 
 const Dispatcher = imports.app.dispatcher;
 const Knowledge = imports.app.knowledge;
@@ -559,4 +560,27 @@ function intersection(a, b) {
     b.filter(item => a_set.has(item))
         .forEach(item => intersection.add(item));
     return [...intersection];
+}
+
+function parse_uri (uri_str, parse_query) {
+    if (!uri_str || !uri_str.length)
+        return null;
+
+    let uri = new Soup.URI (uri_str);
+    if (!uri)
+        return null;
+
+    let {scheme, user, password, host, port, path, query, fragment} = uri;
+
+    if (parse_query && query) {
+        let params = query.split('&');
+        query = {};
+
+        params.forEach((param) => {
+            let tokens = param.split('=');
+            query[decodeURIComponent(tokens[0])] = decodeURIComponent(tokens[1]);
+        });
+    }
+
+    return {scheme, user, password, host, port, path, query, fragment};
 }
