@@ -132,7 +132,7 @@ defines:
   slots:
     <<: *menu-slots
     content:
-      type: Layout.InfiniteScrolling
+      shortdef: 'Layout.InfiniteScrolling(expand: true)'
       references:
         lazy-load: articles-for-set
       slots:
