@@ -49,12 +49,26 @@ var WebShareDialog = new Lang.Class({
             false),
     },
 
+    Signals: {
+        /**
+         * Signal: transaction-done
+         * Emitted when the webview is redirected to redirect-uri
+         *
+         * Parameters:
+         *   uri - the actual redirect uri including parameters
+         */
+        'transaction-done': {
+            param_types: [ GObject.TYPE_STRING ],
+        },
+    },
+
     Template: 'resource:///com/endlessm/knowledge/data/widgets/websharedialog.ui',
     InternalChildren: [ 'stack', 'overlay', 'webview', 'spinner', 'accountbox' ],
 
     _init: function (props) {
         this._provider = null;
         this._uri = null;
+        this._actual_redirect_uri = null;
 
         /* Create an unique cookie path for this instance */
         this._cookies_path_init();
@@ -104,6 +118,9 @@ var WebShareDialog = new Lang.Class({
 
         /* Remove cookies from disk */
         this.connect('delete-event', () => {
+            /* Emit signal to let the user know the transaction ended */
+            this.emit ('transaction-done', this._actual_redirect_uri);
+
             this._cookies_path_remove();
             return false;
         });
@@ -126,6 +143,9 @@ var WebShareDialog = new Lang.Class({
         if (this.redirect_uri &&
             decision_type === WebKit2.PolicyDecisionType.NAVIGATION_ACTION &&
             GLib.str_has_prefix(decision.request.uri, this.redirect_uri)) {
+
+            /* Save actual redirect URI for transaction-done emision */
+            this._actual_redirect_uri = decision.request.uri;
 
             /* Make sure we get rid of the webview */
             this._webview.destroy();
