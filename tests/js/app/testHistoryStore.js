@@ -1,6 +1,9 @@
 const Eknc = imports.gi.EosKnowledgeContent;
 const Gtk = imports.gi.Gtk;
 
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
 const Actions = imports.app.actions;
 const AppUtils = imports.app.utils;
 const EntryPoints = imports.app.entryPoints;
@@ -8,7 +11,9 @@ const HistoryStore = imports.app.historyStore;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const Pages = imports.app.pages;
-const Utils = imports.tests.utils;
+const WebShareDialog = imports.app.widgets.webShareDialog;
+
+Gtk.init(null);
 
 describe('History Store', function () {
     let history_store;
@@ -172,10 +177,20 @@ describe('History Store', function () {
                 original_uri: 'http://endlessm.com',
             }),
         });
+        let share_dialog;
 
-        spyOn(Gtk, 'show_uri').and.callFake(function(a,uri,c) {
-            expect(uri).toMatch('.*' + network_uri_matcher + '.*');
-        });
+        if (network === HistoryStore.Network.FACEBOOK) {
+            let WebShareDialogConstructor = WebShareDialog.WebShareDialog;
+
+            spyOn(WebShareDialog, 'WebShareDialog').and.callFake(function(props) {
+                share_dialog = new WebShareDialogConstructor(props);
+                return share_dialog;
+            });
+        } else {
+            spyOn(Gtk, 'show_uri_on_window').and.callFake(function(a,uri,c) {
+                expect(uri).toMatch('.*' + network_uri_matcher + '.*');
+            });
+        }
         spyOn(AppUtils, 'record_share_metric');
 
         dispatcher.dispatch({
@@ -183,9 +198,23 @@ describe('History Store', function () {
             network: network
         });
 
-        expect(Gtk.show_uri).toHaveBeenCalled();
-        expect(AppUtils.record_share_metric)
-            .toHaveBeenCalledWith(history_store.get_current_item().model, network);
+        if (network === HistoryStore.Network.FACEBOOK) {
+            expect(WebShareDialog.WebShareDialog).toHaveBeenCalled();
+            expect(share_dialog.uri).toMatch('.*' + network_uri_matcher + '.*');
+
+            /* Close dialog, and give the main loop some time to actually do it */
+            share_dialog.close();
+            Utils.update_gui();
+
+            /* Expect was_canceled to be true since we close the dialog */
+            expect(AppUtils.record_share_metric)
+                .toHaveBeenCalledWith(history_store.get_current_item().model, network, true);
+        }
+        else {
+            expect(Gtk.show_uri_on_window).toHaveBeenCalled();
+            expect(AppUtils.record_share_metric)
+                .toHaveBeenCalledWith(history_store.get_current_item().model, network);
+        }
     }
 
     it('can share a history item on Facebook', function () {
