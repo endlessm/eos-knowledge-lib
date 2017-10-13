@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["layout/sidebar.html#sidebarfirst"], "token": "direction"});
+urls_downloaded_cb({"token": "direction", "urls": ["layout/sidebar.html#sidebarfirst"]});
