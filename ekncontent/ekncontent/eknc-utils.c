@@ -23,6 +23,132 @@ eknc_content_object_error_quark (void)
   return g_quark_from_static_string("eknc-content-object-error-quark");
 }
 
+static GVariant *
+string_array_from_json (JsonNode *node,
+                        GError **error)
+{
+  if (!JSON_NODE_HOLDS_ARRAY (node))
+    {
+      g_set_error_literal (error, EKNC_CONTENT_OBJECT_ERROR,
+                           EKNC_CONTENT_OBJECT_ERROR_BAD_FORMAT,
+                           "Expected JSON array");
+      return NULL;
+    }
+
+  JsonArray *array = json_node_get_array (node);
+  guint n_elements = json_array_get_length (array);
+
+  GVariantBuilder builder;
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
+
+  for (guint i = 0; i < n_elements; i++)
+    {
+      const char *str = json_array_get_string_element (array, i);
+
+      if (str == NULL || *str == '\0')
+        continue;
+
+      GVariant *v = g_variant_new_string (str);
+      g_variant_builder_add_value (&builder, v);
+    }
+
+  return g_variant_builder_end (&builder);
+}
+
+static GVariant *
+dict_from_json (JsonNode *node,
+                GError **error)
+{
+  if (!JSON_NODE_HOLDS_OBJECT (node))
+    {
+      g_set_error_literal (error, EKNC_CONTENT_OBJECT_ERROR,
+                           EKNC_CONTENT_OBJECT_ERROR_BAD_FORMAT,
+                           "Expected JSON object");
+      return NULL;
+    }
+
+  JsonObject *object = json_node_get_object (node);
+  GList *members = json_object_get_members (object);
+
+  GVariantBuilder builder;
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+
+  for (GList *l = members; l != NULL; l = l->next)
+    {
+      const char *member_name = l->data;
+      JsonNode *node = json_object_get_member (object, member_name);
+      GVariant *value;
+
+      if (JSON_NODE_HOLDS_VALUE (node))
+        {
+          GType value_type = json_node_get_value_type (node);
+
+          if (value_type == G_TYPE_STRING)
+            value = g_variant_new_string (json_node_get_string (node));
+          else if (value_type == G_TYPE_INT64)
+            value = g_variant_new_int64 (json_node_get_int (node));
+          else if (value_type == G_TYPE_DOUBLE)
+            value = g_variant_new_double (json_node_get_double (node));
+          else if (value_type == G_TYPE_BOOLEAN)
+            value = g_variant_new_boolean (json_node_get_boolean (node));
+          else
+            {
+              g_critical ("Invalid JSON value '%s'", g_type_name (value_type));
+              continue;
+            }
+        }
+      else
+        value = json_gvariant_deserialize (node, "v", NULL);
+
+      if (value == NULL)
+        {
+          const char *type_name = g_type_name (json_node_get_value_type (node));
+          g_autofree char *str = json_to_string (node, FALSE);
+          g_critical ("Invalid variant string; type: '%s', value: '%s'", type_name, str);
+          continue;
+        }
+
+      g_variant_builder_open (&builder, G_VARIANT_TYPE ("{sv}"));
+      g_variant_builder_add (&builder, "s", member_name);
+      g_variant_builder_add (&builder, "v", value);
+      g_variant_builder_close (&builder);
+    }
+
+  g_list_free (members);
+
+  return g_variant_builder_end (&builder);
+}
+
+static GVariant *
+dict_array_from_json (JsonNode *node,
+                      GError **error)
+{
+  if (!JSON_NODE_HOLDS_ARRAY (node))
+    {
+      g_set_error_literal (error, EKNC_CONTENT_OBJECT_ERROR,
+                           EKNC_CONTENT_OBJECT_ERROR_BAD_FORMAT,
+                           "Expected JSON array");
+      return NULL;
+    }
+
+  JsonArray *array = json_node_get_array (node);
+  guint n_elements = json_array_get_length (array);
+
+  GVariantBuilder builder;
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("aa{sv}"));
+
+  for (guint i = 0; i < n_elements; i++)
+    {
+      GVariant *v = dict_from_json (json_array_get_element (array, i), error);
+      if (v == NULL)
+        return NULL;
+
+      g_variant_builder_add_value (&builder, v);
+    }
+
+  return g_variant_builder_end (&builder);
+}
+
 /**
  * eknc_utils_append_gparam_from_json_node:
  *
@@ -35,35 +161,52 @@ eknc_utils_append_gparam_from_json_node (JsonNode *node,
                                          GParamSpec *pspec,
                                          GArray *params)
 {
-  g_autoptr(GError) error = NULL;
-  GParameter param = { NULL, { 0, }};
+  GParameter param = { NULL, G_VALUE_INIT };
 
-  if (!node)
+  if (node == NULL)
     return;
 
   param.name = pspec->name;
+
   g_value_init (&param.value, pspec->value_type);
 
   if (G_IS_PARAM_SPEC_VARIANT (pspec))
     {
       GVariantType *type = G_PARAM_SPEC_VARIANT (pspec)->type;
-      GVariant *variant = json_gvariant_deserialize (node,
-                                                     g_variant_type_peek_string (type),
-                                                     &error);
+      GVariant *variant = NULL;
+
+      g_autoptr(GError) error = NULL;
+
+      if (g_variant_type_equal (type, G_VARIANT_TYPE ("as")))
+        variant = string_array_from_json (node, &error);
+      else if (g_variant_type_equal (type, G_VARIANT_TYPE ("aa{sv}")))
+        variant = dict_array_from_json (node, &error);
+      else
+        variant = json_gvariant_deserialize (node, g_variant_type_peek_string (type), &error);
+
+      if (error != NULL)
+        {
+          g_critical ("Unable to convert field '%s' from JSON to a '%s' variant: %s",
+                      pspec->name,
+                      g_variant_type_peek_string (type),
+                      error->message);
+          return;
+        }
+
       g_value_set_variant (&param.value, variant);
     }
   else if (JSON_NODE_HOLDS_VALUE (node))
     {
-      GValue value = { 0, };
       GType type = json_node_get_value_type (node);
+      GValue value = G_VALUE_INIT;
 
       // Most of our integer properties are stored in json as strings.
       // ImageObject for example was originally trying to follow
       // https://schema.org/ImageObject for its width and height properties,
       // though in practice it is always a string. May be worth a future cleanup,
       // but for now try to parse if we hit this case.
-      if (type == G_TYPE_STRING && (pspec->value_type == G_TYPE_INT ||
-                                    pspec->value_type == G_TYPE_UINT))
+      if (type == G_TYPE_STRING &&
+          (pspec->value_type == G_TYPE_INT || pspec->value_type == G_TYPE_UINT))
         {
           g_value_init (&value, G_TYPE_INT);
           g_value_set_int (&value, atoi (json_node_get_string (node)));
@@ -73,25 +216,30 @@ eknc_utils_append_gparam_from_json_node (JsonNode *node,
           json_node_get_value (node, &value);
         }
 
-      if (g_value_type_transformable (pspec->value_type, type))
-        g_value_transform (&value, &param.value);
+      if (!g_type_is_a (type, pspec->value_type))
+        {
+          if (!g_value_transform (&value, &param.value))
+            {
+              g_value_unset (&value);
+              g_critical ("Unexpected type '%s', expected '%s'",
+                          g_type_name (type),
+                          g_type_name (pspec->value_type));
+              return;
+            }
+        }
       else
-        g_set_error (&error, EKNC_CONTENT_OBJECT_ERROR, EKNC_CONTENT_OBJECT_ERROR_BAD_FORMAT,
-                     "Unexpected type %s", g_type_name (type));
-      g_value_unset(&value);
+        g_value_copy (&value, &param.value);
+
+      g_value_unset (&value);
     }
   else
     {
-      g_set_error (&error, EKNC_CONTENT_OBJECT_ERROR, EKNC_CONTENT_OBJECT_ERROR_BAD_FORMAT,
-                   "Unexpected json value");
+      g_critical ("Unexpected JSON type '%s'",
+                  g_type_name (json_node_get_value_type (node)));
+      return;
     }
 
-  if (error)
-    g_critical ("Error parsing model property %s: %s",
-                pspec->name,
-                error->message);
-  else
-    g_array_append_val (params, param);
+  g_array_append_val (params, param);
 }
 
 /**
