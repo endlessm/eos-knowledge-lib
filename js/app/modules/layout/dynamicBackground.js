@@ -72,8 +72,8 @@ var DynamicBackground = new Module.Class({
         this._background_color = DEFAULT_COLOR;
         this._css_provider = new Gtk.CssProvider();
 
-        let context = this.get_style_context();
-        context.add_provider(this._css_provider,
+        this._context = this.get_style_context();
+        this._context.add_provider(this._css_provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION - 1);
 
         this.reference_module('selection', selection => {
@@ -89,19 +89,22 @@ var DynamicBackground = new Module.Class({
             this._idle_id = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
                 this._update_css_class();
                 this._idle_id = 0;
+                return GLib.SOURCE_REMOVE;
             });
         });
 
-        this.connect('style-set', this._update_custom_style.bind(this));
-        this.connect('style-updated', this._update_custom_style.bind(this));
+        this.connect('style-updated', () => {
+            if (!this._updating_custom_style)
+                this._update_custom_style();
+        });
     },
 
     _update_custom_style: function () {
-        let context = this.get_style_context();
+        this._updating_custom_style = true;
 
         let height = EosKnowledgePrivate.style_context_get_custom_int(
-            context, 'background-height');
-        let rgba = context.get_background_color(Gtk.StateFlags.NORMAL);
+            this._context, 'background-height');
+        let rgba = this._context.get_background_color(Gtk.StateFlags.NORMAL);
         let color = Utils._rgba_to_markup_color(rgba);
 
         if (this._background_height === height && this._background_color === color)
@@ -110,6 +113,8 @@ var DynamicBackground = new Module.Class({
         this._background_height = height;
         this._background_color = color;
         this._update_background();
+
+        this._updating_custom_style = false;
     },
 
     _update_css_class: function () {
@@ -125,9 +130,8 @@ var DynamicBackground = new Module.Class({
         if (css_class === this._css_class)
             return;
 
-        let context = this.get_style_context();
-        context.remove_class(this._css_class);
-        context.add_class(css_class);
+        this._context.remove_class(this._css_class);
+        this._context.add_class(css_class);
         this._css_class = css_class;
         this._update_custom_style();
     },
