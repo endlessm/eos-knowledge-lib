@@ -209,12 +209,6 @@ function _init() {
         },
     });
 
-    Eknc._get_subscriptions_json_real = Eknc.get_subscriptions_json;
-    Eknc.get_subscriptions_json = function (app_id, cancellable) {
-        let json_node = this._get_subscriptions_json_real(app_id, cancellable);
-        return JSON.parse(Json.to_string(json_node, false));
-    };
-
     Eknc.QueryObject.prototype.toString = function () {
         let props = [];
         if (this.app_id)

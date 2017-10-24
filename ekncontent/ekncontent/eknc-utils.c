@@ -645,39 +645,3 @@ eknc_default_vfs_set_shards (GSList *shards)
 
   return TRUE;
 }
-
-/**
- * eknc_get_subscriptions_json:
- * @app_id: knowledge app ID, such as "com.endlessm.health-es"
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @error: #GError for error reporting.
- *
- * Reads the subscriptions json file for a given app_id.
- *
- * Returns: (transfer full): the JsonNode for the given app id
- */
-JsonNode *
-eknc_get_subscriptions_json (const gchar *app_id,
-                             GCancellable *cancellable,
-                             GError **error)
-{
-  g_return_val_if_fail (app_id && *app_id, NULL);
-  g_return_val_if_fail (G_IS_CANCELLABLE (cancellable) || cancellable == NULL, NULL);
-  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
-
-  g_autoptr(GFile) data_dir = eknc_get_data_dir (app_id);
-  if (data_dir == NULL)
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
-                   "Could not find datadir for app id %s", app_id);
-      return NULL;
-    }
-
-  g_autoptr(GFile) subscriptions_file = g_file_get_child (data_dir, "subscriptions.json");
-  g_autofree gchar *contents = NULL;
-  if (!g_file_load_contents (subscriptions_file, cancellable, &contents,
-                             NULL, NULL, error))
-    return NULL;
-
-  return json_from_string (contents, error);
-}
