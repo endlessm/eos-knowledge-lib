@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "record", "urls": ["tools.html#kermit"]});
+urls_downloaded_cb({"urls": ["tools.html#kermit"], "token": "record"});

@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "controller", "urls": ["mf-index.html#page-description", "controller/mesh.html#controllermesh1", "controller/course.html#controllercourse1"]});
+urls_downloaded_cb({"urls": ["mf-index.html#page-description", "controller/mesh.html#controllermesh1", "controller/course.html#controllercourse1"], "token": "controller"});
