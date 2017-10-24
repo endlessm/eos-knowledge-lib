@@ -481,11 +481,15 @@ eknc_get_data_dir (const gchar *app_id)
   g_autofree gchar *system_path = NULL;
   g_autofree gchar *split_path = NULL;
 
+  // Try the extensions mount point first
+  ret = database_dir_from_data_dir ("/app/share", app_id);
+  if (ret)
+    return ret;
+
   flatpak_relative_path = g_build_filename ("flatpak", "app", app_id,
                                             "current", "active",
                                             "files", "share", NULL);
-
-  // Try the user flatpak location first
+  // Try the user flatpak location next
   user_path = g_build_filename (g_get_home_dir (), ".local", "share",
                                 flatpak_relative_path, NULL);
   ret = database_dir_from_data_dir (user_path, app_id);
@@ -516,6 +520,93 @@ eknc_get_data_dir (const gchar *app_id)
     }
 
   return NULL;
+}
+
+static GList *
+databases_dirs_from_metadata (const gchar *flatpak_path, const gchar *app_id)
+{
+  GList *list = NULL;
+  g_autoptr(GKeyFile) metakey = NULL;
+  g_auto(GStrv) groups = NULL;
+  g_autofree gchar *metadata_path = NULL;
+  g_autofree gchar *runtime = NULL;
+  g_auto(GStrv) components = NULL;
+  gchar *arch = NULL;
+
+  metadata_path = g_build_filename (flatpak_path, "flatpak",
+                                    "app", app_id,
+                                    "current", "active", "metadata",
+                                    NULL);
+  metakey = g_key_file_new ();
+  if (!g_key_file_load_from_file (metakey, metadata_path, G_KEY_FILE_NONE, NULL))
+    return NULL;
+
+  runtime = g_key_file_get_string (metakey, "Application", "runtime", NULL);
+  components = g_strsplit (runtime, "/", 3);
+  arch = components[1];
+
+  groups = g_key_file_get_groups (metakey, NULL);
+  for (int i = 0; groups[i] != NULL; i++)
+    {
+      g_autoptr(GFile) extension_dir = NULL;
+      gchar *extension_name = NULL;
+      g_autofree gchar *extension_version = NULL;
+      g_autofree gchar *extension_path = NULL;
+
+      if (!g_str_has_prefix (groups[i], "Extension"))
+        continue;
+
+      extension_name = g_strstr_len (groups[i], -1, app_id);
+      if (extension_name == NULL)
+        continue;
+
+      extension_version = g_key_file_get_string (metakey, groups[i], "version", NULL);
+      if (extension_version == NULL)
+        continue;
+
+      extension_name = g_strstrip (extension_name);
+      extension_path = g_build_filename (flatpak_path, "flatpak",
+                                         "runtime", extension_name,
+                                         arch, extension_version,
+                                         "active", "files",
+                                          NULL);
+      extension_dir = g_file_new_for_path (extension_path);
+      if (!g_file_query_exists (extension_dir, NULL))
+        continue;
+
+      list = g_list_prepend (list, g_object_ref (extension_dir));
+    }
+
+  return list;
+}
+
+/**
+ * eknc_get_extensions_dirs:
+ * @app_id: knowledge app ID, such as "com.endlessm.health-es"
+ *
+ * Searches for all the extensions directories
+ *
+ * This function searches through the system directories for all
+ * the extensions directories that belong to this app.
+ *
+ * Return value: (element-type GFile) (transfer full): list of #GFile
+ */
+GList *
+eknc_get_extensions_dirs (const gchar *app_id)
+{
+  GList *list = NULL;
+  g_autofree gchar *user_path = NULL;
+
+  user_path = g_build_filename (g_get_home_dir (), ".local", "share", NULL);
+  list = databases_dirs_from_metadata (user_path, app_id);
+  if (list != NULL)
+    return list;
+
+  list = databases_dirs_from_metadata ("/var/lib", app_id);
+  if (list != NULL)
+    return list;
+
+  return databases_dirs_from_metadata ("/var/endless-extra", app_id);
 }
 
 /**

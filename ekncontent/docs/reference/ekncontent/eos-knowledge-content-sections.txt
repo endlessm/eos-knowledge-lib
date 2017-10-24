@@ -177,6 +177,7 @@ eknc_default_vfs_set_shards
 eknc_get_current_language
 eknc_get_data_dir
 eknc_get_ekn_version
+eknc_get_extensions_dirs
 eknc_get_subscriptions_json
 EkncContentObjectError
 <SUBSECTION Standard>
