@@ -736,6 +736,18 @@ request_state_free (gpointer data)
 }
 
 static GHashTable *
+get_xapian_fix_query_params (EkncDomain *domain,
+                             EkncQueryObject *query)
+{
+  GHashTable *params = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
+
+  g_hash_table_insert (params, "defaultOp", g_strdup ("and"));
+  g_hash_table_insert (params, "q", g_strdup (eknc_query_object_get_query_string (query)));
+
+  return params;
+}
+
+static GHashTable *
 get_xapian_query_params (EkncDomain *domain,
                          EkncQueryObject *query)
 {
@@ -856,7 +868,7 @@ eknc_domain_get_fixed_query (EkncDomain *self,
   state->domain = g_object_ref (self);
   state->db_manager = g_object_ref (self->db_manager);
   state->query = g_object_ref (query);
-  state->params = get_xapian_query_params (self, query);
+  state->params = get_xapian_fix_query_params (self, query);
 
   g_task_set_task_data (task, state, request_state_free);
 
