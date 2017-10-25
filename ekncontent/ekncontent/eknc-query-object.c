@@ -1023,7 +1023,10 @@ eknc_query_object_new_from_object (EkncQueryObject *source,
   while ((name = va_arg (args, const gchar *)));
   va_end (args);
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   GObject *ret = g_object_newv (EKNC_TYPE_QUERY_OBJECT, NPROPS - 1, params);
+G_GNUC_END_IGNORE_DEPRECATIONS
+
   for (guint i = 0; i < NPROPS - 1; i++)
     {
       g_value_unset (&params[i].value);
