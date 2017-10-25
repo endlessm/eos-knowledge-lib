@@ -43,12 +43,14 @@ eknc_database_manager_new (const char *path);
 
 XapianMSet *
 eknc_database_manager_query (EkncDatabaseManager *self,
+                             const char *query,
                              GHashTable *params,
                              GError **error_out);
 
 gboolean
 eknc_database_manager_fix_query (EkncDatabaseManager *self,
-                                 GHashTable *query,
+                                 const char *query,
+                                 GHashTable *params,
                                  char **stop_fixed_query,
                                  char **spell_fixed_query,
                                  GError **error_out);
