@@ -669,6 +669,7 @@ parse_query_flags (const gchar *str,
 
 static gboolean
 eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
+                                          const char *query_str,
                                           GHashTable *query_options,
                                           char **stop_fixed_query_out,
                                           char **spell_fixed_query_out,
@@ -676,14 +677,12 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
 {
   EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
   GError *error = NULL;
-  const char *query_str;
   const char *match_all;
   const char *default_op;
   const char *flags_str;
   XapianQueryParserFeature flags = QUERY_PARSER_FLAGS;
   XapianStopper *stopper;
 
-  query_str = g_hash_table_lookup (query_options, QUERY_PARAM_QUERYSTR);
   match_all = g_hash_table_lookup (query_options, QUERY_PARAM_MATCH_ALL);
 
   stopper = xapian_query_parser_get_stopper (priv->query_parser);
@@ -742,7 +741,8 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
 
 gboolean
 eknc_database_manager_fix_query (EkncDatabaseManager *self,
-                                 GHashTable *query,
+                                 const char *query,
+                                 GHashTable *params,
                                  char **stop_fixed_query,
                                  char **spell_fixed_query,
                                  GError **error_out)
@@ -755,6 +755,7 @@ eknc_database_manager_fix_query (EkncDatabaseManager *self,
     return FALSE;
 
   return eknc_database_manager_fix_query_internal (self, query,
+                                                   params,
                                                    stop_fixed_query,
                                                    spell_fixed_query,
                                                    error_out);
@@ -775,16 +776,13 @@ eknc_database_manager_fix_query (EkncDatabaseManager *self,
  */
 static XapianMSet *
 eknc_database_manager_query_internal (EkncDatabaseManager *self,
+                                      const char *query_str,
                                       GHashTable *query_options,
                                       GError **error_out)
 {
   EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
-  GError *error = NULL;
-  const gchar *lang;
-  XapianStem *stem;
-  const gchar *str;
   XapianQueryParserFeature flags = QUERY_PARSER_FLAGS;
-  JsonNode *results;
+  GError *error = NULL;
 
   if (database_is_empty (priv->database))
     {
@@ -794,15 +792,11 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
       return NULL;
     }
 
-  g_autofree char *query_str = NULL;
-
-  str = g_hash_table_lookup (query_options, QUERY_PARAM_QUERYSTR);
-
-  lang = g_hash_table_lookup (query_options, QUERY_PARAM_LANG);
+  const char *lang = g_hash_table_lookup (query_options, QUERY_PARAM_LANG);
   if (lang == NULL)
     lang = "none";
 
-  stem = g_hash_table_lookup (priv->stemmers, lang);
+  XapianStem *stem = g_hash_table_lookup (priv->stemmers, lang);
   if (stem == NULL)
     {
       stem = xapian_stem_new_for_language (lang, &error);
@@ -835,11 +829,11 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
   g_autoptr(XapianQuery) parsed_query = NULL;
 
   const char *match_all = g_hash_table_lookup (query_options, QUERY_PARAM_MATCH_ALL);
-  if (match_all != NULL && str == NULL)
+  if (match_all != NULL && query_str == NULL)
     {
       /* Handled below. */
     }
-  else if (str != NULL && match_all == NULL)
+  else if (query_str != NULL && match_all == NULL)
     {
       const char *default_op = g_hash_table_lookup (query_options, QUERY_PARAM_DEFAULT_OP);
       if (default_op != NULL && !parse_default_op (priv->query_parser, default_op, error_out))
@@ -850,7 +844,7 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
         return NULL;
 
       parsed_query = xapian_query_parser_parse_query_full (priv->query_parser,
-                                                           str,
+                                                           query_str,
                                                            flags, "",
                                                            &error);
 
@@ -926,12 +920,12 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
       parsed_query = g_steal_pointer (&full_query);
     }
 
-  str = g_hash_table_lookup (query_options, QUERY_PARAM_COLLAPSE_KEY);
-  if (str != NULL)
-    xapian_enquire_set_collapse_key (enquire, CLAMP (g_ascii_strtod (str, NULL), 0, G_MAXUINT));
+  const char *collapse_str = g_hash_table_lookup (query_options, QUERY_PARAM_COLLAPSE_KEY);
+  if (collapse_str != NULL)
+    xapian_enquire_set_collapse_key (enquire, CLAMP (g_ascii_strtod (collapse_str, NULL), 0, G_MAXUINT));
 
-  str = g_hash_table_lookup (query_options, QUERY_PARAM_SORT_BY);
-  if (str != NULL)
+  const char *sort_str = g_hash_table_lookup (query_options, QUERY_PARAM_SORT_BY);
+  if (sort_str != NULL)
     {
       gboolean reverse_order;
       const gchar *order;
@@ -939,14 +933,14 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
       order = g_hash_table_lookup (query_options, QUERY_PARAM_ORDER);
       reverse_order = (g_strcmp0 (order, "desc") == 0);
       xapian_enquire_set_sort_by_value (enquire,
-                                        CLAMP (g_ascii_strtod (str, NULL), 0, G_MAXUINT),
+                                        CLAMP (g_ascii_strtod (sort_str, NULL), 0, G_MAXUINT),
                                         reverse_order);
     }
   else
     {
-      str = g_hash_table_lookup (query_options, QUERY_PARAM_CUTOFF);
-      if (str != NULL)
-        xapian_enquire_set_cutoff (enquire, CLAMP (g_ascii_strtod (str, NULL), 0, G_MAXUINT));
+      const char *cutoff_str = g_hash_table_lookup (query_options, QUERY_PARAM_CUTOFF);
+      if (cutoff_str != NULL)
+        xapian_enquire_set_cutoff (enquire, CLAMP (g_ascii_strtod (cutoff_str, NULL), 0, G_MAXUINT));
     }
 
   return eknc_database_manager_fetch_results (self, enquire,
@@ -957,7 +951,8 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
 
 XapianMSet *
 eknc_database_manager_query (EkncDatabaseManager *self,
-                             GHashTable *query,
+                             const char *query,
+                             GHashTable *params,
                              GError **error_out)
 {
   EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
@@ -967,7 +962,7 @@ eknc_database_manager_query (EkncDatabaseManager *self,
   if (!ensure_db (self, error_out))
     return NULL;
 
-  return eknc_database_manager_query_internal (self, query, error_out);
+  return eknc_database_manager_query_internal (self, query, params, error_out);
 }
 
 EkncDatabaseManager *

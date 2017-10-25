@@ -745,7 +745,6 @@ get_xapian_fix_query_params (EkncDomain *domain,
   GHashTable *params = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
 
   g_hash_table_insert (params, "defaultOp", g_strdup ("and"));
-  g_hash_table_insert (params, "q", g_strdup (eknc_query_object_get_query_string (query)));
 
   return params;
 }
@@ -769,9 +768,7 @@ get_xapian_query_params (EkncDomain *domain,
   if (filterout != NULL && *filterout != '\0')
     g_hash_table_insert (params, "filterOut", g_strdup (filterout));
 
-  if (query_str != NULL)
-    g_hash_table_insert (params, "q", g_strdup (query_str));
-  else
+  if (query_str == NULL)
     g_hash_table_insert (params, "matchAll", g_strdup ("1"));
 
   if (domain->language != NULL && *domain->language != '\0')
@@ -827,6 +824,7 @@ query_fix_task (GTask *task,
 
   gboolean result =
     eknc_database_manager_fix_query (request->db_manager,
+                                     eknc_query_object_get_query_string (request->query),
                                      request->params,
                                      &request->fixed_stop_query,
                                      &request->fixed_spell_query,
@@ -940,10 +938,11 @@ query_task (GTask *task,
   if (g_task_return_error_if_cancelled (task))
     return;
 
-  g_autoptr(GMutexLocker) db_lock = g_mutex_locker_new (&state->domain->db_lock);
+  const char *foo, *bar;
+  const char *query_str = eknc_query_object_get_query_parser_strings (state->query, &foo, &bar);
 
   g_autoptr(XapianMSet) results =
-    eknc_database_manager_query (state->db_manager, state->params, &error);
+    eknc_database_manager_query (state->db_manager, query_str, state->params, &error);
 
   if (error != NULL)
     {
