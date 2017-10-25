@@ -824,7 +824,7 @@ query_fix_task (GTask *task,
 
   gboolean result =
     eknc_database_manager_fix_query (request->db_manager,
-                                     eknc_query_object_get_query_string (request->query),
+                                     eknc_query_object_get_query (request->query),
                                      request->params,
                                      &request->fixed_stop_query,
                                      &request->fixed_spell_query,
