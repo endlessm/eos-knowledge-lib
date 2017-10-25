@@ -861,6 +861,21 @@ eknc_query_object_get_excluded_tags (EkncQueryObject *self)
 }
 
 /**
+ * eknc_query_object_get_query_string:
+ * @self: the model
+ *
+ * Get the query string set on the object.
+ *
+ * Returns: (transfer none): the query string
+ */
+const char *
+eknc_query_object_get_query_string (EkncQueryObject *self)
+{
+  g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
+  return self->query;
+}
+
+/**
  * eknc_query_object_get_query_parser_string:
  * @self: the model
  *
