@@ -861,6 +861,21 @@ eknc_query_object_get_excluded_tags (EkncQueryObject *self)
 }
 
 /**
+ * eknc_query_object_get_query_string:
+ * @self: the model
+ *
+ * Get the query string set on the object.
+ *
+ * Returns: (transfer none): the query string
+ */
+const char *
+eknc_query_object_get_query_string (EkncQueryObject *self)
+{
+  g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
+  return self->query;
+}
+
+/**
  * eknc_query_object_get_query_parser_string:
  * @self: the model
  *
@@ -1023,7 +1038,10 @@ eknc_query_object_new_from_object (EkncQueryObject *source,
   while ((name = va_arg (args, const gchar *)));
   va_end (args);
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   GObject *ret = g_object_newv (EKNC_TYPE_QUERY_OBJECT, NPROPS - 1, params);
+G_GNUC_END_IGNORE_DEPRECATIONS
+
   for (guint i = 0; i < NPROPS - 1; i++)
     {
       g_value_unset (&params[i].value);

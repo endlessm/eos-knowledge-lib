@@ -79,6 +79,9 @@ eknc_query_object_get_excluded_ids (EkncQueryObject *self);
 GVariant *
 eknc_query_object_get_excluded_tags (EkncQueryObject *self);
 
+const char *
+eknc_query_object_get_query_string (EkncQueryObject *self);
+
 const gchar *
 eknc_query_object_get_query_parser_string (EkncQueryObject *self);
 

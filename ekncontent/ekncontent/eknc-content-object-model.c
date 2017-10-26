@@ -611,11 +611,13 @@ eknc_content_object_model_get_content_stream (EkncContentObjectModel *self,
 EkncContentObjectModel *
 eknc_content_object_model_new_from_json_node (JsonNode *node)
 {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   GArray *params = g_array_new (FALSE, TRUE, sizeof (GParameter));
   eknc_content_object_model_add_json_to_params (node, params);
   EkncContentObjectModel *model = g_object_newv (EKNC_TYPE_CONTENT_OBJECT_MODEL,
                                                  params->len,
                                                  (GParameter *)params->data);
   eknc_utils_free_gparam_array (params);
+G_GNUC_END_IGNORE_DEPRECATIONS
   return model;
 }
