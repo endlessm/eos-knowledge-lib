@@ -17,7 +17,7 @@ permalink: /releases/1/
 | Wed Sep 27 2017 | SDK1.4 release (irregular hotfix)
 | Thu Sep 28 2017 | SDK1.5 hard code freeze
 | Tue Oct 10 2017 | SDK1.5 bugfix release
-| Thu Nov 2 2017  | EOL
+| Thu Nov 16 2017 | EOL
 
 ## Release notes ##
 
