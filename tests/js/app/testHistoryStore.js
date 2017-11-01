@@ -1,5 +1,5 @@
 const Eknc = imports.gi.EosKnowledgeContent;
-const Gtk = imports.gi.Gtk;
+const {GObject, Gtk} = imports.gi;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -183,6 +183,8 @@ describe('History Store', function () {
             let WebShareDialogConstructor = WebShareDialog.WebShareDialog;
 
             spyOn(WebShareDialog, 'WebShareDialog').and.callFake(function(props) {
+                props.manager = new GObject.Object();
+                props.manager.get_objects = jasmine.createSpy().and.returnValue([]);
                 share_dialog = new WebShareDialogConstructor(props);
                 return share_dialog;
             });
