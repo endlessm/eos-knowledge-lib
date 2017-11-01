@@ -47,6 +47,11 @@ var WebShareDialog = new Lang.Class({
             'Use a mobile user agent for the webview',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             false),
+
+        'manager': GObject.ParamSpec.object('manager', 'Manager',
+            'DBus manager for dependency injection in tests',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
     },
 
     Signals: {
@@ -74,14 +79,18 @@ var WebShareDialog = new Lang.Class({
         this._cookies_path_init();
 
         /* Get GOA object manager */
-        this._dbus_manager = Gio.DBusObjectManagerClient.new_for_bus_sync(
-            Gio.BusType.SESSION,
-            Gio.DBusObjectManagerClientFlags.NONE,
-            'org.gnome.OnlineAccounts',
-            '/org/gnome/OnlineAccounts',
-            null,
-            null
-        );
+        if (props.manager) {
+            this._dbus_manager = props.manager;
+        } else {
+            this._dbus_manager = Gio.DBusObjectManagerClient.new_for_bus_sync(
+                Gio.BusType.SESSION,
+                Gio.DBusObjectManagerClientFlags.NONE,
+                'org.gnome.OnlineAccounts',
+                '/org/gnome/OnlineAccounts',
+                null,
+                null
+            );
+        }
 
         /* Assume GetSessionCookies is present.
          * It will be updated the first time we try to call it.
