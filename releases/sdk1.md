@@ -17,14 +17,15 @@ permalink: /releases/1/
 | Wed Sep 27 2017 | SDK1.4 release (irregular hotfix)
 | Thu Sep 28 2017 | SDK1.5 hard code freeze
 | Tue Oct 10 2017 | SDK1.5 bugfix release
-| Mon Oct 30 2017 | SDK1.6 release (irregular hotfix)
+| Thu Nov 2 2017  | SDK1.6 release (irregular hotfix)
 | Thu Nov 16 2017 | EOL
 
 ## Release notes ##
 
-### SDK 1.6 (October 30, 2017) ###
+### SDK 1.6 (November 2, 2017) ###
 
 - This is another irregular hotfix release to fix a crash.
+- This release is for x86_64 only. The ARM runtime will get an update later.
 - Runtime: added a custom-built GTK with a fix for https://bugzilla.gnome.org/show_bug.cgi?id=789215 pending a fix in the GNOME runtime.
 
 ### SDK 1.5 (October 10, 2017) ###
