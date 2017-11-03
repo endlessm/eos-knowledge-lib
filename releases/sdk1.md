@@ -25,8 +25,8 @@ permalink: /releases/1/
 ### SDK 1.6 (November 2, 2017) ###
 
 - This is another irregular hotfix release to fix a crash.
-- This release is for x86_64 only. The ARM runtime will get an update later.
-- Runtime: added a custom-built GTK with a fix for https://bugzilla.gnome.org/show_bug.cgi?id=789215 pending a fix in the GNOME runtime.
+- ~~This release is for x86_64 only.~~ We resolved our technical difficulties blocking an ARM release and have released ARM runtimes as well.
+- Runtime: added a custom-built GTK with a fix for [GNOME bug #789215][3] pending a fix in the GNOME runtime.
 
 ### SDK 1.5 (October 10, 2017) ###
 
@@ -70,3 +70,4 @@ permalink: /releases/1/
 
 [1]: https://git.gnome.org/browse/gnome-sdk-images/commit/?h=gnome-3-26&id=2b1dc1b1ad84bddc932da2395a96d5a7e4c4fad0
 [2]: https://github.com/flatpak/freedesktop-sdk-base/pull/9
+[3]: https://bugzilla.gnome.org/show_bug.cgi?id=789215
