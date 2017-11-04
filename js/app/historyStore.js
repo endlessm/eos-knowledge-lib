@@ -363,7 +363,7 @@ var HistoryStore = new Lang.Class({
 
     close_lightbox: function () {
         let item = this.get_current_item();
-        if (!item.media_model)
+        if (!item || !item.media_model)
             return;
         let target_item = this.search_backwards(-1, item =>
             item.media_model === null);
