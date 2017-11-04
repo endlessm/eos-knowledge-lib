@@ -340,7 +340,9 @@ var HistoryStore = new Lang.Class({
     load_dbus_item: function (ekn_id, query, timestamp) {
         Eknc.Engine.get_default().get_object_promise(ekn_id)
         .then((model) => {
-            if (model instanceof Eknc.ArticleObjectModel) {
+            if (model instanceof Eknc.ArticleObjectModel ||
+                model instanceof Eknc.VideoObjectModel ||
+                model instanceof Eknc.AudioObjectModel) {
                 this.set_current_item_from_props({
                     page_type: Pages.ARTICLE,
                     model: model,
