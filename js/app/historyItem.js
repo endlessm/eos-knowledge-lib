@@ -113,6 +113,20 @@ var HistoryItem = new Knowledge.Class({
         this.parent(props);
     },
 
+    toString() {
+        let retval = '<HistoryItem({';
+        let props = [`page_type: '${this.page_type}'`];
+        if (this.model)
+            props.push(`model: ${this.model}`);
+        if (this.media_model)
+            props.push(`media_model: ${this.media_model}`);
+        if (this.query)
+            props.push(`query: '${this.query}'`);
+        retval += props.join(', ');
+        retval += '})>';
+        return retval;
+    },
+
     get can_share() {
         let model = this.media_model || this.model;
         return model && model.original_uri && model.original_uri.length;
