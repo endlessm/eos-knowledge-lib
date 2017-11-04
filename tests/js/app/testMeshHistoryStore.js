@@ -267,7 +267,7 @@ describe('MeshHistoryStore', function () {
             expect(recent_start_call.args[1]).toEqual(EntryPoints.DBUS_CALL);
         });
 
-        it('goes to the set page if an article was opened', function () {
+        it('goes to the set page if a set was opened', function () {
             model = Eknc.SetObjectModel.new_from_props({
                 ekn_id: 'ekn:///foo',
             });
