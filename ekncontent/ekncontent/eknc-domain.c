@@ -43,6 +43,7 @@ struct _EkncDomain
   char *language;
 
   EkncDatabaseManager *db_manager;
+  GMutex bs_lock;
 
   GFile *content_dir;
   GFile *manifest_file;
@@ -136,6 +137,7 @@ eknc_domain_finalize (GObject *object)
   g_free (self->language);
 
   g_clear_object (&self->db_manager);
+  g_mutex_clear  (&self->bs_lock);
   g_clear_object (&self->content_dir);
   g_clear_object (&self->manifest_file);
 
@@ -457,6 +459,7 @@ eknc_domain_initable_init (GInitable *initable,
 
   g_autofree char *db_path = g_file_get_path (self->manifest_file);
   self->db_manager = eknc_database_manager_new (db_path);
+  g_mutex_init (&self->bs_lock);
 
   if (!eknc_utils_parallel_init (self->shards, 0, cancellable, error))
     return FALSE;
@@ -611,7 +614,7 @@ eknc_domain_get_object (EkncDomain *self,
                         gpointer user_data)
 {
   g_return_if_fail (EKNC_IS_DOMAIN (self));
-  g_return_if_fail (id != NULL);
+  g_return_if_fail (id != NULL || id != '\0');
   g_return_if_fail (G_IS_CANCELLABLE (cancellable) || cancellable == NULL);
 
   g_autoptr(GTask) task = g_task_new (self, cancellable, callback, user_data);
@@ -711,6 +714,7 @@ typedef struct
   EkncQueryObject *query;
 
   EkncDatabaseManager *db_manager;
+  GMutex *bs_lock;
 
   GHashTable *params;
 
@@ -867,6 +871,7 @@ eknc_domain_get_fixed_query (EkncDomain *self,
   RequestState *state = g_slice_new0 (RequestState);
   state->domain = g_object_ref (self);
   state->db_manager = g_object_ref (self->db_manager);
+  state->bs_lock = g_object_ref (&self->bs_lock);
   state->query = g_object_ref (query);
   state->params = get_xapian_fix_query_params (self, query);
 
@@ -934,6 +939,8 @@ query_task (GTask *task,
 
   if (g_task_return_error_if_cancelled (task))
     return;
+
+  g_autoptr(GMutexLocker) bs_lock = g_mutex_locker_new (state->bs_lock);
 
   g_autoptr(XapianMSet) results =
     eknc_database_manager_query (state->db_manager, state->params, &error);
@@ -1018,6 +1025,7 @@ eknc_domain_query (EkncDomain *self,
   RequestState *state = g_slice_new0 (RequestState);
   state->domain = g_object_ref (self);
   state->db_manager = g_object_ref (self->db_manager);
+  state->bs_lock = &self->bs_lock;
   state->query = g_object_ref (query);
   state->params = get_xapian_query_params (self, query);
 
