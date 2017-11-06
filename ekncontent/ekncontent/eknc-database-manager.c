@@ -45,8 +45,6 @@ typedef struct {
 
   char *manifest_path;
 
-  GMutex db_lock;
-
   XapianQueryParser *query_parser;
   XapianDatabase *database;
 } EkncDatabaseManagerPrivate;
@@ -188,8 +186,6 @@ eknc_database_manager_finalize (GObject *object)
   EkncDatabaseManager *self = EKNC_DATABASE_MANAGER (object);
   EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
 
-  g_mutex_clear (&priv->db_lock);
-
   g_free (priv->manifest_path);
 
   g_clear_object (&priv->database);
@@ -226,8 +222,6 @@ eknc_database_manager_init (EkncDatabaseManager *self)
 
   priv->stemmers = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_object_unref);
   g_hash_table_insert (priv->stemmers, g_strdup ("none"), xapian_stem_new ());
-
-  g_mutex_init (&priv->db_lock);
 }
 
 static gboolean
@@ -410,8 +404,6 @@ eknc_database_manager_create_db_internal (EkncDatabaseManager *self,
                                           GError **error_out)
 {
   EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
-
-  g_autoptr(GMutexLocker) db_lock = g_mutex_locker_new (&priv->db_lock);
 
   GError *error = NULL;
 
@@ -691,8 +683,6 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
   XapianQueryParserFeature flags = QUERY_PARSER_FLAGS;
   XapianStopper *stopper;
 
-  g_autoptr(GMutexLocker) db_lock = g_mutex_locker_new (&priv->db_lock);
-
   query_str = g_hash_table_lookup (query_options, QUERY_PARAM_QUERYSTR);
   match_all = g_hash_table_lookup (query_options, QUERY_PARAM_MATCH_ALL);
 
@@ -795,8 +785,6 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
   const gchar *str;
   XapianQueryParserFeature flags = QUERY_PARSER_FLAGS;
   JsonNode *results;
-
-  g_autoptr(GMutexLocker) db_lock = g_mutex_locker_new (&priv->db_lock);
 
   if (database_is_empty (priv->database))
     {
