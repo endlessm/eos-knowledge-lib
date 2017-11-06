@@ -43,6 +43,7 @@ struct _EkncDomain
   char *language;
 
   EkncDatabaseManager *db_manager;
+  GMutex db_lock;
 
   GFile *content_dir;
   GFile *manifest_file;
@@ -136,6 +137,7 @@ eknc_domain_finalize (GObject *object)
   g_free (self->language);
 
   g_clear_object (&self->db_manager);
+  g_mutex_clear (&self->db_lock);
   g_clear_object (&self->content_dir);
   g_clear_object (&self->manifest_file);
 
@@ -457,6 +459,7 @@ eknc_domain_initable_init (GInitable *initable,
 
   g_autofree char *db_path = g_file_get_path (self->manifest_file);
   self->db_manager = eknc_database_manager_new (db_path);
+  g_mutex_init (&self->db_lock);
 
   if (!eknc_utils_parallel_init (self->shards, 0, cancellable, error))
     return FALSE;
@@ -820,6 +823,8 @@ query_fix_task (GTask *task,
   if (g_task_return_error_if_cancelled (task))
     return;
 
+  g_autoptr(GMutexLocker) db_lock = g_mutex_locker_new (&request->domain->db_lock);
+
   gboolean result =
     eknc_database_manager_fix_query (request->db_manager,
                                      request->params,
@@ -934,6 +939,8 @@ query_task (GTask *task,
 
   if (g_task_return_error_if_cancelled (task))
     return;
+
+  g_autoptr(GMutexLocker) db_lock = g_mutex_locker_new (&state->domain->db_lock);
 
   g_autoptr(XapianMSet) results =
     eknc_database_manager_query (state->db_manager, state->params, &error);
