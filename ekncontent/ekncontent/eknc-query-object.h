@@ -94,11 +94,6 @@ eknc_query_object_get_filter_string (EkncQueryObject *self);
 char *
 eknc_query_object_get_filter_out_string (EkncQueryObject *self);
 
-const gchar *
-eknc_query_object_get_query_parser_strings (EkncQueryObject *self,
-                                            const gchar **filter,
-                                            const gchar **filterout);
-
 guint
 eknc_query_object_get_cutoff (EkncQueryObject *self);
 
