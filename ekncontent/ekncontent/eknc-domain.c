@@ -758,18 +758,17 @@ get_xapian_query_params (EkncDomain *domain,
   g_hash_table_insert (params, "defaultOp", g_strdup ("and"));
   g_hash_table_insert (params, "flags", g_strdup ("default,partial,spelling-correction"));
 
-  const char *filter, *filterout;
-  const char *query_str = eknc_query_object_get_query_parser_strings (query,
-                                                                      &filter,
-                                                                      &filterout);
-  if (filter != NULL && *filter != '\0')
-    g_hash_table_insert (params, "filter", g_strdup (filter));
+  char *filter_str = eknc_query_object_get_filter_string (query);
+  char *filter_out_str = eknc_query_object_get_filter_out_string (query);
 
-  if (filterout != NULL && *filterout != '\0')
-    g_hash_table_insert (params, "filterOut", g_strdup (filterout));
-
-  if (query_str == NULL)
+  if (eknc_query_object_is_match_all (query))
     g_hash_table_insert (params, "matchAll", g_strdup ("1"));
+
+  if (filter_str != NULL)
+    g_hash_table_insert (params, "filter", filter_str);
+
+  if (filter_out_str != NULL)
+    g_hash_table_insert (params, "filterOut", filter_out_str);
 
   if (domain->language != NULL && *domain->language != '\0')
     g_hash_table_insert (params, "lang", g_strdup (domain->language));
@@ -938,12 +937,14 @@ query_task (GTask *task,
   if (g_task_return_error_if_cancelled (task))
     return;
 
-  const char *foo, *bar;
-  const char *query_str = eknc_query_object_get_query_parser_strings (state->query, &foo, &bar);
+  g_autoptr(GMutexLocker) db_lock = g_mutex_locker_new (&state->domain->db_lock);
+
+  g_autofree char *query_str = eknc_query_object_get_corrected_query_string (state->query);
+
+  g_debug (G_STRLOC ": Query: '%s'", query_str);
 
   g_autoptr(XapianMSet) results =
     eknc_database_manager_query (state->db_manager, query_str, state->params, &error);
-
   if (error != NULL)
     {
       g_task_return_error (task, error);
@@ -953,7 +954,7 @@ query_task (GTask *task,
   int n_results = xapian_mset_get_size (results);
   int upper_bound = xapian_mset_get_matches_upper_bound (results);
 
-  g_debug ("Found %d results (upper bound: %d)\n", n_results, upper_bound);
+  g_debug (G_STRLOC ": Found %d results (upper bound: %d)\n", n_results, upper_bound);
 
   GList *models = NULL;
 

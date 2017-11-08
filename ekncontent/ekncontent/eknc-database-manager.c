@@ -736,6 +736,14 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
   if (spell_fixed_query_out != NULL)
     *spell_fixed_query_out = xapian_query_parser_get_corrected_query_string (priv->query_parser);
 
+  g_debug (G_STRLOC ":\n"
+           " - query: '%s'\n"
+           " - stop_fixed_query: '%s'\n"
+           " - spell_fixed_query: '%s'",
+           query_str ? query_str : "<none>",
+           *stop_fixed_query_out != NULL ? *stop_fixed_query_out : "<ignored>",
+           *spell_fixed_query_out != NULL ? *spell_fixed_query_out : "<ignored>");
+
   return TRUE;
 }
 
@@ -825,6 +833,8 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
       g_propagate_error (error_out, error);
       return NULL;
     }
+
+  g_debug (G_STRLOC ": Query: '%s'", query_str);
 
   g_autoptr(XapianQuery) parsed_query = NULL;
 
