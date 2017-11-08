@@ -264,7 +264,7 @@ get_xapian_query_uri (EkncXapianBridge *self,
     {
       const gchar *filter, *filterout;
       g_hash_table_insert (params, "defaultOp", "and");
-      g_hash_table_insert (params, "flags", "default,partial,spelling-correction");
+      g_hash_table_insert (params, "flags", "default,partial");
       query_str = eknc_query_object_get_query_parser_strings (query,
                                                               &filter,
                                                               &filterout);
