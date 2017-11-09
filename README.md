@@ -42,6 +42,11 @@ jhbuild sysdeps --install
 jhbuild build
 ```
 
+*Note:* `jhbuild sysdeps --install` could tell that some system
+dependencies are missing, even when they are installed.  If that
+happens you can make sure that your system has the dependencies and
+then run `jhbuild build --nodeps`.
+
 You will also have to make sure `xapian-bridge` is running in the background:
 ```sh
 jhbuild run xapian-bridge &
