@@ -614,7 +614,7 @@ eknc_domain_get_object (EkncDomain *self,
                         gpointer user_data)
 {
   g_return_if_fail (EKNC_IS_DOMAIN (self));
-  g_return_if_fail (id != NULL || id != '\0');
+  g_return_if_fail (id != NULL || *id != '\0');
   g_return_if_fail (G_IS_CANCELLABLE (cancellable) || cancellable == NULL);
 
   g_autoptr(GTask) task = g_task_new (self, cancellable, callback, user_data);
