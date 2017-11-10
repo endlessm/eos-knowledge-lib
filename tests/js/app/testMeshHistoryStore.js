@@ -267,7 +267,7 @@ describe('MeshHistoryStore', function () {
             expect(recent_start_call.args[1]).toEqual(EntryPoints.DBUS_CALL);
         });
 
-        it('goes to the set page if an article was opened', function () {
+        it('goes to the set page if a set was opened', function () {
             model = Eknc.SetObjectModel.new_from_props({
                 ekn_id: 'ekn:///foo',
             });
@@ -280,6 +280,35 @@ describe('MeshHistoryStore', function () {
             Utils.update_gui();
 
             expect(store.get_current_item().page_type).toBe(Pages.SET);
+        });
+
+        ['Video', 'Audio'].forEach(kind => {
+            describe(`when a ${kind.toLowerCase()} was opened`, function () {
+                beforeEach(function () {
+                    model = Eknc[`${kind}ObjectModel`].new_from_props({
+                        ekn_id: 'ekn:///99bac9189b30bb0877f60e1bc16ded7ad94af37f',
+                    });
+                    engine.get_object_promise.and.returnValue(Promise.resolve(model));
+                    dispatcher.dispatch({
+                        action_type: Actions.DBUS_LOAD_ITEM_CALLED,
+                        query: 'foo',
+                        ekn_id: 'ekn:///99bac9189b30bb0877f60e1bc16ded7ad94af37f',
+                    });
+                    Utils.update_gui();
+                });
+
+                it('goes to the article page', function () {
+                    let item = store.get_current_item();
+                    expect(item.page_type).toBe(Pages.ARTICLE);
+                    expect(item.model.ekn_id).toEqual('ekn:///99bac9189b30bb0877f60e1bc16ded7ad94af37f');
+                });
+
+                it('records a metric if a video was opened', function () {
+                    recent_start_call = start_content_access_metric_spy.calls.mostRecent();
+                    expect(recent_start_call.args[0].ekn_id).toEqual('ekn:///99bac9189b30bb0877f60e1bc16ded7ad94af37f');
+                    expect(recent_start_call.args[1]).toEqual(EntryPoints.DBUS_CALL);
+                });
+            });
         });
     });
 });
