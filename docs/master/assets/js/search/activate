@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "activate", "urls": ["arrangement/grid.html#activateonsingleclick"]});
+urls_downloaded_cb({"urls": ["arrangement/grid.html#activateonsingleclick"], "token": "activate"});
