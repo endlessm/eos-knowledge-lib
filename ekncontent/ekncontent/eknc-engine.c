@@ -394,7 +394,7 @@ eknc_engine_query (EkncEngine *self,
       return;
     }
 
-  const char *query_string = eknc_query_object_get_query_string (query);
+  const char *query_string = eknc_query_object_get_query (query);
   if (query_string  != NULL && *query_string != '\0')
     {
       eknc_domain_get_fixed_query (domain, query, cancellable, on_query_fixed_finished, g_steal_pointer (&task));

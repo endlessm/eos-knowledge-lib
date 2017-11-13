@@ -80,21 +80,28 @@ GVariant *
 eknc_query_object_get_excluded_tags (EkncQueryObject *self);
 
 const char *
+eknc_query_object_get_query (EkncQueryObject *self);
+
+char *
 eknc_query_object_get_query_string (EkncQueryObject *self);
 
-const gchar *
-eknc_query_object_get_query_parser_string (EkncQueryObject *self);
+char *
+eknc_query_object_get_corrected_query_string (EkncQueryObject *self);
 
-const gchar *
-eknc_query_object_get_query_parser_strings (EkncQueryObject *self,
-                                            const gchar **filter,
-                                            const gchar **filterout);
+char *
+eknc_query_object_get_filter_string (EkncQueryObject *self);
+
+char *
+eknc_query_object_get_filter_out_string (EkncQueryObject *self);
 
 guint
 eknc_query_object_get_cutoff (EkncQueryObject *self);
 
 gint
 eknc_query_object_get_sort_value (EkncQueryObject *self);
+
+gboolean
+eknc_query_object_is_match_all (EkncQueryObject *self);
 
 EkncQueryObject *
 eknc_query_object_new_from_object (EkncQueryObject *source,

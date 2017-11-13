@@ -556,27 +556,43 @@ get_exact_title_clause (EkncQueryObject *self, gchar **terms)
 }
 
 static gchar *
-get_title_clause (EkncQueryObject *self, gchar **terms)
+get_title_clause (EkncQueryObject *self,
+                  char **terms,
+                  char **corrected_terms)
 {
-  guint length = g_strv_length (terms);
-  g_auto(GStrv) title_terms = g_new0 (gchar *, length + 1);
-  for (guint i = 0; i < length; i++)
-    {
-      g_autofree gchar *title_term = g_strconcat (XAPIAN_PREFIX_TITLE, terms[i], NULL);
-      title_terms[i] = maybe_add_wildcard (self, title_term);
-    }
-  return g_strjoinv (XAPIAN_OP_AND, title_terms);
-}
+  guint terms_length = g_strv_length (terms);
+  guint corrected_terms_length = corrected_terms != NULL
+                               ? g_strv_length (corrected_terms)
+                               : 0;
 
-static gchar *
-get_title_clause2 (EkncQueryObject *self, gchar **terms)
-{
-  guint length = g_strv_length (terms);
-  g_auto(GStrv) title_terms = g_new0 (gchar *, length + 1);
-  for (guint i = 0; i < length; i++)
+  guint max_length = MAX (terms_length, corrected_terms_length);
+
+  g_auto(GStrv) title_terms = g_new0 (gchar *, max_length + 1);
+
+  for (guint i = 0; i < max_length; i++)
     {
-      title_terms[i] = g_strconcat (XAPIAN_PREFIX_TITLE, terms[i], NULL);
+      g_autofree char *term = NULL;
+      if (i < terms_length)
+        term = g_strconcat (XAPIAN_PREFIX_TITLE, terms[i], NULL);
+
+      g_autofree char *corrected_term = NULL;
+      if (i < corrected_terms_length)
+        corrected_term = g_strconcat (XAPIAN_PREFIX_TITLE, corrected_terms[i], NULL);
+
+      /* Discard duplicates */
+      if (g_strcmp0 (term, corrected_term) == 0)
+        g_clear_pointer (&corrected_term, g_free);
+
+      if (term != NULL && corrected_term != NULL)
+        title_terms[i] = g_strdup_printf ("(%s%s%s)", term, XAPIAN_OP_OR, corrected_term);
+      else if (term != NULL)
+        title_terms[i] = g_steal_pointer (&term);
+      else if (corrected_term != NULL)
+        title_terms[i] = g_steal_pointer (&corrected_term);
+      else
+        g_assert_not_reached ();
     }
+
   return g_strjoinv (" ", title_terms);
 }
 
@@ -590,99 +606,6 @@ get_body_clause (EkncQueryObject *self, gchar **terms)
       body_terms[i] = maybe_add_wildcard (self, terms[i]);
     }
   return g_strjoinv (XAPIAN_OP_AND, body_terms);
-}
-
-static gchar *
-get_query_clause (EkncQueryObject *self)
-{
-  if (self->literal_query && *(self->literal_query))
-    return self->literal_query;
-
-  g_auto(GStrv) raw_terms = get_terms (self->query);
-
-  if (g_strv_length (raw_terms) == 0)
-    return NULL;
-
-  // If we only have one character in our search, only look for an exact match.
-  // Fancier searching, particularly wildcard search, leads to performance
-  // problems.
-  if (g_strv_length (raw_terms) == 1 && g_utf8_strlen (raw_terms[0], -1) == 1)
-    {
-      g_autofree gchar *capitalized = capitalize (raw_terms[0]);
-      return g_strconcat (XAPIAN_PREFIX_EXACT_TITLE, capitalized, NULL);
-    }
-
-  GString *query_clause = g_string_new (NULL);
-
-  g_autofree gchar *exact_title_clause = get_exact_title_clause (self, raw_terms);
-  g_string_append (query_clause, exact_title_clause);
-
-  // If we were given a stopword free query, use its terms for the rest of the
-  // query clause. If not, we can assume the terms we already have are free of
-  // stopwords.
-  g_auto(GStrv) stopword_free_terms = get_terms (self->stopword_free_query);
-  GStrv terms = raw_terms;
-  if (stopword_free_terms && *stopword_free_terms)
-    terms = stopword_free_terms;
-
-  g_autofree gchar *title_clause = get_title_clause (self, terms);
-  g_string_append (query_clause, XAPIAN_OP_OR);
-  g_string_append (query_clause, title_clause);
-
-  if (self->match == EKNC_QUERY_OBJECT_MATCH_TITLE_SYNOPSIS)
-    {
-      g_autofree gchar *body_clause = get_body_clause (self, terms);
-      g_string_append (query_clause, XAPIAN_OP_OR);
-      g_string_append (query_clause, body_clause);
-    }
-
-  return g_string_free (query_clause, FALSE);
-}
-
-static gchar *
-get_query_clause2 (EkncQueryObject *self)
-{
-  if (self->literal_query && *(self->literal_query))
-    return self->literal_query;
-
-  g_auto(GStrv) raw_terms = get_terms (self->query);
-
-  if (g_strv_length (raw_terms) == 0)
-    return NULL;
-
-  // If we only have one character in our search, only look for an exact match.
-  // Fancier searching, particularly wildcard search, leads to performance
-  // problems.
-  if (g_strv_length (raw_terms) == 1 && g_utf8_strlen (raw_terms[0], -1) == 1)
-    {
-      g_autofree gchar *capitalized = capitalize (raw_terms[0]);
-      return g_strconcat (XAPIAN_PREFIX_EXACT_TITLE, capitalized, NULL);
-    }
-
-  GString *query_clause = g_string_new (NULL);
-
-  g_autofree gchar *exact_title_clause = get_exact_title_clause (self, raw_terms);
-  g_string_append (query_clause, exact_title_clause);
-
-  // If we were given a corrected query, use its terms for the rest of the
-  // query clause.
-  g_auto(GStrv) corrected_terms = get_terms (self->corrected_query);
-  GStrv terms = raw_terms;
-  if (corrected_terms && *corrected_terms)
-    terms = corrected_terms;
-
-  g_autofree gchar *title_clause = get_title_clause2 (self, terms);
-  g_string_append (query_clause, XAPIAN_OP_OR);
-  g_string_append (query_clause, title_clause);
-
-  if (self->match == EKNC_QUERY_OBJECT_MATCH_TITLE_SYNOPSIS)
-    {
-      g_autofree gchar *body_clause = g_strjoinv (" ", terms);
-      g_string_append (query_clause, XAPIAN_OP_OR);
-      g_string_append (query_clause, body_clause);
-    }
-
-  return g_string_free (query_clause, FALSE);
 }
 
 static gchar *
@@ -746,43 +669,6 @@ consume_clause (GString *parser_string,
       g_string_append (parser_string, parenthesized);
     }
   g_free (clause);
-}
-
-static void
-eknc_query_object_ensure_query_parser_string (EkncQueryObject *self)
-{
-  if (self->query_parser_string)
-    return;
-
-  GString *parser_string = g_string_new (NULL);
-  consume_clause (parser_string, get_query_clause (self));
-  consume_clause (parser_string, get_tags_clause (self->tags_match_any, XAPIAN_OP_OR, FALSE));
-  consume_clause (parser_string, get_tags_clause (self->tags_match_all, XAPIAN_OP_AND, FALSE));
-  consume_clause (parser_string, get_ids_clause (self->ids, XAPIAN_OP_OR, FALSE));
-  consume_clause (parser_string, get_tags_clause (self->excluded_tags, XAPIAN_OP_AND, TRUE));
-  consume_clause (parser_string, get_ids_clause (self->excluded_ids, XAPIAN_OP_AND, TRUE));
-  self->query_parser_string = g_string_free (parser_string, FALSE);
-}
-
-static void
-eknc_query_object_ensure_query_parser_strings (EkncQueryObject *self)
-{
-  if (self->query_parser_string)
-    return;
-
-  GString *filter_string = g_string_new (NULL);
-  GString *filterout_string = g_string_new (NULL);
-
-  consume_clause (filter_string, get_tags_clause (self->tags_match_any, XAPIAN_OP_OR, FALSE));
-  consume_clause (filter_string, get_tags_clause (self->tags_match_all, XAPIAN_OP_AND, FALSE));
-  consume_clause (filter_string, get_ids_clause (self->ids, XAPIAN_OP_OR, FALSE));
-
-  consume_clause (filterout_string, get_tags_clause (self->excluded_tags, XAPIAN_OP_OR, FALSE));
-  consume_clause (filterout_string, get_ids_clause (self->excluded_ids, XAPIAN_OP_OR, FALSE));
-
-  self->query_parser_string = get_query_clause2 (self);
-  self->filter_string = g_string_free (filter_string, FALSE);
-  self->filterout_string = g_string_free (filterout_string, FALSE);
 }
 
 /**
@@ -861,7 +747,7 @@ eknc_query_object_get_excluded_tags (EkncQueryObject *self)
 }
 
 /**
- * eknc_query_object_get_query_string:
+ * eknc_query_object_get_query:
  * @self: the model
  *
  * Get the query string set on the object.
@@ -869,58 +755,198 @@ eknc_query_object_get_excluded_tags (EkncQueryObject *self)
  * Returns: (transfer none): the query string
  */
 const char *
-eknc_query_object_get_query_string (EkncQueryObject *self)
+eknc_query_object_get_query (EkncQueryObject *self)
 {
   g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
   return self->query;
 }
 
 /**
- * eknc_query_object_get_query_parser_string:
- * @self: the model
+ * eknc_query_object_get_corrected_query_string:
+ * @self: a #EkncQueryObject
  *
- * Get the old-style xapian query string to hand off to xapian bridge
+ * Retrieves the query string, including spelling corrections in case
+ * the #EkncQueryObject:corrected-query property is set.
  *
- * Returns: (transfer none): the query string to hand to xapian
+ * If #EkncQueryObject:corrected-query is unset, this function returns
+ * the same string as eknc_query_object_get_query_string().
+ *
+ * Returns: (transfer full) (nullable): the corrected query string
  */
-const gchar *
-eknc_query_object_get_query_parser_string (EkncQueryObject *self)
+char *
+eknc_query_object_get_corrected_query_string (EkncQueryObject *self)
 {
   g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
 
-  eknc_query_object_ensure_query_parser_string (self);
+  if (self->literal_query != NULL && self->literal_query[0] != '\0')
+    return g_strdup (self->literal_query);
 
-  return self->query_parser_string;
+  g_auto(GStrv) raw_terms = get_terms (self->query);
+
+  if (g_strv_length (raw_terms) == 0)
+    return NULL;
+
+  /* If we only have one character in our search, only look for an exact match.
+   * Fancier searching, particularly wildcard search, leads to performance
+   * problems.
+   */
+  if (g_strv_length (raw_terms) == 1 && g_utf8_strlen (raw_terms[0], -1) == 1)
+    {
+      g_autofree char *capitalized = capitalize (raw_terms[0]);
+
+      return g_strconcat (XAPIAN_PREFIX_EXACT_TITLE, capitalized, NULL);
+    }
+
+  GString *query_clause = g_string_new (NULL);
+
+  g_autofree char *exact_title_clause = get_exact_title_clause (self, raw_terms);
+  g_string_append (query_clause, exact_title_clause);
+
+  /* If we were given a corrected query, use its terms for the rest of the
+   * query clause.
+   */
+  g_auto(GStrv) corrected_terms = NULL;
+  if (self->corrected_query != NULL)
+    corrected_terms = get_terms (self->corrected_query);
+
+  g_autofree char *title_clause = get_title_clause (self, raw_terms, corrected_terms);
+
+  g_string_append (query_clause, XAPIAN_OP_OR);
+  g_string_append (query_clause, title_clause);
+
+  if (self->match == EKNC_QUERY_OBJECT_MATCH_TITLE_SYNOPSIS)
+    {
+      g_autofree char *body_clause = g_strjoinv (" ", raw_terms);
+
+      g_string_append (query_clause, XAPIAN_OP_OR);
+      g_string_append (query_clause, body_clause);
+
+      if (corrected_terms != NULL && *corrected_terms[0] != '\0')
+        {
+          g_autofree char *corrected_body_clause = g_strjoinv (" ", corrected_terms);
+
+          g_string_append (query_clause, XAPIAN_OP_OR);
+          g_string_append (query_clause, corrected_body_clause);
+        }
+    }
+
+  return g_string_free (query_clause, FALSE);
 }
 
 /**
- * eknc_query_object_get_query_parser_strings:
- * @self: the model
- * @filter: (out) (transfer none): filter query string
- * @filterout: (out) (transfer none): excluding filter query string
+ * eknc_query_object_get_query_string:
+ * @self: a #EkncQueryObject
  *
- * Get the new-style xapian query strings to hand off to xapian bridge.  The
- * old-style query string is broken into three parts, which are combined like
- * so:
+ * Retrieves the query string.
  *
- * query OP_FILTER filter OP_AND_NOT filterout
- *
- * Returns: (transfer none): the query string to hand to xapian
+ * Returns: (transfer full) (nullable): the query string
  */
-const gchar *
-eknc_query_object_get_query_parser_strings (EkncQueryObject *self,
-                                            const gchar **filter,
-                                            const gchar **filterout)
+char *
+eknc_query_object_get_query_string (EkncQueryObject *self)
 {
   g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
-  g_return_val_if_fail (filter != NULL, NULL);
-  g_return_val_if_fail (filterout != NULL, NULL);
 
-  eknc_query_object_ensure_query_parser_strings (self);
+  if (self->literal_query != NULL && self->literal_query[0] != '\0')
+    return g_strdup (self->literal_query);
 
-  *filter = self->filter_string;
-  *filterout = self->filterout_string;
-  return self->query_parser_string;
+  g_auto(GStrv) raw_terms = get_terms (self->query);
+
+  if (g_strv_length (raw_terms) == 0)
+    return NULL;
+
+  /* If we only have one character in our search, only look for an exact match.
+   * Fancier searching, particularly wildcard search, leads to performance
+   * problems.
+   */
+  if (g_strv_length (raw_terms) == 1 && g_utf8_strlen (raw_terms[0], -1) == 1)
+    {
+      g_autofree char *capitalized = capitalize (raw_terms[0]);
+
+      return g_strconcat (XAPIAN_PREFIX_EXACT_TITLE, capitalized, NULL);
+    }
+
+  GString *query_clause = g_string_new (NULL);
+
+  g_autofree char *exact_title_clause = get_exact_title_clause (self, raw_terms);
+
+  g_string_append (query_clause, exact_title_clause);
+
+  g_autofree char *title_clause = get_title_clause (self, raw_terms, NULL);
+
+  g_string_append (query_clause, XAPIAN_OP_OR);
+  g_string_append (query_clause, title_clause);
+
+  if (self->match == EKNC_QUERY_OBJECT_MATCH_TITLE_SYNOPSIS)
+    {
+      g_autofree char *body_clause = g_strjoinv (" ", raw_terms);
+
+      g_string_append (query_clause, XAPIAN_OP_OR);
+      g_string_append (query_clause, body_clause);
+    }
+
+  return g_string_free (query_clause, FALSE);
+}
+
+/**
+ * eknc_query_object_get_filter_string:
+ * @self: a #EkncQueryObject
+ *
+ * Retrieves the `filter` string from the object.
+ *
+ * Returns: (transfer full) (nullable): the filter string
+ */
+char *
+eknc_query_object_get_filter_string (EkncQueryObject *self)
+{
+  g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
+
+  GString *filter_string = g_string_new (NULL);
+
+  consume_clause (filter_string, get_tags_clause (self->tags_match_any, XAPIAN_OP_OR, FALSE));
+  consume_clause (filter_string, get_tags_clause (self->tags_match_all, XAPIAN_OP_AND, FALSE));
+  consume_clause (filter_string, get_ids_clause (self->ids, XAPIAN_OP_OR, FALSE));
+
+  return g_string_free (filter_string, FALSE);
+}
+
+/**
+ * eknc_query_object_get_filter_out_string:
+ * @self: a #EkncQueryObject
+ *
+ * Retrieves the `filter-out` string from the object.
+ *
+ * Returns: (transfer full) (nullable): the filter-out string
+ */
+char *
+eknc_query_object_get_filter_out_string (EkncQueryObject *self)
+{
+  g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
+
+  GString *filterout_string = g_string_new (NULL);
+
+  consume_clause (filterout_string, get_tags_clause (self->excluded_tags, XAPIAN_OP_OR, FALSE));
+  consume_clause (filterout_string, get_ids_clause (self->excluded_ids, XAPIAN_OP_OR, FALSE));
+
+  return g_string_free (filterout_string, FALSE);
+}
+
+/**
+ * eknc_query_object_is_match_all:
+ * @self: a #EkncQueryObject
+ *
+ * Checks whether the object is a query for all results.
+ *
+ * This function is typically used to retrieve all articles matching to a
+ * specific tag.
+ *
+ * Returns: %TRUE if the object is for matching all results
+ */
+gboolean
+eknc_query_object_is_match_all (EkncQueryObject *self)
+{
+  g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), FALSE);
+
+  return self->query == NULL || self->query[0] == '\0';
 }
 
 /**
