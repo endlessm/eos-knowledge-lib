@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tools.html#installing", "tools.html#using"], "token": "latest"});
+urls_downloaded_cb({"token": "latest", "urls": ["tools.html#installing", "tools.html#using"]});
