@@ -328,6 +328,7 @@ var Document = new Module.Class({
                 return true;
             } else {
                 this.emit('ekn-link-clicked', baseURI);
+                decision.ignore();
                 return true;
             }
         });
