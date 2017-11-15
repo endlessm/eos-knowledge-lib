@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "name", "urls": ["view/audio.html#customcss", "view/document.html#customcss", "view/video.html#customcss"]});
+urls_downloaded_cb({"urls": ["view/audio.html#customcss", "view/document.html#customcss", "view/video.html#customcss"], "token": "name"});
