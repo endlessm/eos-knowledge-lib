@@ -569,14 +569,43 @@ get_title_clause (EkncQueryObject *self, gchar **terms)
 }
 
 static gchar *
-get_title_clause2 (EkncQueryObject *self, gchar **terms)
+get_title_clause2 (EkncQueryObject *self,
+                   char **terms,
+                   char **corrected_terms)
 {
-  guint length = g_strv_length (terms);
-  g_auto(GStrv) title_terms = g_new0 (gchar *, length + 1);
-  for (guint i = 0; i < length; i++)
+  guint terms_length = g_strv_length (terms);
+
+  guint corrected_terms_length = corrected_terms != NULL
+                               ? g_strv_length (corrected_terms)
+                               : 0;
+
+  guint max_length = MAX (terms_length, corrected_terms_length);
+
+  g_auto(GStrv) title_terms = g_new0 (gchar *, max_length + 1);
+  for (guint i = 0; i < max_length; i++)
     {
-      title_terms[i] = g_strconcat (XAPIAN_PREFIX_TITLE, terms[i], NULL);
+      g_autofree char *term = NULL;
+      if (i < terms_length)
+        term = g_strconcat (XAPIAN_PREFIX_TITLE, terms[i], NULL);
+
+      g_autofree char *corrected_term = NULL;
+      if (i < corrected_terms_length)
+        corrected_term = g_strconcat (XAPIAN_PREFIX_TITLE, corrected_terms[i], NULL);
+
+      /* Discard duplicates */
+      if (g_strcmp0 (term, corrected_term) == 0)
+        g_clear_pointer (&corrected_term, g_free);
+
+      if (term != NULL && corrected_term != NULL)
+        title_terms[i] = g_strdup_printf ("(%s%s%s)", term, XAPIAN_OP_OR, corrected_term);
+      else if (term != NULL)
+        title_terms[i] = g_steal_pointer (&term);
+      else if (corrected_term != NULL)
+        title_terms[i] = g_steal_pointer (&corrected_term);
+      else
+        g_assert_not_reached ();
     }
+
   return g_strjoinv (" ", title_terms);
 }
 
@@ -664,22 +693,25 @@ get_query_clause2 (EkncQueryObject *self)
   g_autofree gchar *exact_title_clause = get_exact_title_clause (self, raw_terms);
   g_string_append (query_clause, exact_title_clause);
 
-  // If we were given a corrected query, use its terms for the rest of the
-  // query clause.
   g_auto(GStrv) corrected_terms = get_terms (self->corrected_query);
-  GStrv terms = raw_terms;
-  if (corrected_terms && *corrected_terms)
-    terms = corrected_terms;
 
-  g_autofree gchar *title_clause = get_title_clause2 (self, terms);
+  g_autofree char *title_clause = get_title_clause2 (self, raw_terms, corrected_terms);
   g_string_append (query_clause, XAPIAN_OP_OR);
   g_string_append (query_clause, title_clause);
 
   if (self->match == EKNC_QUERY_OBJECT_MATCH_TITLE_SYNOPSIS)
     {
-      g_autofree gchar *body_clause = g_strjoinv (" ", terms);
+      g_autofree char *body_clause = g_strjoinv (" ", raw_terms);
       g_string_append (query_clause, XAPIAN_OP_OR);
       g_string_append (query_clause, body_clause);
+
+      if (corrected_terms != NULL && *corrected_terms[0] != '\0')
+        {
+          g_autofree char *corrected_body_clause = g_strjoinv (" ", corrected_terms);
+
+          g_string_append (query_clause, XAPIAN_OP_OR);
+          g_string_append (query_clause, corrected_body_clause);
+        }
     }
 
   return g_string_free (query_clause, FALSE);
