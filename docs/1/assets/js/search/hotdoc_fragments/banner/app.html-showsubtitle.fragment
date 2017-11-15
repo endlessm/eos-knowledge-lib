@@ -1,1 +1,1 @@
-fragment_downloaded_cb({"fragment": "show subtitle \nWhether to show an application subtitle underneath the image. Subtitle will be taken from the desktop file description field. \n", "url": "banner/app.html#showsubtitle"});
+fragment_downloaded_cb({"url": "banner/app.html#showsubtitle", "fragment": "show subtitle \nWhether to show an application subtitle underneath the image. Subtitle will be taken from the desktop file description field. \n"});
