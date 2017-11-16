@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["window/simple.html#fontscalingdefaultwindowsize"], "token": "resolution"});
+urls_downloaded_cb({"token": "resolution", "urls": ["window/simple.html#fontscalingdefaultwindowsize"]});
