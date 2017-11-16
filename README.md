@@ -42,11 +42,6 @@ jhbuild sysdeps --install
 jhbuild build
 ```
 
-You will also have to make sure `xapian-bridge` is running in the background:
-```sh
-jhbuild run xapian-bridge &
-```
-
 To run the tests:
 ```sh
 jhbuild make check
@@ -57,7 +52,6 @@ If not using JHbuild you first need to clone, build, and install these other End
  - [eos-sdk]
  - [eos-shard]
  - [xapian-glib]
- - [xapian-bridge]
 
 If you wish to run the tests, you will also need to clone, build, and install [jasmine-gjs].
 Other dependencies are PyYAML for Python 3, and an SCSS compiler.
@@ -162,7 +156,6 @@ For the next release, we may split this repository up into smaller units.
 [eos-sdk]: https://github.com/endlessm/eos-sdk
 [eos-shard]: https://github.com/endlessm/eos-shard
 [xapian-glib]: https://github.com/endlessm/xapian-glib
-[xapian-bridge]: https://github.com/endlessm/xapian-bridge
 [jasmine-gjs]: https://github.com/ptomato/jasmine-gjs
 [transifex]: https://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/
 [website]: http://endlessm.github.io/eos-knowledge-lib/

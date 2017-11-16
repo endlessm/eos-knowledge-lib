@@ -16,9 +16,9 @@ const USAGE = [
 ].join('\n');
 
 // For those interested in kermit's etymology, it goes roughly like this:
-// EosShard -> Dark Shard -> Dark Crystal -> Jim Hensen -> Kermit
+// EosShard -> Dark Shard -> Dark Crystal -> Jim Henson -> Kermit
 
-// size of xapian-bridge result batches
+// size of EkncEngine result batches
 const BATCH_SIZE = 10;
 
 function main () {
