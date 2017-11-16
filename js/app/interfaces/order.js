@@ -97,8 +97,8 @@ var Order = new Lang.Interface({
      *   a new <EosKnowledgeContent.QueryObject>, may be the same object
      */
     modify_xapian_query: function (query) {
-        // You can't sort by two things over xapian-bridge. In practice, we
-        // don't expect that case to occur.
+        // You can't sort by two things with our current API wrapping Xapian.
+        // In practice, we don't expect that case to occur.
         if (!this.modify_xapian_query_impl) {
             if (this._sub_order)
                 return this._sub_order.modify_xapian_query(query);
