@@ -361,7 +361,7 @@ on_query_fixed_finished (GObject *source,
  * @callback: (scope async): callback to call when the request is satisfied.
  * @user_data: (closure): the data to pass to callback function.
  *
- * Asynchronously sends a request to xapian-bridge for a given #EkncQueryObject,
+ * Asynchronously queries the Xapian database for a given #EkncQueryObject,
  * and return a list of matching #EkncContentObjectModel objects.
  */
 void
