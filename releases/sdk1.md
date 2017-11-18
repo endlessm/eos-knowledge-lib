@@ -24,6 +24,10 @@ permalink: /releases/1/
 
 ## Release notes ##
 
+### SDK 1.7 (November 17, 2017) ###
+
+- This is another irregular hotfix release to fix a problem with spelling correction in searches, which made it impossible to search for uncommon words within apps.
+
 ### SDK 1.6 (November 2, 2017) ###
 
 - This is another irregular hotfix release to fix a crash.
