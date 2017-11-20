@@ -1,0 +1,19 @@
+@require(name, detail, extra)
+
+<div class="row">
+	<div class="col-sm-12 col-md-2">
+	@if name:
+		<p>
+		<i><em><code>@name:</code></em></i>
+		</p>
+	@end
+	</div>
+	<div class="col-sm-12 col-md-8 parameter-description">
+	@detail
+	</div>
+	<div class="col-sm-12 col-md-2 parameter-extra">
+	@for name, ex in extra.items():
+	@ex
+	@end
+	</div>
+</div>
