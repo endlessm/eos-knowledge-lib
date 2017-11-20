@@ -6,11 +6,11 @@ permalink: /releases/schedule/
 | Major release | Date              | GNOME version
 |:--------------|:------------------|:-------------
 | [SDK1]        | July 3, 2017      | 3.24
-| **[SDK2]**    | November 16, 2017 | 3.26
-| SDK3          | February 1, 2018  |
-| SDK4          | May 3, 2018       | 3.28
-| SDK5          | August 2, 2018    |
-| SDK6          | November 1, 2018  | 3.30
+| **[SDK2]**    | November 20, 2017 | 3.26
+| SDK3          | February 5, 2018  |
+| SDK4          | May 7, 2018       | 3.28
+| SDK5          | August 6, 2018    |
+| SDK6          | November 5, 2018  | 3.30
 
 ## Release cycle ##
 
@@ -25,12 +25,12 @@ permalink: /releases/schedule/
   No source code changes can be made after this point without approval from the release maintainers.
   Translation and documentation can continue.
 
-- **Major release** &mdash; on the first Thursday of February, May, August, and November.
+- **Major release** &mdash; is built on the first Thursday of February, May, August, and November, and released the following Monday.
   After this point, the development runtime is designated stable and is included on Endless OS images.
   The previous stable runtime is designated EOL.
   Translation and documentation can continue, but the focus of development should be on the next major release.
 
-- **Bugfix release** &mdash; on the first Thursday of every month where there is no major release.
+- **Bugfix release** &mdash; is built on the first Thursday of every month where there is no major release, and released on the following Monday.
   A new version of the stable runtime becomes current.
 
 - **EOL** (End Of Life) &mdash; on the day of the following major release.
