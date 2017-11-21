@@ -22,7 +22,7 @@ var Suggested = new Module.Class({
         });
     },
 
-    _TOTAL_ARTICLES: 50,
+    _TOTAL_ARTICLES: 10,
     construct_query_object: function (limit, query_index) {
         let query = HistoryStore.get_default().current_query;
         if (query_index > 0 || query.length === 0)
