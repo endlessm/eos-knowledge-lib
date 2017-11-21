@@ -88,6 +88,10 @@
                           <property name="wrap_mode">word</property>
                           <property name="ellipsize">end</property>
                           <property name="lines">1</property>
+                          <style>
+                              <class name="CardDefault__title"/>
+                              <class name="Card__title"/>
+                          </style>
                         </object>
                       </child>
                   </object>
