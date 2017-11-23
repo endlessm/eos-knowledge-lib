@@ -85,6 +85,9 @@ var WebviewTooltipPresenter = new Knowledge.Class({
     },
 
     show_external_link_tooltip: function (tooltip, uri) {
+        if (!uri)
+            return;
+
         let builder = this._get_widget_builder();
         let contents = builder.get_object('WebviewTooltipExternalLink');
 
@@ -104,6 +107,9 @@ var WebviewTooltipPresenter = new Knowledge.Class({
     },
 
     show_default_tooltip: function (tooltip, title) {
+        if (!title)
+            return;
+
         let builder = this._get_widget_builder();
         let contents = builder.get_object('WebviewTooltipDefault');
         contents.label = title;
