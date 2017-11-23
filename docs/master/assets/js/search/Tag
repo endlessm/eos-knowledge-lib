@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "Tag", "urls": ["filter/articles.html#tag", "filter/tagged.html#tag", "filter/sets.html#tag"]});
+urls_downloaded_cb({"urls": ["filter/articles.html#tag", "filter/tagged.html#tag", "filter/sets.html#tag"], "token": "Tag"});

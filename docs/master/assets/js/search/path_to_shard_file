@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "path_to_shard_file", "urls": ["tools.html#kermit"]});
+urls_downloaded_cb({"urls": ["tools.html#kermit"], "token": "path_to_shard_file"});
