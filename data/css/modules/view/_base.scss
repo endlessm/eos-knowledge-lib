@@ -1,6 +1,6 @@
 .View {
     &__title {
-        color: $primary-medium-color;
+        color: white;
         font-family: $title-font;
         font-size: 45px;
         font-weight: bold;
@@ -10,6 +10,11 @@
         &.collapsed {
             font-size: 55px;
             padding: 1.0em 1.0em 0.5em 1.0em;
+        }
+
+        /* XXX re-consider how to split Views and Cards better */
+        &.Card__title {
+            color: $primary-medium-color;
         }
     }
 
