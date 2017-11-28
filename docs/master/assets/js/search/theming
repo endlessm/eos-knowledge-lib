@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "theming", "urls": ["view/document.html#viewdocument1"]});
+urls_downloaded_cb({"urls": ["view/document.html#viewdocument1"], "token": "theming"});
