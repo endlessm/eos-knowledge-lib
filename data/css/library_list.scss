@@ -15,8 +15,11 @@
     }
   }
 
-  .ArrangementOverflow .CardDefault {
-    margin: 5px;
+  .ArrangementOverflow {
+      margin: 60px 150px 20px 150px;
+      .CardDefault {
+          margin: 5px;
+      }
   }
 
   .ArrangementSquareGuys {
