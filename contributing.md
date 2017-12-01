@@ -27,6 +27,12 @@ Available runtimes:
 
 The runtimes are built from definitions in the [endless-sdk-flatpak](https://github.com/endlessm/endless-sdk-flatpak) Git repository.
 
+To access nightly builds (currently only for x86-64), you can additionally add the nightly repository:
+
+```sh
+flatpak remote-add --from eos-sdk-nightly http://endlessm.github.io/eos-knowledge-lib/eos-sdk-nightly.flatpakrepo
+```
+
 Building
 --------
 We recommend using [JHbuild] to build this code, especially if you are planning to make changes to it.
