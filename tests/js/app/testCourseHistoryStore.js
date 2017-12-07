@@ -98,16 +98,16 @@ describe('CourseHistoryStore', function () {
     test_close_lightbox(Actions.LIGHTBOX_CLOSED, 'lightbox close clicked');
     test_close_lightbox(Actions.SEARCH_BOX_FOCUSED, 'search box focused');
 
-    describe('when an article card is clicked', function () {
+    describe('when an media object card is clicked', function () {
         let prev_model, next_model, model;
         beforeEach(function () {
-            model = Eknc.ArticleObjectModel.new_from_props({
+            model = Eknc.MediaObjectModel.new_from_props({
                 ekn_id: 'ekn://test/article',
             });
-            prev_model = Eknc.ArticleObjectModel.new_from_props({
+            prev_model = Eknc.MediaObjectModel.new_from_props({
                 ekn_id: 'ekn://test/prev',
             });
-            next_model = Eknc.ArticleObjectModel.new_from_props({
+            next_model = Eknc.MediaObjectModel.new_from_props({
                 ekn_id: 'ekn://test/next',
             });
 
@@ -121,6 +121,24 @@ describe('CourseHistoryStore', function () {
 
         it('shows it in lightbox', function () {
             expect(store.get_current_item().media_model).toBe(model);
+        });
+    });
+
+    describe('when an article object card is clicked', function () {
+        let model;
+        beforeEach(function () {
+            model = Eknc.ArticleObjectModel.new_from_props({
+                ekn_id: 'ekn://test/article',
+            });
+
+            dispatcher.dispatch({
+                action_type: Actions.ITEM_CLICKED,
+                model: model,
+            });
+        });
+
+        it('shows it in article page', function () {
+            expect(store.get_current_item().page_type).toBe(Pages.ARTICLE);
         });
     });
 
