@@ -51,6 +51,7 @@ scss_theme_toplevels = \
 	$(srcdir)/data/css/picard.scss \
 	$(srcdir)/data/css/preset_a.scss \
 	$(srcdir)/data/css/preset_b.scss \
+	$(srcdir)/data/css/video_list.scss \
 	$(NULL)
 scss_theme_base_partials = \
 	$(srcdir)/data/css/_base.scss \
@@ -421,6 +422,7 @@ dist_yamlpreset_DATA = \
 	data/preset/gallery.yaml \
 	data/preset/library-list.yaml \
 	data/preset/news.yaml \
+	data/preset/video_list.yaml \
 	$(NULL)
 
 EXTRA_DIST += \

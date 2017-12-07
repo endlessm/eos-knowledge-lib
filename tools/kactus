@@ -213,7 +213,20 @@ add_label('Choose a stock theme (overrides application theme):');
 let stock_theme_chooser = new Gtk.ComboBoxText({
     halign: Gtk.Align.START,
 });
-['', 'default', 'blog', 'buffet', 'encyclopedia', 'escola', 'gallery', 'library_list', 'news', 'preset_a', 'preset_b'].forEach((item) => {
+[
+    '',
+    'default',
+    'blog',
+    'buffet',
+    'encyclopedia',
+    'escola',
+    'gallery',
+    'library_list',
+    'news',
+    'preset_a',
+    'preset_b',
+    'video_list',
+].forEach((item) => {
     stock_theme_chooser.append(item, item);
 });
 grid.add(stock_theme_chooser);

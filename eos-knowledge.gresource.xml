@@ -13,6 +13,7 @@
     <file compressed="true">data/css/preset_a.css</file>
     <file compressed="true">data/css/preset_b.css</file>
     <file compressed="true">data/css/keybindings.css</file>
+    <file compressed="true">data/css/video_list.css</file>
     <file preprocess="xml-stripblanks">data/icons/scalable/actions/eos-play-symbolic.svg</file>
     <file preprocess="xml-stripblanks">data/icons/scalable/actions/document-save-symbolic.svg</file>
     <file preprocess="xml-stripblanks">data/icons/scalable/apps/facebook-symbolic.svg</file>
