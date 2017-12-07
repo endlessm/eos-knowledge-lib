@@ -44,10 +44,15 @@ var CourseHistoryStore = new GObject.Class({
                         } else {
                             this.set_current_subset(payload.model);
                         }
-                    } else {
+                    } else if (payload.model instanceof Eknc.MediaObjectModel) {
                         this.set_current_item_from_props({
                             media_model: payload.model,
                             context: payload.context,
+                        }, EntryPoints.LINK_CLICKED);
+                    } else {
+                        this.set_current_item_from_props({
+                            page_type: Pages.ARTICLE,
+                            model: payload.model,
                         }, EntryPoints.LINK_CLICKED);
                     }
                 }
