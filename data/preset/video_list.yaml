@@ -1,0 +1,147 @@
+---
+defines:
+- &footer-section
+  type: Layout.ResponsiveMargins
+  styles:
+    - Layout--footer
+  slots:
+    content:
+      shortdef: 'Layout.Box(orientation: horizontal)'
+      slots:
+        contents:
+        - shortdef: 'Banner.Dynamic(mode: full, halign: start, expand: false)'
+        - type: ContentGroup.ContentGroup
+          properties:
+            valign: center
+          slots:
+            arrangement:
+              type: Arrangement.SideBySide
+              slots:
+                card:
+                  type: Card.Title
+            selection:
+              type: Selection.All
+              slots:
+                filter:
+                  shortdef: 'Filter.Tagged(tag: EknStaticTag)'
+                  slots:
+                    sub-filter: Filter.Articles
+
+- &home-page
+  type: Layout.Scrolling
+  slots:
+    content:
+      shortdef: Layout.DynamicBackground
+      references:
+        selection: all-videos
+      slots:
+        content:
+          type: Layout.Box
+          properties:
+            orientation: vertical
+          slots:
+            contents:
+            - shortdef: 'Banner.Dynamic(mode: full, halign: center, expand: true)'
+            - shortdef: 'Layout.Box(orientation: vertical)'
+              styles:
+                - ContentGroup--outercontainer
+              slots:
+                contents:
+                - type: Layout.ResponsiveMargins
+                  slots:
+                    content:
+                      type: ContentGroup.ContentGroup
+                      styles:
+                        - ContentGroup--articles
+                      properties:
+                        halign: fill
+                        paginate: true
+                      slots:
+                        arrangement:
+                          type: Arrangement.List
+                          slots:
+                            card: 'Card.List(hexpand: true)'
+                          properties:
+                            row-spacing: 20
+                        selection:
+                          type: Selection.All
+                          id: all-videos
+                          slots:
+                            filter:
+                              type: Filter.Articles
+                              slots:
+                                sub-filter: 'Filter.Tagged(tag: EknStaticTag, invert: true)'
+            - *footer-section
+
+- &search-page
+  type: Layout.Scrolling
+  slots:
+    content:
+      shortdef: Layout.DynamicBackground
+      references:
+        selection: search-results
+      slots:
+        content:
+          type: Layout.Box
+          properties:
+            orientation: vertical
+          slots:
+            contents:
+            - shortdef: 'Banner.Search(halign: center)'
+            - shortdef: 'Layout.Box(orientation: vertical)'
+              styles:
+                - ContentGroup--outercontainer
+              slots:
+                contents:
+                - type: Layout.ResponsiveMargins
+                  slots:
+                    content:
+                      type: ContentGroup.ContentGroup
+                      styles:
+                        - ContentGroup--articles
+                      properties:
+                        halign: fill
+                        paginate: true
+                      slots:
+                        arrangement:
+                          type: Arrangement.List
+                          slots:
+                            card: 'Card.List(hexpand: true)'
+                          properties:
+                            row-spacing: 20
+                        selection:
+                          type: Selection.Search
+                          id: search-results
+                          slots:
+                            filter: Filter.Articles
+                            order: 'Order.Alphabetical(ascending: true)'
+                        no-results:
+                          shortdef: 'ContentGroup.NoResultsMessage(halign: center, justify: center)'
+            - *footer-section
+
+- &article-page
+  type: Layout.ArticleStack
+  properties:
+    do-sliding-animation: false
+  slots:
+    article: 'View.Document(show-titles: false, show-toc: false)'
+
+root:
+  shortdef: 'Controller.Course(theme: video_list)'
+  slots:
+    window:
+      type: Window.Simple
+      slots:
+        search: Navigation.SearchBox
+        content:
+          type: ContentGroup.MediaLightbox
+          slots:
+            content:
+              type: Layout.Navigation
+              slots:
+                content:
+                  type: Pager.Simple
+                  slots:
+                    home-page: *home-page
+                    search-page: *search-page
+                    article-page: *article-page
