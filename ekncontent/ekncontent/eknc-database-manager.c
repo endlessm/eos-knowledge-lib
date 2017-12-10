@@ -755,8 +755,6 @@ eknc_database_manager_fix_query (EkncDatabaseManager *self,
                                  char **spell_fixed_query,
                                  GError **error_out)
 {
-  EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
-
   g_return_val_if_fail (EKNC_IS_DATABASE_MANAGER (self), FALSE);
 
   if (!ensure_db (self, error_out))
@@ -965,8 +963,6 @@ eknc_database_manager_query (EkncDatabaseManager *self,
                              GHashTable *params,
                              GError **error_out)
 {
-  EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
-
   g_return_val_if_fail (EKNC_IS_DATABASE_MANAGER (self), NULL);
 
   if (!ensure_db (self, error_out))
