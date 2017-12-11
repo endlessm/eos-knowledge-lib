@@ -77,6 +77,16 @@ Related to the module renames, you'll need to update any CSS selectors in your `
 
 ## Release notes ##
 
+### SDK 2.1 (December 11, 2017) ###
+
+- Modular framework: the CSS class for the title of the default Card was
+  erroneously removed during the module renaming, and has now been restored,
+  alongside with its styling.
+- Modular framework: fixed a bug that resulted in showing an empty tooltip
+  on web views.
+- Modular framework: fixed the style of the search results in the A and
+  Library presets.
+
 ### SDK 2.0 (November 20, 2017) ###
 
 This is the first release in the SDK2 series.
