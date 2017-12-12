@@ -6,4 +6,8 @@ $piano-arrangement-spacing: 10px;
     .Card {
         margin: $piano-arrangement-spacing;
     }
+
+    .Card:first-child .Card__context {
+       font-size: 1.5em;
+    }
 }
