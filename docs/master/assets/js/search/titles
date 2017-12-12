@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "titles", "urls": ["view/document.html#showtitles"]});
+urls_downloaded_cb({"urls": ["view/document.html#showtitles"], "token": "titles"});

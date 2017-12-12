@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "Sequence", "urls": ["card/title.html#sequence", "card/sequence.html#sequence", "card/default.html#sequence", "card/deck.html#sequence", "card/list.html#sequence", "card/contentGroup.html#sequence"]});
+urls_downloaded_cb({"urls": ["card/title.html#sequence", "card/sequence.html#sequence", "card/default.html#sequence", "card/deck.html#sequence", "card/list.html#sequence", "card/contentGroup.html#sequence"], "token": "Sequence"});

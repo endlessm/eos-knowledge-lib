@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "View.Audio", "urls": ["view/audio.html#viewaudio1", "view/audio.html#viewaudio"]});
+urls_downloaded_cb({"urls": ["view/audio.html#viewaudio1", "view/audio.html#viewaudio"], "token": "View.Audio"});

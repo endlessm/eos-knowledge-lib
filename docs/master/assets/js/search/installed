@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "installed", "urls": ["tools.html#using"]});
+urls_downloaded_cb({"urls": ["tools.html#using"], "token": "installed"});
