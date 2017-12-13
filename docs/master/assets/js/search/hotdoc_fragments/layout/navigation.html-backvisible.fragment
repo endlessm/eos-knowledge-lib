@@ -1,1 +1,1 @@
-fragment_downloaded_cb({"url": "layout/navigation.html#backvisible", "fragment": "back visible \nBoolean property to manage whether the back button should be shown. Defaults to true \n"});
+fragment_downloaded_cb({"fragment": "back visible \nBoolean property to manage whether the back button should be shown. Defaults to true \n", "url": "layout/navigation.html#backvisible"});

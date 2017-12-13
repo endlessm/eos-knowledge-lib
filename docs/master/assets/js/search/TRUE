@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "TRUE", "urls": ["window/simple.html#showmenubar", "layout/box.html#homogeneous"]});
+urls_downloaded_cb({"urls": ["window/simple.html#showmenubar", "layout/box.html#homogeneous"], "token": "TRUE"});

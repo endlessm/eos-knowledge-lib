@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "subclass", "urls": ["mf-index.html#page-description", "selection/xapian.html#selectionxapian1"]});
+urls_downloaded_cb({"urls": ["mf-index.html#page-description", "selection/xapian.html#selectionxapian1"], "token": "subclass"});
