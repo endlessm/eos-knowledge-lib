@@ -41,7 +41,7 @@ var SideBySide = new Module.Class({
         /* Used for dropdown menu if cards do not fit */
         this._popover = new Gtk.Popover({
             position: Gtk.PositionType.BOTTOM,
-            relative_to: this._popover_button,
+            relative_to: this._popover_button.get_child(),
         });
         this._popover_button.connect("clicked", () => {
             this._popover.popup();
