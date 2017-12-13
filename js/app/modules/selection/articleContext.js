@@ -42,6 +42,7 @@ var ArticleContext = new Module.Class({
             return Eknc.QueryObject.new_from_props({
                 limit: limit,
                 query: this._item.query,
+                tags_match_any: ['EknArticleObject'],
             });
         }
 
