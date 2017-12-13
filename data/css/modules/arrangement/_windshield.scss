@@ -6,4 +6,8 @@ $windshield-arrangement-spacing: 10px;
     .Card {
         margin: $windshield-arrangement-spacing;
     }
+
+    .Card:first-child .Card__context {
+       font-size: 1.5em;
+    }
 }
