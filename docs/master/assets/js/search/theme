@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "theme", "urls": ["controller/course.html#theme", "controller/buffet.html#theme", "controller/mesh.html#theme"]});
+urls_downloaded_cb({"urls": ["controller/course.html#theme", "controller/buffet.html#theme", "controller/mesh.html#theme"], "token": "theme"});
