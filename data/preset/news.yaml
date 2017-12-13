@@ -114,7 +114,7 @@ defines:
                                     halign: start
                                 trigger: *see-more-trigger
                                 arrangement:
-                                  shortdef: 'Arrangement.Thirties(max-rows: 1)'
+                                  shortdef: 'Arrangement.Thirties(max-rows: 2)'
                                   slots:
                                     card: *main-card
                                 selection:
