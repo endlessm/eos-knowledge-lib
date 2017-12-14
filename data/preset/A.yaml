@@ -109,6 +109,8 @@ defines:
       slots:
         content:
           type: ContentGroup.ContentGroup
+          styles:
+            - ContentGroup--articles
           slots:
             <<: *main-arrangement-slot
             selection:
