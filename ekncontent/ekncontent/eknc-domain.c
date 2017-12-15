@@ -457,6 +457,13 @@ eknc_domain_initable_init (GInitable *initable,
       return FALSE;
     }
 
+  if (self->shards == NULL)
+    {
+      g_set_error (error, EKNC_DOMAIN_ERROR, EKNC_DOMAIN_ERROR_EMPTY,
+                   "Content is empty");
+      return FALSE;
+    }
+
   g_autofree char *db_path = g_file_get_path (self->manifest_file);
   self->db_manager = eknc_database_manager_new (db_path);
   g_mutex_init (&self->db_lock);

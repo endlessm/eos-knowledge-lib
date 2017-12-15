@@ -22,6 +22,7 @@ G_DECLARE_FINAL_TYPE (EkncDomain, eknc_domain, EKNC, DOMAIN, GObject)
  * @EKNC_DOMAIN_ERROR_UNSUPPORTED_VERSION: Unsupported version of content found
  * @EKNC_DOMAIN_ERROR_PATH_NOT_FOUND: Provided path was not found
  * @EKNC_DOMAIN_ERROR_ID_NOT_VALID: Requested ekn id is not valid
+ * @EKNC_DOMAIN_ERROR_EMPTY: Content is empty
  *
  * Error enumeration for domain related errors.
  */
@@ -33,6 +34,7 @@ typedef enum {
   EKNC_DOMAIN_ERROR_UNSUPPORTED_VERSION,
   EKNC_DOMAIN_ERROR_PATH_NOT_FOUND,
   EKNC_DOMAIN_ERROR_ID_NOT_VALID,
+  EKNC_DOMAIN_ERROR_EMPTY,
 } EkncDomainError;
 
 #define EKNC_DOMAIN_ERROR eknc_domain_error_quark ()
