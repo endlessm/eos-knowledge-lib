@@ -19,6 +19,7 @@ const HistoryStore = imports.app.historyStore;
 const Knowledge = imports.app.knowledge;
 const ModuleFactory = imports.app.moduleFactory;
 const MoltresEngine = imports.app.moltresEngine;
+const NoContentDialog = imports.app.widgets.noContentDialog;
 const Pages = imports.app.pages;
 const PromiseWrapper = imports.app.promiseWrapper;
 const SetMap = imports.app.setMap;
@@ -213,7 +214,14 @@ var Application = new Knowledge.Class({
     vfunc_startup: function () {
         this.parent();
         Gtk.IconTheme.get_default().add_resource_path('/com/endlessm/knowledge/data/icons');
-        this._initialize_vfs();
+
+        try {
+            this._initialize_vfs();
+        } catch (e if e.matches(Eknc.DomainError, Eknc.DomainError.EMPTY)) {
+            let dialog = new NoContentDialog.NoContentDialog();
+            dialog.run();
+        }
+
         this._initialize_set_map();
     },
 
