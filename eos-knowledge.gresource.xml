@@ -69,6 +69,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/infiniteScrolling.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/sideMenu.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/topMenu.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/noContentDialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/tooltips.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/view/audio.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/view/document.ui</file>
@@ -201,6 +202,7 @@
     <file>js/app/widgets/infiniteScrolledWindow.js</file>
     <file>js/app/widgets/lightbox.js</file>
     <file>js/app/widgets/navButtonOverlay.js</file>
+    <file>js/app/widgets/noContentDialog.js</file>
     <file>js/app/widgets/PDFView.js</file>
     <file>js/app/widgets/previewer.js</file>
     <file>js/app/widgets/shareActionBox.js</file>
