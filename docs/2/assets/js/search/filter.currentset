@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["filter/currentSet.html#filtercurrentset1", "filter/currentSet.html#filtercurrentset"], "token": "filter.currentset"});
+urls_downloaded_cb({"token": "filter.currentset", "urls": ["filter/currentSet.html#filtercurrentset1", "filter/currentSet.html#filtercurrentset"]});

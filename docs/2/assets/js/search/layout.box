@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["layout/box.html#layoutbox1", "layout/box.html#layoutbox"], "token": "layout.box"});
+urls_downloaded_cb({"token": "layout.box", "urls": ["layout/box.html#layoutbox1", "layout/box.html#layoutbox"]});
