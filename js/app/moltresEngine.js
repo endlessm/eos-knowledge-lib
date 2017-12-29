@@ -104,7 +104,8 @@ var MoltresEngine = new Lang.Class({
             models: [],
             upper_bound: 0,
         };
-        if (!query.query || query.query.toLowerCase().split(' ').some((token) => matching_strings.indexOf(token.trim()) > -1)) {
+        if (!query.search_terms ||
+            query.search_terms.toLowerCase().split(' ').some(token => matching_strings.indexOf(token.trim()) > -1)) {
             for (let i = 0; i < Math.min(10, query.limit); i++) {
                 let data = this._ARTICLES[i % this._ARTICLES.length];
                 let unique_data = JSON.parse(JSON.stringify(data));

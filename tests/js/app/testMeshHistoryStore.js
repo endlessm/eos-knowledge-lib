@@ -126,12 +126,12 @@ describe('MeshHistoryStore', function () {
         dispatcher.dispatch({
             action_type: Actions.ITEM_CLICKED,
             model: model,
-            query: 'foo',
+            search_terms: 'foo',
         });
         let item = store.get_current_item();
         expect(item.page_type).toBe(Pages.ARTICLE);
         expect(item.model.ekn_id).toBe(model.ekn_id);
-        expect(item.query).toBe('foo');
+        expect(item.search_terms).toBe('foo');
     });
 
     function test_close_lightbox (action, descriptor) {
@@ -161,7 +161,7 @@ describe('MeshHistoryStore', function () {
             beforeEach(function () {
                 dispatcher.dispatch({
                     action_type: action,
-                    query: 'foo',
+                    search_terms: 'foo',
                 });
             });
 
@@ -226,7 +226,7 @@ describe('MeshHistoryStore', function () {
             engine.get_object_promise.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
-                query: 'foo',
+                search_terms: 'foo',
                 ekn_id: 'ekn:///foo',
             });
 
@@ -242,7 +242,7 @@ describe('MeshHistoryStore', function () {
             engine.get_object_promise.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
-                query: 'foo',
+                search_terms: 'foo',
                 ekn_id: 'ekn:///foo',
             });
             Utils.update_gui();
@@ -257,7 +257,7 @@ describe('MeshHistoryStore', function () {
             engine.get_object_promise.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
-                query: 'foo',
+                search_terms: 'foo',
                 ekn_id: 'ekn:///foo',
             });
             Utils.update_gui();
@@ -274,7 +274,7 @@ describe('MeshHistoryStore', function () {
             engine.get_object_promise.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
-                query: 'foo',
+                search_terms: 'foo',
                 ekn_id: 'ekn:///foo',
             });
             Utils.update_gui();
@@ -291,7 +291,7 @@ describe('MeshHistoryStore', function () {
                     engine.get_object_promise.and.returnValue(Promise.resolve(model));
                     dispatcher.dispatch({
                         action_type: Actions.DBUS_LOAD_ITEM_CALLED,
-                        query: 'foo',
+                        search_terms: 'foo',
                         ekn_id: 'ekn:///99bac9189b30bb0877f60e1bc16ded7ad94af37f',
                     });
                     Utils.update_gui();

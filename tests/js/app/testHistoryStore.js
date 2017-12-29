@@ -40,28 +40,28 @@ describe('History Store', function () {
     it('does not duplicate the same item', function () {
         history_store.set_current_item_from_props({
             page_type: Pages.SEARCH,
-            query: 'blah',
+            search_terms: 'blah',
         });
         history_store.set_current_item_from_props({
             page_type: Pages.SEARCH,
-            query: 'blah',
+            search_terms: 'blah',
         });
         expect(history_store.get_items().length).toBe(1);
     });
 
-    it('tracks the current query', function () {
+    it('tracks the current search terms', function () {
         history_store.set_current_item_from_props({
             page_type: Pages.SEARCH,
-            query: 'blah',
+            search_terms: 'blah',
         });
-        expect(history_store.current_query).toBe('blah');
+        expect(history_store.current_search_terms).toBe('blah');
         let spy = jasmine.createSpy();
-        history_store.connect('notify::current-query', spy);
+        history_store.connect('notify::current-search-terms', spy);
         history_store.set_current_item_from_props({
             page_type: Pages.SEARCH,
-            query: 'gah',
+            search_terms: 'gah',
         });
-        expect(history_store.current_query).toBe('gah');
+        expect(history_store.current_search_terms).toBe('gah');
         expect(spy).toHaveBeenCalled();
     });
 
@@ -85,32 +85,32 @@ describe('History Store', function () {
 
     it('can go back', function () {
         history_store.set_current_item_from_props({
-            query: 'first',
+            search_terms: 'first',
             page_type: Pages.SEARCH,
         });
         history_store.set_current_item_from_props({
-            query: 'second',
+            search_terms: 'second',
             page_type: Pages.SEARCH,
         });
         dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
         let current_item = history_store.get_current_item();
-        expect(current_item.query).toBe('first');
+        expect(current_item.search_terms).toBe('first');
     });
 
     it('can go forward', function () {
         history_store.set_current_item_from_props({
-            query: 'first',
+            search_terms: 'first',
             page_type: Pages.SEARCH,
         });
         history_store.set_current_item_from_props({
-            query: 'second',
+            search_terms: 'second',
             page_type: Pages.SEARCH,
         });
         dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
-        expect(history_store.get_current_item().query).toBe('first');
+        expect(history_store.get_current_item().search_terms).toBe('first');
 
         dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
-        expect(history_store.get_current_item().query).toBe('second');
+        expect(history_store.get_current_item().search_terms).toBe('second');
     });
 
     it('records metrics when using nav buttons', function () {
@@ -161,7 +161,7 @@ describe('History Store', function () {
         // Simulate accelerator key combo
         history_store.activate_action('article-search-visible', null);
         history_store.set_current_item_from_props({
-            query: 'search',
+            search_terms: 'search',
             page_type: 'search',
         });
         expect(history_store.get_action_state('article-search-visible').unpack())

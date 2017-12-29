@@ -47,10 +47,10 @@ describe('Order interface', function () {
         });
         let order = factory.create_root_module();
         let query = new Eknc.QueryObject({
-            query: 'foobar',
+            search_terms: 'foobar',
         });
         query = order.modify_xapian_query(query);
-        expect(query.query).toEqual('foobar title');
+        expect(query.search_terms).toEqual('foobar title');
     });
 
     it('does not let the sub-order influence the Xapian query', function () {
@@ -67,10 +67,10 @@ describe('Order interface', function () {
         });
         let order = factory.create_root_module();
         let query = new Eknc.QueryObject({
-            query: 'foobar',
+            search_terms: 'foobar',
         });
         query = order.modify_xapian_query(query);
-        expect(query.query).not.toMatch('synopsis');
+        expect(query.search_terms).not.toMatch('synopsis');
     });
 
     it('delegates modifying the Xapian query to the sub-order if the top does not do it', function () {
@@ -87,9 +87,9 @@ describe('Order interface', function () {
         });
         let order = factory.create_root_module();
         let query = new Eknc.QueryObject({
-            query: 'foobar',
+            search_terms: 'foobar',
         });
         query = order.modify_xapian_query(query);
-        expect(query.query).toEqual('foobar synopsis');
+        expect(query.search_terms).toEqual('foobar synopsis');
     });
 });

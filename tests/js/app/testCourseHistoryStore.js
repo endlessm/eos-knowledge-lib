@@ -134,7 +134,7 @@ describe('CourseHistoryStore', function () {
             engine.get_object_promise.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
-                query: 'foo',
+                search_terms: 'foo',
                 ekn_id: 'ekn:///foo',
             });
             Utils.update_gui();

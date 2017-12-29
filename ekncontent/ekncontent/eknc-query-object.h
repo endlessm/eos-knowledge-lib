@@ -80,7 +80,7 @@ char * const *
 eknc_query_object_get_excluded_tags (EkncQueryObject *self);
 
 const char *
-eknc_query_object_get_query (EkncQueryObject *self);
+eknc_query_object_get_search_terms (EkncQueryObject *self);
 
 char *
 eknc_query_object_get_query_string (EkncQueryObject *self);

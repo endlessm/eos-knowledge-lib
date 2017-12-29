@@ -66,9 +66,9 @@ describe('Selection.Xapian superclass', function () {
         let connectionId = selection.connect('models-changed', () => {
             let query1 = engine.query_promise.calls.argsFor(0)[0];
             let query2 = engine.query_promise.calls.argsFor(1)[0];
-            expect(query1.query).toEqual(' title');
+            expect(query1.search_terms).toEqual(' title');
             expect(query1.tags_match_all).toEqual(['foobar', 'EknIncludeMe']);
-            expect(query2.query).toEqual(' title');
+            expect(query2.search_terms).toEqual(' title');
             expect(query2.tags_match_all).toEqual(['baz', 'EknIncludeMe']);
             selection.disconnect(connectionId);
             done();

@@ -225,21 +225,21 @@ var Application = new Knowledge.Class({
         this._initialize_set_map();
     },
 
-    LoadItem: function (ekn_id, query, timestamp) {
+    LoadItem: function (ekn_id, search_terms, timestamp) {
         this._ensure_controller();
         Dispatcher.get_default().dispatch({
             action_type: Actions.DBUS_LOAD_ITEM_CALLED,
             ekn_id: ekn_id,
-            query: query,
+            search_terms: search_terms,
             timestamp: timestamp,
         });
     },
 
-    LoadQuery: function (query, timestamp) {
+    LoadQuery: function (search_terms, timestamp) {
         this._ensure_controller();
         Dispatcher.get_default().dispatch({
             action_type: Actions.DBUS_LOAD_QUERY_CALLED,
-            query: query,
+            search_terms: search_terms,
             timestamp: timestamp,
         });
     },

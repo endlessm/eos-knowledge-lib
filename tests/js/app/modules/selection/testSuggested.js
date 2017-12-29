@@ -10,11 +10,11 @@ const Suggested = imports.app.modules.selection.suggested;
 Gtk.init(null);
 
 function setup (store) {
-    // Selection.Suggested only works when the global state is aware of a search
-    // query
+    // Selection.Suggested only works when the global state is aware of search
+    // terms
     store.set_current_item_from_props({
         page_type: 'search',
-        query: 'foobar',
+        search_terms: 'foobar',
     });
 }
 

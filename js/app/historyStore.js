@@ -61,11 +61,12 @@ var HistoryStore = new Lang.Class({
         'current-subset': GObject.ParamSpec.object('current-subset', 'current-subset', 'current-subset',
             GObject.ParamFlags.READABLE, Eknc.SetObjectModel),
         /**
-         * Property: current-query
+         * Property: current-search-terms
          *
          * The model for the current query in the history store.
          */
-        'current-query': GObject.ParamSpec.string('current-query', 'current-query', 'current-query',
+        'current-search-terms': GObject.ParamSpec.string('current-search-terms',
+            'current-search-terms', 'current-search-terms',
             GObject.ParamFlags.READABLE, ''),
         /**
          * Property: animating
@@ -216,10 +217,11 @@ var HistoryStore = new Lang.Class({
         return null;
     },
 
-    get current_query () {
-        let item = this.search_backwards(0, (item) => item.query.length > 0);
+    get current_search_terms() {
+        let item = this.search_backwards(0,
+            ({search_terms}) => search_terms.length > 0);
         if (item)
-            return item.query;
+            return item.search_terms;
         return '';
     },
 
@@ -232,11 +234,11 @@ var HistoryStore = new Lang.Class({
 
     _update_index: function (delta) {
         let old_set = this.current_set;
-        let old_query = this.current_query;
+        let old_search_terms = this.current_search_terms;
         this._index += delta;
         this.emit('changed');
-        if (old_query !== this.current_query)
-            this.notify('current-query');
+        if (old_search_terms !== this.current_search_terms)
+            this.notify('current-search-terms');
         if (old_set !== this.current_set)
             this.notify('current-set');
     },
@@ -291,15 +293,15 @@ var HistoryStore = new Lang.Class({
         this.set_current_item(new HistoryItem.HistoryItem(props), entry_point);
     },
 
-    do_search: function (query, timestamp) {
-        let sanitized_query = Utils.sanitize_query(query);
-        if (sanitized_query.length === 0)
+    do_search: function (search_terms, timestamp) {
+        let sanitized_terms = Utils.sanitize_search_terms(search_terms);
+        if (sanitized_terms.length === 0)
             return;
 
-        Utils.record_search_metric(query);
+        Utils.record_search_metric(search_terms);
         this.set_current_item_from_props({
             page_type: Pages.SEARCH,
-            query: sanitized_query,
+            search_terms: sanitized_terms,
             timestamp: timestamp || Gdk.CURRENT_TIME,
         });
     },
@@ -337,7 +339,7 @@ var HistoryStore = new Lang.Class({
         });
     },
 
-    load_dbus_item: function (ekn_id, query, timestamp) {
+    load_dbus_item: function (ekn_id, search_terms, timestamp) {
         Eknc.Engine.get_default().get_object_promise(ekn_id)
         .then((model) => {
             if (model instanceof Eknc.ArticleObjectModel ||
@@ -346,7 +348,7 @@ var HistoryStore = new Lang.Class({
                 this.set_current_item_from_props({
                     page_type: Pages.ARTICLE,
                     model: model,
-                    query: query,
+                    search_terms: search_terms,
                     timestamp: timestamp || Gdk.CURRENT_TIME,
                 }, EntryPoints.DBUS_CALL);
             } else if (model instanceof Eknc.SetObjectModel) {
@@ -372,7 +374,7 @@ var HistoryStore = new Lang.Class({
         if (!target_item) {
             target_item = {
                 page_type: item.page_type,
-                query: item.query,
+                search_terms: item.search_terms,
                 context_label: item.context_label,
                 timestamp: item.timestamp,
                 model: item.model,

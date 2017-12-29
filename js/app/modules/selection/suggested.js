@@ -17,17 +17,17 @@ var Suggested = new Module.Class({
     _init: function (props) {
         this.parent(props);
         this._hash = 0;
-        HistoryStore.get_default().connect('notify::current-query', () => {
+        HistoryStore.get_default().connect('notify::current-search-terms', () => {
             this._set_needs_refresh(true);
         });
     },
 
     _TOTAL_ARTICLES: 10,
     construct_query_object: function (limit, query_index) {
-        let query = HistoryStore.get_default().current_query;
-        if (query_index > 0 || query.length === 0)
+        let search_terms = HistoryStore.get_default().current_search_terms;
+        if (query_index > 0 || search_terms.length === 0)
             return null;
-        this._hash = Utils.dumb_hash(query);
+        this._hash = Utils.dumb_hash(search_terms);
         // FIXME: We still need a better way to issue a query for
         // 'random' articles. This just gets a random offset and then
         // requests articles (in order) starting from that point.

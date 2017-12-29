@@ -97,10 +97,10 @@ function add_css_provider_from_file (file, priority) {
 
 /* Helper method to sanitize queries.
  * Removes newlines and trims whitespace before and after a query string */
-function sanitize_query (query) {
+function sanitize_search_terms (search_terms) {
     // Crazy regex for line breaks from
     // http://stackoverflow.com/questions/10805125/how-to-remove-all-line-breaks-from-a-string
-    return query.replace(/\r?\n|\r/g, ' ').trim();
+    return search_terms.replace(/\r?\n|\r/g, ' ').trim();
 }
 
 function format_authors(authors) {
@@ -220,12 +220,12 @@ function style_context_to_markup_span(context, state) {
    This allows styling a sub-region of the GtkLabel with an extra CSS class.
    For example, you can specify:
    .title { color: white; }
-   .title.query { weight: bold; color: black; }
+   .title.search-terms { weight: bold; color: black; }
    It supports the CSS properties font-family, font-weight, font-style, and
    color.
    For example, with the above CSS,
 
-        format_ui_string(context, 'You searched for "%s"', 'cat pictures', 'query')
+        format_ui_string(context, 'You searched for "%s"', 'cat pictures', 'search-terms')
 
    will return:
 

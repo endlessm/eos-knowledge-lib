@@ -632,10 +632,10 @@ parse_query_flags (const gchar *str,
 
 static gboolean
 eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
-                                          const char *query_str,
+                                          const char *search_terms,
                                           GHashTable *query_options,
-                                          char **stop_fixed_query_out,
-                                          char **spell_fixed_query_out,
+                                          char **stop_fixed_terms_out,
+                                          char **spell_fixed_terms_out,
                                           GError **error_out)
 {
   EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
@@ -650,17 +650,17 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
 
   stopper = xapian_query_parser_get_stopper (priv->query_parser);
 
-  if (query_str == NULL || match_all != NULL)
+  if (search_terms == NULL || match_all != NULL)
     {
       g_set_error (error_out, EKNC_DATABASE_MANAGER_ERROR,
                   EKNC_DATABASE_MANAGER_ERROR_INVALID_PARAMS,
-                  "Query parameter must be set, and must not be match all.");
+                  "Query to be fixed must have search terms, and must not be match all.");
       return FALSE;
     }
 
-  if (stopper != NULL && stop_fixed_query_out != NULL)
+  if (stopper != NULL && stop_fixed_terms_out != NULL)
     {
-      g_auto(GStrv) words = g_strsplit (query_str, " ", -1);
+      g_auto(GStrv) words = g_strsplit (search_terms, " ", -1);
 
       /* This is not a GStrv, as we don't copy the words, just their pointer */
       g_autofree char **filtered_words = g_new0 (char *, g_strv_length (words) + 1);
@@ -674,7 +674,7 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
             *filtered_iter++ = *words_iter;
         }
 
-      *stop_fixed_query_out = g_strjoinv (" ", filtered_words);
+      *stop_fixed_terms_out = g_strjoinv (" ", filtered_words);
     }
 
   default_op = g_hash_table_lookup (query_options, QUERY_PARAM_DEFAULT_OP);
@@ -687,7 +687,7 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
 
   /* Parse the user's query so we can request a spelling correction. */
   xapian_query_parser_parse_query_full (priv->query_parser,
-                                        query_str != NULL ? query_str : "",
+                                        search_terms != NULL ? search_terms : "",
                                         flags, "",
                                         &error);
   if (error != NULL)
@@ -696,26 +696,26 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
       return FALSE;
     }
 
-  if (spell_fixed_query_out != NULL)
-    *spell_fixed_query_out = xapian_query_parser_get_corrected_query_string (priv->query_parser);
+  if (spell_fixed_terms_out != NULL)
+    *spell_fixed_terms_out = xapian_query_parser_get_corrected_query_string (priv->query_parser);
 
   g_debug (G_STRLOC ":\n"
-           " - query: '%s'\n"
-           " - stop_fixed_query: '%s'\n"
-           " - spell_fixed_query: '%s'",
-           query_str ? query_str : "<none>",
-           *stop_fixed_query_out != NULL ? *stop_fixed_query_out : "<ignored>",
-           *spell_fixed_query_out != NULL ? *spell_fixed_query_out : "<ignored>");
+           " - search terms: '%s'\n"
+           " - stop_fixed_terms: '%s'\n"
+           " - spell_fixed_terms: '%s'",
+           search_terms ? search_terms : "<none>",
+           *stop_fixed_terms_out != NULL ? *stop_fixed_terms_out : "<ignored>",
+           *spell_fixed_terms_out != NULL ? *spell_fixed_terms_out : "<ignored>");
 
   return TRUE;
 }
 
 gboolean
 eknc_database_manager_fix_query (EkncDatabaseManager *self,
-                                 const char *query,
+                                 const char *search_terms,
                                  GHashTable *params,
-                                 char **stop_fixed_query,
-                                 char **spell_fixed_query,
+                                 char **stop_fixed_terms,
+                                 char **spell_fixed_terms,
                                  GError **error_out)
 {
   g_return_val_if_fail (EKNC_IS_DATABASE_MANAGER (self), FALSE);
@@ -723,10 +723,10 @@ eknc_database_manager_fix_query (EkncDatabaseManager *self,
   if (!ensure_db (self, error_out))
     return FALSE;
 
-  return eknc_database_manager_fix_query_internal (self, query,
+  return eknc_database_manager_fix_query_internal (self, search_terms,
                                                    params,
-                                                   stop_fixed_query,
-                                                   spell_fixed_query,
+                                                   stop_fixed_terms,
+                                                   spell_fixed_terms,
                                                    error_out);
 }
 
@@ -745,7 +745,7 @@ eknc_database_manager_fix_query (EkncDatabaseManager *self,
  */
 static XapianMSet *
 eknc_database_manager_query_internal (EkncDatabaseManager *self,
-                                      const char *query_str,
+                                      const char *search_terms,
                                       GHashTable *query_options,
                                       GError **error_out)
 {
@@ -795,16 +795,16 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
       return NULL;
     }
 
-  g_debug (G_STRLOC ": Query: '%s'", query_str);
+  g_debug (G_STRLOC ": Query: '%s'", search_terms);
 
   g_autoptr(XapianQuery) parsed_query = NULL;
 
   const char *match_all = g_hash_table_lookup (query_options, QUERY_PARAM_MATCH_ALL);
-  if (match_all != NULL && query_str == NULL)
+  if (match_all != NULL && search_terms == NULL)
     {
       /* Handled below. */
     }
-  else if (query_str != NULL && match_all == NULL)
+  else if (search_terms != NULL && match_all == NULL)
     {
       const char *default_op = g_hash_table_lookup (query_options, QUERY_PARAM_DEFAULT_OP);
       if (default_op != NULL && !parse_default_op (priv->query_parser, default_op, error_out))
@@ -815,7 +815,7 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
         return NULL;
 
       parsed_query = xapian_query_parser_parse_query_full (priv->query_parser,
-                                                           query_str,
+                                                           search_terms,
                                                            flags, "",
                                                            &error);
 
@@ -829,7 +829,7 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
     {
       g_set_error (error_out, EKNC_DATABASE_MANAGER_ERROR,
                   EKNC_DATABASE_MANAGER_ERROR_INVALID_PARAMS,
-                  "Exactly one of query parameter or match all parameter is required.");
+                  "Either the query must include search terms, or match all.");
       return NULL;
     }
 
@@ -951,7 +951,7 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
 
 XapianMSet *
 eknc_database_manager_query (EkncDatabaseManager *self,
-                             const char *query,
+                             const char *search_terms,
                              GHashTable *params,
                              GError **error_out)
 {
@@ -960,7 +960,7 @@ eknc_database_manager_query (EkncDatabaseManager *self,
   if (!ensure_db (self, error_out))
     return NULL;
 
-  return eknc_database_manager_query_internal (self, query, params, error_out);
+  return eknc_database_manager_query_internal (self, search_terms, params, error_out);
 }
 
 EkncDatabaseManager *

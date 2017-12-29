@@ -31,7 +31,7 @@ describe('Navigation.SearchBox', function () {
     it('sets search text to search query on search page', function () {
         store.set_current_item_from_props({
             page_type: Pages.SEARCH,
-            query: 'foo',
+            search_terms: 'foo',
         });
         expect(box.text).toBe('foo');
     });
@@ -61,7 +61,7 @@ describe('Navigation.SearchBox', function () {
         box.set_text_programmatically('foo');
         box.emit('activate');
         let payload = dispatcher.last_payload_with_type(Actions.SEARCH_TEXT_ENTERED);
-        expect(payload.query).toBe('foo');
+        expect(payload.search_terms).toBe('foo');
     });
 
     it('calls into engine for auto complete results', function () {
@@ -82,6 +82,6 @@ describe('Navigation.SearchBox', function () {
         let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
         expect(payload.model).toBe(model);
         expect(payload.context).toEqual([ model ]);
-        expect(payload.query).toEqual('foo');
+        expect(payload.search_terms).toEqual('foo');
     });
 });

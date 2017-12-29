@@ -61,13 +61,13 @@ describe('Layout.BrandPage', function () {
     }
     does_not_show_brand_page({
         action_type: Actions.DBUS_LOAD_QUERY_CALLED,
-        query: 'foo',
+        search_terms: 'foo',
         timestamp: 0,
     });
     does_not_show_brand_page({
         action_type: Actions.DBUS_LOAD_ITEM_CALLED,
         ekn_id: 'ekn:///1234512345abcdef',
-        query: 'foo',
+        search_terms: 'foo',
         timestamp: 0,
     });
 });

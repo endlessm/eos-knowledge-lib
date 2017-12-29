@@ -58,7 +58,7 @@ var Context = new Module.Class({
             case Pages.SEARCH:
                 /* TRANSLATORS: %s will be replaced with the text the user
                 searched for. Make sure to keep the %s token in your translation. */
-                this.label = _("Search results for “%s”").format(item.query);
+                this.label = _("Search results for “%s”").format(item.search_terms);
                 break;
         }
     },

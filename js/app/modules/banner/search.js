@@ -20,7 +20,8 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *
  * CSS classes:
  *   title - on the banner
- *   query - on the portion of the banner indicating a user query string
+ *   search-terms - on the portion of the banner indicating search terms typed
+ *     in by a user
  */
 var Search = new Module.Class({
     Name: 'Banner.Search',
@@ -37,11 +38,11 @@ var Search = new Module.Class({
     // FIXME: restore functionality of "Searching for X" and error messages
     // https://phabricator.endlessm.com/T12291
     _on_history_changed: function (store) {
-        let item = store.search_backwards(0, item => item.query);
-        if (!item || !item.query)
+        let item = store.search_backwards(0, item => item.search_terms);
+        if (!item || !item.search_terms)
             return;
 
         this.label = Utils.format_ui_string(this.get_style_context(),
-            _("Results for “%s”"), item.query, 'query');
+            _("Results for “%s”"), item.search_terms, 'search-terms');
     },
 });

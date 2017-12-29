@@ -67,14 +67,14 @@ var SearchBox = new Module.Class({
         this.connect('activate', () => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                query: this.text,
+                search_terms: this.text,
             });
         });
         this.connect('menu-item-selected', (entry, ekn_id) => {
             let model = this._autocomplete_models.filter((model) => model.ekn_id === ekn_id)[0];
             Dispatcher.get_default().dispatch({
                 action_type: Actions.ITEM_CLICKED,
-                query: this.text,
+                search_terms: this.text,
                 model: model,
                 context: this._autocomplete_models,
             });
@@ -82,14 +82,14 @@ var SearchBox = new Module.Class({
         this.completion.connect('action-activated', () => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                query: this.text,
+                search_terms: this.text,
             });
         });
     },
 
     _on_history_changed: function () {
-        let item = HistoryStore.get_default().get_current_item();
-        let search_text = item.page_type == Pages.SEARCH ? item.query : '';
+        let {page_type, search_terms} = HistoryStore.get_default().get_current_item();
+        let search_text = page_type == Pages.SEARCH ? search_terms : '';
         this.set_text_programmatically(search_text);
     },
 
@@ -98,20 +98,20 @@ var SearchBox = new Module.Class({
             this._cancellable.cancel();
         this._cancellable = new Gio.Cancellable();
 
-        let query = Utils.sanitize_query(this.text);
+        let search_terms = Utils.sanitize_search_terms(this.text);
         // Ignore empty queries
-        if (query.length === 0)
+        if (search_terms.length === 0)
             return;
 
         let query_obj = new Eknc.QueryObject({
-            query: query,
+            search_terms,
             limit: RESULTS_SIZE,
             tags_match_any: ['EknArticleObject'],
         });
         let engine = Eknc.Engine.get_default();
         this._query_promise = engine.query_promise(query_obj, this._cancellable)
         .then((results) => {
-            if (query !== Utils.sanitize_query(this.text))
+            if (search_terms !== Utils.sanitize_search_terms(this.text))
                 return;
 
             this._autocomplete_models = results.models;
