@@ -29,24 +29,6 @@ function add_custom_model_constructors (model) {
     // FIXME: would be way nicer to put this on the actual gobject init, or
     // better yet support introspection on list properties
     model.new_from_props = function (props={}) {
-        marshal_property(props, 'tags', function (v) {
-            return new GLib.Variant('as', v);
-        });
-        marshal_property(props, 'resources', function (v) {
-            return new GLib.Variant('as', v);
-        });
-        marshal_property(props, 'authors', function (v) {
-            return new GLib.Variant('as', v);
-        });
-        marshal_property(props, 'temporal-coverage', function (v) {
-            return new GLib.Variant('as', v);
-        });
-        marshal_property(props, 'outgoing-links', function (v) {
-            return new GLib.Variant('as', v);
-        });
-        marshal_property(props, 'child-tags', function (v) {
-            return new GLib.Variant('as', v);
-        });
         marshal_property(props, 'discovery-feed-content', function (v) {
             return new GLib.Variant('a{sv}', v);
         });
@@ -73,18 +55,6 @@ function add_custom_model_constructors (model) {
 function _init() {
     let Eknc = this;
 
-    define_property(Eknc.ContentObjectModel, 'tags', {
-        get: function () {
-            let tags = this.get_tags();
-            return tags ? tags.deep_unpack() : [];
-        },
-    });
-    define_property(Eknc.ContentObjectModel, 'resources', {
-        get: function () {
-            let resources = this.get_resources();
-            return resources ? resources.deep_unpack() : [];
-        },
-    });
     define_property(Eknc.ContentObjectModel, 'discovery-feed-content', {
         get: function () {
             let content = this.get_discovery_feed_content();
@@ -92,24 +62,6 @@ function _init() {
         }
     });
 
-    define_property(Eknc.ArticleObjectModel, 'authors', {
-        get: function () {
-            let authors = this.get_authors();
-            return authors ? authors.deep_unpack() : [];
-        },
-    });
-    define_property(Eknc.ArticleObjectModel, 'temporal-coverage', {
-        get: function () {
-            let temporalCoverage = this.get_temporal_coverage();
-            return temporalCoverage ? temporalCoverage.deep_unpack() : [];
-        },
-    });
-    define_property(Eknc.ArticleObjectModel, 'outgoing-links', {
-        get: function () {
-            let outgoing_links = this.get_outgoing_links();
-            return outgoing_links ? outgoing_links.deep_unpack() : [];
-        },
-    });
     define_property(Eknc.ArticleObjectModel, 'table-of-contents', {
         get: function () {
             let toc = this.get_table_of_contents();
@@ -124,13 +76,6 @@ function _init() {
         },
     });
 
-    define_property(Eknc.SetObjectModel, 'child-tags', {
-        get: function () {
-            let child_tags = this.get_child_tags();
-            return child_tags ? child_tags.deep_unpack() : [];
-        },
-    });
-
     add_custom_model_constructors(Eknc.AudioObjectModel);
     add_custom_model_constructors(Eknc.ContentObjectModel);
     add_custom_model_constructors(Eknc.DictionaryObjectModel);
@@ -139,56 +84,6 @@ function _init() {
     add_custom_model_constructors(Eknc.MediaObjectModel);
     add_custom_model_constructors(Eknc.ImageObjectModel);
     add_custom_model_constructors(Eknc.VideoObjectModel);
-
-    define_property(Eknc.QueryObject, 'tags-match-any', {
-        get: function () {
-            let tags = this.get_tags_match_any();
-            return tags ? tags.deep_unpack() : [];
-        },
-    });
-    define_property(Eknc.QueryObject, 'tags-match-all', {
-        get: function () {
-            let tags = this.get_tags_match_all();
-            return tags ? tags.deep_unpack() : [];
-        },
-    });
-    define_property(Eknc.QueryObject, 'ids', {
-        get: function () {
-            let ids = this.get_ids();
-            return ids ? ids.deep_unpack() : [];
-        },
-    });
-    define_property(Eknc.QueryObject, 'excluded-ids', {
-        get: function () {
-            let ids = this.get_excluded_ids();
-            return ids ? ids.deep_unpack() : [];
-        },
-    });
-    define_property(Eknc.QueryObject, 'excluded-tags', {
-        get: function () {
-            let tags = this.get_excluded_tags();
-            return tags ? tags.deep_unpack() : [];
-        },
-    });
-
-    Eknc.QueryObject.new_from_props = function (props={}) {
-        marshal_property(props, 'tags-match-any', function (v) {
-            return new GLib.Variant('as', v);
-        });
-        marshal_property(props, 'tags-match-all', function (v) {
-            return new GLib.Variant('as', v);
-        });
-        marshal_property(props, 'ids', function (v) {
-            return new GLib.Variant('as', v);
-        });
-        marshal_property(props, 'excluded-ids', function (v) {
-            return new GLib.Variant('as', v);
-        });
-        marshal_property(props, 'excluded-tags', function (v) {
-            return new GLib.Variant('as', v);
-        });
-        return new Eknc.QueryObject(props);
-    };
 
     Eknc.QueryObject.new_from_object = function (source, props={}) {
         for (let param_spec of GObject.Object.list_properties.call(Eknc.QueryObject)) {
@@ -199,7 +94,7 @@ function _init() {
                 continue;
             props[name] = source[name];
         }
-        return Eknc.QueryObject.new_from_props(props);
+        return new Eknc.QueryObject(props);
     };
 
     // FIXME: Can be removed when GJS supports pointer-valued properties.

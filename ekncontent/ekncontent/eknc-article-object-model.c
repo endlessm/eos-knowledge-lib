@@ -18,9 +18,9 @@ typedef struct {
   gchar *published;
   guint word_count;
   gboolean is_server_templated;
-  GVariant *authors;
-  GVariant *temporal_coverage;
-  GVariant *outgoing_links;
+  char **authors;
+  char **temporal_coverage;
+  char **outgoing_links;
   GVariant *table_of_contents;
 } EkncArticleObjectModelPrivate;
 
@@ -76,15 +76,15 @@ eknc_article_object_model_get_property (GObject    *object,
       break;
 
     case PROP_AUTHORS:
-      g_value_set_variant (value, priv->authors);
+      g_value_set_boxed (value, priv->authors);
       break;
 
     case PROP_TEMPORAL_COVERAGE:
-      g_value_set_variant (value, priv->temporal_coverage);
+      g_value_set_boxed (value, priv->temporal_coverage);
       break;
 
     case PROP_OUTGOING_LINKS:
-      g_value_set_variant (value, priv->outgoing_links);
+      g_value_set_boxed (value, priv->outgoing_links);
       break;
 
     case PROP_TABLE_OF_CONTENTS:
@@ -131,18 +131,18 @@ eknc_article_object_model_set_property (GObject *object,
       break;
 
     case PROP_AUTHORS:
-      g_clear_pointer (&priv->authors, g_variant_unref);
-      priv->authors = g_value_dup_variant (value);
+      g_clear_pointer (&priv->authors, g_strfreev);
+      priv->authors = g_value_dup_boxed (value);
       break;
 
     case PROP_TEMPORAL_COVERAGE:
-      g_clear_pointer (&priv->temporal_coverage, g_variant_unref);
-      priv->temporal_coverage = g_value_dup_variant (value);
+      g_clear_pointer (&priv->temporal_coverage, g_strfreev);
+      priv->temporal_coverage = g_value_dup_boxed (value);
       break;
 
     case PROP_OUTGOING_LINKS:
-      g_clear_pointer (&priv->outgoing_links, g_variant_unref);
-      priv->outgoing_links = g_value_dup_variant (value);
+      g_clear_pointer (&priv->outgoing_links, g_strfreev);
+      priv->outgoing_links = g_value_dup_boxed (value);
       break;
 
     case PROP_TABLE_OF_CONTENTS:
@@ -164,9 +164,9 @@ eknc_article_object_model_finalize (GObject *object)
   g_clear_pointer (&priv->source, g_free);
   g_clear_pointer (&priv->source_name, g_free);
   g_clear_pointer (&priv->published, g_free);
-  g_clear_pointer (&priv->authors, g_variant_unref);
-  g_clear_pointer (&priv->temporal_coverage, g_variant_unref);
-  g_clear_pointer (&priv->outgoing_links, g_variant_unref);
+  g_clear_pointer (&priv->authors, g_strfreev);
+  g_clear_pointer (&priv->temporal_coverage, g_strfreev);
+  g_clear_pointer (&priv->outgoing_links, g_strfreev);
   g_clear_pointer (&priv->table_of_contents, g_variant_unref);
 
   G_OBJECT_CLASS (eknc_article_object_model_parent_class)->finalize (object);
@@ -237,9 +237,9 @@ eknc_article_object_model_class_init (EkncArticleObjectModelClass *klass)
    * A list of authors of the article being read
    */
   eknc_article_object_model_props[PROP_AUTHORS] =
-    g_param_spec_variant ("authors", "Authors",
+    g_param_spec_boxed ("authors", "Authors",
       "A list of authors of the article being read",
-      G_VARIANT_TYPE ("as"), NULL,
+      G_TYPE_STRV,
       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
   /**
    * EkncArticleObjectModel:temporal-coverage:
@@ -248,9 +248,9 @@ eknc_article_object_model_class_init (EkncArticleObjectModelClass *klass)
    * dates are all in ISO8601.
    */
   eknc_article_object_model_props[PROP_TEMPORAL_COVERAGE] =
-    g_param_spec_variant ("temporal-coverage", "Temporal Coverage",
+    g_param_spec_boxed ("temporal-coverage", "Temporal Coverage",
       "A list of dates that the article being read refers to",
-      G_VARIANT_TYPE ("as"), NULL,
+      G_TYPE_STRV,
       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
   /**
    * EkncArticleObjectModel:outgoing-links:
@@ -258,9 +258,9 @@ eknc_article_object_model_class_init (EkncArticleObjectModelClass *klass)
    * A list of the outbound links present in this article.
    */
   eknc_article_object_model_props[PROP_OUTGOING_LINKS] =
-    g_param_spec_variant ("outgoing-links", "Outgoing Links",
+    g_param_spec_boxed ("outgoing-links", "Outgoing Links",
       "A list of the outbound links present in this article",
-      G_VARIANT_TYPE ("as"), NULL,
+      G_TYPE_STRV,
       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
   /**
    * EkncArticleObjectModel:table-of-contents:
@@ -335,9 +335,9 @@ eknc_article_object_model_add_json_to_params (JsonNode *node,
  *
  * Get the models authors.
  *
- * Returns: (transfer none): the resources GVariant
+ * Returns: (transfer none) (array zero-terminated=1): an array of strings
  */
-GVariant *
+char * const *
 eknc_article_object_model_get_authors (EkncArticleObjectModel *self)
 {
   g_return_val_if_fail (EKNC_IS_ARTICLE_OBJECT_MODEL (self), NULL);
@@ -353,9 +353,9 @@ eknc_article_object_model_get_authors (EkncArticleObjectModel *self)
  * Get the temporal coverage over the article.
  *
  * Since: 2
- * Returns: (transfer none): the resources GVariant
+ * Returns: (transfer none) (array zero-terminated=1): a list of strings
  */
-GVariant *
+char * const *
 eknc_article_object_model_get_temporal_coverage (EkncArticleObjectModel *self)
 {
   g_return_val_if_fail (EKNC_IS_ARTICLE_OBJECT_MODEL (self), NULL);
@@ -370,9 +370,9 @@ eknc_article_object_model_get_temporal_coverage (EkncArticleObjectModel *self)
  *
  * Get the models outgoing_links.
  *
- * Returns: (transfer none): the resources GVariant
+ * Returns: (transfer none) (array zero-terminated=1): a list of strings
  */
-GVariant *
+char * const *
 eknc_article_object_model_get_outgoing_links (EkncArticleObjectModel *self)
 {
   g_return_val_if_fail (EKNC_IS_ARTICLE_OBJECT_MODEL (self), NULL);

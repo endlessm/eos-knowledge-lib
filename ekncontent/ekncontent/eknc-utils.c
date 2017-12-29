@@ -23,23 +23,18 @@ eknc_content_object_error_quark (void)
   return g_quark_from_static_string("eknc-content-object-error-quark");
 }
 
-static GVariant *
-string_array_from_json (JsonNode *node,
-                        GError **error)
+static char **
+string_array_from_json (JsonNode *node)
 {
   if (!JSON_NODE_HOLDS_ARRAY (node))
     {
-      g_set_error_literal (error, EKNC_CONTENT_OBJECT_ERROR,
-                           EKNC_CONTENT_OBJECT_ERROR_BAD_FORMAT,
-                           "Expected JSON array");
+      g_critical ("Expected JSON array");
       return NULL;
     }
 
   JsonArray *array = json_node_get_array (node);
   guint n_elements = json_array_get_length (array);
-
-  GVariantBuilder builder;
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
+  char **retval = g_new0 (char *, n_elements + 1);
 
   for (guint i = 0; i < n_elements; i++)
     {
@@ -48,11 +43,10 @@ string_array_from_json (JsonNode *node,
       if (str == NULL || *str == '\0')
         continue;
 
-      GVariant *v = g_variant_new_string (str);
-      g_variant_builder_add_value (&builder, v);
+      retval[i] = g_strdup (str);
     }
 
-  return g_variant_builder_end (&builder);
+  return retval;
 }
 
 static GVariant *
@@ -177,9 +171,7 @@ eknc_utils_append_gparam_from_json_node (JsonNode *node,
 
       g_autoptr(GError) error = NULL;
 
-      if (g_variant_type_equal (type, G_VARIANT_TYPE ("as")))
-        variant = string_array_from_json (node, &error);
-      else if (g_variant_type_equal (type, G_VARIANT_TYPE ("aa{sv}")))
+      if (g_variant_type_equal (type, G_VARIANT_TYPE ("aa{sv}")))
         variant = dict_array_from_json (node, &error);
       else if (g_variant_type_equal (type, G_VARIANT_TYPE ("a{sv}")))
         variant = dict_from_json (node, &error);
@@ -196,6 +188,11 @@ eknc_utils_append_gparam_from_json_node (JsonNode *node,
         }
 
       g_value_set_variant (&param.value, variant);
+    }
+  else if (pspec->value_type == G_TYPE_STRV)
+    {
+      char **array = string_array_from_json (node);
+      g_value_take_boxed (&param.value, array);
     }
   else if (JSON_NODE_HOLDS_VALUE (node))
     {

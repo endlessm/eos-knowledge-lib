@@ -82,7 +82,7 @@ var CourseHistoryStore = new GObject.Class({
     },
 
     _load_first_subset: function (model) {
-        let query = Eknc.QueryObject.new_from_props({
+        let query = new Eknc.QueryObject({
             limit: 1,
             tags_match_any: model.child_tags,
             tags_match_all: ['EknSetObject'],

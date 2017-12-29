@@ -17,14 +17,14 @@ struct _EkncContentObjectModelClass
   gpointer padding[8];
 };
 
-EkncContentObjectModel *
-eknc_content_object_model_new_from_json_node (JsonNode *node);
-
-GVariant *
+char * const *
 eknc_content_object_model_get_tags (EkncContentObjectModel *self);
 
-GVariant *
+char * const *
 eknc_content_object_model_get_resources (EkncContentObjectModel *self);
+
+EkncContentObjectModel *
+eknc_content_object_model_new_from_json_node (JsonNode *node);
 
 GFileInputStream *
 eknc_content_object_model_get_content_stream (EkncContentObjectModel *self,

@@ -29,12 +29,12 @@ var FeaturedFirst = new Module.Class({
 
     construct_query_object: function (limit, query_index) {
         if (query_index == 0) {
-            return Eknc.QueryObject.new_from_props({
+            return new Eknc.QueryObject({
                 limit: limit,
                 tags_match_all: ['EknFeaturedTag'],
             });
         } else if (query_index == 1) {
-            return Eknc.QueryObject.new_from_props({
+            return new Eknc.QueryObject({
                 limit: limit,
                 excluded_tags: ['EknFeaturedTag'],
             });

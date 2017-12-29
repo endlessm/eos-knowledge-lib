@@ -23,7 +23,7 @@ var Search = new Module.Class({
         let query = HistoryStore.get_default().current_query;
         if (query_index > 0 || query.length === 0)
             return null;
-        return Eknc.QueryObject.new_from_props({
+        return new Eknc.QueryObject({
             query: query,
             limit: limit,
         });

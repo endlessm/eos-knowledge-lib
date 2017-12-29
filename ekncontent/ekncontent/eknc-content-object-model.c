@@ -28,8 +28,8 @@ typedef struct {
   gchar *last_modified_date;
   gchar *license;
   gboolean featured;
-  GVariant *tags;
-  GVariant *resources;
+  char **tags;
+  char **resources;
   GVariant *discovery_feed_content;
 } EkncContentObjectModelPrivate;
 
@@ -124,11 +124,11 @@ eknc_content_object_model_get_property (GObject    *object,
       break;
 
     case PROP_TAGS:
-      g_value_set_variant (value, priv->tags);
+      g_value_set_boxed (value, priv->tags);
       break;
 
     case PROP_RESOURCES:
-      g_value_set_variant (value, priv->resources);
+      g_value_set_boxed (value, priv->resources);
       break;
 
     case PROP_DISCOVERY_FEED_CONTENT:
@@ -216,13 +216,13 @@ eknc_content_object_model_set_property (GObject *object,
       break;
 
     case PROP_TAGS:
-      g_clear_pointer (&priv->tags, g_variant_unref);
-      priv->tags = g_value_dup_variant (value);
+      g_clear_pointer (&priv->tags, g_strfreev);
+      priv->tags = g_value_dup_boxed (value);
       break;
 
     case PROP_RESOURCES:
-      g_clear_pointer (&priv->resources, g_variant_unref);
-      priv->resources = g_value_dup_variant (value);
+      g_clear_pointer (&priv->resources, g_strfreev);
+      priv->resources = g_value_dup_boxed (value);
       break;
 
     case PROP_DISCOVERY_FEED_CONTENT:
@@ -275,8 +275,8 @@ eknc_content_object_model_finalize (GObject *object)
   g_clear_pointer (&priv->synopsis, g_free);
   g_clear_pointer (&priv->last_modified_date, g_free);
   g_clear_pointer (&priv->license, g_free);
-  g_clear_pointer (&priv->tags, g_variant_unref);
-  g_clear_pointer (&priv->resources, g_variant_unref);
+  g_clear_pointer (&priv->tags, g_strfreev);
+  g_clear_pointer (&priv->resources, g_strfreev);
   g_clear_pointer (&priv->discovery_feed_content, g_variant_unref);
 
   G_OBJECT_CLASS (eknc_content_object_model_parent_class)->finalize (object);
@@ -433,9 +433,9 @@ eknc_content_object_model_class_init (EkncContentObjectModelClass *klass)
    * A list of tag strings associated with the model.
    */
   eknc_content_object_model_props[PROP_TAGS] =
-    g_param_spec_variant ("tags", "Tags",
+    g_param_spec_boxed ("tags", "Tags",
       "A list of tag strings associated with the model.",
-      G_VARIANT_TYPE ("as"), NULL,
+      G_TYPE_STRV,
       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
   /**
    * EkncContentObjectModel:resources:
@@ -443,9 +443,9 @@ eknc_content_object_model_class_init (EkncContentObjectModelClass *klass)
    * A list of ekn ids of resources belonging to the model.
    */
   eknc_content_object_model_props[PROP_RESOURCES] =
-    g_param_spec_variant ("resources", "Resources",
+    g_param_spec_boxed ("resources", "Resources",
       "A list of ekn ids of resources belonging to the model.",
-      G_VARIANT_TYPE ("as"), NULL,
+      G_TYPE_STRV,
       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
@@ -551,9 +551,9 @@ eknc_content_object_model_add_json_to_params (JsonNode *node,
  *
  * Get the model's tags.
  *
- * Returns: (transfer none): the resources GVariant
+ * Returns: (transfer none) (array zero-terminated=1): an array of strings
  */
-GVariant *
+char * const *
 eknc_content_object_model_get_tags (EkncContentObjectModel *self)
 {
   g_return_val_if_fail (EKNC_IS_CONTENT_OBJECT_MODEL (self), NULL);
@@ -568,9 +568,9 @@ eknc_content_object_model_get_tags (EkncContentObjectModel *self)
  *
  * Get the model's resources.
  *
- * Returns: (transfer none): the resources GVariant
+ * Returns: (transfer none) (array zero-terminated=1): an array of strings
  */
-GVariant *
+char * const *
 eknc_content_object_model_get_resources (EkncContentObjectModel *self)
 {
   g_return_val_if_fail (EKNC_IS_CONTENT_OBJECT_MODEL (self), NULL);

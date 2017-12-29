@@ -31,12 +31,10 @@ var Suggested = new Module.Class({
         // FIXME: We still need a better way to issue a query for
         // 'random' articles. This just gets a random offset and then
         // requests articles (in order) starting from that point.
-        let random_query = Eknc.QueryObject.new_from_props({
+        return new Eknc.QueryObject({
             offset: this._hash % this._TOTAL_ARTICLES,
             limit: limit,
         });
-
-        return random_query;
     },
 
     get_models: function () {

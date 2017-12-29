@@ -19,7 +19,7 @@ struct _EkncSetObjectModelClass
   gpointer padding[8];
 };
 
-GVariant *
+char * const *
 eknc_set_object_model_get_child_tags (EkncSetObjectModel *self);
 
 EkncContentObjectModel *

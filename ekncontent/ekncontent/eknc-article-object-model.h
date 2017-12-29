@@ -19,13 +19,13 @@ struct _EkncArticleObjectModelClass
   gpointer padding[8];
 };
 
-GVariant *
+char * const *
 eknc_article_object_model_get_authors (EkncArticleObjectModel *self);
 
-GVariant *
+char * const *
 eknc_article_object_model_get_temporal_coverage (EkncArticleObjectModel *self);
 
-GVariant *
+char * const *
 eknc_article_object_model_get_outgoing_links (EkncArticleObjectModel *self);
 
 GVariant *

@@ -29,7 +29,7 @@ var SetCrossSection = new Module.Class({
         let current_set = HistoryStore.get_default().current_set;
         if (current_set)
             tags = tags.concat(current_set.child_tags);
-        return Eknc.QueryObject.new_from_props({
+        return new Eknc.QueryObject({
             limit: limit,
             tags_match_all: tags,
             sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,

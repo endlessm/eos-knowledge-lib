@@ -10,7 +10,7 @@ describe('QueryObject', function () {
     const EXCLUDED_TAGS = ['Zuul'];
 
     it('sets tags and ids objects properly', function () {
-        let query_obj = Eknc.QueryObject.new_from_props({
+        let query_obj = new Eknc.QueryObject({
             ids: IDS,
             excluded_ids: EXCLUDED_IDS,
             tags_match_any: TAGS_MATCH_ANY,
@@ -28,7 +28,7 @@ describe('QueryObject', function () {
         let mutable_ids = ['ekn://busters-es/0123456789012345',
                            'ekn://busters-es/fabaffacabacbafa'];
         let mutable_tags = ['Venkman', 'Stantz'];
-        let query_obj = Eknc.QueryObject.new_from_props({
+        let query_obj = new Eknc.QueryObject({
             ids: mutable_ids,
             tags_match_any: mutable_tags,
         });
@@ -40,7 +40,7 @@ describe('QueryObject', function () {
 
     describe('new_from_object constructor', function () {
         const QUERY = 'keymaster';
-        const QUERY_OBJ = Eknc.QueryObject.new_from_props({
+        const QUERY_OBJ = new Eknc.QueryObject({
             tags_match_any: TAGS_MATCH_ANY,
             query: QUERY,
         });
@@ -77,14 +77,14 @@ describe('QueryObject', function () {
     });
 
     it('should map sort property to xapian sort value', function () {
-        let query_obj = Eknc.QueryObject.new_from_props({
+        let query_obj = new Eknc.QueryObject({
             query: 'tyrion wins',
             sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,
         });
         let result = query_obj.get_sort_value();
         expect(result).toBe(0);
 
-        query_obj = Eknc.QueryObject.new_from_props({
+        query_obj = new Eknc.QueryObject({
             query: 'tyrion wins',
         });
         let undefined_result = query_obj.get_sort_value();
@@ -92,14 +92,14 @@ describe('QueryObject', function () {
     });
 
     it('should map match type to xapian cutoff value', () => {
-        let query_obj = Eknc.QueryObject.new_from_props({
+        let query_obj = new Eknc.QueryObject({
             query: 'tyrion wins',
             match: Eknc.QueryObjectMatch.TITLE_SYNOPSIS,
         });
         let result = query_obj.get_cutoff();
         expect(result).toBe(20);
 
-        query_obj = Eknc.QueryObject.new_from_props({
+        query_obj = new Eknc.QueryObject({
             query: 'tyrion wins',
             match: Eknc.QueryObjectMatch.ONLY_TITLE,
         });
