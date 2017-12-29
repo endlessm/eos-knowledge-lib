@@ -50,8 +50,8 @@ var BuffetHistoryStore = new GObject.Class({
                         });
                     } else {
                         let context_label = '';
-                        if (payload.query) {
-                            context_label = _("Results were found for “%s”").format(payload.query);
+                        if (payload.search_terms) {
+                            context_label = _("Results were found for “%s”").format(payload.search_terms);
                         } else if (payload.context_label) {
                             context_label = payload.context_label;
                         }
@@ -68,7 +68,7 @@ var BuffetHistoryStore = new GObject.Class({
                     break;
                 case Actions.SEARCH_TEXT_ENTERED:
                 case Actions.DBUS_LOAD_QUERY_CALLED:
-                    this.do_search(payload.query,
+                    this.do_search(payload.search_terms,
                         payload.timestamp || Gdk.CURRENT_TIME);
                     break;
                 case Actions.LIGHTBOX_CLOSED:
@@ -76,7 +76,7 @@ var BuffetHistoryStore = new GObject.Class({
                     this.close_lightbox();
                     break;
                 case Actions.DBUS_LOAD_ITEM_CALLED:
-                    this.load_dbus_item(payload.ekn_id, payload.query,
+                    this.load_dbus_item(payload.ekn_id, payload.search_terms,
                         payload.timestamp || Gdk.CURRENT_TIME);
                     break;
             }

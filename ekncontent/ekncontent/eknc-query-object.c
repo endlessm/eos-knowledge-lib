@@ -50,9 +50,9 @@ struct _EkncQueryObject
   GObject parent_instance;
 
   gchar *app_id;
-  gchar *query;
-  gchar *corrected_query;
-  gchar *stopword_free_query;
+  gchar *search_terms;
+  gchar *corrected_terms;
+  gchar *stopword_free_terms;
   gchar *literal_query;
   EkncQueryObjectMode mode;
   EkncQueryObjectMatch match;
@@ -74,8 +74,8 @@ G_DEFINE_TYPE (EkncQueryObject,
 enum {
   PROP_0,
   PROP_APP_ID,
-  PROP_QUERY,
-  PROP_STOPWORD_FREE_QUERY,
+  PROP_SEARCH_TERMS,
+  PROP_STOPWORD_FREE_TERMS,
   PROP_LITERAL_QUERY,
   PROP_MODE,
   PROP_MATCH,
@@ -88,7 +88,7 @@ enum {
   PROP_IDS,
   PROP_EXCLUDED_IDS,
   PROP_EXCLUDED_TAGS,
-  PROP_CORRECTED_QUERY,
+  PROP_CORRECTED_TERMS,
   NPROPS
 };
 
@@ -108,16 +108,16 @@ eknc_query_object_get_property (GObject    *object,
       g_value_set_string (value, self->app_id);
       break;
 
-    case PROP_QUERY:
-      g_value_set_string (value, self->query);
+    case PROP_SEARCH_TERMS:
+      g_value_set_string (value, self->search_terms);
       break;
 
-    case PROP_CORRECTED_QUERY:
-      g_value_set_string (value, self->corrected_query);
+    case PROP_CORRECTED_TERMS:
+      g_value_set_string (value, self->corrected_terms);
       break;
 
-    case PROP_STOPWORD_FREE_QUERY:
-      g_value_set_string (value, self->stopword_free_query);
+    case PROP_STOPWORD_FREE_TERMS:
+      g_value_set_string (value, self->stopword_free_terms);
       break;
 
     case PROP_LITERAL_QUERY:
@@ -188,19 +188,19 @@ eknc_query_object_set_property (GObject *object,
       self->app_id = g_value_dup_string (value);
       break;
 
-    case PROP_QUERY:
-      g_clear_pointer (&self->query, g_free);
-      self->query = g_value_dup_string (value);
+    case PROP_SEARCH_TERMS:
+      g_clear_pointer (&self->search_terms, g_free);
+      self->search_terms = g_value_dup_string (value);
       break;
 
-    case PROP_CORRECTED_QUERY:
-      g_clear_pointer (&self->corrected_query, g_free);
-      self->corrected_query = g_value_dup_string (value);
+    case PROP_CORRECTED_TERMS:
+      g_clear_pointer (&self->corrected_terms, g_free);
+      self->corrected_terms = g_value_dup_string (value);
       break;
 
-    case PROP_STOPWORD_FREE_QUERY:
-      g_clear_pointer (&self->stopword_free_query, g_free);
-      self->stopword_free_query = g_value_dup_string (value);
+    case PROP_STOPWORD_FREE_TERMS:
+      g_clear_pointer (&self->stopword_free_terms, g_free);
+      self->stopword_free_terms = g_value_dup_string (value);
       break;
 
     case PROP_LITERAL_QUERY:
@@ -268,9 +268,9 @@ eknc_query_object_finalize (GObject *object)
   EkncQueryObject *self = EKNC_QUERY_OBJECT (object);
 
   g_clear_pointer (&self->app_id, g_free);
-  g_clear_pointer (&self->query, g_free);
-  g_clear_pointer (&self->corrected_query, g_free);
-  g_clear_pointer (&self->stopword_free_query, g_free);
+  g_clear_pointer (&self->search_terms, g_free);
+  g_clear_pointer (&self->corrected_terms, g_free);
+  g_clear_pointer (&self->stopword_free_terms, g_free);
   g_clear_pointer (&self->literal_query, g_free);
   g_clear_pointer (&self->tags_match_all, g_strfreev);
   g_clear_pointer (&self->tags_match_any, g_strfreev);
@@ -302,34 +302,34 @@ eknc_query_object_class_init (EkncQueryObjectClass *klass)
       "", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
-   * EkncQueryObject:query:
+   * EkncQueryObject:search-terms:
    *
    * The actual query string that was entered by the user with all terms
    * that should be searched for.
    */
-  eknc_query_object_props[PROP_QUERY] =
-    g_param_spec_string ("query", "Query string",
+  eknc_query_object_props[PROP_SEARCH_TERMS] =
+    g_param_spec_string ("search-terms", "Search terms",
       "Query string with terms to search",
       "", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
-   * EkncQueryObject:corrected-query:
+   * EkncQueryObject:corrected-terms:
    *
-   * A corrected version of the query property (e.g. with typos corrected).
+   * A corrected version of the search-terms property (e.g. with typos corrected).
    */
-  eknc_query_object_props[PROP_CORRECTED_QUERY] =
-    g_param_spec_string ("corrected-query", "Corrected query string",
-      "A version of query with typos, etc corrected",
+  eknc_query_object_props[PROP_CORRECTED_TERMS] =
+    g_param_spec_string ("corrected-terms", "Corrected terms",
+      "A version of search-terms with typos, etc corrected",
       "", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
-   * EkncQueryObject:stopword-free-query:
+   * EkncQueryObject:stopword-free-terms:
    *
-   * A corrected version of the query property with stopword words removed.
+   * A corrected version of the search-terms property with stopword words removed.
    */
-  eknc_query_object_props[PROP_STOPWORD_FREE_QUERY] =
-    g_param_spec_string ("stopword-free-query", "Stop free query string",
-      "A version of query without any stopword words",
+  eknc_query_object_props[PROP_STOPWORD_FREE_TERMS] =
+    g_param_spec_string ("stopword-free-terms", "Stopword-free terms",
+      "A version of search-terms without any stopwords",
       "", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
@@ -722,18 +722,18 @@ eknc_query_object_get_excluded_tags (EkncQueryObject *self)
 }
 
 /**
- * eknc_query_object_get_query:
+ * eknc_query_object_get_search_terms:
  * @self: the model
  *
- * Get the query string set on the object.
+ * Get the search terms set on the object, as typed in by a user.
  *
- * Returns: (transfer none): the query string
+ * Returns: (transfer none): the search terms as a string
  */
 const char *
-eknc_query_object_get_query (EkncQueryObject *self)
+eknc_query_object_get_search_terms (EkncQueryObject *self)
 {
   g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
-  return self->query;
+  return self->search_terms;
 }
 
 /**
@@ -741,9 +741,9 @@ eknc_query_object_get_query (EkncQueryObject *self)
  * @self: a #EkncQueryObject
  *
  * Retrieves the query string, including spelling corrections in case
- * the #EkncQueryObject:corrected-query property is set.
+ * the #EkncQueryObject:corrected-terms property is set.
  *
- * If #EkncQueryObject:corrected-query is unset, this function returns
+ * If #EkncQueryObject:corrected-terms is unset, this function returns
  * the same string as eknc_query_object_get_query_string().
  *
  * Returns: (transfer full) (nullable): the corrected query string
@@ -756,7 +756,7 @@ eknc_query_object_get_corrected_query_string (EkncQueryObject *self)
   if (self->literal_query != NULL && self->literal_query[0] != '\0')
     return g_strdup (self->literal_query);
 
-  g_auto(GStrv) raw_terms = get_terms (self->query);
+  g_auto(GStrv) raw_terms = get_terms (self->search_terms);
 
   if (g_strv_length (raw_terms) == 0)
     return NULL;
@@ -781,8 +781,8 @@ eknc_query_object_get_corrected_query_string (EkncQueryObject *self)
    * query clause.
    */
   g_auto(GStrv) corrected_terms = NULL;
-  if (self->corrected_query != NULL)
-    corrected_terms = get_terms (self->corrected_query);
+  if (self->corrected_terms != NULL)
+    corrected_terms = get_terms (self->corrected_terms);
 
   g_autofree char *title_clause = get_title_clause (self, raw_terms, corrected_terms);
 
@@ -824,7 +824,7 @@ eknc_query_object_get_query_string (EkncQueryObject *self)
   if (self->literal_query != NULL && self->literal_query[0] != '\0')
     return g_strdup (self->literal_query);
 
-  g_auto(GStrv) raw_terms = get_terms (self->query);
+  g_auto(GStrv) raw_terms = get_terms (self->search_terms);
 
   if (g_strv_length (raw_terms) == 0)
     return NULL;
@@ -921,7 +921,7 @@ eknc_query_object_is_match_all (EkncQueryObject *self)
 {
   g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), FALSE);
 
-  return self->query == NULL || self->query[0] == '\0';
+  return self->search_terms == NULL || self->search_terms[0] == '\0';
 }
 
 /**

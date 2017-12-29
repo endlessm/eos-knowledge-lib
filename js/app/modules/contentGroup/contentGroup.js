@@ -298,7 +298,7 @@ var ContentGroup = new Module.Class({
         else
             this._arrangement.clear_highlight();
 
-        this._arrangement.highlight_string(item.query);
+        this._arrangement.highlight_string(item.search_terms);
     },
 
     _on_selection_error: function () {

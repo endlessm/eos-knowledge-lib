@@ -108,12 +108,12 @@ function _init() {
         let props = [];
         if (this.app_id)
             props.push(`app_id: "${this.app_id}"`);
-        if (this.query)
-            props.push(`query: "${this.query}"`);
-        if (this.corrected_query)
-            props.push(`corrected_query: "${this.corrected_query}"`);
-        if (this.stopword_free_query)
-            props.push(`stopword_free_query: "${this.stopword_free_query}"`);
+        if (this.search_terms)
+            props.push(`search_terms: "${this.search_terms}"`);
+        if (this.corrected_terms)
+            props.push(`corrected_terms: "${this.corrected_terms}"`);
+        if (this.stopword_free_terms)
+            props.push(`stopword_free_terms: "${this.stopword_free_terms}"`);
         if (this.literal_query)
             props.push(`literal_query: "${this.literal_query}"`);
         if (this.mode !== Eknc.QueryObjectMode.INCREMENTAL)

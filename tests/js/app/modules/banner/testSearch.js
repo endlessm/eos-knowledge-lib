@@ -22,7 +22,7 @@ describe('Banner.Search', function () {
         expect(Gtk.test_find_label(searchBanner, '*myfoobar*')).toBeNull();
         store.set_current_item_from_props({
             page_type: Pages.SEARCH,
-            query: 'myfoobar',
+            search_terms: 'myfoobar',
         });
         expect(Gtk.test_find_label(searchBanner, '*myfoobar*')).not.toBeNull();
     });

@@ -23,7 +23,7 @@ var ArticleContext = new Module.Class({
 
     _update_item: function () {
         let item = HistoryStore.get_default().search_backwards(0, (item) => {
-            return item.page_type === Pages.SET || item.query.length > 0;
+            return item.page_type === Pages.SET || item.search_terms.length > 0;
         });
         if (item === this._item)
             return;
@@ -38,10 +38,10 @@ var ArticleContext = new Module.Class({
         if (this._item === null)
             return null;
 
-        if (this._item.query.length > 0) {
+        if (this._item.search_terms.length > 0) {
             return new Eknc.QueryObject({
                 limit: limit,
-                query: this._item.query,
+                search_terms: this._item.search_terms,
                 tags_match_any: ['EknArticleObject'],
             });
         }

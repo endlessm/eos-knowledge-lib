@@ -46,7 +46,7 @@ describe('Banner.Context', function () {
     it('displays the user query when showing search', function () {
         store.set_current_item_from_props({
             page_type: Pages.SEARCH,
-            query: 'some user text',
+            search_terms: 'some user text',
         });
         expect(module.label).toMatch(/some user text/);
     });

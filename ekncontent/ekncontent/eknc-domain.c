@@ -724,8 +724,8 @@ typedef struct
 
   GHashTable *params;
 
-  char *fixed_stop_query;
-  char *fixed_spell_query;
+  char *fixed_stop_terms;
+  char *fixed_spell_terms;
 } RequestState;
 
 static void
@@ -733,8 +733,8 @@ request_state_free (gpointer data)
 {
   RequestState *state = data;
 
-  g_free (state->fixed_stop_query);
-  g_free (state->fixed_spell_query);
+  g_free (state->fixed_stop_terms);
+  g_free (state->fixed_spell_terms);
 
   g_clear_object (&state->domain);
   g_clear_object (&state->query);
@@ -830,10 +830,10 @@ query_fix_task (GTask *task,
 
   gboolean result =
     eknc_database_manager_fix_query (request->db_manager,
-                                     eknc_query_object_get_query (request->query),
+                                     eknc_query_object_get_search_terms (request->query),
                                      request->params,
-                                     &request->fixed_stop_query,
-                                     &request->fixed_spell_query,
+                                     &request->fixed_stop_terms,
+                                     &request->fixed_spell_terms,
                                      &error);
   if (error != NULL)
     {
@@ -859,7 +859,7 @@ query_fix_task (GTask *task,
  *      - the query which has had spelling correction applied to it.
  *
  * Note that the spelling correction will be performed on the original
- * query string, and not the string with stop words removed.
+ * search terms string, and not the string with stop words removed.
  */
 void
 eknc_domain_get_fixed_query (EkncDomain *self,
@@ -912,21 +912,21 @@ eknc_domain_get_fixed_query_finish (EkncDomain *self,
       RequestState *request = g_task_get_task_data (G_TASK (result));
 
       /* If we didn't get a corrected query, we can just reuse the existing query object */
-      if (request->fixed_stop_query == NULL && request->fixed_spell_query == NULL)
+      if (request->fixed_stop_terms == NULL && request->fixed_spell_terms == NULL)
         return g_object_ref (request->query);
 
-      if (request->fixed_stop_query != NULL && request->fixed_spell_query != NULL)
+      if (request->fixed_stop_terms != NULL && request->fixed_spell_terms != NULL)
         return eknc_query_object_new_from_object (request->query,
-                                                  "stopword-free-query", request->fixed_stop_query,
-                                                  "corrected-query", request->fixed_spell_query,
+                                                  "stopword-free-terms", request->fixed_stop_terms,
+                                                  "corrected-terms", request->fixed_spell_terms,
                                                   NULL);
-      else if (request->fixed_stop_query != NULL)
+      else if (request->fixed_stop_terms != NULL)
         return eknc_query_object_new_from_object (request->query,
-                                                  "stopword-free-query", request->fixed_stop_query,
+                                                  "stopword-free-terms", request->fixed_stop_terms,
                                                   NULL);
       else
         return eknc_query_object_new_from_object (request->query,
-                                                  "corrected-query", request->fixed_spell_query,
+                                                  "corrected-terms", request->fixed_spell_terms,
                                                   NULL);
     }
 

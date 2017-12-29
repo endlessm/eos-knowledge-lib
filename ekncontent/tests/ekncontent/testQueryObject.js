@@ -39,25 +39,25 @@ describe('QueryObject', function () {
     });
 
     describe('new_from_object constructor', function () {
-        const QUERY = 'keymaster';
+        const TERMS = 'keymaster';
         const QUERY_OBJ = new Eknc.QueryObject({
             tags_match_any: TAGS_MATCH_ANY,
-            query: QUERY,
+            search_terms: TERMS,
         });
 
         it('duplicates properties from source object', function () {
             let query_obj_copy = Eknc.QueryObject.new_from_object(QUERY_OBJ);
             expect(query_obj_copy.tags_match_any).toEqual(TAGS_MATCH_ANY);
-            expect(query_obj_copy.query).toEqual(QUERY);
+            expect(query_obj_copy.search_terms).toEqual(TERMS);
         });
 
         it('allows properties to be overridden', function () {
-            let new_query = 'gatekeeper';
+            let new_terms = 'gatekeeper';
             let new_query_object = Eknc.QueryObject.new_from_object(QUERY_OBJ, {
-                query: new_query
+                search_terms: new_terms,
             });
             expect(new_query_object.tags_match_any).toEqual(TAGS_MATCH_ANY);
-            expect(new_query_object.query).toEqual(new_query);
+            expect(new_query_object.search_terms).toEqual(new_terms);
         });
 
         it('properly marshals arrays from the override object', function () {
@@ -78,14 +78,14 @@ describe('QueryObject', function () {
 
     it('should map sort property to xapian sort value', function () {
         let query_obj = new Eknc.QueryObject({
-            query: 'tyrion wins',
+            search_terms: 'tyrion wins',
             sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,
         });
         let result = query_obj.get_sort_value();
         expect(result).toBe(0);
 
         query_obj = new Eknc.QueryObject({
-            query: 'tyrion wins',
+            search_terms: 'tyrion wins',
         });
         let undefined_result = query_obj.get_sort_value();
         expect(undefined_result).toBe(-1);
@@ -93,14 +93,14 @@ describe('QueryObject', function () {
 
     it('should map match type to xapian cutoff value', () => {
         let query_obj = new Eknc.QueryObject({
-            query: 'tyrion wins',
+            search_terms: 'tyrion wins',
             match: Eknc.QueryObjectMatch.TITLE_SYNOPSIS,
         });
         let result = query_obj.get_cutoff();
         expect(result).toBe(20);
 
         query_obj = new Eknc.QueryObject({
-            query: 'tyrion wins',
+            search_terms: 'tyrion wins',
             match: Eknc.QueryObjectMatch.ONLY_TITLE,
         });
         result = query_obj.get_cutoff();

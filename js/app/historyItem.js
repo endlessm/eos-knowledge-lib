@@ -56,12 +56,12 @@ var HistoryItem = new Knowledge.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             Eknc.ContentObjectModel),
         /**
-         * Property: query
+         * Property: search-terms
          *
-         * A query string entered by the user causing navigation to this history
-         * item.
+         * A search string entered by the user causing navigation to this
+         * history item.
          */
-        'query': GObject.ParamSpec.string('query', 'Query',
+        'search-terms': GObject.ParamSpec.string('search-terms', 'Search terms',
             'The search string entered when navigating to this page',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
@@ -120,8 +120,8 @@ var HistoryItem = new Knowledge.Class({
             props.push(`model: ${this.model}`);
         if (this.media_model)
             props.push(`media_model: ${this.media_model}`);
-        if (this.query)
-            props.push(`query: '${this.query}'`);
+        if (this.search_terms)
+            props.push(`search_terms: '${this.search_terms}'`);
         retval += props.join(', ');
         retval += '})>';
         return retval;
@@ -134,11 +134,11 @@ var HistoryItem = new Knowledge.Class({
 
     equals: function (item) {
         let page_equal = this.page_type === item.page_type;
-        let query_equal = this.query === item.query;
+        let terms_equal = this.search_terms === item.search_terms;
         let model_equal = _models_equal_or_both_null(this.model, item.model);
         let media_equal = _models_equal_or_both_null(this.media_model,
             item.media_model);
-        return page_equal && query_equal && model_equal && media_equal;
+        return page_equal && terms_equal && model_equal && media_equal;
     },
 });
 

@@ -8,20 +8,20 @@ describe('History Item', function () {
         it('detects equivalent items', function () {
             let item1 = new HistoryItem.HistoryItem({
                 page_type: 'foo',
-                query: 'bar',
+                search_terms: 'bar',
             });
             let item2 = new HistoryItem.HistoryItem({
                 page_type: 'foo',
-                query: 'bar',
+                search_terms: 'bar',
             });
             expect(item1.equals(item2)).toBeTruthy();
             item1 = new HistoryItem.HistoryItem({
                 page_type: 'foo',
-                query: 'bar',
+                search_terms: 'bar',
             });
             item2 = new HistoryItem.HistoryItem({
                 page_type: 'foo',
-                query: 'not bar',
+                search_terms: 'not bar',
             });
             expect(item1.equals(item2)).toBeFalsy();
         });
@@ -53,7 +53,7 @@ describe('History Item', function () {
     it('new_from_object duplicates all property values', function () {
         let item1 = new HistoryItem.HistoryItem({
             page_type: 'foo',
-            query: 'bar',
+            search_terms: 'bar',
             model: Eknc.ContentObjectModel.new_from_props({
                 ekn_id: 'ekn://aaaaaaaaaaaaaaaa',
             }),

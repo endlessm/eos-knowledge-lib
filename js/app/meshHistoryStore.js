@@ -42,8 +42,8 @@ var MeshHistoryStore = new GObject.Class({
                         props['page_type'] = Pages.ARTICLE;
                         entry_point = EntryPoints.LINK_CLICKED;
                     }
-                    if (payload.query)
-                        props['query'] = payload.query;
+                    if (payload.search_terms)
+                        props['search_terms'] = payload.search_terms;
                     this.set_current_item_from_props(props, entry_point);
                 }
                     break;
@@ -62,14 +62,14 @@ var MeshHistoryStore = new GObject.Class({
                     break;
                 case Actions.SEARCH_TEXT_ENTERED:
                 case Actions.DBUS_LOAD_QUERY_CALLED:
-                    this.do_search(payload.query,
+                    this.do_search(payload.search_terms,
                         payload.timestamp || Gdk.CURRENT_TIME);
                     break;
                 case Actions.ARTICLE_LINK_CLICKED:
                     this.show_ekn_id(payload.ekn_id);
                     break;
                 case Actions.DBUS_LOAD_ITEM_CALLED:
-                    this.load_dbus_item(payload.ekn_id, payload.query,
+                    this.load_dbus_item(payload.ekn_id, payload.search_terms,
                         payload.timestamp || Gdk.CURRENT_TIME);
                     break;
             }

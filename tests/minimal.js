@@ -181,7 +181,7 @@ var MinimalXapianOrder = new Module.Class({
 
     modify_xapian_query_impl: function (query) {
         return Eknc.QueryObject.new_from_object(query, {
-            query: query.query + ' ' + this.model_prop
+            search_terms: `${query.search_terms} ${this.model_prop}`,
         });
     },
 });

@@ -70,11 +70,11 @@ var CourseHistoryStore = new GObject.Class({
                     break;
                 case Actions.SEARCH_TEXT_ENTERED:
                 case Actions.DBUS_LOAD_QUERY_CALLED:
-                    this.do_search(payload.query,
+                    this.do_search(payload.search_terms,
                         payload.timestamp || Gdk.CURRENT_TIME);
                     break;
                 case Actions.DBUS_LOAD_ITEM_CALLED:
-                    this.load_dbus_item(payload.ekn_id, payload.query,
+                    this.load_dbus_item(payload.ekn_id, payload.search_terms,
                         payload.timestamp || Gdk.CURRENT_TIME);
                     break;
             }

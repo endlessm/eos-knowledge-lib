@@ -457,10 +457,10 @@ function _pretty_print_table (elements) {
     rows.forEach(row => print(row));
 }
 
-function query (app_id, query_string) {
+function query (app_id, search_terms) {
     let engine = Eknc.Engine.get_default();
     let query_obj = new Eknc.QueryObject({
-        query: query_string,
+        search_terms,
         limit: BATCH_SIZE,
         app_id: app_id,
     });

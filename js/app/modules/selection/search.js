@@ -14,18 +14,15 @@ var Search = new Module.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        HistoryStore.get_default().connect('notify::current-query', () => {
+        HistoryStore.get_default().connect('notify::current-search-terms', () => {
             this._set_needs_refresh(true);
         });
     },
 
     construct_query_object: function (limit, query_index) {
-        let query = HistoryStore.get_default().current_query;
-        if (query_index > 0 || query.length === 0)
+        let search_terms = HistoryStore.get_default().current_search_terms;
+        if (query_index > 0 || search_terms.length === 0)
             return null;
-        return new Eknc.QueryObject({
-            query: query,
-            limit: limit,
-        });
+        return new Eknc.QueryObject({search_terms, limit});
     },
 });
