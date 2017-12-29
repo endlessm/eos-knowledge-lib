@@ -459,46 +459,11 @@ static XapianMSet *
 eknc_database_manager_fetch_results (EkncDatabaseManager *self,
                                      XapianEnquire *enquire,
                                      XapianQuery *query,
-                                     GHashTable *query_options,
+                                     guint offset,
+                                     guint limit,
                                      GError **error_out)
 {
-  const gchar *str;
-  guint limit, offset;
   GError *error = NULL;
-
-  str = g_hash_table_lookup (query_options, QUERY_PARAM_OFFSET);
-  if (str == NULL)
-    {
-      g_set_error_literal (error_out, EKNC_DATABASE_MANAGER_ERROR,
-                           EKNC_DATABASE_MANAGER_ERROR_INVALID_PARAMS,
-                           "Offset parameter is required for the query");
-      return NULL;
-    }
-
-  offset = CLAMP (g_ascii_strtod (str, NULL), 0, G_MAXUINT);
-
-  str = g_hash_table_lookup (query_options, QUERY_PARAM_LIMIT);
-  if (str == NULL)
-    {
-      g_set_error_literal (error_out, EKNC_DATABASE_MANAGER_ERROR,
-                           EKNC_DATABASE_MANAGER_ERROR_INVALID_PARAMS,
-                           "Limit parameter is required for the query");
-      return NULL;
-    }
-
-  /* str may contain a negative value to mean "all matching results"; since
-   * casting a negative floating point value into an unsigned integer is
-   * undefined behavior, we need to perform some level of validation first
-   */
-  {
-    double val = g_ascii_strtod (str, NULL);
-
-    /* Allow negative values to mean "all results" */
-    if (val < 0)
-      limit = G_MAXUINT;
-    else
-      limit = CLAMP (val, 0, G_MAXUINT);
-  }
 
   xapian_enquire_set_query (enquire, query, xapian_query_get_length (query));
 
@@ -945,9 +910,42 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
         xapian_enquire_set_cutoff (enquire, CLAMP (g_ascii_strtod (cutoff_str, NULL), 0, G_MAXUINT));
     }
 
+  guint limit, offset;
+  const char *offset_str = g_hash_table_lookup (query_options, QUERY_PARAM_OFFSET);
+  if (offset_str == NULL)
+    {
+      g_set_error_literal (error_out, EKNC_DATABASE_MANAGER_ERROR,
+                           EKNC_DATABASE_MANAGER_ERROR_INVALID_PARAMS,
+                           "Offset parameter is required for the query");
+      return NULL;
+    }
+
+  offset = CLAMP (g_ascii_strtod (offset_str, NULL), 0, G_MAXUINT);
+
+  const char *limit_str = g_hash_table_lookup (query_options, QUERY_PARAM_LIMIT);
+  if (limit_str == NULL)
+    {
+      g_set_error_literal (error_out, EKNC_DATABASE_MANAGER_ERROR,
+                           EKNC_DATABASE_MANAGER_ERROR_INVALID_PARAMS,
+                           "Limit parameter is required for the query");
+      return NULL;
+    }
+
+  /* str may contain a negative value to mean "all matching results"; since
+   * casting a negative floating point value into an unsigned integer is
+   * undefined behavior, we need to perform some level of validation first
+   */
+  double val = g_ascii_strtod (limit_str, NULL);
+
+  /* Allow negative values to mean "all results" */
+  if (val < 0)
+    limit = G_MAXUINT;
+  else
+    limit = CLAMP (val, 0, G_MAXUINT);
+
   return eknc_database_manager_fetch_results (self, enquire,
                                               parsed_query,
-                                              query_options,
+                                              offset, limit,
                                               error_out);
 }
 
