@@ -21,7 +21,7 @@ typedef struct {
   char **authors;
   char **temporal_coverage;
   char **outgoing_links;
-  GVariant *table_of_contents;
+  EkncContents *table_of_contents;
 } EkncArticleObjectModelPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (EkncArticleObjectModel,
@@ -88,7 +88,7 @@ eknc_article_object_model_get_property (GObject    *object,
       break;
 
     case PROP_TABLE_OF_CONTENTS:
-      g_value_set_variant (value, priv->table_of_contents);
+      g_value_set_object (value, priv->table_of_contents);
       break;
 
     default:
@@ -146,8 +146,8 @@ eknc_article_object_model_set_property (GObject *object,
       break;
 
     case PROP_TABLE_OF_CONTENTS:
-      g_clear_pointer (&priv->table_of_contents, g_variant_unref);
-      priv->table_of_contents = g_value_dup_variant (value);
+      g_clear_pointer (&priv->table_of_contents, g_object_unref);
+      priv->table_of_contents = g_value_dup_object (value);
       break;
 
     default:
@@ -167,7 +167,7 @@ eknc_article_object_model_finalize (GObject *object)
   g_clear_pointer (&priv->authors, g_strfreev);
   g_clear_pointer (&priv->temporal_coverage, g_strfreev);
   g_clear_pointer (&priv->outgoing_links, g_strfreev);
-  g_clear_pointer (&priv->table_of_contents, g_variant_unref);
+  g_clear_object (&priv->table_of_contents);
 
   G_OBJECT_CLASS (eknc_article_object_model_parent_class)->finalize (object);
 }
@@ -265,13 +265,12 @@ eknc_article_object_model_class_init (EkncArticleObjectModelClass *klass)
   /**
    * EkncArticleObjectModel:table-of-contents:
    *
-   * A json array representing the article's hierarchical table of
-   * contents
+   * A representation of the article's hierarchical table of contents
    */
   eknc_article_object_model_props[PROP_TABLE_OF_CONTENTS] =
-    g_param_spec_variant ("table-of-contents", "Table of Contents",
-      "A json array representing the article's hierarchical table of contents",
-      G_VARIANT_TYPE ("aa{sv}"), NULL,
+    g_param_spec_object ("table-of-contents", "Table of Contents",
+      "A representation of the article's hierarchical table of contents",
+      EKNC_TYPE_CONTENTS, NULL,
       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class,
@@ -385,17 +384,17 @@ eknc_article_object_model_get_outgoing_links (EkncArticleObjectModel *self)
  * eknc_article_object_model_get_table_of_contents:
  * @self: the model
  *
- * Get the models table of contents.
+ * Get the model's table of contents.
  *
- * Returns: (transfer none): the resources GVariant
+ * Returns: (transfer full): the #EkncContents
  */
-GVariant *
+EkncContents *
 eknc_article_object_model_get_table_of_contents (EkncArticleObjectModel *self)
 {
   g_return_val_if_fail (EKNC_IS_ARTICLE_OBJECT_MODEL (self), NULL);
 
   EkncArticleObjectModelPrivate *priv = eknc_article_object_model_get_instance_private (self);
-  return priv->table_of_contents;
+  return g_object_ref (priv->table_of_contents);
 }
 
 /**

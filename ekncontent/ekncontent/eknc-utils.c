@@ -113,36 +113,6 @@ dict_from_json (JsonNode *node,
   return g_variant_builder_end (&builder);
 }
 
-static GVariant *
-dict_array_from_json (JsonNode *node,
-                      GError **error)
-{
-  if (!JSON_NODE_HOLDS_ARRAY (node))
-    {
-      g_set_error_literal (error, EKNC_CONTENT_OBJECT_ERROR,
-                           EKNC_CONTENT_OBJECT_ERROR_BAD_FORMAT,
-                           "Expected JSON array");
-      return NULL;
-    }
-
-  JsonArray *array = json_node_get_array (node);
-  guint n_elements = json_array_get_length (array);
-
-  GVariantBuilder builder;
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("aa{sv}"));
-
-  for (guint i = 0; i < n_elements; i++)
-    {
-      GVariant *v = dict_from_json (json_array_get_element (array, i), error);
-      if (v == NULL)
-        return NULL;
-
-      g_variant_builder_add_value (&builder, v);
-    }
-
-  return g_variant_builder_end (&builder);
-}
-
 /**
  * eknc_utils_append_gparam_from_json_node:
  *
@@ -171,9 +141,7 @@ eknc_utils_append_gparam_from_json_node (JsonNode *node,
 
       g_autoptr(GError) error = NULL;
 
-      if (g_variant_type_equal (type, G_VARIANT_TYPE ("aa{sv}")))
-        variant = dict_array_from_json (node, &error);
-      else if (g_variant_type_equal (type, G_VARIANT_TYPE ("a{sv}")))
+      if (g_variant_type_equal (type, G_VARIANT_TYPE ("a{sv}")))
         variant = dict_from_json (node, &error);
       else
         variant = json_gvariant_deserialize (node, g_variant_type_peek_string (type), &error);
@@ -209,6 +177,11 @@ eknc_utils_append_gparam_from_json_node (JsonNode *node,
         {
           g_value_init (&value, G_TYPE_INT);
           g_value_set_int (&value, atoi (json_node_get_string (node)));
+        }
+      else if (pspec->value_type == EKNC_TYPE_CONTENTS)
+        {
+          g_value_init (&value, EKNC_TYPE_CONTENTS);
+          g_value_take_object (&value, eknc_contents_new_from_json_node (node))
         }
       else
         {

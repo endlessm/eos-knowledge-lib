@@ -28,7 +28,7 @@ eknc_article_object_model_get_temporal_coverage (EkncArticleObjectModel *self);
 char * const *
 eknc_article_object_model_get_outgoing_links (EkncArticleObjectModel *self);
 
-GVariant *
+EkncContents *
 eknc_article_object_model_get_table_of_contents (EkncArticleObjectModel *self);
 
 EkncContentObjectModel *

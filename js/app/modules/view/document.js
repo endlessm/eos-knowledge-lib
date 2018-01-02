@@ -127,10 +127,10 @@ var Document = new Module.Class({
         if (this.model.table_of_contents !== undefined && this.model.content_type !== 'application/pdf') {
             this._mainArticleSections = this.model.table_of_contents
                 .filter(item => !item.hasParent)
-                .sort((a, b) => a.hasIndex - b.hasIndex);
+                .sort((a, b) => a.index - b.index);
             if (this._mainArticleSections.length > 1) {
                 this.toc.section_list = this._mainArticleSections.map(function (section) {
-                    return section.hasLabel;
+                    return section.label;
                 });
                 _toc_visible = true;
             }
@@ -219,7 +219,7 @@ var Document = new Module.Class({
         if (this.content_view.is_loading)
             return;
         // tells the webkit webview directly to scroll to a ToC entry
-        let location = this._mainArticleSections[index].hasContent;
+        let location = this._mainArticleSections[index].content;
         let script = 'scrollTo(' + location.toSource() + ', ' + this._SCROLL_DURATION + ');';
         this.toc.target_section = index;
         this.content_view.run_javascript(script, null, null);
@@ -227,7 +227,7 @@ var Document = new Module.Class({
 
     _find_section_index: function (sectionName) {
         return this._mainArticleSections.findIndex(section =>
-            section.hasContent.split('#')[1] === sectionName);
+            section.content.split('#')[1] === sectionName);
     },
 
     _register_share_message: function (network, message_name) {

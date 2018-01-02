@@ -32,23 +32,6 @@ function add_custom_model_constructors (model) {
         marshal_property(props, 'discovery-feed-content', function (v) {
             return new GLib.Variant('a{sv}', v);
         });
-        marshal_property(props, 'table-of-contents', function (v) {
-            // Mimic json_gvariant_deserialize
-            let toc = [];
-            for (let item of v) {
-                let new_item = {};
-                for (let prop in item) {
-                    if (prop === 'hasIndex') {
-                        new_item[prop] = new GLib.Variant('i', item[prop]);
-                    }
-                    else
-                        new_item[prop] = new GLib.Variant('s', item[prop]);
-                }
-                toc.push(new_item);
-            }
-            return new GLib.Variant('aa{sv}', toc);
-        });
-        return new model(props);
     };
 }
 
@@ -60,20 +43,6 @@ function _init() {
             let content = this.get_discovery_feed_content();
             return content ? content.deep_unpack() : [];
         }
-    });
-
-    define_property(Eknc.ArticleObjectModel, 'table-of-contents', {
-        get: function () {
-            let toc = this.get_table_of_contents();
-            if (!toc)
-                return [];
-            toc = toc.deep_unpack();
-            toc.forEach(item => {
-                for (let prop in item)
-                    item[prop] = item[prop].deep_unpack();
-            });
-            return toc;
-        },
     });
 
     add_custom_model_constructors(Eknc.AudioObjectModel);

@@ -35,7 +35,7 @@ describe ('Article Object Model', function () {
         });
 
         it ('should read in a table of contents', function () {
-            expect(articleObject.table_of_contents[0].hasLabel).toBe('History');
+            expect(articleObject.table_of_contents.get_label(0)).toBe('History');
         });
 
         it('marshals an authors array', function () {
