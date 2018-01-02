@@ -16,7 +16,6 @@
 
 #include "eknc-database-manager-private.h"
 
-#define QUERY_PARAM_COLLAPSE_KEY "collapse"
 #define QUERY_PARAM_CUTOFF "cutoff"
 #define QUERY_PARAM_DEFAULT_OP "defaultOp"
 #define QUERY_PARAM_FILTER "filter"
@@ -926,10 +925,6 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
       g_object_unref (parsed_query);
       parsed_query = g_steal_pointer (&full_query);
     }
-
-  const char *collapse_str = g_hash_table_lookup (query_options, QUERY_PARAM_COLLAPSE_KEY);
-  if (collapse_str != NULL)
-    xapian_enquire_set_collapse_key (enquire, CLAMP (g_ascii_strtod (collapse_str, NULL), 0, G_MAXUINT));
 
   const char *sort_str = g_hash_table_lookup (query_options, QUERY_PARAM_SORT_BY);
   if (sort_str != NULL)
