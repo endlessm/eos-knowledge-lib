@@ -111,7 +111,6 @@ eknc_database_manager_add_queryparser_prefixes (EkncDatabaseManager *self,
 static void
 eknc_database_manager_add_queryparser_standard_prefixes (EkncDatabaseManager *self)
 {
-  /* TODO: these should be configurable */
   static const struct {
     const gchar *field;
     const gchar *prefix;
