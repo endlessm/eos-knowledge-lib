@@ -94,6 +94,8 @@ eknc_query_results_finalize (GObject *object)
   EkncQueryResults *self = EKNC_QUERY_RESULTS (object);
 
   g_slist_free_full (self->models, g_object_unref);
+
+  G_OBJECT_CLASS (eknc_query_results_parent_class)->finalize (object);
 }
 
 

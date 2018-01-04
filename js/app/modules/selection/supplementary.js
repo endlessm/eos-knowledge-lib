@@ -37,6 +37,6 @@ var Supplementary = new Module.Class({
             default:
                 return null;
         }
-        return Eknc.QueryObject.new_from_props(query_object_params);
+        return new Eknc.QueryObject(query_object_params);
     },
 });

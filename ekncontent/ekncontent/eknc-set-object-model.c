@@ -13,7 +13,7 @@
  * The model class for set objects.
  */
 typedef struct {
-  GVariant *child_tags;
+  char **child_tags;
 } EkncSetObjectModelPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (EkncSetObjectModel,
@@ -40,7 +40,7 @@ eknc_set_object_model_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_CHILD_TAGS:
-      g_value_set_variant (value, priv->child_tags);
+      g_value_set_boxed (value, priv->child_tags);
       break;
 
     default:
@@ -60,8 +60,8 @@ eknc_set_object_model_set_property (GObject *object,
   switch (prop_id)
     {
     case PROP_CHILD_TAGS:
-      g_clear_pointer (&priv->child_tags, g_variant_unref);
-      priv->child_tags = g_value_dup_variant (value);
+      g_clear_pointer (&priv->child_tags, g_strfreev);
+      priv->child_tags = g_value_dup_boxed (value);
       break;
 
     default:
@@ -75,7 +75,7 @@ eknc_set_object_model_finalize (GObject *object)
   EkncSetObjectModel *self = EKNC_SET_OBJECT_MODEL (object);
   EkncSetObjectModelPrivate *priv = eknc_set_object_model_get_instance_private (self);
 
-  g_clear_pointer (&priv->child_tags, g_variant_unref);
+  g_clear_pointer (&priv->child_tags, g_strfreev);
 
   G_OBJECT_CLASS (eknc_set_object_model_parent_class)->finalize (object);
 }
@@ -103,9 +103,9 @@ eknc_set_object_model_class_init (EkncSetObjectModelClass *klass)
    * to the tags with which a set itself has been tagged.
    */
   eknc_set_object_model_props[PROP_CHILD_TAGS] =
-    g_param_spec_variant ("child-tags", "Child Tags",
+    g_param_spec_boxed ("child-tags", "Child Tags",
       "A list of tags that articles in this set are tagged with",
-      G_VARIANT_TYPE ("as"), NULL,
+      G_TYPE_STRV,
       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class,
@@ -145,9 +145,9 @@ eknc_set_object_model_add_json_to_params (JsonNode *node,
  *
  * Get the models child_tags.
  *
- * Returns: (transfer none): the resources GVariant
+ * Returns: (transfer none) (array zero-terminated=1): an array of strings
  */
-GVariant *
+char * const *
 eknc_set_object_model_get_child_tags (EkncSetObjectModel *self)
 {
   g_return_val_if_fail (EKNC_IS_SET_OBJECT_MODEL (self), NULL);

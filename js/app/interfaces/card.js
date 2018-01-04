@@ -284,7 +284,7 @@ var Card = new Lang.Interface({
 
     // O promises, where art thou?
     _count_set: function (set_obj, callback) {
-        let query = Eknc.QueryObject.new_from_props({
+        let query = new Eknc.QueryObject({
             tags_match_any: set_obj.child_tags,
             limit: GLib.MAXUINT32,
         });

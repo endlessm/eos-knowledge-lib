@@ -77,7 +77,7 @@ var ContentForSet = new Module.Class({
         if (!this.model)
             return null;
 
-        return Eknc.QueryObject.new_from_props({
+        return new Eknc.QueryObject({
             limit: limit,
             tags_match_any: this.model.child_tags,
             sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,

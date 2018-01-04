@@ -44,11 +44,9 @@ var Next = new Module.Class({
         if (!next_model)
             return null;
 
-        let query_object_params = {
+        return new Eknc.QueryObject({
             limit: 1,
             ids: [next_model.ekn_id],
-        };
-
-        return Eknc.QueryObject.new_from_props(query_object_params);
+        });
     },
 });

@@ -459,7 +459,7 @@ function _pretty_print_table (elements) {
 
 function query (app_id, query_string) {
     let engine = Eknc.Engine.get_default();
-    let query_obj = Eknc.QueryObject.new_from_props({
+    let query_obj = new Eknc.QueryObject({
         query: query_string,
         limit: BATCH_SIZE,
         app_id: app_id,

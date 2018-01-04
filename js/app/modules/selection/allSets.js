@@ -21,7 +21,7 @@ var AllSets = new Module.Class({
     construct_query_object: function (limit, query_index) {
         if (query_index > 0)
             return null;
-        return Eknc.QueryObject.new_from_props({
+        return new Eknc.QueryObject({
             limit: limit,
             tags_match_all: ['EknSetObject'],
             sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,

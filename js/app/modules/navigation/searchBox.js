@@ -103,7 +103,7 @@ var SearchBox = new Module.Class({
         if (query.length === 0)
             return;
 
-        let query_obj = Eknc.QueryObject.new_from_props({
+        let query_obj = new Eknc.QueryObject({
             query: query,
             limit: RESULTS_SIZE,
             tags_match_any: ['EknArticleObject'],

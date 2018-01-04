@@ -64,19 +64,19 @@ typedef enum {
   EKNC_QUERY_OBJECT_ORDER_DESCENDING,
 } EkncQueryObjectOrder;
 
-GVariant *
+char * const *
 eknc_query_object_get_tags_match_all (EkncQueryObject *self);
 
-GVariant *
+char * const *
 eknc_query_object_get_tags_match_any (EkncQueryObject *self);
 
-GVariant *
+char * const *
 eknc_query_object_get_ids (EkncQueryObject *self);
 
-GVariant *
+char * const *
 eknc_query_object_get_excluded_ids (EkncQueryObject *self);
 
-GVariant *
+char * const *
 eknc_query_object_get_excluded_tags (EkncQueryObject *self);
 
 const char *

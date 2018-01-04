@@ -39,14 +39,14 @@ var ArticleContext = new Module.Class({
             return null;
 
         if (this._item.query.length > 0) {
-            return Eknc.QueryObject.new_from_props({
+            return new Eknc.QueryObject({
                 limit: limit,
                 query: this._item.query,
                 tags_match_any: ['EknArticleObject'],
             });
         }
 
-        return Eknc.QueryObject.new_from_props({
+        return new Eknc.QueryObject({
             limit: limit,
             tags_match_any: this._item.model.child_tags,
             sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,

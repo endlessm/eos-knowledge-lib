@@ -63,11 +63,11 @@ struct _EkncQueryObject
   EkncQueryObjectOrder order;
   guint limit;
   guint offset;
-  GVariant *tags_match_all;
-  GVariant *tags_match_any;
-  GVariant *ids;
-  GVariant *excluded_ids;
-  GVariant *excluded_tags;
+  char **tags_match_all;
+  char **tags_match_any;
+  char **ids;
+  char **excluded_ids;
+  char **excluded_tags;
 };
 
 G_DEFINE_TYPE (EkncQueryObject,
@@ -152,23 +152,23 @@ eknc_query_object_get_property (GObject    *object,
       break;
 
     case PROP_TAGS_MATCH_ALL:
-      g_value_set_variant (value, self->tags_match_all);
+      g_value_set_boxed (value, self->tags_match_all);
       break;
 
     case PROP_TAGS_MATCH_ANY:
-      g_value_set_variant (value, self->tags_match_any);
+      g_value_set_boxed (value, self->tags_match_any);
       break;
 
     case PROP_IDS:
-      g_value_set_variant (value, self->ids);
+      g_value_set_boxed (value, self->ids);
       break;
 
     case PROP_EXCLUDED_IDS:
-      g_value_set_variant (value, self->excluded_ids);
+      g_value_set_boxed (value, self->excluded_ids);
       break;
 
     case PROP_EXCLUDED_TAGS:
-      g_value_set_variant (value, self->excluded_tags);
+      g_value_set_boxed (value, self->excluded_tags);
       break;
 
     default:
@@ -236,28 +236,28 @@ eknc_query_object_set_property (GObject *object,
       break;
 
     case PROP_TAGS_MATCH_ALL:
-      g_clear_pointer (&self->tags_match_all, g_variant_unref);
-      self->tags_match_all = g_value_dup_variant (value);
+      g_clear_pointer (&self->tags_match_all, g_strfreev);
+      self->tags_match_all = g_value_dup_boxed (value);
       break;
 
     case PROP_TAGS_MATCH_ANY:
-      g_clear_pointer (&self->tags_match_any, g_variant_unref);
-      self->tags_match_any = g_value_dup_variant (value);
+      g_clear_pointer (&self->tags_match_any, g_strfreev);
+      self->tags_match_any = g_value_dup_boxed (value);
       break;
 
     case PROP_IDS:
-      g_clear_pointer (&self->ids, g_variant_unref);
-      self->ids = g_value_dup_variant (value);
+      g_clear_pointer (&self->ids, g_strfreev);
+      self->ids = g_value_dup_boxed (value);
       break;
 
     case PROP_EXCLUDED_IDS:
-      g_clear_pointer (&self->excluded_ids, g_variant_unref);
-      self->excluded_ids = g_value_dup_variant (value);
+      g_clear_pointer (&self->excluded_ids, g_strfreev);
+      self->excluded_ids = g_value_dup_boxed (value);
       break;
 
     case PROP_EXCLUDED_TAGS:
-      g_clear_pointer (&self->excluded_tags, g_variant_unref);
-      self->excluded_tags = g_value_dup_variant (value);
+      g_clear_pointer (&self->excluded_tags, g_strfreev);
+      self->excluded_tags = g_value_dup_boxed (value);
       break;
 
     default:
@@ -276,11 +276,11 @@ eknc_query_object_finalize (GObject *object)
   g_clear_pointer (&self->stopword_free_query, g_free);
   g_clear_pointer (&self->literal_query, g_free);
   g_clear_pointer (&self->query_parser_string, g_free);
-  g_clear_pointer (&self->tags_match_all, g_variant_unref);
-  g_clear_pointer (&self->tags_match_any, g_variant_unref);
-  g_clear_pointer (&self->ids, g_variant_unref);
-  g_clear_pointer (&self->excluded_ids, g_variant_unref);
-  g_clear_pointer (&self->excluded_tags, g_variant_unref);
+  g_clear_pointer (&self->tags_match_all, g_strfreev);
+  g_clear_pointer (&self->tags_match_any, g_strfreev);
+  g_clear_pointer (&self->ids, g_strfreev);
+  g_clear_pointer (&self->excluded_ids, g_strfreev);
+  g_clear_pointer (&self->excluded_tags, g_strfreev);
 
   G_OBJECT_CLASS (eknc_query_object_parent_class)->finalize (object);
 }
@@ -412,9 +412,9 @@ eknc_query_object_class_init (EkncQueryObjectClass *klass)
    * A list of tags to restrict the search to.
    */
   eknc_query_object_props[PROP_TAGS_MATCH_ALL] =
-    g_param_spec_variant ("tags-match-all", "Tags match all",
+    g_param_spec_boxed ("tags-match-all", "Tags match all",
       "A list of tags to restrict the search to",
-      G_VARIANT_TYPE ("as"), NULL,
+      G_TYPE_STRV,
       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
@@ -423,9 +423,9 @@ eknc_query_object_class_init (EkncQueryObjectClass *klass)
    * A list of tags to restrict the search to.
    */
   eknc_query_object_props[PROP_TAGS_MATCH_ANY] =
-    g_param_spec_variant ("tags-match-any", "Tags match any",
+    g_param_spec_boxed ("tags-match-any", "Tags match any",
       "A list of tags to restrict the search to",
-      G_VARIANT_TYPE ("as"), NULL,
+      G_TYPE_STRV,
       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
@@ -435,9 +435,9 @@ eknc_query_object_class_init (EkncQueryObjectClass *klass)
    * empty query to retrieve the given set of ids.
    */
   eknc_query_object_props[PROP_IDS] =
-    g_param_spec_variant ("ids", "Ids",
+    g_param_spec_boxed ("ids", "Ids",
       "A list of model ids",
-      G_VARIANT_TYPE ("as"), NULL,
+      G_TYPE_STRV,
       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
@@ -446,9 +446,9 @@ eknc_query_object_class_init (EkncQueryObjectClass *klass)
    * A list of specific ekn ids to exclude from the search.
    */
   eknc_query_object_props[PROP_EXCLUDED_IDS] =
-    g_param_spec_variant ("excluded-ids", "Excluded ids",
+    g_param_spec_boxed ("excluded-ids", "Excluded ids",
       "A list of specific ekn ids to exclude from the search",
-      G_VARIANT_TYPE ("as"), NULL,
+      G_TYPE_STRV,
       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
@@ -457,9 +457,9 @@ eknc_query_object_class_init (EkncQueryObjectClass *klass)
    * A list of specific ekn tags to exclude from the search.
    */
   eknc_query_object_props[PROP_EXCLUDED_TAGS] =
-    g_param_spec_variant ("excluded-tags", "Excluded tags",
+    g_param_spec_boxed ("excluded-tags", "Excluded tags",
       "A list of specific ekn tags to exclude from the search",
-      G_VARIANT_TYPE ("as"), NULL,
+      G_TYPE_STRV,
       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class,
@@ -609,15 +609,14 @@ get_body_clause (EkncQueryObject *self, gchar **terms)
 }
 
 static gchar *
-get_tags_clause (GVariant *variant, gchar *join_op, gboolean exclude)
+get_tags_clause (char **tags, char *join_op, gboolean exclude)
 {
-  if (variant == NULL)
+  if (tags == NULL)
     return NULL;
   // Tag lists should be joined as a series of individual tag queries joined
   // by with a join operator, so an article that has any of the tags will
   // match, e.g. [foo,bar,baz] => 'K:foo OR K:bar OR K:baz'
-  gsize length;
-  g_autofree const gchar **tags = g_variant_get_strv (variant, &length);
+  size_t length = g_strv_length (tags);
   g_auto(GStrv) prefixed_tags = g_new0 (gchar *, length + 1);
   for (guint i = 0; i < length; i++)
     {
@@ -630,12 +629,11 @@ get_tags_clause (GVariant *variant, gchar *join_op, gboolean exclude)
 }
 
 static gchar *
-get_ids_clause (GVariant *variant, gchar *join_op, gboolean exclude)
+get_ids_clause (char **ids, char *join_op, gboolean exclude)
 {
-  if (variant == NULL)
+  if (ids == NULL)
     return NULL;
-  gsize length;
-  g_autofree const gchar **ids = g_variant_get_strv (variant, &length);
+  size_t length = g_strv_length (ids);
   g_auto(GStrv) prefixed_ids = g_new0 (gchar *, length + 1);
   for (guint i = 0; i < length; i++)
     {
@@ -675,11 +673,11 @@ consume_clause (GString *parser_string,
  * eknc_query_object_get_tags_match_all:
  * @self: the model
  *
- * Get the GVariant in the EkncQueryObject:tags-match-all
+ * Accessor function for #EkncQueryObject:tags-match-all.
  *
- * Returns: (transfer none): the resources GVariant
+ * Returns: (transfer none) (array zero-terminated=1): an array of strings
  */
-GVariant *
+char * const *
 eknc_query_object_get_tags_match_all (EkncQueryObject *self)
 {
   g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
@@ -690,11 +688,11 @@ eknc_query_object_get_tags_match_all (EkncQueryObject *self)
  * eknc_query_object_get_tags_match_any:
  * @self: the model
  *
- * Get the GVariant in the EkncQueryObject:tags-match-any
+ * Accessor function for #EkncQueryObject:tags-match-any.
  *
- * Returns: (transfer none): the resources GVariant
+ * Returns: (transfer none) (array zero-terminated=1): an array of strings
  */
-GVariant *
+char * const *
 eknc_query_object_get_tags_match_any (EkncQueryObject *self)
 {
   g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
@@ -705,11 +703,11 @@ eknc_query_object_get_tags_match_any (EkncQueryObject *self)
  * eknc_query_object_get_ids:
  * @self: the model
  *
- * Get the GVariant in the EkncQueryObject:ids
+ * Accessor function for #EkncQueryObject:ids.
  *
- * Returns: (transfer none): the resources GVariant
+ * Returns: (transfer none) (array zero-terminated=1): an array of strings
  */
-GVariant *
+char * const *
 eknc_query_object_get_ids (EkncQueryObject *self)
 {
   g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
@@ -720,11 +718,11 @@ eknc_query_object_get_ids (EkncQueryObject *self)
  * eknc_query_object_get_excluded_ids:
  * @self: the model
  *
- * Get the GVariant in the EkncQueryObject:excluded-ids
+ * Accessor function for #EkncQueryObject:excluded-ids.
  *
- * Returns: (transfer none): the resources GVariant
+ * Returns: (transfer none) (array zero-terminated=1): an array of strings
  */
-GVariant *
+char * const *
 eknc_query_object_get_excluded_ids (EkncQueryObject *self)
 {
   g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
@@ -735,11 +733,11 @@ eknc_query_object_get_excluded_ids (EkncQueryObject *self)
  * eknc_query_object_get_excluded_tags:
  * @self: the model
  *
- * Get the GVariant in the EkncQueryObject:excluded-tags
+ * Accessor function for #EkncQueryObject:excluded-tags.
  *
- * Returns: (transfer none): the resources GVariant
+ * Returns: (transfer none) (array zero-terminated=1): an array of strings
  */
-GVariant *
+char * const *
 eknc_query_object_get_excluded_tags (EkncQueryObject *self)
 {
   g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);

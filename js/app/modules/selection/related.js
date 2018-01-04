@@ -35,11 +35,10 @@ var Related = new Module.Class({
             return null;
 
         let tags = item.model.tags.filter(tag => !tag.startsWith('Ekn'));
-        let query_object_params = {
+
+        return new Eknc.QueryObject({
             limit: limit,
             tags_match_any: tags,
-        };
-
-        return Eknc.QueryObject.new_from_props(query_object_params);
+        });
     },
 });

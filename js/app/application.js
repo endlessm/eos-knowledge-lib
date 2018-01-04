@@ -254,7 +254,7 @@ var Application = new Knowledge.Class({
     },
 
     _initialize_set_map: function () {
-        Eknc.Engine.get_default().query_promise(Eknc.QueryObject.new_from_props({
+        Eknc.Engine.get_default().query_promise(new Eknc.QueryObject({
             limit: GLib.MAXUINT32,
             tags_match_all: ['EknSetObject'],
         }))
