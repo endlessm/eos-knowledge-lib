@@ -708,26 +708,18 @@ eknc_query_object_get_search_terms (EkncQueryObject *self)
   return self->search_terms;
 }
 
-/**
- * eknc_query_object_get_corrected_query_string:
+/*
+ * get_corrected_query_string:
  * @self: a #EkncQueryObject
  *
  * Retrieves the query string, including spelling corrections in case
  * the #EkncQueryObject:corrected-terms property is set.
  *
- * If #EkncQueryObject:corrected-terms is unset, this function returns
- * the same string as eknc_query_object_get_query_string().
- *
  * Returns: (transfer full) (nullable): the corrected query string
  */
-char *
-eknc_query_object_get_corrected_query_string (EkncQueryObject *self)
+static char *
+get_corrected_query_string (EkncQueryObject *self)
 {
-  g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
-
-  if (self->literal_query != NULL)
-    return g_strdup (self->literal_query);
-
   g_auto(GStrv) raw_terms = get_terms (self->search_terms);
 
   if (g_strv_length (raw_terms) == 0)
@@ -776,69 +768,17 @@ eknc_query_object_get_corrected_query_string (EkncQueryObject *self)
   return g_string_free (query_clause, FALSE);
 }
 
-/**
- * eknc_query_object_get_query_string:
- * @self: a #EkncQueryObject
- *
- * Retrieves the query string.
- *
- * Returns: (transfer full) (nullable): the query string
- */
-char *
-eknc_query_object_get_query_string (EkncQueryObject *self)
-{
-  g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
-
-  if (self->literal_query != NULL)
-    return g_strdup (self->literal_query);
-
-  g_auto(GStrv) raw_terms = get_terms (self->search_terms);
-
-  if (g_strv_length (raw_terms) == 0)
-    return NULL;
-
-  /* If we only have one character in our search, only look for an exact match.
-   * Fancier searching, particularly wildcard search, leads to performance
-   * problems.
-   */
-  if (g_strv_length (raw_terms) == 1 && g_utf8_strlen (raw_terms[0], -1) == 1)
-    return g_strconcat (XAPIAN_PREFIX_EXACT_TITLE, raw_terms[0], NULL);
-
-  GString *query_clause = g_string_new (NULL);
-
-  g_autofree char *exact_title_clause = get_exact_title_clause (self, raw_terms);
-
-  g_string_append (query_clause, exact_title_clause);
-
-  g_autofree char *title_clause = get_title_clause (self, raw_terms, NULL);
-
-  g_string_append (query_clause, XAPIAN_OP_OR);
-  g_string_append (query_clause, title_clause);
-
-  if (self->match == EKNC_QUERY_OBJECT_MATCH_TITLE_SYNOPSIS)
-    {
-      g_autofree char *body_clause = g_strjoinv (" ", raw_terms);
-
-      g_string_append (query_clause, XAPIAN_OP_OR);
-      g_string_append (query_clause, body_clause);
-    }
-
-  return g_string_free (query_clause, FALSE);
-}
-
-/**
- * eknc_query_object_get_filter_string:
+/*
+ * get_filter_string:
  * @self: a #EkncQueryObject
  *
  * Retrieves the `filter` string from the object.
  *
  * Returns: (transfer full) (nullable): the filter string
  */
-char *
-eknc_query_object_get_filter_string (EkncQueryObject *self)
+static char *
+get_filter_string (EkncQueryObject *self)
 {
-  g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
-
   if (self->tags_match_any == NULL && self->tags_match_all == NULL && self->ids == NULL)
     return NULL;
 
@@ -851,19 +791,17 @@ eknc_query_object_get_filter_string (EkncQueryObject *self)
   return g_string_free (filter_string, FALSE);
 }
 
-/**
- * eknc_query_object_get_filter_out_string:
+/*
+ * get_filter_out_string:
  * @self: a #EkncQueryObject
  *
  * Retrieves the `filter-out` string from the object.
  *
  * Returns: (transfer full) (nullable): the filter-out string
  */
-char *
-eknc_query_object_get_filter_out_string (EkncQueryObject *self)
+static char *
+get_filter_out_string (EkncQueryObject *self)
 {
-  g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
-
   if (self->excluded_tags == NULL && self->excluded_ids == NULL)
     return NULL;
 
@@ -1043,6 +981,113 @@ eknc_query_object_configure_enquire (EkncQueryObject *self,
       unsigned cutoff = eknc_query_object_get_cutoff (self);
       xapian_enquire_set_cutoff (enquire, cutoff);
     }
+}
+
+/**
+ * eknc_query_object_get_query:
+ * @self: the query object
+ * @qp: a #XapianQueryParser
+ * @error_out: (nullable): return location for an error, or %NULL.
+ *
+ * Create a #XapianQuery object from an #EkncQueryObject.
+ * The search terms will be parsed using @qp.
+ * If the #EkncQueryObject:literal-query property is set, @qp will be used to
+ * parse that too.
+ *
+ * Returns: (transfer full): The constructed #XapianQuery, or %NULL on error.
+ */
+XapianQuery *
+eknc_query_object_get_query (EkncQueryObject *self,
+                             XapianQueryParser *qp,
+                             GError **error_out)
+{
+  g_autoptr(GError) error = NULL;
+  g_autoptr(XapianQuery) parsed_query = NULL;
+
+  /* "literal-query" is for debugging, short-circuiting everything else */
+  if (self->literal_query != NULL)
+    {
+      parsed_query = xapian_query_parser_parse_query (qp, self->literal_query,
+                                                      &error);
+      if (error != NULL)
+        {
+          g_propagate_error (error_out, error);
+          return NULL;
+        }
+
+      return g_steal_pointer (&parsed_query);
+    }
+
+  if (self->search_terms != NULL)
+    {
+      g_autofree char *query_string = get_corrected_query_string (self);
+      xapian_query_parser_set_default_op (qp, XAPIAN_QUERY_OP_AND);
+      parsed_query = xapian_query_parser_parse_query_full (qp, query_string,
+                                                           XAPIAN_QUERY_PARSER_FEATURE_DEFAULT |
+                                                           XAPIAN_QUERY_PARSER_FEATURE_PARTIAL |
+                                                           XAPIAN_QUERY_PARSER_FEATURE_SPELLING_CORRECTION,
+                                                           "", &error);
+
+      if (error != NULL)
+        {
+          g_propagate_error (error_out, error);
+          return NULL;
+        }
+    }
+  /* If no search terms, then query was match-all; parsed_query remains NULL */
+
+  /* Parse the filters (if any) and combine. */
+  g_autofree char *filter_str = get_filter_string (self);
+  if (filter_str != NULL)
+    {
+      g_autoptr(XapianQuery) filter_query =
+        xapian_query_parser_parse_query (qp, filter_str, &error);
+      if (error != NULL)
+        {
+          g_propagate_error (error_out, error);
+          return NULL;
+        }
+
+      if (parsed_query == NULL)
+        {
+          /* match_all */
+          parsed_query = g_steal_pointer (&filter_query);
+        }
+      else
+        {
+          g_autoptr(XapianQuery) full_query =
+            xapian_query_new_for_pair (XAPIAN_QUERY_OP_FILTER, parsed_query, filter_query);
+
+          g_object_unref (parsed_query);
+          parsed_query = g_steal_pointer (&full_query);
+        }
+    }
+  else if (parsed_query == NULL)
+    {
+      parsed_query = xapian_query_new_match_all ();
+    }
+
+  g_autofree char *filterout_str = get_filter_out_string (self);
+  if (filterout_str != NULL)
+    {
+      g_autoptr(XapianQuery) filterout_query =
+        xapian_query_parser_parse_query (qp, filterout_str, &error);
+      if (error != NULL)
+        {
+          g_propagate_error (error_out, error);
+          return NULL;
+        }
+
+      g_autoptr(XapianQuery) full_query =
+        xapian_query_new_for_pair (XAPIAN_QUERY_OP_AND_NOT,
+                                   parsed_query,
+                                   filterout_query);
+
+      g_object_unref (parsed_query);
+      parsed_query = g_steal_pointer (&full_query);
+    }
+
+  return g_steal_pointer (&parsed_query);
 }
 
 /**

@@ -600,98 +600,16 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
 
   eknc_query_object_configure_enquire (query, enquire);
 
-  g_autofree char *search_terms = eknc_query_object_get_corrected_query_string (query);
+  const char *search_terms = eknc_query_object_get_search_terms (query);
   g_debug (G_STRLOC ": Query: '%s'", search_terms);
 
-  g_autoptr(XapianQuery) parsed_query = NULL;
-
-  gboolean match_all = eknc_query_object_is_match_all (query);
-  if (match_all && search_terms == NULL)
+  g_autoptr(XapianQuery) parsed_query = eknc_query_object_get_query (query,
+                                                                     priv->query_parser,
+                                                                     &error);
+  if (error != NULL)
     {
-      /* Handled below. */
-    }
-  else if (search_terms != NULL && !match_all)
-    {
-      xapian_query_parser_set_default_op (priv->query_parser, XAPIAN_QUERY_OP_AND);
-
-      parsed_query = xapian_query_parser_parse_query_full (priv->query_parser,
-                                                           search_terms,
-                                                           XAPIAN_QUERY_PARSER_FEATURE_DEFAULT |
-                                                           XAPIAN_QUERY_PARSER_FEATURE_PARTIAL |
-                                                           XAPIAN_QUERY_PARSER_FEATURE_SPELLING_CORRECTION,
-                                                           "",
-                                                           &error);
-
-      if (error != NULL)
-        {
-          g_propagate_error (error_out, error);
-          return NULL;
-        }
-    }
-  else
-    {
-      g_set_error (error_out, EKNC_DATABASE_MANAGER_ERROR,
-                  EKNC_DATABASE_MANAGER_ERROR_INVALID_PARAMS,
-                  "Either the query must include search terms, or match all.");
+      g_propagate_error (error_out, error);
       return NULL;
-    }
-
-  /* Parse the filters (if any) and combine. */
-  g_autofree char *filter_str = eknc_query_object_get_filter_string (query);
-  if (filter_str != NULL)
-    {
-      g_autoptr(XapianQuery) filter_query =
-        xapian_query_parser_parse_query_full (priv->query_parser,
-                                              filter_str,
-                                              XAPIAN_QUERY_PARSER_FEATURE_DEFAULT,
-                                              "", &error);
-      if (error != NULL)
-        {
-          g_propagate_error (error_out, error);
-          return NULL;
-        }
-
-      if (parsed_query == NULL)
-        {
-          /* match_all */
-          parsed_query = g_steal_pointer (&filter_query);
-        }
-      else
-        {
-          g_autoptr(XapianQuery) full_query =
-            xapian_query_new_for_pair (XAPIAN_QUERY_OP_FILTER, parsed_query, filter_query);
-
-          g_object_unref (parsed_query);
-          parsed_query = g_steal_pointer (&full_query);
-        }
-    }
-  else if (parsed_query == NULL)
-    {
-      parsed_query = xapian_query_new_match_all ();
-    }
-
-  g_autofree char *filterout_str = eknc_query_object_get_filter_out_string (query);
-  if (filterout_str != NULL)
-    {
-      g_autoptr(XapianQuery) filterout_query =
-        xapian_query_parser_parse_query_full (priv->query_parser,
-                                              filterout_str,
-                                              XAPIAN_QUERY_PARSER_FEATURE_DEFAULT,
-                                              "",
-                                              &error);
-      if (error != NULL)
-        {
-          g_propagate_error (error_out, error);
-          return NULL;
-        }
-
-      g_autoptr(XapianQuery) full_query =
-        xapian_query_new_for_pair (XAPIAN_QUERY_OP_AND_NOT,
-                                   parsed_query,
-                                   filterout_query);
-
-      g_object_unref (parsed_query);
-      parsed_query = g_steal_pointer (&full_query);
     }
 
   guint offset = eknc_query_object_get_offset (query);

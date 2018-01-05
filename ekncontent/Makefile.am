@@ -233,6 +233,7 @@ EosKnowledgeContent_@EKN_CONTENT_API_VERSION@_gir_INCLUDES = \
 	GObject-2.0 \
 	Json-1.0 \
 	Soup-2.4 \
+	Xapian-1.0 \
 	$(NULL)
 EosKnowledgeContent_@EKN_CONTENT_API_VERSION@_gir_SCANNERFLAGS = \
 	--warn-all --warn-error \

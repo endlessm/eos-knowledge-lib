@@ -3,6 +3,7 @@
 #pragma once
 
 #include <glib-object.h>
+#include <xapian-glib.h>
 
 G_BEGIN_DECLS
 
@@ -82,18 +83,6 @@ eknc_query_object_get_excluded_tags (EkncQueryObject *self);
 const char *
 eknc_query_object_get_search_terms (EkncQueryObject *self);
 
-char *
-eknc_query_object_get_query_string (EkncQueryObject *self);
-
-char *
-eknc_query_object_get_corrected_query_string (EkncQueryObject *self);
-
-char *
-eknc_query_object_get_filter_string (EkncQueryObject *self);
-
-char *
-eknc_query_object_get_filter_out_string (EkncQueryObject *self);
-
 guint
 eknc_query_object_get_cutoff (EkncQueryObject *self);
 
@@ -108,6 +97,11 @@ eknc_query_object_get_offset (EkncQueryObject *self);
 
 guint
 eknc_query_object_get_limit (EkncQueryObject *self);
+
+XapianQuery *
+eknc_query_object_get_query (EkncQueryObject *self,
+                             XapianQueryParser *qp,
+                             GError **error_out);
 
 EkncQueryObject *
 eknc_query_object_new_from_object (EkncQueryObject *source,
