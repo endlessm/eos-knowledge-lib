@@ -21,6 +21,8 @@
 #include <json-glib/json-glib.h>
 #include <xapian-glib.h>
 
+#include "eknc-query-object.h"
+
 G_BEGIN_DECLS
 
 #define EKNC_TYPE_DATABASE_MANAGER eknc_database_manager_get_type()
@@ -43,14 +45,13 @@ eknc_database_manager_new (const char *path);
 
 XapianMSet *
 eknc_database_manager_query (EkncDatabaseManager *self,
-                             const char *search_terms,
-                             GHashTable *params,
+                             EkncQueryObject *query,
+                             const char *lang,
                              GError **error_out);
 
 gboolean
 eknc_database_manager_fix_query (EkncDatabaseManager *self,
                                  const char *search_terms,
-                                 GHashTable *params,
                                  char **stop_fixed_terms,
                                  char **spell_fixed_terms,
                                  GError **error_out);

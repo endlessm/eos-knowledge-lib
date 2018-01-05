@@ -1,6 +1,6 @@
 /* Copyright 2016 Endless Mobile, Inc. */
 
-#include "eknc-query-object.h"
+#include "eknc-query-object-private.h"
 
 #include "eknc-enums.h"
 #include "eknc-utils-private.h"
@@ -839,6 +839,9 @@ eknc_query_object_get_filter_string (EkncQueryObject *self)
 {
   g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
 
+  if (self->tags_match_any == NULL && self->tags_match_all == NULL && self->ids == NULL)
+    return NULL;
+
   GString *filter_string = g_string_new (NULL);
 
   consume_clause (filter_string, get_tags_clause (self->tags_match_any, XAPIAN_OP_OR));
@@ -860,6 +863,9 @@ char *
 eknc_query_object_get_filter_out_string (EkncQueryObject *self)
 {
   g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
+
+  if (self->excluded_tags == NULL && self->excluded_ids == NULL)
+    return NULL;
 
   GString *filterout_string = g_string_new (NULL);
 
@@ -1012,4 +1018,59 @@ G_GNUC_END_IGNORE_DEPRECATIONS
       g_value_unset (&params[i].value);
     }
   return EKNC_QUERY_OBJECT (ret);
+}
+
+/*
+ * eknc_query_object_configure_enquire:
+ * @enquire: a #XapianEnquire object that will have properties set on it
+ *
+ * Private functon to configure a #XapianEnquire with the sorting parameters
+ * specified in @self.
+ */
+void
+eknc_query_object_configure_enquire (EkncQueryObject *self,
+                                     XapianEnquire *enquire)
+{
+  int sort_value = eknc_query_object_get_sort_value (self);
+
+  if (sort_value > -1)
+    {
+      gboolean reversed = (self->order == EKNC_QUERY_OBJECT_ORDER_DESCENDING);
+      xapian_enquire_set_sort_by_value (enquire, sort_value, reversed);
+    }
+  else
+    {
+      unsigned cutoff = eknc_query_object_get_cutoff (self);
+      xapian_enquire_set_cutoff (enquire, cutoff);
+    }
+}
+
+/**
+ * eknc_query_object_get_offset:
+ * @self: the query object
+ *
+ * Get the query's offset, meaning how far into the result set the returned
+ * results should start.
+ *
+ * Returns: the offset as an unsigned integer
+ */
+guint
+eknc_query_object_get_offset (EkncQueryObject *self)
+{
+  return self->offset;
+}
+
+/**
+ * eknc_query_object_get_limit:
+ * @self: the query object
+ *
+ * Get the query's limit, meaning the maximum number of results that should be
+ * returned.
+ *
+ * Returns: the limit as an unsigned integer
+ */
+guint
+eknc_query_object_get_limit (EkncQueryObject *self)
+{
+  return self->limit;
 }

@@ -90,6 +90,7 @@ ekncontent_sources = \
 	ekncontent/eknc-media-object-model.c \
 	ekncontent/eknc-object-model.c \
 	ekncontent/eknc-query-object.c \
+	ekncontent/eknc-query-object-private.h \
 	ekncontent/eknc-query-results.c \
 	ekncontent/eknc-set-object-model.c \
 	ekncontent/eknc-utils-private.h \

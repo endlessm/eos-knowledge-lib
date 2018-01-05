@@ -103,6 +103,12 @@ eknc_query_object_get_sort_value (EkncQueryObject *self);
 gboolean
 eknc_query_object_is_match_all (EkncQueryObject *self);
 
+guint
+eknc_query_object_get_offset (EkncQueryObject *self);
+
+guint
+eknc_query_object_get_limit (EkncQueryObject *self);
+
 EkncQueryObject *
 eknc_query_object_new_from_object (EkncQueryObject *source,
                                    const gchar     *first_property_name,

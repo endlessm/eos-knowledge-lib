@@ -722,8 +722,6 @@ typedef struct
 
   EkncDatabaseManager *db_manager;
 
-  GHashTable *params;
-
   char *fixed_stop_terms;
   char *fixed_spell_terms;
 } RequestState;
@@ -740,78 +738,7 @@ request_state_free (gpointer data)
   g_clear_object (&state->query);
   g_clear_object (&state->db_manager);
 
-  g_clear_pointer (&state->params, g_hash_table_unref);
-
   g_slice_free (RequestState, state);
-}
-
-static GHashTable *
-get_xapian_fix_query_params (EkncDomain *domain,
-                             EkncQueryObject *query)
-{
-  GHashTable *params = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
-
-  g_hash_table_insert (params, "defaultOp", g_strdup ("and"));
-
-  return params;
-}
-
-static GHashTable *
-get_xapian_query_params (EkncDomain *domain,
-                         EkncQueryObject *query)
-{
-  GHashTable *params = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
-
-  g_hash_table_insert (params, "defaultOp", g_strdup ("and"));
-  g_hash_table_insert (params, "flags", g_strdup ("default,partial,spelling-correction"));
-
-  char *filter_str = eknc_query_object_get_filter_string (query);
-  char *filter_out_str = eknc_query_object_get_filter_out_string (query);
-
-  if (eknc_query_object_is_match_all (query))
-    g_hash_table_insert (params, "matchAll", g_strdup ("1"));
-
-  if (filter_str != NULL)
-    g_hash_table_insert (params, "filter", filter_str);
-
-  if (filter_out_str != NULL)
-    g_hash_table_insert (params, "filterOut", filter_out_str);
-
-  if (domain->language != NULL && *domain->language != '\0')
-    g_hash_table_insert (params, "lang", g_strdup (domain->language));
-
-  guint limit, offset;
-  g_object_get (query, "limit", &limit, "offset", &offset, NULL);
-
-  if (limit > 0)
-    {
-      char *limit_string = g_strdup_printf ("%u", limit);
-      g_hash_table_insert (params, "limit", limit_string);
-    }
-
-  char *offset_string = g_strdup_printf ("%u", offset);
-  g_hash_table_insert (params, "offset", offset_string);
-
-  guint cutoff = eknc_query_object_get_cutoff (query);
-  char *cutoff_string = g_strdup_printf ("%u", cutoff);
-  g_hash_table_insert (params, "cutoff", cutoff_string);
-
-  int sort_value = eknc_query_object_get_sort_value (query);
-  if (sort_value > -1)
-    {
-      char *sort_string = g_strdup_printf ("%d", sort_value);
-      g_hash_table_insert (params, "sortBy", sort_string);
-    }
-
-  EkncQueryObjectOrder order;
-  g_object_get (query, "order", &order, NULL);
-
-  g_hash_table_insert (params, "order",
-                       order == EKNC_QUERY_OBJECT_ORDER_ASCENDING
-                         ? g_strdup ("asc")
-                         : g_strdup ("desc"));
-
-  return params;
 }
 
 static void
@@ -831,7 +758,6 @@ query_fix_task (GTask *task,
   gboolean result =
     eknc_database_manager_fix_query (request->db_manager,
                                      eknc_query_object_get_search_terms (request->query),
-                                     request->params,
                                      &request->fixed_stop_terms,
                                      &request->fixed_spell_terms,
                                      &error);
@@ -878,7 +804,6 @@ eknc_domain_get_fixed_query (EkncDomain *self,
   state->domain = g_object_ref (self);
   state->db_manager = g_object_ref (self->db_manager);
   state->query = g_object_ref (query);
-  state->params = get_xapian_fix_query_params (self, query);
 
   g_task_set_task_data (task, state, request_state_free);
 
@@ -947,12 +872,12 @@ query_task (GTask *task,
 
   g_autoptr(GMutexLocker) db_lock = g_mutex_locker_new (&state->domain->db_lock);
 
-  g_autofree char *query_str = eknc_query_object_get_corrected_query_string (state->query);
-
-  g_debug (G_STRLOC ": Query: '%s'", query_str);
+  const char *lang = state->domain->language;
+  if (lang == NULL || *lang == '\0')
+    lang = "none";
 
   g_autoptr(XapianMSet) results =
-    eknc_database_manager_query (state->db_manager, query_str, state->params, &error);
+    eknc_database_manager_query (state->db_manager, state->query, lang, &error);
   if (error != NULL)
     {
       g_task_return_error (task, error);
@@ -1034,7 +959,6 @@ eknc_domain_query (EkncDomain *self,
   state->domain = g_object_ref (self);
   state->db_manager = g_object_ref (self->db_manager);
   state->query = g_object_ref (query);
-  state->params = get_xapian_query_params (self, query);
 
   g_task_set_task_data (task, state, request_state_free);
 

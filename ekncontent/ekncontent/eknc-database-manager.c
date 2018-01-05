@@ -15,26 +15,10 @@
  */
 
 #include "eknc-database-manager-private.h"
-
-#define QUERY_PARAM_CUTOFF "cutoff"
-#define QUERY_PARAM_DEFAULT_OP "defaultOp"
-#define QUERY_PARAM_FILTER "filter"
-#define QUERY_PARAM_FILTER_OUT "filterOut"
-#define QUERY_PARAM_FLAGS "flags"
-#define QUERY_PARAM_LANG "lang"
-#define QUERY_PARAM_LIMIT "limit"
-#define QUERY_PARAM_MATCH_ALL "matchAll"
-#define QUERY_PARAM_OFFSET "offset"
-#define QUERY_PARAM_ORDER "order"
-#define QUERY_PARAM_QUERYSTR "q"
-#define QUERY_PARAM_SORT_BY "sortBy"
+#include "eknc-query-object-private.h"
 
 #define PREFIX_METADATA_KEY "XbPrefixes"
 #define STOPWORDS_METADATA_KEY "XbStopwords"
-#define QUERY_PARSER_FLAGS XAPIAN_QUERY_PARSER_FEATURE_DEFAULT | \
-  XAPIAN_QUERY_PARSER_FEATURE_WILDCARD |\
-  XAPIAN_QUERY_PARSER_FEATURE_PURE_NOT |\
-  XAPIAN_QUERY_PARSER_FEATURE_SPELLING_CORRECTION
 
 G_DEFINE_QUARK (eknc-database-manager-error-quark, eknc_database_manager_error)
 
@@ -488,175 +472,15 @@ database_is_empty (XapianDatabase *db)
 }
 
 static gboolean
-parse_default_op (XapianQueryParser *qp,
-                  const gchar *str,
-                  GError **error)
-{
-  XapianQueryOp op;
-
-  if (g_str_equal (str, "and"))
-    {
-      op = XAPIAN_QUERY_OP_AND;
-    }
-  else if (g_str_equal (str, "or"))
-    {
-      op = XAPIAN_QUERY_OP_OR;
-    }
-  else if (g_str_equal (str, "near"))
-    {
-      op = XAPIAN_QUERY_OP_NEAR;
-    }
-  else if (g_str_equal (str, "phrase"))
-    {
-      op = XAPIAN_QUERY_OP_PHRASE;
-    }
-  else if (g_str_equal (str, "elite-set"))
-    {
-      op = XAPIAN_QUERY_OP_ELITE_SET;
-    }
-  else if (g_str_equal (str, "synonym"))
-    {
-      op = XAPIAN_QUERY_OP_SYNONYM;
-    }
-  else if (g_str_equal (str, "max"))
-    {
-#ifdef XAPIAN_QUERY_OP_MAX
-      op = XAPIAN_QUERY_OP_MAX;
-#else
-      // Not wrapped by older xapian-glib.
-      g_set_error (error, EKNC_DATABASE_MANAGER_ERROR,
-                   EKNC_DATABASE_MANAGER_ERROR_INVALID_PARAMS,
-                   "defaultOp value 'max' not supported by xapian-glib in use.");
-      return FALSE;
-#endif
-    }
-  else
-    {
-      g_set_error (error, EKNC_DATABASE_MANAGER_ERROR,
-                   EKNC_DATABASE_MANAGER_ERROR_INVALID_PARAMS,
-                   "defaultOp parameter must be \"and\", \"or\", \"near\", \"phrase\", \"elite-set\", \"synonym\" or \"max\".");
-      return FALSE;
-    }
-
-  xapian_query_parser_set_default_op (qp, op);
-
-  return TRUE;
-}
-
-static gboolean
-parse_query_flags (const gchar *str,
-                   XapianQueryParserFeature *flags_ptr,
-                   GError **error)
-{
-  XapianQueryParserFeature flags = 0;
-
-  g_auto(GStrv) v = g_strsplit (str, ",", -1);
-
-  char **iter;
-
-  for (iter = v; *iter != NULL; iter++)
-    {
-      if (g_str_equal (*iter, "boolean"))
-        {
-          flags |= XAPIAN_QUERY_PARSER_FEATURE_BOOLEAN;
-        }
-      else if (g_str_equal (*iter, "phrase"))
-        {
-          flags |= XAPIAN_QUERY_PARSER_FEATURE_PHRASE;
-        }
-      else if (g_str_equal (*iter, "lovehate"))
-        {
-          flags |= XAPIAN_QUERY_PARSER_FEATURE_LOVEHATE;
-        }
-      else if (g_str_equal (*iter, "boolean-any-case"))
-        {
-          flags |= XAPIAN_QUERY_PARSER_FEATURE_BOOLEAN_ANY_CASE;
-        }
-      else if (g_str_equal (*iter, "wildcard"))
-        {
-          flags |= XAPIAN_QUERY_PARSER_FEATURE_WILDCARD;
-        }
-      else if (g_str_equal (*iter, "pure-not"))
-        {
-          flags |= XAPIAN_QUERY_PARSER_FEATURE_PURE_NOT;
-        }
-      else if (g_str_equal (*iter, "partial"))
-        {
-          flags |= XAPIAN_QUERY_PARSER_FEATURE_PARTIAL;
-        }
-      else if (g_str_equal (*iter, "spelling-correction"))
-        {
-          flags |= XAPIAN_QUERY_PARSER_FEATURE_SPELLING_CORRECTION;
-        }
-      else if (g_str_equal (*iter, "synonym"))
-        {
-          flags |= XAPIAN_QUERY_PARSER_FEATURE_SYNONYM;
-        }
-      else if (g_str_equal (*iter, "auto-synonyms"))
-        {
-          flags |= XAPIAN_QUERY_PARSER_FEATURE_AUTO_SYNONYMS;
-        }
-      else if (g_str_equal (*iter, "auto-multiword-synonyms"))
-        {
-          flags |= XAPIAN_QUERY_PARSER_FEATURE_AUTO_MULTIWORD_SYNONYMS;
-        }
-      else if (g_str_equal (*iter, "cjk-ngram"))
-        {
-#ifdef XAPIAN_QUERY_PARSER_FEATURE_CJK_NGRAM
-          flags |= XAPIAN_QUERY_PARSER_FEATURE_CJK_NGRAM;
-#else
-          /* Not wrapped by older xapian-glib. */
-          g_set_error (error, EKNC_DATABASE_MANAGER_ERROR,
-                       EKNC_DATABASE_MANAGER_ERROR_INVALID_PARAMS,
-                       "Query parser flag 'cjk-ngram' not supported by xapian-glib in use.");
-          return FALSE;
-#endif
-        }
-      else if (g_str_equal (*iter, "default"))
-        {
-          flags |= XAPIAN_QUERY_PARSER_FEATURE_DEFAULT;
-        }
-      else
-        {
-          g_set_error (error, EKNC_DATABASE_MANAGER_ERROR,
-                       EKNC_DATABASE_MANAGER_ERROR_INVALID_PARAMS,
-                       "Unknown query parser flag.");
-          return FALSE;
-        }
-    }
-
-  *flags_ptr = flags;
-
-  return TRUE;
-}
-
-static gboolean
 eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
                                           const char *search_terms,
-                                          GHashTable *query_options,
                                           char **stop_fixed_terms_out,
                                           char **spell_fixed_terms_out,
                                           GError **error_out)
 {
   EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
   GError *error = NULL;
-  const char *match_all;
-  const char *default_op;
-  const char *flags_str;
-  XapianQueryParserFeature flags = QUERY_PARSER_FLAGS;
-  XapianStopper *stopper;
-
-  match_all = g_hash_table_lookup (query_options, QUERY_PARAM_MATCH_ALL);
-
-  stopper = xapian_query_parser_get_stopper (priv->query_parser);
-
-  if (search_terms == NULL || match_all != NULL)
-    {
-      g_set_error (error_out, EKNC_DATABASE_MANAGER_ERROR,
-                  EKNC_DATABASE_MANAGER_ERROR_INVALID_PARAMS,
-                  "Query to be fixed must have search terms, and must not be match all.");
-      return FALSE;
-    }
+  XapianStopper *stopper = xapian_query_parser_get_stopper (priv->query_parser);
 
   if (stopper != NULL && stop_fixed_terms_out != NULL)
     {
@@ -677,18 +501,16 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
       *stop_fixed_terms_out = g_strjoinv (" ", filtered_words);
     }
 
-  default_op = g_hash_table_lookup (query_options, QUERY_PARAM_DEFAULT_OP);
-  if (default_op != NULL && !parse_default_op (priv->query_parser, default_op, error_out))
-    return FALSE;
-
-  flags_str = g_hash_table_lookup (query_options, QUERY_PARAM_FLAGS);
-  if (flags_str != NULL && !parse_query_flags (flags_str, &flags, error_out))
-    return FALSE;
+  xapian_query_parser_set_default_op (priv->query_parser, XAPIAN_QUERY_OP_AND);
 
   /* Parse the user's query so we can request a spelling correction. */
   xapian_query_parser_parse_query_full (priv->query_parser,
                                         search_terms != NULL ? search_terms : "",
-                                        flags, "",
+                                        XAPIAN_QUERY_PARSER_FEATURE_DEFAULT |
+                                        XAPIAN_QUERY_PARSER_FEATURE_WILDCARD |
+                                        XAPIAN_QUERY_PARSER_FEATURE_PURE_NOT |
+                                        XAPIAN_QUERY_PARSER_FEATURE_SPELLING_CORRECTION,
+                                        "",
                                         &error);
   if (error != NULL)
     {
@@ -713,7 +535,6 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
 gboolean
 eknc_database_manager_fix_query (EkncDatabaseManager *self,
                                  const char *search_terms,
-                                 GHashTable *params,
                                  char **stop_fixed_terms,
                                  char **spell_fixed_terms,
                                  GError **error_out)
@@ -724,33 +545,19 @@ eknc_database_manager_fix_query (EkncDatabaseManager *self,
     return FALSE;
 
   return eknc_database_manager_fix_query_internal (self, search_terms,
-                                                   params,
                                                    stop_fixed_terms,
                                                    spell_fixed_terms,
                                                    error_out);
 }
 
-/* If a database exists, queries it with the following options:
- *   - collapse: see http://xapian.org/docs/collapsing.html
- *   - cutoff: percent between (0, 100) for the XapianEnquire cutoff parameter
- *   - limit: max number of results to return
- *   - offset: offset from which to start returning results
- *   - order: if sortBy is specified, either "desc" or "asc" (resp. "descending"
- *            and "ascending"
- *   - q: querystring that's parseable by a XapianQueryParser
- *   - sortBy: field to sort the results on
- *   - defaultOp: default operator to use when parsing q ("and", "or", "near",
- *     "phrase", "elite-set" or "synonym"; if not specified the default is
- *     "or")
- */
+/* If a database exists, queries it with the given #EkncQueryObject. */
 static XapianMSet *
 eknc_database_manager_query_internal (EkncDatabaseManager *self,
-                                      const char *search_terms,
-                                      GHashTable *query_options,
+                                      EkncQueryObject *query,
+                                      const char *lang,
                                       GError **error_out)
 {
   EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
-  XapianQueryParserFeature flags = QUERY_PARSER_FLAGS;
   GError *error = NULL;
 
   if (database_is_empty (priv->database))
@@ -760,10 +567,6 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
                    "Empty database found");
       return NULL;
     }
-
-  const char *lang = g_hash_table_lookup (query_options, QUERY_PARAM_LANG);
-  if (lang == NULL)
-    lang = "none";
 
   XapianStem *stem = g_hash_table_lookup (priv->stemmers, lang);
   if (stem == NULL)
@@ -795,28 +598,28 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
       return NULL;
     }
 
+  eknc_query_object_configure_enquire (query, enquire);
+
+  g_autofree char *search_terms = eknc_query_object_get_corrected_query_string (query);
   g_debug (G_STRLOC ": Query: '%s'", search_terms);
 
   g_autoptr(XapianQuery) parsed_query = NULL;
 
-  const char *match_all = g_hash_table_lookup (query_options, QUERY_PARAM_MATCH_ALL);
-  if (match_all != NULL && search_terms == NULL)
+  gboolean match_all = eknc_query_object_is_match_all (query);
+  if (match_all && search_terms == NULL)
     {
       /* Handled below. */
     }
-  else if (search_terms != NULL && match_all == NULL)
+  else if (search_terms != NULL && !match_all)
     {
-      const char *default_op = g_hash_table_lookup (query_options, QUERY_PARAM_DEFAULT_OP);
-      if (default_op != NULL && !parse_default_op (priv->query_parser, default_op, error_out))
-        return NULL;
-
-      const char *flags_str = g_hash_table_lookup (query_options, QUERY_PARAM_FLAGS);
-      if (flags_str != NULL && !parse_query_flags (flags_str, &flags, error_out))
-        return NULL;
+      xapian_query_parser_set_default_op (priv->query_parser, XAPIAN_QUERY_OP_AND);
 
       parsed_query = xapian_query_parser_parse_query_full (priv->query_parser,
                                                            search_terms,
-                                                           flags, "",
+                                                           XAPIAN_QUERY_PARSER_FEATURE_DEFAULT |
+                                                           XAPIAN_QUERY_PARSER_FEATURE_PARTIAL |
+                                                           XAPIAN_QUERY_PARSER_FEATURE_SPELLING_CORRECTION,
+                                                           "",
                                                            &error);
 
       if (error != NULL)
@@ -834,7 +637,7 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
     }
 
   /* Parse the filters (if any) and combine. */
-  const char *filter_str = g_hash_table_lookup (query_options, QUERY_PARAM_FILTER);
+  g_autofree char *filter_str = eknc_query_object_get_filter_string (query);
   if (filter_str != NULL)
     {
       g_autoptr(XapianQuery) filter_query =
@@ -867,7 +670,7 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
       parsed_query = xapian_query_new_match_all ();
     }
 
-  const char *filterout_str = g_hash_table_lookup (query_options, QUERY_PARAM_FILTER_OUT);
+  g_autofree char *filterout_str = eknc_query_object_get_filter_out_string (query);
   if (filterout_str != NULL)
     {
       g_autoptr(XapianQuery) filterout_query =
@@ -891,57 +694,8 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
       parsed_query = g_steal_pointer (&full_query);
     }
 
-  const char *sort_str = g_hash_table_lookup (query_options, QUERY_PARAM_SORT_BY);
-  if (sort_str != NULL)
-    {
-      gboolean reverse_order;
-      const gchar *order;
-
-      order = g_hash_table_lookup (query_options, QUERY_PARAM_ORDER);
-      reverse_order = (g_strcmp0 (order, "desc") == 0);
-      xapian_enquire_set_sort_by_value (enquire,
-                                        CLAMP (g_ascii_strtod (sort_str, NULL), 0, G_MAXUINT),
-                                        reverse_order);
-    }
-  else
-    {
-      const char *cutoff_str = g_hash_table_lookup (query_options, QUERY_PARAM_CUTOFF);
-      if (cutoff_str != NULL)
-        xapian_enquire_set_cutoff (enquire, CLAMP (g_ascii_strtod (cutoff_str, NULL), 0, G_MAXUINT));
-    }
-
-  guint limit, offset;
-  const char *offset_str = g_hash_table_lookup (query_options, QUERY_PARAM_OFFSET);
-  if (offset_str == NULL)
-    {
-      g_set_error_literal (error_out, EKNC_DATABASE_MANAGER_ERROR,
-                           EKNC_DATABASE_MANAGER_ERROR_INVALID_PARAMS,
-                           "Offset parameter is required for the query");
-      return NULL;
-    }
-
-  offset = CLAMP (g_ascii_strtod (offset_str, NULL), 0, G_MAXUINT);
-
-  const char *limit_str = g_hash_table_lookup (query_options, QUERY_PARAM_LIMIT);
-  if (limit_str == NULL)
-    {
-      g_set_error_literal (error_out, EKNC_DATABASE_MANAGER_ERROR,
-                           EKNC_DATABASE_MANAGER_ERROR_INVALID_PARAMS,
-                           "Limit parameter is required for the query");
-      return NULL;
-    }
-
-  /* str may contain a negative value to mean "all matching results"; since
-   * casting a negative floating point value into an unsigned integer is
-   * undefined behavior, we need to perform some level of validation first
-   */
-  double val = g_ascii_strtod (limit_str, NULL);
-
-  /* Allow negative values to mean "all results" */
-  if (val < 0)
-    limit = G_MAXUINT;
-  else
-    limit = CLAMP (val, 0, G_MAXUINT);
+  guint offset = eknc_query_object_get_offset (query);
+  guint limit = eknc_query_object_get_limit (query);
 
   return eknc_database_manager_fetch_results (self, enquire,
                                               parsed_query,
@@ -951,8 +705,8 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
 
 XapianMSet *
 eknc_database_manager_query (EkncDatabaseManager *self,
-                             const char *search_terms,
-                             GHashTable *params,
+                             EkncQueryObject *query,
+                             const char *lang,
                              GError **error_out)
 {
   g_return_val_if_fail (EKNC_IS_DATABASE_MANAGER (self), NULL);
@@ -960,7 +714,7 @@ eknc_database_manager_query (EkncDatabaseManager *self,
   if (!ensure_db (self, error_out))
     return NULL;
 
-  return eknc_database_manager_query_internal (self, search_terms, params, error_out);
+  return eknc_database_manager_query_internal (self, query, lang, error_out);
 }
 
 EkncDatabaseManager *
