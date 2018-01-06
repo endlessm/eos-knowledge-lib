@@ -597,7 +597,8 @@ get_title_clause (EkncQueryObject *self,
 }
 
 static gchar *
-get_tags_clause (char **tags, char *join_op, gboolean exclude)
+get_tags_clause (char **tags,
+                 char *join_op)
 {
   if (tags == NULL)
     return NULL;
@@ -607,17 +608,13 @@ get_tags_clause (char **tags, char *join_op, gboolean exclude)
   size_t length = g_strv_length (tags);
   g_auto(GStrv) prefixed_tags = g_new0 (gchar *, length + 1);
   for (guint i = 0; i < length; i++)
-    {
-      if (exclude)
-        prefixed_tags[i] = g_strdup_printf ("%s %s\"%s\"", XAPIAN_OP_NOT, XAPIAN_PREFIX_TAG, tags[i]);
-      else
-        prefixed_tags[i] = g_strdup_printf ("%s\"%s\"", XAPIAN_PREFIX_TAG, tags[i]);
-    }
+    prefixed_tags[i] = g_strdup_printf ("%s\"%s\"", XAPIAN_PREFIX_TAG, tags[i]);
   return g_strjoinv (join_op, prefixed_tags);
 }
 
 static gchar *
-get_ids_clause (char **ids, char *join_op, gboolean exclude)
+get_ids_clause (char **ids,
+                char *join_op)
 {
   if (ids == NULL)
     return NULL;
@@ -630,10 +627,6 @@ get_ids_clause (char **ids, char *join_op, gboolean exclude)
         {
           g_critical ("Unexpected id structure in query object: %s", ids[i]);
           prefixed_ids[i] = NULL;
-        }
-      else if (exclude)
-        {
-          prefixed_ids[i] = g_strdup_printf ("%s %s%s", XAPIAN_OP_NOT, XAPIAN_PREFIX_ID, hash);
         }
       else
         {
@@ -888,9 +881,9 @@ eknc_query_object_get_filter_string (EkncQueryObject *self)
 
   GString *filter_string = g_string_new (NULL);
 
-  consume_clause (filter_string, get_tags_clause (self->tags_match_any, XAPIAN_OP_OR, FALSE));
-  consume_clause (filter_string, get_tags_clause (self->tags_match_all, XAPIAN_OP_AND, FALSE));
-  consume_clause (filter_string, get_ids_clause (self->ids, XAPIAN_OP_OR, FALSE));
+  consume_clause (filter_string, get_tags_clause (self->tags_match_any, XAPIAN_OP_OR));
+  consume_clause (filter_string, get_tags_clause (self->tags_match_all, XAPIAN_OP_AND));
+  consume_clause (filter_string, get_ids_clause (self->ids, XAPIAN_OP_OR));
 
   return g_string_free (filter_string, FALSE);
 }
@@ -910,8 +903,8 @@ eknc_query_object_get_filter_out_string (EkncQueryObject *self)
 
   GString *filterout_string = g_string_new (NULL);
 
-  consume_clause (filterout_string, get_tags_clause (self->excluded_tags, XAPIAN_OP_OR, FALSE));
-  consume_clause (filterout_string, get_ids_clause (self->excluded_ids, XAPIAN_OP_OR, FALSE));
+  consume_clause (filterout_string, get_tags_clause (self->excluded_tags, XAPIAN_OP_OR));
+  consume_clause (filterout_string, get_ids_clause (self->excluded_ids, XAPIAN_OP_OR));
 
   return g_string_free (filterout_string, FALSE);
 }
