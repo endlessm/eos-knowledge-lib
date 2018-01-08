@@ -150,6 +150,7 @@ eknc_query_object_get_tags_match_all
 eknc_query_object_get_tags_match_any
 eknc_query_object_is_match_all
 eknc_query_object_new_from_object
+eknc_query_object_to_string
 <SUBSECTION Standard>
 EkncQueryObject
 EkncQueryObjectClass

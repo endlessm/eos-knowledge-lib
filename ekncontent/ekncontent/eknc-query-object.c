@@ -1173,3 +1173,66 @@ eknc_query_object_get_limit (EkncQueryObject *self)
 {
   return self->limit;
 }
+
+/**
+ * eknc_query_object_to_string:
+ * @self: the query object
+ *
+ * Dumps a representation of @self to a string, for debugging only.
+ * The format of this string may change at any time, so it should not be parsed.
+ *
+ * Returns: a string
+ */
+char *
+eknc_query_object_to_string (EkncQueryObject *self)
+{
+  g_auto(GStrv) props = g_new0 (char *, NPROPS);
+  size_t ix = 0;
+
+#define DUMP_STRING(propname) \
+  if (self->propname) \
+    props[ix++] = g_strdup_printf (#propname ": \"%s\"", self->propname);
+
+#define DUMP_ENUM(propname, type, default_val) \
+  if (self->propname != default_val) \
+    { \
+      g_autofree char *prop = g_enum_to_string (type, self->propname); \
+      props[ix++] = g_strdup_printf (#propname ": %s", prop); \
+    }
+
+#define DUMP_UINT(propname, default_val) \
+  if (self->propname != default_val) \
+    props[ix++] = g_strdup_printf (#propname ": %u", self->propname);
+
+#define DUMP_STRV(propname) \
+  if (self->propname && *self->propname) \
+    { \
+      g_autofree char *prop = g_strjoinv ("\", \"", self->propname); \
+      props[ix++] = g_strdup_printf (#propname ": [\"%s\"]", prop); \
+    }
+
+  DUMP_STRING(app_id)
+  DUMP_STRING(search_terms)
+  DUMP_STRING(corrected_terms)
+  DUMP_STRING(stopword_free_terms)
+  DUMP_STRING(literal_query)
+  DUMP_ENUM(mode, EKNC_TYPE_QUERY_OBJECT_MODE, EKNC_QUERY_OBJECT_MODE_INCREMENTAL)
+  DUMP_ENUM(match, EKNC_TYPE_QUERY_OBJECT_MATCH, EKNC_QUERY_OBJECT_MATCH_ONLY_TITLE)
+  DUMP_ENUM(sort, EKNC_TYPE_QUERY_OBJECT_SORT, EKNC_QUERY_OBJECT_SORT_RELEVANCE)
+  DUMP_ENUM(order, EKNC_TYPE_QUERY_OBJECT_ORDER, EKNC_QUERY_OBJECT_ORDER_ASCENDING)
+  DUMP_UINT(limit, G_MAXUINT)
+  DUMP_UINT(offset, 0)
+  DUMP_STRV(tags_match_all)
+  DUMP_STRV(tags_match_any)
+  DUMP_STRV(ids)
+  DUMP_STRV(excluded_ids)
+  DUMP_STRV(excluded_tags)
+
+#undef DUMP_STRING
+#undef DUMP_ENUM
+#undef DUMP_UINT
+#undef DUMP_STRV
+
+  g_autofree char *props_string = g_strjoinv(", ", props);
+  return g_strdup_printf ("Eknc.QueryObject({%s})", props_string);
+}
