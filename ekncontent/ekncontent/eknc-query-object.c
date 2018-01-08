@@ -54,9 +54,6 @@ struct _EkncQueryObject
   gchar *corrected_query;
   gchar *stopword_free_query;
   gchar *literal_query;
-  gchar *query_parser_string;
-  gchar *filter_string;
-  gchar *filterout_string;
   EkncQueryObjectMode mode;
   EkncQueryObjectMatch match;
   EkncQueryObjectSort sort;
@@ -275,7 +272,6 @@ eknc_query_object_finalize (GObject *object)
   g_clear_pointer (&self->corrected_query, g_free);
   g_clear_pointer (&self->stopword_free_query, g_free);
   g_clear_pointer (&self->literal_query, g_free);
-  g_clear_pointer (&self->query_parser_string, g_free);
   g_clear_pointer (&self->tags_match_all, g_strfreev);
   g_clear_pointer (&self->tags_match_any, g_strfreev);
   g_clear_pointer (&self->ids, g_strfreev);
