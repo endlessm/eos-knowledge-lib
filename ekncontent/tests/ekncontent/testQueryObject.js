@@ -133,14 +133,13 @@ describe('QueryObject', function () {
                 .toEqual('Query(<alldocuments>)');
         });
 
-        // Skip: this seems to be adding a wildcard anyway
-        xit('queries only the exact title if only one letter in the search terms', function () {
+        it('queries only the exact title if only one letter in the search terms', function () {
             let query_obj = new Eknc.QueryObject({
                 search_terms: 'a',
                 mode: Eknc.QueryObjectMode.DELIMITED,
             });
             expect(query_obj.get_query(qp).get_description())
-                .toEqual('Query(XEXACTSa@1)');
+                .toEqual('Query(XEXACTSa)');
         });
 
         it('queries the title and exact title', function () {
@@ -149,17 +148,15 @@ describe('QueryObject', function () {
                 mode: Eknc.QueryObjectMode.DELIMITED,
             });
             expect(query_obj.get_query(qp).get_description())
-                .toEqual('Query((XEXACTStyrion_wins@1 OR (Styrion@2 OR ((SYNONYM WILDCARD OR Swins) OR Swins@3))))');
+                .toEqual('Query((XEXACTStyrion_wins@1 OR (Styrion@1 OR ((SYNONYM WILDCARD OR Swins) OR Swins@2))))');
         });
 
-        // Skip: this seems to not add a wildcard but instead add a second copy
-        // of the exact title clause
-        xit('adds a wildcard to the exact title in incremental search mode', function () {
+        it('adds a wildcard to the exact title in incremental search mode', function () {
             let query_obj = new Eknc.QueryObject({
                 search_terms: 'tyrion wins',
             });
             expect(query_obj.get_query(qp).get_description())
-                .toEqual('Query(((XEXACTStyrion_wins@1 OR (SYNONYM WILDCARD OR XEXACTStyrion_wins)) OR (Styrion@2 OR ((SYNONYM WILDCARD OR Swins) OR Swins@3)))');
+                .toEqual('Query((((SYNONYM WILDCARD OR XEXACTStyrion_wins) OR XEXACTStyrion_wins@1) OR (Styrion@1 OR ((SYNONYM WILDCARD OR Swins) OR Swins@2))))');
         });
 
         it('queries the exact title exactly but uses both corrected and uncorrected terms for the title', function () {
@@ -169,7 +166,7 @@ describe('QueryObject', function () {
                 mode: Eknc.QueryObjectMode.DELIMITED,
             });
             expect(query_obj.get_query(qp).get_description())
-                .toEqual('Query((XEXACTShappy_nwe_year@1 OR ((Shappy@2 OR (Snwe@3 OR Snew@4)) OR ((SYNONYM WILDCARD OR Syear) OR Syear@5))))');
+                .toEqual('Query((XEXACTShappy_nwe_year@1 OR ((Shappy@1 OR (Snwe@2 OR Snew@3)) OR ((SYNONYM WILDCARD OR Syear) OR Syear@4))))');
         });
 
         it('filters requested IDs and tags', function () {
@@ -179,7 +176,7 @@ describe('QueryObject', function () {
                 tags_match_all: ['music', 'records'],
             });
             expect(query_obj.get_query(qp).get_description())
-                .toEqual('Query((((0 * Kjazz OR 0 * Kblues) AND (0 * Kmusic AND 0 * Krecords)) AND (0 * Q0123456789abcdef01230123456789abcdef0123 OR 0 * Qc0ffeec0ffeec0ffeec0c0ffeec0ffeec0ffeec0)))');
+                .toEqual('Query(((Q0123456789abcdef01230123456789abcdef0123 OR Qc0ffeec0ffeec0ffeec0c0ffeec0ffeec0ffeec0) AND (Kmusic AND Krecords) AND (Kjazz OR Kblues)))');
         });
 
         it('filters out undesired IDs and tags', function () {
@@ -188,7 +185,7 @@ describe('QueryObject', function () {
                 excluded_tags: ['jazz', 'blues'],
             });
             expect(query_obj.get_query(qp).get_description())
-                .toEqual('Query((<alldocuments> AND_NOT ((0 * Kjazz OR 0 * Kblues) AND (0 * Q0123456789abcdef01230123456789abcdef0123 OR 0 * Qc0ffeec0ffeec0ffeec0c0ffeec0ffeec0ffeec0))))');
+                .toEqual('Query((<alldocuments> AND_NOT ((Kjazz OR Kblues) AND (Q0123456789abcdef01230123456789abcdef0123 OR Qc0ffeec0ffeec0ffeec0c0ffeec0ffeec0ffeec0))))');
         });
 
         it('combines filter and filter-out clauses', function () {
@@ -197,7 +194,7 @@ describe('QueryObject', function () {
                 excluded_tags: ['hair-metal'],
             });
             expect(query_obj.get_query(qp).get_description())
-                .toEqual('Query((0 * Krock AND_NOT 0 * Khair-metal))');
+                .toEqual('Query((Krock AND_NOT Khair-metal))');
         });
 
         it('combines filter clause with search terms', function () {
@@ -207,7 +204,7 @@ describe('QueryObject', function () {
                 tags_match_any: ['jazz'],
             });
             expect(query_obj.get_query(qp).get_description())
-                .toEqual('Query(((XEXACTSsteely_dan@1 OR (Ssteely@2 OR ((SYNONYM WILDCARD OR Sdan) OR Sdan@3))) FILTER 0 * Kjazz))');
+                .toEqual('Query(((XEXACTSsteely_dan@1 OR (Ssteely@1 OR ((SYNONYM WILDCARD OR Sdan) OR Sdan@2))) FILTER Kjazz))');
         });
 
         it('searches title and synopsis if requested', function () {
@@ -218,7 +215,7 @@ describe('QueryObject', function () {
                 match: Eknc.QueryObjectMatch.TITLE_SYNOPSIS,
             });
             expect(query_obj.get_query(qp).get_description())
-                .toEqual('Query((((XEXACTSbeatles@1 OR (Sbeatles@2 OR Sbeetles@3)) OR beatles@4) OR ((SYNONYM WILDCARD OR beetles) OR beetles@5)))')
+                .toEqual('Query((((XEXACTSbeatles@1 OR (Sbeatles@1 OR Sbeetles@2)) OR ((SYNONYM WILDCARD OR beatles) OR beatles@1)) OR ((SYNONYM WILDCARD OR beetles) OR beetles@1)))')
         });
 
         it('stems terms if a stemmer is added to the query parser', function () {
@@ -231,7 +228,7 @@ describe('QueryObject', function () {
                 match: Eknc.QueryObjectMatch.TITLE_SYNOPSIS,
             });
             expect(query_obj.get_query(qp).get_description())
-                .toEqual('Query(((ZXEXACTSrevolut@1 OR ZSrevolut@2) OR ((SYNONYM WILDCARD OR revolution) OR Zrevolut@3)))');
+                .toEqual('Query(((ZXEXACTSrevolut@1 OR ((SYNONYM WILDCARD OR Srevolution) OR ZSrevolut@1)) OR ((SYNONYM WILDCARD OR revolution) OR Zrevolut@1)))');
         });
     });
 });

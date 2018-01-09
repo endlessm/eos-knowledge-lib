@@ -14,15 +14,12 @@
 #define XAPIAN_PUBLISHED_DATE_VALUE_NO 1
 #define MAX_TERM_LENGTH 245
 
-#define XAPIAN_PREFIX_EXACT_TITLE "exact_title:"
-#define XAPIAN_PREFIX_ID "id:"
-#define XAPIAN_PREFIX_TAG "tag:"
-#define XAPIAN_PREFIX_TITLE "title:"
+#define XAPIAN_PREFIX_EXACT_TITLE "XEXACTS"
+#define XAPIAN_PREFIX_ID "Q"
+#define XAPIAN_PREFIX_TAG "K"
 
-#define XAPIAN_OP_AND " AND "
-#define XAPIAN_OP_OR " OR "
-#define XAPIAN_OP_NEAR " NEAR "
-#define XAPIAN_OP_NOT "NOT"
+#define QUERY_PARSER_PREFIX_EXACT_TITLE "exact_title:"
+#define QUERY_PARSER_PREFIX_TITLE "title:"
 
 #define XAPIAN_SYNTAX_REGEX "\\(|\\)|\\+|\\-|\\'|\\\""
 #define XAPIAN_TERM_REGEX "AND|OR|NOT|XOR|NEAR|ADJ"
@@ -510,24 +507,40 @@ get_terms (const gchar *query)
   return terms;
 }
 
-static gchar *
-get_exact_title_clause (EkncQueryObject *self, gchar **terms)
+static XapianQuery *
+get_exact_title_clause (EkncQueryObject *self,
+                        XapianQueryParser *qp,
+                        char **terms,
+                        GError **error_out)
 {
+  g_autoptr(GError) error = NULL;
   g_autofree gchar *joined = g_strjoinv ("_", terms);
-  g_autofree gchar *prefixed = g_strconcat (XAPIAN_PREFIX_EXACT_TITLE, joined, NULL);
-
-  if (self->mode == EKNC_QUERY_OBJECT_MODE_DELIMITED)
-    return g_steal_pointer (&prefixed);
+  g_autofree gchar *prefixed = g_strconcat (QUERY_PARSER_PREFIX_EXACT_TITLE, joined, NULL);
 
   /* Combine the term with a wild-carded version if search mode is incremental */
-  return g_strdup_printf ("(%s%s%s*)", prefixed, XAPIAN_OP_OR, prefixed);
+  XapianQueryParserFeature flags = XAPIAN_QUERY_PARSER_FEATURE_DEFAULT;
+  if (self->mode == EKNC_QUERY_OBJECT_MODE_INCREMENTAL)
+    flags |= XAPIAN_QUERY_PARSER_FEATURE_PARTIAL;
+
+  g_autoptr(XapianQuery) retval =
+    xapian_query_parser_parse_query_full (qp, prefixed, flags, "", &error);
+  if (error != NULL)
+    {
+      g_propagate_error (error_out, error);
+      return NULL;
+    }
+
+  return g_steal_pointer (&retval);
 }
 
-static gchar *
+static XapianQuery *
 get_title_clause (EkncQueryObject *self,
+                  XapianQueryParser *qp,
                   char **terms,
-                  char **corrected_terms)
+                  char **corrected_terms,
+                  GError **error_out)
 {
+  g_autoptr(GError) error = NULL;
   guint terms_length = g_strv_length (terms);
   guint corrected_terms_length = corrected_terms != NULL
                                ? g_strv_length (corrected_terms)
@@ -541,81 +554,86 @@ get_title_clause (EkncQueryObject *self,
     {
       g_autofree char *term = NULL;
       if (i < terms_length)
-        term = g_strconcat (XAPIAN_PREFIX_TITLE, terms[i], NULL);
+        term = g_strconcat (QUERY_PARSER_PREFIX_TITLE, terms[i], NULL);
 
       g_autofree char *corrected_term = NULL;
       if (i < corrected_terms_length)
-        corrected_term = g_strconcat (XAPIAN_PREFIX_TITLE, corrected_terms[i], NULL);
+        corrected_term = g_strconcat (QUERY_PARSER_PREFIX_TITLE,
+                                      corrected_terms[i], NULL);
 
       /* Discard duplicates */
       if (g_strcmp0 (term, corrected_term) == 0)
         g_clear_pointer (&corrected_term, g_free);
 
       if (term != NULL && corrected_term != NULL)
-        title_terms[i] = g_strdup_printf ("(%s%s%s)", term, XAPIAN_OP_OR, corrected_term);
+        title_terms[i] = g_strdup_printf ("(%s OR %s)", term, corrected_term);
       else if (term != NULL)
         title_terms[i] = g_steal_pointer (&term);
-      else if (corrected_term != NULL)
-        title_terms[i] = g_steal_pointer (&corrected_term);
       else
-        g_assert_not_reached ();
+        title_terms[i] = g_steal_pointer (&corrected_term);
     }
 
-  return g_strjoinv (" ", title_terms);
+  g_autofree char *parser_string = g_strjoinv (" ", title_terms);
+
+  g_autoptr(XapianQuery) retval =
+    xapian_query_parser_parse_query_full (qp, parser_string,
+                                          XAPIAN_QUERY_PARSER_FEATURE_DEFAULT |
+                                          XAPIAN_QUERY_PARSER_FEATURE_PARTIAL,
+                                          "", &error);
+  if (error != NULL)
+    {
+      g_propagate_error (error_out, error);
+      return NULL;
+    }
+
+  return g_steal_pointer (&retval);
 }
 
-static gchar *
+static XapianQuery *
 get_tags_clause (char **tags,
-                 char *join_op)
+                 XapianQueryOp join_op)
 {
   if (tags == NULL)
     return NULL;
   // Tag lists should be joined as a series of individual tag queries joined
   // by with a join operator, so an article that has any of the tags will
-  // match, e.g. [foo,bar,baz] => 'K:foo OR K:bar OR K:baz'
+  // match, e.g. [foo,bar,baz] => 'Kfoo OR Kbar OR Kbaz'
   size_t length = g_strv_length (tags);
+  if (length == 0)
+    return NULL;
+
   g_auto(GStrv) prefixed_tags = g_new0 (gchar *, length + 1);
   for (guint i = 0; i < length; i++)
-    prefixed_tags[i] = g_strdup_printf ("%s\"%s\"", XAPIAN_PREFIX_TAG, tags[i]);
-  return g_strjoinv (join_op, prefixed_tags);
+    prefixed_tags[i] = g_strdup_printf ("%s%s", XAPIAN_PREFIX_TAG, tags[i]);
+
+  return xapian_query_new_for_terms (join_op, (const char **) prefixed_tags);
 }
 
-static gchar *
+static XapianQuery *
 get_ids_clause (char **ids,
-                char *join_op)
+                XapianQueryOp join_op)
 {
   if (ids == NULL)
     return NULL;
   size_t length = g_strv_length (ids);
+  if (length == 0)
+    return NULL;
+
   g_auto(GStrv) prefixed_ids = g_new0 (gchar *, length + 1);
-  for (guint i = 0; i < length; i++)
+  for (size_t i = 0; i < length;)
     {
       const gchar *hash = eknc_utils_id_get_hash (ids[i]);
       if (hash == NULL)
         {
           g_critical ("Unexpected id structure in query object: %s", ids[i]);
-          prefixed_ids[i] = NULL;
+          continue;
         }
-      else
-        {
-          prefixed_ids[i] = g_strdup_printf ("%s%s", XAPIAN_PREFIX_ID, hash);
-        }
-    }
-  return g_strjoinv (join_op, prefixed_ids);
-}
 
-static void
-consume_clause (GString *parser_string,
-                gchar *clause)
-{
-  if (clause && *clause)
-    {
-      g_autofree gchar *parenthesized = parenthesize (clause);
-      if (*(parser_string->str))
-        g_string_append (parser_string, XAPIAN_OP_AND);
-      g_string_append (parser_string, parenthesized);
+      prefixed_ids[i] = g_strdup_printf ("%s%s", XAPIAN_PREFIX_ID, hash);
+      i++;
     }
-  g_free (clause);
+
+  return xapian_query_new_for_terms (join_op, (const char **) prefixed_ids);
 }
 
 /**
@@ -709,17 +727,20 @@ eknc_query_object_get_search_terms (EkncQueryObject *self)
 }
 
 /*
- * get_corrected_query_string:
+ * get_corrected_query:
  * @self: a #EkncQueryObject
  *
- * Retrieves the query string, including spelling corrections in case
+ * Retrieves the query to use, including spelling corrections in case
  * the #EkncQueryObject:corrected-terms property is set.
  *
- * Returns: (transfer full) (nullable): the corrected query string
+ * Returns: (transfer full) (nullable): a #XapianQuery instance
  */
-static char *
-get_corrected_query_string (EkncQueryObject *self)
+static XapianQuery *
+get_corrected_query (EkncQueryObject *self,
+                     XapianQueryParser *qp,
+                     GError **error_out)
 {
+  g_autoptr(GError) error = NULL;
   g_auto(GStrv) raw_terms = get_terms (self->search_terms);
 
   if (g_strv_length (raw_terms) == 0)
@@ -730,12 +751,18 @@ get_corrected_query_string (EkncQueryObject *self)
    * problems.
    */
   if (g_strv_length (raw_terms) == 1 && g_utf8_strlen (raw_terms[0], -1) == 1)
-    return g_strconcat (XAPIAN_PREFIX_EXACT_TITLE, raw_terms[0], NULL);
+    {
+      g_autofree char *prefixed = g_strconcat (XAPIAN_PREFIX_EXACT_TITLE, raw_terms[0], NULL);
+      return xapian_query_new_for_term (prefixed);
+    }
 
-  GString *query_clause = g_string_new (NULL);
-
-  g_autofree char *exact_title_clause = get_exact_title_clause (self, raw_terms);
-  g_string_append (query_clause, exact_title_clause);
+  g_autoptr(XapianQuery) exact_title_clause =
+    get_exact_title_clause (self, qp, raw_terms, &error);
+  if (error != NULL)
+    {
+      g_propagate_error (error_out, error);
+      return NULL;
+    }
 
   /* If we were given a corrected query, use its terms for the rest of the
    * query clause.
@@ -744,73 +771,123 @@ get_corrected_query_string (EkncQueryObject *self)
   if (self->corrected_terms != NULL)
     corrected_terms = get_terms (self->corrected_terms);
 
-  g_autofree char *title_clause = get_title_clause (self, raw_terms, corrected_terms);
+  g_autoptr(XapianQuery) title_clause =
+    get_title_clause (self, qp, raw_terms, corrected_terms, &error);
+  if (error != NULL)
+    {
+      g_propagate_error (error_out, error);
+      return NULL;
+    }
 
-  g_string_append (query_clause, XAPIAN_OP_OR);
-  g_string_append (query_clause, title_clause);
+  g_autoptr(XapianQuery) query_clause =
+    xapian_query_new_for_pair (XAPIAN_QUERY_OP_OR, exact_title_clause, title_clause);
 
   if (self->match == EKNC_QUERY_OBJECT_MATCH_TITLE_SYNOPSIS)
     {
-      g_autofree char *body_clause = g_strjoinv (" ", raw_terms);
+      g_autofree char *body_terms = g_strjoinv (" ", raw_terms);
+      g_autoptr(XapianQuery) body_clause =
+        xapian_query_parser_parse_query_full (qp, body_terms,
+                                              XAPIAN_QUERY_PARSER_FEATURE_DEFAULT |
+                                              XAPIAN_QUERY_PARSER_FEATURE_PARTIAL,
+                                              "", &error);
+      if (error != NULL)
+        {
+          g_propagate_error (error_out, error);
+          return NULL;
+        }
 
-      g_string_append (query_clause, XAPIAN_OP_OR);
-      g_string_append (query_clause, body_clause);
+      g_autoptr(XapianQuery) temp_query =
+        xapian_query_new_for_pair (XAPIAN_QUERY_OP_OR, query_clause, body_clause);
+
+      g_object_unref (query_clause);
+      query_clause = g_steal_pointer (&temp_query);
 
       if (corrected_terms != NULL)
         {
-          g_autofree char *corrected_body_clause = g_strjoinv (" ", corrected_terms);
+          g_autofree char *corrected_body_terms = g_strjoinv (" ", corrected_terms);
+          g_autoptr(XapianQuery) corrected_body_clause =
+            xapian_query_parser_parse_query_full (qp, corrected_body_terms,
+                                                  XAPIAN_QUERY_PARSER_FEATURE_DEFAULT |
+                                                  XAPIAN_QUERY_PARSER_FEATURE_PARTIAL,
+                                                  "", &error);
+          if (error != NULL)
+            {
+              g_propagate_error (error_out, error);
+              return NULL;
+            }
 
-          g_string_append (query_clause, XAPIAN_OP_OR);
-          g_string_append (query_clause, corrected_body_clause);
+          temp_query = xapian_query_new_for_pair (XAPIAN_QUERY_OP_OR,
+                                                  query_clause, corrected_body_clause);
+
+          g_object_unref (query_clause);
+          query_clause = g_steal_pointer (&temp_query);
         }
     }
 
-  return g_string_free (query_clause, FALSE);
+  return g_steal_pointer (&query_clause);
 }
 
 /*
- * get_filter_string:
+ * get_filter_clause:
  * @self: a #EkncQueryObject
  *
- * Retrieves the `filter` string from the object.
+ * Retrieves a filter query clause from the object.
  *
- * Returns: (transfer full) (nullable): the filter string
+ * Returns: (transfer full) (nullable): a #XapianQuery object
  */
-static char *
-get_filter_string (EkncQueryObject *self)
+static XapianQuery *
+get_filter_clause (EkncQueryObject *self)
 {
   if (self->tags_match_any == NULL && self->tags_match_all == NULL && self->ids == NULL)
     return NULL;
 
-  GString *filter_string = g_string_new (NULL);
+  GSList *clauses = NULL;
+  XapianQuery *match_any = get_tags_clause (self->tags_match_any, XAPIAN_QUERY_OP_OR);
+  if (match_any != NULL)
+    clauses = g_slist_prepend (clauses, match_any);
 
-  consume_clause (filter_string, get_tags_clause (self->tags_match_any, XAPIAN_OP_OR));
-  consume_clause (filter_string, get_tags_clause (self->tags_match_all, XAPIAN_OP_AND));
-  consume_clause (filter_string, get_ids_clause (self->ids, XAPIAN_OP_OR));
+  XapianQuery *match_all = get_tags_clause (self->tags_match_all, XAPIAN_QUERY_OP_AND);
+  if (match_all != NULL)
+    clauses = g_slist_prepend (clauses, match_all);
 
-  return g_string_free (filter_string, FALSE);
+  XapianQuery *ids = get_ids_clause (self->ids, XAPIAN_QUERY_OP_OR);
+  if (ids != NULL)
+    clauses = g_slist_prepend (clauses, ids);
+
+  if (clauses == NULL)
+    return NULL;
+
+  XapianQuery *filter_query = xapian_query_new_for_queries (XAPIAN_QUERY_OP_AND, clauses);
+
+  g_slist_free_full (clauses, g_object_unref);
+  return filter_query;
 }
 
 /*
- * get_filter_out_string:
+ * get_filter_out_clause:
  * @self: a #EkncQueryObject
  *
- * Retrieves the `filter-out` string from the object.
+ * Retrieves a filter-out query clause from the object.
  *
- * Returns: (transfer full) (nullable): the filter-out string
+ * Returns: (transfer full) (nullable): a #XapianQuery object
  */
-static char *
-get_filter_out_string (EkncQueryObject *self)
+static XapianQuery *
+get_filter_out_clause (EkncQueryObject *self)
 {
   if (self->excluded_tags == NULL && self->excluded_ids == NULL)
     return NULL;
 
-  GString *filterout_string = g_string_new (NULL);
+  g_autoptr(XapianQuery) excluded_tags = get_tags_clause (self->excluded_tags, XAPIAN_QUERY_OP_OR);
+  g_autoptr(XapianQuery) excluded_ids = get_ids_clause (self->excluded_ids, XAPIAN_QUERY_OP_OR);
 
-  consume_clause (filterout_string, get_tags_clause (self->excluded_tags, XAPIAN_OP_OR));
-  consume_clause (filterout_string, get_ids_clause (self->excluded_ids, XAPIAN_OP_OR));
+  if (excluded_tags == NULL && excluded_ids == NULL)
+    return NULL;
+  if (excluded_tags == NULL)
+    return g_steal_pointer (&excluded_ids);
+  if (excluded_ids == NULL)
+    return g_steal_pointer (&excluded_tags);
 
-  return g_string_free (filterout_string, FALSE);
+  return xapian_query_new_for_pair (XAPIAN_QUERY_OP_AND, excluded_tags, excluded_ids);
 }
 
 /**
@@ -1020,14 +1097,7 @@ eknc_query_object_get_query (EkncQueryObject *self,
 
   if (self->search_terms != NULL)
     {
-      g_autofree char *query_string = get_corrected_query_string (self);
-      xapian_query_parser_set_default_op (qp, XAPIAN_QUERY_OP_AND);
-      parsed_query = xapian_query_parser_parse_query_full (qp, query_string,
-                                                           XAPIAN_QUERY_PARSER_FEATURE_DEFAULT |
-                                                           XAPIAN_QUERY_PARSER_FEATURE_PARTIAL |
-                                                           XAPIAN_QUERY_PARSER_FEATURE_SPELLING_CORRECTION,
-                                                           "", &error);
-
+      parsed_query = get_corrected_query (self, qp, &error);
       if (error != NULL)
         {
           g_propagate_error (error_out, error);
@@ -1036,18 +1106,10 @@ eknc_query_object_get_query (EkncQueryObject *self,
     }
   /* If no search terms, then query was match-all; parsed_query remains NULL */
 
-  /* Parse the filters (if any) and combine. */
-  g_autofree char *filter_str = get_filter_string (self);
-  if (filter_str != NULL)
+  /* Fetch the filter clauses (if any) and combine. */
+  g_autoptr(XapianQuery) filter_query = get_filter_clause (self);
+  if (filter_query != NULL)
     {
-      g_autoptr(XapianQuery) filter_query =
-        xapian_query_parser_parse_query (qp, filter_str, &error);
-      if (error != NULL)
-        {
-          g_propagate_error (error_out, error);
-          return NULL;
-        }
-
       if (parsed_query == NULL)
         {
           /* match_all */
@@ -1067,17 +1129,9 @@ eknc_query_object_get_query (EkncQueryObject *self,
       parsed_query = xapian_query_new_match_all ();
     }
 
-  g_autofree char *filterout_str = get_filter_out_string (self);
-  if (filterout_str != NULL)
+  g_autoptr(XapianQuery) filterout_query = get_filter_out_clause (self);
+  if (filterout_query != NULL)
     {
-      g_autoptr(XapianQuery) filterout_query =
-        xapian_query_parser_parse_query (qp, filterout_str, &error);
-      if (error != NULL)
-        {
-          g_propagate_error (error_out, error);
-          return NULL;
-        }
-
       g_autoptr(XapianQuery) full_query =
         xapian_query_new_for_pair (XAPIAN_QUERY_OP_AND_NOT,
                                    parsed_query,
