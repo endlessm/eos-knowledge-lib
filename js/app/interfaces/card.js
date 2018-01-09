@@ -286,7 +286,6 @@ var Card = new Lang.Interface({
     _count_set: function (set_obj, callback) {
         let query = new Eknc.QueryObject({
             tags_match_any: set_obj.child_tags,
-            limit: GLib.MAXUINT32,
         });
         Eknc.Engine.get_default().query_promise(query)
         .then((results) => {

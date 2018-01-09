@@ -299,7 +299,7 @@ eknc_query_object_class_init (EkncQueryObjectClass *klass)
   eknc_query_object_props[PROP_APP_ID] =
     g_param_spec_string ("app-id", "App ID",
       "App ID of the database to query",
-      "", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+      NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
    * EkncQueryObject:search-terms:
@@ -310,7 +310,7 @@ eknc_query_object_class_init (EkncQueryObjectClass *klass)
   eknc_query_object_props[PROP_SEARCH_TERMS] =
     g_param_spec_string ("search-terms", "Search terms",
       "Query string with terms to search",
-      "", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+      NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
    * EkncQueryObject:corrected-terms:
@@ -320,7 +320,7 @@ eknc_query_object_class_init (EkncQueryObjectClass *klass)
   eknc_query_object_props[PROP_CORRECTED_TERMS] =
     g_param_spec_string ("corrected-terms", "Corrected terms",
       "A version of search-terms with typos, etc corrected",
-      "", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+      NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
    * EkncQueryObject:stopword-free-terms:
@@ -330,7 +330,7 @@ eknc_query_object_class_init (EkncQueryObjectClass *klass)
   eknc_query_object_props[PROP_STOPWORD_FREE_TERMS] =
     g_param_spec_string ("stopword-free-terms", "Stopword-free terms",
       "A version of search-terms without any stopwords",
-      "", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+      NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
    * EkncQueryObject:literal-query:
@@ -340,7 +340,7 @@ eknc_query_object_class_init (EkncQueryObjectClass *klass)
   eknc_query_object_props[PROP_LITERAL_QUERY] =
     g_param_spec_string ("literal-query", "Xapian query",
       "Literal Xapian query",
-      "", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+      NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
    * EkncQueryObject:mode:
@@ -390,7 +390,8 @@ eknc_query_object_class_init (EkncQueryObjectClass *klass)
   eknc_query_object_props[PROP_LIMIT] =
     g_param_spec_uint ("limit", "Limit",
       "The maximum number of results to return",
-      0, G_MAXUINT, 0, G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+      0, G_MAXUINT, G_MAXUINT,
+      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   /**
    * EkncQueryObject:offset:
@@ -724,7 +725,7 @@ eknc_query_object_get_corrected_query_string (EkncQueryObject *self)
 {
   g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
 
-  if (self->literal_query != NULL && self->literal_query[0] != '\0')
+  if (self->literal_query != NULL)
     return g_strdup (self->literal_query);
 
   g_auto(GStrv) raw_terms = get_terms (self->search_terms);
@@ -763,7 +764,7 @@ eknc_query_object_get_corrected_query_string (EkncQueryObject *self)
       g_string_append (query_clause, XAPIAN_OP_OR);
       g_string_append (query_clause, body_clause);
 
-      if (corrected_terms != NULL && *corrected_terms[0] != '\0')
+      if (corrected_terms != NULL)
         {
           g_autofree char *corrected_body_clause = g_strjoinv (" ", corrected_terms);
 
@@ -788,7 +789,7 @@ eknc_query_object_get_query_string (EkncQueryObject *self)
 {
   g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
 
-  if (self->literal_query != NULL && self->literal_query[0] != '\0')
+  if (self->literal_query != NULL)
     return g_strdup (self->literal_query);
 
   g_auto(GStrv) raw_terms = get_terms (self->search_terms);
@@ -884,7 +885,7 @@ eknc_query_object_is_match_all (EkncQueryObject *self)
 {
   g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), FALSE);
 
-  return self->search_terms == NULL || self->search_terms[0] == '\0';
+  return self->search_terms == NULL;
 }
 
 /**
