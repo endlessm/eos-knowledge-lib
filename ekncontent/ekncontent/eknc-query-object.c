@@ -509,22 +509,17 @@ get_terms (const gchar *query)
   return terms;
 }
 
-// Combines the term with a wild-carded version if search mode is incremental
-static gchar *
-maybe_add_wildcard (EkncQueryObject *self, gchar *term)
-{
-  if (self->mode == EKNC_QUERY_OBJECT_MODE_DELIMITED)
-    return g_strdup (term);
-  g_autofree gchar *with_wildcard = g_strdup_printf ("%s%s%s*", term, XAPIAN_OP_OR, term);
-  return parenthesize (with_wildcard);
-}
-
 static gchar *
 get_exact_title_clause (EkncQueryObject *self, gchar **terms)
 {
   g_autofree gchar *joined = g_strjoinv ("_", terms);
   g_autofree gchar *prefixed = g_strconcat (XAPIAN_PREFIX_EXACT_TITLE, joined, NULL);
-  return maybe_add_wildcard (self, prefixed);
+
+  if (self->mode == EKNC_QUERY_OBJECT_MODE_DELIMITED)
+    return g_steal_pointer (&prefixed);
+
+  /* Combine the term with a wild-carded version if search mode is incremental */
+  return g_strdup_printf ("(%s%s%s*)", prefixed, XAPIAN_OP_OR, prefixed);
 }
 
 static gchar *
