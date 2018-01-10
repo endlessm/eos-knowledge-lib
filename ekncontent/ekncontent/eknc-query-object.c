@@ -475,24 +475,6 @@ parenthesize (const gchar *term)
   return g_strdup_printf ("(%s)", term);
 }
 
-// Unicode friendly capitalization function
-static gchar *
-capitalize (const gchar *input)
-{
-  if (input == NULL)
-    return NULL;
-  GString *string = g_string_new (NULL);
-  if (*input)
-    {
-      gunichar firstchar = g_utf8_get_char (input);
-      gunichar titlechar = g_unichar_totitle (firstchar);
-      g_string_append_unichar (string, titlechar);
-      if (g_utf8_next_char (input))
-        g_string_append (string, g_utf8_next_char (input));
-    }
-  return g_string_free (string, FALSE);
-}
-
 // Limit term length we sent to xapian
 static void
 chomp_term (gchar *term)
@@ -540,13 +522,7 @@ maybe_add_wildcard (EkncQueryObject *self, gchar *term)
 static gchar *
 get_exact_title_clause (EkncQueryObject *self, gchar **terms)
 {
-  guint length = g_strv_length (terms);
-  g_auto(GStrv) capitalized_terms = g_new0 (gchar *, length + 1);
-  for (guint i = 0; i < length; i++)
-    {
-      capitalized_terms[i] = capitalize (terms[i]);
-    }
-  g_autofree gchar *joined = g_strjoinv ("_", capitalized_terms);
+  g_autofree gchar *joined = g_strjoinv ("_", terms);
   g_autofree gchar *prefixed = g_strconcat (XAPIAN_PREFIX_EXACT_TITLE, joined, NULL);
   return maybe_add_wildcard (self, prefixed);
 }
@@ -766,11 +742,7 @@ eknc_query_object_get_corrected_query_string (EkncQueryObject *self)
    * problems.
    */
   if (g_strv_length (raw_terms) == 1 && g_utf8_strlen (raw_terms[0], -1) == 1)
-    {
-      g_autofree char *capitalized = capitalize (raw_terms[0]);
-
-      return g_strconcat (XAPIAN_PREFIX_EXACT_TITLE, capitalized, NULL);
-    }
+    return g_strconcat (XAPIAN_PREFIX_EXACT_TITLE, raw_terms[0], NULL);
 
   GString *query_clause = g_string_new (NULL);
 
@@ -834,11 +806,7 @@ eknc_query_object_get_query_string (EkncQueryObject *self)
    * problems.
    */
   if (g_strv_length (raw_terms) == 1 && g_utf8_strlen (raw_terms[0], -1) == 1)
-    {
-      g_autofree char *capitalized = capitalize (raw_terms[0]);
-
-      return g_strconcat (XAPIAN_PREFIX_EXACT_TITLE, capitalized, NULL);
-    }
+    return g_strconcat (XAPIAN_PREFIX_EXACT_TITLE, raw_terms[0], NULL);
 
   GString *query_clause = g_string_new (NULL);
 
