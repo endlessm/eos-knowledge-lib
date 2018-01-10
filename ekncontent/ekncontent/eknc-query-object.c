@@ -597,18 +597,6 @@ get_title_clause (EkncQueryObject *self,
 }
 
 static gchar *
-get_body_clause (EkncQueryObject *self, gchar **terms)
-{
-  guint length = g_strv_length (terms);
-  g_auto(GStrv) body_terms = g_new0 (gchar *, length + 1);
-  for (guint i = 0; i < length; i++)
-    {
-      body_terms[i] = maybe_add_wildcard (self, terms[i]);
-    }
-  return g_strjoinv (XAPIAN_OP_AND, body_terms);
-}
-
-static gchar *
 get_tags_clause (char **tags, char *join_op, gboolean exclude)
 {
   if (tags == NULL)
