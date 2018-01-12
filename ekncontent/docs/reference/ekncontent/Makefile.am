@@ -26,6 +26,7 @@ IGNORE_HFILES = \
 	eknc-database-manager-private.h \
 	eknc-domain-private.h \
 	eknc-media-object-model-private.h \
+	eknc-query-object-private.h \
 	eknc-utils-private.h
 
 HTML_IMAGES =

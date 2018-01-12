@@ -90,6 +90,7 @@ ekncontent_sources = \
 	ekncontent/eknc-media-object-model.c \
 	ekncontent/eknc-object-model.c \
 	ekncontent/eknc-query-object.c \
+	ekncontent/eknc-query-object-private.h \
 	ekncontent/eknc-query-results.c \
 	ekncontent/eknc-set-object-model.c \
 	ekncontent/eknc-utils-private.h \
@@ -232,6 +233,7 @@ EosKnowledgeContent_@EKN_CONTENT_API_VERSION@_gir_INCLUDES = \
 	GObject-2.0 \
 	Json-1.0 \
 	Soup-2.4 \
+	Xapian-1.0 \
 	$(NULL)
 EosKnowledgeContent_@EKN_CONTENT_API_VERSION@_gir_SCANNERFLAGS = \
 	--warn-all --warn-error \
