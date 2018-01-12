@@ -77,6 +77,22 @@ Related to the module renames, you'll need to update any CSS selectors in your `
 
 ## Release notes ##
 
+### SDK 2.2 (January 8, 2018) ###
+
+- Modular framework: fixed a bug whereby the sidebar on some apps would
+  blank out after clicking on a search result.
+- Modular framework: increased the margins on the search results page
+  for some apps.
+- Modular framework: corrected the alignment of the popup menu showing
+  extra categories that don't fit in the top bar of news apps.
+- Modular framework: adjusted the text size on the front page cards in
+  news apps so that text on very large cards doesn't look out of
+  proportion.
+- Modular framework: adjusted the opacity of the popup that appears when
+  you hover the mouse over a link.
+- Modular framework: adjusted the size of the "Copy" popup that appears
+  when you select text.
+
 ### SDK 2.1 (December 11, 2017) ###
 
 - Modular framework: the CSS class for the title of the default Card was
