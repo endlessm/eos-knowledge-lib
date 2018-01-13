@@ -132,7 +132,7 @@ defines:
   slots:
     <<: *menu-slots
     content:
-      shortdef: 'Layout.InfiniteScrolling(expand: true)'
+      shortdef: 'Layout.Scrolling(expand: true)'
       references:
         lazy-load: articles-for-set
       slots:
@@ -189,7 +189,11 @@ defines:
                     - type: Layout.ResponsiveMargins
                       slots:
                         content:
-                          shortdef: 'ContentGroup.ContentGroup(halign: center)'
+                          type: ContentGroup.ContentGroup
+                          properties:
+                            halign: center
+                            paginate: true
+                            cards-per-page: 10
                           styles:
                             - ContentGroup--articles
                           slots:
