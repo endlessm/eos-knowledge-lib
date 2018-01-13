@@ -80,11 +80,14 @@
         background-color: $primary-dark-color;
         color: white;
         font-size: 1.5em;
-        box-shadow: 4px 0px 20px 0px rgba(0, 0, 0, 0.4);
+        box-shadow: 0px 2px 3px transparentize(black, 1 - 0.40);
         font-family: $support-font;
-        border-radius: 22px;
-        padding: 7px 35px;
-        margin: 30px 0px 40px 0px;
+        border-radius: 50px;
+        padding: 20px 30px;
+        margin: 50px 0 20px 0;
+        &:hover {
+            background-color: $primary-medium-color;
+        }
     }
 }
 
