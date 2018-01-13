@@ -173,6 +173,7 @@ var ContentGroup = new Module.Class({
                 no_show_all: true,
                 visible: this.paginate,
             });
+            Utils.set_hand_cursor_on_widget(see_more_button);
 
             see_more_button.get_style_context().add_class(Utils.get_element_style_class(ContentGroup, 'paginate'));
             see_more_button.connect('clicked', () => {
