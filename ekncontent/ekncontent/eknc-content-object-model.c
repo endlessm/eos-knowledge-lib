@@ -30,7 +30,7 @@ typedef struct {
   gboolean featured;
   char **tags;
   char **resources;
-  GVariant *discovery_feed_content;
+  JsonObject *discovery_feed_content;
 } EkncContentObjectModelPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (EkncContentObjectModel,
@@ -132,7 +132,7 @@ eknc_content_object_model_get_property (GObject    *object,
       break;
 
     case PROP_DISCOVERY_FEED_CONTENT:
-      g_value_set_variant (value, priv->discovery_feed_content);
+      g_value_set_boxed (value, priv->discovery_feed_content);
       break;
 
     default:
@@ -226,8 +226,8 @@ eknc_content_object_model_set_property (GObject *object,
       break;
 
     case PROP_DISCOVERY_FEED_CONTENT:
-      g_clear_pointer (&priv->discovery_feed_content, g_variant_unref);
-      priv->discovery_feed_content = g_value_dup_variant (value);
+      g_clear_pointer (&priv->discovery_feed_content, json_object_unref);
+      priv->discovery_feed_content = g_value_dup_boxed (value);
       break;
 
     default:
@@ -277,7 +277,7 @@ eknc_content_object_model_finalize (GObject *object)
   g_clear_pointer (&priv->license, g_free);
   g_clear_pointer (&priv->tags, g_strfreev);
   g_clear_pointer (&priv->resources, g_strfreev);
-  g_clear_pointer (&priv->discovery_feed_content, g_variant_unref);
+  g_clear_pointer (&priv->discovery_feed_content, json_object_unref);
 
   G_OBJECT_CLASS (eknc_content_object_model_parent_class)->finalize (object);
 }
@@ -458,9 +458,9 @@ eknc_content_object_model_class_init (EkncContentObjectModelClass *klass)
    * discovery feed.
    */
   eknc_content_object_model_props[PROP_DISCOVERY_FEED_CONTENT] =
-    g_param_spec_variant ("discovery-feed-content", "Discovery Feed Content",
+    g_param_spec_boxed ("discovery-feed-content", "Discovery Feed Content",
       "Content to be used by the Discovery Feed",
-      G_VARIANT_TYPE ("a{sv}"), NULL,
+      JSON_TYPE_OBJECT,
       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class,
@@ -586,9 +586,9 @@ eknc_content_object_model_get_resources (EkncContentObjectModel *self)
  * Get the discovery feed content for the model, which is a collection of
  * properties with no defined schema yet.
  *
- * Returns: (transfer none): a #GVariant
+ * Returns: (transfer none): a #JsonObject
  */
-GVariant *
+JsonObject *
 eknc_content_object_model_get_discovery_feed_content (EkncContentObjectModel *self)
 {
   g_return_val_if_fail (EKNC_IS_CONTENT_OBJECT_MODEL (self), NULL);

@@ -97,8 +97,7 @@ describe('Content Object Model', function () {
             expect(contentObject.featured).toBeTruthy();
         });
 
-        // SKIP: Doesn't work because of deep-unpacking
-        xit('has discovery feed content', function () {
+        it('has discovery feed content', function () {
             expect(contentObject.discovery_feed_content)
                 .toEqual(MOCK_CONTENT_DATA['discoveryFeedContent']);
         });

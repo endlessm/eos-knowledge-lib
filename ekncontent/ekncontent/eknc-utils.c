@@ -173,8 +173,6 @@ eknc_utils_append_gparam_from_json_node (JsonNode *node,
 
       if (g_variant_type_equal (type, G_VARIANT_TYPE ("aa{sv}")))
         variant = dict_array_from_json (node, &error);
-      else if (g_variant_type_equal (type, G_VARIANT_TYPE ("a{sv}")))
-        variant = dict_from_json (node, &error);
       else
         variant = json_gvariant_deserialize (node, g_variant_type_peek_string (type), &error);
 
@@ -193,6 +191,10 @@ eknc_utils_append_gparam_from_json_node (JsonNode *node,
     {
       char **array = string_array_from_json (node);
       g_value_take_boxed (&param.value, array);
+    }
+  else if (JSON_NODE_HOLDS_OBJECT (node) && pspec->value_type == JSON_TYPE_OBJECT)
+    {
+      g_value_set_boxed (&param.value, json_node_get_object (node));
     }
   else if (JSON_NODE_HOLDS_VALUE (node))
     {

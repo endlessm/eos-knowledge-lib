@@ -23,7 +23,7 @@ eknc_content_object_model_get_tags (EkncContentObjectModel *self);
 char * const *
 eknc_content_object_model_get_resources (EkncContentObjectModel *self);
 
-GVariant *
+JsonObject *
 eknc_content_object_model_get_discovery_feed_content (EkncContentObjectModel *self);
 
 EkncContentObjectModel *
