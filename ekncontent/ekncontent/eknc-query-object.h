@@ -103,6 +103,9 @@ eknc_query_object_get_query (EkncQueryObject *self,
                              XapianQueryParser *qp,
                              GError **error_out);
 
+char *
+eknc_query_object_to_string (EkncQueryObject *self);
+
 EkncQueryObject *
 eknc_query_object_new_from_object (EkncQueryObject *source,
                                    const gchar     *first_property_name,

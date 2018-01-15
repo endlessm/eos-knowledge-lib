@@ -600,8 +600,8 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
 
   eknc_query_object_configure_enquire (query, enquire);
 
-  const char *search_terms = eknc_query_object_get_search_terms (query);
-  g_debug (G_STRLOC ": Query: '%s'", search_terms);
+  g_autofree char *dump = eknc_query_object_to_string (query);
+  g_debug (G_STRLOC " %s", dump);
 
   g_autoptr(XapianQuery) parsed_query = eknc_query_object_get_query (query,
                                                                      priv->query_parser,
@@ -611,6 +611,9 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
       g_propagate_error (error_out, error);
       return NULL;
     }
+
+  g_autofree char *query_dump = xapian_query_get_description (parsed_query);
+  g_debug (G_STRLOC " %s", query_dump);
 
   guint offset = eknc_query_object_get_offset (query);
   guint limit = eknc_query_object_get_limit (query);
