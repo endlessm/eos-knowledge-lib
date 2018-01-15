@@ -12,6 +12,9 @@ const MOCK_CONTENT_DATA = {
     'thumbnail': 'ekn://text_editors/Stallman.jpg',
     'resources': ['ekn://text_editors/stallman_the_bard', 'ekn://text_editors/emacs_screenshot'],
     'featured': true,
+    'discoveryFeedContent': {'blurbs':
+        ['10 Facts About Emacs That Will Blow Your Mind. #7 Knocked My Socks Off!'],
+    },
 };
 
 describe('Content Object Model', function () {
@@ -92,6 +95,12 @@ describe('Content Object Model', function () {
 
         it('has a featured flag', function () {
             expect(contentObject.featured).toBeTruthy();
+        });
+
+        // SKIP: Doesn't work because of deep-unpacking
+        xit('has discovery feed content', function () {
+            expect(contentObject.discovery_feed_content)
+                .toEqual(MOCK_CONTENT_DATA['discoveryFeedContent']);
         });
     });
 });

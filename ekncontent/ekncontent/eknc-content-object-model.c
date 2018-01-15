@@ -580,6 +580,24 @@ eknc_content_object_model_get_resources (EkncContentObjectModel *self)
 }
 
 /**
+ * eknc_content_object_model_get_discovery_feed_content:
+ * @self: the model
+ *
+ * Get the discovery feed content for the model, which is a collection of
+ * properties with no defined schema yet.
+ *
+ * Returns: (transfer none): a #GVariant
+ */
+GVariant *
+eknc_content_object_model_get_discovery_feed_content (EkncContentObjectModel *self)
+{
+  g_return_val_if_fail (EKNC_IS_CONTENT_OBJECT_MODEL (self), NULL);
+
+  EkncContentObjectModelPrivate *priv = eknc_content_object_model_get_instance_private (self);
+  return priv->discovery_feed_content;
+}
+
+/**
  * eknc_content_object_model_get_content_stream:
  * @self: the model
  * @error: set if an error occurred while loading the content
