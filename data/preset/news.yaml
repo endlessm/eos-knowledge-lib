@@ -1,12 +1,62 @@
----
+vars:
+  # non-page
+  app-banner:
+    shortdef: 'Banner.App(show-subtitle: false)'
+
+  # home-page
+  home-highlighted-arrangement:
+    shortdef: 'Arrangement.Piano(expand: true)'
+
+  home-highlighted-card: &main-card
+    type: Card.Default
+    properties:
+      excluded_types:
+      - 0
+      - 1
+
+  home-preview-subsetcontent-arrangement:
+    shortdef: 'Arrangement.Thirties(max-rows: 2)'
+
+  home-preview-subsetcontent-card: *main-card
+
+  # set-page
+  set-articles-arrangement:
+    type: Arrangement.List
+    properties:
+      row-spacing: 20
+
+  set-articles-card:
+    shortdef: 'Card.List(hexpand: true)'
+
+  set-preview-subsetcontent-arrangement:
+    shortdef: 'Arrangement.Thirties(max-rows: 2)'
+
+  set-preview-subsetcontent-card: *main-card
+
+  set-featured-articles-arrangement: &featured-arrangement
+    shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
+
+  set-featured-articles-card: &featured-card
+    type: Card.Default
+    properties:
+      excluded_types:
+      - 0
+      - 2
+
+  # search-page
+  search-articles-arrangement:
+    type: Arrangement.List
+
+  search-articles-card:
+    shortdef: 'Card.List(hexpand: true)'
+
+  search-suggested-articles-arrangement: *featured-arrangement
+
+  search-suggested-articles-card: *featured-card
+  
+
 defines:
 # Various one-liners
-- &main-card
-  type: Card.Default
-  properties:
-    excluded_types:
-    - 0
-    - 1
 - &header-card Card.Title
 
 # Reused components
@@ -19,7 +69,8 @@ defines:
         content:
           type: Navigation.TopMenu
           slots:
-            banner: 'Banner.App(show-subtitle: false)'
+            banner:
+              refvar: 'app-banner'
             menu:
               type: ContentGroup.ContentGroup
               properties:
@@ -49,15 +100,6 @@ defines:
         hexpand: true
     - shortdef: 'Decoration.ThemeableImage(valign: end, halign: end)'
 
-- &suggestions-arrangement
-  shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
-  slots:
-    card:
-      type: Card.Default
-      properties:
-        excluded_types:
-        - 0
-        - 2
 
 # Pages
 - &home-page
@@ -86,9 +128,10 @@ defines:
                         - ContentGroup--highlightsall
                       slots:
                         arrangement:
-                          type: Arrangement.Piano
+                          refvar: 'home-highlighted-arrangement'
                           slots:
-                            card: *main-card
+                            card:
+                              refvar: 'home-highlighted-card'
                         selection:
                           type: Selection.FeaturedFirst
                           id: highlighted
@@ -114,9 +157,10 @@ defines:
                                     halign: start
                                 trigger: *see-more-trigger
                                 arrangement:
-                                  shortdef: 'Arrangement.Thirties(max-rows: 2)'
+                                  refvar: home-preview-subsetcontent-arrangement
                                   slots:
-                                    card: *main-card
+                                    card:
+                                      refvar: home-preview-subsetcontent-card
                                 selection:
                                   type: Selection.ContentForSet
                                   slots:
@@ -174,9 +218,10 @@ defines:
                                         halign: start
                                     trigger: *see-more-trigger
                                     arrangement:
-                                      shortdef: 'Arrangement.Thirties(max-rows: 1)'
+                                      refvar: set-preview-subsetcontent-arrangement
                                       slots:
-                                        card: *main-card
+                                        card:
+                                          refvar: set-preview-subsetcontent-card
                                     selection:
                                       type: Selection.ContentForSet
                                       slots:
@@ -194,11 +239,10 @@ defines:
                             - ContentGroup--articles
                           slots:
                             arrangement:
-                              type: Arrangement.List
+                              refvar: set-articles-arrangement
                               slots:
-                                card: 'Card.List(hexpand: true)'
-                              properties:
-                                row-spacing: 20
+                                card:
+                                  refvar: set-articles-card
                             selection:
                               type: Selection.ContentForSet
                               id: articles-for-set
@@ -217,7 +261,11 @@ defines:
                           properties:
                             valign: center
                           slots:
-                            arrangement: *suggestions-arrangement
+                            arrangement:
+                              refvar: set-featured-articles-arrangement
+                              slots:
+                                card:
+                                  refvar: set-featured-articles-card
                             title:
                               shortdef: 'ContentGroup.StaticText(label: !translate "other news", halign: start)'
                             selection:
@@ -257,11 +305,12 @@ defines:
                           slots:
                             filter: Filter.Articles
                         arrangement:
-                          type: Arrangement.List
+                          refvar: search-articles-arrangement
                           styles:
                             - ContentGroup--articles
                           slots:
-                            card: 'Card.List(hexpand: true)'
+                            card:
+                              refvar: search-articles-card
                         no-results:
                           shortdef: 'Layout.Box(orientation: vertical, valign: start)'
                           slots:
@@ -281,7 +330,11 @@ defines:
                                       properties:
                                         label: !translate 'you might be interested in...'
                                         halign: start
-                                    arrangement: *suggestions-arrangement
+                                    arrangement:
+                                      refvar: search-suggested-articles-arrangement
+                                      slots:
+                                        card:
+                                          refvar: search-suggested-articles-card
                                     selection:
                                       type: Selection.Suggested
                                       slots:
