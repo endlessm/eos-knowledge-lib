@@ -19,10 +19,15 @@ permalink: /releases/1/
 | Tue Oct 10 2017 | SDK1.5 bugfix release
 | Thu Nov 2 2017  | SDK1.6 release (irregular hotfix)
 | Fri Nov 17 2017 | SDK1.7 release (irregular hotfix)
-| TBD             | SDK1.8 release (irregular hotfix)
+| Sat Jan 13 2018 | SDK1.8 release (irregular hotfix)
+| TBD             | SDK1.9 release (irregular hotfix)
 | TBD             | EOL
 
 ## Release notes ##
+
+### SDK 1.8 (January 13, 2018) ###
+
+This is a security update, with no other changes except the underlying GNOME runtime. It includes a mitigation for the MELTDOWN and SPECTRE vulnerabilities in WebKit.
 
 ### SDK 1.7 (November 17, 2017) ###
 
