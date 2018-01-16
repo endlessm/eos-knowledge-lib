@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "root": {
+    "type": "Controller.Fake",
+    "slots": {
+      "window": {
+        "type": "Window.Fake",
+        "properties": {
+          "foo": "bar"
+        },
+        "slots": {
+          "search": {
+            "type": "Navigation.Fake"
+          }
+        }
+      }
+    }
+  }
+}
