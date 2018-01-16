@@ -1,4 +1,24 @@
 ---
+vars:
+  app-banner:
+    type: Banner.Dynamic
+    properties:
+      mode: full
+      valign: center
+      halign: center
+
+  home-sets-arrangement:
+    type: Arrangement.TiledGrid
+  home-sets-card:
+    type: Card.Default
+    properties:
+      excluded_types:
+        - 0
+        - 1
+
+  noresults-message-text:
+    shortdef: 'ContentGroup.NoResultsMessage(valign: center, halign: center, justify: center)'
+
 defines:
 - &sidebar-right
   shortdef: 'Layout.Sidebar(sidebar-first: false)'
@@ -18,7 +38,7 @@ defines:
     shortdef: 'Arrangement.List(orientation: vertical)'
     slots:
       card: Card.Title
-  no-results: 'ContentGroup.NoResultsMessage(valign: center, halign: center, justify: center)'
+  no-results: $noresults-message-text
 
 - &home-page
   shortdef: 'Layout.Box(orientation: vertical)'
@@ -27,11 +47,7 @@ defines:
     - shortdef: 'Layout.Box(homogeneous: true, valign: start)'
       slots:
         contents:
-        - type: Banner.Dynamic
-          properties:
-            mode: full
-            valign: center
-            halign: center
+        - refvar: $app-banner
         - type: Navigation.SearchBox
           properties:
             shadow-type: none
@@ -41,14 +57,9 @@ defines:
     - shortdef: 'ContentGroup.ContentGroup(expand: true)'
       slots:
         arrangement:
-          type: Arrangement.TiledGrid
+          refvar: $home-sets-arrangement
           slots:
-            card:
-              type: Card.Default
-              properties:
-                excluded_types:
-                  - 0
-                  - 1
+            card: $home-sets-card
         selection: Selection.AllSets
 
 - &set-page
