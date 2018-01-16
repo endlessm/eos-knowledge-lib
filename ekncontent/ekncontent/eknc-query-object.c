@@ -18,7 +18,6 @@
 #define XAPIAN_PREFIX_ID "Q"
 #define XAPIAN_PREFIX_TAG "K"
 
-#define QUERY_PARSER_PREFIX_EXACT_TITLE "exact_title:"
 #define QUERY_PARSER_PREFIX_TITLE "title:"
 
 #define XAPIAN_SYNTAX_REGEX "\\(|\\)|\\+|\\-|\\'|\\\""
@@ -515,7 +514,6 @@ get_exact_title_clause (EkncQueryObject *self,
 {
   g_autoptr(GError) error = NULL;
   g_autofree gchar *joined = g_strjoinv ("_", terms);
-  g_autofree gchar *prefixed = g_strconcat (QUERY_PARSER_PREFIX_EXACT_TITLE, joined, NULL);
 
   /* Combine the term with a wild-carded version if search mode is incremental */
   XapianQueryParserFeature flags = XAPIAN_QUERY_PARSER_FEATURE_DEFAULT;
@@ -523,7 +521,8 @@ get_exact_title_clause (EkncQueryObject *self,
     flags |= XAPIAN_QUERY_PARSER_FEATURE_PARTIAL;
 
   g_autoptr(XapianQuery) retval =
-    xapian_query_parser_parse_query_full (qp, prefixed, flags, "", &error);
+    xapian_query_parser_parse_query_full (qp, joined, flags,
+                                          XAPIAN_PREFIX_EXACT_TITLE, &error);
   if (error != NULL)
     {
       g_propagate_error (error_out, error);
