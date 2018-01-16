@@ -1,4 +1,38 @@
 ---
+vars:
+  app-banner:
+    shortdef: 'Banner.Dynamic(mode: full)'
+
+  home-sets-arrangement:
+    shortdef: 'Arrangement.Overflow(orientation: horizontal)'
+  home-sets-card: &main-card
+    type: Card.Default
+    properties:
+      excluded_types:
+        - 0
+        - 2
+  home-allsets-arrangement:
+    type: Arrangement.SquareGuys
+    properties:
+      halign: center
+      valign: start
+      expand: true
+  home-allsets-card: *main-card
+
+  search-articles-arrangement: &main-arrangement
+    type: Arrangement.SquareGuys
+    properties:
+      halign: center
+      valign: start
+      expand: true
+  search-articles-card: *main-card
+
+  noresults-message-text:
+    shortdef: 'ContentGroup.NoResultsMessage(valign: center, halign: center, justify: center)'
+
+  subset-articles-arrangement: *main-arrangement
+  subset-articles-card: *main-card
+
 defines:
 - &sidebar-list-slots
   arrangement:
@@ -6,19 +40,6 @@ defines:
     slots:
       card: Card.Title
   no-results: 'ContentGroup.NoResultsMessage(valign: center)'
-
-- &card
-  Card.Default
-
-- &main-arrangement-slot
-  arrangement:
-    type: Arrangement.SquareGuys
-    properties:
-      halign: center
-      valign: start
-      expand: true
-    slots:
-      card: *card
 
 - &home-page
   type: Layout.HamburgerBasement
@@ -28,7 +49,7 @@ defines:
         source-id: sets-group
         property: has-more-content
   slots:
-    top: 'Banner.Dynamic(mode: full)'
+    top: $app-banner
     middle: 'Navigation.SearchBox(halign: center, focus-on-map: true)'
     bottom:
       type: Layout.Box
@@ -45,14 +66,9 @@ defines:
             valign: end
           slots:
             arrangement:
-              shortdef: 'Arrangement.Overflow(orientation: horizontal)'
+              refvar: $home-sets-arrangement
               slots:
-                card:
-                  type: *card
-                  properties:
-                    excluded_types:
-                      - 0
-                      - 2
+                card: $home-sets-card
             selection:
               type: Selection.AllSets
               slots:
@@ -72,18 +88,9 @@ defines:
           shortdef: 'ContentGroup.ContentGroup(expand: true)'
           slots:
             arrangement:
-              type: Arrangement.SquareGuys
-              properties:
-                halign: center
-                valign: start
-                expand: true
+              refvar: $home-allsets-arrangement
               slots:
-                card:
-                  type: *card
-                  properties:
-                    excluded_types:
-                      - 0
-                      - 2
+                card: $home-allsets-card
             selection:
               type: Selection.AllSets
               id: basement-sets
@@ -125,13 +132,16 @@ defines:
         content:
           type: ContentGroup.ContentGroup
           slots:
-            <<: *main-arrangement-slot
+            arrangement:
+              refvar: $search-articles-arrangement
+              slots:
+                card: $search-articles-card
             selection:
               type: Selection.Search
               id: search-results
               slots:
                 filter: Filter.Articles
-            no-results: 'ContentGroup.NoResultsMessage(valign: center, halign: center, justify: center)'
+            no-results: $noresults-message-text
           styles:
           - search-results
 
@@ -156,7 +166,10 @@ defines:
                 wrap: true
                 halign: center
                 justify: center
-            <<: *main-arrangement-slot
+            arrangement:
+              refvar: $subset-articles-arrangement
+              slots:
+                card: $subset-articles-card
             selection:
               type: Selection.ContentForSet
               id: article-list
