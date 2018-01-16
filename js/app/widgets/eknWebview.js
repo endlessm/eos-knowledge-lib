@@ -174,7 +174,8 @@ var EknWebview = new Knowledge.Class({
         if (decision_type === WebKit2.PolicyDecisionType.NAVIGATION_ACTION) {
             let uri = decision.request.uri;
             let scheme = GLib.uri_parse_scheme(uri);
-            if (scheme !== null && this.EXTERNALLY_HANDLED_SCHEMES.indexOf(scheme) !== -1) {
+            if (!uri.startsWith ('http://127.0.0.1') &&
+                scheme !== null && this.EXTERNALLY_HANDLED_SCHEMES.indexOf(scheme) !== -1) {
                 if (scheme === 'license') {
                     // Create a license viewer
                     if (!this._license_view) {

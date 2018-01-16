@@ -105,9 +105,6 @@ var Document = new Module.Class({
         this.set_title_label_from_model(this._title_label);
         this.set_title_label_from_model(this._top_title_label);
 
-        if (this.nav_content)
-            this._content_panel = this._panel_overlay.add_panel_widget(this.nav_content,
-                                                                       Gtk.PositionType.BOTTOM);
         this.show_all();
 
         this._setup_toc();
@@ -213,7 +210,55 @@ var Document = new Module.Class({
         });
     },
 
-    set_active: function () { /* NO-OP */},
+    set_active: function (active) {
+        if (active && this.nav_content && !this._broadway_toplevel) {
+            let manager = Gdk.DisplayManager.get();
+            /* Get broadway display */
+            GLib.setenv ("GDK_BACKEND", "broadway", true);
+            let display = manager.open_display(":0");
+
+            /* Ensure broadway display */
+            if (display === null) {
+                let i = 0;
+                GLib.spawn_command_line_async("broadwayd");
+
+                while (display === null && i < 20) {
+                    GLib.usleep (50000);
+                    display = manager.open_display(":0");
+                    i++;
+                }
+            }
+
+            /* Set up CSS overrides */
+            let screen = display.get_default_screen();
+            let provider = new Gtk.CssProvider();
+            provider.load_from_data(Gio.Application.get_default()._controller.css);
+            Gtk.StyleContext.add_provider_for_screen(screen,
+                                                     provider,
+                                                     Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+            /* Create broadway window */
+            this._broadway_toplevel = new Gtk.Window ({
+                screen: screen,
+                decorated: false
+            });
+
+            /* Add nav-content */
+            this.nav_content.halign = Gtk.Align.FILL;
+            this.nav_content.valign = Gtk.Align.FILL;
+            this._broadway_toplevel.add(this.nav_content);
+            this._broadway_toplevel.maximize();
+
+            /* Give the webview some time before showing the window */
+            imports.mainloop.timeout_add(1000, () => {
+                this._broadway_toplevel.show_all();
+                return GLib.SOURCE_REMOVE;
+            });
+        } else if (this._broadway_toplevel) {
+            this._broadway_toplevel.destroy();
+            delete this._broadway_toplevel;
+        }
+    },
 
     _scroll_to_section: function (index) {
         if (this.content_view.is_loading)
@@ -327,8 +372,8 @@ var Document = new Module.Class({
 
                 return true;
             } else {
-                this.emit('ekn-link-clicked', baseURI);
-                decision.ignore();
+                //this.emit('ekn-link-clicked', baseURI);
+                decision.use();
                 return true;
             }
         });

@@ -20,6 +20,7 @@
         </script>
         {{{share-actions}}}
         {{{content}}}
+        <iframe src="http://127.0.0.1:8080" width="100%" height="400" frameborder="0" marginheight="0" marginwidth="0" scrolling="no" />
         <script type="text/javascript">
             window.crosslink_init({{{crosslink-data}}});
             window.chunk_init({{{chunk-data}}});
