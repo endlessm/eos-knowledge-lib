@@ -1,19 +1,33 @@
 ---
-defines:
+vars:
+  app-banner:
+    shortdef: 'Banner.Dynamic(mode: text, expand: true)'
+  app-brand:
+    shortdef: 'ContentGroup.StaticText(label: "")'
 
-- &main-arrangement-slot
-  arrangement:
+  home-sets-arrangement:
     type: Arrangement.Grid
     properties:
       homogeneous: true
-    slots:
-      card:
-        type: Card.Default
-        properties:
-          background-size: "center"
-          excluded_types:
-          - 0
-          - 2
+  home-sets-card:
+    type: Card.Default
+    properties:
+      excluded_types:
+      - 0
+      - 2
+
+  set-articles-arrangement: &list-arrangement
+    shortdef: 'Arrangement.List(hexpand: true)'
+  set-articles-card: &list-card
+    shortdef: 'Card.List(hexpand: true, show-synopsis: false)'
+
+  search-articles-arrangement: *list-arrangement
+  search-articles-card: *list-card
+
+  noresults-message-text:
+    type: ContentGroup.NoResultsMessage
+
+defines:
 - &footer
   shortdef: 'Layout.Box(orientation: vertical, halign: fill, hexpand: true)'
   styles:
@@ -26,14 +40,6 @@ defines:
   shortdef: 'Layout.Box(orientation: vertical)'
   styles:
     - background
-
-- &list-arrangement-slot
-  arrangement:
-    shortdef: 'Arrangement.List(hexpand: true)'
-    slots:
-      card:
-        shortdef: 'Card.List(hexpand: true, show-synopsis: false)'
-
 
 - &home-page
   shortdef: Layout.Scrolling
@@ -54,14 +60,17 @@ defines:
             - shortdef: 'Layout.Box(orientation: vertical, valign: center, vexpand: true)'
               slots:
                 contents:
-                - shortdef: 'Banner.Dynamic(mode: text, expand: true)'
-                - shortdef: 'ContentGroup.StaticText(label: "TV ESCOLA")'
+                - refvar: $app-banner
+                - refvar: $app-brand
         - shortdef: 'Layout.Box(orientation: vertical)'
           slots:
             contents:
             - shortdef: 'ContentGroup.ContentGroup(expand: true)'
               slots:
-                <<: *main-arrangement-slot
+                arrangement:
+                  refvar: $home-sets-arrangement
+                  slots:
+                    card: $home-sets-card
                 selection: Selection.AllSets
             - <<: *footer
 
@@ -90,7 +99,10 @@ defines:
                           properties:
                             format-string: "%s"
                             expand: true
-                        <<: *list-arrangement-slot
+                        arrangement:
+                          refvar: $set-articles-arrangement
+                          slots:
+                            card: $set-articles-card
                         selection:
                           shortdef: 'Selection.ContentForSet()'
                           id: content-for-set
@@ -117,13 +129,16 @@ defines:
                     - 'Banner.Search(halign: center, justify: center, xalign: 0.5)'
                     - type: ContentGroup.ContentGroup
                       slots:
-                        <<: *list-arrangement-slot
+                        arrangement:
+                          refvar: $search-articles-arrangement
+                          slots:
+                            card: $search-articles-card
                         selection:
                           type: Selection.Search
                           id: search-results
                           slots:
                             filter: Filter.Articles
-                        no-results: ContentGroup.NoResultsMessage
+                        no-results: $noresults-message-text
                       styles:
                       - search-results
             - <<: *footer
