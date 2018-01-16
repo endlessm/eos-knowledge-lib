@@ -1,15 +1,79 @@
 ---
+vars:
+  home-highlighted-articles-arrangement:
+    type: Arrangement.Windshield
+  home-highlighted-articles-card:
+    type: Card.Default
+    properties:
+      excluded_types:
+      - 0
+      - 1
+  home-highlighted-articles-order:
+    shortdef: 'Order.PublishedDate(ascending: false)'
+  home-preview-setcontent-arrangement:
+    type: Arrangement.SquareGuys
+    properties:
+      max-rows: 2
+  home-preview-setcontent-card: &main-card
+    type: Card.Default
+    properties:
+      excluded_types:
+      - 0
+      - 2
+  home-preview-allsets-arrangement: &allsets-arrangement
+    type: Arrangement.SquareGuys
+    properties:
+      max-rows: 1
+      valign: end
+  home-preview-allsets-card: &allsets-card
+    type: Card.Deck
+  home-preview-allsets-text: &allsets-text
+    type: ContentGroup.StaticText
+    properties:
+      label: !translate "Browse by topic"
+      halign: start
+
+  set-preview-setcontent-arrangement:
+    type: Arrangement.Half
+  set-preview-setcontent-card: *main-card
+  set-preview-allsets-arrangement: *allsets-arrangement
+  set-preview-allsets-card: *allsets-card
+  set-preview-allsets-text: *allsets-text
+
+  article-next-article-card:
+    type: Card.Sequence
+    properties:
+      sequence: 1
+      navigation-context: !translate 'Next Article'
+
+  search-articles-arrangement:
+    type: Arrangement.List
+  search-articles-card:
+    type: Card.List
+
+  noresults-message-text:
+    type: ContentGroup.NoResultsMessage
+  noresults-suggested-articles-arrangement:
+    shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
+    styles:
+    - small-spaced-arrangement
+  noresults-suggested-articles-card: *main-card
+  noresults-suggested-articles-text:
+    type: ContentGroup.StaticText
+    properties:
+      label: !translate 'You might be interested in...'
+      halign: start
+  noresults-preview-allsets-arrangement: *allsets-arrangement
+  noresults-preview-allsets-card: *allsets-card
+  noresults-preview-allsets-text: *allsets-text
+
+  allsets-sets-arrangement:
+    type: Arrangement.SquareGuys
+  allsets-sets-card: *allsets-card
+
 defines:
 # A few small repeated elements
 - &header-card Card.Title
-- &main-card
-  type: Card.Default
-  properties:
-    excluded_types:
-    - 0
-    - 2
-- &set-card
-  type: Card.Deck
 
 - &see-more-trigger
   shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
@@ -21,55 +85,6 @@ defines:
         ellipsize: end
         hexpand: true
     - shortdef: 'Decoration.ThemeableImage(valign: end, halign: end)'
-
-- &article-suggestions
-  type: ContentGroup.ContentGroup
-  properties:
-    valign: center
-  slots:
-    title:
-      type: ContentGroup.StaticText
-      properties:
-        label: !translate 'You might be interested in...'
-        halign: start
-    arrangement:
-      shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
-      styles:
-      - small-spaced-arrangement
-      slots:
-        card: *main-card
-    selection:
-      type: Selection.Suggested
-      slots:
-        filter: Filter.Articles
-
-- &category-suggestions
-  type: ContentGroup.ContentGroup
-  properties:
-    valign: center
-  slots:
-    title:
-      type: ContentGroup.StaticText
-      properties:
-        label: !translate "Browse by topic"
-        halign: start
-    trigger:
-      shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
-      slots:
-        contents:
-        - shortdef: 'ContentGroup.StaticText(label: !translate "See more categories")'
-        - type: Decoration.ThemeableImage
-          properties:
-            valign: end
-            halign: end
-    arrangement:
-      type: Arrangement.SquareGuys
-      properties:
-        max-rows: 1
-        valign: end
-      slots:
-        card: *set-card
-    selection: Selection.AllSets
 
 - &page-with-menu
   type: Layout.SideMenu
@@ -113,18 +128,14 @@ defines:
                     - ContentGroup--highlightsall
                   slots:
                     arrangement:
-                      type: Arrangement.Windshield
+                      refvar: $home-highlighted-articles-arrangement
                       slots:
-                        card:
-                          type: Card.Default
-                          properties:
-                            excluded_types:
-                            - 0
-                            - 1
+                        card: $home-highlighted-articles-card
                     selection:
                       type: Selection.FeaturedFirst
                       slots:
                         filter: Filter.Articles
+                        order: $home-highlighted-articles-order
             - type: Layout.ResponsiveMargins
               slots:
                 content:
@@ -146,11 +157,9 @@ defines:
                               properties:
                                 halign: start
                             arrangement:
-                              type: Arrangement.SquareGuys
-                              properties:
-                                max-rows: 2
+                              refvar: $home-preview-setcontent-arrangement
                               slots:
-                                card: *main-card
+                                card: $home-preview-setcontent-card
                             selection:
                               type: Selection.ContentForSet
                               slots:
@@ -162,7 +171,25 @@ defines:
                 - LayoutResponsiveMargins--complementarycontent
               slots:
                 content:
-                  <<: *category-suggestions
+                  type: ContentGroup.ContentGroup
+                  properties:
+                    valign: center
+                  slots:
+                    title: $home-preview-allsets-text
+                    trigger:
+                      shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
+                      slots:
+                        contents:
+                        - shortdef: 'ContentGroup.StaticText(label: !translate "See more categories")'
+                        - type: Decoration.ThemeableImage
+                          properties:
+                            valign: end
+                            halign: end
+                    arrangement:
+                      refvar: $home-preview-allsets-arrangement
+                      slots:
+                        card: $home-preview-allsets-card
+                    selection: Selection.AllSets
 
 - &set-page
   <<: *page-with-menu
@@ -193,9 +220,9 @@ defines:
                             - ContentGroup--previewset
                           slots:
                             arrangement:
-                              type: Arrangement.Half
+                              refvar: $set-preview-setcontent-arrangement
                               slots:
-                                card: *main-card
+                                card: $set-preview-setcontent-card
                             title:
                               type: ContentGroup.DynamicTitle
                               properties:
@@ -217,7 +244,25 @@ defines:
                 - LayoutResponsiveMargins--complementarycontent
               slots:
                 content:
-                  <<: *category-suggestions
+                  type: ContentGroup.ContentGroup
+                  properties:
+                    valign: center
+                  slots:
+                    title: $set-preview-allsets-text
+                    trigger:
+                      shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
+                      slots:
+                        contents:
+                        - shortdef: 'ContentGroup.StaticText(label: !translate "See more categories")'
+                        - type: Decoration.ThemeableImage
+                          properties:
+                            valign: end
+                            halign: end
+                    arrangement:
+                      refvar: $set-preview-allsets-arrangement
+                      slots:
+                        card: $set-preview-allsets-card
+                    selection: Selection.AllSets
 
 - &search-page
   <<: *page-with-menu
@@ -239,11 +284,11 @@ defines:
                 halign: fill
               slots:
                 arrangement:
-                  type: Arrangement.List
+                  refvar: $search-articles-arrangement
                   styles:
                     - ContentGroup--articles
                   slots:
-                    card: Card.List
+                    card: $search-articles-card
                 selection:
                   type: Selection.Search
                   id: search-results
@@ -253,19 +298,49 @@ defines:
                   shortdef: 'Layout.Box(orientation: vertical)'
                   slots:
                     contents:
-                    - type: ContentGroup.NoResultsMessage
+                    - refvar: $noresults-message-text
                     - type: Layout.ResponsiveMargins
                       styles:
                         - LayoutResponsiveMargins--complementarycontent
                       slots:
                         content:
-                          <<: *article-suggestions
+                          type: ContentGroup.ContentGroup
+                          properties:
+                            valign: center
+                          slots:
+                            title: $noresults-suggested-articles-text
+                            arrangement:
+                              refvar: $noresults-suggested-articles-arrangement
+                              slots:
+                                card: $noresults-suggested-articles-card
+                            selection:
+                              type: Selection.Suggested
+                              slots:
+                                filter: Filter.Articles
                     - type: Layout.ResponsiveMargins
                       styles:
                         - LayoutResponsiveMargins--complementarycontent
                       slots:
                         content:
-                          <<: *category-suggestions
+                          type: ContentGroup.ContentGroup
+                          properties:
+                            valign: center
+                          slots:
+                            title: $noresults-preview-allsets-text
+                            trigger:
+                              shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
+                              slots:
+                                contents:
+                                - shortdef: 'ContentGroup.StaticText(label: !translate "See more categories")'
+                                - type: Decoration.ThemeableImage
+                                  properties:
+                                    valign: end
+                                    halign: end
+                            arrangement:
+                              refvar: $noresults-preview-allsets-arrangement
+                              slots:
+                                card: $noresults-preview-allsets-card
+                            selection: Selection.AllSets
 
 - &all-sets-page
   <<: *page-with-menu
@@ -285,9 +360,9 @@ defines:
               type: ContentGroup.ContentGroup
               slots:
                 arrangement:
-                  type: Arrangement.SquareGuys
+                  refvar: $allsets-sets-arrangement
                   slots:
-                    card: *set-card
+                    card: $allsets-sets-card
                 selection:
                   type: Selection.AllSets
                   id: all-sets
@@ -316,11 +391,7 @@ defines:
             arrangement:
               shortdef: 'Arrangement.List(max-rows: 1)'
               slots:
-                card:
-                  type: Card.Sequence
-                  properties:
-                    sequence: 1
-                    navigation-context: !translate 'Next Article'
+                card: $article-next-article-card
             selection:
               type: Selection.Next
 
