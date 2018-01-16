@@ -10,6 +10,7 @@
 #include "eknc-video-object-model.h"
 
 #include <json-glib/json-glib.h>
+#include <endless/endless.h>
 
 /**
  * eknc_object_model_from_json_node:
@@ -24,6 +25,8 @@ EkncContentObjectModel *
 eknc_object_model_from_json_node (JsonNode *node,
                                   GError **error)
 {
+  g_autoptr(EosProfileProbe) probe = EOS_PROFILE_PROBE ("/ekncontent/object/from_json_node");
+
   if (!JSON_NODE_HOLDS_OBJECT (node))
     {
       g_set_error (error, EKNC_CONTENT_OBJECT_ERROR, EKNC_CONTENT_OBJECT_ERROR_BAD_FORMAT,
