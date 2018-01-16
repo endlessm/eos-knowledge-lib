@@ -1,5 +1,6 @@
 // Copyright 2016 Endless Mobile, Inc.
 
+const Endless = imports.gi.Endless;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
@@ -25,6 +26,8 @@ var DynamicTitle = new Module.Class({
     },
 
     make_ready: function (cb = function () {}) {
+        let probe = Endless.ProfileProbe.start('/ekn/dynamicTitle/make_ready');
+
         let content_group = this.get_ancestor(ContentGroup.ContentGroup.$gtype);
         if (content_group === null)
             throw new Error('DynamicTitles must be a descendant of ContentGroup');
@@ -41,5 +44,7 @@ var DynamicTitle = new Module.Class({
 
         selection.connect('notify::model', update_label);
         cb();
+
+        probe.stop();
     },
 });
