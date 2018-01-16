@@ -1,12 +1,61 @@
 ---
+vars:
+  app-banner:
+    shortdef: 'Banner.App(show-subtitle: false)'
+
+  home-highlighted-articles-arrangement:
+    shortdef: 'Arrangement.Piano(expand: true)'
+  home-highlighted-articles-card: &main-card
+    type: Card.Default
+    properties:
+      excluded_types:
+      - 0
+      - 1
+
+  home-highlighted-articles-order:
+    shortdef: 'Order.PublishedDate(ascending: false)'
+  home-preview-setcontent-arrangement:
+    shortdef: 'Arrangement.Thirties(max-rows: 2)'
+  home-preview-setcontent-card: *main-card
+
+
+  set-articles-arrangement:
+    type: Arrangement.List
+    properties:
+      row-spacing: 20
+  set-articles-card:
+    shortdef: 'Card.List(hexpand: true)'
+  set-preview-setcontent-arrangement:
+    shortdef: 'Arrangement.Thirties(max-rows: 2)'
+  set-preview-setcontent-card: *main-card
+  set-supplementary-articles-arrangement: &supplementary-arrangement
+    shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
+  set-supplementary-articles-card: &supplementary-card
+    type: Card.Default
+    properties:
+      excluded_types:
+      - 0
+      - 2
+  set-supplementary-articles-text:
+    shortdef: 'ContentGroup.StaticText(label: !translate "other news", halign: start)'
+
+  search-articles-arrangement:
+    type: Arrangement.List
+  search-articles-card:
+    shortdef: 'Card.List(hexpand: true)'
+
+  noresults-message-text:
+    type: ContentGroup.NoResultsMessage
+  noresults-suggested-articles-arrangement: *supplementary-arrangement
+  noresults-suggested-articles-card: *supplementary-card
+  noresults-suggested-articles-text:
+    type: ContentGroup.StaticText
+    properties:
+      label: !translate 'you might be interested in...'
+      halign: start
+
 defines:
 # Various one-liners
-- &main-card
-  type: Card.Default
-  properties:
-    excluded_types:
-    - 0
-    - 1
 - &header-card Card.Title
 
 # Reused components
@@ -19,7 +68,7 @@ defines:
         content:
           type: Navigation.TopMenu
           slots:
-            banner: 'Banner.App(show-subtitle: false)'
+            banner: $app-banner
             menu:
               type: ContentGroup.ContentGroup
               properties:
@@ -49,15 +98,6 @@ defines:
         hexpand: true
     - shortdef: 'Decoration.ThemeableImage(valign: end, halign: end)'
 
-- &suggestions-arrangement
-  shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
-  slots:
-    card:
-      type: Card.Default
-      properties:
-        excluded_types:
-        - 0
-        - 2
 
 # Pages
 - &home-page
@@ -86,15 +126,15 @@ defines:
                         - ContentGroup--highlightsall
                       slots:
                         arrangement:
-                          type: Arrangement.Piano
+                          refvar: $home-highlighted-articles-arrangement
                           slots:
-                            card: *main-card
+                            card: $home-highlighted-articles-card
                         selection:
                           type: Selection.FeaturedFirst
                           id: highlighted
                           slots:
                             filter: Filter.Articles
-                            order: 'Order.PublishedDate(ascending: false)'
+                            order: $home-highlighted-articles-order
                     - shortdef: 'ContentGroup.ContentGroup(halign: fill)'
                       slots:
                         arrangement:
@@ -114,9 +154,9 @@ defines:
                                     halign: start
                                 trigger: *see-more-trigger
                                 arrangement:
-                                  shortdef: 'Arrangement.Thirties(max-rows: 2)'
+                                  refvar: $home-preview-setcontent-arrangement
                                   slots:
-                                    card: *main-card
+                                    card: $home-preview-setcontent-card
                                 selection:
                                   type: Selection.ContentForSet
                                   slots:
@@ -174,9 +214,9 @@ defines:
                                         halign: start
                                     trigger: *see-more-trigger
                                     arrangement:
-                                      shortdef: 'Arrangement.Thirties(max-rows: 1)'
+                                      refvar: $set-preview-setcontent-arrangement
                                       slots:
-                                        card: *main-card
+                                        card: $set-preview-setcontent-card
                                     selection:
                                       type: Selection.ContentForSet
                                       slots:
@@ -198,11 +238,9 @@ defines:
                             - ContentGroup--articles
                           slots:
                             arrangement:
-                              type: Arrangement.List
+                              refvar: $set-articles-arrangement
                               slots:
-                                card: 'Card.List(hexpand: true)'
-                              properties:
-                                row-spacing: 20
+                                card: $set-articles-card
                             selection:
                               type: Selection.ContentForSet
                               id: articles-for-set
@@ -221,9 +259,11 @@ defines:
                           properties:
                             valign: center
                           slots:
-                            arrangement: *suggestions-arrangement
-                            title:
-                              shortdef: 'ContentGroup.StaticText(label: !translate "other news", halign: start)'
+                            arrangement:
+                              refvar: $set-supplementary-articles-arrangement
+                              slots:
+                                card: $set-supplementary-articles-card
+                            title: $set-supplementary-articles-text
                             selection:
                               type: Selection.Supplementary
                               slots:
@@ -261,16 +301,16 @@ defines:
                           slots:
                             filter: Filter.Articles
                         arrangement:
-                          type: Arrangement.List
+                          refvar: $search-articles-arrangement
                           styles:
                             - ContentGroup--articles
                           slots:
-                            card: 'Card.List(hexpand: true)'
+                            card: $search-articles-card
                         no-results:
                           shortdef: 'Layout.Box(orientation: vertical, valign: start)'
                           slots:
                             contents:
-                            - type: ContentGroup.NoResultsMessage
+                            - refvar: $noresults-message-text
                             - type: Layout.ResponsiveMargins
                               styles:
                                 - LayoutResponsiveMargins--complementarycontent
@@ -280,12 +320,11 @@ defines:
                                   properties:
                                     valign: center
                                   slots:
-                                    title:
-                                      type: ContentGroup.StaticText
-                                      properties:
-                                        label: !translate 'you might be interested in...'
-                                        halign: start
-                                    arrangement: *suggestions-arrangement
+                                    title: $noresults-suggested-articles-text
+                                    arrangement:
+                                      refvar: $noresults-suggested-articles-arrangement
+                                      slots:
+                                        card: $noresults-suggested-articles-card
                                     selection:
                                       type: Selection.Suggested
                                       slots:
