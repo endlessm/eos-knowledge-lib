@@ -1,18 +1,49 @@
+---
+vars:
+  app-banner:
+    shortdef: 'Banner.App(show-subtitle: false)'
+
+  home-featured-articles-arrangement: &main-arrangement
+    type: Arrangement.List
+    properties:
+      valign: start
+    styles:
+      - main-arrangement
+  home-featured-articles-card: &main-card
+    type: Card.Default
+    properties:
+      excluded_types:
+      - 0
+      - 2
+  home-featured-articles-order: &main-order
+    shortdef: 'Order.PublishedDate(ascending: false)'
+
+  set-articles-arrangement: *main-arrangement
+  set-articles-card: *main-card
+  set-articles-order: *main-order
+
+  search-articles-arrangement: *main-arrangement
+  search-articles-card:
+    shortdef: 'Card.List(show-context: true)'
+
+  noresults-message-text:
+    type: ContentGroup.StaticText
+    properties:
+      label: !translate 'Sorry, there are no results that match your search.'
+      halign: start
+      justify: left
+      wrap: true
+      wrap-mode: word-char
+  noresults-featured-articles-text:
+    type: ContentGroup.StaticText
+    properties:
+      label: !translate 'Latest posts'
+      halign: start
+  noresults-featured-articles-arrangement:
+    shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
+  noresults-featured-articles-card: *main-card
+
 defines:
-- &main-arrangement
-  type: Arrangement.List
-  properties:
-    valign: start
-  styles:
-    - main-arrangement
-
-- &main-card
-  type: Card.Default
-  properties:
-    excluded_types:
-    - 0
-    - 2
-
 - &main-menu
   type: Layout.Scrolling
   slots:
@@ -22,7 +53,7 @@ defines:
         - main-menu
       slots:
         contents:
-        - shortdef: 'Banner.App(show-subtitle: false)'
+        - refvar: $app-banner
         - type: ContentGroup.ContentGroup
           properties:
             cards-per-page: 50
@@ -66,15 +97,15 @@ defines:
             expand: true
           slots:
             arrangement:
-              <<: *main-arrangement
+              refvar: $home-featured-articles-arrangement
               slots:
-                card: *main-card
+                card: $home-featured-articles-card
             selection:
               type: Selection.FeaturedFirst
               id: highlighted
               slots:
                 filter: Filter.Articles
-                order: 'Order.PublishedDate(ascending: false)'
+                order: $home-featured-articles-order
 
 - &article-page
   type: Layout.ArticleStack
@@ -106,15 +137,15 @@ defines:
                 expand: true
               slots:
                 arrangement:
-                  <<: *main-arrangement
+                  refvar: $set-articles-arrangement
                   slots:
-                    card: *main-card
+                    card: $set-articles-card
                 selection:
                   type: Selection.ContentForSet
                   id: set-articles
                   slots:
                     filter: Filter.Articles
-                    order: 'Order.PublishedDate(ascending: false)'
+                    order: $set-articles-order
 
 - &search-page
   shortdef: 'Layout.InfiniteScrolling(expand: true)'
@@ -136,9 +167,9 @@ defines:
                 halign: center
               slots:
                 arrangement:
-                  <<: *main-arrangement
+                  refvar: $search-articles-arrangement
                   slots:
-                    card: 'Card.List(show-context: true)'
+                    card: $search-articles-card
                 selection:
                   type: Selection.Search
                   id: search-results
@@ -148,30 +179,20 @@ defines:
                   shortdef: 'Layout.Box(orientation: vertical)'
                   slots:
                     contents:
-                    - type: ContentGroup.StaticText
+                    - refvar: $noresults-message-text
                       styles:
                         - no-results-message
-                      properties:
-                        label: !translate 'Sorry, there are no results that match your search.'
-                        halign: start
-                        justify: left
-                        wrap: true
-                        wrap-mode: word-char
                     - type: ContentGroup.ContentGroup
                       styles:
                         - ContentGroup--complementarycontent
                       properties:
                         valign: start
                       slots:
-                        title:
-                          type: ContentGroup.StaticText
-                          properties:
-                            label: !translate 'Latest posts'
-                            halign: start
+                        title: $noresults-featured-articles-text
                         arrangement:
-                          shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
+                          refvar: $noresults-featured-articles-arrangement
                           slots:
-                            card: *main-card
+                            card: $noresults-featured-articles-card
                         selection:
                           type: Selection.FeaturedFirst
                           slots:
