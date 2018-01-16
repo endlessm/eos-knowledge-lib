@@ -619,17 +619,17 @@ get_ids_clause (char **ids,
     return NULL;
 
   g_auto(GStrv) prefixed_ids = g_new0 (gchar *, length + 1);
-  for (size_t i = 0; i < length;)
+  for (size_t ix = 0, prefixed_ix = 0; ix < length; ix++)
     {
-      const gchar *hash = eknc_utils_id_get_hash (ids[i]);
+      const char *hash = eknc_utils_id_get_hash (ids[ix]);
       if (hash == NULL)
         {
-          g_critical ("Unexpected id structure in query object: %s", ids[i]);
+          g_critical ("Unexpected id structure in query object: %s", ids[ix]);
           continue;
         }
 
-      prefixed_ids[i] = g_strdup_printf ("%s%s", XAPIAN_PREFIX_ID, hash);
-      i++;
+      prefixed_ids[prefixed_ix] = g_strdup_printf ("%s%s", XAPIAN_PREFIX_ID, hash);
+      prefixed_ix++;
     }
 
   return xapian_query_new_for_terms (join_op, (const char **) prefixed_ids);
