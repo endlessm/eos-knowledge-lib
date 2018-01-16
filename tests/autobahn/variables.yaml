@@ -1,0 +1,12 @@
+vars:
+  app-window:
+    shortdef: 'Window.Fake(foo: bar)'
+  app-search:
+    shortdef: Navigation.Fake
+root:
+  shortdef: 'Controller.Fake'
+  slots:
+    window:
+      refvar: $app-window
+      slots:
+        search: $app-search

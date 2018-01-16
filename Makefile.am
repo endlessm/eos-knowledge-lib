@@ -540,6 +540,7 @@ javascript_tests = \
 yaml_tests = \
 	tests/autobahn/basic.yaml \
 	tests/autobahn/fullApp.yaml \
+	tests/autobahn/variables.yaml \
 	tests/autobahn/test-autobahn-catalog \
 	tests/autobahn/test-autobahn-translation \
 	$(NULL)

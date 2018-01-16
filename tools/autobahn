@@ -19,6 +19,9 @@ JSON -> Jason Schwartzman -> Shwartz -> Spaceballs -> Radar jammed -> Jam
 sandwich -> Cheese sandwich -> Kraft singles -> Kraftwerk -> Autobahn
 """
 
+overrides = None
+preset = None
+
 
 # This allows you to put a shortdef string (see below) into a slot, instead of
 # a module description.
@@ -79,6 +82,27 @@ def order_module_keys(module):
             retval[key] = sorted_ordered_dict(module[key])
     return retval
 
+def expand_slot_refvar(module):
+    if isinstance(module, str) and module.startswith('$'):
+        return {'refvar': module}
+    return module
+
+def expand_refvar(module):
+    if not preset or 'vars' not in preset or 'refvar' not in module:
+        return module
+
+    var = module.pop('refvar')[1:]
+    if var not in preset['vars']:
+        raise ValueError('var %s not defined in preset.' % var)
+
+    if overrides and var in overrides:
+        content = overrides[var]
+    else:
+        content = preset['vars'][var]
+    module.update(content)
+
+    return module
+
 
 def walk(module_tree, transform_func):
     # Transform first, in case the transformation adds slots
@@ -93,7 +117,20 @@ def walk(module_tree, transform_func):
 
 
 def preprocess(infile):
-    tree = yaml.load(infile)['root']
+    global overrides
+    global preset
+
+    docs = yaml.load_all(infile)
+    doc = next(docs)
+
+    if 'overrides' in doc:
+        overrides = doc['overrides']
+        doc = next(docs)
+    preset = doc
+
+    tree = doc['root']
+    tree = walk(tree, expand_slot_refvar)
+    tree = walk(tree, expand_refvar)
     tree = walk(tree, expand_slot_shorthand)
     tree = walk(tree, expand_shortdef)
     tree = walk(tree, order_module_keys)
