@@ -1,4 +1,21 @@
 ---
+vars:
+  app-banner:
+    type: Banner.Dynamic
+
+  home-articles-arrangement: &main-arrangement
+    type: Arrangement.List
+    properties:
+      row-spacing: 20
+  home-articles-card: &main-card
+    shortdef: 'Card.List(hexpand: true)'
+
+  search-articles-arrangement: *main-arrangement
+  search-articles-card: *main-card
+
+  noresults-message-text:
+    shortdef: 'ContentGroup.NoResultsMessage(halign: center, justify: center)'
+
 defines:
 - &footer-section
   type: Layout.ResponsiveMargins
@@ -9,7 +26,11 @@ defines:
       shortdef: 'Layout.Box(orientation: horizontal)'
       slots:
         contents:
-        - shortdef: 'Banner.Dynamic(mode: full, halign: start, expand: false)'
+        - refvar: $app-banner
+          properties:
+            mode: full
+            halign: start
+            expand: false
         - type: ContentGroup.ContentGroup
           properties:
             valign: center
@@ -41,7 +62,11 @@ defines:
             orientation: vertical
           slots:
             contents:
-            - shortdef: 'Banner.Dynamic(mode: full, halign: center, expand: true)'
+            - refvar: $app-banner
+              properties:
+                mode: full
+                halign: center
+                expand: true
             - shortdef: 'Layout.Box(orientation: vertical)'
               styles:
                 - ContentGroup--outercontainer
@@ -58,11 +83,9 @@ defines:
                         paginate: true
                       slots:
                         arrangement:
-                          type: Arrangement.List
+                          refvar: $home-articles-arrangement
                           slots:
-                            card: 'Card.List(hexpand: true)'
-                          properties:
-                            row-spacing: 20
+                            card: $home-articles-card
                         selection:
                           type: Selection.All
                           id: all-videos
@@ -104,19 +127,16 @@ defines:
                         paginate: true
                       slots:
                         arrangement:
-                          type: Arrangement.List
+                          refvar: $search-articles-arrangement
                           slots:
-                            card: 'Card.List(hexpand: true)'
-                          properties:
-                            row-spacing: 20
+                            card: $search-articles-card
                         selection:
                           type: Selection.Search
                           id: search-results
                           slots:
                             filter: Filter.Articles
                             order: 'Order.Alphabetical(ascending: true)'
-                        no-results:
-                          shortdef: 'ContentGroup.NoResultsMessage(halign: center, justify: center)'
+                        no-results: $noresults-message-text
             - *footer-section
 
 - &article-page
