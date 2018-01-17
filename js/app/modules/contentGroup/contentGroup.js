@@ -2,6 +2,7 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
+const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
@@ -241,6 +242,8 @@ var ContentGroup = new Module.Class({
     },
 
     make_ready: function (cb=function () {}) {
+        let probe = Endless.ProfileProbe.start('/ekn/contentGroup/make_ready');
+
         [this._title, this._trigger, this._no_results].forEach((module) => {
             if (module)
                 module.make_ready();
@@ -255,6 +258,8 @@ var ContentGroup = new Module.Class({
                 }
             });
         }
+
+        probe.stop();
     },
 
     get_selection: function () {

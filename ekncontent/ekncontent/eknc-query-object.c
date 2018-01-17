@@ -5,8 +5,9 @@
 #include "eknc-enums.h"
 #include "eknc-utils-private.h"
 
-#include <gobject/gvaluecollector.h>
 #include <string.h>
+#include <gobject/gvaluecollector.h>
+#include <endless/endless.h>
 
 #define MATCH_SYNOPSIS_CUTOFF 20
 #define DEFAULT_CUTOFF 10
@@ -1077,6 +1078,8 @@ eknc_query_object_get_query (EkncQueryObject *self,
                              XapianQueryParser *qp,
                              GError **error_out)
 {
+  g_autoptr(EosProfileProbe) probe = EOS_PROFILE_PROBE ("/ekncontent/query");
+
   g_autoptr(GError) error = NULL;
   g_autoptr(XapianQuery) parsed_query = NULL;
 

@@ -3,8 +3,10 @@
 #include "eknc-content-object-model.h"
 #include "eknc-content-object-model-private.h"
 
-#include <string.h>
 #include "eknc-utils-private.h"
+
+#include <string.h>
+#include <endless/endless.h>
 
 /**
  * SECTION:content-object-model
@@ -629,6 +631,8 @@ eknc_content_object_model_get_content_stream (EkncContentObjectModel *self,
 EkncContentObjectModel *
 eknc_content_object_model_new_from_json_node (JsonNode *node)
 {
+  g_autoptr(EosProfileProbe) probe = EOS_PROFILE_PROBE ("/ekncontent/object/content");
+
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   GArray *params = g_array_new (FALSE, TRUE, sizeof (GParameter));
   eknc_content_object_model_add_json_to_params (node, params);
@@ -637,5 +641,6 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
                                                  (GParameter *)params->data);
   eknc_utils_free_gparam_array (params);
 G_GNUC_END_IGNORE_DEPRECATIONS
+
   return model;
 }

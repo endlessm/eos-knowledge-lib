@@ -17,6 +17,8 @@
 #include "eknc-database-manager-private.h"
 #include "eknc-query-object-private.h"
 
+#include <endless/endless.h>
+
 #define PREFIX_METADATA_KEY "XbPrefixes"
 #define STOPWORDS_METADATA_KEY "XbStopwords"
 
@@ -314,6 +316,8 @@ create_database_from_manifest (const char  *manifest_path,
 {
   GError *error = NULL;
 
+  g_autoptr(EosProfileProbe) probe = EOS_PROFILE_PROBE ("/ekncontent/database/create");
+
   g_autoptr(JsonParser) parser = json_parser_new_immutable ();
   if (!json_parser_load_from_file (parser, manifest_path, &error))
     {
@@ -338,6 +342,9 @@ create_database_from_manifest (const char  *manifest_path,
 
   for (GList *l = dbs; l != NULL; l = l->next)
     {
+      g_autoptr(EosProfileProbe) db_probe =
+        EOS_PROFILE_PROBE ("/ekncontent/database/create/internal_db");
+
       JsonObject *json_db = json_node_get_object (l->data);
 
       guint64 db_offset = json_object_get_int_member (json_db, "offset");
@@ -478,6 +485,8 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
                                           char **spell_fixed_terms_out,
                                           GError **error_out)
 {
+  g_autoptr(EosProfileProbe) probe = EOS_PROFILE_PROBE ("/ekncontent/fix_query");
+
   EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
   GError *error = NULL;
   XapianStopper *stopper = xapian_query_parser_get_stopper (priv->query_parser);
@@ -569,6 +578,8 @@ eknc_database_manager_query_internal (EkncDatabaseManager *self,
                                       const char *lang,
                                       GError **error_out)
 {
+  g_autoptr(EosProfileProbe) probe = EOS_PROFILE_PROBE ("/ekncontent/query");
+
   EkncDatabaseManagerPrivate *priv = eknc_database_manager_get_instance_private (self);
   GError *error = NULL;
 
