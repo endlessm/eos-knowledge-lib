@@ -30,7 +30,7 @@ function add_custom_model_constructors (model) {
     // better yet support introspection on list properties
     model.new_from_props = function (props={}) {
         marshal_property(props, 'discovery-feed-content', function (v) {
-            return new GLib.Variant('a{sv}', v);
+            return Json.from_string(JSON.stringify(v)).get_object();
         });
         marshal_property(props, 'table-of-contents', function (v) {
             // Mimic json_gvariant_deserialize
@@ -57,8 +57,9 @@ function _init() {
 
     define_property(Eknc.ContentObjectModel, 'discovery-feed-content', {
         get: function () {
-            let content = this.get_discovery_feed_content();
-            return content ? content.deep_unpack() : [];
+            let node = new Json.Node();
+            node.init_object(this.get_discovery_feed_content());
+            return JSON.parse(Json.to_string(node, false));
         }
     });
 
