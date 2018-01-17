@@ -519,7 +519,19 @@ eknc_database_manager_fix_query_internal (EkncDatabaseManager *self,
     }
 
   if (spell_fixed_terms_out != NULL)
-    *spell_fixed_terms_out = xapian_query_parser_get_corrected_query_string (priv->query_parser);
+    {
+      /* In older databases, each entry in the spelling dictionary had a
+       * newline appended. This has now been fixed, but in order to avoid
+       * having to rebuild everything, we remove all excess whitespace from
+       * each corrected term. */
+      g_autofree char *corrected = xapian_query_parser_get_corrected_query_string (priv->query_parser);
+      g_auto(GStrv) temp_array = g_strsplit (corrected, " ", -1);
+
+      for (char **iter = temp_array; *iter != NULL; iter++)
+        *iter = g_strstrip (*iter);
+
+      *spell_fixed_terms_out = g_strjoinv (" ", temp_array);
+    }
 
   g_debug (G_STRLOC ":\n"
            " - search terms: '%s'\n"
