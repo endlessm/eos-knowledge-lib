@@ -9,7 +9,11 @@ defines:
       - 1
 
 - &main-arrangement
-  type: Arrangement.Constrained
+  type: Arrangement.SquareGuys
+  properties:
+    halign: center
+    valign: start
+    expand: true
   slots:
     card:
       <<: *main-card
@@ -46,396 +50,59 @@ defines:
   type: Selection.ContentForSet
 
 # Pages
-
-# FIXME: The repeating ContentGroup structure should be replaced with the
-# infinite scrolling arrangement once it's made (T16360).
 - &home-page
   type: Layout.TopMenu
   slots:
     top-menu:
       <<: *main-menu
     content:
-      shortdef: 'Layout.Scrolling(expand: true)'
+      type: Layout.InfiniteScrolling
+      references:
+        lazy-load: home-articles
       slots:
         content:
           type: Layout.ResponsiveMargins
           slots:
             content:
-              shortdef: 'Layout.Box(orientation: vertical)'
+              type: ContentGroup.ContentGroup
+              styles:
+                - ContentGroup--maincontent
               slots:
-                contents:
-                  - type: ContentGroup.ContentGroup
-                    slots:
-                      arrangement:
-                        <<: *main-arrangement
-                      selection:
-                        <<: *selection-home
-                        id: home-CG1
-                        slots:
-                          filter:
-                            type: Filter.Articles
-                  - type: ContentGroup.ContentGroup
-                    slots:
-                      arrangement:
-                        <<: *main-arrangement
-                      selection:
-                        <<: *selection-home
-                        id: home-CG2
-                        slots:
-                          filter:
-                            type: Filter.Articles
-                            slots:
-                              sub-filter:
-                                type: Filter.OtherGroup
-                                references:
-                                  other: home-CG1
-                  - type: ContentGroup.ContentGroup
-                    slots:
-                      arrangement:
-                        <<: *main-arrangement
-                      selection:
-                        <<: *selection-home
-                        id: home-CG3
-                        slots:
-                          filter:
-                            type: Filter.Articles
-                            slots:
-                              sub-filter:
-                                type: Filter.OtherGroup
-                                references:
-                                  other: home-CG1
-                                slots:
-                                  sub-filter:
-                                    type: Filter.OtherGroup
-                                    references:
-                                      other: home-CG2
-                  - type: ContentGroup.ContentGroup
-                    slots:
-                      arrangement:
-                        <<: *main-arrangement
-                      selection:
-                        <<: *selection-home
-                        id: home-CG4
-                        slots:
-                          filter:
-                            type: Filter.Articles
-                            slots:
-                              sub-filter:
-                                type: Filter.OtherGroup
-                                references:
-                                  other: home-CG1
-                                slots:
-                                  sub-filter:
-                                    type: Filter.OtherGroup
-                                    references:
-                                      other: home-CG2
-                                    slots:
-                                      sub-filter:
-                                        type: Filter.OtherGroup
-                                        references:
-                                          other: home-CG3
-                  - type: ContentGroup.ContentGroup
-                    slots:
-                      arrangement:
-                        <<: *main-arrangement
-                      selection:
-                        <<: *selection-home
-                        id: home-CG5
-                        slots:
-                          filter:
-                            type: Filter.Articles
-                            slots:
-                              sub-filter:
-                                type: Filter.OtherGroup
-                                references:
-                                  other: home-CG1
-                                slots:
-                                  sub-filter:
-                                    type: Filter.OtherGroup
-                                    references:
-                                      other: home-CG2
-                                    slots:
-                                      sub-filter:
-                                        type: Filter.OtherGroup
-                                        references:
-                                          other: home-CG3
-                                        slots:
-                                          sub-filter:
-                                            type: Filter.OtherGroup
-                                            references:
-                                              other: home-CG4
-                  - type: ContentGroup.ContentGroup
-                    slots:
-                      arrangement:
-                        <<: *main-arrangement
-                      selection:
-                        <<: *selection-home
-                        id: home-CG6
-                        slots:
-                          filter:
-                            type: Filter.Articles
-                            slots:
-                              sub-filter:
-                                type: Filter.OtherGroup
-                                references:
-                                  other: home-CG1
-                                slots:
-                                  sub-filter:
-                                    type: Filter.OtherGroup
-                                    references:
-                                      other: home-CG2
-                                    slots:
-                                      sub-filter:
-                                        type: Filter.OtherGroup
-                                        references:
-                                          other: home-CG3
-                                        slots:
-                                          sub-filter:
-                                            type: Filter.OtherGroup
-                                            references:
-                                              other: home-CG4
-                                            slots:
-                                              sub-filter:
-                                                type: Filter.OtherGroup
-                                                references:
-                                                  other: home-CG5
-                  - type: ContentGroup.ContentGroup
-                    slots:
-                      arrangement:
-                        <<: *main-arrangement
-                      selection:
-                        <<: *selection-home
-                        id: home-CG7
-                        slots:
-                          filter:
-                            type: Filter.Articles
-                            slots:
-                              sub-filter:
-                                type: Filter.OtherGroup
-                                references:
-                                  other: home-CG1
-                                slots:
-                                  sub-filter:
-                                    type: Filter.OtherGroup
-                                    references:
-                                      other: home-CG2
-                                    slots:
-                                      sub-filter:
-                                        type: Filter.OtherGroup
-                                        references:
-                                          other: home-CG3
-                                        slots:
-                                          sub-filter:
-                                            type: Filter.OtherGroup
-                                            references:
-                                              other: home-CG4
-                                            slots:
-                                              sub-filter:
-                                                type: Filter.OtherGroup
-                                                references:
-                                                  other: home-CG5
-                                                slots:
-                                                  sub-filter:
-                                                    type: Filter.OtherGroup
-                                                    references:
-                                                      other: home-CG6
+                arrangement:
+                  <<: *main-arrangement
+                selection:
+                  <<: *selection-home
+                  id: home-articles
+                  slots:
+                    filter:
+                      type: Filter.Articles
 
-# FIXME: The repeating ContentGroup structure should be replaced with the
-# infinite scrolling arrangement once it's made (T16360).
 - &set-page
   type: Layout.TopMenu
   slots:
     top-menu:
       <<: *main-menu
     content:
-      shortdef: 'Layout.Scrolling(expand: true)'
+      type: Layout.InfiniteScrolling
+      references:
+        lazy-load: set-articles
       slots:
         content:
           type: Layout.ResponsiveMargins
           slots:
             content:
-              shortdef: 'Layout.Box(orientation: vertical)'
+              type: ContentGroup.ContentGroup
+              styles:
+                - ContentGroup--maincontent
               slots:
-                contents:
-                  - shortdef: 'Banner.Set(halign: center)'
-                    slots:
-                      card:
-                        type: Card.Title
-                  - type: ContentGroup.ContentGroup
-                    slots:
-                      arrangement:
-                        <<: *main-arrangement
-                      selection:
-                        <<: *selection-set
-                        id: set-CG1
-                        slots:
-                          filter:
-                            type: Filter.Articles
-                  - type: ContentGroup.ContentGroup
-                    slots:
-                      arrangement:
-                        <<: *main-arrangement
-                      selection:
-                        <<: *selection-set
-                        id: set-CG2
-                        slots:
-                          filter:
-                            type: Filter.Articles
-                            slots:
-                              sub-filter:
-                                type: Filter.OtherGroup
-                                references:
-                                  other: set-CG1
-                  - type: ContentGroup.ContentGroup
-                    slots:
-                      arrangement:
-                        <<: *main-arrangement
-                      selection:
-                        <<: *selection-set
-                        id: set-CG3
-                        slots:
-                          filter:
-                            type: Filter.Articles
-                            slots:
-                              sub-filter:
-                                type: Filter.OtherGroup
-                                references:
-                                  other: set-CG1
-                                slots:
-                                  sub-filter:
-                                    type: Filter.OtherGroup
-                                    references:
-                                      other: set-CG2
-                  - type: ContentGroup.ContentGroup
-                    slots:
-                      arrangement:
-                        <<: *main-arrangement
-                      selection:
-                        <<: *selection-set
-                        id: set-CG4
-                        slots:
-                          filter:
-                            type: Filter.Articles
-                            slots:
-                              sub-filter:
-                                type: Filter.OtherGroup
-                                references:
-                                  other: set-CG1
-                                slots:
-                                  sub-filter:
-                                    type: Filter.OtherGroup
-                                    references:
-                                      other: set-CG2
-                                    slots:
-                                      sub-filter:
-                                        type: Filter.OtherGroup
-                                        references:
-                                          other: set-CG3
-                  - type: ContentGroup.ContentGroup
-                    slots:
-                      arrangement:
-                        <<: *main-arrangement
-                      selection:
-                        <<: *selection-set
-                        id: set-CG5
-                        slots:
-                          filter:
-                            type: Filter.Articles
-                            slots:
-                              sub-filter:
-                                type: Filter.OtherGroup
-                                references:
-                                  other: set-CG1
-                                slots:
-                                  sub-filter:
-                                    type: Filter.OtherGroup
-                                    references:
-                                      other: set-CG2
-                                    slots:
-                                      sub-filter:
-                                        type: Filter.OtherGroup
-                                        references:
-                                          other: set-CG3
-                                        slots:
-                                          sub-filter:
-                                            type: Filter.OtherGroup
-                                            references:
-                                              other: set-CG4
-                  - type: ContentGroup.ContentGroup
-                    slots:
-                      arrangement:
-                        <<: *main-arrangement
-                      selection:
-                        <<: *selection-set
-                        id: set-CG6
-                        slots:
-                          filter:
-                            type: Filter.Articles
-                            slots:
-                              sub-filter:
-                                type: Filter.OtherGroup
-                                references:
-                                  other: set-CG1
-                                slots:
-                                  sub-filter:
-                                    type: Filter.OtherGroup
-                                    references:
-                                      other: set-CG2
-                                    slots:
-                                      sub-filter:
-                                        type: Filter.OtherGroup
-                                        references:
-                                          other: set-CG3
-                                        slots:
-                                          sub-filter:
-                                            type: Filter.OtherGroup
-                                            references:
-                                              other: set-CG4
-                                            slots:
-                                              sub-filter:
-                                                type: Filter.OtherGroup
-                                                references:
-                                                  other: set-CG5
-                  - type: ContentGroup.ContentGroup
-                    slots:
-                      arrangement:
-                        <<: *main-arrangement
-                      selection:
-                        <<: *selection-set
-                        id: set-CG7
-                        slots:
-                          filter:
-                            type: Filter.Articles
-                            slots:
-                              sub-filter:
-                                type: Filter.OtherGroup
-                                references:
-                                  other: set-CG1
-                                slots:
-                                  sub-filter:
-                                    type: Filter.OtherGroup
-                                    references:
-                                      other: set-CG2
-                                    slots:
-                                      sub-filter:
-                                        type: Filter.OtherGroup
-                                        references:
-                                          other: set-CG3
-                                        slots:
-                                          sub-filter:
-                                            type: Filter.OtherGroup
-                                            references:
-                                              other: set-CG4
-                                            slots:
-                                              sub-filter:
-                                                type: Filter.OtherGroup
-                                                references:
-                                                  other: set-CG5
-                                                slots:
-                                                  sub-filter:
-                                                    type: Filter.OtherGroup
-                                                    references:
-                                                      other: set-CG6
+                arrangement:
+                  <<: *main-arrangement
+                selection:
+                  <<: *selection-set
+                  id: set-articles
+                  slots:
+                    filter:
+                      type: Filter.Articles
 
 - &search-page
   type: Layout.TopMenu
