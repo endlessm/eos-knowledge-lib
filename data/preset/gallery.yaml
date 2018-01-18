@@ -1,30 +1,51 @@
+---
+vars:
+  app-banner:
+    shortdef: 'Banner.Dynamic(mode: full, show-subtitle: false, valign: center)'
+
+  home-articles-arrangement: &main-arrangement
+    type: Arrangement.SquareGuys
+    properties:
+      halign: center
+      valign: start
+      expand: true
+  home-articles-card: &main-card
+    type: Card.Default
+    properties:
+      excluded_types:
+        - 0
+        - 1
+
+  set-articles-arrangement: *main-arrangement
+  set-articles-card: *main-card
+
+  search-articles-arrangement: *main-arrangement
+  search-articles-card: *main-card
+
+  noresults-message-text:
+    type: ContentGroup.NoResultsMessage
+    properties:
+      halign: center
+      justify: center
+      valign: end
+  noresults-suggested-articles-arrangement:
+    shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
+  noresults-suggested-articles-card: *main-card
+  noresults-suggested-articles-text:
+    type: ContentGroup.StaticText
+    properties:
+      label: !translate 'You might also be interested in...'
+      halign: start
+
 defines:
-
 # Recurring components
-- &main-card
-  type: Card.Default
-  properties:
-    excluded_types:
-      - 0
-      - 1
-
-- &main-arrangement
-  type: Arrangement.SquareGuys
-  properties:
-    halign: center
-    valign: start
-    expand: true
-  slots:
-    card:
-      <<: *main-card
-
 - &main-menu
   type: Layout.ResponsiveMargins
   slots:
     content:
       type: Navigation.TopMenu
       slots:
-        banner: 'Banner.Dynamic(mode: full, show-subtitle: false, valign: center)'
+        banner: $app-banner
         menu:
           type: ContentGroup.ContentGroup
           properties:
@@ -69,7 +90,9 @@ defines:
                 - ContentGroup--maincontent
               slots:
                 arrangement:
-                  <<: *main-arrangement
+                  refvar: $home-articles-arrangement
+                  slots:
+                    card: $home-articles-card
                 selection:
                   <<: *selection-home
                   id: home-articles
@@ -96,7 +119,9 @@ defines:
                 - ContentGroup--maincontent
               slots:
                 arrangement:
-                  <<: *main-arrangement
+                  refvar: $set-articles-arrangement
+                  slots:
+                    card: $set-articles-card
                 selection:
                   <<: *selection-set
                   id: set-articles
@@ -129,10 +154,9 @@ defines:
                     halign: fill
                   slots:
                     arrangement:
-                      type: Arrangement.SquareGuys
+                      refvar: $search-articles-arrangement
                       slots:
-                        card:
-                          <<: *main-card
+                        card: $search-articles-card
                     selection:
                       type: Selection.Search
                       id: search-results
@@ -142,11 +166,7 @@ defines:
                       shortdef: 'Layout.Box(orientation: vertical)'
                       slots:
                         contents:
-                        - type: ContentGroup.NoResultsMessage
-                          properties:
-                            halign: center
-                            justify: center
-                            valign: end
+                        - refvar: $noresults-message-text
                         - type: Layout.ResponsiveMargins
                           styles:
                             - LayoutResponsiveMargins--complementarycontent
@@ -154,16 +174,11 @@ defines:
                             content:
                               shortdef: 'ContentGroup.ContentGroup(valign: center)'
                               slots:
-                                title:
-                                  type: ContentGroup.StaticText
-                                  properties:
-                                    label: !translate 'You might also be interested in...'
-                                    halign: start
+                                title: $noresults-suggested-articles-text
                                 arrangement:
-                                  shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
+                                  refvar: $noresults-suggested-articles-arrangement
                                   slots:
-                                    card:
-                                      <<: *main-card
+                                    card: $noresults-suggested-articles-card
                                 selection:
                                   type: Selection.Suggested
                                   slots:
