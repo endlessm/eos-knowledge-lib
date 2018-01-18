@@ -45,23 +45,3 @@
     padding-left: 50px;
     padding-right: 50px;
 }
-
-// FIXME: These 2 selector styles should be integrated into the framework.
-.PagerSimple {
-    margin-top: 0;
-}
-
-.WindowSimple {
-    scrollbar {
-        padding: 3px;
-        background-color: #c3c4c4;
-        border: 1px solid #b6b6b2;
-        // margin-top is for being covered by Layout.TopMenu
-        margin-top: 50px;
-
-        slider {
-            min-width: 6px;
-            background-color: #787c7d;
-        }
-    }
-}
