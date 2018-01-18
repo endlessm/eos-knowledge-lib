@@ -1,4 +1,16 @@
 ---
+vars:
+  app-banner:
+    type: Banner.Dynamic
+
+  search-articles-arrangement:
+    shortdef: 'Arrangement.List(hexpand: true, homogeneous: false)'
+  search-articles-card:
+    shortdef: 'Card.Title(halign: start)'
+
+  noresults-message-text:
+    type: ContentGroup.NoResultsMessage
+
 defines:
   - &home-page
     shortdef: 'Layout.Box(expand: true)'
@@ -7,7 +19,7 @@ defines:
       - shortdef: 'Layout.Box(orientation: vertical, halign: center, valign: center)'
         slots:
           contents:
-          - type: Banner.Dynamic
+          - refvar: $app-banner
             properties:
               expand: true
               mode: full
@@ -17,7 +29,7 @@ defines:
     shortdef: 'Layout.Box(vexpand: false, halign: fill, homogeneous: true)'
     slots:
       contents:
-      - type: Banner.Dynamic
+      - refvar: $app-banner
         properties:
           valign: start
           halign: center
@@ -52,16 +64,15 @@ defines:
                   - shortdef: ContentGroup.ContentGroup
                     slots:
                       arrangement:
-                        shortdef: 'Arrangement.List(hexpand: true, homogeneous: false)'
+                        refvar: $search-articles-arrangement
                         slots:
-                          card:
-                            shortdef: 'Card.Title(halign: start)'
+                          card: $search-articles-card
                       selection:
                         type: Selection.Search
                         id: search-results
                         slots:
                           filter: Filter.Articles
-                      no-results: ContentGroup.NoResultsMessage
+                      no-results: $noresults-message-text
                     styles:
                     - search-results
 
