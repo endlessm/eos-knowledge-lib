@@ -15,7 +15,8 @@ permalink: /releases/2/
 | Mon Dec 11 2017 | SDK2.1 bugfix release
 | Thu Dec 28 2017 | SDK2.2 hard code freeze
 | Mon Jan 8 2018  | SDK2.2 bugfix release
-| Sat Jan 18 2018 | SDK2.3 release (irregular hotfix)
+| Sat Jan 14 2018 | SDK2.2.1 release (irregular hotfix)
+| Thu Jan 18 2018 | SDK2.3 release (irregular hotfix)
 | Mon Feb 5 2018  | EOL
 
 ## Major features ##
@@ -80,6 +81,10 @@ Related to the module renames, you'll need to update any CSS selectors in your `
 
 ### SDK 2.3 (January 18, 2018) ###
 
+This is an irregular hotfix release to include the fix from the underlying GNOME runtime for slow app startup times. Read more on [Alex Larsson's blog][1].
+
+### SDK 2.2.1 (January 14, 2018) ###
+
 This is a security update, with no other changes except the underlying GNOME runtime. It includes a mitigation for the MELTDOWN and SPECTRE vulnerabilities in WebKit.
 
 ### SDK 2.2 (January 8, 2018) ###
@@ -111,3 +116,5 @@ This is a security update, with no other changes except the underlying GNOME run
 ### SDK 2.0 (November 20, 2017) ###
 
 This is the first release in the SDK2 series.
+
+[1]: https://blogs.gnome.org/alexl/2018/01/16/fixing-flatpak-startup-times/

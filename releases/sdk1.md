@@ -20,10 +20,14 @@ permalink: /releases/1/
 | Thu Nov 2 2017  | SDK1.6 release (irregular hotfix)
 | Fri Nov 17 2017 | SDK1.7 release (irregular hotfix)
 | Sat Jan 13 2018 | SDK1.8 release (irregular hotfix)
-| TBD             | SDK1.9 release (irregular hotfix)
-| TBD             | EOL
+| Thu Jan 18 2018 | SDK1.9 release (irregular hotfix)
+| Thu Jan 18 2018 | EOL
 
 ## Release notes ##
+
+### SDK 1.9 (January 18, 2018) ###
+
+This is the final irregular hotfix release to include the fix from the underlying GNOME runtime for slow app startup times. Read more on [Alex Larsson's blog][4].
 
 ### SDK 1.8 (January 13, 2018) ###
 
@@ -82,3 +86,4 @@ This is a security update, with no other changes except the underlying GNOME run
 [1]: https://git.gnome.org/browse/gnome-sdk-images/commit/?h=gnome-3-26&id=2b1dc1b1ad84bddc932da2395a96d5a7e4c4fad0
 [2]: https://github.com/flatpak/freedesktop-sdk-base/pull/9
 [3]: https://bugzilla.gnome.org/show_bug.cgi?id=789215
+[4]: https://blogs.gnome.org/alexl/2018/01/16/fixing-flatpak-startup-times/
