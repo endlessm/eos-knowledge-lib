@@ -79,9 +79,9 @@ a[href] {
 $spacing-elements: 30px;
 
 #bodycontents {
-    .eos-article-title {
+    .eos-article-title h1 {
         color: $text-color-title;
-        font: 700 2.8rem $font-secondary;   // 56px // Root: 20px 
+        font: 700 3.2rem $font-secondary;   // 64px // Root: 20px 
         text-align: center;
         line-height: 1.125;
         margin-bottom: $spacing-elements;
