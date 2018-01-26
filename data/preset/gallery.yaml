@@ -15,9 +15,12 @@ vars:
       excluded_types:
         - 0
         - 1
+  home-articles-order: &main-order
+    type: Order.Sequence
 
   set-articles-arrangement: *main-arrangement
   set-articles-card: *main-card
+  set-articles-order: *main-order
 
   search-articles-arrangement: *main-arrangement
   search-articles-card: *main-card
@@ -65,14 +68,6 @@ defines:
                 filter: Filter.Featured
                 order: Order.Sequence
 
-- &selection-home
-  type: Selection.FeaturedFirst
-
-- &selection-set
-  type: Selection.ContentForSet
-  slots:
-    order: Order.Sequence
-
 # Pages
 - &home-page
   type: Layout.TopMenu
@@ -97,9 +92,10 @@ defines:
                   slots:
                     card: $home-articles-card
                 selection:
-                  <<: *selection-home
+                  type: Selection.FeaturedFirst
                   id: home-articles
                   slots:
+                    order: $home-articles-order
                     filter:
                       type: Filter.Articles
 
@@ -126,9 +122,10 @@ defines:
                   slots:
                     card: $set-articles-card
                 selection:
-                  <<: *selection-set
+                  type: Selection.ContentForSet
                   id: set-articles
                   slots:
+                    order: $set-articles-order
                     filter:
                       type: Filter.Articles
 

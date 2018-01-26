@@ -11,6 +11,8 @@ vars:
       excluded_types:
         - 0
         - 2
+  home-sets-order: &order
+    type: Order.Sequence
   home-allsets-arrangement:
     type: Arrangement.SquareGuys
     properties:
@@ -23,6 +25,7 @@ vars:
       excluded_types:
         - 0
         - 2
+  home-allsets-order: *order
 
   set-articles-arrangement:
     type: Arrangement.SquareGuys
@@ -73,7 +76,7 @@ defines:
         selection:
           type: Selection.AllSets
           slots:
-            order: Order.Sequence
+            order: $home-sets-order
     basement:
       type: Layout.InfiniteScrolling
       references:
@@ -90,7 +93,7 @@ defines:
               type: Selection.AllSets
               id: basement-sets
               slots:
-                order: Order.Sequence
+                order: $home-allsets-order
 
 - &set-page
   shortdef: 'Layout.Box(orientation: vertical)'

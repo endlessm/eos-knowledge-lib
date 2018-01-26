@@ -9,6 +9,8 @@ vars:
       row-spacing: 20
   home-articles-card: &main-card
     shortdef: 'Card.List(hexpand: true)'
+  home-articles-order: &main-order
+    type: Order.Sequence
 
   search-articles-arrangement: *main-arrangement
   search-articles-card: *main-card
@@ -90,6 +92,7 @@ defines:
                           type: Selection.All
                           id: all-videos
                           slots:
+                            order: $home-articles-order
                             filter:
                               type: Filter.Articles
                               slots:

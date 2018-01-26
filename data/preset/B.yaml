@@ -15,6 +15,10 @@ vars:
       excluded_types:
         - 0
         - 1
+  home-sets-order: &order
+    type: Order.Sequence
+
+  set-setcontent-order: *order
 
   noresults-message-text:
     shortdef: 'ContentGroup.NoResultsMessage(valign: center, halign: center, justify: center)'
@@ -63,7 +67,7 @@ defines:
         selection:
           type: Selection.AllSets
           slots:
-            type: Order.Sequence
+            type: $home-sets-order
 
 - &set-page
   <<: *sidebar-right
@@ -86,7 +90,7 @@ defines:
               type: Selection.ContentForSet
               id: set-sidebar
               slots:
-                order: Order.Sequence
+                order: $set-setcontent-order
 
 - &search-page
   <<: *sidebar-right
@@ -132,7 +136,7 @@ defines:
               type: Selection.ArticleContext
               id: article-list
               slots:
-                order: Order.Sequence
+                order: $set-setcontent-order
 
 root:
   shortdef: 'Controller.Mesh(theme: preset_b)'
