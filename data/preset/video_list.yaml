@@ -138,7 +138,6 @@ defines:
                           id: search-results
                           slots:
                             filter: Filter.Articles
-                            order: 'Order.Alphabetical(ascending: true)'
                         no-results: $noresults-message-text
             - *footer-section
 
