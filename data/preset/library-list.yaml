@@ -11,6 +11,8 @@ vars:
       excluded_types:
         - 0
         - 2
+  home-sets-order: &main-order
+    type: Order.Sequence
   home-allsets-arrangement:
     type: Arrangement.SquareGuys
     properties:
@@ -18,6 +20,7 @@ vars:
       valign: start
       expand: true
   home-allsets-card: *main-card
+  home-allsets-order: *main-order
 
   search-articles-arrangement: &main-arrangement
     type: Arrangement.SquareGuys
@@ -29,6 +32,8 @@ vars:
 
   noresults-message-text:
     shortdef: 'ContentGroup.NoResultsMessage(valign: center, halign: center, justify: center)'
+
+  set-setcontent-order: *main-order
 
   subset-articles-arrangement: *main-arrangement
   subset-articles-card: *main-card
@@ -73,7 +78,7 @@ defines:
               type: Selection.AllSets
               slots:
                 filter: Filter.Featured
-                order: Order.Sequence
+                order: $home-sets-order
         - type: Decoration.ThemeableImage
           properties:
             halign: end
@@ -97,7 +102,7 @@ defines:
               id: basement-sets
               slots:
                 filter: Filter.Featured
-                order: Order.Sequence
+                order: $home-allsets-order
 
 - &set-page
   shortdef: 'Layout.Sidebar(sidebar-first: false)'
@@ -122,7 +127,7 @@ defines:
               type: Selection.ContentForSet
               id: set-sidebar
               slots:
-                order: Order.Sequence
+                order: $set-setcontent-order
 
 - &search-page
   shortdef: 'Layout.Box(orientation: vertical)'
@@ -195,7 +200,7 @@ defines:
               id: subset-list
               slots:
                 filter: Filter.Sets
-                order: Order.Sequence
+                order: $set-setcontent-order
 
 - &article-page
   type: Layout.ArticleStack
