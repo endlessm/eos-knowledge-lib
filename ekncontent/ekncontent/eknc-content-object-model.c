@@ -33,6 +33,7 @@ typedef struct {
   char **tags;
   char **resources;
   JsonObject *discovery_feed_content;
+  guint sequence_number;
 } EkncContentObjectModelPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (EkncContentObjectModel,
@@ -57,6 +58,7 @@ enum {
   PROP_TAGS,
   PROP_RESOURCES,
   PROP_DISCOVERY_FEED_CONTENT,
+  PROP_SEQUENCE_NUMBER,
   NPROPS
 };
 
@@ -135,6 +137,10 @@ eknc_content_object_model_get_property (GObject    *object,
 
     case PROP_DISCOVERY_FEED_CONTENT:
       g_value_set_boxed (value, priv->discovery_feed_content);
+      break;
+
+    case PROP_SEQUENCE_NUMBER:
+      g_value_set_uint (value, priv->sequence_number);
       break;
 
     default:
@@ -230,6 +236,10 @@ eknc_content_object_model_set_property (GObject *object,
     case PROP_DISCOVERY_FEED_CONTENT:
       g_clear_pointer (&priv->discovery_feed_content, json_object_unref);
       priv->discovery_feed_content = g_value_dup_boxed (value);
+      break;
+
+    case PROP_SEQUENCE_NUMBER:
+      priv->sequence_number = g_value_get_uint (value);
       break;
 
     default:
@@ -464,6 +474,17 @@ eknc_content_object_model_class_init (EkncContentObjectModelClass *klass)
       "Content to be used by the Discovery Feed",
       JSON_TYPE_OBJECT,
       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+  /**
+   * EkncContentObjectModel:sequence-number:
+   *
+   * A number that determines the position of the model in a
+   * sequence of models.
+   */
+  eknc_content_object_model_props[PROP_SEQUENCE_NUMBER] =
+    g_param_spec_uint ("sequence-number", "Sequence Number",
+      "Determines the position of the model in a sequence",
+      0, G_MAXUINT, G_MAXUINT,
+      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class,
                                      NPROPS,
@@ -543,6 +564,9 @@ eknc_content_object_model_add_json_to_params (JsonNode *node,
                                            params);
   eknc_utils_append_gparam_from_json_node (json_object_get_member (object, "discoveryFeedContent"),
                                            g_object_class_find_property (klass, "discovery-feed-content"),
+                                           params);
+  eknc_utils_append_gparam_from_json_node (json_object_get_member (object, "sequenceNumber"),
+                                           g_object_class_find_property (klass, "sequence-number"),
                                            params);
   g_type_class_unref (klass);
 }
