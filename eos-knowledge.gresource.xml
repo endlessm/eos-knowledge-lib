@@ -165,6 +165,7 @@
     <file>js/app/modules/navigation/topMenu.js</file>
     <file>js/app/modules/order/alphabetical.js</file>
     <file>js/app/modules/order/publishedDate.js</file>
+    <file>js/app/modules/order/sequence.js</file>
     <file>js/app/modules/pager/parallaxBackground.js</file>
     <file>js/app/modules/pager/simple.js</file>
     <file>js/app/modules/selection/all.js</file>
