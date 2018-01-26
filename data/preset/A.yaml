@@ -72,6 +72,8 @@ defines:
             card: $home-sets-card
         selection:
           type: Selection.AllSets
+          slots:
+            order: Order.Sequence
     basement:
       type: Layout.InfiniteScrolling
       references:
@@ -87,6 +89,8 @@ defines:
             selection:
               type: Selection.AllSets
               id: basement-sets
+              slots:
+                order: Order.Sequence
 
 - &set-page
   shortdef: 'Layout.Box(orientation: vertical)'

@@ -73,6 +73,7 @@ defines:
               type: Selection.AllSets
               slots:
                 filter: Filter.Featured
+                order: Order.Sequence
         - type: Decoration.ThemeableImage
           properties:
             halign: end
@@ -96,6 +97,7 @@ defines:
               id: basement-sets
               slots:
                 filter: Filter.Featured
+                order: Order.Sequence
 
 - &set-page
   shortdef: 'Layout.Sidebar(sidebar-first: false)'
@@ -119,6 +121,8 @@ defines:
             selection:
               type: Selection.ContentForSet
               id: set-sidebar
+              slots:
+                order: Order.Sequence
 
 - &search-page
   shortdef: 'Layout.Box(orientation: vertical)'
@@ -173,6 +177,8 @@ defines:
             selection:
               type: Selection.ContentForSet
               id: article-list
+              slots:
+                order: Order.Sequence
     sidebar:
       type: Layout.InfiniteScrolling
       references:
@@ -189,6 +195,7 @@ defines:
               id: subset-list
               slots:
                 filter: Filter.Sets
+                order: Order.Sequence
 
 - &article-page
   type: Layout.ArticleStack

@@ -106,6 +106,7 @@ defines:
               type: Selection.AllSets
               slots:
                 filter: Filter.Featured
+                order: Order.Sequence
 
 - &home-page
   <<: *page-with-menu
@@ -164,8 +165,11 @@ defines:
                               type: Selection.ContentForSet
                               slots:
                                 filter: Filter.Articles
+                                order: Order.Sequence
                     selection:
                       type: Selection.AllSets
+                      slots:
+                        order: Order.Sequence
             - type: Layout.ResponsiveMargins
               styles:
                 - LayoutResponsiveMargins--complementarycontent
@@ -189,7 +193,10 @@ defines:
                       refvar: $home-preview-allsets-arrangement
                       slots:
                         card: $home-preview-allsets-card
-                    selection: Selection.AllSets
+                    selection:
+                      type: Selection.AllSets
+                      slots:
+                        order: Order.Sequence
 
 - &set-page
   <<: *page-with-menu
@@ -233,10 +240,12 @@ defines:
                               type: Selection.SetCrossSection
                               slots:
                                 filter: Filter.Articles
+                                order: Order.Sequence
                     selection:
                       type: Selection.AllSets
                       id: thematic-sets
                       slots:
+                        order: Order.Sequence
                         filter:
                           type: Filter.Thematic
             - type: Layout.ResponsiveMargins
@@ -262,7 +271,10 @@ defines:
                       refvar: $set-preview-allsets-arrangement
                       slots:
                         card: $set-preview-allsets-card
-                    selection: Selection.AllSets
+                    selection:
+                      type: Selection.AllSets
+                      slots:
+                        order: Order.Sequence
 
 - &search-page
   <<: *page-with-menu
@@ -340,7 +352,10 @@ defines:
                               refvar: $noresults-preview-allsets-arrangement
                               slots:
                                 card: $noresults-preview-allsets-card
-                            selection: Selection.AllSets
+                            selection:
+                              type: Selection.AllSets
+                              slots:
+                                order: Order.Sequence
 
 - &all-sets-page
   <<: *page-with-menu
@@ -366,6 +381,8 @@ defines:
                 selection:
                   type: Selection.AllSets
                   id: all-sets
+                  slots:
+                    order: Order.Sequence
 
 - &article-page
   <<: *page-with-menu
