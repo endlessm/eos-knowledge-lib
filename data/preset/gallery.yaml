@@ -63,12 +63,15 @@ defines:
               type: Selection.AllSets
               slots:
                 filter: Filter.Featured
+                order: Order.Sequence
 
 - &selection-home
   type: Selection.FeaturedFirst
 
 - &selection-set
   type: Selection.ContentForSet
+  slots:
+    order: Order.Sequence
 
 # Pages
 - &home-page

@@ -71,7 +71,10 @@ defines:
                   refvar: $home-sets-arrangement
                   slots:
                     card: $home-sets-card
-                selection: Selection.AllSets
+                selection:
+                  type: Selection.AllSets
+                  slots:
+                    order: Order.Sequence
             - <<: *footer
 
 - &set-page
@@ -106,6 +109,8 @@ defines:
                         selection:
                           shortdef: 'Selection.ContentForSet()'
                           id: content-for-set
+                          slots:
+                            order: Order.Sequence
             - <<: *footer
 
 - &search-page

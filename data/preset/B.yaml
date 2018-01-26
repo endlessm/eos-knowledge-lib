@@ -60,7 +60,10 @@ defines:
           refvar: $home-sets-arrangement
           slots:
             card: $home-sets-card
-        selection: Selection.AllSets
+        selection:
+          type: Selection.AllSets
+          slots:
+            type: Order.Sequence
 
 - &set-page
   <<: *sidebar-right
@@ -82,6 +85,8 @@ defines:
             selection:
               type: Selection.ContentForSet
               id: set-sidebar
+              slots:
+                order: Order.Sequence
 
 - &search-page
   <<: *sidebar-right
@@ -126,6 +131,8 @@ defines:
             selection:
               type: Selection.ArticleContext
               id: article-list
+              slots:
+                order: Order.Sequence
 
 root:
   shortdef: 'Controller.Mesh(theme: preset_b)'

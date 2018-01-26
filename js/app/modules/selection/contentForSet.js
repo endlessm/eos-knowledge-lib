@@ -80,7 +80,6 @@ var ContentForSet = new Module.Class({
         return new Eknc.QueryObject({
             limit: limit,
             tags_match_any: this.model.child_tags,
-            sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,
         });
     },
 

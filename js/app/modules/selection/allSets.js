@@ -24,7 +24,6 @@ var AllSets = new Module.Class({
         return new Eknc.QueryObject({
             limit: limit,
             tags_match_all: ['EknSetObject'],
-            sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,
         });
     },
 

@@ -26,7 +26,6 @@ var Supplementary = new Module.Class({
         let query_object_params = {
             limit: limit,
             excluded_tags: tags,
-            sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,
         };
         switch (query_index) {
             case 0:

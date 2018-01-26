@@ -32,7 +32,6 @@ var SetCrossSection = new Module.Class({
         return new Eknc.QueryObject({
             limit: limit,
             tags_match_all: tags,
-            sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,
         });
     },
 

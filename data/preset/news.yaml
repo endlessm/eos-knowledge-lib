@@ -86,6 +86,7 @@ defines:
                   type: Selection.AllSets
                   slots:
                     filter: Filter.Featured
+                    order: Order.Sequence
 
 - &see-more-trigger
   shortdef: 'Layout.Box(orientation: horizontal, halign: end, valign: end)'
@@ -166,6 +167,7 @@ defines:
                           type: Selection.AllSets
                           slots:
                             filter: Filter.Featured
+                            order: Order.Sequence
 
 - &set-page
   <<: *menu
@@ -226,6 +228,7 @@ defines:
                               type: Selection.ContentForSet
                               slots:
                                 filter: Filter.Sets
+                                order: Order.Sequence
                     - type: Layout.ResponsiveMargins
                       slots:
                         content:
@@ -268,6 +271,7 @@ defines:
                               type: Selection.Supplementary
                               slots:
                                 filter: Filter.Articles
+                                slots: Order.Sequence
 
 - &search-page
   <<: *menu

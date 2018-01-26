@@ -67,6 +67,7 @@ defines:
               type: Selection.AllSets
               slots:
                 filter: Filter.Featured
+                order: Order.Sequence
         - type: ContentGroup.ContentGroup
           slots:
             arrangement:

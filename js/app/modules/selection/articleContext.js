@@ -49,7 +49,6 @@ var ArticleContext = new Module.Class({
         return new Eknc.QueryObject({
             limit: limit,
             tags_match_any: this._item.model.child_tags,
-            sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,
         });
     },
 });
