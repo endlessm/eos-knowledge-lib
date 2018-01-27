@@ -1,4 +1,8 @@
 const Gtk = imports.gi.Gtk;
+
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
 Gtk.init(null);
 
 const Actions = imports.app.actions;
