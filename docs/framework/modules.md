@@ -38,8 +38,8 @@ Here are the types of UI modules and how they fit together.
   A **Selection** serves records through a **ContentGroup** to an
   **Arrangement**, which turns the records into **Card**s.
 - **View** - These modules display the actual content.
-- **Window** - These modules are the toplevel windows which contain
-  other modules.
+- **[Window](modules/window.md)** - These modules are the toplevel windows
+  which contain other modules.
 
 Here's a diagram of what contains what:
 

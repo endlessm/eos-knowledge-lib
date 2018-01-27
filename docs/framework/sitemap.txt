@@ -1,4 +1,5 @@
 index.md
 	tools.md
 	modules.md
+		modules/window.md
 	mf-index

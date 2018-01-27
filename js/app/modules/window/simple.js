@@ -18,18 +18,34 @@ const Utils = imports.app.utils;
 /**
  * Class: Simple
  * Window with default functionality
+ *
+ * The `Window.Simple` module contains all the other user interface modules
+ * for every application.
  */
 var Simple = new Module.Class({
     Name: 'Window.Simple',
     Extends: Endless.Window,
 
     Slots: {
+        /**
+         * Slot: content
+         *
+         * The `content` slot is where the rest of the application goes.
+         * It takes up all of the window's screen area, except for the title
+         * bar.
+         */
         'content': {},
         /**
          * Slot: search
-         * Optional
+         *
+         * The `search` slot is located in the center of the window's title
+         * bar.
+         * It currently only supports a [](Navigation.SearchBox) module.
          */
-        'search': {},
+        'search': {
+            optional: true,
+            allowed: ['Navigation.SearchBox'],
+        },
     },
 
     WINDOW_WIDTH_THRESHOLD: 800,
