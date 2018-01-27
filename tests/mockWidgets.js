@@ -1,7 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported MockEknWebview, MockHistoryButtons, MockRenderer,
-MockScrolledLayout, MockSizeWidget */
+/* exported MockEknWebview, MockSizeWidget */
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -11,23 +10,7 @@ const Knowledge = imports.app.knowledge;
 const Minimal = imports.tests.minimal;
 const Module = imports.app.interfaces.module;
 
-const MockScrolledLayout = new Module.Class({
-    Name: 'MockScrolledLayout',
-    Extends: Minimal.MinimalBinModule,
-    Signals: {
-        'need-more-content': {},  // needed for several arrangements
-    },
-    Slots: {
-        'content': {},
-    },
-    _init: function (props={}) {
-        this.parent(props);
-        this.create_submodule('content');
-    },
-    new_content_added: function () {},
-});
-
-const MockRenderer = new Knowledge.Class({
+const _Renderer = new Knowledge.Class({
     Name: 'MockRenderer',
     Extends: GObject.Object,
     Properties: {
@@ -46,7 +29,7 @@ const MockRenderer = new Knowledge.Class({
     },
 });
 
-const MockEknWebview = new Knowledge.Class({
+var MockEknWebview = new Knowledge.Class({
     Name: 'MockEknWebview',
     Extends: Gtk.Frame,
     Signals: {
@@ -62,13 +45,13 @@ const MockEknWebview = new Knowledge.Class({
     },
     _init: function (props={}) {
         this.parent(props);
-        this.renderer = new MockRenderer();
+        this.renderer = new _Renderer();
     },
     load_uri: function () {},
     get_page_id: function () { return 1; },
 });
 
-const MockSizeWidget = new Module.Class({
+var MockSizeWidget = new Module.Class({
     Name: 'MockSkizeWidget',
     Extends: Gtk.Widget,
 
