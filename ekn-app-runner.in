@@ -21,6 +21,14 @@ if [ "$RUN_DEBUG" != "" ]; then
     DEBUG_COMMAND="gdb --args"
 fi
 
+if [ "$RUN_PROFILE" != "" ]; then
+    export EOS_PROFILE=1
+fi
+
+if [ "$RUN_PROFILE_FILE" != "" ]; then
+    export EOS_PROFILE="capture:$RUN_PROFILE_FILE"
+fi
+
 if [ "$#" -lt 2 ]; then
     echo "Run this script by passing it an app ID and a gresource file"
     exit 1
