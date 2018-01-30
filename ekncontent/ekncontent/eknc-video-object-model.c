@@ -18,6 +18,7 @@ typedef struct {
   guint duration;
   gchar *transcript;
   gchar *poster_uri;
+  gchar *wrapper_uri;
 } EkncVideoObjectModelPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (EkncVideoObjectModel,
@@ -29,6 +30,7 @@ enum {
   PROP_DURATION,
   PROP_TRANSCRIPT,
   PROP_POSTER_URI,
+  PROP_WRAPPER_URI,
   NPROPS
 };
 
@@ -55,6 +57,10 @@ eknc_video_object_model_get_property (GObject    *object,
 
     case PROP_POSTER_URI:
       g_value_set_string (value, priv->poster_uri);
+      break;
+
+    case PROP_WRAPPER_URI:
+      g_value_set_string (value, priv->wrapper_uri);
       break;
 
     default:
@@ -87,6 +93,11 @@ eknc_video_object_model_set_property (GObject *object,
       priv->poster_uri = g_value_dup_string (value);
       break;
 
+    case PROP_WRAPPER_URI:
+      g_clear_pointer (&priv->wrapper_uri, g_free);
+      priv->wrapper_uri = g_value_dup_string (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -100,6 +111,7 @@ eknc_video_object_model_finalize (GObject *object)
 
   g_clear_pointer (&priv->transcript, g_free);
   g_clear_pointer (&priv->poster_uri, g_free);
+  g_clear_pointer (&priv->wrapper_uri, g_free);
 
   G_OBJECT_CLASS (eknc_video_object_model_parent_class)->finalize (object);
 }
@@ -142,6 +154,18 @@ eknc_video_object_model_class_init (EkncVideoObjectModelClass *klass)
     g_param_spec_string ("poster-uri", "Poster URI",
       "URI of the poster image",
       "", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+  /**
+   * EkncVideoObjectModel:wrapper-uri:
+   *
+   * URI of an article that wraps this video if the video is thinly
+   * wrapped by some other article.
+   *
+   * The EKN ID of an #ArticleObjectModel.
+   */
+  eknc_video_object_model_props[PROP_WRAPPER_URI] =
+    g_param_spec_string ("wrapper-uri", "Wrapper",
+      "URI of the wrapper article",
+      "", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class,
                                      NPROPS,
@@ -176,6 +200,9 @@ eknc_video_object_model_add_json_to_params (JsonNode *node,
                                            params);
   eknc_utils_append_gparam_from_json_node (json_object_get_member (object, "poster"),
                                            g_object_class_find_property (klass, "poster-uri"),
+                                           params);
+  eknc_utils_append_gparam_from_json_node (json_object_get_member (object, "wrapper"),
+                                           g_object_class_find_property (klass, "wrapper-uri"),
                                            params);
   g_type_class_unref (klass);
 }
