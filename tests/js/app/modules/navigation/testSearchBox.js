@@ -3,6 +3,9 @@
 const Eknc = imports.gi.EosKnowledgeContent;
 const Gtk = imports.gi.Gtk;
 
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
 Gtk.init(null);
 
 const Actions = imports.app.actions;
@@ -13,7 +16,6 @@ const MockEngine = imports.tests.mockEngine;
 const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const Pages = imports.app.pages;
 const SearchBox = imports.app.modules.navigation.searchBox;
-const Utils = imports.tests.utils;
 
 describe('Navigation.SearchBox', function () {
     let box, engine, dispatcher, store, reading_history;
