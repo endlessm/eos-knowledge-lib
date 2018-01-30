@@ -98,6 +98,9 @@ eknc_query_object_get_offset (EkncQueryObject *self);
 guint
 eknc_query_object_get_limit (EkncQueryObject *self);
 
+const char *
+eknc_query_object_get_content_type (EkncQueryObject *self);
+
 XapianQuery *
 eknc_query_object_get_query (EkncQueryObject *self,
                              XapianQueryParser *qp,
