@@ -151,7 +151,7 @@ var WebShareDialog = new Lang.Class({
     _onDecidePolicy: function (webview, decision, decision_type) {
         if (this.redirect_uri &&
             decision_type === WebKit2.PolicyDecisionType.NAVIGATION_ACTION &&
-            GLib.str_has_prefix(decision.request.uri, this.redirect_uri)) {
+            decision.request.uri.startsWith(this.redirect_uri)) {
 
             /* Save actual redirect URI for transaction-done emision */
             this._actual_redirect_uri = decision.request.uri;
