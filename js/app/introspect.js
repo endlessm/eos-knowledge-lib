@@ -43,6 +43,8 @@ function _introspect_slots(slots_obj) {
             name: slot_name,
             array: !!slot.array,
             multi: !!slot.multi,
+            optional: !!slot.optional,
+            allowed: slot.allowed || [],
         };
     });
 }
