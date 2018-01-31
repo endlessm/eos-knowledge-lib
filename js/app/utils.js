@@ -483,8 +483,9 @@ function stop_content_access_metric(model) {
 
 function ekn_id_to_byte_array(ekn_id) {
     let bytes = [];
-    for (let pos = 'ekn:///'.length; pos < ekn_id.length; pos += 2)
-        bytes.push(Number.parseInt(ekn_id.substr(pos, 2), 16));
+    const [hash] = components_from_ekn_id(ekn_id);
+    for (let pos = 0; pos < hash.length; pos += 2)
+        bytes.push(Number.parseInt(hash.substr(pos, 2), 16));
     if (bytes.length !== 20)
         throw new Error(`Invalid EKN ID ${ekn_id}`);
     return bytes;
