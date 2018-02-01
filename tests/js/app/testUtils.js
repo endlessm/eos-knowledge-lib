@@ -104,6 +104,27 @@ describe('Utilities:', function () {
         });
     });
 
+    describe('ekn_id_to_byte_array', function () {
+        it('returns the EKN ID hash as an array of integers', function () {
+            const id = 'ekn:///0008101820283038404850586068707880889098';
+            const array = Utils.ekn_id_to_byte_array(id);
+            expect(array).toEqual([0, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88,
+                96, 104, 112, 120, 128, 136, 144, 152]);
+        });
+
+        it('handles legacy EKN IDs with domain gracefully', function () {
+            const id = 'ekn://scuba-diving/0008101820283038404850586068707880889098';
+            const array = Utils.ekn_id_to_byte_array(id);
+            expect(array).toEqual([0, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88,
+                96, 104, 112, 120, 128, 136, 144, 152]);
+        });
+
+        it('throws on invalid EKN ID hash', function () {
+            const id = 'ekn:///a0a8';
+            expect(() => Utils.ekn_id_to_byte_array(id)).toThrow();
+        });
+    });
+
     describe('set operations', function () {
         let a = [1, 2, 3, 4];
         let b = [3, 4, 5, 6];
