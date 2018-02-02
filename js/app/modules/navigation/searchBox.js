@@ -135,11 +135,15 @@ var SearchBox = new Module.Class({
      * are.
      */
     _get_prefixed_title: function (model, query) {
+        if (!model.original_title)
+            return model.title;
+
         let title = model.title.toLowerCase();
         let original_title = model.original_title.toLowerCase();
         query = query.toLowerCase();
+        let length = Math.min(query.length, title.length, original_title.length);
 
-        for (let i = 0; i < query.length; i++) {
+        for (let i = 0; i < length; i++) {
             if (title[i] !== original_title[i]) {
                 if (title[i] === query[i]) {
                     return model.title;

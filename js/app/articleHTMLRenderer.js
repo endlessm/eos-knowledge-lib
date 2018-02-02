@@ -268,7 +268,11 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         function get_button_markup (network) {
             let file = Gio.file_new_for_uri(`resource:///com/endlessm/knowledge/data/icons/scalable/apps/${network}-symbolic.svg`);
             let [success, svg] = file.load_contents(null);
-            return `<a class="share-action" onclick="window.webkit.messageHandlers.share_on_${network}.postMessage(0)"><img>${svg.toString()}</img></a>`;
+            return `
+            <a class="share-action"
+               onclick="window.webkit.messageHandlers.share_on_${network}.postMessage(0)">
+               ${svg.toString()}
+            </a>`;
         }
 
         let facebook = get_button_markup('facebook');
