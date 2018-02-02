@@ -2,17 +2,26 @@
 
 /* exported WebShareDialog */
 
+const Config = imports.app.config;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Soup = imports.gi.Soup;
+const Gettext = imports.gettext;
 const WebKit2 = imports.gi.WebKit2;
 
 const Lang = imports.lang;
 
+let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
+
 /* Template needs WebView type */
 GObject.type_ensure( WebKit2.WebView.$gtype);
+
+const MsgResponse = {
+    NONE: 0,
+    SIGN_IN: 1
+};
 
 /**
  * Class: WebShareDialog
@@ -68,7 +77,8 @@ var WebShareDialog = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/websharedialog.ui',
-    InternalChildren: [ 'stack', 'overlay', 'webview', 'spinner', 'accountbox' ],
+    InternalChildren: [ 'stack', 'overlay', 'webview', 'spinner', 'accountbox',
+                        'infobar', 'msg_revealer', 'msg_label', 'msg_image', 'msg_buttonbox' ],
 
     _init (props) {
         this._provider = null;
@@ -107,11 +117,10 @@ var WebShareDialog = new Lang.Class({
             /* Also use a mobile size */
             this.default_width = 320;
             this.default_height = 480;
-        }
-        else {
+        } else {
             /* Based on facebook share dialog size */
-            this.default_width = 560;
-            this.default_height = 600;
+            this.default_width = 550;
+            this.default_height = 480;
         }
 
         /* Bind WebView and Dialog title */
@@ -134,11 +143,11 @@ var WebShareDialog = new Lang.Class({
             return false;
         });
 
+        /* Handle infobar response */
+        this._infobar.connect('response', this._onInfobarResponse.bind(this));
+
         /* Get GOA account for this.provider */
         this._update_goa_account();
-
-        /* Set webview uri */
-        this._update_uri();
     },
 
     _onLoadChanged (webview, event) {
@@ -164,6 +173,52 @@ var WebShareDialog = new Lang.Class({
             return true;
         }
         return false;
+    },
+
+    _ensure_control_center () {
+        if (this._control_center)
+            return;
+
+        this._control_center = Gio.DBusActionGroup.get(
+            this._dbus_manager.get_connection(),
+            'org.gnome.ControlCenter',
+            '/org/gnome/ControlCenter'
+        );
+    },
+
+    _msgSet (message, button_label, response) {
+        this._msg_label.set_markup(message);
+
+        /* Remove all buttons */
+        let action_area = this._infobar.get_action_area();
+        action_area.get_children().forEach ((child) => {
+            action_area.remove(child);
+        });
+
+        this._infobar.add_button(button_label, response);
+    },
+
+    _onInfobarResponse (infobar, response) {
+        if (response === MsgResponse.SIGN_IN) {
+            if (!this._goa_account)
+                return;
+
+            let attention = this._goa_account.get_cached_property('AttentionNeeded');
+            let id = this._goa_account.get_cached_property('Id');
+
+            if (attention && attention.unpack() && id) {
+                let params = new GLib.Variant('(sav)', ['online-accounts', [id]]);
+                this._ensure_control_center();
+                this._control_center.activate_action('launch-panel', params);
+                this._online_accounts_panel_launched = true;
+            }
+        } else if (response === Gtk.ResponseType.CLOSE) {
+            this._msg_revealer.reveal_child = false;
+            this._online_accounts_panel_launched = false;
+            this._msg_image.icon_name = null;
+            this._msg_image.hide();
+            this._update_uri();
+        }
     },
 
     _cookies_path_init () {
@@ -226,6 +281,36 @@ var WebShareDialog = new Lang.Class({
                                        WebKit2.CookiePersistentStorage.SQLITE);
     },
 
+    _attention_needed_sync () {
+        if (!this._goa_account)
+            return;
+
+        let attention = this._goa_account.get_cached_property('AttentionNeeded');
+
+        if (attention && attention.unpack()) {
+            /* AttentionNeeded propably means the session has expired */
+            this._overlay.width_request = -1;
+            this._overlay.height_request = -1;
+
+            /* Show expired session message */
+            let message = _('Please sign in again to share this link');
+            this._msgSet(`<b><big>${message}</big></b>`, _('Sign In'), MsgResponse.SIGN_IN);
+            this._msg_image.icon_name = this.provider + '-symbolic';
+            this._msg_image.show();
+            this._msg_revealer.reveal_child = true;
+        } else {
+            /* Set webview uri */
+            this._update_cookies();
+            this._update_uri();
+
+            /* Check if we launced online accounts panel, if so... close it */
+            if (this._control_center && this._online_accounts_panel_launched) {
+                this._control_center.activate_action('quit', null);
+                this._infobar.response(Gtk.ResponseType.CLOSE);
+            }
+        }
+    },
+
     _update_goa_account () {
         if (!this._dbus_manager || !this._webview)
             return;
@@ -247,18 +332,30 @@ var WebShareDialog = new Lang.Class({
         switch (accounts.length) {
             case 0:
                 /* TODO: open GOA to create a new account */
+                this._goa_oauth2 = this._goa_account = null;
             break;
             case 1:
                 this._goa_oauth2 = accounts[0].get_interface('org.gnome.OnlineAccounts.OAuth2Based');
-                this._update_cookies();
+                this._goa_account = accounts[0].get_interface('org.gnome.OnlineAccounts.Account');
             break;
             default:
                 /* TODO: Create a list of accounts and let the user choose which one to use
                  * in the meantime, use the first one!
                  */
                 this._goa_oauth2 = accounts[0].get_interface('org.gnome.OnlineAccounts.OAuth2Based');
-                this._update_cookies();
+                this._goa_account = accounts[0].get_interface('org.gnome.OnlineAccounts.Account');
             break;
+        }
+
+        if (this._goa_account) {
+            /* Listen to proxy properties changes */
+            this._goa_account.connect('g-properties-changed', (proxy, props, invalid) => {
+                let properties = props.deep_unpack();
+                if ('AttentionNeeded' in properties)
+                    this._attention_needed_sync();
+            });
+
+            this._attention_needed_sync();
         }
     },
 
