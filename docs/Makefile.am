@@ -10,6 +10,8 @@ EXTRA_DIST = \
 	api/sitemap.txt \
 	framework/hotdoc.json \
 	framework/index.md \
+	framework/modules.md \
+	framework/modules/window.md \
 	framework/sitemap.txt \
 	framework/tools.md \
 	$(NULL)
