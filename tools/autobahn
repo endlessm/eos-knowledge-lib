@@ -70,7 +70,9 @@ def recursive_ordered_dict(regdict):
 
 
 def order_module_keys(module):
-    retval = collections.OrderedDict({'type': module['type']})
+    retval = collections.OrderedDict()
+    if 'type' in module:
+        retval['type'] = module['type']
     if 'id' in module:
         retval['id'] = module['id']
     if 'styles' in module:
@@ -104,6 +106,34 @@ def expand_refvar(module):
     return module
 
 
+def expand_overrides(overrides):
+    for key in overrides:
+        overrides[key] = walk(overrides[key], expand_slot_shorthand)
+        overrides[key] = walk(overrides[key], expand_shortdef)
+    return overrides
+
+
+def process_custom_overrides(overrides, tree):
+    if not overrides:
+        return
+    for key in overrides:
+        if key.startswith('root'):
+            apply_custom_override(overrides, tree, key)
+
+
+def apply_custom_override(overrides, node, name):
+    components = name.split('.')
+    for key in components[1:]:
+        try:
+            if isinstance(node, list):
+                node = node[int(key)]
+            else:
+                node = node['slots'][key]
+        except:
+            return
+    node.update(overrides[name])
+
+
 def walk(module_tree, transform_func):
     # Transform first, in case the transformation adds slots
     if isinstance(module_tree, list):
@@ -124,7 +154,7 @@ def preprocess(infile):
     doc = next(docs)
 
     if 'overrides' in doc:
-        overrides = doc['overrides']
+        overrides = expand_overrides(doc['overrides'])
         doc = next(docs)
     preset = doc
 
@@ -133,6 +163,7 @@ def preprocess(infile):
     tree = walk(tree, expand_refvar)
     tree = walk(tree, expand_slot_shorthand)
     tree = walk(tree, expand_shortdef)
+    process_custom_overrides(overrides, tree)
     tree = walk(tree, order_module_keys)
 
     app = collections.OrderedDict((

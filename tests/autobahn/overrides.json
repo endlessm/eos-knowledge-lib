@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "root": {
+    "type": "Controller.Overridden",
+    "properties": {
+      "added": true
+    },
+    "slots": {
+      "window": {
+        "type": "Window.Original",
+        "slots": {
+          "contents": [
+            {
+              "type": "Layout.Original"
+            },
+            {
+              "type": "Layout.Overridden"
+            }
+          ],
+          "search": {
+            "type": "Navigation.Overridden",
+            "properties": {
+              "fully-overridden": true
+            }
+          }
+        }
+      }
+    }
+  }
+}

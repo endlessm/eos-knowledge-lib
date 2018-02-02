@@ -1,0 +1,25 @@
+---
+overrides:
+  search-module:
+    shortdef: 'Navigation.Overridden(fully-overridden: false)'
+  root:
+    shortdef: 'Controller.Overridden(added: true)'
+  root.window.contents.1:
+    type: Layout.Overridden
+  root.window.search:
+    properties:
+      fully-overridden: true
+---
+vars:
+  search-module:
+    type: Navigation.Original
+root:
+  type: Controller.Original
+  slots:
+    window:
+      type: Window.Original
+      slots:
+        contents:
+        - shortdef: Layout.Original
+        - shortdef: Layout.Original
+        search: $search-module
