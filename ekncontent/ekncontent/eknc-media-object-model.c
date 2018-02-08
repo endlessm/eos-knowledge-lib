@@ -21,6 +21,7 @@ typedef struct {
   gchar *caption;
   guint width;
   guint height;
+  char *parent_uri;
 } EkncMediaObjectModelPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (EkncMediaObjectModel,
@@ -32,6 +33,7 @@ enum {
   PROP_CAPTION,
   PROP_WIDTH,
   PROP_HEIGHT,
+  PROP_PARENT_URI,
   NPROPS
 };
 
@@ -58,6 +60,10 @@ eknc_media_object_model_get_property (GObject    *object,
 
     case PROP_HEIGHT:
       g_value_set_uint (value, priv->height);
+      break;
+
+    case PROP_PARENT_URI:
+      g_value_set_string (value, priv->parent_uri);
       break;
 
     default:
@@ -89,6 +95,11 @@ eknc_media_object_model_set_property (GObject *object,
       priv->height = g_value_get_uint (value);
       break;
 
+    case PROP_PARENT_URI:
+      g_clear_pointer (&priv->parent_uri, g_free);
+      priv->parent_uri = g_value_dup_string (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -101,6 +112,7 @@ eknc_media_object_model_finalize (GObject *object)
   EkncMediaObjectModelPrivate *priv = eknc_media_object_model_get_instance_private (self);
 
   g_clear_pointer (&priv->caption, g_free);
+  g_clear_pointer (&priv->parent_uri, g_free);
 
   G_OBJECT_CLASS (eknc_media_object_model_parent_class)->finalize (object);
 }
@@ -143,6 +155,17 @@ eknc_media_object_model_class_init (EkncMediaObjectModelClass *klass)
       "The height of the media in pixels",
       0, G_MAXUINT, 0, G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
+  /**
+   * EkncMediaObjectModel:parent-uri:
+   *
+   * The EKN URI of an #EkncContentObjectModel that embeds this
+   * #EkncMediaObjectModel.
+   */
+  eknc_media_object_model_props[PROP_PARENT_URI] =
+    g_param_spec_string ("parent-uri", "Parent URI",
+      "EKN URI of article that embeds this media object",
+      NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+
   g_object_class_install_properties (object_class,
                                      NPROPS,
                                      eknc_media_object_model_props);
@@ -184,6 +207,9 @@ eknc_media_object_model_add_json_to_params (JsonNode *node,
                                            params);
   eknc_utils_append_gparam_from_json_node (json_object_get_member (object, "height"),
                                            g_object_class_find_property (klass, "height"),
+                                           params);
+  eknc_utils_append_gparam_from_json_node (json_object_get_member (object, "parent"),
+                                           g_object_class_find_property (klass, "parent-uri"),
                                            params);
   g_type_class_unref (klass);
 }

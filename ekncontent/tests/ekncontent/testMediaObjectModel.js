@@ -8,6 +8,7 @@ const MOCK_MEDIA_DATA = {
     'caption': 'Great musician, or greatest?',
     'height': '666',
     'width': '666',
+    'parent': 'ekn://paul/banks',
 };
 
 describe('Media Object Model', function () {
@@ -37,6 +38,7 @@ describe('Media Object Model', function () {
             expect(imageObject.caption).toBe('Great musician, or greatest?');
             expect(imageObject.width).toBe(666);
             expect(imageObject.height).toBe(666);
+            expect(imageObject.parent_uri).toBe(MOCK_MEDIA_DATA.parent);
         });
 
         it('should inherit properties set by parent class (ContentObjectModel)', function () {
