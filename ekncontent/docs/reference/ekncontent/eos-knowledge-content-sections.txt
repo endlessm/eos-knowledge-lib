@@ -138,6 +138,7 @@ EkncQueryObjectMode
 EkncQueryObjectMatch
 EkncQueryObjectSort
 EkncQueryObjectOrder
+eknc_query_object_get_content_type
 eknc_query_object_get_cutoff
 eknc_query_object_get_excluded_ids
 eknc_query_object_get_excluded_tags

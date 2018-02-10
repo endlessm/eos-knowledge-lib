@@ -16,6 +16,7 @@
 #define MAX_TERM_LENGTH 245
 
 #define XAPIAN_PREFIX_EXACT_TITLE "XEXACTS"
+#define XAPIAN_PREFIX_CONTENT_TYPE "T"
 #define XAPIAN_PREFIX_ID "Q"
 #define XAPIAN_PREFIX_TAG "K"
 
@@ -51,6 +52,7 @@ struct _EkncQueryObject
   gchar *corrected_terms;
   gchar *stopword_free_terms;
   gchar *literal_query;
+  char *content_type;
   EkncQueryObjectMode mode;
   EkncQueryObjectMatch match;
   EkncQueryObjectSort sort;
@@ -86,6 +88,7 @@ enum {
   PROP_EXCLUDED_IDS,
   PROP_EXCLUDED_TAGS,
   PROP_CORRECTED_TERMS,
+  PROP_CONTENT_TYPE,
   NPROPS
 };
 
@@ -163,6 +166,10 @@ eknc_query_object_get_property (GObject    *object,
 
     case PROP_EXCLUDED_TAGS:
       g_value_set_boxed (value, self->excluded_tags);
+      break;
+
+    case PROP_CONTENT_TYPE:
+      g_value_set_string (value, self->content_type);
       break;
 
     default:
@@ -254,6 +261,11 @@ eknc_query_object_set_property (GObject *object,
       self->excluded_tags = g_value_dup_boxed (value);
       break;
 
+    case PROP_CONTENT_TYPE:
+      g_clear_pointer (&self->content_type, g_free);
+      self->content_type = g_value_dup_string (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -269,6 +281,7 @@ eknc_query_object_finalize (GObject *object)
   g_clear_pointer (&self->corrected_terms, g_free);
   g_clear_pointer (&self->stopword_free_terms, g_free);
   g_clear_pointer (&self->literal_query, g_free);
+  g_clear_pointer (&self->content_type, g_free);
   g_clear_pointer (&self->tags_match_all, g_strfreev);
   g_clear_pointer (&self->tags_match_any, g_strfreev);
   g_clear_pointer (&self->ids, g_strfreev);
@@ -454,6 +467,17 @@ eknc_query_object_class_init (EkncQueryObjectClass *klass)
     g_param_spec_boxed ("excluded-tags", "Excluded tags",
       "A list of specific ekn tags to exclude from the search",
       G_TYPE_STRV,
+      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+
+  /**
+   * EkncQueryObject:content-type:
+   *
+   * Content type to restrict the search to.
+   */
+  eknc_query_object_props[PROP_CONTENT_TYPE] =
+    g_param_spec_string ("content-type", "Content Type",
+      "Content type to restrict the search to",
+      NULL,
       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class,
@@ -726,6 +750,21 @@ eknc_query_object_get_search_terms (EkncQueryObject *self)
   return self->search_terms;
 }
 
+/**
+ * eknc_query_object_get_content_type:
+ * @self: the model
+ *
+ * Get the content type that this query is restricted to
+ *
+ * Returns: (transfer none): the content type as a string
+ */
+const char *
+eknc_query_object_get_content_type (EkncQueryObject *self)
+{
+  g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
+  return self->content_type;
+}
+
 /*
  * get_corrected_query:
  * @self: a #EkncQueryObject
@@ -828,6 +867,27 @@ get_corrected_query (EkncQueryObject *self,
 }
 
 /*
+ * get_content_type_clause:
+ * @content_type: a string containing the content type
+ *
+ * Retreives a content-type query clause from the content type string
+ *
+ * Returns: (transfer full) (nullable): a #XapianQuery object
+ *
+ */
+static XapianQuery *
+get_content_type_clause (const char *content_type)
+{
+  g_autofree char *prefixed = NULL;
+
+  if (content_type == NULL)
+    return NULL;
+
+  prefixed = g_strconcat (XAPIAN_PREFIX_CONTENT_TYPE, content_type, NULL);
+  return xapian_query_new_for_term (prefixed);
+}
+
+/*
  * get_filter_clause:
  * @self: a #EkncQueryObject
  *
@@ -838,7 +898,10 @@ get_corrected_query (EkncQueryObject *self,
 static XapianQuery *
 get_filter_clause (EkncQueryObject *self)
 {
-  if (self->tags_match_any == NULL && self->tags_match_all == NULL && self->ids == NULL)
+  if (self->tags_match_any == NULL &&
+      self->tags_match_all == NULL &&
+      self->ids == NULL &&
+      self->content_type == NULL)
     return NULL;
 
   GSList *clauses = NULL;
@@ -853,6 +916,10 @@ get_filter_clause (EkncQueryObject *self)
   XapianQuery *ids = get_ids_clause (self->ids, XAPIAN_QUERY_OP_OR);
   if (ids != NULL)
     clauses = g_slist_prepend (clauses, ids);
+
+  XapianQuery *content_type = get_content_type_clause (self->content_type);
+  if (content_type != NULL)
+    clauses = g_slist_prepend (clauses, content_type);
 
   if (clauses == NULL)
     return NULL;
@@ -1218,6 +1285,7 @@ eknc_query_object_to_string (EkncQueryObject *self)
   DUMP_STRING(corrected_terms)
   DUMP_STRING(stopword_free_terms)
   DUMP_STRING(literal_query)
+  DUMP_STRING(content_type)
   DUMP_ENUM(mode, EKNC_TYPE_QUERY_OBJECT_MODE, EKNC_QUERY_OBJECT_MODE_INCREMENTAL)
   DUMP_ENUM(match, EKNC_TYPE_QUERY_OBJECT_MATCH, EKNC_QUERY_OBJECT_MATCH_ONLY_TITLE)
   DUMP_ENUM(sort, EKNC_TYPE_QUERY_OBJECT_SORT, EKNC_QUERY_OBJECT_SORT_RELEVANCE)
