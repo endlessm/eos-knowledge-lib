@@ -196,6 +196,14 @@ describe('QueryObject', function () {
                 .toEqual('Query(WILDCARD SYNONYM Ttext)');
         });
 
+        it('can filter out by content type', function () {
+            let query_obj = new Eknc.QueryObject({
+                excluded_content_type: 'text'
+            });
+            expect(query_obj.get_query(qp).get_description())
+                .toEqual('Query((<alldocuments> AND_NOT WILDCARD SYNONYM Ttext))');
+        });
+
         it('combines filter and filter-out clauses', function () {
             let query_obj = new Eknc.QueryObject({
                 tags_match_any: ['rock'],

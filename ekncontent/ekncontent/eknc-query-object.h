@@ -101,6 +101,9 @@ eknc_query_object_get_limit (EkncQueryObject *self);
 const char *
 eknc_query_object_get_content_type (EkncQueryObject *self);
 
+const char *
+eknc_query_object_get_excluded_content_type (EkncQueryObject *self);
+
 XapianQuery *
 eknc_query_object_get_query (EkncQueryObject *self,
                              XapianQueryParser *qp,

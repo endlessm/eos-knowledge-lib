@@ -53,6 +53,7 @@ struct _EkncQueryObject
   gchar *stopword_free_terms;
   gchar *literal_query;
   char *content_type;
+  char *excluded_content_type;
   EkncQueryObjectMode mode;
   EkncQueryObjectMatch match;
   EkncQueryObjectSort sort;
@@ -89,6 +90,7 @@ enum {
   PROP_EXCLUDED_TAGS,
   PROP_CORRECTED_TERMS,
   PROP_CONTENT_TYPE,
+  PROP_EXCLUDED_CONTENT_TYPE,
   NPROPS
 };
 
@@ -170,6 +172,10 @@ eknc_query_object_get_property (GObject    *object,
 
     case PROP_CONTENT_TYPE:
       g_value_set_string (value, self->content_type);
+      break;
+
+    case PROP_EXCLUDED_CONTENT_TYPE:
+      g_value_set_string (value, self->excluded_content_type);
       break;
 
     default:
@@ -266,6 +272,11 @@ eknc_query_object_set_property (GObject *object,
       self->content_type = g_value_dup_string (value);
       break;
 
+    case PROP_EXCLUDED_CONTENT_TYPE:
+      g_clear_pointer (&self->excluded_content_type, g_free);
+      self->excluded_content_type = g_value_dup_string (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -282,6 +293,7 @@ eknc_query_object_finalize (GObject *object)
   g_clear_pointer (&self->stopword_free_terms, g_free);
   g_clear_pointer (&self->literal_query, g_free);
   g_clear_pointer (&self->content_type, g_free);
+  g_clear_pointer (&self->excluded_content_type, g_free);
   g_clear_pointer (&self->tags_match_all, g_strfreev);
   g_clear_pointer (&self->tags_match_any, g_strfreev);
   g_clear_pointer (&self->ids, g_strfreev);
@@ -477,6 +489,17 @@ eknc_query_object_class_init (EkncQueryObjectClass *klass)
   eknc_query_object_props[PROP_CONTENT_TYPE] =
     g_param_spec_string ("content-type", "Content Type",
       "Content type to restrict the search to",
+      NULL,
+      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+
+  /**
+   * EkncQueryObject:excluded-content-type:
+   *
+   * Content type to exclude from the search.
+   */
+  eknc_query_object_props[PROP_EXCLUDED_CONTENT_TYPE] =
+    g_param_spec_string ("excluded-content-type", "Excluded Content Type",
+      "Content type to exclude from the search",
       NULL,
       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
@@ -765,6 +788,21 @@ eknc_query_object_get_content_type (EkncQueryObject *self)
   return self->content_type;
 }
 
+/**
+ * eknc_query_object_get_excluded_content_type:
+ * @self: the model
+ *
+ * Get the content type that this query is excluded from
+ *
+ * Returns: (transfer none): the excluded content type as a string
+ */
+const char *
+eknc_query_object_get_excluded_content_type (EkncQueryObject *self)
+{
+  g_return_val_if_fail (EKNC_IS_QUERY_OBJECT (self), NULL);
+  return self->excluded_content_type;
+}
+
 /*
  * get_corrected_query:
  * @self: a #EkncQueryObject
@@ -938,20 +976,32 @@ get_filter_clause (EkncQueryObject *self)
 static XapianQuery *
 get_filter_out_clause (EkncQueryObject *self)
 {
-  if (self->excluded_tags == NULL && self->excluded_ids == NULL)
+  GSList *clauses = NULL;
+
+  if (self->excluded_tags == NULL &&
+      self->excluded_ids == NULL &&
+      self->excluded_content_type == NULL)
     return NULL;
 
-  g_autoptr(XapianQuery) excluded_tags = get_tags_clause (self->excluded_tags, XAPIAN_QUERY_OP_OR);
-  g_autoptr(XapianQuery) excluded_ids = get_ids_clause (self->excluded_ids, XAPIAN_QUERY_OP_OR);
+  XapianQuery *excluded_ids = get_ids_clause (self->excluded_ids, XAPIAN_QUERY_OP_OR);
+  if (excluded_ids != NULL)
+    clauses = g_slist_prepend (clauses, excluded_ids);
 
-  if (excluded_tags == NULL && excluded_ids == NULL)
+  XapianQuery *excluded_tags = get_tags_clause (self->excluded_tags, XAPIAN_QUERY_OP_OR);
+  if (excluded_tags != NULL)
+    clauses = g_slist_prepend (clauses, excluded_tags);
+
+  XapianQuery *excluded_content_type = get_content_type_clause (self->excluded_content_type);
+  if (excluded_content_type != NULL)
+    clauses = g_slist_prepend (clauses, excluded_content_type);
+
+  if (clauses == NULL)
     return NULL;
-  if (excluded_tags == NULL)
-    return g_steal_pointer (&excluded_ids);
-  if (excluded_ids == NULL)
-    return g_steal_pointer (&excluded_tags);
 
-  return xapian_query_new_for_pair (XAPIAN_QUERY_OP_AND, excluded_tags, excluded_ids);
+  XapianQuery *filter_out_query = xapian_query_new_for_queries (XAPIAN_QUERY_OP_AND, clauses);
+
+  g_slist_free_full (clauses, g_object_unref);
+  return filter_out_query;
 }
 
 /**
@@ -1283,6 +1333,7 @@ eknc_query_object_to_string (EkncQueryObject *self)
   DUMP_STRING(stopword_free_terms)
   DUMP_STRING(literal_query)
   DUMP_STRING(content_type)
+  DUMP_STRING(excluded_content_type)
   DUMP_ENUM(mode, EKNC_TYPE_QUERY_OBJECT_MODE, EKNC_QUERY_OBJECT_MODE_INCREMENTAL)
   DUMP_ENUM(match, EKNC_TYPE_QUERY_OBJECT_MATCH, EKNC_QUERY_OBJECT_MATCH_ONLY_TITLE)
   DUMP_ENUM(sort, EKNC_TYPE_QUERY_OBJECT_SORT, EKNC_QUERY_OBJECT_SORT_RELEVANCE)
