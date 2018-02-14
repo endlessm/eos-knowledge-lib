@@ -8,54 +8,12 @@ This project uses the GNOME technology stack, including GTK and WebKit for UI, a
 
 Building
 --------
-We recommend using [JHbuild] to build this code, especially if you are planning to make changes to it.
-A sample JHbuild moduleset is included in the root directory of this repository.
+We recommend using [Flapjack] to build this code, especially if you are planning to make changes to it.
+The [example.flapjack.ini] configuration file included with Flapjack is precisely made to build the `eos-knowledge-lib` and other components.
 
-First download the moduleset with:
-```sh
-wget https://raw.githubusercontent.com/endlessm/eos-knowledge-lib/master/eos-knowledge-lib.modules
-```
-
-Then edit `~/.config/jhbuildrc` to get JHbuild to use the provided moduleset.
-Here's an example jhbuildrc file:
-```python
-# Change this path to the directory where you put the moduleset file
-modulesets_dir = os.path.expanduser('~')
-moduleset = ['eos-knowledge-lib']
-modules = ['eos-knowledge-lib']
-
-# Change these two paths to your liking
-checkoutroot = os.path.expanduser('~/checkout')
-prefix = os.path.expanduser('~/install')
-
-# This option is required
-os.environ['GIO_EXTRA_MODULES'] = os.path.join(prefix, 'lib', 'gio', 'modules')
-
-# Set options to your liking
-os.environ['CFLAGS'] = '-g -Og -fdiagnostics-color=auto'
-use_local_modulesets = True
-```
-
-To build, then do:
-```sh
-jhbuild sysdeps --install
-jhbuild build
-```
-
-To run the tests:
-```sh
-jhbuild make check
-```
-
-If not using JHbuild you first need to clone, build, and install these other Endless repositories:
-
- - [eos-sdk]
- - [eos-shard]
- - [xapian-glib]
+Copy the `example.flapjack.ini` to `~/.config/flapjack.ini` and follow the instructions for [Flapjack] to know how to build, test, and run apps.
 
 If you wish to run the tests, you will also need to clone, build, and install [jasmine-gjs].
-Other dependencies are PyYAML for Python 3, and an SCSS compiler.
-Install these using your system's package manager.
 
 Developer introduction to offline content apps
 ----------------------------------------------
@@ -152,10 +110,9 @@ More and better documentation on all of this is incoming.
 
 For the next release, we may split this repository up into smaller units.
 
-[JHbuild]: https://developer.gnome.org/jhbuild/stable/
-[eos-sdk]: https://github.com/endlessm/eos-sdk
+[Flapjack]: https://github.com/endlessm/flapjack
+[example.flapjack.ini]: https://github.com/endlessm/flapjack/blob/master/example.flapjack.ini
 [eos-shard]: https://github.com/endlessm/eos-shard
-[xapian-glib]: https://github.com/endlessm/xapian-glib
 [jasmine-gjs]: https://github.com/ptomato/jasmine-gjs
 [transifex]: https://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/
 [website]: http://endlessm.github.io/eos-knowledge-lib/
