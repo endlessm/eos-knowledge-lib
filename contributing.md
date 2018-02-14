@@ -35,62 +35,12 @@ flatpak remote-add --from eos-sdk-nightly http://endlessm.github.io/eos-knowledg
 
 Building
 --------
-We recommend using [JHbuild] to build this code, especially if you are planning to make changes to it.
-A sample JHbuild moduleset is included in the root directory of this repository.
+We recommend using [Flapjack] to build this code, especially if you are planning to make changes to it.
+The [example.flapjack.ini] configuration file included with Flapjack is precisely made to build the `eos-knowledge-lib` and other components.
 
-First download the moduleset with:
-
-```sh
-wget https://raw.githubusercontent.com/endlessm/eos-knowledge-lib/master/eos-knowledge-lib.modules
-```
-
-Then edit `~/.config/jhbuildrc` to get JHbuild to use the provided moduleset.
-Here's an example jhbuildrc file:
-
-```python
-# Change this path to the directory where you put the moduleset file
-modulesets_dir = os.path.expanduser('~')
-moduleset = ['eos-knowledge-lib']
-modules = ['eos-knowledge-lib']
-
-# Change these two paths to your liking
-checkoutroot = os.path.expanduser('~/checkout')
-prefix = os.path.expanduser('~/install')
-
-# Set options to your liking
-os.environ['CFLAGS'] = '-g -Og -fdiagnostics-color=auto'
-use_local_modulesets = True
-```
-
-To build, then do:
-
-```sh
-jhbuild sysdeps --install
-jhbuild build
-```
-
-You will also have to make sure `xapian-bridge` is running in the background:
-
-```sh
-jhbuild run xapian-bridge &
-```
-
-To run the tests:
-
-```sh
-jhbuild make check
-```
-
-If not using JHbuild you first need to clone, build, and install these other Endless repositories:
-
- - [eos-sdk]
- - [eos-shard]
- - [xapian-glib]
- - [xapian-bridge]
+Copy the `example.flapjack.ini` to `~/.config/flapjack.ini` and follow the instructions for [Flapjack] to know how to build, test, and run apps.
 
 If you wish to run the tests, you will also need to clone, build, and install [jasmine-gjs].
-Other dependencies are PyYAML for Python 3, and an SCSS compiler.
-Install these using your system's package manager.
 
 Finding your way around
 -----------------------
@@ -141,11 +91,8 @@ Release schedule and future plans
 ---------------------------------
 For more information, see the [release schedule].
 
-[JHbuild]: https://developer.gnome.org/jhbuild/stable/
-[eos-sdk]: https://github.com/endlessm/eos-sdk
-[eos-shard]: https://github.com/endlessm/eos-shard
-[xapian-glib]: https://github.com/endlessm/xapian-glib
-[xapian-bridge]: https://github.com/endlessm/xapian-bridge
+[Flapjack]: https://github.com/endlessm/flapjack
+[example.flapjack.ini]: https://github.com/endlessm/flapjack/blob/master/example.flapjack.ini
 [jasmine-gjs]: https://github.com/ptomato/jasmine-gjs
 [transifex]: https://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/
 [release schedule]: /eos-knowledge-lib/releases/schedule
