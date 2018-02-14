@@ -70,7 +70,7 @@ var WebShareDialog = new Lang.Class({
     Template: 'resource:///com/endlessm/knowledge/data/widgets/websharedialog.ui',
     InternalChildren: [ 'stack', 'overlay', 'webview', 'spinner', 'accountbox' ],
 
-    _init: function (props) {
+    _init (props) {
         this._provider = null;
         this._uri = null;
         this._actual_redirect_uri = null;
@@ -141,14 +141,14 @@ var WebShareDialog = new Lang.Class({
         this._update_uri();
     },
 
-    _onLoadChanged: function (webview, event) {
+    _onLoadChanged (webview, event) {
         if (event == WebKit2.LoadEvent.STARTED)
             this._spinner.visible = this._spinner.active = true;
         else if (event == WebKit2.LoadEvent.FINISHED)
             this._spinner.visible = this._spinner.active = false;
     },
 
-    _onDecidePolicy: function (webview, decision, decision_type) {
+    _onDecidePolicy (webview, decision, decision_type) {
         if (this.redirect_uri &&
             decision_type === WebKit2.PolicyDecisionType.NAVIGATION_ACTION &&
             GLib.str_has_prefix(decision.request.uri, this.redirect_uri)) {
@@ -166,7 +166,7 @@ var WebShareDialog = new Lang.Class({
         return false;
     },
 
-    _cookies_path_init: function () {
+    _cookies_path_init () {
         let dir = GLib.dir_make_tmp('WebShareDialog-XXXXXX');
 
         if (dir)
@@ -175,7 +175,7 @@ var WebShareDialog = new Lang.Class({
             logError(new Error('Can not create tmp dir to share cookies with webview'));
     },
 
-    _cookies_path_remove: function () {
+    _cookies_path_remove () {
 
         if (!this._cookies_path)
             return;
@@ -193,7 +193,7 @@ var WebShareDialog = new Lang.Class({
         delete this._cookies_path;
     },
 
-    _webview_set_cookies: function (variant) {
+    _webview_set_cookies (variant) {
         let retval = variant.get_child_value(0);
         let cookies = retval.deep_unpack();
 
@@ -226,7 +226,7 @@ var WebShareDialog = new Lang.Class({
                                        WebKit2.CookiePersistentStorage.SQLITE);
     },
 
-    _update_goa_account: function () {
+    _update_goa_account () {
         if (!this._dbus_manager || !this._webview)
             return;
 
@@ -262,7 +262,7 @@ var WebShareDialog = new Lang.Class({
         }
     },
 
-    _update_cookies: function () {
+    _update_cookies () {
         if (!this._goa_oauth2)
             return;
 
@@ -282,7 +282,7 @@ var WebShareDialog = new Lang.Class({
         }
     },
 
-    _update_uri: function () {
+    _update_uri () {
         if (!this._webview)
             return;
 
