@@ -190,10 +190,10 @@ describe('QueryObject', function () {
 
         it('can filter by content type', function () {
             let query_obj = new Eknc.QueryObject({
-                content_type: 'text/html'
+                content_type: 'text'
             });
             expect(query_obj.get_query(qp).get_description())
-                .toEqual('Query(Ttext/html)');
+                .toEqual('Query(WILDCARD SYNONYM Ttext)');
         });
 
         it('combines filter and filter-out clauses', function () {

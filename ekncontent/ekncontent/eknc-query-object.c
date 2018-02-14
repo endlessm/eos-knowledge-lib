@@ -873,18 +873,15 @@ get_corrected_query (EkncQueryObject *self,
  * Retreives a content-type query clause from the content type string
  *
  * Returns: (transfer full) (nullable): a #XapianQuery object
- *
  */
 static XapianQuery *
 get_content_type_clause (const char *content_type)
 {
-  g_autofree char *prefixed = NULL;
-
   if (content_type == NULL)
     return NULL;
 
-  prefixed = g_strconcat (XAPIAN_PREFIX_CONTENT_TYPE, content_type, NULL);
-  return xapian_query_new_for_term (prefixed);
+  g_autofree char *prefixed = g_strconcat (XAPIAN_PREFIX_CONTENT_TYPE, content_type, NULL);
+  return xapian_query_new_wildcard (prefixed);
 }
 
 /*
