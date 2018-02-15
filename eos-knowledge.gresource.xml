@@ -140,6 +140,7 @@
     <file>js/app/modules/decoration/separator.js</file>
     <file>js/app/modules/decoration/themeableImage.js</file>
     <file>js/app/modules/filter/articles.js</file>
+    <file>js/app/modules/filter/contentType.js</file>
     <file>js/app/modules/filter/currentSet.js</file>
     <file>js/app/modules/filter/featured.js</file>
     <file>js/app/modules/filter/otherGroup.js</file>

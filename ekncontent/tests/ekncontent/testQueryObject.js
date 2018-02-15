@@ -188,6 +188,22 @@ describe('QueryObject', function () {
                 .toEqual('Query((<alldocuments> AND_NOT ((Kjazz OR Kblues) AND (Q0123456789abcdef01230123456789abcdef0123 OR Qc0ffeec0ffeec0ffeec0c0ffeec0ffeec0ffeec0))))');
         });
 
+        it('can filter by content type', function () {
+            let query_obj = new Eknc.QueryObject({
+                content_type: 'text'
+            });
+            expect(query_obj.get_query(qp).get_description())
+                .toEqual('Query(WILDCARD SYNONYM Ttext)');
+        });
+
+        it('can filter out by content type', function () {
+            let query_obj = new Eknc.QueryObject({
+                excluded_content_type: 'text'
+            });
+            expect(query_obj.get_query(qp).get_description())
+                .toEqual('Query((<alldocuments> AND_NOT WILDCARD SYNONYM Ttext))');
+        });
+
         it('combines filter and filter-out clauses', function () {
             let query_obj = new Eknc.QueryObject({
                 tags_match_any: ['rock'],
