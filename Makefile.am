@@ -110,7 +110,6 @@ scss_theme_pager_partials = \
 	$(NULL)
 scss_theme_view_partials = \
 	$(srcdir)/data/css/modules/view/_audio.scss \
-	$(srcdir)/data/css/modules/view/_base.scss \
 	$(srcdir)/data/css/modules/view/_document.scss \
 	$(srcdir)/data/css/modules/view/_media.scss \
 	$(srcdir)/data/css/modules/view/_video.scss \
