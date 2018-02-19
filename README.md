@@ -114,5 +114,5 @@ For the next release, we may split this repository up into smaller units.
 [example.flapjack.ini]: https://github.com/endlessm/flapjack/blob/master/example.flapjack.ini
 [eos-shard]: https://github.com/endlessm/eos-shard
 [jasmine-gjs]: https://github.com/ptomato/jasmine-gjs
-[transifex]: https://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/
+[transifex]: https://www.transifex.com/endless-os/eos-knowledge-lib/
 [website]: http://endlessm.github.io/eos-knowledge-lib/
