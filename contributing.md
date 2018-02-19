@@ -94,5 +94,5 @@ For more information, see the [release schedule].
 [Flapjack]: https://github.com/endlessm/flapjack
 [example.flapjack.ini]: https://github.com/endlessm/flapjack/blob/master/example.flapjack.ini
 [jasmine-gjs]: https://github.com/ptomato/jasmine-gjs
-[transifex]: https://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/
+[transifex]: https://www.transifex.com/endless-os/eos-knowledge-lib/
 [release schedule]: /eos-knowledge-lib/releases/schedule
