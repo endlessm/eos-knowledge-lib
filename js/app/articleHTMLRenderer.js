@@ -226,7 +226,14 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         }
 
         return JSON.stringify({
-            'ParentFeaturedSets': get_parent_featured_sets(),
+            // Need to explicitly expand properties, stringify does not
+            // work on GI-binded objects
+            'ParentFeaturedSets': get_parent_featured_sets().map((set) => ({
+                child_tags: set.child_tags,
+                ekn_id: set.ekn_id,
+                title: set.title,
+                tags: set.tags,
+            })),
         });
     },
 
