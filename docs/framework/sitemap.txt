@@ -1,4 +1,8 @@
 index.md
+	tutorial/index.md
+		tutorial/install.md
+		tutorial/ingester.md
+			tutorial/ingester-full-code.md
 	tools.md
 	modules.md
 		modules/window.md

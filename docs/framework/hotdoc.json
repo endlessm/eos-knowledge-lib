@@ -6,6 +6,15 @@
     "output": "built",
     "sitemap": "sitemap.txt",
 
+    "default-license": "CC-BY-SAv4.0",
+    "default-code-samples-license": "CC0-1.0",
+    "default-copyright-holders": [
+        {
+            "name": "Endless Mobile, Inc.",
+            "years": [2017, 2018]
+        }
+    ],
+
     "mf_sources": ["../../js/app/modules/*/*.js"],
     "mf_smart_index": true,
 
