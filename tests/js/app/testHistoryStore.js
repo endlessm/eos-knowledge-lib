@@ -1,5 +1,5 @@
 const Eknc = imports.gi.EosKnowledgeContent;
-const {GObject, Gtk} = imports.gi;
+const {GObject, Gtk, Gio} = imports.gi;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -13,7 +13,23 @@ const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const Pages = imports.app.pages;
 const WebShareDialog = imports.app.widgets.webShareDialog;
 
+const Lang = imports.lang;
+
 Gtk.init(null);
+
+const DummyManager = new Lang.Class({
+    Name: 'DummyManager',
+    Extends: GObject.Object,
+    Signals: {
+        'object-added': { },
+        'object-removed': { },
+    },
+
+    _init (props) {
+        this.parent(props);
+        this.get_objects = jasmine.createSpy().and.returnValue([]);
+    }
+});
 
 describe('History Store', function () {
     let history_store;
@@ -183,8 +199,7 @@ describe('History Store', function () {
             let WebShareDialogConstructor = WebShareDialog.WebShareDialog;
 
             spyOn(WebShareDialog, 'WebShareDialog').and.callFake(function(props) {
-                props.manager = new GObject.Object();
-                props.manager.get_objects = jasmine.createSpy().and.returnValue([]);
+                Gio.DBusObjectManagerClient.new_for_bus_sync = jasmine.createSpy().and.returnValue(new DummyManager())
                 share_dialog = new WebShareDialogConstructor(props);
                 return share_dialog;
             });
