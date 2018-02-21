@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the eos-knowledge package.
 # 
 # Translators:
+# Cheng-Chia Tseng <pswo10680@gmail.com>, 2017
 # Philip Chimento <philip.chimento@gmail.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
 "POT-Creation-Date: 2017-06-14 22:54+0000\n"
-"PO-Revision-Date: 2017-09-23 12:01+0000\n"
-"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/zh_TW/)\n"
+"PO-Revision-Date: 2017-11-20 17:59+0000\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
+"Language-Team: Chinese (Taiwan) (http://www.transifex.com/endless-os/eos-knowledge-lib/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,7 +25,7 @@ msgstr "下一篇文章"
 
 #: data/widgets/card/sequence.ui:60
 msgid "Previous Article"
-msgstr "前一文章"
+msgstr "上一篇文章"
 
 #: data/widgets/contentGroup/contentGroup.ui:26
 msgid "Oops! There was an error."
@@ -47,7 +48,7 @@ msgid ""
 "Check your spelling\n"
 "Try other words that mean the same thing\n"
 "Try using more general words"
-msgstr "我們建議你：\n\n檢查你的拼字\n嘗試其他有相同意義的詞彙\n嘗試使用更普通常見的詞彙"
+msgstr "我們建議您：\n\n檢查您的拼字\n嘗試其他有相同意義的詞彙\n嘗試使用更普及常見的詞彙"
 
 #: data/widgets/layout/sideMenu.ui:95
 msgid "Home"
@@ -55,7 +56,7 @@ msgstr "首頁"
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license"
-msgstr "察看授權"
+msgstr "檢視授權條款"
 
 #: js/app/application.js:182
 msgid "Oops! No content."
@@ -139,7 +140,7 @@ msgstr[0] "%d 個項目"
 
 #: js/app/modules/banner/context.js:38 js/app/modules/banner/context.js:49
 msgid "Highlights"
-msgstr "重點摘要"
+msgstr "劃重點"
 
 #: js/app/modules/banner/context.js:52
 msgid "All Categories"
@@ -179,7 +180,7 @@ msgstr "預留位置"
 
 #: js/app/modules/navigation/searchBox.js:162
 msgid "See more results"
-msgstr "看更多結果"
+msgstr "查看更多結果"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that
@@ -188,7 +189,7 @@ msgstr "看更多結果"
 #. example: "Jane Austen and Henry Miller and William Clifford"
 #: js/app/utils.js:100
 msgid "by {author}"
-msgstr "作者 {author}"
+msgstr "作者為 {author}"
 
 #: js/app/utils.js:100
 msgid "and"
