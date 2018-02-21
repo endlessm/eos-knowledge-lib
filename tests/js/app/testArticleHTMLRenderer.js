@@ -8,6 +8,7 @@ const SetMap = imports.app.setMap;
 
 describe('Article HTML Renderer', function () {
     let wikihow_model, wikibooks_model, wikipedia_model, wikisource_model;
+    let all_models;
     let renderer;
 
     beforeEach(function () {
@@ -58,6 +59,13 @@ describe('Article HTML Renderer', function () {
             license: 'CC-BY-SA 3.0',
             title: 'Wikibooks title',
         });
+
+        all_models = [
+            wikipedia_model,
+            wikisource_model,
+            wikihow_model,
+            wikibooks_model,
+        ];
     });
 
     it('can render an article', function () {
@@ -91,6 +99,30 @@ describe('Article HTML Renderer', function () {
     it('includes correct css for article type', function () {
         expect(renderer.render(wikihow_model)).toMatch('wikihow.css');
         expect(renderer.render(wikibooks_model)).toMatch('wikimedia.css');
+    });
+
+    it('includes correct auxillary css on any model type', function () {
+        all_models.forEach(m => {
+            expect(renderer.render(m)).toMatch('clipboard.css');
+            expect(renderer.render(m)).toMatch('share-actions.css');
+        });
+    });
+
+    it('includes correct auxillary js on any model type', function () {
+        all_models.forEach(m => {
+            expect(renderer.render(m)).toMatch('jquery-min.js');
+            expect(renderer.render(m)).toMatch('clipboard-manager.js');
+            expect(renderer.render(m)).toMatch('crosslink.js');
+            expect(renderer.render(m)).toMatch('chunk.js');
+            expect(renderer.render(m)).toMatch('share-actions.js');
+        });
+    });
+
+    it('includes custom css on any model type', function () {
+        renderer.set_custom_css_files(['custom.css'])
+        all_models.forEach(m =>
+            expect(renderer.render(m)).toMatch('custom.css')
+        );
     });
 
     it('escapes html special characters in title', function () {
