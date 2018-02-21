@@ -158,6 +158,41 @@ describe('Article HTML Renderer', function () {
         expect(html).not.toMatch('<script type="text/x-mathjax-config">');
     });
 
+    describe('Model with custom tags', function () {
+        let model;
+        let setModel;
+
+        beforeEach(function () {
+            model = Eknc.ArticleObjectModel.new_from_props({
+                source_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
+                original_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
+                content_type: 'text/html',
+                source: 'wikibooks',
+                source_name: 'Wikibooks',
+                license: 'CC-BY-SA 3.0',
+                title: 'Wikibooks title',
+                tags: ['Famous Books']
+            });
+            setModel = Eknc.SetObjectModel.new_from_props({
+                tags: ['EknSetObject'],
+                title: 'Famous Books - Set Title',
+                featured: true,
+                ekn_id: 'ekn:///id',
+                child_tags: ['Famous Books']
+            });
+
+            SetMap.init_map_with_models([setModel]);
+        });
+
+        afterEach(function () {
+            SetMap.init_map_with_models([]);
+        });
+
+        it('includes sets in the metadata', function () {
+            expect(renderer.render(model)).toMatch('Famous Books \\- Set Title');
+        });
+    });
+
     describe('Prensa Libre source', function () {
         let html;
 
