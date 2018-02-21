@@ -168,6 +168,7 @@ describe('Article HTML Renderer', function () {
     describe('Model with custom tags', function () {
         let model;
         let setModel;
+        let nonfeaturedSetModel;
 
         beforeEach(function () {
             model = Eknc.ArticleObjectModel.new_from_props({
@@ -187,8 +188,15 @@ describe('Article HTML Renderer', function () {
                 ekn_id: 'ekn:///id',
                 child_tags: ['Famous Books']
             });
+            nonfeaturedSetModel = Eknc.SetObjectModel.new_from_props({
+                tags: ['EknSetObject'],
+                title: 'Infamous Books - Set Title',
+                featured: false,
+                ekn_id: 'ekn:///otherId',
+                child_tags: ['Infamous Books']
+            });
 
-            SetMap.init_map_with_models([setModel]);
+            SetMap.init_map_with_models([nonfeaturedSetModel, setModel]);
         });
 
         afterEach(function () {
@@ -197,6 +205,16 @@ describe('Article HTML Renderer', function () {
 
         it('includes sets in the metadata', function () {
             expect(renderer.render(model)).toMatch('Famous Books \\- Set Title');
+        });
+
+        it('includes featured ParentSets in the chunk data', function () {
+            expect(renderer.render(model))
+                .toMatch('"ParentFeaturedSets":\\s*\\[\\{.*"title":\s*"Famous Books \\- Set Title"');
+        });
+
+        it('does not include non-featured ParentSets in the chunk data', function () {
+            expect(renderer.render(model))
+                .not.toMatch('"ParentFeaturedSets":\\s*\\[\\{.*"title":\s*"Infamous Books \\- Set Title"');
         });
     });
 
