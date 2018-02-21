@@ -218,6 +218,42 @@ describe('Article HTML Renderer', function () {
         });
     });
 
+    describe('Model with outgoing links', function () {
+        let model;
+        let setModel;
+        let nonfeaturedSetModel;
+        let engine;
+
+        beforeEach(function () {
+            engine = Eknc.Engine.get_default();
+            model = Eknc.ArticleObjectModel.new_from_props({
+                source_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
+                original_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
+                content_type: 'text/html',
+                source: 'wikibooks',
+                source_name: 'Wikibooks',
+                license: 'CC-BY-SA 3.0',
+                title: 'Wikibooks title',
+                tags: ['Famous Books'],
+                outgoing_links: [
+                    'http://outgoing.link',
+                ]
+            });
+
+            spyOn(engine, 'test_link').and.callFake(function(link) {
+                if (link === 'http://outgoing.link') {
+                    return 'ekn://some_uri';
+                }
+
+                return null;
+            });
+        });
+
+        it('includes cross-links in the metadata', function () {
+            expect(renderer.render(model)).toMatch('crosslink_init\\(\\["ekn://some_uri"');
+        });
+    });
+
     describe('Prensa Libre source', function () {
         let html;
 
