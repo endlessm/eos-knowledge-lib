@@ -8,6 +8,8 @@ EXTRA_DIST = \
 	api/hotdoc.json \
 	api/index.md \
 	api/sitemap.txt \
+	framework/concepts/index.md \
+	framework/concepts/yaml_format.md \
 	framework/hotdoc.json \
 	framework/index.md \
 	framework/modules.md \

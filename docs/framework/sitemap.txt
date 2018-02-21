@@ -1,4 +1,6 @@
 index.md
+	concepts/index.md
+		concepts/yaml_format.md
 	tutorial/index.md
 		tutorial/install.md
 		tutorial/ingester.md
