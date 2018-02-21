@@ -125,6 +125,13 @@ describe('Article HTML Renderer', function () {
         );
     });
 
+    ['facebook', 'twitter', 'whatsapp'].forEach(function (network) {
+        it(`includes a share button for ${network}`, function () {
+            expect(renderer.render(wikipedia_model))
+                .toMatch(`messageHandlers.share_on_${network}.postMessage\\(0\\)`);
+        });
+    });
+
     it('escapes html special characters in title', function () {
         let html = renderer.render(wikihow_model);
         expect(html).toMatch('Wikihow &amp; title');
