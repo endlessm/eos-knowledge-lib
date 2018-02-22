@@ -19,3 +19,4 @@ js/app/modules/layout/hamburgerBasement.js
 js/app/modules/layout/placeholder.js
 js/app/modules/navigation/searchBox.js
 js/app/utils.js
+js/app/widgets/webShareDialog.js
