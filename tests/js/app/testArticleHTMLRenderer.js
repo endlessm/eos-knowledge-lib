@@ -8,6 +8,7 @@ const SetMap = imports.app.setMap;
 
 describe('Article HTML Renderer', function () {
     let wikihow_model, wikibooks_model, wikipedia_model, wikisource_model;
+    let all_models;
     let renderer;
 
     beforeEach(function () {
@@ -58,6 +59,13 @@ describe('Article HTML Renderer', function () {
             license: 'CC-BY-SA 3.0',
             title: 'Wikibooks title',
         });
+
+        all_models = [
+            wikipedia_model,
+            wikisource_model,
+            wikihow_model,
+            wikibooks_model,
+        ];
     });
 
     it('can render an article', function () {
@@ -93,6 +101,37 @@ describe('Article HTML Renderer', function () {
         expect(renderer.render(wikibooks_model)).toMatch('wikimedia.css');
     });
 
+    it('includes correct auxillary css on any model type', function () {
+        all_models.forEach(m => {
+            expect(renderer.render(m)).toMatch('clipboard.css');
+            expect(renderer.render(m)).toMatch('share-actions.css');
+        });
+    });
+
+    it('includes correct auxillary js on any model type', function () {
+        all_models.forEach(m => {
+            expect(renderer.render(m)).toMatch('jquery-min.js');
+            expect(renderer.render(m)).toMatch('clipboard-manager.js');
+            expect(renderer.render(m)).toMatch('crosslink.js');
+            expect(renderer.render(m)).toMatch('chunk.js');
+            expect(renderer.render(m)).toMatch('share-actions.js');
+        });
+    });
+
+    it('includes custom css on any model type', function () {
+        renderer.set_custom_css_files(['custom.css'])
+        all_models.forEach(m =>
+            expect(renderer.render(m)).toMatch('custom.css')
+        );
+    });
+
+    ['facebook', 'twitter', 'whatsapp'].forEach(function (network) {
+        it(`includes a share button for ${network}`, function () {
+            expect(renderer.render(wikipedia_model))
+                .toMatch(`messageHandlers.share_on_${network}.postMessage\\(0\\)`);
+        });
+    });
+
     it('escapes html special characters in title', function () {
         let html = renderer.render(wikihow_model);
         expect(html).toMatch('Wikihow &amp; title');
@@ -124,6 +163,95 @@ describe('Article HTML Renderer', function () {
     it('does not include MathJax in articles from other sources', function () {
         let html = renderer.render(wikihow_model);
         expect(html).not.toMatch('<script type="text/x-mathjax-config">');
+    });
+
+    describe('Model with custom tags', function () {
+        let model;
+        let setModel;
+        let nonfeaturedSetModel;
+
+        beforeEach(function () {
+            model = Eknc.ArticleObjectModel.new_from_props({
+                source_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
+                original_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
+                content_type: 'text/html',
+                source: 'wikibooks',
+                source_name: 'Wikibooks',
+                license: 'CC-BY-SA 3.0',
+                title: 'Wikibooks title',
+                tags: ['Famous Books']
+            });
+            setModel = Eknc.SetObjectModel.new_from_props({
+                tags: ['EknSetObject'],
+                title: 'Famous Books - Set Title',
+                featured: true,
+                ekn_id: 'ekn:///id',
+                child_tags: ['Famous Books']
+            });
+            nonfeaturedSetModel = Eknc.SetObjectModel.new_from_props({
+                tags: ['EknSetObject'],
+                title: 'Infamous Books - Set Title',
+                featured: false,
+                ekn_id: 'ekn:///otherId',
+                child_tags: ['Infamous Books']
+            });
+
+            SetMap.init_map_with_models([nonfeaturedSetModel, setModel]);
+        });
+
+        afterEach(function () {
+            SetMap.init_map_with_models([]);
+        });
+
+        it('includes sets in the metadata', function () {
+            expect(renderer.render(model)).toMatch('Famous Books \\- Set Title');
+        });
+
+        it('includes featured ParentSets in the chunk data', function () {
+            expect(renderer.render(model))
+                .toMatch('"ParentFeaturedSets":\\s*\\[\\{.*"title":\s*"Famous Books \\- Set Title"');
+        });
+
+        it('does not include non-featured ParentSets in the chunk data', function () {
+            expect(renderer.render(model))
+                .not.toMatch('"ParentFeaturedSets":\\s*\\[\\{.*"title":\s*"Infamous Books \\- Set Title"');
+        });
+    });
+
+    describe('Model with outgoing links', function () {
+        let model;
+        let setModel;
+        let nonfeaturedSetModel;
+        let engine;
+
+        beforeEach(function () {
+            engine = Eknc.Engine.get_default();
+            model = Eknc.ArticleObjectModel.new_from_props({
+                source_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
+                original_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
+                content_type: 'text/html',
+                source: 'wikibooks',
+                source_name: 'Wikibooks',
+                license: 'CC-BY-SA 3.0',
+                title: 'Wikibooks title',
+                tags: ['Famous Books'],
+                outgoing_links: [
+                    'http://outgoing.link',
+                ]
+            });
+
+            spyOn(engine, 'test_link').and.callFake(function(link) {
+                if (link === 'http://outgoing.link') {
+                    return 'ekn://some_uri';
+                }
+
+                return null;
+            });
+        });
+
+        it('includes cross-links in the metadata', function () {
+            expect(renderer.render(model)).toMatch('crosslink_init\\(\\["ekn://some_uri"');
+        });
     });
 
     describe('Prensa Libre source', function () {
