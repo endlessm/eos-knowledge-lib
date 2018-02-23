@@ -21,6 +21,7 @@ HOTDOC_PROJECTS = framework
 framework_HOTDOC_FLAGS = \
 	--conf-file $(abs_srcdir)/framework/hotdoc.json \
 	-o $(abs_builddir)/framework/built \
+	--html-theme $(datadir)/eos-hotdoc-theme \
 	--mf-introspect-utility $(abs_top_builddir)/tools/introspect-local \
 	$(FRAMEWORK_EXTRA_HOTDOC_FLAGS) \
 	$(NULL)
