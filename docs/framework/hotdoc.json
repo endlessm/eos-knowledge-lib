@@ -15,6 +15,8 @@
         }
     ],
 
+    "html_extra_theme": "theme",
+
     "mf_sources": ["../../js/app/modules/*/*.js"],
     "mf_smart_index": true,
 

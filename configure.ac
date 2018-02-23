@@ -86,6 +86,9 @@ AC_PATH_PROG([SCSS], [sassc], [notfound])
 AS_IF([test x$SCSS = xnotfound], [AC_MSG_ERROR([Sass compiler not found.
 Try installing "sassc" or its equivalent package.])])
 AC_ARG_VAR([SCSS], [Path to SCSS compiler])
+AS_IF([test x$enable_documentation = xyes],
+    [AC_CHECK_FILE([$prefix/share/eos-hotdoc-theme],,
+        [AC_MSG_ERROR([eos-hotdoc-theme is required for --enable-documentation.])])])
 
 AC_CACHE_SAVE
 
