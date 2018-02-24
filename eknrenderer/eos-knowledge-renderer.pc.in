@@ -1,0 +1,14 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: @PACKAGE_NAME@
+Version: @PACKAGE_VERSION@
+Description: Private renderer library for Endless OS Content Platform
+URL: @PACKAGE_URL@
+
+Requires: @AX_PACKAGE_REQUIRES@
+Requires.private: @AX_PACKAGE_REQUIRES_PRIVATE@
+Cflags: -I${includedir}/@EKN_RENDERER_API_NAME@
+Libs: -L${libdir} -l@EKN_RENDERER_API_NAME@

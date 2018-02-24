@@ -276,8 +276,8 @@ AC_CONFIG_FILES([
 ])
 AC_CONFIG_HEADERS([config.h])  dnl Header with system-dependent #defines
 
-# Call ekncontent ./configure
-AC_CONFIG_SUBDIRS([ekncontent])
+# Call ekncontent and eknrenderer ./configure
+AC_CONFIG_SUBDIRS([ekncontent eknrenderer])
 
 # Do the output
 AC_OUTPUT
