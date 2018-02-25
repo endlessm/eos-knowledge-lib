@@ -8,12 +8,18 @@ EXTRA_DIST = \
 	api/hotdoc.json \
 	api/index.md \
 	api/sitemap.txt \
+	framework/concepts/index.md \
+	framework/concepts/yaml_format.md \
 	framework/hotdoc.json \
 	framework/index.md \
 	framework/modules.md \
 	framework/modules/window.md \
 	framework/sitemap.txt \
 	framework/tools.md \
+	framework/tutorial/index.md \
+	framework/tutorial/ingester.md \
+	framework/tutorial/ingester-full-code.md \
+	framework/tutorial/install.md \
 	$(NULL)
 
 HOTDOC_PROJECTS = framework
