@@ -16,6 +16,10 @@ EXTRA_DIST = \
 	framework/modules/window.md \
 	framework/sitemap.txt \
 	framework/tools.md \
+	framework/tutorial/index.md \
+	framework/tutorial/ingester.md \
+	framework/tutorial/ingester-full-code.md \
+	framework/tutorial/install.md \
 	$(NULL)
 
 HOTDOC_PROJECTS = framework
