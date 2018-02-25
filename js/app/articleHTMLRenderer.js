@@ -1,4 +1,4 @@
-const {DModel, Endless, GLib, Gio, GObject} = imports.gi;
+const {DModel, Eknr, Endless, GLib, Gio, GObject} = imports.gi;
 const Gettext = imports.gettext;
 
 const Config = imports.app.config;
@@ -8,19 +8,6 @@ const Utils = imports.app.utils;
 const SetMap = imports.app.setMap;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
-
-let _template_cache = {};
-function _load_template(template_filename) {
-    let uri = 'resource:///com/endlessm/knowledge/data/templates/' + template_filename;
-    if (_template_cache[uri] === undefined) {
-        let file = Gio.file_new_for_uri(uri);
-        let [success, string] = file.load_contents(null);
-        let template = string.toString();
-        Mustache.parse(template);
-        _template_cache[uri] = template;
-    }
-    return _template_cache[uri];
-}
 
 /**
  * Class: ArticleHTMLRenderer
@@ -51,11 +38,8 @@ var ArticleHTMLRenderer = new Knowledge.Class({
 
     _init: function (props={}) {
         this.parent(props);
+        this._renderer = new Eknr.Renderer();
         this._custom_css_files = [];
-    },
-
-    _strip_tags: function (html) {
-        return html.replace(/^\s*<html>\s*<body>/, '').replace(/<\/body>\s*<\/html>\s*$/, '');
     },
 
     set_custom_css_files: function (custom_css_files) {
@@ -67,106 +51,11 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         return app.get_web_overrides_css();
     },
 
-    _get_legacy_disclaimer: function (model) {
-        switch (model.source) {
-            case 'wikipedia':
-            case 'wikibooks':
-            case 'wikisource':
-                let original_link = _to_link(model.original_uri, model.source_name);
-                let license_link = _to_license_link(model.license);
-                // TRANSLATORS: anything inside curly braces '{}' is going
-                // to be substituted in code. Please make sure to leave the
-                // curly braces around any words that have them and DO NOT
-                // translate words inside curly braces.
-                return _("This page contains content from {original-link}, available under a {license-link} license.")
-                .replace('{original-link}', original_link)
-                .replace('{license-link}', license_link);
-            case 'wikihow':
-                let wikihow_article_link = _to_link(model.original_uri, model.title);
-                // TRANSLATORS: Replace this with a link to the homepage of
-                // wikiHow in your language.
-                let wikihow_link = _to_link(_("http://wikihow.com"), model.source_name);
-                // TRANSLATORS: anything inside curly braces '{}' is going
-                // to be substituted in code. Please make sure to leave the
-                // curly braces around any words that have them and DO NOT
-                // translate words inside curly braces.
-                return _("See {wikihow-article-link} for more details, videos, pictures and attribution. Courtesy of {wikihow-link}, where anyone can easily learn how to do anything.")
-                .replace('{wikihow-article-link}', wikihow_article_link)
-                .replace('{wikihow-link}', wikihow_link);
-            default:
-                return false;
-        }
-    },
-
-    _should_include_mathjax: function (model) {
-        let may_have_mathjax = ['wikipedia', 'wikibooks', 'wikisource'];
-        return (may_have_mathjax.indexOf(model.source) !== -1);
-    },
-
-    _get_legacy_css_files: function (model) {
-        let css_files = [];
-
-        switch (model.source) {
-            case 'wikipedia':
-            case 'wikibooks':
-            case 'wikisource':
-                css_files.push('wikimedia.css');
-                break;
-            case 'wikihow':
-                css_files.push('wikihow.css');
-                break;
-        }
-        return css_files;
-    },
-
-    _get_legacy_javascript_files: function (model) {
-        let javascript_files = [
-            'content-fixes.js',
-            'hide-broken-images.js',
-        ];
-
-        if (this.enable_scroll_manager)
-            javascript_files.push('scroll-manager.js');
-
-        return javascript_files;
-    },
-
     _get_html: function (model) {
         let engine = DModel.Engine.get_default();
         let domain = engine.get_domain();
         let [, bytes] = domain.read_uri(model.ekn_id);
         return bytes.get_data().toString();
-    },
-
-    _render_legacy_content: function (model) {
-        let css_files = this._get_legacy_css_files(model);
-        let js_files = this._get_legacy_javascript_files(model);
-
-        let html = this._get_html(model);
-
-        let template = _load_template('legacy-article.mst');
-
-        return Mustache.render(template, {
-            'title': this.show_title ? model.title : false,
-            'body-html': this._strip_tags(html),
-            'disclaimer': this._get_legacy_disclaimer(model),
-            'copy-button-text': _("Copy"),
-            'css-files': css_files,
-            'javascript-files': js_files,
-            'include-mathjax': this._should_include_mathjax(model),
-            'mathjax-path': Config.mathjax_path,
-        });
-    },
-
-    _render_prensa_libre_content: function (model) {
-        let html = this._get_html(model);
-
-        let template = _load_template('news-article.mst');
-
-        return Mustache.render(template, {
-            'css-files': ['prensa-libre.css'],
-            'body-html': this._strip_tags(html),
-        });
     },
 
     _render_content: function (model) {
@@ -176,22 +65,20 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         //
         // "Legacy" content, including most wiki sources and also 2.6 Prensa Libre content,
         // is templated and styled on the client.
+        let html = this._get_html(model)
 
-        if (model.is_server_templated) {
-            return this._get_html(model);
-        } else {
-            switch (model.source) {
-            case 'wikipedia':
-            case 'wikibooks':
-            case 'wikisource':
-            case 'wikihow':
-                return this._render_legacy_content(model);
-            case 'prensa-libre':
-                return this._render_prensa_libre_content(model);
-            default:
-                return null;
-            }
-        }
+        if (model.is_server_templated)
+            return html;
+
+        return this._renderer.render_legacy_content(
+            html,
+            model.source,
+            model.source_name,
+            model.original_uri,
+            model.license,
+            model.title,
+            this.show_title,
+            this.enable_scroll_manager);
     },
 
     _get_wrapper_css_files: function () {
@@ -291,20 +178,20 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         let css_files = this._get_wrapper_css_files();
         let js_files = this._get_wrapper_js_files();
 
-        let template = _load_template('article-wrapper.mst');
+        let template = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/data/templates/article-wrapper.mst');
 
-        return Mustache.render(template, {
-            'id': model.ekn_id,
-            'css-files': css_files,
-            'custom-css-files': this._get_app_override_css_files(),
-            'javascript-files': js_files,
-            'copy-button-text': _("Copy"),
-            'share-actions': this._get_share_actions_markup(model),
-            'content': content,
-            'crosslink-data': this._get_crosslink_data(model),
-            'chunk-data': this._get_chunk_data(model),
-            'content-metadata': this._get_metadata(model),
-        });
+        return this._renderer.render_mustache_document_from_file(template, new GLib.Variant('a{sv}', {
+            'id': new GLib.Variant('s', model.ekn_id),
+            'css-files': new GLib.Variant('as', css_files),
+            'custom-css-files': new GLib.Variant('as', this._get_app_override_css_files()),
+            'javascript-files': new GLib.Variant('as', js_files),
+            'copy-button-text': new GLib.Variant('s', _("Copy")),
+            'share-actions': new GLib.Variant('s', this._get_share_actions_markup(model)),
+            'content': new GLib.Variant('s', content),
+            'crosslink-data': new GLib.Variant('s', this._get_crosslink_data(model)),
+            'chunk-data': new GLib.Variant('s', this._get_chunk_data(model)),
+            'content-metadata': new GLib.Variant('s', this._get_metadata(model)),
+        }));
     },
 
     /*
@@ -316,15 +203,6 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         return this._render_wrapper(content, model);
     },
 });
-
-function _to_link(uri, text) {
-    return '<a class="eos-show-link" href="' + uri + '">' + Mustache.escape(text) + '</a>';
-}
-
-function _to_license_link (license) {
-    return _to_link('license://' + GLib.uri_escape_string(license, null, false),
-        Endless.get_license_display_name(license));
-}
 
 function _get_display_string_for_license(license) {
     if (license === Endless.LICENSE_NO_LICENSE)
