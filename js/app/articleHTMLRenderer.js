@@ -1,4 +1,5 @@
 const Eknc = imports.gi.EosKnowledgeContent;
+const Eknr = imports.gi.EosKnowledgeRenderer;
 const Endless = imports.gi.Endless;
 const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
@@ -55,6 +56,7 @@ var ArticleHTMLRenderer = new Knowledge.Class({
 
     _init: function (props={}) {
         this.parent(props);
+        this._renderer = new Eknr.Renderer({});
         this._custom_css_files = [];
     },
 
@@ -147,17 +149,19 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         let html = this._get_html(model);
 
         let template = _load_template('legacy-article.mst');
+        let title = this.show_title ? model.title : false;
 
-        return Mustache.render(template, {
-            'title': this.show_title ? model.title : false,
-            'body-html': this._strip_tags(html),
-            'disclaimer': this._get_legacy_disclaimer(model),
-            'copy-button-text': _("Copy"),
-            'css-files': css_files,
-            'javascript-files': js_files,
-            'include-mathjax': this._should_include_mathjax(model),
-            'mathjax-path': Config.mathjax_path,
-        });
+        return this._renderer.render_mustache_document(template, new GLib.Variant('a{sv}', {
+            'title': new GLib.Variant(typeof(title) === 'boolean' ? 'b' : 's', title),
+            'body-html': new GLib.Variant('s', this._strip_tags(html)),
+            'disclaimer': new GLib.Variant('s', this._get_legacy_disclaimer(model)),
+            'copy-button-text': new GLib.Variant('s', _("Copy")),
+            'css-files': new GLib.Variant('as', css_files),
+            'javascript-files': new GLib.Variant('as', js_files),
+            'include-mathjax': new GLib.Variant('b',
+                                                this._should_include_mathjax(model)),
+            'mathjax-path': new GLib.Variant('s', Config.mathjax_path),
+        }));
     },
 
     _render_prensa_libre_content: function (model) {
@@ -165,10 +169,10 @@ var ArticleHTMLRenderer = new Knowledge.Class({
 
         let template = _load_template('news-article.mst');
 
-        return Mustache.render(template, {
-            'css-files': ['prensa-libre.css'],
-            'body-html': this._strip_tags(html),
-        });
+        return this._renderer.render_mustache_document(template, new GLib.Variant('a{sv}', {
+            'css-files': new GLib.Variant('as', ['prensa-libre.css']),
+            'body-html': new GLib.Variant('s', this._strip_tags(html)),
+        }));
     },
 
     _render_content: function (model) {
@@ -295,18 +299,18 @@ var ArticleHTMLRenderer = new Knowledge.Class({
 
         let template = _load_template('article-wrapper.mst');
 
-        return Mustache.render(template, {
-            'id': model.ekn_id,
-            'css-files': css_files,
-            'custom-css-files': this._get_app_override_css_files(),
-            'javascript-files': js_files,
-            'copy-button-text': _("Copy"),
-            'share-actions': this._get_share_actions_markup(model),
-            'content': content,
-            'crosslink-data': this._get_crosslink_data(model),
-            'chunk-data': this._get_chunk_data(model),
-            'content-metadata': this._get_metadata(model),
-        });
+        return this._renderer.render_mustache_document(template, new GLib.Variant('a{sv}', {
+            'id': new GLib.Variant('s', model.ekn_id),
+            'css-files': new GLib.Variant('as', css_files),
+            'custom-css-files': new GLib.Variant('as', this._get_app_override_css_files()),
+            'javascript-files': new GLib.Variant('as', js_files),
+            'copy-button-text': new GLib.Variant('s', _("Copy")),
+            'share-actions': new GLib.Variant('s', this._get_share_actions_markup(model)),
+            'content': new GLib.Variant('s', content),
+            'crosslink-data': new GLib.Variant('s', this._get_crosslink_data(model)),
+            'chunk-data': new GLib.Variant('s', this._get_chunk_data(model)),
+            'content-metadata': new GLib.Variant('s', this._get_metadata(model)),
+        }));
     },
 
     /*
