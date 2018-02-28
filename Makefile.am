@@ -526,10 +526,8 @@ javascript_tests = \
 	tests/js/app/testToggleTweener.js \
 	tests/js/app/testUtils.js \
 	tests/js/app/testWebExtension.js \
-	tests/js/app/testWidgetSurfaceCache.js \
 	tests/js/app/widgets/testDynamicLogo.js \
 	tests/js/app/widgets/testFormattableLabel.js \
-	tests/js/app/widgets/testImageCoverFrame.js \
 	tests/js/app/widgets/testLightbox.js \
 	tests/js/app/widgets/testPDFView.js \
 	tests/js/app/widgets/testPreviewer.js \
