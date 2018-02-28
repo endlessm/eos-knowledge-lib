@@ -16,7 +16,6 @@ const Mainloop = imports.mainloop;
 
 const Config = imports.app.config;
 const FormattableLabel = imports.app.widgets.formattableLabel;
-const ImageCoverFrame = imports.app.widgets.imageCoverFrame;
 const Module = imports.app.interfaces.module;
 const SetMap = imports.app.setMap;
 const SpaceContainer = imports.app.widgets.spaceContainer;
@@ -382,32 +381,25 @@ var Card = new Lang.Interface({
      * Sets up a frame to show the model's thumbnail uri.
      */
     set_thumbnail_frame_from_model: function (frame) {
+        let placeholder = new Gtk.Frame({ visible: true });
+
         frame.visible = this._set_media_class_from_model(frame);
 
-        if (!this.model.thumbnail_uri) {
-            let placeholder = new Gtk.Frame({ visible: true });
-            this._add_css_class(placeholder, 'no_thumbnail');
-            frame.add(placeholder);
-            return;
-        }
-        let file = Gio.File.new_for_uri(this.model.thumbnail_uri);
-        let cancellable = null;
-        let stream = file.read(cancellable);
-        if (this.background_size === 'center') {
-            let pixbuf = GdkPixbuf.Pixbuf.new_from_stream(stream, null);
-            let image = new Gtk.Image({
-                visible: true,
-                pixbuf: pixbuf,
-            });
-            frame.add(image);
+        if (this.model.thumbnail_uri) {
+            let provider = new Gtk.CssProvider();
+            provider.load_from_data(
+                `frame {
+                    background: url('${this.model.thumbnail_uri}') center / ${this.background_size} no-repeat;
+                }`);
+            placeholder.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION - 10);
+            this._add_css_class(frame, 'thumbnail');
         } else {
-            let coveredFrame = new ImageCoverFrame.ImageCoverFrame();
-            coveredFrame.set_content(stream);
-            frame.add(coveredFrame);
+            this._add_css_class(placeholder, 'no_thumbnail');
         }
 
+        placeholder.visible = true;
+        frame.add(placeholder);
         frame.visible = true;
-        this._add_css_class(frame, 'thumbnail');
     },
 
     /**

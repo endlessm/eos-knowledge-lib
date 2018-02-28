@@ -5,11 +5,15 @@ const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Knowledge = imports.app.knowledge;
-const WidgetSurfaceCache = imports.app.widgetSurfaceCache;
+
+function clamp(x, low, high) {
+    return x > high ? high : x < low ? low : x;
+}
 
 /**
  * Class: ThemeableImage
@@ -49,26 +53,41 @@ var ThemeableImage = new Knowledge.Class({
 
         this.parent(props);
         this.set_has_window(false);
-        this._min_width = 0;
-        this._min_height = 0;
-        this._sizing = 'full-size';
+        this._sizing = 'size-full';
 
-        let provider = new Gtk.CssProvider();
-        provider.load_from_data('* { -gtk-icon-source: none; }');
-        this.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION - 10);
-
-        this._pixbuf = null;
-        this._surface_cache = null;
-        this._image_width = 0;
-        this._image_height = 0;
         let file = Gio.File.new_for_uri(this.image_uri);
         if (file.query_exists(null)) {
+            let loader = new GdkPixbuf.PixbufLoader();
             let stream = file.read(null);
-            this._pixbuf = GdkPixbuf.Pixbuf.new_from_stream(stream, null);
-            this._surface_cache = new WidgetSurfaceCache.WidgetSurfaceCache(this, this._draw_scaled_pixbuf.bind(this));
+
+            /* We do not want to load the whole pixbuf just to extract its size */
+            loader.connect('size-prepared', (loader, width, height) => {
+                this._pixbuf_width = width;
+                this._pixbuf_height = height;
+            });
+
+            /* Read 4k chunks until we get the image size */
+            do {
+                let chunk = stream.read_bytes(4096, null);
+                if (chunk === null)
+                    break;
+                loader.write_bytes(chunk);
+            } while (this._pixbuf_width === undefined);
+
+            /* Close stream and loader */
+            stream.close(null);
+            loader.close();
+
+            let provider = new Gtk.CssProvider();
+            provider.load_from_data(
+                `.ThemeableImage {
+                    -gtk-icon-source: none;
+                    background: url('${this.image_uri}') center no-repeat;
+                    background-size: cover;
+                }`);
+            this.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION - 10);
         }
 
-        this.connect('style-set', () => this._update_custom_style());
         this.connect('style-updated', () => this._update_custom_style());
 
         probe.stop();
@@ -123,8 +142,8 @@ var ThemeableImage = new Knowledge.Class({
                                                                   this.get_state_flags());
         min_width = Math.max(min_width, this.width_request);
         let nat_width = min_width;
-        if (this._pixbuf) {
-            nat_width = Math.max(nat_width, this._pixbuf.width);
+        if (this._pixbuf_width) {
+            nat_width = Math.max(nat_width, this._pixbuf_width);
             if (this._sizing === 'size-min') {
                 nat_width = min_width;
             } else if (this._sizing === 'size-full') {
@@ -140,6 +159,9 @@ var ThemeableImage = new Knowledge.Class({
         if (nat_width + extra > 0)
             nat_width += extra;
 
+        this._min_width = min_width;
+        this._nat_width = nat_width;
+
         return [min_width, nat_width];
     },
 
@@ -149,8 +171,8 @@ var ThemeableImage = new Knowledge.Class({
                                                                    this.get_state_flags());
         min_height = Math.max(min_height, this.height_request);
         let nat_height = min_height;
-        if (this._pixbuf) {
-            nat_height = Math.max(nat_height, this._pixbuf.height);
+        if (this._pixbuf_height) {
+            nat_height = Math.max(nat_height, this._pixbuf_height);
             if (this._sizing === 'size-min') {
                 nat_height = min_height;
             } else if (this._sizing === 'size-full') {
@@ -165,6 +187,9 @@ var ThemeableImage = new Knowledge.Class({
             min_height += extra;
         if (nat_height + extra > 0)
             nat_height += extra;
+
+        this._min_height = min_height;
+        this._nat_height = nat_height;
 
         return [min_height, nat_height];
     },
@@ -190,47 +215,43 @@ var ThemeableImage = new Knowledge.Class({
         // a patch to fix this in Gtk if the need arises
     },
 
-    _draw_scaled_pixbuf: function (cr) {
-        // Helps to read these transforms in reverse. We center the pixbuf at
-        // the origin, scale it to fit, then translate its center to the
-        // center of our allocation.
-        cr.translate(this._image_width / 2, this._image_height / 2);
-        let scale = Math.min(this._image_width / this._pixbuf.get_width(),
-                             this._image_height / this._pixbuf.get_height());
-        scale = Math.min(1, scale);
-        cr.scale(scale, scale);
-        cr.translate(-this._pixbuf.get_width() / 2, -this._pixbuf.get_height() / 2);
-
-        Gdk.cairo_set_source_pixbuf(cr, this._pixbuf, 0, 0);
-        cr.paint();
-    },
-
     vfunc_draw: function (cr) {
-        let width = this.get_allocated_width();
-        let height = this.get_allocated_height();
-        Gtk.render_background(this.get_style_context(), cr,
-            0, 0, width, height);
-        Gtk.render_frame(this.get_style_context(), cr,
-            0, 0, width, height);
-        Gtk.render_focus(this.get_style_context(), cr,
-            0, 0, width, height);
+        let context = this.get_style_context();
+        let alloc_width = this.get_allocated_width();
+        let alloc_height = this.get_allocated_height();
         let padding = this._get_padding();
         let border = this._get_border();
 
-        width = width - padding.left - padding.right - border.left - border.right;
-        height = height - padding.top - padding.bottom - border.top - border.bottom;
-        if (this._pixbuf) {
-            let do_invalidate = this._image_width !== width || this._image_height !== height;
-            this._image_width = width;
-            this._image_height = height;
-            if (do_invalidate)
-                this._surface_cache.invalidate();
-            cr.setSourceSurface(this._surface_cache.get_surface(),
-                                padding.left + border.left, padding.top + border.top);
-            cr.paint();
+        let width = alloc_width - padding.left - padding.right - border.left - border.right;
+        let height = alloc_height - padding.top - padding.bottom - border.top - border.bottom;
+        if (this._pixbuf_width) {
+            let w = this._pixbuf_width;
+            let h = this._pixbuf_height;
+
+            if (width < w) {
+                h *= width / w;
+                w = width;
+            }
+
+            if (height < h) {
+                w *= height / h;
+                h = height;
+            }
+
+            w = clamp(w, this._min_width, this._nat_width);
+            h = clamp(h, this._min_height, this._nat_height);
+
+            Gtk.render_background(context, cr,
+                padding.left + border.left + (width - w)/2.0,
+                padding.top + border.top + (height - h)/2.0,
+                w, h);
+            Gtk.render_frame(context, cr, 0, 0, alloc_width, alloc_height);
+            if (this.can_focus && this.has_focus)
+                Gtk.render_focus(context, cr, 0, 0, alloc_width, alloc_height);
         } else {
-            Gtk.render_activity(this.get_style_context(), cr,
-                padding.left + border.left, padding.top + border.top,
+            Gtk.render_activity(context, cr,
+                padding.left + border.left,
+                padding.top + border.top,
                 width, height);
         }
         cr.$dispose();
