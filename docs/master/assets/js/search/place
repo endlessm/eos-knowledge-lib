@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["contentGroup/staticText.html#ellipsize", "contentGroup/dynamicTitle.html#ellipsize", "banner/context.html#ellipsize", "banner/search.html#ellipsize"], "token": "place"});
+urls_downloaded_cb({"urls": ["banner/search.html#ellipsize", "banner/context.html#ellipsize", "contentGroup/staticText.html#ellipsize", "contentGroup/dynamicTitle.html#ellipsize"], "token": "place"});

@@ -1,0 +1,491 @@
+<html lang="en">
+<head>
+
+<base href="..">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>Writing an ingester</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/isotope.pkgd.min.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+<link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
+<link rel="shortcut icon" href="assets/images/favicon-32x32.png">
+<link href="https://fonts.googleapis.com/css?family=Lato%7CMontserrat" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/custom.css">
+
+</head>
+
+<body class="no-script
+" data-spy="scroll" data-target="#toc" data-offset="70">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+  <div class="container-fluid">
+    <div class="navbar-right">
+      <a id="toc-toggle">
+        <span class="glyphicon glyphicon-menu-right"></span>
+        <span class="glyphicon glyphicon-menu-left"></span>
+      </a>
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-header">
+      <a id="sidenav-toggle">
+        <span class="glyphicon glyphicon-menu-right"></span>
+        <span class="glyphicon glyphicon-menu-left"></span>
+      </a>
+      <a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+<img src="assets/images/Endless_mark_orange.svg" style="width: 48px" alt="Home" id="home">
+      </a>
+      <form action="" class="navbar-form pull-right" id="navbar-search-form">
+        <div class="form-group has-feedback">
+          <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+          <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+        </div>
+      </form>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-wrapper">
+      <ul class="nav navbar-nav" id="menu">
+      </ul>
+      <div class="hidden-xs hidden-sm navbar-text navbar-center">
+<p><b>Modular Framework</b></p>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+<div data-extension="core" data-hotdoc-in-toplevel="True" data-hotdoc-project="framework-0" data-hotdoc-ref="tutorial/ingester.html" class="page_container" id="page-wrapper">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				
+<div id="page-description" data-hotdoc-source="ingester.md" data-hotdoc-role="main">
+<h1 id="writing-an-ingester">Writing an ingester</h1>
+<p>First we need to write a program that will download the blog posts and "ingest" them, making them work with our system.
+We call this program an "ingester".</p>
+<p>In our ingester, we'll read the Creative Commons blog's RSS feed, download the articles linked from the feed, clean them up so that we can re-theme them to fit with our app, and package them into a "hatch" which is the next step in the app-building process.</p>
+<p>An ingester is a NodeJS program.
+There is an NPM package called <a href="https://www.npmjs.com/package/libingester">libingester</a> which provides some facilities that make it easier to write an ingester.
+We will write our Creative Commons blog ingester using libingester.
+We'll also use other NPM packages for cleaning up the HTML.</p>
+<h2 id="setting-up-a-node-module-for-the-ingester">Setting up a Node module for the ingester</h2>
+<p>First, create a directory where the ingester code will live, and create a package:</p>
+<pre><code class="language-bash">mkdir cc-ingester
+cd cc-ingester
+npm init
+</code></pre>
+<p>The <code>npm init</code> command will ask you some questions in order to set up the package.</p>
+<ul>
+<li>Accept the default name of <code>cc-ingester</code>.</li>
+<li>Put <code>0.0.0</code> as the version.</li>
+<li>Write a nice description, such as "Ingester for Creative Commons blog".</li>
+<li>Accept the default entry point.</li>
+<li>Leave the test command, git repository, and keywords blank.</li>
+<li>Put your name as the author.</li>
+<li>Put <code>CC0-1.0</code> as the license, or whatever you choose (the code in this tutorial is licensed <code>CC0-1.0</code>, which means that anyone can use, copy, and modify it freely.)</li>
+</ul>
+<p>Set up any developer tools you might be planning to use, for example:</p>
+<pre><code class="language-bash">npm install --save-dev eslint
+./node_modules/.bin/eslint --init
+</code></pre>
+<h2 id="parsing-the-rss-feed">Parsing the RSS feed</h2>
+<p>Create a file in the <code>cc-ingester</code> directory called <code>index.js</code>.
+We'll write the ingester in here.</p>
+<p>First we want to read the Creative Commons blog's RSS feed and make sure we can parse its entries.
+For this we'll use the utilities included in libingester.
+Install it like this:</p>
+<pre><code class="language-bash">npm install --save libingester
+</code></pre>
+<p>Here's a minimal script that will parse the RSS feed and show which posts we would ingest:</p>
+<pre><code class="language-javascript">const Libingester = require('libingester');
+
+const feedURI = 'https://creativecommons.org/blog/feed/';
+
+function ingestArticle({date, title}) {
+    console.log(date, title);
+}
+
+function main() {
+    Libingester.util.fetch_rss_entries(feedURI)
+    .then(items =&gt; Promise.all(items.map(ingestArticle)))
+    .catch(err =&gt; {
+        console.log('there was an error', err);
+        process.exitCode = 1;
+    });
+}
+
+main();
+</code></pre>
+<p>Add <code>"start": "node index.js"</code> to the <code>scripts</code> dictionary in <code>package.json</code>, and test the script by running <code>npm start</code>!</p>
+<p>You will probably see no articles.
+Looking at the <a href="https://endlessm.github.io/libingester/#utilfetch_rss_entries">libingester API documentation</a>, that is because <code>fetch_rss_entries()</code> only looks at the previous day of entries.
+Let's supply some better parameters, putting no maximum on the number of posts and a 3-month maximum on the posts' age:</p>
+<pre><code class="language-javascript">Libingester.util.fetch_rss_entries(FEED_URI, Infinity, 90)
+</code></pre>
+<p>This time, <code>npm start</code> prints more post titles, but not 90 days' worth.
+<a href="https://creativecommons.org/blog/feed/">Examining the RSS feed</a> shows why: it only shows 10 items.
+This is a problem with a lot of RSS feeds.
+Unfortunately there isn't a standard way to paginate RSS feeds.
+However, we can see in the RSS feed that it is generated by Wordpress, which gives us an easy solution.
+<a href="https://codex.wordpress.org/Pagination#Adding_the_.22paged.22_parameter_to_a_query">Wordpress RSS feeds support pagination</a>, and since Wordpress is so common, libingester includes a utility for paginating them, which we can use:</p>
+<pre><code class="language-javascript">const paginator = Libingester.util.create_wordpress_paginator(FEED_URI);
+Libingester.util.fetch_rss_entries(paginator, Infinity, 90)
+</code></pre>
+<p>This works, showing three months of posts!
+Let's temporarily change the maximum number of items to <code>3</code> for further development, in order to save time.</p>
+<blockquote>
+<p><strong>NOTE</strong>: There are also <a href="https://endlessm.github.io/libingester/#utilfetch_rss_entries">environment variables</a> that control these parameters.
+It would be much more convenient to use the environment variables once you are using the ingester in production, but for this tutorial, we'll edit the values in the code.</p>
+</blockquote>
+<h2 id="obtaining-metadata">Obtaining metadata</h2>
+<p>Now that we have RSS entries, we can download the posts, and get their metadata (such as title, author, and tags).</p>
+<p>To see the HTML we're dealing with and get a sense of how much cleaning must be done, let's get our <code>ingestArticle()</code> function to write out some basic metadata from the RSS feed and save a copy of the HTML:</p>
+<pre><code class="language-javascript">const thenifyAll = require('thenify-all');
+const fs = thenifyAll(require('fs'), {}, ['writeFile']);
+// ...
+function ingestArticle({link, title, author, date}, ix) {
+    return Libingester.util.fetch_html(link)
+    .then($ =&gt; {
+        console.log('-'.repeat(40));
+        console.log(`TITLE: ${title}`);
+        console.log(`AUTHOR: ${author}`);
+        console.log(`URL: ${link}`);
+        console.log(`DATE PUBLISHED: ${date}`);
+
+        return fs.writeFile(`${ix}.html`, $.html();)
+    });
+}
+</code></pre>
+<p><code>Libingester.util.fetch_html</code> returns a Cheerio object. <a href="https://github.com/cheeriojs/cheerio">Cheerio</a> is a library for DOM manipulation without a browser, and its interface is the same as jQuery.</p>
+<p>Examining the written-out HTML in <code>0.html</code>, <code>1.html</code>, and <code>2.html</code> shows that this blog has easily available metadata in its header, which follows the OpenGraph standard:</p>
+<pre><code class="language-html">&lt;meta property="og:locale" content="en_US" /&gt;
+&lt;meta property="og:type" content="article" /&gt;
+&lt;meta property="og:title" content="Katherine Maher, Ruth Okediji, Chris Bourg to Keynote Creative Commons Global Summit - Creative Commons" /&gt;
+&lt;meta property="og:description" content="We’re super excited to announce our keynote speakers for the 2018 CC Global Summit from April 13-15 in Toronto." /&gt;
+&lt;meta property="og:url" content="https://creativecommons.org/2018/01/29/summit-keynotes-2018/" /&gt;
+</code></pre>
+<p>We can quite easily get the metadata using Cheerio:</p>
+<pre><code class="language-javascript">const imageURI = $('meta[property="og:image"]').attr('content');
+const synopsis = $('meta[property="og:description"]').attr('content');
+const lastModified = $('meta[property="article:modified_time"]')
+    .attr('content');
+console.log(`IMAGE URI: ${imageURI}`);
+console.log(`SYNOPSIS: ${synopsis}`);
+console.log(`LAST MODIFIED: ${lastModified}`);
+</code></pre>
+<p>In the case of tags, things are slightly complicated.
+Wordpress distinguishes predefined "categories" and free-form "tags".
+The data model for offline content that we use here, allows tagging content with an array of strings.
+These tag strings can be any string, and are not visible to users of the app.
+Later on, when we define the content structure for the app, we can create a "set" that is visible in the app's UI.
+A set includes any number of tag strings, and can be marked "featured" to make it more prominent in the app, or not.
+(You'll learn more about this later in the walkthrough.)</p>
+<p>Later on we will make Wordpress categories into featured sets, and Wordpress tags non-featured.
+For now, we will mark the tag IDs of Wordpress tags with <code>tag:</code> and leave the Wordpress categories as-is, so that we'll know what to do later.</p>
+<pre><code class="language-javascript">const wpCategory = $('meta[property="article:section"]')
+    .attr('content');
+const wpTags = $('meta[property="article:tag"]')
+    .map(function () { return $(this).attr('content'); })
+    .get();
+const tags = wpTags.map(t =&gt; `tag:${t}`);
+tags.unshift(wpCategory);
+console.log(`TAGS: ${tags}`);
+</code></pre>
+<h2 id="cleaning-up-the-blog-posts">Cleaning up the blog posts</h2>
+<p>If you're creating an app from a website's content, it's incongruous when it looks like the whole website is embedded inside the app.
+We want to get rid of all the theming and navigation elements on the web page, so that we can later design a more unified style for our app's UI elements and its content.</p>
+<p>Although it would be possible to do this with traditional web scraping and DOM manipulation tools such as Cheerio, we are going to use <a href="https://mozilla.github.io/fathom/">Fathom</a> to clean up the content.
+Fathom is a fairly new technology that allows you to interpret an HTML document based on "rules" that you write.</p>
+<pre><code>npm install --save fathom-web jsdom
+</code></pre>
+<blockquote>
+<p><strong>NOTE:</strong> Both libingester and Fathom require a DOM library for processing the HTML.
+Unfortunately, libingester works internally with Cheerio which is much faster than JSDOM, but Fathom requires some features that Cheerio doesn't provide.
+Therefore, we have to convert from one to the other and back again in our ingester.</p>
+</blockquote>
+<p>We use a rule set based on <a href="https://github.com/mozilla/fathom/blob/1634b977fdab852177670b0366eb96ea962c3c30/test/demos.js#L129-L213">Fathom's example "Readability" ruleset</a>, which scores paragraphs and paragraph-like HTML nodes based on their likelihood to be part of the main text, then picks the biggest cluster of high-scoring nodes.</p>
+<pre><code class="language-javascript">const rules = ruleset(
+    // Isolate the actual blog post body text. Based on Fathom's example
+    // Readability rules
+    rule(dom('p,li,code,blockquote,pre,h1,h2,h3,h4,h5,h6'),
+        props(scoreByLength).type('paragraphish')),
+    rule(type('paragraphish'), score(byInverseLinkDensity)),
+    rule(dom('p'), score(4.5).type('paragraphish')),
+
+    // Tweaks for this particular blog
+    rule(type('paragraphish'), score(hasAncestor('article', 10))),
+    rule(dom('.entry-summary p'), score(0).type('paragraphish')),
+    rule(dom('figure'), props(scoreByImageSize).type('paragraphish')),
+
+    // Find the best cluster of paragraph-ish nodes
+    rule(
+        type('paragraphish').bestCluster({
+            splittingDistance: 3,
+            differentDepthCost: 6.5,
+            differentTagCost: 2,
+            sameTagCost: 0.5,
+            strideCost: 0,
+        }),
+        out('content').allThrough(Futils.domSort)));
+
+// ...
+
+const dom = JSDOM.jsdom($.html(), {
+    features: {ProcessExternalResources: false},
+});
+const facts = rules.against(dom);
+const html = facts.get('content')
+    .filter(fnode =&gt; fnode.scoreFor('paragraphish') &gt; 0)
+    .map(fnode =&gt; fnode.element.outerHTML).join('');
+return fs.writeFile(`${ix}.html`, `&lt;article&gt;${html}&lt;/article&gt;`);
+</code></pre>
+<p>For brevity, we've omitted the imports and the functions <code>scoreByLength()</code>, <code>scoreByImageSize()</code>, <code>byInverseLinkDensity()</code>, and <code>hasAncestor()</code>.
+If you're running your own program as you're following along, you can find them in the <a href="tutorial/ingester-full-code.html#indexjs">full code</a>.</p>
+<p>Running our ingester with <code>npm start</code> now shows the HTML in <code>0.html</code>, <code>1.html</code>, and <code>2.html</code> to be quite minimal.
+We'll do some final cleanup with Cheerio, removing unused DOM attributes, to keep the sizes of the posts as small as possible.
+After all, our app may be downloaded by people with limited internet connections, so we should try to optimize for that.</p>
+<pre><code class="language-javascript">$ = Cheerio.load('&lt;article&gt;');
+$('article').append(html);
+
+const all = $('*');
+all.removeAttr('class');
+all.removeAttr('style');
+const imgs = $('img');
+['attachment-id', 'permalink', 'orig-file', 'orig-size', 'image-meta',
+    'comments-opened', 'medium-file', 'large-file']
+    .forEach(data =&gt; imgs.removeAttr(`data-${data}`));
+imgs.removeAttr('srcset');  // For simplicity, only use one size
+</code></pre>
+<h2 id="creating-a-hatch">Creating a hatch</h2>
+<p>We're now going to render the ingested pages into one of libingester's <em>article formats</em>, and then save the result in a <em>hatch</em>.
+An article format is a class that we can pass HTML snippets into, and it will render a nice-looking page that's suitable for embedding into our app.
+A hatch is libingester's term for the packaged-up content: it's a hatch that you open and drop content ("<em>assets</em>") into, and from there it goes for further processing.</p>
+<p>To create the hatch, we change our <code>main()</code> function a bit, and change our <code>ingestArticle()</code> function to take the hatch as its first parameter.</p>
+<pre><code class="language-javascript">function main() {
+    const hatch = new Libingester.Hatch('cc-blog', 'en');
+    const paginator = Libingester.util.create_wordpress_paginator(feedURI);
+    Libingester.util.fetch_rss_entries(paginator, 3, 90)
+    .then(items =&gt; Promise.all(items.map(entry =&gt; ingestArticle(hatch, entry))))
+    .then(() =&gt; hatch.finish())
+    .catch(err =&gt; {
+        console.log('there was an error', err);
+        process.exitCode = 1;
+    });
+}
+</code></pre>
+<p>We're going to use one of libingester's predefined article formats, but it's also possible to write your own.
+The article format we'll use is called <code>BlogArticle</code>.
+The <code>BlogArticle</code> is itself an asset which we'll drop into the hatch.
+Here we create it, and give it all the metadata that we determined earlier:</p>
+<pre><code class="language-javascript">const postAsset = new Libingester.BlogArticle();
+postAsset.set_title(title);
+postAsset.set_synopsis(synopsis);
+postAsset.set_canonical_uri(link);
+if (lastModified)
+    postAsset.set_last_modified_date(lastModified);
+postAsset.set_date_published(date);
+postAsset.set_author(author);
+postAsset.set_tags(tags);
+</code></pre>
+<p>We include some static metadata such as the license, which we know because the whole blog is under that license:</p>
+<pre><code class="language-javascript">postAsset.set_license('CC BY 4.0 International');
+postAsset.set_read_more_text(`"${title}" by ${author}, used under CC BY 4.0 International / Reformatted from original`);
+</code></pre>
+<p>We also have to convert all the post's images to assets and drop them into the hatch.
+After all, we are packaging up content for offline viewing, so all the images have to be offline as well.</p>
+<p>We take the <code>imageURI</code> we determined earlier and use that as the post's thumbnail image:</p>
+<pre><code class="language-javascript">const thumbnailAsset = Libingester.util.download_image(imageURI);
+hatch.save_asset(thumbnailAsset);
+postAsset.set_thumbnail(thumbnailAsset);
+</code></pre>
+<p>Next, we pick a "main image" for the post.
+The main image is a feature of the <code>BlogArticle</code> format: one image can be highlighted and given special placement at the top of the post.
+We'll take a guess that the first <code>&lt;figure&gt;</code> element in the post would make a good main image.
+We can always amend our guess later when we refine the ingester.</p>
+<pre><code class="language-javascript">const figures = $('figure');
+if (figures.length) {
+    const main = figures.first();
+    const img = $('img', main);
+    const mainImageAsset = Libingester.util.download_img(img, baseURI);
+    hatch.save_asset(mainImageAsset);
+
+    postAsset.set_main_image(mainImageAsset);
+    postAsset.set_main_image_caption($('figcaption', main).text());
+
+    $(main).remove();
+}
+</code></pre>
+<p>Note that we have to remove the main image from the article body, according to the documentation of <a href="https://endlessm.github.io/libingester/#blogarticleset_main_image"><code>set_main_image()</code></a>, or else it will get rendered twice.</p>
+<p>Then, we drop all the other image assets into the hatch:</p>
+<pre><code class="language-javascript">$('figure').each(function () {
+    const img = $('img', this);
+    const figureAsset = Libingester.util.download_img(img, baseURI);
+    hatch.save_asset(figureAsset);
+});
+</code></pre>
+<p>Finally, we give what remains of the HTML to the post asset, and drop that into the hatch too:</p>
+<pre><code class="language-javascript">postAsset.set_body($);
+postAsset.render();
+
+hatch.save_asset(postAsset);
+</code></pre>
+<h2 id="putting-it-all-together">Putting it all together</h2>
+<p>Now, since we're done testing, set the maximum number of posts back to <code>Infinity</code> in order to get the full 90 days of content.</p>
+<p>If you've followed along and typed in or copied the code examples, you have the full ingester now.
+If you didn't, or something's not working right, then check the <a href="tutorial/ingester-full-code.html">full code</a> here.</p>
+<p>When you run this ingester with <code>npm start</code>, you should see the posts being processed one by one, and then the hatch will be saved in the current directory.
+The hatch is a <code>.tar.gz</code> file, but libingester leaves an uncompressed directory full of <code>.data</code> and <code>.metadata</code> files, and a manifest.
+You can inspect these files to see what's in them, but in the next section we will use a tool called Hatch Previewer for that.</p>
+<h2 id="further-remarks-and-ideas">Further remarks and ideas</h2>
+<p>If you're packaging up content that isn't organized in an RSS feed, or the RSS feed isn't paginated, you might have to use web scraping.
+There are other packages available from NPM that can help you write a web scraper.</p>
+<p>It's not required to download the content from online!
+If you have a local archive of content, you can simply write your ingester to process it from your local archive and put it into the hatch.</p>
+<p>Make sure that you have the rights to modify and redistribute any content that you turn into an app!
+Most websites' copyright belongs to the website's owner.
+To make an app, you should use your own website, or make sure that the content is freely redistributable, like Wikipedia and its affiliated sites.</p>
+
+</div>
+
+
+		<div id="subpages">
+	<h4>Subpages</h4>
+	<div class="container-fluid">
+		<div class="row">
+						<div class="col-sm-12 col-md-4">
+				<a href="tutorial/ingester-full-code.html">Full code</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>The full ingester code</p>
+							</div>
+					</div>
+	</div>
+</div>
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		
+<div class="panel panel-default">
+  <div class="panel-heading collapsed" id="license-toggle" data-toggle="collapse" data-target="#license-info" aria-expanded="false" aria-controls="license-info">
+    <h4 class="panel-title" data-toc-skip="true" id="license-and-copyright-info">
+      License and Copyright info
+    </h4>
+  </div>
+  <div id="license-info" class="panel-collapse collapse">
+    <div class="panel-body">
+      
+
+<div class="license-description">
+	<table>
+		<tbody>
+			<tr>
+			<td>
+				<em>Documentation in this page is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>
+				license, unless otherwise noted.</em>
+			</td>
+			<td>
+						<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+				<img src="assets/CC-BY-SAv4.0.png" class="license-logo">
+			</a>
+						</td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div class="license-description">
+	<table>
+		<tbody>
+			<tr>
+			<td>
+				<em>Code snippets in this page are licensed under a <a rel="license" href="http://spdx.org/licenses/CC0-1.0">Creative Commons Zero 1.0 Universal.</a>
+				license, unless otherwise noted.</em>
+			</td>
+			<td>
+						<a rel="license" href="http://spdx.org/licenses/CC0-1.0">
+				<img src="assets/CC0-1.0.png" class="license-logo">
+			</a>
+						</td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div class="copyrights-description">
+		<p>
+				© 								2017, 
+				2018, 
+													       	Endless Mobile, Inc. 			</p>
+	</div>
+
+
+    </div>
+  </div>
+</div>
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		<a href="https://github.com/endlessm/eos-knowledge-lib/edit/master/docs/framework/tutorial/ingester.md" data-hotdoc-role="edit-button">Edit on github</a>
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+</body>
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</html>

@@ -32,11 +32,15 @@
 
 <script src="assets/js/lines_around_headings.js"></script>
 
-<script src="assets/js/trie.js"></script>
 <script src="assets/js/prism-core.js"></script>
 <script src="assets/js/prism-autoloader.js"></script>
 <script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
 
+<link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
+<link rel="shortcut icon" href="assets/images/favicon-32x32.png">
+<link href="https://fonts.googleapis.com/css?family=Lato%7CMontserrat" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/custom.css">
 
 </head>
 
@@ -48,41 +52,42 @@ $('body').removeClass('no-script');
 </script>
 
 <nav class="navbar navbar-fixed-top navbar-default" id="topnav">
-	<div class="container-fluid">
-		<div class="navbar-right">
-			<a id="toc-toggle">
-				<span class="glyphicon glyphicon-menu-right"></span>
-				<span class="glyphicon glyphicon-menu-left"></span>
-			</a>
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<form action="" class="navbar-form pull-right" id="navbar-search-form">
-                               <div class="form-group has-feedback">
-                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
-				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
-                               </div>
-                        </form>
-		</div>
-		<div class="navbar-header">
-			<a id="sidenav-toggle">
-				<span class="glyphicon glyphicon-menu-right"></span>
-				<span class="glyphicon glyphicon-menu-left"></span>
-			</a>
-			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
-				<img src="assets/images/home.svg" alt="Home" id="home">
-			</a>
-		</div>
-		<div class="navbar-collapse collapse" id="navbar-wrapper">
-			<ul class="nav navbar-nav" id="menu">
-							</ul>
-			<div class="hidden-xs hidden-sm navbar-text navbar-center">
-							</div>
-		</div>
-	</div>
+  <div class="container-fluid">
+    <div class="navbar-right">
+      <a id="toc-toggle">
+        <span class="glyphicon glyphicon-menu-right"></span>
+        <span class="glyphicon glyphicon-menu-left"></span>
+      </a>
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-header">
+      <a id="sidenav-toggle">
+        <span class="glyphicon glyphicon-menu-right"></span>
+        <span class="glyphicon glyphicon-menu-left"></span>
+      </a>
+      <a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+<img src="assets/images/Endless_mark_orange.svg" style="width: 48px" alt="Home" id="home">
+      </a>
+      <form action="" class="navbar-form pull-right" id="navbar-search-form">
+        <div class="form-group has-feedback">
+          <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+          <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+        </div>
+      </form>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-wrapper">
+      <ul class="nav navbar-nav" id="menu">
+      </ul>
+      <div class="hidden-xs hidden-sm navbar-text navbar-center">
+<p><b>Modular Framework</b></p>
+      </div>
+    </div>
+  </div>
 </nav>
 
 <main>
@@ -366,7 +371,19 @@ it is ellipsizing and wrapping)</p>
 	</div>
 	<div id="footer">
 		
+<div class="panel panel-default">
+  <div class="panel-heading collapsed" id="license-toggle" data-toggle="collapse" data-target="#license-info" aria-expanded="false" aria-controls="license-info">
+    <h4 class="panel-title" data-toc-skip="true" id="license-and-copyright-info">
+      License and Copyright info
+    </h4>
+  </div>
+  <div id="license-info" class="panel-collapse collapse">
+    <div class="panel-body">
+      
 
+    </div>
+  </div>
+</div>
 	</div>
 </div>
 

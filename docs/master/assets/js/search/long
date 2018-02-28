@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["card/list.html#cardlist1"], "token": "long"});
+urls_downloaded_cb({"urls": ["tutorial/index.html#walkthrough", "card/list.html#cardlist1"], "token": "long"});

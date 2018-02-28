@@ -1,0 +1,431 @@
+<html lang="en">
+<head>
+
+<base href="..">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>Full code</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/isotope.pkgd.min.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+<link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
+<link rel="shortcut icon" href="assets/images/favicon-32x32.png">
+<link href="https://fonts.googleapis.com/css?family=Lato%7CMontserrat" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/custom.css">
+
+</head>
+
+<body class="no-script
+" data-spy="scroll" data-target="#toc" data-offset="70">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+  <div class="container-fluid">
+    <div class="navbar-right">
+      <a id="toc-toggle">
+        <span class="glyphicon glyphicon-menu-right"></span>
+        <span class="glyphicon glyphicon-menu-left"></span>
+      </a>
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-header">
+      <a id="sidenav-toggle">
+        <span class="glyphicon glyphicon-menu-right"></span>
+        <span class="glyphicon glyphicon-menu-left"></span>
+      </a>
+      <a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+<img src="assets/images/Endless_mark_orange.svg" style="width: 48px" alt="Home" id="home">
+      </a>
+      <form action="" class="navbar-form pull-right" id="navbar-search-form">
+        <div class="form-group has-feedback">
+          <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+          <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+        </div>
+      </form>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-wrapper">
+      <ul class="nav navbar-nav" id="menu">
+      </ul>
+      <div class="hidden-xs hidden-sm navbar-text navbar-center">
+<p><b>Modular Framework</b></p>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+<div data-extension="core" data-hotdoc-in-toplevel="True" data-hotdoc-project="framework-0" data-hotdoc-ref="tutorial/ingester-full-code.html" class="page_container" id="page-wrapper">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				
+<div id="page-description" data-hotdoc-source="ingester-full-code.md" data-hotdoc-role="main">
+<h2 id="indexjs">index.js</h2>
+<pre><code class="language-js">'use strict';
+
+const Cheerio = require('cheerio');
+const {dom, out, props, rule, ruleset, score, type} = require('fathom-web');
+const Futils = require('fathom-web/utils');
+const JSDOM = require('jsdom/lib/old-api');
+const Libingester = require('libingester');
+
+const feedURI = 'https://creativecommons.org/blog/feed/';
+
+function scoreByLength(fnode) {
+    let length = Futils.inlineTextLength(fnode.element) * 2;
+    if (Number.isNaN(length))
+        length = 0;  // Penalize empty nodes
+    return {
+        score: length,
+        note: {length},
+    };
+}
+
+function byInverseLinkDensity(fnode) {
+    const linkDensity = Futils.linkDensity(fnode,
+        fnode.noteFor('paragraphish').length);
+    if (Number.isNaN(linkDensity))
+        return 1;
+    return (1 - linkDensity) * 1.5;
+}
+
+function scoreByImageSize(fnode) {
+    const img = fnode.element.querySelector('img');
+    const width = img.getAttribute('width');
+    const height = img.getAttribute('height');
+    let length = Futils.inlineTextLength(fnode.element) * 2;
+    if (Number.isNaN(length))
+        length = 1;  // Don't penalize empty captions
+    return {
+        score: width &amp;&amp; height ? width * height / 100 : 100,
+        note: {length},
+    };
+}
+
+const hasAncestor = (tagName, scoreIfHas) =&gt; fnode =&gt; {
+    const lowerTag = tagName.toLowerCase();
+    for (let element = fnode.element, parent;
+        (parent = element.parentNode) != null &amp;&amp;
+            parent.nodeType === parent.ELEMENT_NODE;
+        element = parent) {
+        if (element.tagName.toLowerCase() === lowerTag)
+            return scoreIfHas;
+    }
+    return 1;
+};
+
+const rules = ruleset(
+    // Isolate the actual blog post body text. Based on Fathom's example
+    // Readability rules
+    rule(dom('p,li,code,blockquote,pre,h1,h2,h3,h4,h5,h6'),
+        props(scoreByLength).type('paragraphish')),
+    rule(type('paragraphish'), score(byInverseLinkDensity)),
+    rule(dom('p'), score(4.5).type('paragraphish')),
+
+    // Tweaks for this particular blog
+    rule(type('paragraphish'), score(hasAncestor('article', 10))),
+    rule(dom('.entry-summary p'), score(0).type('paragraphish')),
+    rule(dom('figure'), props(scoreByImageSize).type('paragraphish')),
+
+    // Find the best cluster of paragraph-ish nodes
+    rule(
+        type('paragraphish').bestCluster({
+            splittingDistance: 3,
+            differentDepthCost: 6.5,
+            differentTagCost: 2,
+            sameTagCost: 0.5,
+            strideCost: 0,
+        }),
+        out('content').allThrough(Futils.domSort)));
+
+function ingestArticle(hatch, {title, link, date, author}) {
+    return Libingester.util.fetch_html(link)
+    .then($ =&gt; {
+        const baseURI = Libingester.util.get_doc_base_uri($, link);
+
+        const imageURI = $('meta[property="og:image"]').attr('content');
+        const synopsis = $('meta[property="og:description"]').attr('content');
+        const lastModified = $('meta[property="article:modified_time"]')
+            .attr('content');
+
+        // Wordpress distinguishes predefined "categories" and free-form "tags".
+        // We are likely to make Wordpress categories into featured sets, and
+        // Wordpress tags non-featured. For now, we will mark the tag IDs of
+        // Wordpress tags with "tag:".
+        const wpCategory = $('meta[property="article:section"]')
+            .attr('content');
+        const wpTags = $('meta[property="article:tag"]')
+            .map(function () { return $(this).attr('content'); })
+            .get();
+        const tags = wpTags.map(t =&gt; `tag:${t}`);
+        tags.unshift(wpCategory);
+
+        const dom = JSDOM.jsdom($.html(), {
+            features: {ProcessExternalResources: false},
+        });
+        const facts = rules.against(dom);
+        const html = facts.get('content')
+            .filter(fnode =&gt; fnode.scoreFor('paragraphish') &gt; 0)
+            .map(fnode =&gt; fnode.element.outerHTML).join('');
+
+        // Load the DOM back into Cheerio
+        $ = Cheerio.load('&lt;article&gt;');
+        $('article').append(html);
+
+        // Do some extra cleanup to minimize the size
+        const all = $('*');
+        all.removeAttr('class');
+        all.removeAttr('style');
+        const imgs = $('img');
+        ['attachment-id', 'permalink', 'orig-file', 'orig-size', 'image-meta',
+            'comments-opened', 'medium-file', 'large-file']
+            .forEach(data =&gt; imgs.removeAttr(`data-${data}`));
+        imgs.removeAttr('srcset');  // For simplicity, only use one size
+
+        const postAsset = new Libingester.BlogArticle();
+        postAsset.set_title(title);
+        postAsset.set_synopsis(synopsis);
+        postAsset.set_canonical_uri(link);
+        if (lastModified)
+            postAsset.set_last_modified_date(lastModified);
+        postAsset.set_date_published(date);
+        postAsset.set_license('CC BY 4.0 International');
+        postAsset.set_author(author);
+        postAsset.set_read_more_text(`"${title}" by ${author}, used under CC BY 4.0 International / Reformatted from original`);
+        postAsset.set_tags(tags);
+
+        const thumbnailAsset = Libingester.util.download_image(imageURI);
+        hatch.save_asset(thumbnailAsset);
+        postAsset.set_thumbnail(thumbnailAsset);
+
+        // Pick out a "main image": the first &lt;figure&gt;
+        const figures = $('figure');
+        if (figures.length) {
+            const main = figures.first();
+            const img = $('img', main);
+            const mainImageAsset = Libingester.util.download_img(img, baseURI);
+            hatch.save_asset(mainImageAsset);
+
+            postAsset.set_main_image(mainImageAsset);
+            postAsset.set_main_image_caption($('figcaption', main).text());
+
+            $(main).remove();
+        }
+
+        // Save assets for any remaining &lt;figure&gt;s
+        $('figure').each(function () {
+            const img = $('img', this);
+            const figureAsset = Libingester.util.download_img(img, baseURI);
+            hatch.save_asset(figureAsset);
+        });
+
+        postAsset.set_body($);
+        postAsset.render();
+
+        hatch.save_asset(postAsset);
+    });
+}
+
+function main() {
+    const hatch = new Libingester.Hatch('cc-blog', 'en');
+    const paginator = Libingester.util.create_wordpress_paginator(feedURI);
+    Libingester.util.fetch_rss_entries(paginator, Infinity, 90)
+    .then(items =&gt; Promise.all(items.map(entry =&gt; ingestArticle(hatch, entry))))
+    .then(() =&gt; hatch.finish())
+    .catch(err =&gt; {
+        console.log('there was an error', err);
+        process.exitCode = 1;
+    });
+}
+
+main();
+
+</code></pre>
+<h2 id="packagejson">package.json</h2>
+<pre><code class="language-json">{
+  "name": "cc-ingester",
+  "version": "0.0.0",
+  "description": "Ingester for Creative Commons blog",
+  "main": "index.js",
+  "dependencies": {
+    "fathom-web": "^2.2.0",
+    "jsdom": "^11.6.2",
+    "libingester": "^2.4.2",
+    "progress": "^2.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.16.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "eslint ."
+  },
+  "author": "Philip Chimento",
+  "license": "CC0-1.0"
+}
+
+</code></pre>
+<h2 id="eslintrcjson">.eslintrc.json</h2>
+<pre><code class="language-json">{
+    "env": {
+        "es6": true,
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "no-console": 0,
+        "indent": [
+            "error",
+            4,
+            {
+                "MemberExpression": "off"
+            }
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ]
+    }
+}
+</code></pre>
+
+</div>
+
+
+		
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		
+<div class="panel panel-default">
+  <div class="panel-heading collapsed" id="license-toggle" data-toggle="collapse" data-target="#license-info" aria-expanded="false" aria-controls="license-info">
+    <h4 class="panel-title" data-toc-skip="true" id="license-and-copyright-info">
+      License and Copyright info
+    </h4>
+  </div>
+  <div id="license-info" class="panel-collapse collapse">
+    <div class="panel-body">
+      
+
+<div class="license-description">
+	<table>
+		<tbody>
+			<tr>
+			<td>
+				<em>Documentation in this page is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>
+				license, unless otherwise noted.</em>
+			</td>
+			<td>
+						<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+				<img src="assets/CC-BY-SAv4.0.png" class="license-logo">
+			</a>
+						</td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div class="license-description">
+	<table>
+		<tbody>
+			<tr>
+			<td>
+				<em>Code snippets in this page are licensed under a <a rel="license" href="http://spdx.org/licenses/CC0-1.0">Creative Commons Zero 1.0 Universal.</a>
+				license, unless otherwise noted.</em>
+			</td>
+			<td>
+						<a rel="license" href="http://spdx.org/licenses/CC0-1.0">
+				<img src="assets/CC0-1.0.png" class="license-logo">
+			</a>
+						</td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div class="copyrights-description">
+		<p>
+				© 								2017, 
+				2018, 
+													       	Endless Mobile, Inc. 			</p>
+	</div>
+
+
+    </div>
+  </div>
+</div>
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		<a href="https://github.com/endlessm/eos-knowledge-lib/edit/master/docs/framework/tutorial/ingester-full-code.md" data-hotdoc-role="edit-button">Edit on github</a>
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+</body>
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</html>

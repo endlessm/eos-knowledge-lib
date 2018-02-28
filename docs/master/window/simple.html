@@ -32,11 +32,15 @@
 
 <script src="assets/js/lines_around_headings.js"></script>
 
-<script src="assets/js/trie.js"></script>
 <script src="assets/js/prism-core.js"></script>
 <script src="assets/js/prism-autoloader.js"></script>
 <script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
 
+<link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
+<link rel="shortcut icon" href="assets/images/favicon-32x32.png">
+<link href="https://fonts.googleapis.com/css?family=Lato%7CMontserrat" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/custom.css">
 
 </head>
 
@@ -48,41 +52,42 @@ $('body').removeClass('no-script');
 </script>
 
 <nav class="navbar navbar-fixed-top navbar-default" id="topnav">
-	<div class="container-fluid">
-		<div class="navbar-right">
-			<a id="toc-toggle">
-				<span class="glyphicon glyphicon-menu-right"></span>
-				<span class="glyphicon glyphicon-menu-left"></span>
-			</a>
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<form action="" class="navbar-form pull-right" id="navbar-search-form">
-                               <div class="form-group has-feedback">
-                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
-				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
-                               </div>
-                        </form>
-		</div>
-		<div class="navbar-header">
-			<a id="sidenav-toggle">
-				<span class="glyphicon glyphicon-menu-right"></span>
-				<span class="glyphicon glyphicon-menu-left"></span>
-			</a>
-			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
-				<img src="assets/images/home.svg" alt="Home" id="home">
-			</a>
-		</div>
-		<div class="navbar-collapse collapse" id="navbar-wrapper">
-			<ul class="nav navbar-nav" id="menu">
-							</ul>
-			<div class="hidden-xs hidden-sm navbar-text navbar-center">
-							</div>
-		</div>
-	</div>
+  <div class="container-fluid">
+    <div class="navbar-right">
+      <a id="toc-toggle">
+        <span class="glyphicon glyphicon-menu-right"></span>
+        <span class="glyphicon glyphicon-menu-left"></span>
+      </a>
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-header">
+      <a id="sidenav-toggle">
+        <span class="glyphicon glyphicon-menu-right"></span>
+        <span class="glyphicon glyphicon-menu-left"></span>
+      </a>
+      <a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+<img src="assets/images/Endless_mark_orange.svg" style="width: 48px" alt="Home" id="home">
+      </a>
+      <form action="" class="navbar-form pull-right" id="navbar-search-form">
+        <div class="form-group has-feedback">
+          <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+          <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+        </div>
+      </form>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-wrapper">
+      <ul class="nav navbar-nav" id="menu">
+      </ul>
+      <div class="hidden-xs hidden-sm navbar-text navbar-center">
+<p><b>Modular Framework</b></p>
+      </div>
+    </div>
+  </div>
 </nav>
 
 <main>
@@ -112,221 +117,10 @@ $('body').removeClass('no-script');
 
 		
 <div class="class_details">
-	<p>Window with default functionality</p>
+	<p>The <code>Window.Simple</code> module contains all the other user interface modules
+for every application.</p>
 
 </div>
-
-</div>
-
-
-<h2 class="symbol_section" id="Properties">Properties</h2>
-
-
-<div class="base_symbol_container" data-hotdoc-tags="" id="Window.Simple:halign">
-		<h3 class="method" id="halign">
-    <span><code>halign</code></span>
-</h3>
-
-		<p>How to position in extra horizontal space</p>
-
-
-<dl>
-    <dd>Default value</dd>
-    <dt>0</dt>
-</dl>
-<dl>
-    <dd>Type</dd>
-    <dt>GtkAlign</dt>
-</dl>
-
-</div>
-
-
-
-<div class="base_symbol_container" data-hotdoc-tags="" id="Window.Simple:valign">
-		<h3 class="method" id="valign">
-    <span><code>valign</code></span>
-</h3>
-
-		<p>How to position in extra vertical space</p>
-
-
-<dl>
-    <dd>Default value</dd>
-    <dt>0</dt>
-</dl>
-<dl>
-    <dd>Type</dd>
-    <dt>GtkAlign</dt>
-</dl>
-
-</div>
-
-
-
-<div class="base_symbol_container" data-hotdoc-tags="" id="Window.Simple:hexpand">
-		<h3 class="method" id="hexpand">
-    <span><code>hexpand</code></span>
-</h3>
-
-		<p>Whether widget wants more horizontal space</p>
-
-
-<dl>
-    <dd>Default value</dd>
-    <dt>False</dt>
-</dl>
-<dl>
-    <dd>Type</dd>
-    <dt>Boolean</dt>
-</dl>
-
-</div>
-
-
-
-<div class="base_symbol_container" data-hotdoc-tags="" id="Window.Simple:vexpand">
-		<h3 class="method" id="vexpand">
-    <span><code>vexpand</code></span>
-</h3>
-
-		<p>Whether widget wants more vertical space</p>
-
-
-<dl>
-    <dd>Default value</dd>
-    <dt>False</dt>
-</dl>
-<dl>
-    <dd>Type</dd>
-    <dt>Boolean</dt>
-</dl>
-
-</div>
-
-
-
-<div class="base_symbol_container" data-hotdoc-tags="" id="Window.Simple:expand">
-		<h3 class="method" id="expand">
-    <span><code>expand</code></span>
-</h3>
-
-		<p>Whether widget wants to expand in both directions</p>
-
-
-<dl>
-    <dd>Default value</dd>
-    <dt>False</dt>
-</dl>
-<dl>
-    <dd>Type</dd>
-    <dt>Boolean</dt>
-</dl>
-
-</div>
-
-
-
-<div class="base_symbol_container" data-hotdoc-tags="" id="Window.Simple:show-menubar">
-		<h3 class="method" id="showmenubar">
-    <span><code>show-menubar</code></span>
-</h3>
-
-		<p>TRUE if the window should show a menubar at the top of the window</p>
-
-
-<dl>
-    <dd>Default value</dd>
-    <dt>True</dt>
-</dl>
-<dl>
-    <dd>Type</dd>
-    <dt>Boolean</dt>
-</dl>
-
-</div>
-
-
-
-<div class="base_symbol_container" data-hotdoc-tags="" id="Window.Simple:font-scaling-active">
-		<h3 class="method" id="fontscalingactive">
-    <span><code>font-scaling-active</code></span>
-</h3>
-
-		<p>Whether or not EosWindow objects scale font size</p>
-
-
-<dl>
-    <dd>Default value</dd>
-    <dt>False</dt>
-</dl>
-<dl>
-    <dd>Type</dd>
-    <dt>Boolean</dt>
-</dl>
-
-</div>
-
-
-
-<div class="base_symbol_container" data-hotdoc-tags="" id="Window.Simple:font-scaling-default-size">
-		<h3 class="method" id="fontscalingdefaultsize">
-    <span><code>font-scaling-default-size</code></span>
-</h3>
-
-		<p>This is the default font-size by which font-size for children widgets will scale</p>
-
-
-<dl>
-    <dd>Default value</dd>
-    <dt>16</dt>
-</dl>
-<dl>
-    <dd>Type</dd>
-    <dt>Number</dt>
-</dl>
-
-</div>
-
-
-
-<div class="base_symbol_container" data-hotdoc-tags="" id="Window.Simple:font-scaling-default-window-size">
-		<h3 class="method" id="fontscalingdefaultwindowsize">
-    <span><code>font-scaling-default-window-size</code></span>
-</h3>
-
-		<p>This is the base resolution by which font-size for children widgets will scale</p>
-
-
-<dl>
-    <dd>Default value</dd>
-    <dt>1080</dt>
-</dl>
-<dl>
-    <dd>Type</dd>
-    <dt>Number</dt>
-</dl>
-
-</div>
-
-
-
-<div class="base_symbol_container" data-hotdoc-tags="" id="Window.Simple:font-scaling-min-font-size">
-		<h3 class="method" id="fontscalingminfontsize">
-    <span><code>font-scaling-min-font-size</code></span>
-</h3>
-
-		<p>This is the minimum font-size under which font-size for children widgets won't scale</p>
-
-
-<dl>
-    <dd>Default value</dd>
-    <dt>10</dt>
-</dl>
-<dl>
-    <dd>Type</dd>
-    <dt>Number</dt>
-</dl>
 
 </div>
 
@@ -339,9 +133,18 @@ $('body').removeClass('no-script');
     <span><code>content</code></span>
 </h3>
 
-		
+		<p>The <code>content</code> slot is where the rest of the application goes.
+It takes up all of the window's screen area, except for the title
+bar.</p>
 
 
+<dl>
+  <dt>Required</dt>
+  <dd>
+    yes
+  </dd>
+
+</dl>
 </div>
 
 
@@ -351,9 +154,21 @@ $('body').removeClass('no-script');
     <span><code>search</code></span>
 </h3>
 
-		<p>Optional</p>
+		<p>The <code>search</code> slot is located in the center of the window's title
+bar.
+It currently only supports a <a href="navigation/searchBox.html#Navigation.SearchBox">Navigation.SearchBox</a> module.</p>
 
 
+<dl>
+  <dt>Required</dt>
+  <dd>
+    no
+  </dd>
+  <dt>Allowed modules</dt>
+  <dd>
+    <a href="navigation/searchBox.html"><code>Navigation.SearchBox</code></a>
+  </dd>
+</dl>
 
 </div>
 
@@ -365,7 +180,19 @@ $('body').removeClass('no-script');
 	</div>
 	<div id="footer">
 		
+<div class="panel panel-default">
+  <div class="panel-heading collapsed" id="license-toggle" data-toggle="collapse" data-target="#license-info" aria-expanded="false" aria-controls="license-info">
+    <h4 class="panel-title" data-toc-skip="true" id="license-and-copyright-info">
+      License and Copyright info
+    </h4>
+  </div>
+  <div id="license-info" class="panel-collapse collapse">
+    <div class="panel-body">
+      
 
+    </div>
+  </div>
+</div>
 	</div>
 </div>
 

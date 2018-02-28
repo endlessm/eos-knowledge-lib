@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["card/title.html#texthalign", "card/sequence.html#texthalign", "card/default.html#texthalign", "card/deck.html#texthalign", "card/list.html#texthalign", "card/contentGroup.html#texthalign"], "token": "Horizontal"});
+urls_downloaded_cb({"urls": ["card/contentGroup.html#texthalign", "card/title.html#texthalign", "card/sequence.html#texthalign", "card/list.html#texthalign", "card/deck.html#texthalign", "card/default.html#texthalign"], "token": "Horizontal"});

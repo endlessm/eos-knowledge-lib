@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["window/simple.html#windowsimple1"], "token": "Window"});
+urls_downloaded_cb({"urls": ["modules/window.html#window", "mf-index.html#page-description"], "token": "Window"});

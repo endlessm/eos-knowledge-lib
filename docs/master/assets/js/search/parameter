@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["view/document.html#viewdocument1"], "token": "parameter"});
+urls_downloaded_cb({"urls": ["view/document.html#viewdocument1", "tutorial/ingester.html#creating-a-hatch"], "token": "parameter"});

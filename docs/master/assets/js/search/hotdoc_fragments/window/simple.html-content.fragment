@@ -1,1 +1,1 @@
-fragment_downloaded_cb({"fragment": "content \n", "url": "window/simple.html#content"});
+fragment_downloaded_cb({"fragment": "content \nThe content slot is where the rest of the application goes. It takes up all of the window s screen area except for the title bar. \n", "url": "window/simple.html#content"});
