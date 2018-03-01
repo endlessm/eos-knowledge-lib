@@ -17,6 +17,7 @@ const Dispatcher = imports.app.dispatcher;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const Overflow = imports.app.modules.arrangement.overflow;
+const {SpinnerReplacement} = imports.app.widgets.spinnerReplacement;
 const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -351,29 +352,5 @@ var ContentGroup = new Module.Class({
         if (max_cards > -1)
             cards_to_load = max_cards;
         this._selection.queue_load_more(cards_to_load);
-    },
-});
-
-const SpinnerReplacement = new Lang.Class({
-    Name: 'SpinnerReplacement',
-    Extends: Gtk.Revealer,
-
-    _init(props={}) {
-        props.transition_duration = 200;
-        props.transition_type = Gtk.RevealerTransitionType.CROSSFADE;
-        this.parent(props);
-
-        let fake_spinner = Gtk.Image.new_from_icon_name('content-loading-symbolic',
-            Gtk.IconSize.DIALOG);
-        fake_spinner.show();
-        this.add(fake_spinner);
-    },
-
-    get active() {
-        return this.reveal_child;
-    },
-
-    set active(v) {
-        this.reveal_child = v;
     },
 });
