@@ -37,7 +37,7 @@ vars:
       - 0
       - 2
   set-supplementary-articles-text:
-    shortdef: 'ContentGroup.StaticText(label: !translate "other news", halign: start)'
+    shortdef: 'ContentGroup.StaticText(label: !translate "other news")'
 
   search-articles-arrangement:
     type: Arrangement.List
@@ -52,7 +52,6 @@ vars:
     type: ContentGroup.StaticText
     properties:
       label: !translate 'you might be interested in...'
-      halign: start
 
 defines:
 # Various one-liners

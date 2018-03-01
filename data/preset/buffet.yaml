@@ -31,7 +31,6 @@ vars:
     type: ContentGroup.StaticText
     properties:
       label: !translate "Browse by topic"
-      halign: start
 
   set-preview-setcontent-arrangement:
     type: Arrangement.Half
@@ -62,7 +61,6 @@ vars:
     type: ContentGroup.StaticText
     properties:
       label: !translate 'You might be interested in...'
-      halign: start
   noresults-preview-allsets-arrangement: *allsets-arrangement
   noresults-preview-allsets-card: *allsets-card
   noresults-preview-allsets-text: *allsets-text

@@ -3,7 +3,10 @@ vars:
   app-banner:
     shortdef: 'Banner.Dynamic(mode: text, expand: true)'
   app-brand:
-    shortdef: 'ContentGroup.StaticText(label: "")'
+    type: ContentGroup.StaticText
+    properties:
+      halign: center
+      label: ''
 
   home-sets-arrangement:
     type: Arrangement.Grid

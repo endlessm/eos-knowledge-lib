@@ -11,4 +11,11 @@ const FormattableLabel = imports.app.widgets.formattableLabel;
 var StaticText = new Module.Class({
     Name: 'ContentGroup.StaticText',
     Extends: FormattableLabel.FormattableLabel,
+
+    _init(props={}) {
+        this.parent(Object.assign({
+            halign: Gtk.Align.START,
+            justify: Gtk.Justification.LEFT,
+        }, props));
+    }
 });
