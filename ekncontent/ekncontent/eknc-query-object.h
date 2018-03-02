@@ -44,6 +44,7 @@ typedef enum {
  * @EKNC_QUERY_OBJECT_SORT_SEQUENCE_NUMBER: Uses the article page rank to sort
  *   results.
  * @EKNC_QUERY_OBJECT_SORT_DATE: Uses the article date to sort the results.
+ * @EKNC_QUERY_OBJECT_SORT_ALPHABETICAL: Uses the article title to sort the results.
  *
  * Enumeration for different ways to sort query results.
  */
@@ -51,6 +52,7 @@ typedef enum {
   EKNC_QUERY_OBJECT_SORT_RELEVANCE,
   EKNC_QUERY_OBJECT_SORT_SEQUENCE_NUMBER,
   EKNC_QUERY_OBJECT_SORT_DATE,
+  EKNC_QUERY_OBJECT_SORT_ALPHABETICAL,
 } EkncQueryObjectSort;
 
 /**
