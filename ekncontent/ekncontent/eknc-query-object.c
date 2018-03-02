@@ -13,6 +13,7 @@
 #define DEFAULT_CUTOFF 10
 #define XAPIAN_SEQUENCE_NUMBER_VALUE_NO 0
 #define XAPIAN_PUBLISHED_DATE_VALUE_NO 1
+#define XAPIAN_ALPHABETICAL_VALUE_NO 2
 #define MAX_TERM_LENGTH 245
 
 #define XAPIAN_PREFIX_EXACT_TITLE "XEXACTS"
@@ -1069,6 +1070,10 @@ eknc_query_object_get_sort_value (EkncQueryObject *self)
 
     case EKNC_QUERY_OBJECT_SORT_DATE:
       return XAPIAN_PUBLISHED_DATE_VALUE_NO;
+      break;
+
+    case EKNC_QUERY_OBJECT_SORT_ALPHABETICAL:
+      return XAPIAN_ALPHABETICAL_VALUE_NO;
       break;
 
     default:

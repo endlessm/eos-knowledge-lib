@@ -2,6 +2,7 @@
 
 /* exported Alphabetical */
 
+const Eknc = imports.gi.EosKnowledgeContent;
 const GObject = imports.gi.GObject;
 
 const Module = imports.app.interfaces.module;
@@ -36,5 +37,12 @@ var Alphabetical = new Module.Class({
         if (is_upper_a !== is_upper_b && this.case_sensitive)
             return a > b ? -1 : 1;
         return a.localeCompare(b);
+    },
+
+    modify_xapian_query_impl: function (query) {
+        return Eknc.QueryObject.new_from_object(query, {
+            order: Eknc.QueryObjectOrder[this.ascending? 'ASCENDING' : 'DESCENDING'],
+            sort: Eknc.QueryObjectSort.ALPHABETICAL,
+        });
     },
 });
