@@ -1,5 +1,6 @@
 /* exported ThemeableImage */
 
+const Endless = imports.gi.Endless;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const GdkPixbuf = imports.gi.GdkPixbuf;
@@ -44,6 +45,8 @@ var ThemeableImage = new Knowledge.Class({
     },
 
     _init: function (props={}) {
+        let probe = Endless.ProfileProbe.start('/ekn/themeableImage/_init');
+
         this.parent(props);
         this.set_has_window(false);
         this._min_width = 0;
@@ -67,6 +70,8 @@ var ThemeableImage = new Knowledge.Class({
 
         this.connect('style-set', () => this._update_custom_style());
         this.connect('style-updated', () => this._update_custom_style());
+
+        probe.stop();
     },
 
     _update_custom_style: function () {
