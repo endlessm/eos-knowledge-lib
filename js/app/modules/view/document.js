@@ -16,11 +16,14 @@ const HistoryStore = imports.app.historyStore;
 const InArticleSearch = imports.app.widgets.inArticleSearch;
 const Module = imports.app.interfaces.module;
 const PDFView = imports.app.widgets.PDFView;
-// Make sure included for glade template
-const SlidingPanelOverlay = imports.app.widgets.slidingPanelOverlay;
+const {slidingPanelOverlay, spinnerReplacement} = imports.app.widgets;
 const TableOfContents = imports.app.widgets.tableOfContents;
 const Utils = imports.app.utils;
 const {View} = imports.app.interfaces.view;
+
+// Make sure included for glade template
+void slidingPanelOverlay;
+void spinnerReplacement;
 
 const SPINNER_PAGE_NAME = 'spinner';
 const CONTENT_PAGE_NAME = 'content';

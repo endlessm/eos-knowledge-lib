@@ -12,11 +12,13 @@ const Gettext = imports.gettext;
 const WebKit2 = imports.gi.WebKit2;
 
 const Lang = imports.lang;
+const {spinnerReplacement} = imports.app.widgets;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
-/* Template needs WebView type */
+/* Template needs WebView and SpinnerReplacement types */
 GObject.type_ensure( WebKit2.WebView.$gtype);
+void spinnerReplacement;
 
 const MsgResponse = {
     NONE: 0,

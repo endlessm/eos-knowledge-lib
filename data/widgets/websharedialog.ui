@@ -53,7 +53,7 @@
                   </packing>
                 </child>
                 <child type="overlay">
-                  <object class="GtkSpinner" id="spinner">
+                  <object class="EknSpinnerReplacement" id="spinner">
                     <property name="can_focus">False</property>
                   </object>
                   <packing>
