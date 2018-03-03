@@ -85,7 +85,7 @@ renderer_mustache_data_new (GVariantDict  *variables,
 static void
 renderer_mustache_data_free (RendererMustacheData *data)
 {
-  g_variant_dict_unref (data->variables);
+  g_clear_pointer (&data->variables, g_variant_dict_unref);
   g_clear_pointer (&data->output.string, free);
   g_free (data);
 }
