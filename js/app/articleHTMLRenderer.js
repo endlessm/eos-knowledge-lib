@@ -324,7 +324,7 @@ var ArticleHTMLRenderer = new Knowledge.Class({
 });
 
 function _to_link(uri, text) {
-    return '<a class="eos-show-link" href="' + uri + '">' + Mustache.escape(text) + '</a>';
+    return '<a class="eos-show-link" href="' + uri + '">' + Eknr.escape_html(text) + '</a>';
 }
 
 function _to_license_link (license) {
