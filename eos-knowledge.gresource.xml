@@ -98,7 +98,6 @@
     <file>js/app/interfaces/view.js</file>
     <file>js/app/introspect.js</file>
     <file>js/app/knowledge.js</file>
-    <file>js/app/libs/mustache.js</file>
     <file>js/app/meshHistoryStore.js</file>
     <file>js/app/moduleFactory.js</file>
     <file>js/app/modules/arrangement/accordion.js</file>
