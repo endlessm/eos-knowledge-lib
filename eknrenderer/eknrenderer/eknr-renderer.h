@@ -38,6 +38,9 @@ gchar * eknr_renderer_render_mustache_document (EknrRenderer *renderer,
 gchar * eknr_escape_html (const gchar  *html,
                           GError      **error);
 
+gboolean eknr_mustache_template_compiles (const gchar  *tmpl_text,
+                                          GError      **error);
+
 EknrRenderer * eknr_renderer_new (void);
 
 G_END_DECLS

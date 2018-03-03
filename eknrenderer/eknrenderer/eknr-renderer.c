@@ -467,6 +467,38 @@ eknr_renderer_render_mustache_document (EknrRenderer *renderer,
   return g_steal_pointer (&data->output.string);
 }
 
+/**
+ * eknr_mustache_template_compiles:
+ * @tmpl_text: The template to render
+ * @error: A #GError
+ *
+ * Attempt to compile a mustache template.
+ *
+ * Returns: The %TRUE on success, %FALSE on error.
+ */
+gboolean
+eknr_mustache_template_compiles (const gchar  *tmpl_text,
+                                 GError      **error)
+{
+  mustache_api_t api = {
+    .read = &_renderer_read_from_closure,
+    .write = &_renderer_write_to_closure,
+    .varget = &_renderer_var_from_ht,
+    .sectget = &_renderer_sect_from_ht,
+    .error = &_renderer_set_error
+  };
+  g_autoptr(RendererMustacheData) data = renderer_mustache_data_new (NULL,
+                                                                     error,
+                                                                     tmpl_text);
+  g_autoptr(mustache_template_t) tmpl = mustache_compile (&api,
+                                                          (gchar *) data);
+
+  if (!tmpl)
+    return FALSE;
+
+  return TRUE;
+}
+
 static void
 eknr_renderer_get_property (GObject    *object,
                             guint       prop_id,
