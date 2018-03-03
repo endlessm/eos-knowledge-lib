@@ -21,17 +21,22 @@ GQuark eknr_error (void);
 /**
  * EknrError:
  * @EKNR_ERROR_SUBSTITUTION_FAILED: Template substitution failed
+ * @EKNR_ERROR_HTML_ESCAPE_FAILED: HTML escaping failed
  *
  * Error codes for the %EKNR_ERROR error domain
  */
 typedef enum {
-  EKNR_ERROR_SUBSTITUTION_FAILED
+  EKNR_ERROR_SUBSTITUTION_FAILED,
+  EKNR_ERROR_HTML_ESCAPE_FAILED
 } EknrError;
 
 gchar * eknr_renderer_render_mustache_document (EknrRenderer *renderer,
                                                 const gchar  *tmpl_text,
                                                 GVariant     *variables,
                                                 GError      **error);
+
+gchar * eknr_escape_html (const gchar  *html,
+                          GError      **error);
 
 EknrRenderer * eknr_renderer_new (void);
 

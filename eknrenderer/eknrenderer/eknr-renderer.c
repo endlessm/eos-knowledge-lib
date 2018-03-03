@@ -186,6 +186,44 @@ escape_value_eval_callback (const GMatchInfo *match_info,
 }
 
 /**
+ * eknr_escape_html:
+ * @html: The string to escape
+ * @error: A #GError
+ *
+ * Escape HTML, replacing characters with HTML entities.
+ *
+ * Returns: (transfer full): The escaped HTML document, or %NULL on error.
+ */
+gchar *
+eknr_escape_html (const gchar  *html,
+                  GError      **error)
+{
+  g_autoptr(GRegex) regex = NULL;
+  g_autofree gchar *escaped = NULL;
+
+  /* First, use a regex to pick out the relevant entities that
+   * need to be escaped.*/
+  regex = g_regex_new ("[&<>\"'\\/]", 0, 0, error);
+
+  if (regex == NULL)
+    return NULL;;
+
+  escaped = g_regex_replace_eval (regex,
+                                  html,
+                                  strlen (html),
+                                  0,
+                                  0,
+                                  escape_value_eval_callback,
+                                  NULL,
+                                  error);
+
+  if (escaped == NULL)
+    return NULL;
+
+  return g_steal_pointer (&escaped);
+}
+
+/**
  * maybe_escape_value:
  * @value: (transfer full): The string to escape
  * @is_escaped: Whether or not to apply escaping
@@ -204,7 +242,6 @@ maybe_escape_value (gchar          *value,
                     mustache_api_t *api,
                     void           *api_closure)
 {
-  g_autoptr(GRegex) regex = NULL;
   g_autoptr(GError) error = NULL;
   g_autofree gchar *unescaped = NULL;
   g_autofree gchar *escaped = NULL;
@@ -215,25 +252,7 @@ maybe_escape_value (gchar          *value,
   /* Take an autofree reference to unescaped, it will be freed
    * when the function returns. */
   unescaped = value;
-
-  /* First, use a regex to pick out the relevant entities that
-   * need to be escaped.*/
-  regex = g_regex_new ("[&<>\"'\\/]", 0, 0, &error);
-
-  if (regex == NULL)
-    {
-      (*api->error) (api, api_closure, __LINE__, error->message);
-      return NULL;
-    }
-
-  escaped = g_regex_replace_eval (regex,
-                                  unescaped,
-                                  strlen (value),
-                                  0,
-                                  0,
-                                  escape_value_eval_callback,
-                                  NULL,
-                                  &error);
+  escaped = eknr_escape_html (unescaped, &error);
 
   if (escaped == NULL)
     {
