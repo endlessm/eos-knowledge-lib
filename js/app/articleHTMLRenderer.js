@@ -13,19 +13,6 @@ const SetMap = imports.app.setMap;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
-let _template_cache = {};
-function _load_template(template_filename) {
-    let uri = 'resource:///com/endlessm/knowledge/data/templates/' + template_filename;
-    if (_template_cache[uri] === undefined) {
-        let file = Gio.file_new_for_uri(uri);
-        let [success, string] = file.load_contents(null);
-        let template = string.toString();
-        Eknr.mustache_template_compiles(template);
-        _template_cache[uri] = template;
-    }
-    return _template_cache[uri];
-}
-
 function template_file(template_filename) {
     return Gio.file_new_for_uri('resource:///com/endlessm/knowledge/data/templates/' + template_filename);
 }
