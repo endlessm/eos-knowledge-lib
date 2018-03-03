@@ -15,7 +15,7 @@ Create a `.local` folder in your home directory and unzip the downloaded package
 
 ```bash
 mkdir -p ~/.local
-tar -C ~/.local -xjf node-v8.9.4-linux-x64.tar.xz
+tar -C ~/.local -xJf node-v8.9.4-linux-x64.tar.xz
 ```
 
 Check if `~/.local/bin` is in your path (`echo $PATH`) and if not, add the following line to your `~/.bashrc` file, then close and reopen the terminal:
