@@ -21,7 +21,7 @@ function _load_template(template_filename) {
         let file = Gio.file_new_for_uri(uri);
         let [success, string] = file.load_contents(null);
         let template = string.toString();
-        Mustache.parse(template);
+        Eknr.mustache_template_compiles(template);
         _template_cache[uri] = template;
     }
     return _template_cache[uri];
