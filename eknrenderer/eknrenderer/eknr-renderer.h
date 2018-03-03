@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <gio/gio.h>
 #include <glib-object.h>
 
 G_BEGIN_DECLS
@@ -34,6 +35,12 @@ gchar * eknr_renderer_render_mustache_document (EknrRenderer *renderer,
                                                 const gchar  *tmpl_text,
                                                 GVariant     *variables,
                                                 GError      **error);
+
+gchar *
+eknr_renderer_render_mustache_document_from_file (EknrRenderer *renderer,
+                                                  GFile        *file,
+                                                  GVariant     *variables,
+                                                  GError      **error);
 
 gchar * eknr_escape_html (const gchar  *html,
                           GError      **error);

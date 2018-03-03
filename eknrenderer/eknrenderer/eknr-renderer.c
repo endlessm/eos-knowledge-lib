@@ -23,7 +23,7 @@ struct _EknrRenderer
 
 typedef struct _EknrRendererPrivate
 {
-  gint unused;
+  GHashTable *cache;
 } EknrRendererPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (EknrRenderer,
@@ -425,6 +425,80 @@ _renderer_set_error (mustache_api_t *api,
                msg);
 }
 
+gchar *
+_renderer_render_mustache_document_internal (mustache_template_t  *tmpl,
+                                             GVariant             *variables,
+                                             GError              **error)
+{
+  mustache_api_t api = {
+    .read = &_renderer_read_from_closure,
+    .write = &_renderer_write_to_closure,
+    .varget = &_renderer_var_from_ht,
+    .sectget = &_renderer_sect_from_ht,
+    .error = &_renderer_set_error
+  };
+  g_autoptr(RendererMustacheData) data = renderer_mustache_data_new (g_variant_dict_new (variables),
+                                                                     error,
+                                                                     NULL);
+
+  if (!mustache_render (&api, (void *) data, tmpl))
+    return NULL;
+
+  return g_steal_pointer (&data->output.string);
+}
+
+/**
+ * eknr_renderer_render_mustache_document_from_file:
+ * @renderer: An #EknrRenderer
+ * @file: A #GFile specifying the location of the template file
+ * @variables: The variables and sections to use when rendering.
+ * @error: A #GError
+ *
+ * Use mustache_c to render a document, similar to
+ * eknr_renderer_render_mustache_document, but read the template
+ * from the file specified at @file. If that file has already been
+ * read, its contents will be read from the internal cache.
+ *
+ * Returns: The renderered document on success, %NULL on error.
+ */
+gchar *
+eknr_renderer_render_mustache_document_from_file (EknrRenderer *renderer,
+                                                  GFile        *file,
+                                                  GVariant     *variables,
+                                                  GError      **error)
+{
+  g_autofree gchar *path = g_file_get_uri (file);
+  EknrRendererPrivate *priv = eknr_renderer_get_instance_private (renderer);
+  mustache_template_t *tmpl = g_hash_table_lookup (priv->cache, path);
+  g_autofree gchar *contents = NULL;
+  mustache_api_t api = {
+    .read = &_renderer_read_from_closure,
+    .write = &_renderer_write_to_closure,
+    .varget = &_renderer_var_from_ht,
+    .sectget = &_renderer_sect_from_ht,
+    .error = &_renderer_set_error
+  };
+  g_autoptr(RendererMustacheData) data = NULL;
+
+  if (tmpl != NULL)
+    return _renderer_render_mustache_document_internal (tmpl, variables, error);
+
+  if (!g_file_load_contents (file, NULL, &contents, NULL, NULL, error))
+    return NULL;
+
+  data = renderer_mustache_data_new (NULL,
+                                     error,
+                                     contents);
+  tmpl = mustache_compile (&api, (gchar *) data);
+
+  if (tmpl == NULL)
+    return NULL;
+
+  g_hash_table_replace (priv->cache, g_steal_pointer (&path), tmpl);
+
+  return _renderer_render_mustache_document_internal (tmpl, variables, error);
+}
+
 /**
  * eknr_renderer_render_mustache_document:
  * @renderer: An #EknrRenderer
@@ -461,10 +535,7 @@ eknr_renderer_render_mustache_document (EknrRenderer *renderer,
   if (!tmpl)
     return NULL;
 
-  if (!mustache_render (&api, (void *) data, tmpl))
-    return NULL;
-
-  return g_steal_pointer (&data->output.string);
+  return _renderer_render_mustache_document_internal (tmpl, variables, error);
 }
 
 /**
@@ -533,6 +604,9 @@ static void
 eknr_renderer_finalize (GObject *object)
 {
   EknrRenderer *self = EKNR_RENDERER (object);
+  EknrRendererPrivate *priv = eknr_renderer_get_instance_private (self);
+
+  g_hash_table_unref (priv->cache);
 
   G_OBJECT_CLASS (eknr_renderer_parent_class)->finalize (object);
 }
@@ -550,6 +624,11 @@ eknr_renderer_class_init (EknrRendererClass *klass)
 static void
 eknr_renderer_init (EknrRenderer *self)
 {
+  EknrRendererPrivate *priv = eknr_renderer_get_instance_private (self);
+  priv->cache = g_hash_table_new_full (g_str_hash,
+                                       g_str_equal,
+                                       g_free,
+                                       (GDestroyNotify) free_mustache_template);
 }
 
 EknrRenderer *
