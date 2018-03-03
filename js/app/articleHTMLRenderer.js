@@ -3,7 +3,6 @@ const Gettext = imports.gettext;
 
 const Config = imports.app.config;
 const Knowledge = imports.app.knowledge;
-const Mustache = imports.app.libs.mustache.Mustache;
 const Utils = imports.app.utils;
 const SetMap = imports.app.setMap;
 
