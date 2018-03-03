@@ -26,6 +26,10 @@ function _load_template(template_filename) {
     return _template_cache[uri];
 }
 
+function template_file(template_filename) {
+    return Gio.file_new_for_uri('resource:///com/endlessm/knowledge/data/templates/' + template_filename);
+}
+
 /**
  * Class: ArticleHTMLRenderer
  */
@@ -147,10 +151,9 @@ var ArticleHTMLRenderer = new Knowledge.Class({
 
         let html = this._get_html(model);
 
-        let template = _load_template('legacy-article.mst');
         let title = this.show_title ? model.title : false;
 
-        return this._renderer.render_mustache_document(template, new GLib.Variant('a{sv}', {
+        return this._renderer.render_mustache_document_from_file(template_file('legacy-article.mst'), new GLib.Variant('a{sv}', {
             'title': new GLib.Variant(typeof(title) === 'boolean' ? 'b' : 's', title),
             'body-html': new GLib.Variant('s', this._strip_tags(html)),
             'disclaimer': new GLib.Variant('s', this._get_legacy_disclaimer(model)),
@@ -166,9 +169,7 @@ var ArticleHTMLRenderer = new Knowledge.Class({
     _render_prensa_libre_content: function (model) {
         let html = this._get_html(model);
 
-        let template = _load_template('news-article.mst');
-
-        return this._renderer.render_mustache_document(template, new GLib.Variant('a{sv}', {
+        return this._renderer.render_mustache_document_from_file(template_file('news-article.mst'), new GLib.Variant('a{sv}', {
             'css-files': new GLib.Variant('as', ['prensa-libre.css']),
             'body-html': new GLib.Variant('s', this._strip_tags(html)),
         }));
@@ -296,9 +297,7 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         let css_files = this._get_wrapper_css_files();
         let js_files = this._get_wrapper_js_files();
 
-        let template = _load_template('article-wrapper.mst');
-
-        return this._renderer.render_mustache_document(template, new GLib.Variant('a{sv}', {
+        return this._renderer.render_mustache_document_from_file(template_file('article-wrapper.mst'), new GLib.Variant('a{sv}', {
             'id': new GLib.Variant('s', model.ekn_id),
             'css-files': new GLib.Variant('as', css_files),
             'custom-css-files': new GLib.Variant('as', this._get_app_override_css_files()),
