@@ -50,6 +50,7 @@ libeos_knowledge_renderer_@EKN_RENDERER_API_VERSION@_la_CPPFLAGS = \
 	$(CODE_COVERAGE_CPPFLAGS) \
 	-DG_LOG_DOMAIN=\"EosKnowledgeRenderer\" \
 	-DCOMPILING_EKN_RENDERER \
+	-DMATHJAX_PATH=\"@MATHJAXDIR@\"
 	-I $(builddir)/eknrenderer \
 	$(NULL)
 libeos_knowledge_renderer_@EKN_RENDERER_API_VERSION@_la_CFLAGS = \
