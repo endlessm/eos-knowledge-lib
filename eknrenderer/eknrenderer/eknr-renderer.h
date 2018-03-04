@@ -62,6 +62,18 @@ eknr_renderer_render_content (EknrRenderer  *renderer,
                               gboolean       use_scroll_manager,
                               GError       **error);
 
+typedef gboolean (*EknrOutgoingLinkDeterminationFunc) (const gchar *outgoing_link,
+                                                       gpointer     user_data);
+
+typedef struct _EknrBoxedSetInfo {
+  guint    ref_count;
+  gboolean featured;
+  gchar    *ekn_id;
+  gchar    *title;
+  GStrv    child_tags;
+  GStrv    tags;
+} EknrBoxedSetInfo;
+
 EknrRenderer * eknr_renderer_new (void);
 
 G_END_DECLS

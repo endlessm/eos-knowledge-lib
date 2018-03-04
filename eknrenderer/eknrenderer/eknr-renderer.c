@@ -904,6 +904,402 @@ eknr_renderer_render_content (EknrRenderer  *renderer,
   return NULL;
 }
 
+static GVariant *
+get_wrapper_css_files (const gchar * const *custom_css_files)
+{
+  GPtrArray *wrapper_css_files = g_ptr_array_new_with_free_func (g_free);
+  g_auto(GStrv) strv = NULL;
+
+  g_ptr_array_add (wrapper_css_files, g_strdup ("clipboard.css"));
+  g_ptr_array_add (wrapper_css_files, g_strdup ("share-actions.css"));
+
+  while (*custom_css_files != NULL)
+    {
+      g_ptr_array_add (wrapper_css_files, g_strdup (*custom_css_files));
+      ++custom_css_files;
+    }
+
+  g_ptr_array_add (wrapper_css_files, NULL);
+
+  strv = (const gchar * const *) g_ptr_array_free (wrapper_css_files, FALSE);
+  return g_variant_new_strv (strv, -1);
+}
+
+static GVariant *
+get_wrapper_js_files (void)
+{
+  const gchar * const wrapper_js_files[] = {
+    "jquery-min.js",
+    "clipboard-manager.js",
+    "crosslink.js",
+    "chunk.js",
+    "share-actions.js",
+    NULL
+  };
+
+  return g_variant_new_strv (wrapper_js_files, -1);
+}
+
+static GVariant *
+get_wrapper_outgoing_links_json (const gchar * const               *outgoing_links,
+                                 EknrOutgoingLinkDeterminationFunc  determination_func,
+                                 gpointer                           user_data)
+{
+  g_autoptr(JsonBuilder) builder = json_builder_new ();
+  g_autoptr(JsonNode) node = NULL;
+  g_autoptr(JsonGenerator) generator = NULL;
+  g_autofree gchar *json_string = NULL;
+
+  json_builder_begin_array (builder)
+
+  while (*outgoing_links != NULL)
+    {
+      const gchar *link = *outgoing_links;
+
+      if ((*determination_func) (link, user_data))
+        json_builder_add_string_value (array, link);
+
+      ++outgoing_links;
+    }
+
+  json_builder_end_array (builder);
+  node = json_builder_get_root (builder);
+  generator = json_generator_new ();
+
+  json_generator_set_root (node);
+  json_string = json_generator_to_data (generator, NULL);
+
+  return g_variant_new_string (json_string);
+}
+
+static GPtrArray *
+get_wrapper_parent_featured_sets (const gchar * const *tags,
+                                  GHashTable          *set_map)
+{
+  g_autoptr(GPtrArray) parent_featured_sets = g_ptr_array_new_with_free_func (eknr_boxed_set_info_unref);
+
+  for (; *tags != NULL; ++tags)
+    {
+      const gchar      *tag = *tags;
+      EknrBoxedSetInfo *set = NULL;
+
+      if (g_strncmp(tag, "Ekn", 3) == 0)
+        continue;
+
+      set = g_hash_table_lookup (set_map, tag);
+
+      if (set == NULL)
+        continue;
+
+      if (!set.featured)
+        continue;
+
+      g_ptr_array_add (parent_featured_sets,
+                       eknr_boxed_set_info_ref (set));
+    }
+
+  return g_steal_pointer (&parent_featured_sets);
+}
+
+static JsonNode *
+strv_to_json_array_node (GStrv strv)
+{
+  g_autoptr(JsonBuilder) builder = json_builder_new ();
+
+  json_builder_begin_array (builder);
+
+  while (*strv != NULL)
+    {
+      json_builder_add_string_value (builder, *strv);
+      ++strv;
+    }
+
+  json_builder_end_array (builder);
+
+  return json_builder_get_root (builder);
+}
+
+static GVariant *
+get_wrapper_chunk_data_json (const gchar * const *tags,
+                             GHashTable          *set_map)
+{
+  g_autoptr(JsonBuilder) object_builder = json_builder_new ();
+  g_autoptr(JsonBuilder) array_builder = json_builder_new ();
+  g_autoptr(JsonNode) node = NULL;
+  g_autoptr(JsonGenerator) generator = NULL;
+  g_autoptr(GPtrArray) parent_featured_sets = get_wrapper_parent_featured_sets (tags, set_map);
+  guint parent_featured_sets_index = 0;
+  g_autofree gchar *json_string = NULL;
+
+  json_builder_begin_object (object_builder)
+  json_builder_set_member_name (object_builder, "ParentFeaturedSets");
+
+  json_builder_begin_array (array_builder);
+
+  for (;
+       parent_featured_sets_index <= parent_featured_sets->length;
+       ++parent_featured_sets_index)
+    {
+      EknrBoxedSetInfo *set = g_ptr_array_index (parent_featured_sets,
+                                                 parent_featured_sets_index);
+
+      g_autoptr(JsonBuilder) child_builder = json_builder_new ();
+
+      json_builder_begin_object (child_builder);
+
+      /* Build up JSON representation of child */
+      json_builder_set_member_name (child_builder, "child_tags");
+      json_builder_set_value (child_builder,
+                              strv_to_json_array_node (set->child_tags));
+
+      json_builder_set_member_name (child_builder, "ekn_id");
+      json_builder_set_string_value (child_builder, set->ekn_id);
+
+      json_builder_set_member_name (child_builder, "title=");
+      json_builder_set_string_value (child_builder, set->title);
+
+      json_builder_set_member_name (child_builder, "tags");
+      json_builder_set_value (child_builder,
+                              strv_to_json_array_node (set->tags));
+
+      json_builder_end_object (child_builder);
+
+      /* Add to the array */
+      json_builder_add_value (array_builder,
+                              json_builder_get_node (child_builder));
+    }
+
+  json_builder_end_array (array_builder);
+
+  /* Set parent object value */
+  json_builder_set_value (object_builder, json_builder_get_node (array_builder));
+
+  /* Stringify */
+  node = json_builder_get_root (builder);
+  generator = json_generator_new ();
+
+  json_generator_set_root (node);
+  json_string = json_generator_to_data (generator, NULL);
+
+  return g_variant_new_string (json_string);
+}
+
+static GVariant *
+get_wrapper_metadata (const gchar         *ekn_id,
+                      const gchar         *title,
+                      const gchar         *published,
+                      const gchar * const *authors,
+                      const gchar *       *license,
+                      const gchar         *source,
+                      const gchar         *source_name,
+                      const gchar         *original_uri,
+                      const gchar * const *tags,
+                      GHashTable          *set_map)
+{
+  g_autoptr(JsonBuilder) metadata_builder = json_builder_new ();
+  g_autoptr(JsonBuilder) sets_array_builder = json_builder_new ();
+  g_autoptr(GPtrArray) sets = g_ptr_array_new_with_free_func (eknr_boxed_set_info_unref);
+  guint sets_index = 0;
+  g_autoptr(JsonNode) node = NULL;
+  g_autoptr(JsonGenerator) generator = NULL;
+  g_autofree gchar *json_string = NULL;
+
+  for (; *tags != NULL; ++tags)
+    {
+      const gchar *tag = *tags;
+      EknrBoxedSetInfo *set = NULL;
+
+      if (g_strncmp (tag, "Ekn", 3) == 0)
+        continue;
+
+      set = g_hash_table_lookup (set_map, tag);
+
+      if (set == NULL)
+        continue;
+
+      g_ptr_array_add (sets, eknr_boxed_set_info_ref (set));
+    }
+
+  /* Now that we have all the sets, collect metadata into JSON */
+  json_builder_begin_object (metadata_builder);
+
+  json_builder_set_member_name (metadata_builder, "id");
+  json_builder_set_string_value (metadata_builder, ekn_id);
+
+  json_builder_set_member_name (metadata_builder, "title");
+  json_builder_set_string_value (metadata_builder, title);
+
+  json_builder_set_member_name (metadata_builder, "published");
+  json_builder_set_string_value (metadata_builder, published);
+
+  json_builder_set_member_name (metadata_builder, "authors");
+  json_builder_set_value (metadata_builder,
+                          strv_to_json_array_node (authors));
+
+  json_builder_set_member_name (metadata_builder, "license");
+  json_builder_set_string_value (metadata_builder, license);
+
+  json_builder_set_member_name (metadata_builder, "source");
+  json_builder_set_string_value (metadata_builder, source);
+
+  json_builder_set_member_name (metadata_builder, "source_name");
+  json_builder_set_string_value (metadata_builder, source_name);
+
+  json_builder_set_member_name (metadata_builder, "original_uri");
+  json_builder_set_string_value (metadata_builder, original_uri);
+
+  json_builder_begin_array (sets_array_builder);
+
+  /* Build up the JsonArray for the sets */
+  for (; sets_index < sets->length; ++sets_index)
+    {
+      g_autoptr(JsonBuilder) set_builder = json_builder_new ();
+      EknrBoxedSetInfo *set = g_ptr_array_index (sets, sets_index);
+
+      json_builder_begin_object (set_builder);
+
+      json_builder_set_member_name (set_builder, "id");
+      json_builder_set_string_value (set_builder, set->id);
+
+      json_builder_set_member_name (set_builder, "title");
+      json_builder_set_string_value (set_builder, set->title);
+
+      json_builder_set_member_name (set_builder, "featured");
+      json_builder_set_boolean_value (set_builder, set->featured);
+
+      json_builder_end_object (set_builder);
+
+      json_builder_add_value (sets_array_builder,
+                              json_builder_get_node (set_builder));
+    }
+
+  json_builder_end_array (sets_array_builder);
+
+  json_builder_set_member_name (metadata_builder, "sets");
+  json_builder_set_value (metadata_builder, json_builder_get_node (sets_array_builder));
+
+  json_builder_end_object (metadata_builder);
+
+  /* Stringify */
+  node = json_builder_get_root (builder);
+  generator = json_generator_new ();
+
+  json_generator_set_root (node);
+  json_string = json_generator_to_data (generator, NULL);
+
+  return g_variant_new_string (json_string);
+}
+
+static gchar *
+get_wrapper_share_button_markup (const gchar *network_name,
+                                 GError **error)
+{
+  g_autofree gchar *svg_file_path = g_strdup_printf ("resource:///com/endlessm/knowledge/data/icons/scalable/apps/%s-symbolic.svg", network_name);
+  g_autoptr(GFile) svg_file = g_file_new_for_uri (svg_file_path);
+
+  if (!g_file_load_contents (svg_file, NULL, &contents, NULL, NULL, error))
+    return NULL;
+
+  return g_strdup_printf ("<a class=\"share-action\"\n"
+                          "  onclick=\"window.webkit.messageHandlers.share_on_%s.postMessage(0)\">\n"
+                          "%s\n"
+                          "</a>\n");
+}
+
+static gchar *
+get_wrapper_share_actions_markup (const gchar  *original_uri,
+                                  GError      **error)
+{
+  g_autofree gchar *facebook = NULL;
+  g_autofree gchar *twitter = NULL;
+  g_autofree gchar *whatsapp = NULL;
+
+  if (original_uri == NULL || g_strncmp (original_uri, "", 0) == 0)
+    return "";
+
+  facebook = get_wrapper_share_button_markup ("facebook");
+
+  if (facebook == NULL)
+    return NULL;
+
+  twitter = get_wrapper_share_button_markup ("twitter");
+
+  if (twitter == NULL)
+    return NULL;
+
+  whatsapp = get_wrapper_share_button_markup ("whatsapp");
+
+  if (whatsapp == NULL)
+    return NULL;
+
+  return g_strdup_printf ("<div id=\"default-share-actions\" style=\"visibility: hidden;\">%s%s%s</div>",
+                          facebook,
+                          twitter,
+                          whatsapps);
+}
+
+static gchar *
+eknr_renderer_render_wrapper (EknrRenderer                       *renderer,
+                              const gchar                        *content,
+                              const gchar                        *ekn_id,
+                              const gchar                        *title,
+                              const gchar                        *published,
+                              const gchar * const                *authors,
+                              const gchar *                      *license,
+                              const gchar                        *source,
+                              const gchar                        *source_name,
+                              const gchar                        *original_uri,
+                              const gchar * const                *tags,
+                              GHashTable                         *set_map,
+                              const gchar * const                *outgoing_links,
+                              EknrOutgoingLinkDeterminationFunc   determination_func,
+                              gpointer                            user_data,
+                              const gchar * const                *custom_css_files,
+                              const gchar * const                *override_css_files,
+                              GError                            **error)
+{
+  g_autoptr(GFile) file = template_file("article-wrapper.mst");
+  GVariantDict vardict;
+  g_autoptr(GVariant) variant = NULL;
+
+  GVariant *share_actions_markup_variant = get_wrapper_share_actions_markup (original_uri,
+                                                                             error);
+
+  if (share_actions_markup == NULL)
+    return NULL;
+
+  g_variant_dict_init (&vardict, NULL);
+
+  g_variant_dict_insert_value (&vardict, "id", ekn_id);
+  g_variant_dict_insert_value (&vardict, "css-files", get_wrappper_css_files (custom_css_files));
+  g_variant_dict_insert_value (&vardict, "custom-css-files", override_css_files);
+  g_variant_dict_insert_value (&vardict, "javascript-files", get_wrapper_js_files ());
+  g_variant_dict_insert_value (&vardict, "copy-button-text", _("Copy"));
+  g_variant_dict_insert_value (&vardict, "share-actions", share_actions_markup_variant);
+  g_variant_dict_insert_value (&vardict, "content", content);
+  g_variant_dict_insert_value (&vardict, "crosslink-data", get_wrapper_outgoing_links_json (outgoing_links,
+                                                                                            determination_func,
+                                                                                            error));
+  g_variant_dict_insert_value (&vardict, "chunk-data", get_wrapper_chunk_data_json (tags, set_map));
+  g_variant_dict_insert_value (&vardict, "content-metadata", get_wrapper_metadata (ekn_id,
+                                                                                   title,
+                                                                                   published,
+                                                                                   authors,
+                                                                                   license,
+                                                                                   source,
+                                                                                   source_name,
+                                                                                   original_uri,
+                                                                                   tags,
+                                                                                   set_map));
+
+  variant = g_variant_dict_end (&vardict);
+
+  return eknr_renderer_render_mustache_document_from_file (renderer,
+                                                           file,
+                                                           variant,
+                                                           error);
+}
+
 static void
 eknr_renderer_get_property (GObject    *object,
                             guint       prop_id,
@@ -969,6 +1365,72 @@ EknrRenderer *
 eknr_renderer_new (void)
 {
   return EKNR_RENDERER (g_object_new (EKNR_TYPE_RENDERER, NULL));
+}
+
+EknrBoxedSetInfo *
+eknr_boxed_set_info_new (gboolean             featured,
+                         const gchar         *ekn_id,
+                         const gchar         *title,
+                         const gchar * const *child_tags.
+                         const gchar * const *tags)
+{
+  EknrBoxedSetInfo *set = g_new0 (EknrBoxedSetInfo, 1);
+
+  set->ref_count = 1;
+  set->featured = featured;
+  set->ekn_id = g_strdup (ekn_id);
+  set->title = g_strdup (title);
+  set->child_tags = g_strdupv (child_tags);
+  set->tags = g_strdupv (tags);
+
+  return set;
+}
+
+EknrBoxedSetInfo *
+eknr_boxed_set_info_copy (EknrBoxedSetInfo *set)
+{
+  return ekrn_boxed_set_info_new (set->featured,
+                                  set->ekn_id,
+                                  set->title,
+                                  set->child_Tags,
+                                  set->tags);
+}
+
+EknrBoxedSetInfo *
+eknr_boxed_set_info_ref (EknrBoxedSetInfo *set)
+{
+  ++set->ref_count;
+  return set;
+}
+
+void
+eknr_boxed_set_info_unref (EknrBoxedSetInfo *set)
+{
+  --set->ref_count;
+
+  if (set->ref_count > 0)
+    return;
+
+  g_clear_pointer (&set->ekn_id, g_free);
+  g_clear_pointer (&set->title, g_free);
+  g_clear_pointer (&set->child_tags, g_strfreev);
+  g_clear_pointer (&set->tags, g_strfreev);
+
+  g_free (set);
+}
+
+/* Boxed type registration for EknrBoxedSetInfo */
+GType
+eknr_boxed_set_info_get_type (void)
+{
+  static GType type_id = 0;
+
+  if (!type_id)
+    type_id = g_boxed_register_static (g_intern_static_string ("EknrBoxedSetInfo"),
+                                       (GBoxedCopyFunc) eknr_boxed_set_info_copy,
+                                       (BoxedFreeFunc) eknr_boxed_set_info_free));
+
+  return type_id;
 }
 
 GQuark
