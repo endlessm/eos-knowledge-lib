@@ -4,8 +4,13 @@
 #include <stdlib.h>
 
 #include <mustache.h>
+#include <libintl.h>
 
 #include "eknr-renderer.h"
+
+#define _(String) gettext (String)
+#define gettext_noop(String) String
+#define N_(String) gettext_noop (String)
 
 /**
  * SECTION:renderer
