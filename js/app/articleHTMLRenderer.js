@@ -50,10 +50,6 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         this._custom_css_files = [];
     },
 
-    _strip_tags: function (html) {
-        return html.replace(/^\s*<html>\s*<body>/, '').replace(/<\/body>\s*<\/html>\s*$/, '');
-    },
-
     set_custom_css_files: function (custom_css_files) {
         this._custom_css_files = custom_css_files;
     },
@@ -63,103 +59,9 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         return app.get_web_overrides_css();
     },
 
-    _get_legacy_disclaimer: function (model) {
-        switch (model.source) {
-            case 'wikipedia':
-            case 'wikibooks':
-            case 'wikisource':
-                let original_link = _to_link(model.original_uri, model.source_name);
-                let license_link = _to_license_link(model.license);
-                // TRANSLATORS: anything inside curly braces '{}' is going
-                // to be substituted in code. Please make sure to leave the
-                // curly braces around any words that have them and DO NOT
-                // translate words inside curly braces.
-                return _("This page contains content from {original-link}, available under a {license-link} license.")
-                .replace('{original-link}', original_link)
-                .replace('{license-link}', license_link);
-            case 'wikihow':
-                let wikihow_article_link = _to_link(model.original_uri, model.title);
-                // TRANSLATORS: Replace this with a link to the homepage of
-                // wikiHow in your language.
-                let wikihow_link = _to_link(_("http://wikihow.com"), model.source_name);
-                // TRANSLATORS: anything inside curly braces '{}' is going
-                // to be substituted in code. Please make sure to leave the
-                // curly braces around any words that have them and DO NOT
-                // translate words inside curly braces.
-                return _("See {wikihow-article-link} for more details, videos, pictures and attribution. Courtesy of {wikihow-link}, where anyone can easily learn how to do anything.")
-                .replace('{wikihow-article-link}', wikihow_article_link)
-                .replace('{wikihow-link}', wikihow_link);
-            default:
-                return false;
-        }
-    },
-
-    _should_include_mathjax: function (model) {
-        let may_have_mathjax = ['wikipedia', 'wikibooks', 'wikisource'];
-        return (may_have_mathjax.indexOf(model.source) !== -1);
-    },
-
-    _get_legacy_css_files: function (model) {
-        let css_files = [];
-
-        switch (model.source) {
-            case 'wikipedia':
-            case 'wikibooks':
-            case 'wikisource':
-                css_files.push('wikimedia.css');
-                break;
-            case 'wikihow':
-                css_files.push('wikihow.css');
-                break;
-        }
-        return css_files;
-    },
-
-    _get_legacy_javascript_files: function (model) {
-        let javascript_files = [
-            'content-fixes.js',
-            'hide-broken-images.js',
-        ];
-
-        if (this.enable_scroll_manager)
-            javascript_files.push('scroll-manager.js');
-
-        return javascript_files;
-    },
-
     _get_html: function (model) {
         let [success, bytes, mime] = Eknc.Engine.get_default().get_domain().read_uri(model.ekn_id);
         return bytes.get_data().toString();
-    },
-
-    _render_legacy_content: function (model) {
-        let css_files = this._get_legacy_css_files(model);
-        let js_files = this._get_legacy_javascript_files(model);
-
-        let html = this._get_html(model);
-
-        let title = this.show_title ? model.title : false;
-
-        return this._renderer.render_mustache_document_from_file(template_file('legacy-article.mst'), new GLib.Variant('a{sv}', {
-            'title': new GLib.Variant(typeof(title) === 'boolean' ? 'b' : 's', title),
-            'body-html': new GLib.Variant('s', this._strip_tags(html)),
-            'disclaimer': new GLib.Variant('s', this._get_legacy_disclaimer(model)),
-            'copy-button-text': new GLib.Variant('s', _("Copy")),
-            'css-files': new GLib.Variant('as', css_files),
-            'javascript-files': new GLib.Variant('as', js_files),
-            'include-mathjax': new GLib.Variant('b',
-                                                this._should_include_mathjax(model)),
-            'mathjax-path': new GLib.Variant('s', Config.mathjax_path),
-        }));
-    },
-
-    _render_prensa_libre_content: function (model) {
-        let html = this._get_html(model);
-
-        return this._renderer.render_mustache_document_from_file(template_file('news-article.mst'), new GLib.Variant('a{sv}', {
-            'css-files': new GLib.Variant('as', ['prensa-libre.css']),
-            'body-html': new GLib.Variant('s', this._strip_tags(html)),
-        }));
     },
 
     _render_content: function (model) {
@@ -170,21 +72,15 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         // "Legacy" content, including most wiki sources and also 2.6 Prensa Libre content,
         // is templated and styled on the client.
 
-        if (model.is_server_templated) {
-            return this._get_html(model);
-        } else {
-            switch (model.source) {
-            case 'wikipedia':
-            case 'wikibooks':
-            case 'wikisource':
-            case 'wikihow':
-                return this._render_legacy_content(model);
-            case 'prensa-libre':
-                return this._render_prensa_libre_content(model);
-            default:
-                return null;
-            }
-        }
+        return this._renderer.render_content(this._get_html(model),
+                                             model.is_server_templated,
+                                             model.source,
+                                             model.source_name,
+                                             model.original_uri,
+                                             model.license,
+                                             model.title,
+                                             this.show_title,
+                                             this.enable_scroll_manager);
     },
 
     _get_wrapper_css_files: function () {
@@ -307,15 +203,6 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         return this._render_wrapper(content, model);
     },
 });
-
-function _to_link(uri, text) {
-    return '<a class="eos-show-link" href="' + uri + '">' + Eknr.escape_html(text) + '</a>';
-}
-
-function _to_license_link (license) {
-    return _to_link('license://' + GLib.uri_escape_string(license, null, false),
-        Endless.get_license_display_name(license));
-}
 
 function _get_display_string_for_license(license) {
     if (license === Endless.LICENSE_NO_LICENSE)
