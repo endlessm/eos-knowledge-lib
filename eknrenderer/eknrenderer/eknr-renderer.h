@@ -28,7 +28,8 @@ GQuark eknr_error (void);
  */
 typedef enum {
   EKNR_ERROR_SUBSTITUTION_FAILED,
-  EKNR_ERROR_HTML_ESCAPE_FAILED
+  EKNR_ERROR_HTML_ESCAPE_FAILED,
+  EKNR_ERROR_UNKNOWN_LEGACY_SOURCE
 } EknrError;
 
 gchar * eknr_renderer_render_mustache_document (EknrRenderer *renderer,
@@ -47,6 +48,19 @@ gchar * eknr_escape_html (const gchar  *html,
 
 gboolean eknr_mustache_template_compiles (const gchar  *tmpl_text,
                                           GError      **error);
+
+gchar *
+eknr_renderer_render_content (EknrRenderer  *renderer,
+                              const gchar   *body_html,
+                              gboolean       server_templated,
+                              const gchar   *source,
+                              const gchar   *source_name,
+                              const gchar   *original_uri,
+                              const gchar   *license,
+                              const gchar   *title,
+                              gboolean       show_title,
+                              gboolean       use_scroll_manager,
+                              GError       **error);
 
 EknrRenderer * eknr_renderer_new (void);
 

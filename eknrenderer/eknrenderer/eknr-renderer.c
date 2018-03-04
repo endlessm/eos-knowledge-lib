@@ -576,6 +576,334 @@ eknr_mustache_template_compiles (const gchar  *tmpl_text,
   return TRUE;
 }
 
+static gchar *
+format_a_href_link (const gchar  *uri,
+                    const gchar  *text,
+                    GError      **error)
+{
+  g_autofree gchar *escaped = eknr_escape_html(text, error);
+
+  if (escaped == NULL)
+    return NULL;
+
+  return g_strdup_printf ("<a class=\"eos-show-link\" href=\"%s\">%s</a>",
+                          uri,
+                          escaped);
+}
+
+static gchar *
+format_license_link (const gchar  *license,
+                     GError      **error)
+{
+  g_autofree gchar *escaped = g_uri_escape_string (license, NULL, TRUE);
+  g_autofree gchar *licence_link = g_strdup_printf ("license://%s", escaped);
+  return format_a_href_link (licence_link,
+                             eos_get_license_display_name (license),
+                             error);
+}
+
+static GVariant *
+get_legacy_disclaimer_section_content (const gchar  *source,
+                                       const gchar  *source_name,
+                                       const gchar  *original_uri,
+                                       const gchar  *license,
+                                       const gchar  *title,
+                                       GError      **error)
+{
+  if (g_strcmp0 (source, "wikisource") == 0 ||
+      g_strcmp0 (source, "wikibooks") == 0 ||
+      g_strcmp0 (source, "wikipedia") == 0)
+    {
+      g_autofree gchar *original_link = format_a_href_link (original_uri,
+                                                            source_name,
+                                                            error);
+      g_autofree gchar *license_link = NULL;
+      g_autofree gchar *disclaimer = NULL;
+
+      if (original_link == NULL)
+        return NULL;
+
+      license_link = format_license_link (license, error);
+
+      if (license_link == NULL)
+        return NULL;
+
+      disclaimer = g_strdup_printf(_("This page conatins content from %s, available under a %s license."),
+                                   source, license_link);
+      return g_variant_new_string (disclaimer);
+    }
+  else if (g_strcmp0 (source, "wikihow") == 0)
+    {
+      g_autofree gchar *wikihow_article_link = format_a_href_link (original_uri,
+                                                                   title,
+                                                                   error);
+      g_autofree gchar *wikihow_link = NULL;
+      g_autofree gchar *disclaimer = NULL;
+
+      if (wikihow_article_link == NULL)
+        return NULL;
+
+      wikihow_link = format_a_href_link (_("http://wikihow.com"),
+                                         source_name,
+                                         error);
+
+      if (wikihow_link == NULL)
+        return NULL;
+
+      disclaimer = g_strdup_printf(_("See %s for more details, videos, pictures and attribution. Courtesy of %s, where anyone can easily learn how to do anything."),
+                                   wikihow_article_link,
+                                   wikihow_link);
+
+      return g_variant_new_string (disclaimer);
+    }
+
+  return g_variant_new_boolean (FALSE);
+}
+
+static GVariant *
+get_legacy_css_files (const gchar *source)
+{
+  const gchar * const empty_css_files[] = { NULL };
+
+  if (g_strcmp0 (source, "wikisource") == 0 ||
+      g_strcmp0 (source, "wikibooks") == 0 ||
+      g_strcmp0 (source, "wikipedia") == 0)
+    {
+      const gchar * const css_files[] = {
+        "wikimedia.css",
+        NULL
+      };
+      return g_variant_new_strv (css_files, -1);
+    }
+  else if (g_strcmp0 (source, "wikihow") == 0)
+    {
+      const gchar * const css_files[] = {
+        "wikihow.css",
+        NULL
+      };
+      return g_variant_new_strv (css_files, -1);
+    }
+
+  return g_variant_new_strv (empty_css_files, -1);
+}
+
+static GVariant *
+get_legacy_javascript_files (gboolean use_scroll_manager)
+{
+  GPtrArray *javascript_files = g_ptr_array_new_with_free_func (g_free);
+  g_auto(GStrv) strv = NULL;
+
+  g_ptr_array_add (javascript_files, g_strdup ("content-fixes.js"));
+  g_ptr_array_add (javascript_files, g_strdup ("hide-broken-images.js"));
+
+  if (use_scroll_manager)
+    g_ptr_array_add (javascript_files, g_strdup ("scroll-manager.js"));
+
+  /* NULL-terminate */
+  g_ptr_array_add (javascript_files, NULL);
+
+  strv = (GStrv) g_ptr_array_free (javascript_files, FALSE);
+  return g_variant_new_strv ((const gchar * const *) strv, -1);
+}
+
+static GVariant *
+get_legacy_should_include_mathjax (const gchar *source)
+{
+  if (g_strcmp0 (source, "wikisource") == 0 ||
+      g_strcmp0 (source, "wikibooks") == 0 ||
+      g_strcmp0 (source, "wikipedia") == 0)
+    return g_variant_new_boolean (TRUE);
+
+  return g_variant_new_boolean (FALSE);
+}
+
+static gchar *
+regex_substitute (const gchar  *regex,
+                  const gchar  *substitution,
+                  const gchar  *content,
+                  GError      **error)
+{
+  g_autoptr(GRegex) regex_compiled = g_regex_new (regex, 0, 0, error);
+
+  if (regex == NULL)
+    return NULL;
+
+  return g_regex_replace (regex_compiled,
+                          content,
+                          -1,
+                          0,
+                          substitution,
+                          0,
+                          error);
+}
+
+static gchar *
+strip_body_tags (const gchar  *html,
+                 GError      **error)
+{
+  g_autofree gchar *stripped_start_tags = regex_substitute ("^\\s*<html>\\s*<body>",
+                                                            "",
+                                                            html,
+                                                            error);
+
+  if (stripped_start_tags == NULL)
+    return NULL;
+
+  return regex_substitute ("<\\/body>\\s*<\\/html>\\s*$",
+                           "",
+                           stripped_start_tags,
+                           error);
+}
+
+static GFile *
+template_file (const gchar *filename)
+{
+  g_autofree gchar *uri = g_strdup_printf ("resource:///com/endlessm/knowledge/data/templates/%s", filename);
+  return g_file_new_for_uri (uri);
+}
+
+gchar *
+_renderer_render_legacy_content (EknrRenderer *renderer,
+                                 const gchar  *body_html,
+                                 const gchar  *source,
+                                 const gchar  *source_name,
+                                 const gchar  *original_uri,
+                                 const gchar  *license,
+                                 const gchar  *title,
+                                 gboolean      show_title,
+                                 gboolean      use_scroll_manager,
+                                 GError      **error)
+{
+  g_autoptr(GFile) file = template_file("legacy-article.mst");
+  g_autofree gchar *stripped_body = strip_body_tags (body_html, error);
+  GVariantDict vardict;
+  g_autoptr(GVariant) variant = NULL;
+  GVariant *disclaimer = NULL; /* floating */
+
+  if (stripped_body == NULL)
+    return NULL;
+
+  disclaimer = get_legacy_disclaimer_section_content (source,
+                                                      source_name,
+                                                      original_uri,
+                                                      license,
+                                                      title,
+                                                      error);
+
+  if (disclaimer == NULL)
+    return NULL;
+
+  g_variant_dict_init (&vardict, NULL);
+
+  g_variant_dict_insert_value (&vardict,
+                               "title",
+                               show_title ? g_variant_new_string (title) : g_variant_new_boolean (FALSE));
+  g_variant_dict_insert_value (&vardict, "body-html", g_variant_new_string (stripped_body));
+  g_variant_dict_insert_value (&vardict, "disclaimer", disclaimer);
+  g_variant_dict_insert_value (&vardict, "copy-button-text", g_variant_new_string (_("Copy")));
+  g_variant_dict_insert_value (&vardict, "css-files", get_legacy_css_files (source));
+  g_variant_dict_insert_value (&vardict, "javascript-files", get_legacy_javascript_files (use_scroll_manager));
+  g_variant_dict_insert_value (&vardict, "include-mathjax", get_legacy_should_include_mathjax (source));
+  g_variant_dict_insert_value (&vardict, "mathjax-path", g_variant_new_string (MATHJAX_PATH));
+
+  variant = g_variant_dict_end (&vardict);
+
+  return eknr_renderer_render_mustache_document_from_file (renderer,
+                                                           file,
+                                                           variant,
+                                                           error);
+}
+
+gchar *
+_renderer_render_prensa_libre_content (EknrRenderer *renderer,
+                                       const gchar  *body_html,
+                                       GError      **error)
+{
+  g_autoptr(GFile) file = template_file("news-article.mst");
+  g_autofree gchar *stripped_body = strip_body_tags (body_html, error);
+  g_auto(GVariantDict) vardict;
+  g_autoptr(GVariant) variant = NULL;
+  const gchar *prensa_libre_css_files[] = {
+    "prensa-libre.css",
+    NULL
+  };
+
+  if (stripped_body == NULL)
+    return NULL;
+
+  g_variant_dict_init (&vardict, NULL);
+
+  g_variant_dict_insert_value (&vardict, "body-html", g_variant_new_string (stripped_body));
+  g_variant_dict_insert_value (&vardict, "css-files", g_variant_new_strv ((const gchar * const *) prensa_libre_css_files, -1));
+
+  variant = g_variant_dict_end (&vardict);
+
+  return eknr_renderer_render_mustache_document_from_file (renderer,
+                                                           file,
+                                                           variant,
+                                                           error);
+}
+
+/**
+ * eknr_renderer_render_content:
+ * @renderer: An #EknrRenderer
+ * @body_html: The underlying HTML body
+ * @server_templated: Whether templating already occurred at build time
+ * @source: Where this content came from
+ * @source_name: Name of the source
+ * @original_uri: URI this content came from
+ * @license: Content license
+ * @title: Content title
+ * @show_title: %TRUE if the article title should be rendered out too.
+ * @use_scroll_manager: %TRUE if the scroll manager should be used, %FALSE otherwise
+ * @error: A #GError
+ *
+ * Render the content and return the rendered content.;
+ *
+ * Returns: (transfer full): A string of rendered HTML or %NULL on error.
+ */
+gchar *
+eknr_renderer_render_content (EknrRenderer  *renderer,
+                              const gchar   *body_html,
+                              gboolean       server_templated,
+                              const gchar   *source,
+                              const gchar   *source_name,
+                              const gchar   *original_uri,
+                              const gchar   *license,
+                              const gchar   *title,
+                              gboolean       show_title,
+                              gboolean       use_scroll_manager,
+                              GError       **error)
+{
+  if (server_templated)
+    return g_strdup (body_html);
+
+  if (g_strcmp0 (source, "wikipedia") == 0 ||
+      g_strcmp0 (source, "wikihow") == 0 ||
+      g_strcmp0 (source, "wikisource") == 0 ||
+      g_strcmp0 (source, "wikibooks") == 0)
+    return _renderer_render_legacy_content(renderer,
+                                           body_html,
+                                           source,
+                                           source_name,
+                                           original_uri,
+                                           license,
+                                           title,
+                                           show_title,
+                                           use_scroll_manager,
+                                           error);
+  else if (g_strcmp0 (source, "prensa-libre") == 0)
+    return _renderer_render_prensa_libre_content(renderer, body_html, error);
+
+  g_set_error (error,
+               EKNR_ERROR,
+               EKNR_ERROR_UNKNOWN_LEGACY_SOURCE,
+               "HTML is not server templated, but no renderer exists for %s",
+               source);
+
+  return NULL;
+}
+
 static void
 eknr_renderer_get_property (GObject    *object,
                             guint       prop_id,
