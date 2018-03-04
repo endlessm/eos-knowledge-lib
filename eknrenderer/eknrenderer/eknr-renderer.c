@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <endless/endless.h>
 #include <mustache.h>
 #include <libintl.h>
 

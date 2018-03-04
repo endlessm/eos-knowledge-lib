@@ -114,7 +114,7 @@ AC_SUBST([JASMINE_REPORT_ARGUMENT])
 
 # Package dependencies
 # Update these whenever you use a function that requires a certain API version
-AX_PKG_CHECK_MODULES([EKN_RENDERER], [glib-2.0 gio-2.0 gobject-2.0 json-glib-1.0 mustache_c-1.0])
+AX_PKG_CHECK_MODULES([EKN_RENDERER], [glib-2.0 gio-2.0 gobject-2.0 json-glib-1.0 endless-0 mustache_c-1.0])
 
 # Code Coverage
 # -------------
