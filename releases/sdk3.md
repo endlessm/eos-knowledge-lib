@@ -68,5 +68,11 @@ If you were using libingester's `BlogAsset` and `NewsAsset`, this is done for yo
 
 ## Release notes ##
 
+### SDK 3.1 (March 5, 2018) ###
+
+- Modular framework: Fixed sharing to Facebook when your online account login has expired.
+- Modular framework: Some improvements to the appearance of Wikipedia articles.
+- Modular framework: Fixed some visual regressions around titles on cards.
+
 ### SDK 3.0 (February 5, 2018) ###
 This is the first release in the SDK3 series.
