@@ -51,7 +51,7 @@ Install it like this:
 npm install --save libingester
 ```
 
-Here's a minimal script that will parse the RSS feed and show which posts we would ingest:
+Create an `index.js`. Here's a minimal version that will parse the RSS feed and show which posts we would ingest:
 ```javascript
 const Libingester = require('libingester');
 
