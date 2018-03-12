@@ -120,7 +120,7 @@ function ingestArticle({link, title, author, date}, ix) {
         console.log(`URL: ${link}`);
         console.log(`DATE PUBLISHED: ${date}`);
 
-        return fs.writeFile(`${ix}.html`, $.html();)
+        return fs.writeFile(`${ix}.html`, $.html());
     });
 }
 ```
