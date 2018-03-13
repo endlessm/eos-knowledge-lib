@@ -5,8 +5,10 @@
 # Translators:
 # Fernando Farfan <fernando@endlessm.com>, 2015
 # Ivan G. Gonçalves <i@endlessm.com>, 2015
+# Joaquim Rocha <jrocha@endlessm.com>, 2018
 # Mariana Barbosa <mariana@endlessm.com>, 2016-2017
 # Mariana Barbosa <mari@endlessm.com>, 2015-2016
+# Mariela Balbona Blank <mariela@endlessm.com>, 2018
 # Martin Abente Lahaye <tch@sugarlabs.org>, 2016
 # Philip Chimento <philip.chimento@gmail.com>, 2015,2017
 # Renato Peixoto Pinto <renato@endlessm.com>, 2014
@@ -15,16 +17,34 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
-"Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-06-14 22:54+0000\n"
-"PO-Revision-Date: 2017-09-22 08:43+0000\n"
-"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/pt_BR/)\n"
+"Report-Msgid-Bugs-To: https://www.transifex.com/endless-os/public/\n"
+"POT-Creation-Date: 2018-02-22 16:19-0300\n"
+"PO-Revision-Date: 2018-03-13 20:35+0000\n"
+"Last-Translator: Mariela Balbona Blank <mariela@endlessm.com>\n"
+"Language-Team: Portuguese (Brazil) (http://www.transifex.com/endless-os/eos-knowledge-lib/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: data/widgets/noContentDialog.ui:8
+msgid "Oops! No content."
+msgstr "Opa! Sem conteúdo."
+
+#: data/widgets/noContentDialog.ui:9
+msgid ""
+"The application could not find content to show. Please uninstall and re-"
+"install the application from the App Center."
+msgstr "O programa não encontrou conteúdo para mostrar. Por favor desinstale e instale novamente o programa a partir da Central de Programas."
+
+#: data/widgets/noContentDialog.ui:23
+msgid "Open App Center"
+msgstr "Abrir a Central de Programas"
+
+#: data/widgets/noContentDialog.ui:36
+msgid "Close"
+msgstr "Fechar"
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
@@ -65,16 +85,6 @@ msgstr "Página principal"
 msgid "View the license"
 msgstr "Veja a licença"
 
-#: js/app/application.js:182
-msgid "Oops! No content."
-msgstr "Opa! Sem conteúdo."
-
-#: js/app/application.js:183
-msgid ""
-"If you have an internet connection, we are downloading more content right "
-"now. Try again in a few minutes after this message disappears."
-msgstr "Se você está conectado, estamos baixando conteúdos adicionais neste momento. Tente novamente em alguns minutos quando esta mensagem desaparecer. "
-
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
@@ -102,21 +112,21 @@ msgid ""
 "to do anything."
 msgstr "Veja {wikihow-article-link} para mais detalhes, videos, imagens e atribuições. Cortesia de {wikihow-link}, onde qualquer pessoa pode facilmente aprender como fazer qualquer coisa. "
 
-#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:273
+#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:296
 msgid "Copy"
 msgstr "Copiar"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:305
+#: js/app/articleHTMLRenderer.js:329
 msgid "Content taken from {blog-link}."
 msgstr "Conteúdo retirado de {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:310
+#: js/app/articleHTMLRenderer.js:334
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "Cortesia de conteúdo de {blog-link}.  Utilizado com permissão."
 
@@ -124,23 +134,27 @@ msgstr "Cortesia de conteúdo de {blog-link}.  Utilizado com permissão."
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:317
+#: js/app/articleHTMLRenderer.js:341
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Cortesia de conteúdo de {blog-link}, licenciado sob {license-link}."
 
-#: js/app/buffetHistoryStore.js:53
+#: js/app/buffetHistoryStore.js:54
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "Foram encontrados resultados para “%s”"
 
-#: js/app/interfaces/card.js:279
+#: js/app/historyStore.js:414
+msgid "Shared from Endless"
+msgstr "Compartilhado a partir do Endless"
+
+#: js/app/interfaces/card.js:252
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
 msgstr[0] "%s:%s minuto"
 msgstr[1] "%s:%s minutos"
 
-#: js/app/interfaces/card.js:343
+#: js/app/interfaces/card.js:315
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -162,12 +176,12 @@ msgstr "Todas as Categorias"
 msgid "Search results for “%s”"
 msgstr "Resultados da pesquisa por “%s”"
 
-#: js/app/modules/banner/search.js:45
+#: js/app/modules/banner/search.js:46
 #, javascript-format
 msgid "Results for “%s”"
 msgstr "Resultados para “%s”"
 
-#: js/app/modules/contentGroup/contentGroup.js:171
+#: js/app/modules/contentGroup/contentGroup.js:173
 msgid "See more"
 msgstr "Veja mais"
 
@@ -187,7 +201,7 @@ msgstr "PÁGINA PRINCIPAL"
 msgid "Placeholder"
 msgstr "Marcador de posição"
 
-#: js/app/modules/navigation/searchBox.js:162
+#: js/app/modules/navigation/searchBox.js:166
 msgid "See more results"
 msgstr "Ver mais resultados"
 
@@ -196,10 +210,26 @@ msgstr "Ver mais resultados"
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:100
+#: js/app/utils.js:115
 msgid "by {author}"
 msgstr "Por {author}"
 
-#: js/app/utils.js:100
+#: js/app/utils.js:115
 msgid "and"
 msgstr "e"
+
+#: js/app/widgets/webShareDialog.js:179
+msgid "Retry"
+msgstr "Tentar de novo"
+
+#: js/app/widgets/webShareDialog.js:362
+msgid "Please sign in again to share this link"
+msgstr "Por favor entre de novo para poder compartilhar o endereço"
+
+#: js/app/widgets/webShareDialog.js:363 js/app/widgets/webShareDialog.js:415
+msgid "Sign In"
+msgstr "Iniciar sessão"
+
+#: js/app/widgets/webShareDialog.js:414
+msgid "Please sign in to share this link"
+msgstr "Por favor entre para compartilhar o endereço"

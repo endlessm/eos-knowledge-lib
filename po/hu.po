@@ -3,41 +3,60 @@
 # This file is distributed under the same license as the eos-knowledge package.
 # 
 # Translators:
+# Zoltan Hoppar <hopparz@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
-"Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-06-14 22:54+0000\n"
-"PO-Revision-Date: 2017-08-03 16:21+0000\n"
-"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
-"Language-Team: Hungarian (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/hu/)\n"
+"Report-Msgid-Bugs-To: https://www.transifex.com/endless-os/public/\n"
+"POT-Creation-Date: 2018-02-22 16:19-0300\n"
+"PO-Revision-Date: 2018-02-22 20:37+0000\n"
+"Last-Translator: Martin Abente Lahaye <tch@sugarlabs.org>\n"
+"Language-Team: Hungarian (http://www.transifex.com/endless-os/eos-knowledge-lib/language/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: hu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: data/widgets/noContentDialog.ui:8
+msgid "Oops! No content."
+msgstr "Hoppá! Nincs tartalom."
+
+#: data/widgets/noContentDialog.ui:9
+msgid ""
+"The application could not find content to show. Please uninstall and re-"
+"install the application from the App Center."
+msgstr ""
+
+#: data/widgets/noContentDialog.ui:23
+msgid "Open App Center"
+msgstr ""
+
+#: data/widgets/noContentDialog.ui:36
+msgid "Close"
+msgstr ""
+
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
-msgstr ""
+msgstr "Következő cikk"
 
 #: data/widgets/card/sequence.ui:60
 msgid "Previous Article"
-msgstr ""
+msgstr "Előző cikk"
 
 #: data/widgets/contentGroup/contentGroup.ui:26
 msgid "Oops! There was an error."
-msgstr ""
+msgstr "Hoppsz. Hiba történt."
 
 #: data/widgets/contentGroup/contentGroup.ui:40
 msgid "Download support info"
-msgstr ""
+msgstr "Támogatási információk letöltése"
 
 #: data/widgets/contentGroup/contentGroup.ui:44
 msgid ""
 "Click here to download a file with information that will help us track down "
 "the problem."
-msgstr ""
+msgstr "Kattintson ide, hogy letölthesse a fájlt információival együtt, ami segíthet számunkra a hiba lekövetésében."
 
 #: data/widgets/contentGroup/noResultsMessage.ui:37
 msgid ""
@@ -46,25 +65,15 @@ msgid ""
 "Check your spelling\n"
 "Try other words that mean the same thing\n"
 "Try using more general words"
-msgstr ""
+msgstr "Azt javasoljuk:\n\nEllenőrizze a gépelési hibákat\nHasználjon más szavakat ugyanarra a dologra\nPróbáljon használni elterjedtebb, ismertebb kifejezéseket"
 
 #: data/widgets/layout/sideMenu.ui:95
 msgid "Home"
-msgstr ""
+msgstr "Kezdőlap"
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license"
-msgstr ""
-
-#: js/app/application.js:182
-msgid "Oops! No content."
-msgstr ""
-
-#: js/app/application.js:183
-msgid ""
-"If you have an internet connection, we are downloading more content right "
-"now. Try again in a few minutes after this message disappears."
-msgstr ""
+msgstr "Licensz megtekintése"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -74,13 +83,13 @@ msgstr ""
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
-msgstr ""
+msgstr "Ez az oldal különféle tartalmakat tartalmaz innen:  {original-link}, ami elérhető ezzel a licensszel: {license-link}"
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
 #: js/app/articleHTMLRenderer.js:92
 msgid "http://wikihow.com"
-msgstr ""
+msgstr "http://wikihow.com"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -91,106 +100,126 @@ msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
-msgstr ""
+msgstr "Tekintse meg ezt az oldalt {wikihow-article-link} további videókért, képekért, és más tulajdonságokért. Ez az oldal {wikihow-link} tulajdona, ahonnan bárki megtanulhatja, hogy tehet meg bármit."
 
-#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:273
+#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:296
 msgid "Copy"
-msgstr ""
+msgstr "Másolás"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:305
+#: js/app/articleHTMLRenderer.js:329
 msgid "Content taken from {blog-link}."
-msgstr ""
+msgstr "Tartalom forrása: {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:310
+#: js/app/articleHTMLRenderer.js:334
 msgid "Content courtesy of {blog-link}. Used with kind permission."
-msgstr ""
+msgstr "Tartalom tulajdonosa: {blog-link}. Felhasználva a szerző engedélyével."
 
 #. TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:317
+#: js/app/articleHTMLRenderer.js:341
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
-msgstr ""
+msgstr "Tartalom tulajdonosa: {blog-link}, licensze: {license-link}."
 
-#: js/app/buffetHistoryStore.js:53
+#: js/app/buffetHistoryStore.js:54
 #, javascript-format
 msgid "Results were found for “%s”"
+msgstr "Találatok ebben a témában: “%s”"
+
+#: js/app/historyStore.js:414
+msgid "Shared from Endless"
 msgstr ""
 
-#: js/app/interfaces/card.js:279
+#: js/app/interfaces/card.js:252
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s:%s perc"
+msgstr[1] "%s:%s perc"
 
-#: js/app/interfaces/card.js:343
+#: js/app/interfaces/card.js:315
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d elem"
+msgstr[1] "%d elem"
 
 #: js/app/modules/banner/context.js:38 js/app/modules/banner/context.js:49
 msgid "Highlights"
-msgstr ""
+msgstr "Kiemelések"
 
 #: js/app/modules/banner/context.js:52
 msgid "All Categories"
-msgstr ""
+msgstr "Összes kategória"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep the %s token in your translation.
 #: js/app/modules/banner/context.js:61
 #, javascript-format
 msgid "Search results for “%s”"
-msgstr ""
+msgstr "Keresési eredmények ehhez kapcsolódóan: “%s”"
 
-#: js/app/modules/banner/search.js:45
+#: js/app/modules/banner/search.js:46
 #, javascript-format
 msgid "Results for “%s”"
-msgstr ""
+msgstr "Eredmények ehhez kapcsolódóan: “%s”"
 
-#: js/app/modules/contentGroup/contentGroup.js:171
+#: js/app/modules/contentGroup/contentGroup.js:173
 msgid "See more"
-msgstr ""
+msgstr "Még több"
 
 #: js/app/modules/contentGroup/noResultsMessage.js:52
 msgid "We're sorry, there are no results that match your search."
-msgstr ""
+msgstr "Sajnáljuk, a keresés feltételeinek nincs eredménye."
 
 #: js/app/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
-msgstr ""
+msgstr "ÖSSZES KATEGÓRIA MEGJELENÍTÉSE"
 
 #: js/app/modules/layout/hamburgerBasement.js:51
 msgid "HOME"
-msgstr ""
+msgstr "KEZDŐOLDAL"
 
 #: js/app/modules/layout/placeholder.js:25
 msgid "Placeholder"
-msgstr ""
+msgstr "Helykihagyás"
 
-#: js/app/modules/navigation/searchBox.js:162
+#: js/app/modules/navigation/searchBox.js:166
 msgid "See more results"
-msgstr ""
+msgstr "Tekintese meg a többi találatot is"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:100
+#: js/app/utils.js:115
 msgid "by {author}"
+msgstr "{author} által"
+
+#: js/app/utils.js:115
+msgid "and"
+msgstr "és"
+
+#: js/app/widgets/webShareDialog.js:179
+msgid "Retry"
 msgstr ""
 
-#: js/app/utils.js:100
-msgid "and"
+#: js/app/widgets/webShareDialog.js:362
+msgid "Please sign in again to share this link"
+msgstr ""
+
+#: js/app/widgets/webShareDialog.js:363 js/app/widgets/webShareDialog.js:415
+msgid "Sign In"
+msgstr ""
+
+#: js/app/widgets/webShareDialog.js:414
+msgid "Please sign in to share this link"
 msgstr ""

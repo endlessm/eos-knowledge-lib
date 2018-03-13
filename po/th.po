@@ -7,16 +7,34 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
-"Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-06-14 22:54+0000\n"
-"PO-Revision-Date: 2017-09-22 22:38+0000\n"
-"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
-"Language-Team: Thai (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/th/)\n"
+"Report-Msgid-Bugs-To: https://www.transifex.com/endless-os/public/\n"
+"POT-Creation-Date: 2018-02-22 16:19-0300\n"
+"PO-Revision-Date: 2018-03-13 18:24+0000\n"
+"Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
+"Language-Team: Thai (http://www.transifex.com/endless-os/eos-knowledge-lib/language/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: th\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: data/widgets/noContentDialog.ui:8
+msgid "Oops! No content."
+msgstr "อ๊ะ! ไม่มีเนื้อหา"
+
+#: data/widgets/noContentDialog.ui:9
+msgid ""
+"The application could not find content to show. Please uninstall and re-"
+"install the application from the App Center."
+msgstr "แอพพลิเคชันไม่พบเนื้อหาที่จะแสดง โปรดถอนการติดตั้งแล้วติดตั้งแอพพลิเคชันอีกครั้งจาก App Center"
+
+#: data/widgets/noContentDialog.ui:23
+msgid "Open App Center"
+msgstr "เปิด App Center"
+
+#: data/widgets/noContentDialog.ui:36
+msgid "Close"
+msgstr "ปิด"
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
@@ -57,16 +75,6 @@ msgstr "โฮม"
 msgid "View the license"
 msgstr "ดูใบอนุญาต"
 
-#: js/app/application.js:182
-msgid "Oops! No content."
-msgstr "อ๊ะ! ไม่มีเนื้อหา"
-
-#: js/app/application.js:183
-msgid ""
-"If you have an internet connection, we are downloading more content right "
-"now. Try again in a few minutes after this message disappears."
-msgstr "หากคุณมีการเชื่อมต่ออินเทอร์เน็ต เราจะดาวน์โหลดเนื้อหาเพิ่มเติมทันที  ทดลองอีกครั้งภายในสองหรือสามนาทีหลังจากข้อความนี้หายไป"
-
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
@@ -94,21 +102,21 @@ msgid ""
 "to do anything."
 msgstr "ดูรายละเอียด, วิดีโอ, ภาพ, และความเป็นเจ้าของเพิ่มเติมที่ {wikihow-article-link}  ขอขอบคุณ {wikihow-link} ในฐานะพื้นที่ที่ทุกคนสามารถเรียนรู้วิธีทำสิ่งต่างๆ ได้"
 
-#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:273
+#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:296
 msgid "Copy"
 msgstr "คัดลอก"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:305
+#: js/app/articleHTMLRenderer.js:329
 msgid "Content taken from {blog-link}."
 msgstr "เนื้อหานำมาจาก {blog-link}"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:310
+#: js/app/articleHTMLRenderer.js:334
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "เนื้อหาจาก {blog-link}  นำมาใช้งานโดยได้รับอนุญาตแล้ว"
 
@@ -116,22 +124,26 @@ msgstr "เนื้อหาจาก {blog-link}  นำมาใช้งา�
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:317
+#: js/app/articleHTMLRenderer.js:341
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "เนื้อหาจาก {blog-link} สงวนลิขสิทธิ์ภายใต้ {license-link}"
 
-#: js/app/buffetHistoryStore.js:53
+#: js/app/buffetHistoryStore.js:54
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "ผลลัพธ์ที่พบสำหรับ “%s”"
 
-#: js/app/interfaces/card.js:279
+#: js/app/historyStore.js:414
+msgid "Shared from Endless"
+msgstr "แชร์จาก Endless"
+
+#: js/app/interfaces/card.js:252
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
 msgstr[0] "%s:%s นาที"
 
-#: js/app/interfaces/card.js:343
+#: js/app/interfaces/card.js:315
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -152,12 +164,12 @@ msgstr "หมวดหมู่ทั้งหมด"
 msgid "Search results for “%s”"
 msgstr "ผลลัพธ์การค้นหาสำหรับ “%s”"
 
-#: js/app/modules/banner/search.js:45
+#: js/app/modules/banner/search.js:46
 #, javascript-format
 msgid "Results for “%s”"
 msgstr "ผลลัพธ์สำหรับ “%s”"
 
-#: js/app/modules/contentGroup/contentGroup.js:171
+#: js/app/modules/contentGroup/contentGroup.js:173
 msgid "See more"
 msgstr "ดูเพิ่มเติม"
 
@@ -177,7 +189,7 @@ msgstr "โฮม"
 msgid "Placeholder"
 msgstr "ผู้รับผิดชอบ "
 
-#: js/app/modules/navigation/searchBox.js:162
+#: js/app/modules/navigation/searchBox.js:166
 msgid "See more results"
 msgstr "ดูผลลัพธ์เพิ่มเติม"
 
@@ -186,10 +198,26 @@ msgstr "ดูผลลัพธ์เพิ่มเติม"
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:100
+#: js/app/utils.js:115
 msgid "by {author}"
 msgstr "โดย {author} "
 
-#: js/app/utils.js:100
+#: js/app/utils.js:115
 msgid "and"
 msgstr "และ"
+
+#: js/app/widgets/webShareDialog.js:179
+msgid "Retry"
+msgstr "ลองอีกครั้ง"
+
+#: js/app/widgets/webShareDialog.js:362
+msgid "Please sign in again to share this link"
+msgstr "โปรดลงชื่อเข้าใช้อีกครั้งเพื่อแชร์ลิงก์นี้"
+
+#: js/app/widgets/webShareDialog.js:363 js/app/widgets/webShareDialog.js:415
+msgid "Sign In"
+msgstr "ลงชื่อเข้าใช้"
+
+#: js/app/widgets/webShareDialog.js:414
+msgid "Please sign in to share this link"
+msgstr "โปรดลงชื่อเข้าใช้เพื่อแชร์ลิงก์นี้"

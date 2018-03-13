@@ -3,20 +3,39 @@
 # This file is distributed under the same license as the eos-knowledge package.
 # 
 # Translators:
+# Cheng-Chia Tseng <pswo10680@gmail.com>, 2017
 # Philip Chimento <philip.chimento@gmail.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
-"Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-06-14 22:54+0000\n"
-"PO-Revision-Date: 2017-09-23 12:01+0000\n"
-"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/zh_TW/)\n"
+"Report-Msgid-Bugs-To: https://www.transifex.com/endless-os/public/\n"
+"POT-Creation-Date: 2018-02-22 16:19-0300\n"
+"PO-Revision-Date: 2018-03-13 18:11+0000\n"
+"Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
+"Language-Team: Chinese (Taiwan) (http://www.transifex.com/endless-os/eos-knowledge-lib/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: data/widgets/noContentDialog.ui:8
+msgid "Oops! No content."
+msgstr "糟糕！沒有任何內容。"
+
+#: data/widgets/noContentDialog.ui:9
+msgid ""
+"The application could not find content to show. Please uninstall and re-"
+"install the application from the App Center."
+msgstr "應用程式找不到可以顯示的內容。請解除安裝，再從 App Center 重新安裝程式。"
+
+#: data/widgets/noContentDialog.ui:23
+msgid "Open App Center"
+msgstr "開啟 App Center"
+
+#: data/widgets/noContentDialog.ui:36
+msgid "Close"
+msgstr "關閉"
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
@@ -24,7 +43,7 @@ msgstr "下一篇文章"
 
 #: data/widgets/card/sequence.ui:60
 msgid "Previous Article"
-msgstr "前一文章"
+msgstr "上一篇文章"
 
 #: data/widgets/contentGroup/contentGroup.ui:26
 msgid "Oops! There was an error."
@@ -47,7 +66,7 @@ msgid ""
 "Check your spelling\n"
 "Try other words that mean the same thing\n"
 "Try using more general words"
-msgstr "我們建議你：\n\n檢查你的拼字\n嘗試其他有相同意義的詞彙\n嘗試使用更普通常見的詞彙"
+msgstr "我們建議您：\n\n檢查您的拼字\n嘗試其他有相同意義的詞彙\n嘗試使用更普及常見的詞彙"
 
 #: data/widgets/layout/sideMenu.ui:95
 msgid "Home"
@@ -55,17 +74,7 @@ msgstr "首頁"
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license"
-msgstr "察看授權"
-
-#: js/app/application.js:182
-msgid "Oops! No content."
-msgstr "糟糕！沒有任何內容。"
-
-#: js/app/application.js:183
-msgid ""
-"If you have an internet connection, we are downloading more content right "
-"now. Try again in a few minutes after this message disappears."
-msgstr "如果您有網際網路連線，我們將會立即下載更多內容。請在此訊息消失數分鐘後再重試。"
+msgstr "檢視授權條款"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -94,21 +103,21 @@ msgid ""
 "to do anything."
 msgstr "請參閱 {wikihow-article-link} 瞭解其他詳細資訊、影片、相片及姓名標示聲明。內容來自 {wikihow-link}，所有人都可以在這裡輕易學會任何事。"
 
-#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:273
+#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:296
 msgid "Copy"
 msgstr "複製"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:305
+#: js/app/articleHTMLRenderer.js:329
 msgid "Content taken from {blog-link}."
 msgstr "內容取自 {blog-link}。"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:310
+#: js/app/articleHTMLRenderer.js:334
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "內容來自 {blog-link}，已經過同意使用。"
 
@@ -116,22 +125,26 @@ msgstr "內容來自 {blog-link}，已經過同意使用。"
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:317
+#: js/app/articleHTMLRenderer.js:341
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "內容承蒙 {blog-link} 許可，依 {license-link} 授權。"
 
-#: js/app/buffetHistoryStore.js:53
+#: js/app/buffetHistoryStore.js:54
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "「%s」的搜尋結果"
 
-#: js/app/interfaces/card.js:279
+#: js/app/historyStore.js:414
+msgid "Shared from Endless"
+msgstr "已從 Endless 分享"
+
+#: js/app/interfaces/card.js:252
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
 msgstr[0] "%s:%s 分鐘"
 
-#: js/app/interfaces/card.js:343
+#: js/app/interfaces/card.js:315
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -139,7 +152,7 @@ msgstr[0] "%d 個項目"
 
 #: js/app/modules/banner/context.js:38 js/app/modules/banner/context.js:49
 msgid "Highlights"
-msgstr "重點摘要"
+msgstr "劃重點"
 
 #: js/app/modules/banner/context.js:52
 msgid "All Categories"
@@ -152,12 +165,12 @@ msgstr "全部類別"
 msgid "Search results for “%s”"
 msgstr "搜尋「%s」的結果"
 
-#: js/app/modules/banner/search.js:45
+#: js/app/modules/banner/search.js:46
 #, javascript-format
 msgid "Results for “%s”"
 msgstr "針對「%s」的結果"
 
-#: js/app/modules/contentGroup/contentGroup.js:171
+#: js/app/modules/contentGroup/contentGroup.js:173
 msgid "See more"
 msgstr "查看更多"
 
@@ -177,19 +190,35 @@ msgstr "首頁"
 msgid "Placeholder"
 msgstr "預留位置"
 
-#: js/app/modules/navigation/searchBox.js:162
+#: js/app/modules/navigation/searchBox.js:166
 msgid "See more results"
-msgstr "看更多結果"
+msgstr "查看更多結果"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:100
+#: js/app/utils.js:115
 msgid "by {author}"
-msgstr "作者 {author}"
+msgstr "作者為 {author}"
 
-#: js/app/utils.js:100
+#: js/app/utils.js:115
 msgid "and"
 msgstr "和"
+
+#: js/app/widgets/webShareDialog.js:179
+msgid "Retry"
+msgstr "重試"
+
+#: js/app/widgets/webShareDialog.js:362
+msgid "Please sign in again to share this link"
+msgstr "請重新登入來分享這個連結"
+
+#: js/app/widgets/webShareDialog.js:363 js/app/widgets/webShareDialog.js:415
+msgid "Sign In"
+msgstr "登入"
+
+#: js/app/widgets/webShareDialog.js:414
+msgid "Please sign in to share this link"
+msgstr "請登入來分享這個連結"

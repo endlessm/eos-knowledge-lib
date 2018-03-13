@@ -8,16 +8,34 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
-"Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-06-14 22:54+0000\n"
-"PO-Revision-Date: 2017-09-23 21:58+0000\n"
-"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
-"Language-Team: Hindi (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/hi/)\n"
+"Report-Msgid-Bugs-To: https://www.transifex.com/endless-os/public/\n"
+"POT-Creation-Date: 2018-02-22 16:19-0300\n"
+"PO-Revision-Date: 2018-02-22 20:37+0000\n"
+"Last-Translator: Martin Abente Lahaye <tch@sugarlabs.org>\n"
+"Language-Team: Hindi (http://www.transifex.com/endless-os/eos-knowledge-lib/language/hi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: hi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: data/widgets/noContentDialog.ui:8
+msgid "Oops! No content."
+msgstr "ओह! कोई सामग्री नहीं है."
+
+#: data/widgets/noContentDialog.ui:9
+msgid ""
+"The application could not find content to show. Please uninstall and re-"
+"install the application from the App Center."
+msgstr ""
+
+#: data/widgets/noContentDialog.ui:23
+msgid "Open App Center"
+msgstr ""
+
+#: data/widgets/noContentDialog.ui:36
+msgid "Close"
+msgstr ""
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
@@ -58,16 +76,6 @@ msgstr "मुखपृष्ठ"
 msgid "View the license"
 msgstr "लाइसेंस देखें"
 
-#: js/app/application.js:182
-msgid "Oops! No content."
-msgstr "ओह! कोई सामग्री नहीं है."
-
-#: js/app/application.js:183
-msgid ""
-"If you have an internet connection, we are downloading more content right "
-"now. Try again in a few minutes after this message disappears."
-msgstr "अगर आपके पास इंटरनेट कनेक्शन है, तो हम इस समय अधिक सामग्री डाउनलोड कर रहे हैं. इस संदेश के हट जाने के कुछ मिनट बाद पुनः प्रयास करें."
-
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
@@ -95,21 +103,21 @@ msgid ""
 "to do anything."
 msgstr "अधिक विवरण, वीडियो, चित्रों और विशेषता के लिए {wikihow-article-link} देखें. {wikihow-link} को श्रेय, जहाँ कोई भी आसानी से सीख सकता है कि कुछ भी कैसे करना है."
 
-#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:273
+#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:296
 msgid "Copy"
 msgstr "प्रतिलिपि करें"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:305
+#: js/app/articleHTMLRenderer.js:329
 msgid "Content taken from {blog-link}."
 msgstr "{blog-link} से ली गई सामग्री."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:310
+#: js/app/articleHTMLRenderer.js:334
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "{blog-link} के सामग्री सौजन्य से. अनुमति से उपयोग की गई."
 
@@ -117,23 +125,27 @@ msgstr "{blog-link} के सामग्री सौजन्य से. अ�
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:317
+#: js/app/articleHTMLRenderer.js:341
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "{blog-link} केे सामग्री सौजन्य से, {license-link} के अंतर्गत लाइसेंसीकृत."
 
-#: js/app/buffetHistoryStore.js:53
+#: js/app/buffetHistoryStore.js:54
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "“%s” के लिए परिणाम प्राप्त हुए"
 
-#: js/app/interfaces/card.js:279
+#: js/app/historyStore.js:414
+msgid "Shared from Endless"
+msgstr ""
+
+#: js/app/interfaces/card.js:252
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
 msgstr[0] "%s:%s मिनट"
 msgstr[1] "%s:%s मिनट"
 
-#: js/app/interfaces/card.js:343
+#: js/app/interfaces/card.js:315
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -155,12 +167,12 @@ msgstr "सभी श्रेणियाँ"
 msgid "Search results for “%s”"
 msgstr "“%s” के लिए परिणाम खोजें"
 
-#: js/app/modules/banner/search.js:45
+#: js/app/modules/banner/search.js:46
 #, javascript-format
 msgid "Results for “%s”"
 msgstr "“%s” के लिए परिणाम"
 
-#: js/app/modules/contentGroup/contentGroup.js:171
+#: js/app/modules/contentGroup/contentGroup.js:173
 msgid "See more"
 msgstr "अधिक देखें"
 
@@ -180,7 +192,7 @@ msgstr "मुखपृष्ठ"
 msgid "Placeholder"
 msgstr "प्लेसहोल्डर"
 
-#: js/app/modules/navigation/searchBox.js:162
+#: js/app/modules/navigation/searchBox.js:166
 msgid "See more results"
 msgstr "अधिक परिणाम देखें"
 
@@ -189,10 +201,26 @@ msgstr "अधिक परिणाम देखें"
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:100
+#: js/app/utils.js:115
 msgid "by {author}"
 msgstr "{author} की ओर से"
 
-#: js/app/utils.js:100
+#: js/app/utils.js:115
 msgid "and"
 msgstr "और"
+
+#: js/app/widgets/webShareDialog.js:179
+msgid "Retry"
+msgstr ""
+
+#: js/app/widgets/webShareDialog.js:362
+msgid "Please sign in again to share this link"
+msgstr ""
+
+#: js/app/widgets/webShareDialog.js:363 js/app/widgets/webShareDialog.js:415
+msgid "Sign In"
+msgstr ""
+
+#: js/app/widgets/webShareDialog.js:414
+msgid "Please sign in to share this link"
+msgstr ""
