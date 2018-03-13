@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["view/audio.html#viewaudio1", "pager/parallaxBackground.html#pagerparallaxbackground1"], "token": "enabled"});
+urls_downloaded_cb({"urls": ["pager/parallaxBackground.html#pagerparallaxbackground1", "view/audio.html#viewaudio1"], "token": "enabled"});

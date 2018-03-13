@@ -111,7 +111,7 @@ $('body').removeClass('no-script');
 Most likely, you will want the "64-bit" package.
 Create a <code>.local</code> folder in your home directory and unzip the downloaded package there:</p>
 <pre><code class="language-bash">mkdir -p ~/.local
-tar -C ~/.local -xjf node-v8.9.4-linux-x64.tar.xz
+tar -C ~/.local -xJf --strip-components=1 node-v8.9.4-linux-x64.tar.xz
 </code></pre>
 <p>Check if <code>~/.local/bin</code> is in your path (<code>echo $PATH</code>) and if not, add the following line to your <code>~/.bashrc</code> file, then close and reopen the terminal:</p>
 <pre><code class="language-bash">export PATH="$HOME/.local/bin:$PATH"
