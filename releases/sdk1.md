@@ -21,9 +21,14 @@ permalink: /releases/1/
 | Fri Nov 17 2017 | SDK1.7 release (irregular hotfix)
 | Sat Jan 13 2018 | SDK1.8 release (irregular hotfix)
 | Thu Jan 18 2018 | SDK1.9 release (irregular hotfix)
-| Thu Jan 18 2018 | EOL
+| Tue Mar 13 2018 | SDK1.10 release (irregular hotfix)
+| Tue Mar 13 2018 | EOL
 
 ## Release notes ##
+
+### SDK 1.10 (March 13, 2018) ###
+
+This is one more irregular hotfix release, to further improve slow app startup times.
 
 ### SDK 1.9 (January 18, 2018) ###
 

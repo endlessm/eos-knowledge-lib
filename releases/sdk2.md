@@ -17,7 +17,8 @@ permalink: /releases/2/
 | Mon Jan 8 2018  | SDK2.2 bugfix release
 | Sat Jan 14 2018 | SDK2.2.1 release (irregular hotfix)
 | Thu Jan 18 2018 | SDK2.3 release (irregular hotfix)
-| Mon Feb 5 2018  | EOL
+| Tue Mar 13 2018 | SDK2.4 release (irregular hotfix)
+| Tue Mar 13 2018 | EOL
 
 ## Major features ##
 
@@ -78,6 +79,10 @@ These changes apply to your `app.yaml` file.
 Related to the module renames, you'll need to update any CSS selectors in your `overrides.scss` file that use the `.CardKnowledgeDocument`, `.CardVideo`, `.CardAudio`, or `.CardMedia` classes (and any BEM variants) to refer to [`.ViewDocument`](http://endlessm.github.io/eos-knowledge-lib/docs/2/view/document.html), [`.ViewVideo`](http://endlessm.github.io/eos-knowledge-lib/docs/2/view/video.html), [`.ViewAudio`](http://endlessm.github.io/eos-knowledge-lib/docs/2/view/audio.html), and [`.ViewMedia`](http://endlessm.github.io/eos-knowledge-lib/docs/2/view/media.html).
 
 ## Release notes ##
+
+### SDK 2.4 (March 13, 2018) ###
+
+This is another irregular hotfix release, to further improve slow app startup times.
 
 ### SDK 2.3 (January 18, 2018) ###
 
