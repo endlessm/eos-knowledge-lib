@@ -7,16 +7,34 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
-"Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-06-14 22:54+0000\n"
-"PO-Revision-Date: 2017-09-20 09:25+0000\n"
-"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://www.transifex.com/endless-os/public/\n"
+"POT-Creation-Date: 2018-02-22 16:19-0300\n"
+"PO-Revision-Date: 2018-03-13 17:57+0000\n"
+"Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/endless-os/eos-knowledge-lib/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: data/widgets/noContentDialog.ui:8
+msgid "Oops! No content."
+msgstr "يا لهذا! لا يوجد محتوى."
+
+#: data/widgets/noContentDialog.ui:9
+msgid ""
+"The application could not find content to show. Please uninstall and re-"
+"install the application from the App Center."
+msgstr "لم يتمكن التطبيق من إيجاد محتوى لإظهاره. الرجاء إلغاء تثبيت التطبيق ثم إعادة تثبيته من مركز التطبيقات."
+
+#: data/widgets/noContentDialog.ui:23
+msgid "Open App Center"
+msgstr "فتح مركز التطبيقات"
+
+#: data/widgets/noContentDialog.ui:36
+msgid "Close"
+msgstr "إغلاق"
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
@@ -57,16 +75,6 @@ msgstr "الصفحة الرئيسية"
 msgid "View the license"
 msgstr "عرض الترخيص"
 
-#: js/app/application.js:182
-msgid "Oops! No content."
-msgstr "يا لهذا! لا يوجد محتوى."
-
-#: js/app/application.js:183
-msgid ""
-"If you have an internet connection, we are downloading more content right "
-"now. Try again in a few minutes after this message disappears."
-msgstr "إذا كان لديك اتصال بالإنترنت، فنحن نقوم حالياً بتنزيل مزيداً من المحتويات. حاول مرة أخرى بعد بضع دقائق بعد اختفاء هذه الرسالة."
-
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
@@ -94,21 +102,21 @@ msgid ""
 "to do anything."
 msgstr "اطلع على {wikihow-article-link} لمزيد من التفاصيل والفيديوهات والصور والإستنادات. بإذن \n {wikihow-link}، حيث يُمكن لاي شخص أن يتعلم بسهولة كيف يفعل أي شيء."
 
-#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:273
+#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:296
 msgid "Copy"
 msgstr "نسخة"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:305
+#: js/app/articleHTMLRenderer.js:329
 msgid "Content taken from {blog-link}."
 msgstr "المُحتوى مأخوذ من {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:310
+#: js/app/articleHTMLRenderer.js:334
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "المحتوى مهدى من {blog-link}. تم استخدامه بإذن كريم من صاحبه."
 
@@ -116,16 +124,20 @@ msgstr "المحتوى مهدى من {blog-link}. تم استخدامه بإذن
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:317
+#: js/app/articleHTMLRenderer.js:341
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "المحتوى مهدى من {blog-link}، ومرخص بموجب {license-link}."
 
-#: js/app/buffetHistoryStore.js:53
+#: js/app/buffetHistoryStore.js:54
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "النتائج التي عثرنا عليها لـ “%s”"
 
-#: js/app/interfaces/card.js:279
+#: js/app/historyStore.js:414
+msgid "Shared from Endless"
+msgstr "تمت المشاركة من Endless"
+
+#: js/app/interfaces/card.js:252
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
@@ -136,7 +148,7 @@ msgstr[3] "%s:%s دقائق"
 msgstr[4] "%s:%s دقائق"
 msgstr[5] "%s:%s دقائق "
 
-#: js/app/interfaces/card.js:343
+#: js/app/interfaces/card.js:315
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -162,12 +174,12 @@ msgstr "جميع التصنيفات"
 msgid "Search results for “%s”"
 msgstr "نتائج البحث الخاصة بـ “%s”"
 
-#: js/app/modules/banner/search.js:45
+#: js/app/modules/banner/search.js:46
 #, javascript-format
 msgid "Results for “%s”"
 msgstr "النتائج عن “%s”"
 
-#: js/app/modules/contentGroup/contentGroup.js:171
+#: js/app/modules/contentGroup/contentGroup.js:173
 msgid "See more"
 msgstr "شاهد المزيد"
 
@@ -187,7 +199,7 @@ msgstr "الصفحة الرئيسية"
 msgid "Placeholder"
 msgstr "عنصر نائب"
 
-#: js/app/modules/navigation/searchBox.js:162
+#: js/app/modules/navigation/searchBox.js:166
 msgid "See more results"
 msgstr "قُم بمشاهدة المزيد من النتائج"
 
@@ -196,10 +208,26 @@ msgstr "قُم بمشاهدة المزيد من النتائج"
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:100
+#: js/app/utils.js:115
 msgid "by {author}"
 msgstr "بواسطة (المؤلف)"
 
-#: js/app/utils.js:100
+#: js/app/utils.js:115
 msgid "and"
 msgstr "و"
+
+#: js/app/widgets/webShareDialog.js:179
+msgid "Retry"
+msgstr "إعادة المحاولة"
+
+#: js/app/widgets/webShareDialog.js:362
+msgid "Please sign in again to share this link"
+msgstr "الرجاء تسجيل الدخول مجدداً لمشاركة هذا الرابط"
+
+#: js/app/widgets/webShareDialog.js:363 js/app/widgets/webShareDialog.js:415
+msgid "Sign In"
+msgstr "تسجيل الدخول"
+
+#: js/app/widgets/webShareDialog.js:414
+msgid "Please sign in to share this link"
+msgstr "الرجاء تسجيل الدخول لمشاركة هذا الرابط"

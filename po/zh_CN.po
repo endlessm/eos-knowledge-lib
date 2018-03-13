@@ -13,16 +13,34 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
-"Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-06-14 22:54+0000\n"
-"PO-Revision-Date: 2017-09-23 21:58+0000\n"
-"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://www.transifex.com/endless-os/public/\n"
+"POT-Creation-Date: 2018-02-22 16:19-0300\n"
+"PO-Revision-Date: 2018-02-22 20:37+0000\n"
+"Last-Translator: Martin Abente Lahaye <tch@sugarlabs.org>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/endless-os/eos-knowledge-lib/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: data/widgets/noContentDialog.ui:8
+msgid "Oops! No content."
+msgstr "哎呀！无内容。"
+
+#: data/widgets/noContentDialog.ui:9
+msgid ""
+"The application could not find content to show. Please uninstall and re-"
+"install the application from the App Center."
+msgstr ""
+
+#: data/widgets/noContentDialog.ui:23
+msgid "Open App Center"
+msgstr ""
+
+#: data/widgets/noContentDialog.ui:36
+msgid "Close"
+msgstr ""
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
@@ -63,16 +81,6 @@ msgstr "主页"
 msgid "View the license"
 msgstr "查看许可证"
 
-#: js/app/application.js:182
-msgid "Oops! No content."
-msgstr "哎呀！无内容。"
-
-#: js/app/application.js:183
-msgid ""
-"If you have an internet connection, we are downloading more content right "
-"now. Try again in a few minutes after this message disappears."
-msgstr "如果您可以连接到互联网，我们将立即下载更多内容。请您在本消息消失后的几分钟后重试。"
-
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
@@ -100,21 +108,21 @@ msgid ""
 "to do anything."
 msgstr "查看更多关于{wikihow-article-link}的细节，视频，图片和来源。内容由{wikihow-link}提供，在此您可以轻松掌握各种技巧。"
 
-#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:273
+#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:296
 msgid "Copy"
 msgstr "复制"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:305
+#: js/app/articleHTMLRenderer.js:329
 msgid "Content taken from {blog-link}."
 msgstr "来源于{blog-link}的内容。"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:310
+#: js/app/articleHTMLRenderer.js:334
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "内容由{blog-link}提供。经授权许可使用。"
 
@@ -122,22 +130,26 @@ msgstr "内容由{blog-link}提供。经授权许可使用。"
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:317
+#: js/app/articleHTMLRenderer.js:341
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "内容由{blog-link}提供，已得到{license-link}许可认证。"
 
-#: js/app/buffetHistoryStore.js:53
+#: js/app/buffetHistoryStore.js:54
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "已找到“%s”的结果"
 
-#: js/app/interfaces/card.js:279
+#: js/app/historyStore.js:414
+msgid "Shared from Endless"
+msgstr ""
+
+#: js/app/interfaces/card.js:252
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
 msgstr[0] "%s: %s分钟"
 
-#: js/app/interfaces/card.js:343
+#: js/app/interfaces/card.js:315
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -158,12 +170,12 @@ msgstr "全部类别"
 msgid "Search results for “%s”"
 msgstr "搜索“%s”的结果"
 
-#: js/app/modules/banner/search.js:45
+#: js/app/modules/banner/search.js:46
 #, javascript-format
 msgid "Results for “%s”"
 msgstr "“%s”的结果"
 
-#: js/app/modules/contentGroup/contentGroup.js:171
+#: js/app/modules/contentGroup/contentGroup.js:173
 msgid "See more"
 msgstr "查看更多"
 
@@ -183,7 +195,7 @@ msgstr "主页"
 msgid "Placeholder"
 msgstr "占位符"
 
-#: js/app/modules/navigation/searchBox.js:162
+#: js/app/modules/navigation/searchBox.js:166
 msgid "See more results"
 msgstr "查看更多结果"
 
@@ -192,10 +204,26 @@ msgstr "查看更多结果"
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:100
+#: js/app/utils.js:115
 msgid "by {author}"
 msgstr "作者：{author}"
 
-#: js/app/utils.js:100
+#: js/app/utils.js:115
 msgid "and"
 msgstr "与"
+
+#: js/app/widgets/webShareDialog.js:179
+msgid "Retry"
+msgstr ""
+
+#: js/app/widgets/webShareDialog.js:362
+msgid "Please sign in again to share this link"
+msgstr ""
+
+#: js/app/widgets/webShareDialog.js:363 js/app/widgets/webShareDialog.js:415
+msgid "Sign In"
+msgstr ""
+
+#: js/app/widgets/webShareDialog.js:414
+msgid "Please sign in to share this link"
+msgstr ""

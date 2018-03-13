@@ -4,15 +4,16 @@
 # 
 # Translators:
 # Hartono <hartono.s10@gmail.com>, 2016-2017
-# Kukuh Syafaat <syafaatkukuh@gmail.com>, 2017
+# Kukuh Syafaat <syafaatkukuh@gmail.com>, 2017-2018
 # Philip Chimento <philip.chimento@gmail.com>, 2017
+# princeofgiri <princeofgiri@di.blankon.in>, 2018
 # Roddy Shuler <roddy@endlessm.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
-"Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-06-14 22:54+0000\n"
-"PO-Revision-Date: 2017-11-09 04:53+0000\n"
+"Report-Msgid-Bugs-To: https://www.transifex.com/endless-os/public/\n"
+"POT-Creation-Date: 2018-02-22 16:19-0300\n"
+"PO-Revision-Date: 2018-02-28 04:21+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian (http://www.transifex.com/endless-os/eos-knowledge-lib/language/id/)\n"
 "MIME-Version: 1.0\n"
@@ -20,6 +21,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: id\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: data/widgets/noContentDialog.ui:8
+msgid "Oops! No content."
+msgstr "Ups! Tidak ada konten."
+
+#: data/widgets/noContentDialog.ui:9
+msgid ""
+"The application could not find content to show. Please uninstall and re-"
+"install the application from the App Center."
+msgstr "Aplikasi tidak dapat menemukan konten untuk ditampilkan. Silahkan hapus pemasangan atau pasang ulang aplikasi dari Pusat Aplikasi."
+
+#: data/widgets/noContentDialog.ui:23
+msgid "Open App Center"
+msgstr "Buka Pusat Aplikasi"
+
+#: data/widgets/noContentDialog.ui:36
+msgid "Close"
+msgstr "Tutup"
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
@@ -60,16 +79,6 @@ msgstr "Beranda"
 msgid "View the license"
 msgstr "Lihat izin penggunaan"
 
-#: js/app/application.js:182
-msgid "Oops! No content."
-msgstr "Ups! Tidak ada konten yang ditemukan"
-
-#: js/app/application.js:183
-msgid ""
-"If you have an internet connection, we are downloading more content right "
-"now. Try again in a few minutes after this message disappears."
-msgstr "Jika Anda memiliki sambungan internet, kami sedang mengunduh konten lebih banyak. Coba lagi dalam beberapa menit setelah pesan ini menghilang."
-
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
@@ -97,21 +106,21 @@ msgid ""
 "to do anything."
 msgstr "Lihat {wikihow-article-link} untuk rincian, video, gambar dan atribusi selengkapnya. Milik {wikihow-link}, di mana setiap orang dapat mempelajari cara melakukan sesuatu secara mudah."
 
-#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:273
+#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:296
 msgid "Copy"
 msgstr "Salin"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:305
+#: js/app/articleHTMLRenderer.js:329
 msgid "Content taken from {blog-link}."
 msgstr "Konten diambil dari {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:310
+#: js/app/articleHTMLRenderer.js:334
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "Konten adalah hak milik {blog-link}. Digunakan dengan izin."
 
@@ -119,22 +128,26 @@ msgstr "Konten adalah hak milik {blog-link}. Digunakan dengan izin."
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:317
+#: js/app/articleHTMLRenderer.js:341
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Konten adalah hak milik {blog-link}, berlisensi di bawah {license-link}."
 
-#: js/app/buffetHistoryStore.js:53
+#: js/app/buffetHistoryStore.js:54
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "Ada hasil ditemukan untuk \"%s\""
 
-#: js/app/interfaces/card.js:279
+#: js/app/historyStore.js:414
+msgid "Shared from Endless"
+msgstr "Dibagikan dari Endless"
+
+#: js/app/interfaces/card.js:252
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
 msgstr[0] "%s:%s menit"
 
-#: js/app/interfaces/card.js:343
+#: js/app/interfaces/card.js:315
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -155,12 +168,12 @@ msgstr "Semua Kategori"
 msgid "Search results for “%s”"
 msgstr "Hasil pencarian untuk \"%s\""
 
-#: js/app/modules/banner/search.js:45
+#: js/app/modules/banner/search.js:46
 #, javascript-format
 msgid "Results for “%s”"
 msgstr "Hasil untuk “%s”"
 
-#: js/app/modules/contentGroup/contentGroup.js:171
+#: js/app/modules/contentGroup/contentGroup.js:173
 msgid "See more"
 msgstr "Lihat lainnya"
 
@@ -180,7 +193,7 @@ msgstr "BERANDA"
 msgid "Placeholder"
 msgstr "Tempat"
 
-#: js/app/modules/navigation/searchBox.js:162
+#: js/app/modules/navigation/searchBox.js:166
 msgid "See more results"
 msgstr "Lihat lebih banyak hasil"
 
@@ -189,10 +202,26 @@ msgstr "Lihat lebih banyak hasil"
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:100
+#: js/app/utils.js:115
 msgid "by {author}"
 msgstr "oleh {pengarang}"
 
-#: js/app/utils.js:100
+#: js/app/utils.js:115
 msgid "and"
 msgstr "dan"
+
+#: js/app/widgets/webShareDialog.js:179
+msgid "Retry"
+msgstr "Ulangi"
+
+#: js/app/widgets/webShareDialog.js:362
+msgid "Please sign in again to share this link"
+msgstr "Silahkan masuk kembali untuk membagikan tautan ini"
+
+#: js/app/widgets/webShareDialog.js:363 js/app/widgets/webShareDialog.js:415
+msgid "Sign In"
+msgstr "Masuk"
+
+#: js/app/widgets/webShareDialog.js:414
+msgid "Please sign in to share this link"
+msgstr "Silahkan masuk untuk membagikan tautan ini"

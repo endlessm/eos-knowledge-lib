@@ -7,16 +7,34 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
-"Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2017-06-14 22:54+0000\n"
-"PO-Revision-Date: 2017-09-22 22:38+0000\n"
-"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://www.transifex.com/endless-os/public/\n"
+"POT-Creation-Date: 2018-02-22 16:19-0300\n"
+"PO-Revision-Date: 2018-03-13 17:53+0000\n"
+"Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/endless-os/eos-knowledge-lib/language/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: data/widgets/noContentDialog.ui:8
+msgid "Oops! No content."
+msgstr "Ối! Không có nội dung."
+
+#: data/widgets/noContentDialog.ui:9
+msgid ""
+"The application could not find content to show. Please uninstall and re-"
+"install the application from the App Center."
+msgstr "Ứng dụng này không thể tìm thấy nội dung để hiển thị. Vui lòng gỡ cài đặt và cài đặt lại ứng dụng từ Trung tâm Ứng dụng."
+
+#: data/widgets/noContentDialog.ui:23
+msgid "Open App Center"
+msgstr "Mở Trung tâm Ứng dụng"
+
+#: data/widgets/noContentDialog.ui:36
+msgid "Close"
+msgstr "Đóng"
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
@@ -57,16 +75,6 @@ msgstr "Trang chủ"
 msgid "View the license"
 msgstr "Xem giấy phép"
 
-#: js/app/application.js:182
-msgid "Oops! No content."
-msgstr "Ối! Không có nội dung."
-
-#: js/app/application.js:183
-msgid ""
-"If you have an internet connection, we are downloading more content right "
-"now. Try again in a few minutes after this message disappears."
-msgstr "Nếu bạn có kết nối internet, ngay bây giờ chúng ta đang tải về thêm nội dung. Hãy thử lại trong vài phút tới sau khi tin nhắn này biến mất."
-
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
@@ -94,21 +102,21 @@ msgid ""
 "to do anything."
 msgstr "Xem {wikihow-article-link} để biết thêm các thông tin chi tiết, video, ảnh và thuộc tính. Thoải mái vào {wikihow-link}, ở đó bất kỳ ai cũng có thể dễ dàng học cách thực hiện bất kỳ điều gì."
 
-#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:273
+#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:296
 msgid "Copy"
 msgstr "Sao chép"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:305
+#: js/app/articleHTMLRenderer.js:329
 msgid "Content taken from {blog-link}."
 msgstr "Nội dung lấy từ {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:310
+#: js/app/articleHTMLRenderer.js:334
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "Được quyền sử dụng nội dung từ {blog-link}. Được cho phép sử dụng."
 
@@ -116,22 +124,26 @@ msgstr "Được quyền sử dụng nội dung từ {blog-link}. Được cho p
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:317
+#: js/app/articleHTMLRenderer.js:341
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Được quyền sử dụng nội dung từ {blog-link}, được cấp phép theo {license-link}."
 
-#: js/app/buffetHistoryStore.js:53
+#: js/app/buffetHistoryStore.js:54
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "Đã tìm thấy kết quả tìm kiếm cho \"%s\""
 
-#: js/app/interfaces/card.js:279
+#: js/app/historyStore.js:414
+msgid "Shared from Endless"
+msgstr "Được chia sẻ từ Endless"
+
+#: js/app/interfaces/card.js:252
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
 msgstr[0] "%s:%s phút"
 
-#: js/app/interfaces/card.js:343
+#: js/app/interfaces/card.js:315
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -152,12 +164,12 @@ msgstr "Tất cả Danh mục"
 msgid "Search results for “%s”"
 msgstr "Kết quả tìm kiếm cho \"%s\""
 
-#: js/app/modules/banner/search.js:45
+#: js/app/modules/banner/search.js:46
 #, javascript-format
 msgid "Results for “%s”"
 msgstr "Kết quả đối với “%s”"
 
-#: js/app/modules/contentGroup/contentGroup.js:171
+#: js/app/modules/contentGroup/contentGroup.js:173
 msgid "See more"
 msgstr "Xem thêm"
 
@@ -177,7 +189,7 @@ msgstr "TRANG CHỦ"
 msgid "Placeholder"
 msgstr "Phần giữ chỗ"
 
-#: js/app/modules/navigation/searchBox.js:162
+#: js/app/modules/navigation/searchBox.js:166
 msgid "See more results"
 msgstr "Xem thêm kết quả"
 
@@ -186,10 +198,26 @@ msgstr "Xem thêm kết quả"
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:100
+#: js/app/utils.js:115
 msgid "by {author}"
 msgstr "bởi {author}"
 
-#: js/app/utils.js:100
+#: js/app/utils.js:115
 msgid "and"
 msgstr "và"
+
+#: js/app/widgets/webShareDialog.js:179
+msgid "Retry"
+msgstr "Thử lại"
+
+#: js/app/widgets/webShareDialog.js:362
+msgid "Please sign in again to share this link"
+msgstr "Vui lòng đăng nhập lại để chia sẻ liên kết này"
+
+#: js/app/widgets/webShareDialog.js:363 js/app/widgets/webShareDialog.js:415
+msgid "Sign In"
+msgstr "Đăng nhập"
+
+#: js/app/widgets/webShareDialog.js:414
+msgid "Please sign in to share this link"
+msgstr "Vui lòng đăng nhập để chia sẻ liên kết này"
