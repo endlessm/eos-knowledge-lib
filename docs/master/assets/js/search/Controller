@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["mf-index.html#page-description", "controller/course.html#controllercourse1", "modules/window.html#window"], "token": "Controller"});
+urls_downloaded_cb({"token": "Controller", "urls": ["mf-index.html#page-description", "controller/course.html#controllercourse1", "modules/window.html#window"]});
