@@ -1,0 +1,20 @@
+{
+  "name": "cc-ingester",
+  "version": "0.0.0",
+  "description": "Ingester for Creative Commons blog",
+  "main": "index.js",
+  "dependencies": {
+    "fathom-web": "^2.2.0",
+    "jsdom": "^11.6.2",
+    "libingester": "^2.5.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.16.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "eslint ."
+  },
+  "author": "Philip Chimento",
+  "license": "CC0-1.0"
+}
