@@ -74,9 +74,13 @@ var ThemeableImage = new Knowledge.Class({
                 loader.write_bytes(chunk);
             } while (this._pixbuf_width === undefined);
 
-            /* Close stream and loader */
-            stream.close(null);
-            loader.close();
+            try {
+                /* Close stream and loader */
+                stream.close(null);
+
+                /* Ignore errors, we are only interested in the image size */
+                loader.close();
+            } catch (e) { }
 
             let provider = new Gtk.CssProvider();
             provider.load_from_data(
