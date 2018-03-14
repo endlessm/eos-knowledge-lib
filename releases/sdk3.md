@@ -13,8 +13,9 @@ permalink: /releases/3/
 | Mon Feb 5 2018  | SDK3.0 release
 | Thu Feb 15 2018 | SDK3.1 hard code freeze
 | Mon Mar 5 2018  | SDK3.1 bugfix release
-| Thu Mar 22 2018 | SDK3.2 hard code freeze
-| Mon Apr 9 2018  | SDK3.2 bugfix release
+| Wed Mar 14 2018 | SDK3.2 release (irregular hotfix)
+| Thu Mar 22 2018 | SDK3.3 hard code freeze
+| Mon Apr 9 2018  | SDK3.3 bugfix release
 | Mon May 7 2018  | EOL
 
 ## Major features ##
@@ -67,6 +68,12 @@ If you were adding extra space to the ends of HTML pages in your app in order to
 If you were using libingester's `BlogAsset` and `NewsAsset`, this is done for you automatically if you upgrade to libingester 2.2.45 or later.
 
 ## Release notes ##
+
+### SDK 3.2 (March 14, 2018) ###
+
+- This is an irregular hotfix release.
+- Modular framework: Bug fixed whereby some apps with videos might lock up when navigating to other pages.
+- Modular framework: Translated English-only messages that appear when signing in to Facebook after your login has expired.
 
 ### SDK 3.1 (March 5, 2018) ###
 
