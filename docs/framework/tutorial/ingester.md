@@ -109,8 +109,8 @@ Now that we have RSS entries, we can download the posts, and get their metadata 
 To see the HTML we're dealing with and get a sense of how much cleaning must be done, let's get our `ingestArticle()` function to write out some basic metadata from the RSS feed and save a copy of the HTML:
 
 ```javascript
-const thenifyAll = require('thenify-all');
-const fs = thenifyAll(require('fs'), {}, ['writeFile']);
+const util = require('util');
+const writeFile = util.promisify(require('fs').writeFile);
 // ...
 async function ingestArticle({link, title, author, date}, ix) {
     let $ = await Libingester.util.fetch_html(link);
@@ -120,7 +120,7 @@ async function ingestArticle({link, title, author, date}, ix) {
     console.log(`URL: ${link}`);
     console.log(`DATE PUBLISHED: ${date}`);
 
-    await fs.writeFile(`${ix}.html`, $.html());
+    await writeFile(`${ix}.html`, $.html());
 }
 ```
 
