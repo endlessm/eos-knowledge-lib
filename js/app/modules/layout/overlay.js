@@ -42,6 +42,7 @@ var Overlay = new Module.Class({
         this.parent(props);
 
         this.add(this.create_submodule('content'));
-        this.create_submodule('overlays').forEach(this.add_overlay, this);
+        this.create_submodule('overlays')
+            .forEach(module => this.add_overlay(module));
     },
 });

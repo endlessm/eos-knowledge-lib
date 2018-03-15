@@ -30,15 +30,12 @@ vars:
     type: ContentGroup.StaticText
     properties:
       label: !translate 'Sorry, there are no results that match your search.'
-      halign: start
-      justify: left
       wrap: true
       wrap-mode: word-char
   noresults-featured-articles-text:
     type: ContentGroup.StaticText
     properties:
       label: !translate 'Latest posts'
-      halign: start
   noresults-featured-articles-arrangement:
     shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
   noresults-featured-articles-card: *main-card

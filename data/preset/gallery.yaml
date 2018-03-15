@@ -38,7 +38,6 @@ vars:
     type: ContentGroup.StaticText
     properties:
       label: !translate 'You might also be interested in...'
-      halign: start
 
 defines:
 # Recurring components
