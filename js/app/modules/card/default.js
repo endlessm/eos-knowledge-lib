@@ -60,6 +60,19 @@ var Default = new Module.Class({
     InternalChildren: [ 'layout', 'inner-content-grid', 'thumbnail-frame',
                         'grid', 'title-label', 'synopsis-label', 'context-frame',
                         'thumbnail-overlay', 'content-overlay', 'title-box'],
+    Properties: {
+        /**
+         * Property: justify
+         * Horizontal justification of the title, synopsis and context
+         *
+         * Default value:
+         *   **Gtk.Justification.LEFT**
+         */
+        'justify': GObject.ParamSpec.enum('justify',
+            'Justify', 'Horizontal justification of the title, synopsis and context',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            Gtk.Justification.$gtype, Gtk.Justification.LEFT),
+    },
 
     _init: function (props={}) {
         Object.defineProperties(this, {
@@ -84,6 +97,7 @@ var Default = new Module.Class({
 
         this._context_widget = this.create_context_widget_from_model();
         this._context_frame.add(this._context_widget);
+        this._setup_justification();
 
         this.set_size_request(Card.MinSize.B, Card.MinSize.B);
 
@@ -96,6 +110,30 @@ var Default = new Module.Class({
             this.set_media_overlay_from_model(this._content_overlay);
         else
             this.set_media_overlay_from_model(this._thumbnail_overlay);
+    },
+
+    _setup_justification: function () {
+        const props = {
+            halign: Gtk.Align.START,
+            justify: Gtk.Justification.LEFT,
+            xalign: 0,
+        };
+        if (this.justify === Gtk.Justification.CENTER) {
+            props.halign = Gtk.Align.CENTER;
+            props.justify = Gtk.Justification.CENTER;
+            props.xalign = 0.5;
+        } else if (this.justify === Gtk.Justification.FILL) {
+            props.halign = Gtk.Align.FILL;
+            props.justify = Gtk.Justification.FILL;
+            props.xalign = 0;
+        } else if (this.justify === Gtk.Justification.RIGHT) {
+            props.halign = Gtk.Align.END;
+            props.justify = Gtk.Justification.RIGHT;
+            props.xalign = 1;
+        }
+        Object.assign(this._title_label, props);
+        Object.assign(this._synopsis_label, props);
+        this._context_frame.halign = props.halign;
     },
 
     _get_card_type: function () {
@@ -416,7 +454,6 @@ var Default = new Module.Class({
             this.get_style_context().add_class('CardPost');
             show_synopsis = false;
             this._title_label.lines = 2;
-            this._context_widget.halign = Gtk.Align.START;
             this._title_label.valign = Gtk.Align.END;
             this._main_layout(
                 real_alloc_width,
@@ -429,7 +466,6 @@ var Default = new Module.Class({
             text_constraints = this._get_constraints_post_card(show_context);
         } else if (this._card_type === CardType.MED_RES_IMAGE) {
             this.get_style_context().add_class('CardPolaroid');
-            this._context_widget.halign = Gtk.Align.START;
             if (orientation === Gtk.Orientation.HORIZONTAL) {
                 if (real_alloc_width > Card.MaxSize.E) {
                     this._main_layout(
@@ -500,7 +536,6 @@ var Default = new Module.Class({
             } else {
                 this._synopsis_label.lines = 6;
             }
-            this._context_frame.halign = Gtk.Align.START;
             if (show_synopsis) {
                 this._title_label.valign = Gtk.Align.END;
             } else {
