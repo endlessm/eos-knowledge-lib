@@ -6,8 +6,7 @@
   "dependencies": {
     "fathom-web": "^2.2.0",
     "jsdom": "^11.6.2",
-    "libingester": "^2.4.2",
-    "progress": "^2.0.0"
+    "libingester": "^2.4.2"
   },
   "devDependencies": {
     "eslint": "^4.16.0"
