@@ -192,7 +192,7 @@ We use a rule set based on [Fathom's example "Readability" ruleset][fathom-reada
 const rules = ruleset(
     // Isolate the actual blog post body text. Based on Fathom's example
     // Readability rules
-    rule(dom('p,li,code,blockquote,pre,h1,h2,h3,h4,h5,h6'),
+    rule(dom('p,li,ol,ul,code,blockquote,pre,h1,h2,h3,h4,h5,h6'),
         props(scoreByLength).type('paragraphish')),
     rule(type('paragraphish'), score(byInverseLinkDensity)),
     rule(dom('p'), score(4.5).type('paragraphish')),
