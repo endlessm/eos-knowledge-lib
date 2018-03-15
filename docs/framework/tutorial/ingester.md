@@ -150,9 +150,9 @@ console.log(`LAST MODIFIED: ${lastModified}`);
 In the case of tags, things are slightly complicated.
 Wordpress distinguishes predefined "categories" and free-form "tags".
 The data model for offline content that we use here, allows tagging content with an array of strings.
-These tag strings can be any string, and are not visible to users of the app.
+These tags can be any string, and are not visible to users of the app.
 Later on, when we define the content structure for the app, we can create a "set" that is visible in the app's UI.
-A set includes any number of tag strings, and can be marked "featured" to make it more prominent in the app, or not.
+A set includes any number of tags, and can be marked "featured" to make it more prominent in the app, or not.
 (You'll learn more about this later in the walkthrough.)
 
 Later on we will make Wordpress categories into featured sets, and Wordpress tags non-featured.
