@@ -75,104 +75,104 @@ const rules = ruleset(
         }),
         out('content').allThrough(Futils.domSort)));
 
-function ingestArticle(hatch, {title, link, date, author}) {
-    return Libingester.util.fetch_html(link)
-    .then($ => {
-        const baseURI = Libingester.util.get_doc_base_uri($, link);
+async function ingestArticle(hatch, {title, link, date, author}) {
+    let $ = await Libingester.util.fetch_html(link);
+    const baseURI = Libingester.util.get_doc_base_uri($, link);
 
-        const imageURI = $('meta[property="og:image"]').attr('content');
-        const synopsis = $('meta[property="og:description"]').attr('content');
-        const lastModified = $('meta[property="article:modified_time"]')
-            .attr('content');
+    const imageURI = $('meta[property="og:image"]').attr('content');
+    const synopsis = $('meta[property="og:description"]').attr('content');
+    const lastModified = $('meta[property="article:modified_time"]')
+        .attr('content');
 
-        // Wordpress distinguishes predefined "categories" and free-form "tags".
-        // We are likely to make Wordpress categories into featured sets, and
-        // Wordpress tags non-featured. For now, we will mark the tag IDs of
-        // Wordpress tags with "tag:".
-        const wpCategory = $('meta[property="article:section"]')
-            .attr('content');
-        const wpTags = $('meta[property="article:tag"]')
-            .map(function () { return $(this).attr('content'); })
-            .get();
-        const tags = wpTags.map(t => `tag:${t}`);
-        tags.unshift(wpCategory);
+    // Wordpress distinguishes predefined "categories" and free-form "tags".
+    // We are likely to make Wordpress categories into featured sets, and
+    // Wordpress tags non-featured. For now, we will mark the tag IDs of
+    // Wordpress tags with "tag:".
+    const wpCategory = $('meta[property="article:section"]')
+        .attr('content');
+    const wpTags = $('meta[property="article:tag"]')
+        .map(function () { return $(this).attr('content'); })
+        .get();
+    const tags = wpTags.map(t => `tag:${t}`);
+    tags.unshift(wpCategory);
 
-        const dom = JSDOM.jsdom($.html(), {
-            features: {ProcessExternalResources: false},
-        });
-        const facts = rules.against(dom);
-        const html = facts.get('content')
-            .filter(fnode => fnode.scoreFor('paragraphish') > 0)
-            .map(fnode => fnode.element.outerHTML).join('');
-
-        // Load the DOM back into Cheerio
-        $ = Cheerio.load('<article>');
-        $('article').append(html);
-
-        // Do some extra cleanup to minimize the size
-        const all = $('*');
-        all.removeAttr('class');
-        all.removeAttr('style');
-        const imgs = $('img');
-        ['attachment-id', 'permalink', 'orig-file', 'orig-size', 'image-meta',
-            'comments-opened', 'medium-file', 'large-file']
-            .forEach(data => imgs.removeAttr(`data-${data}`));
-        imgs.removeAttr('srcset');  // For simplicity, only use one size
-
-        const postAsset = new Libingester.BlogArticle();
-        postAsset.set_title(title);
-        postAsset.set_synopsis(synopsis);
-        postAsset.set_canonical_uri(link);
-        if (lastModified)
-            postAsset.set_last_modified_date(lastModified);
-        postAsset.set_date_published(date);
-        postAsset.set_license('CC BY 4.0 International');
-        postAsset.set_author(author);
-        postAsset.set_read_more_text(`"${title}" by ${author}, used under CC BY 4.0 International / Reformatted from original`);
-        postAsset.set_tags(tags);
-
-        const thumbnailAsset = Libingester.util.download_image(imageURI);
-        hatch.save_asset(thumbnailAsset);
-        postAsset.set_thumbnail(thumbnailAsset);
-
-        // Pick out a "main image": the first <figure>
-        const figures = $('figure');
-        if (figures.length) {
-            const main = figures.first();
-            const img = $('img', main);
-            const mainImageAsset = Libingester.util.download_img(img, baseURI);
-            hatch.save_asset(mainImageAsset);
-
-            postAsset.set_main_image(mainImageAsset);
-            postAsset.set_main_image_caption($('figcaption', main).text());
-
-            $(main).remove();
-        }
-
-        // Save assets for any remaining <figure>s
-        $('figure').each(function () {
-            const img = $('img', this);
-            const figureAsset = Libingester.util.download_img(img, baseURI);
-            hatch.save_asset(figureAsset);
-        });
-
-        postAsset.set_body($);
-        postAsset.render();
-
-        hatch.save_asset(postAsset);
+    const dom = JSDOM.jsdom($.html(), {
+        features: {ProcessExternalResources: false},
     });
+    const facts = rules.against(dom);
+    const html = facts.get('content')
+        .filter(fnode => fnode.scoreFor('paragraphish') > 0)
+        .map(fnode => fnode.element.outerHTML).join('');
+
+    // Load the DOM back into Cheerio
+    $ = Cheerio.load('<article>');
+    $('article').append(html);
+
+    // Do some extra cleanup to minimize the size
+    const all = $('*');
+    all.removeAttr('class');
+    all.removeAttr('style');
+    const imgs = $('img');
+    ['attachment-id', 'permalink', 'orig-file', 'orig-size', 'image-meta',
+        'comments-opened', 'medium-file', 'large-file']
+        .forEach(data => imgs.removeAttr(`data-${data}`));
+    imgs.removeAttr('srcset');  // For simplicity, only use one size
+
+    const postAsset = new Libingester.BlogArticle();
+    postAsset.set_title(title);
+    postAsset.set_synopsis(synopsis);
+    postAsset.set_canonical_uri(link);
+    if (lastModified)
+        postAsset.set_last_modified_date(lastModified);
+    postAsset.set_date_published(date);
+    postAsset.set_license('CC BY 4.0 International');
+    postAsset.set_author(author);
+    postAsset.set_read_more_text(`"${title}" by ${author}, used under CC BY 4.0 International / Reformatted from original`);
+    postAsset.set_tags(tags);
+
+    const thumbnailAsset = Libingester.util.download_image(imageURI);
+    hatch.save_asset(thumbnailAsset);
+    postAsset.set_thumbnail(thumbnailAsset);
+
+    // Pick out a "main image": the first <figure>
+    const figures = $('figure');
+    if (figures.length) {
+        const main = figures.first();
+        const img = $('img', main);
+        const mainImageAsset = Libingester.util.download_img(img, baseURI);
+        hatch.save_asset(mainImageAsset);
+
+        postAsset.set_main_image(mainImageAsset);
+        postAsset.set_main_image_caption($('figcaption', main).text());
+
+        $(main).remove();
+    }
+
+    // Save assets for any remaining <figure>s
+    $('figure').each(function () {
+        const img = $('img', this);
+        const figureAsset = Libingester.util.download_img(img, baseURI);
+        hatch.save_asset(figureAsset);
+    });
+
+    postAsset.set_body($);
+    postAsset.render();
+
+    hatch.save_asset(postAsset);
 }
 
-function main() {
+async function main() {
     const hatch = new Libingester.Hatch('cc-blog', 'en');
     const paginator = Libingester.util.create_wordpress_paginator(feedURI);
-    Libingester.util.fetch_rss_entries(paginator, Infinity, 90)
-    .then(items => Promise.all(items.map(entry => ingestArticle(hatch, entry))))
-    .then(() => hatch.finish())
-    .catch(err => {
+    try {
+        const items = await Libingester.util.fetch_rss_entries(paginator,
+            Infinity, 90);
+        await Promise.all(items.map(entry => ingestArticle(hatch, entry)));
+        hatch.finish();
+    } catch(err) {
         console.log('there was an error', err);
         process.exitCode = 1;
-    });
+    }
 }
 
 main();

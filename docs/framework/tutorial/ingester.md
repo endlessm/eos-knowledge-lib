@@ -61,13 +61,14 @@ function ingestArticle({date, title}) {
     console.log(date, title);
 }
 
-function main() {
-    Libingester.util.fetch_rss_entries(feedURI)
-    .then(items => Promise.all(items.map(ingestArticle)))
-    .catch(err => {
+async function main() {
+    try {
+        const items = await Libingester.util.fetch_rss_entries(feedURI);
+        items.forEach(ingestArticle);
+    } catch(err) {
         console.log('there was an error', err);
         process.exitCode = 1;
-    });
+    }
 }
 
 main();
@@ -111,17 +112,15 @@ To see the HTML we're dealing with and get a sense of how much cleaning must be 
 const thenifyAll = require('thenify-all');
 const fs = thenifyAll(require('fs'), {}, ['writeFile']);
 // ...
-function ingestArticle({link, title, author, date}, ix) {
-    return Libingester.util.fetch_html(link)
-    .then($ => {
-        console.log('-'.repeat(40));
-        console.log(`TITLE: ${title}`);
-        console.log(`AUTHOR: ${author}`);
-        console.log(`URL: ${link}`);
-        console.log(`DATE PUBLISHED: ${date}`);
+async function ingestArticle({link, title, author, date}, ix) {
+    let $ = await Libingester.util.fetch_html(link);
+    console.log('-'.repeat(40));
+    console.log(`TITLE: ${title}`);
+    console.log(`AUTHOR: ${author}`);
+    console.log(`URL: ${link}`);
+    console.log(`DATE PUBLISHED: ${date}`);
 
-        return fs.writeFile(`${ix}.html`, $.html());
-    });
+    await fs.writeFile(`${ix}.html`, $.html());
 }
 ```
 
@@ -222,7 +221,7 @@ const facts = rules.against(dom);
 const html = facts.get('content')
     .filter(fnode => fnode.scoreFor('paragraphish') > 0)
     .map(fnode => fnode.element.outerHTML).join('');
-return fs.writeFile(`${ix}.html`, `<article>${html}</article>`);
+await fs.writeFile(`${ix}.html`, `<article>${html}</article>`);
 ```
 
 For brevity, we've omitted the imports and the functions `scoreByLength()`, `scoreByImageSize()`, `byInverseLinkDensity()`, and `hasAncestor()`.
@@ -255,16 +254,18 @@ A hatch is libingester's term for the packaged-up content: it's a hatch that you
 To create the hatch, we change our `main()` function a bit, and change our `ingestArticle()` function to take the hatch as its first parameter.
 
 ```javascript
-function main() {
+async function main() {
     const hatch = new Libingester.Hatch('cc-blog', 'en');
     const paginator = Libingester.util.create_wordpress_paginator(feedURI);
-    Libingester.util.fetch_rss_entries(paginator, 3, 90)
-    .then(items => Promise.all(items.map(entry => ingestArticle(hatch, entry))))
-    .then(() => hatch.finish())
-    .catch(err => {
+    try {
+        const items = await Libingester.util.fetch_rss_entries(paginator,
+            Infinity, 90);
+        await Promise.all(items.map(entry => ingestArticle(hatch, entry)));
+        hatch.finish();
+    } catch(err) {
         console.log('there was an error', err);
         process.exitCode = 1;
-    });
+    }
 }
 ```
 
