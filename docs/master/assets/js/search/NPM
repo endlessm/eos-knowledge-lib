@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "NPM", "urls": ["tutorial/ingester.html#writing-an-ingester", "tutorial/ingester.html#further-remarks-and-ideas"]});
+urls_downloaded_cb({"urls": ["tutorial/ingester.html#writing-an-ingester", "tutorial/ingester.html#further-remarks-and-ideas"], "token": "NPM"});

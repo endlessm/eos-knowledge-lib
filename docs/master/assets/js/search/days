@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "days", "urls": ["tutorial/ingester.html#parsing-the-rss-feed", "tutorial/ingester.html#putting-it-all-together"]});
+urls_downloaded_cb({"urls": ["tutorial/ingester.html#parsing-the-rss-feed", "tutorial/ingester.html#putting-it-all-together"], "token": "days"});
