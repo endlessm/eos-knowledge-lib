@@ -8,6 +8,7 @@ vars:
   home-sets-card:
     type: &card Card.Default
     properties:
+      justify: center
       excluded_types:
         - 0
         - 2
