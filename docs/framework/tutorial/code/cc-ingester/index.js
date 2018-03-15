@@ -108,18 +108,6 @@ async function ingestArticle(hatch, {title, link, date, author}) {
     $ = Cheerio.load('<article>');
     $('article').append(html);
 
-    // Do some extra cleanup to minimize the size
-    const all = $('*');
-    all.removeAttr('class');
-    all.removeAttr('style');
-    const imgs = $('img');
-    ['attachment-id', 'comments-opened', 'image-description', 'image-meta',
-        'image-title', 'large-file', 'medium-file', 'orig-file',
-        'orig-size', 'permalink']
-        .forEach(data => imgs.removeAttr(`data-${data}`));
-    imgs.removeAttr('srcset');  // For simplicity, only use one size
-    imgs.removeAttr('sizes');
-
     const postAsset = new Libingester.BlogArticle();
     postAsset.set_title(title);
     postAsset.set_synopsis(synopsis);
@@ -156,6 +144,18 @@ async function ingestArticle(hatch, {title, link, date, author}) {
         const figureAsset = Libingester.util.download_img(img, baseURI);
         hatch.save_asset(figureAsset);
     });
+
+    // Do some extra cleanup to minimize the size
+    const all = $('*');
+    all.removeAttr('class');
+    all.removeAttr('style');
+    const imgs = $('img');
+    ['attachment-id', 'comments-opened', 'image-description', 'image-meta',
+        'image-title', 'large-file', 'medium-file', 'orig-file',
+        'orig-size', 'permalink']
+        .forEach(data => imgs.removeAttr(`data-${data}`));
+    imgs.removeAttr('srcset');  // For simplicity, only use one size
+    imgs.removeAttr('sizes');
 
     postAsset.set_body($);
     postAsset.render();
