@@ -12,7 +12,7 @@ const Gtk = imports.gi.Gtk;
 const Knowledge = imports.app.knowledge;
 
 function clamp(x, low, high) {
-    return x > high ? high : x < low ? low : x;
+    return (x > high) ? high : ((x < low) ? low : x);
 }
 
 /**
@@ -83,7 +83,7 @@ var ThemeableImage = new Knowledge.Class({
                 `.ThemeableImage {
                     -gtk-icon-source: none;
                     background: url('${this.image_uri}') center no-repeat;
-                    background-size: cover;
+                    background-size: contain;
                 }`);
             this.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION - 10);
         }
@@ -94,10 +94,16 @@ var ThemeableImage = new Knowledge.Class({
     },
 
     _update_custom_style: function () {
-        this._sizing = EosKnowledgePrivate.style_context_get_custom_string(this.get_style_context(), 'sizing');
-        if (['size-full', 'size-down', 'size-min'].indexOf(this._sizing) == -1) {
-            let error = new Error('Unrecognized option style property value for -EknThemeableImage-sizing ' + this._sizing);
+        let sizing = EosKnowledgePrivate.style_context_get_custom_string(this.get_style_context(), 'sizing');
+        if (['size-full', 'size-down', 'size-min'].indexOf(sizing) == -1) {
+            let error = new Error('Unrecognized option style property value for -EknThemeableImage-sizing ' + sizing);
             logError(error);
+            return;
+        }
+
+        if (this._sizing !== sizing) {
+            this._sizing = sizing;
+            this.queue_resize();
         }
      },
 
@@ -150,6 +156,10 @@ var ThemeableImage = new Knowledge.Class({
                 min_width = nat_width;
             }
         }
+
+        this._min_width = min_width;
+        this._nat_width = nat_width;
+
         let extra = [this._get_margin(), this._get_border(), this._get_padding()].reduce((total, border) => {
             return total + border.left + border.right;
         }, 0);
@@ -158,9 +168,6 @@ var ThemeableImage = new Knowledge.Class({
             min_width += extra;
         if (nat_width + extra > 0)
             nat_width += extra;
-
-        this._min_width = min_width;
-        this._nat_width = nat_width;
 
         return [min_width, nat_width];
     },
@@ -179,6 +186,10 @@ var ThemeableImage = new Knowledge.Class({
                 min_height = nat_height;
             }
         }
+
+        this._min_height = min_height;
+        this._nat_height = nat_height;
+
         let extra = [this._get_margin(), this._get_border(), this._get_padding()].reduce((total, border) => {
             return total + border.top + border.bottom;
         }, 0);
@@ -187,9 +198,6 @@ var ThemeableImage = new Knowledge.Class({
             min_height += extra;
         if (nat_height + extra > 0)
             nat_height += extra;
-
-        this._min_height = min_height;
-        this._nat_height = nat_height;
 
         return [min_height, nat_height];
     },
@@ -241,14 +249,24 @@ var ThemeableImage = new Knowledge.Class({
             w = clamp(w, this._min_width, this._nat_width);
             h = clamp(h, this._min_height, this._nat_height);
 
-            Gtk.render_background(context, cr,
-                padding.left + border.left + (width - w)/2.0,
-                padding.top + border.top + (height - h)/2.0,
-                w, h);
-            Gtk.render_frame(context, cr, 0, 0, alloc_width, alloc_height);
+            let x = (alloc_width - w)/2.0 - border.left;
+            let y = (alloc_height - h)/2.0 - border.top;
+
+            w += border.left + border.right;
+            h += border.top + border.bottom;
+
+            Gtk.render_background(context, cr, x, y, w, h);
+
+            x -= padding.left;
+            y -= padding.top;
+            w += padding.left + padding.right;
+            h += padding.top + padding.bottom;
+
+            Gtk.render_frame(context, cr, x, y, w, h);
+
             if (this.can_focus && this.has_focus)
-                Gtk.render_focus(context, cr, 0, 0, alloc_width, alloc_height);
-        } else {
+                Gtk.render_focus(context, cr, x, y, w, h);
+            } else {
             Gtk.render_activity(context, cr,
                 padding.left + border.left,
                 padding.top + border.top,
