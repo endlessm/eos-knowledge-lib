@@ -4,6 +4,7 @@
   "description": "Ingester for Creative Commons blog",
   "main": "index.js",
   "dependencies": {
+    "cheerio": "^0.22.0",
     "fathom-web": "^2.2.0",
     "jsdom": "^11.6.2",
     "libingester": "^2.5.1",

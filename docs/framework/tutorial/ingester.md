@@ -178,7 +178,7 @@ Although it would be possible to do this with traditional web scraping and DOM m
 Fathom is a fairly new technology that allows you to interpret an HTML document based on "rules" that you write.
 
 ```
-npm install --save fathom-web jsdom
+npm install --save cheerio fathom-web jsdom
 ```
 
 > **NOTE:** Both libingester and Fathom require a DOM library for processing the HTML.
