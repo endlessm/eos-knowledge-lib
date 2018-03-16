@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["view/media.html#viewmedia1"], "token": "caption"});
+urls_downloaded_cb({"token": "caption", "urls": ["view/media.html#viewmedia1"]});

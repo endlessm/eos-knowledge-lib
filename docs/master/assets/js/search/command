@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tools.html#installing", "tools.html#using1", "tutorial/ingester.html#page-description"], "token": "command"});
+urls_downloaded_cb({"token": "command", "urls": ["tools.html#installing", "tools.html#using1", "tutorial/ingester.html#page-description"]});

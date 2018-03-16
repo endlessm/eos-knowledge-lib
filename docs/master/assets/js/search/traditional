@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/ingester.html#cleaning-up-the-blog-posts"], "token": "traditional"});
+urls_downloaded_cb({"token": "traditional", "urls": ["tutorial/ingester.html#cleaning-up-the-blog-posts"]});

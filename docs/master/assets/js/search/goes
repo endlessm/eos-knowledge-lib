@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["window/simple.html#content"], "token": "goes"});
+urls_downloaded_cb({"token": "goes", "urls": ["window/simple.html#content"]});
