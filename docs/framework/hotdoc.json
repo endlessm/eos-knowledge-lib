@@ -16,6 +16,7 @@
     ],
 
     "html_extra_theme": "theme",
+    "extra_assets": ["images"],
 
     "mf_sources": ["../../js/app/modules/*/*.js"],
     "mf_smart_index": true,

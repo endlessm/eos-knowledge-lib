@@ -7,5 +7,7 @@ index.md
 		tutorial/install.md
 		tutorial/ingester.md
 			tutorial/ingester-full-code.md
+		tutorial/shard.md
+			tutorial/shard-full-code.md
 	tools.md
 	mf-index
