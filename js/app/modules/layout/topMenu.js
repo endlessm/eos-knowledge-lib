@@ -8,6 +8,16 @@ const Gtk = imports.gi.Gtk;
 const Module = imports.app.interfaces.module;
 const SlidingPanelOverlay = imports.app.widgets.slidingPanelOverlay;
 
+const Direction = {
+    UP: 0,
+    DOWN: 1,
+};
+
+const MIN_PIXELS_TO_ACTIVATE = {
+    [Direction.UP]: 20,
+    [Direction.DOWN]: 275,
+};
+
 /**
  * Class: TopMenu
  * A layout template with a top menu bar that slides out over the content
@@ -66,6 +76,10 @@ var TopMenu = new Module.Class({
         this._menu_panel = this.add_panel_widget(top_menu_container, Gtk.PositionType.TOP);
         this._menu_panel.expand = true;
 
+        this._previous_position = 0;
+        this._previous_start = 0;
+        this._previous_direction = Direction.DOWN;
+
         this._open_menu();
         let content = this.create_submodule('content');
         this._grid.add(content);
@@ -88,17 +102,31 @@ var TopMenu = new Module.Class({
 
     _on_scroll: function (adjustment) {
         let value = adjustment.value;
-        let upper = adjustment.upper;
+        let direction = (value - this._previous_position) >= 0 ? Direction.DOWN : Direction.UP;
 
-        // FIXME: For now we just hide the top menu once the user has scrolled
-        // down the page halfway. Eventually we want to do something more fancy
-        // like hide the menu only if the user scrolls down 'quickly'.
-        // https://github.com/endlessm/eos-sdk/issues/4092
-        if (value >= upper / 2) {
+        // Track distance in current direction
+        if (direction !== this._previous_direction)
+            this._previous_start = value;
+
+        let distance = value - this._previous_start;
+        let min_distance =  MIN_PIXELS_TO_ACTIVATE[direction];
+        this._previous_position = value;
+        this._previous_direction = direction;
+
+        // Check if moved enough distance
+        if (!(Math.abs(distance) > min_distance))
+            return;
+
+        // Hide or show the panel if necessary
+        if (direction === Direction.DOWN && this._is_open()) {
             this._close_menu();
-        } else {
+        } else if (direction === Direction.UP && !this._is_open()) {
             this._open_menu();
         }
+    },
+
+    _is_open: function () {
+        return this._menu_panel.reveal_panel;
     },
 
     _open_menu: function () {
