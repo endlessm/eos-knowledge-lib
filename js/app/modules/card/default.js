@@ -513,10 +513,11 @@ var Default = new Module.Class({
                     Emeus.ConstraintAttribute.WIDTH
                 );
                 text_constraints = this.get_constraints_polaroid_card_vertical(show_context);
-                if ((real_alloc_height <= Card.MaxSize.B && real_alloc_width <= Card.MaxSize.C) || (real_alloc_height <= Card.MaxSize.C && real_alloc_width <= Card.MaxSize.B)) {
+                if (show_context && ((real_alloc_height <= Card.MaxSize.B && real_alloc_width <= Card.MaxSize.C) || (real_alloc_height <= Card.MaxSize.C && real_alloc_width <= Card.MaxSize.B))) {
                     this._title_label.lines = 1;
                 } else {
                     this._title_label.lines = 2;
+                    this._title_box.valign = Gtk.Align.CENTER;
                 }
             }
         } else if (this._card_type === CardType.LOW_RES_IMAGE) {
