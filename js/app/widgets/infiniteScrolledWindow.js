@@ -53,21 +53,12 @@ var InfiniteScrolledWindow = new Knowledge.Class({
         // scroll view will request more as needed.
         this._requested_content = true;
         this.vadjustment.connect('value-changed', this._check_scroll.bind(this));
-        this.vadjustment.connect('notify::page-size', this._check_extra_space.bind(this));
-        this.connect('size-allocate', this._check_extra_space.bind(this));
+        this.vadjustment.connect('notify::page-size', this._check_scroll.bind(this));
+        this.connect('size-allocate', this._check_scroll.bind(this));
     },
 
     new_content_added: function () {
         this._requested_content = false;
-    },
-
-    _check_extra_space: function () {
-        if (this._requested_content)
-            return;
-        if (this.vadjustment.page_size === this.vadjustment.upper) {
-            this._requested_content = true;
-            this.emit('need-more-content');
-        }
     },
 
     /*
