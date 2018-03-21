@@ -61,13 +61,14 @@ function ingestArticle({date, title}) {
     console.log(date, title);
 }
 
-function main() {
-    Libingester.util.fetch_rss_entries(feedURI)
-    .then(items => Promise.all(items.map(ingestArticle)))
-    .catch(err => {
+async function main() {
+    try {
+        const items = await Libingester.util.fetch_rss_entries(feedURI);
+        items.forEach(ingestArticle);
+    } catch(err) {
         console.log('there was an error', err);
         process.exitCode = 1;
-    });
+    }
 }
 
 main();
@@ -108,20 +109,18 @@ Now that we have RSS entries, we can download the posts, and get their metadata 
 To see the HTML we're dealing with and get a sense of how much cleaning must be done, let's get our `ingestArticle()` function to write out some basic metadata from the RSS feed and save a copy of the HTML:
 
 ```javascript
-const thenifyAll = require('thenify-all');
-const fs = thenifyAll(require('fs'), {}, ['writeFile']);
+const util = require('util');
+const writeFile = util.promisify(require('fs').writeFile);
 // ...
-function ingestArticle({link, title, author, date}, ix) {
-    return Libingester.util.fetch_html(link)
-    .then($ => {
-        console.log('-'.repeat(40));
-        console.log(`TITLE: ${title}`);
-        console.log(`AUTHOR: ${author}`);
-        console.log(`URL: ${link}`);
-        console.log(`DATE PUBLISHED: ${date}`);
+async function ingestArticle({link, title, author, date}, ix) {
+    let $ = await Libingester.util.fetch_html(link);
+    console.log('-'.repeat(40));
+    console.log(`TITLE: ${title}`);
+    console.log(`AUTHOR: ${author}`);
+    console.log(`URL: ${link}`);
+    console.log(`DATE PUBLISHED: ${date}`);
 
-        return fs.writeFile(`${ix}.html`, $.html());
-    });
+    await writeFile(`${ix}.html`, $.html());
 }
 ```
 
@@ -151,9 +150,9 @@ console.log(`LAST MODIFIED: ${lastModified}`);
 In the case of tags, things are slightly complicated.
 Wordpress distinguishes predefined "categories" and free-form "tags".
 The data model for offline content that we use here, allows tagging content with an array of strings.
-These tag strings can be any string, and are not visible to users of the app.
+These tags can be any string, and are not visible to users of the app.
 Later on, when we define the content structure for the app, we can create a "set" that is visible in the app's UI.
-A set includes any number of tag strings, and can be marked "featured" to make it more prominent in the app, or not.
+A set includes any number of tags, and can be marked "featured" to make it more prominent in the app, or not.
 (You'll learn more about this later in the walkthrough.)
 
 Later on we will make Wordpress categories into featured sets, and Wordpress tags non-featured.
@@ -179,7 +178,7 @@ Although it would be possible to do this with traditional web scraping and DOM m
 Fathom is a fairly new technology that allows you to interpret an HTML document based on "rules" that you write.
 
 ```
-npm install --save fathom-web jsdom
+npm install --save cheerio fathom-web jsdom
 ```
 
 > **NOTE:** Both libingester and Fathom require a DOM library for processing the HTML.
@@ -192,7 +191,7 @@ We use a rule set based on [Fathom's example "Readability" ruleset][fathom-reada
 const rules = ruleset(
     // Isolate the actual blog post body text. Based on Fathom's example
     // Readability rules
-    rule(dom('p,li,code,blockquote,pre,h1,h2,h3,h4,h5,h6'),
+    rule(dom('p,li,ol,ul,code,blockquote,pre,h1,h2,h3,h4,h5,h6'),
         props(scoreByLength).type('paragraphish')),
     rule(type('paragraphish'), score(byInverseLinkDensity)),
     rule(dom('p'), score(4.5).type('paragraphish')),
@@ -222,7 +221,7 @@ const facts = rules.against(dom);
 const html = facts.get('content')
     .filter(fnode => fnode.scoreFor('paragraphish') > 0)
     .map(fnode => fnode.element.outerHTML).join('');
-return fs.writeFile(`${ix}.html`, `<article>${html}</article>`);
+await fs.writeFile(`${ix}.html`, `<article>${html}</article>`);
 ```
 
 For brevity, we've omitted the imports and the functions `scoreByLength()`, `scoreByImageSize()`, `byInverseLinkDensity()`, and `hasAncestor()`.
@@ -240,10 +239,12 @@ const all = $('*');
 all.removeAttr('class');
 all.removeAttr('style');
 const imgs = $('img');
-['attachment-id', 'permalink', 'orig-file', 'orig-size', 'image-meta',
-    'comments-opened', 'medium-file', 'large-file']
+['attachment-id', 'comments-opened', 'image-description', 'image-meta',
+    'image-title', 'large-file', 'medium-file', 'orig-file',
+    'orig-size', 'permalink']
     .forEach(data => imgs.removeAttr(`data-${data}`));
 imgs.removeAttr('srcset');  // For simplicity, only use one size
+imgs.removeAttr('sizes');
 ```
 
 ## Creating a hatch ##
@@ -255,16 +256,18 @@ A hatch is libingester's term for the packaged-up content: it's a hatch that you
 To create the hatch, we change our `main()` function a bit, and change our `ingestArticle()` function to take the hatch as its first parameter.
 
 ```javascript
-function main() {
+async function main() {
     const hatch = new Libingester.Hatch('cc-blog', 'en');
     const paginator = Libingester.util.create_wordpress_paginator(feedURI);
-    Libingester.util.fetch_rss_entries(paginator, 3, 90)
-    .then(items => Promise.all(items.map(entry => ingestArticle(hatch, entry))))
-    .then(() => hatch.finish())
-    .catch(err => {
+    try {
+        const items = await Libingester.util.fetch_rss_entries(paginator,
+            Infinity, 90);
+        await Promise.all(items.map(entry => ingestArticle(hatch, entry)));
+        hatch.finish();
+    } catch(err) {
         console.log('there was an error', err);
         process.exitCode = 1;
-    });
+    }
 }
 ```
 
