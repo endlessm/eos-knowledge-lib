@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["layout/overlay.html#layoutoverlay1"], "token": "another"});
+urls_downloaded_cb({"token": "another", "urls": ["layout/overlay.html#layoutoverlay1"]});
