@@ -1,0 +1,118 @@
+#!/usr/bin/env python3
+
+import argparse
+import re
+import subprocess
+
+from os import listdir, path
+
+CURRENT_DIR = path.dirname(path.realpath(__file__))
+
+KERMIT_OUTPUT_PARSER_REGEX = re.compile("([0-9a-f]+) - ([a-z\/\-]+) - \"(.*)\" - Offset ([0-9]+)")
+
+def _get_shards(shard_dir):
+    shards = []
+
+    for filename in listdir(shard_dir):
+        full_filename = path.join(shard_dir, filename)
+        if not path.isfile(path.join(shard_dir, filename)):
+            continue
+
+        if not filename.endswith('.shard'):
+            continue
+
+        shards.append(full_filename)
+
+    return sorted(shards)
+
+def parse_shard(assets, shard_path):
+    shard_short_name = path.splitext(path.basename(shard_path))[0]
+    shard_raw_items = subprocess.check_output(['kermit', 'list', shard_path]).decode('utf8') \
+                                                                             .splitlines()
+    articles = 0
+    for raw_asset in shard_raw_items:
+        parsed_asset = KERMIT_OUTPUT_PARSER_REGEX.search(raw_asset)
+
+        title = parsed_asset.group(3)
+        mime_type = parsed_asset.group(2)
+
+        asset = {
+            'asset_id': parsed_asset.group(1),
+            'mime_type': mime_type,
+            'offset': parsed_asset.group(4),
+            'shard': shard_short_name,
+            'title': title,
+        }
+
+        assets[title] = assets.get(title, []) + [asset]
+
+        if mime_type == 'text/html':
+            articles += 1
+
+    print(' - {} ({} assets, {} articles)'.format(shard_short_name,
+                                                  len(shard_raw_items),
+                                                  articles))
+
+    return articles
+
+def get_duplicate_articles(assets):
+    for article_assets in assets.values():
+        articles = [asset for asset in article_assets if asset['mime_type'] == 'text/html']
+
+        if len(articles) > 1:
+            yield articles
+
+def process_duplicates(shard_dir):
+    print('Examining shard dir: {}'.format(shard_dir))
+
+    shards = _get_shards(shard_dir)
+    print('Found shards:')
+    for shard in shards:
+        print(' - {}'.format(shard))
+    print()
+
+    assets = {}
+    total_articles = 0
+
+    print('Collecting items in the shards...')
+    for shard in shards:
+        # Note: Assets is mutated in the call
+        total_articles += parse_shard(assets, shard)
+    print()
+
+    total_unique_articles = len(assets)
+    print('Unique articles found: {}'.format(total_unique_articles))
+    print('Unique articles expected: {}'.format(total_articles))
+    print()
+
+    # If no duplicates, exit out early
+    if total_articles == total_unique_articles:
+        print('No duplicate articles found!')
+        return
+
+    # Otherwise, assume that we have duplicates
+    print('WARNING! There seems to be {} duplicate articles in these shards!'.format(
+        total_articles - total_unique_articles))
+    print()
+
+    for duplicate_article in get_duplicate_articles(assets):
+        title = duplicate_article[0]['title']
+        print('Duplicate ({}x): "{}"'.format(len(duplicate_article), title))
+
+        for article_asset in duplicate_article:
+            shard = article_asset['shard']
+            asset_id = article_asset['asset_id']
+            print(' - Shard: {}, Asset ID: {}'.format(shard, asset_id))
+
+        print()
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Examines groups of shards and identifies problems')
+
+    parser.add_argument('-d', '--shard-dir',
+                        default=CURRENT_DIR,
+                        help='Root directory containing all the shards')
+
+    args = vars(parser.parse_args())
+
+    process_duplicates(args['shard_dir'])

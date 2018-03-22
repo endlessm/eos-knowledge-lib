@@ -1,0 +1,6 @@
+[MESSAGES CONTROL]
+
+disable= superfluous-parens,
+         too-few-public-methods,
+         wrong-import-order,
+         wrong-import-position
