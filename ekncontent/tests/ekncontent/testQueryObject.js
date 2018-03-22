@@ -1,4 +1,6 @@
 const Eknc = imports.gi.EosKnowledgeContent;
+
+imports.gi.Xapian.version = '2.0';
 const Xapian = imports.gi.Xapian;
 
 describe('QueryObject', function () {
