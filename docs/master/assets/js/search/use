@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "use", "urls": ["contentGroup/contentGroup.html#paginate"]});
+urls_downloaded_cb({"urls": ["tutorial/shard.html#downloading-linked-media", "contentGroup/contentGroup.html#paginate"], "token": "use"});

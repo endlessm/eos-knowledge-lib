@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "tweak", "urls": ["tools.html#kactus", "tools.html#using"]});
+urls_downloaded_cb({"urls": ["tools.html#kactus", "tools.html#using", "tutorial/shard.html#downloading-linked-media"], "token": "tweak"});

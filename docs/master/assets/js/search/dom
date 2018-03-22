@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "dom", "urls": ["tutorial/ingester.html#obtaining-metadata", "tutorial/ingester.html#cleaning-up-the-blog-posts"]});
+urls_downloaded_cb({"urls": ["tutorial/ingester.html#obtaining-metadata", "tutorial/ingester.html#cleaning-up-the-blog-posts", "tutorial/shard.html#fixing-the-missing-images", "tutorial/shard.html#downloading-linked-media"], "token": "dom"});

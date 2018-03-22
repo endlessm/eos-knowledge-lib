@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "representing", "urls": ["card/deck.html#carddeck1"]});
+urls_downloaded_cb({"urls": ["card/deck.html#carddeck1", "tutorial/shard.html#downloading-linked-media"], "token": "representing"});

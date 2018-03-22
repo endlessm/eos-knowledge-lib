@@ -104,8 +104,14 @@ $('body').removeClass('no-script');
 				
 <div id="page-description" data-hotdoc-source="index.md" data-hotdoc-role="main">
 <h1 id="walkthrough">Walkthrough</h1>
-<p>Here's an example of how to use the Endless SDK to take online content and package it to be available offline.</p>
-<p>ingester -&gt; hatch -&gt; app</p>
+<p>Here's an example of how to use the Endless SDK to take online content and package it to be available offline in an app.</p>
+<p>We'll do the whole thing in a few steps.
+First, we'll write a program called an <strong>ingester</strong> that downloads the content and makes it suitable for offline viewing.
+The ingester creates an archive called a <strong>hatch</strong>.
+We'll use a tool called Hatch Previewer to examine the hatch and make visual improvements in the ingester.
+Then we turn the hatch into another, more compressed archive called a <strong>shard</strong>, which is used to publish the content.
+Next, we will build a user interface for the app, and test it together with the shard.
+Finally, we will show how to put the user interface and one or more shards together into an app, which can be published as a <a href="https://flatpak.org">flatpak</a> package.</p>
 <p>We're going to use the <a href="https://creativecommons.org/blog">blog of the Creative Commons organization</a> itself.
 The blog and its content are licensed CC-BY 4.0, which means that it's free to use and modify as long as we credit the original author.</p>
 <h2 id="requirements-for-following-this-walkthrough">Requirements for following this walkthrough</h2>
@@ -131,6 +137,12 @@ It can be done on other Linux computers, but in that case you might have to adap
 			</div>
 			<div class="col-sm-12 col-md-8 subpage-description">
 								<p>Downloading content to make it available offline</p>
+							</div>
+						<div class="col-sm-12 col-md-4">
+				<a href="tutorial/shard.html">Creating a shard</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>Refining and packaging the downloaded content</p>
 							</div>
 					</div>
 	</div>

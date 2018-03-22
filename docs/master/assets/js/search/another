@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "another", "urls": ["layout/overlay.html#layoutoverlay1"]});
+urls_downloaded_cb({"urls": ["tutorial/shard.html#fixing-the-missing-images", "layout/overlay.html#layoutoverlay1"], "token": "another"});

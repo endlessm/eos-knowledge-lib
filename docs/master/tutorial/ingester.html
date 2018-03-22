@@ -148,13 +148,14 @@ function ingestArticle({date, title}) {
     console.log(date, title);
 }
 
-function main() {
-    Libingester.util.fetch_rss_entries(feedURI)
-    .then(items =&gt; Promise.all(items.map(ingestArticle)))
-    .catch(err =&gt; {
+async function main() {
+    try {
+        const items = await Libingester.util.fetch_rss_entries(feedURI);
+        items.forEach(ingestArticle);
+    } catch(err) {
         console.log('there was an error', err);
         process.exitCode = 1;
-    });
+    }
 }
 
 main();
@@ -183,20 +184,18 @@ It would be much more convenient to use the environment variables once you are u
 <h2 id="obtaining-metadata">Obtaining metadata</h2>
 <p>Now that we have RSS entries, we can download the posts, and get their metadata (such as title, author, and tags).</p>
 <p>To see the HTML we're dealing with and get a sense of how much cleaning must be done, let's get our <code>ingestArticle()</code> function to write out some basic metadata from the RSS feed and save a copy of the HTML:</p>
-<pre><code class="language-javascript">const thenifyAll = require('thenify-all');
-const fs = thenifyAll(require('fs'), {}, ['writeFile']);
+<pre><code class="language-javascript">const util = require('util');
+const writeFile = util.promisify(require('fs').writeFile);
 // ...
-function ingestArticle({link, title, author, date}, ix) {
-    return Libingester.util.fetch_html(link)
-    .then($ =&gt; {
-        console.log('-'.repeat(40));
-        console.log(`TITLE: ${title}`);
-        console.log(`AUTHOR: ${author}`);
-        console.log(`URL: ${link}`);
-        console.log(`DATE PUBLISHED: ${date}`);
+async function ingestArticle({link, title, author, date}, ix) {
+    let $ = await Libingester.util.fetch_html(link);
+    console.log('-'.repeat(40));
+    console.log(`TITLE: ${title}`);
+    console.log(`AUTHOR: ${author}`);
+    console.log(`URL: ${link}`);
+    console.log(`DATE PUBLISHED: ${date}`);
 
-        return fs.writeFile(`${ix}.html`, $.html());
-    });
+    await writeFile(`${ix}.html`, $.html());
 }
 </code></pre>
 <p><code>Libingester.util.fetch_html</code> returns a Cheerio object. <a href="https://github.com/cheeriojs/cheerio">Cheerio</a> is a library for DOM manipulation without a browser, and its interface is the same as jQuery.</p>
@@ -219,9 +218,9 @@ console.log(`LAST MODIFIED: ${lastModified}`);
 <p>In the case of tags, things are slightly complicated.
 Wordpress distinguishes predefined "categories" and free-form "tags".
 The data model for offline content that we use here, allows tagging content with an array of strings.
-These tag strings can be any string, and are not visible to users of the app.
+These tags can be any string, and are not visible to users of the app.
 Later on, when we define the content structure for the app, we can create a "set" that is visible in the app's UI.
-A set includes any number of tag strings, and can be marked "featured" to make it more prominent in the app, or not.
+A set includes any number of tags, and can be marked "featured" to make it more prominent in the app, or not.
 (You'll learn more about this later in the walkthrough.)</p>
 <p>Later on we will make Wordpress categories into featured sets, and Wordpress tags non-featured.
 For now, we will mark the tag IDs of Wordpress tags with <code>tag:</code> and leave the Wordpress categories as-is, so that we'll know what to do later.</p>
@@ -239,7 +238,7 @@ console.log(`TAGS: ${tags}`);
 We want to get rid of all the theming and navigation elements on the web page, so that we can later design a more unified style for our app's UI elements and its content.</p>
 <p>Although it would be possible to do this with traditional web scraping and DOM manipulation tools such as Cheerio, we are going to use <a href="https://mozilla.github.io/fathom/">Fathom</a> to clean up the content.
 Fathom is a fairly new technology that allows you to interpret an HTML document based on "rules" that you write.</p>
-<pre><code>npm install --save fathom-web jsdom
+<pre><code>npm install --save cheerio fathom-web jsdom
 </code></pre>
 <blockquote>
 <p><strong>NOTE:</strong> Both libingester and Fathom require a DOM library for processing the HTML.
@@ -250,7 +249,7 @@ Therefore, we have to convert from one to the other and back again in our ingest
 <pre><code class="language-javascript">const rules = ruleset(
     // Isolate the actual blog post body text. Based on Fathom's example
     // Readability rules
-    rule(dom('p,li,code,blockquote,pre,h1,h2,h3,h4,h5,h6'),
+    rule(dom('p,li,ol,ul,code,blockquote,pre,h1,h2,h3,h4,h5,h6'),
         props(scoreByLength).type('paragraphish')),
     rule(type('paragraphish'), score(byInverseLinkDensity)),
     rule(dom('p'), score(4.5).type('paragraphish')),
@@ -280,7 +279,7 @@ const facts = rules.against(dom);
 const html = facts.get('content')
     .filter(fnode =&gt; fnode.scoreFor('paragraphish') &gt; 0)
     .map(fnode =&gt; fnode.element.outerHTML).join('');
-return fs.writeFile(`${ix}.html`, `&lt;article&gt;${html}&lt;/article&gt;`);
+await fs.writeFile(`${ix}.html`, `&lt;article&gt;${html}&lt;/article&gt;`);
 </code></pre>
 <p>For brevity, we've omitted the imports and the functions <code>scoreByLength()</code>, <code>scoreByImageSize()</code>, <code>byInverseLinkDensity()</code>, and <code>hasAncestor()</code>.
 If you're running your own program as you're following along, you can find them in the <a href="tutorial/ingester-full-code.html#indexjs">full code</a>.</p>
@@ -294,26 +293,30 @@ const all = $('*');
 all.removeAttr('class');
 all.removeAttr('style');
 const imgs = $('img');
-['attachment-id', 'permalink', 'orig-file', 'orig-size', 'image-meta',
-    'comments-opened', 'medium-file', 'large-file']
+['attachment-id', 'comments-opened', 'image-description', 'image-meta',
+    'image-title', 'large-file', 'medium-file', 'orig-file',
+    'orig-size', 'permalink']
     .forEach(data =&gt; imgs.removeAttr(`data-${data}`));
 imgs.removeAttr('srcset');  // For simplicity, only use one size
+imgs.removeAttr('sizes');
 </code></pre>
 <h2 id="creating-a-hatch">Creating a hatch</h2>
 <p>We're now going to render the ingested pages into one of libingester's <em>article formats</em>, and then save the result in a <em>hatch</em>.
 An article format is a class that we can pass HTML snippets into, and it will render a nice-looking page that's suitable for embedding into our app.
 A hatch is libingester's term for the packaged-up content: it's a hatch that you open and drop content ("<em>assets</em>") into, and from there it goes for further processing.</p>
 <p>To create the hatch, we change our <code>main()</code> function a bit, and change our <code>ingestArticle()</code> function to take the hatch as its first parameter.</p>
-<pre><code class="language-javascript">function main() {
+<pre><code class="language-javascript">async function main() {
     const hatch = new Libingester.Hatch('cc-blog', 'en');
     const paginator = Libingester.util.create_wordpress_paginator(feedURI);
-    Libingester.util.fetch_rss_entries(paginator, 3, 90)
-    .then(items =&gt; Promise.all(items.map(entry =&gt; ingestArticle(hatch, entry))))
-    .then(() =&gt; hatch.finish())
-    .catch(err =&gt; {
+    try {
+        const items = await Libingester.util.fetch_rss_entries(paginator,
+            Infinity, 90);
+        await Promise.all(items.map(entry =&gt; ingestArticle(hatch, entry)));
+        hatch.finish();
+    } catch(err) {
         console.log('there was an error', err);
         process.exitCode = 1;
-    });
+    }
 }
 </code></pre>
 <p>We're going to use one of libingester's predefined article formats, but it's also possible to write your own.

@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "latest", "urls": ["tools.html#installing", "tools.html#using"]});
+urls_downloaded_cb({"urls": ["tools.html#installing", "tools.html#using", "tutorial/install.html#installing-the-endless-sdk", "tutorial/install.html#page-description"], "token": "latest"});

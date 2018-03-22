@@ -1,0 +1,487 @@
+<html lang="en">
+<head>
+
+<base href="..">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>Creating a shard</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/isotope.pkgd.min.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/trie.js"></script>
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+
+<link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
+<link rel="shortcut icon" href="assets/images/favicon-32x32.png">
+<link href="https://fonts.googleapis.com/css?family=Lato%7CMontserrat" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/custom.css">
+
+</head>
+
+<body class="no-script
+" data-spy="scroll" data-target="#toc" data-offset="70">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+  <div class="container-fluid">
+    <div class="navbar-right">
+      <a id="toc-toggle">
+        <span class="glyphicon glyphicon-menu-right"></span>
+        <span class="glyphicon glyphicon-menu-left"></span>
+      </a>
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-header">
+      <a id="sidenav-toggle">
+        <span class="glyphicon glyphicon-menu-right"></span>
+        <span class="glyphicon glyphicon-menu-left"></span>
+      </a>
+      <a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+<img src="assets/images/Endless_mark_orange.svg" style="width: 48px" alt="Home" id="home">
+      </a>
+      <form action="" class="navbar-form pull-right" id="navbar-search-form">
+        <div class="form-group has-feedback">
+          <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+          <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+        </div>
+      </form>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-wrapper">
+      <ul class="nav navbar-nav" id="menu">
+      </ul>
+      <div class="hidden-xs hidden-sm navbar-text navbar-center">
+<p><b>Modular Framework</b></p>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+<div data-extension="core" data-hotdoc-in-toplevel="True" data-hotdoc-project="framework-0" data-hotdoc-ref="tutorial/shard.html" class="page_container" id="page-wrapper">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				
+<div id="page-description" data-hotdoc-source="shard.md" data-hotdoc-role="main">
+<h1 id="creating-a-shard">Creating a shard</h1>
+<p>In this section, we'll view the blog posts we've ingested in the previous section, and make some improvements to our ingester.
+We'll add some customizations to the visual theme, and make sure videos are downloaded for offline viewing too.
+Then we will package the hatch for distribution, in an archive format called a "shard".</p>
+<p>We'll use Hatch Previewer to view the blog posts.
+If you haven't installed it yet, check how to do so in the <a href="tutorial/install.html#installing-hatch-previwer">Install</a> section.</p>
+<h2 id="viewing-the-blog-posts">Viewing the blog posts</h2>
+<p>Running the ingester in the last section should have created a directory with a name like <code>hatch_cc-blog_20180215_104946</code> (where the numbers are the date and time that the ingester was run.)
+Start Hatch Previewer, either by clicking its icon on the desktop, or from the command line:</p>
+<pre><code class="language-bash">flatpak run com.endlessm.HatchPreviewer
+</code></pre>
+<p>You'll be shown a dialog box where you select a directory.
+Navigate to the hatch directory and select it.</p>
+<blockquote>
+<p><strong>NOTE:</strong> You can also pass the hatch directory on the command line, but you have to give an absolute path due to a limitation in Flatpak.</p>
+</blockquote>
+<p>You should see a mostly blank window with a list of the ingested blog posts on the left.
+Click on one, and you should see something like this:</p>
+<p><img src="tutorial/images/hatch-previewer-screenshot.png" alt="Screenshot of Hatch Previewer" id="screenshot-of-hatch-previewer"></p>
+<p>You can see the page as it looks when rendered in the article format, and press the "Flip" button to view the raw HTML.
+You can also see the metadata on the right-hand side.</p>
+<p>Browse through the posts, and take note of anything that looks odd.
+You can also compare them to the posts on their original website in your browser, to make sure nothing is missing.</p>
+<p>The first thing you might notice is that there are some blank spaces in the article format we used.
+These will display metadata, but haven't been filled in yet.
+There's a space after the dash at the top right, for the date that the post was published.
+This isn't pre-filled because we want to display it in whatever date format the user has selected in their settings, and that's impossible to know at this point.</p>
+<p>There's also a space at the bottom of the post where the tags will go.
+We won't determine what tags will be used in the app until later, so there's nothing to display here yet.</p>
+<h2 id="customizing-the-fonts-and-colors">Customizing the fonts and colors</h2>
+<p>Perhaps the most obvious thing to refine is the use of default fonts and colors in the rendered posts.
+We want to change these; in our case to better reflect the style of the original site.</p>
+<p>The way we do this is with the <a href="https://endlessm.github.io/libingester/#blogarticleset_custom_scss"><code>set_custom_scss</code></a> method of the <code>BlogArticle</code> format.
+Each article format has its own default CSS theme.
+You can customize certain variables in the theme, while largely sticking to the default.</p>
+<p>Here's what the custom SCSS looks like for customizing the font:</p>
+<pre><code class="language-scss">$title-font: 'Source Sans Variable';
+$body-font: 'Source Sans Variable';
+$context-font: 'Source Sans Variable';
+$support-font: 'Source Sans Variable';
+</code></pre>
+<p>Each of these variables governs a font used for a particular purpose in the rendered asset.
+In our case, we'll stick with Source Sans as the font, just as the original blog does.</p>
+<p>We also want to customize the color scheme to look more like the original blog.
+Here's some SCSS to do that:</p>
+<pre><code class="language-scss">$primary-light-color: #fb7928;
+$primary-medium-color: #ee5b32;
+$accent-light-color: #049bce;
+$accent-dark-color: #464646;
+$background-light-color: white;
+$background-dark-color: #e9e9e9;
+</code></pre>
+<p>Just as with the fonts, these are variables specific to the <code>BlogArticle</code>'s default theme.</p>
+<p>Putting it all together, we add the following lines to our ingester in the same place where we set all the metadata on the post asset:</p>
+<pre><code class="language-javascript">postAsset.set_custom_scss(`
+    $title-font: 'Source Sans Variable';
+    $body-font: 'Source Sans Variable';
+    $context-font: 'Source Sans Variable';
+    $support-font: 'Source Sans Variable';
+    $primary-light-color: #fb7928;
+    $primary-medium-color: #ee5b32;
+    $accent-light-color: #049bce;
+    $accent-dark-color: #464646
+    $background-light-color: white;
+    $background-dark-color: #e9e9e9;
+    @import '_default';
+`);
+</code></pre>
+<p>The <code>@import '_default';</code> brings in the default theme for <code>BlogArticle</code>.
+We can add custom SCSS rules to do further customization after the import line, but we're not going to do that in this example.
+You can also leave out the import line if you want to start from scratch and write your own theme.</p>
+<p>Re-run the ingester, and view the hatch with Hatch Previewer; you should see the effects of our customizations in the rendered HTML, and also in the embedded CSS when you click the "Flip" button.</p>
+<h2 id="fixing-the-missing-images">Fixing the missing images</h2>
+<p>Another thing you might notice while browsing through the hatch is that some images are not showing up.
+At the time of this walkthrough's writing, this happens in the articles <a href="https://creativecommons.org/2018/01/15/5-awesome-organisations-working-protect-expand-public-domain/">"5 Awesome Organisations Working to Protect and Expand the Public Domain"</a> and <a href="https://creativecommons.org/2018/01/31/thank-lead-sponsor-ccs-global-summit/">"Thank you to Private Internet Access, lead sponsor of CC’s Global Summit"</a>, though of course if you are doing this walkthrough later, it may happen in other articles, or not at all.
+(If you want to reproduce these results exactly, you can set your ingester to page back to a longer time ago.)</p>
+<p>We use the "Flip" button in Hatch Previewer to figure out why this is happening.
+The raw HTML for the paragraph with the missing image looks like this:</p>
+<pre><code class="language-html">&lt;p&gt;
+  &lt;a href="https://www.eff.org/copyrightweek"&gt;
+    &lt;img data-image-title="copyright_week_2018" data-image-description="" src="https://d15omoko64skxi.cloudfront.net/wp-content/uploads/2018/01/copyright_week_2018-1024x512.png" alt="" width="840" height="420" sizes="(max-width: 709px) 85vw, (max-width: 909px) 67vw, (max-width: 1362px) 62vw, 840px"&gt;
+  &lt;/a&gt;
+  &lt;i&gt;
+    &lt;span&gt;We’re taking part in &lt;/span&gt;
+  &lt;/i&gt;
+  &lt;a href="https://www.eff.org/copyrightweek"&gt;
+    &lt;i&gt;
+      &lt;span&gt;Copyright Week&lt;/span&gt;
+    &lt;/i&gt;
+  &lt;/a&gt;
+  &lt;i&gt;
+    &lt;span&gt;, a series of actions and discussions supporting key principles that should guide copyright policy. Every day this week, various groups are taking on different elements of the law, and addressing what’s at stake, and what we need to do to make sure that copyright promotes creativity and innovation.&lt;/span&gt;
+  &lt;/i&gt;
+&lt;/p&gt;
+</code></pre>
+<p>The cause is apparent: the ingester isn't turning the image into an image asset.
+The image's location still points to an online address, which Hatch Previewer can't access because it runs sandboxed and doesn't have network privileges.
+Looking back at our <a href="tutorial/ingester-full-code.html">ingester code</a>, we only looked for images inside a <code>&lt;figure&gt;</code> tag.</p>
+<p>The <code>BlogArticle</code> format works best with <code>&lt;figure&gt;</code> images anyway, and not inline <code>&lt;img&gt;</code> elements, so instead of changing our image-to-asset code to look for the latter, we'll transmute them into the former, using Cheerio to manipulate the DOM.</p>
+<pre><code class="language-javascript">$('p img').each(function () {
+    const figure = $('&lt;figure&gt;&lt;/figure&gt;');
+    const enclosingPara = $(this).parents('p')[0];
+    figure.append($(this));
+    figure.insertBefore(enclosingPara);
+});
+</code></pre>
+<h2 id="cleaning-unused-elements">Cleaning unused elements</h2>
+<p>We also see from the HTML example above that there are useless <code>&lt;span&gt;</code> elements that we can remove to save even more space.
+Doing too much of this kind of cleanup can yield diminishing returns, but in this case the fix is quick to do with Cheerio, so we will not refrain.</p>
+<pre><code class="language-javascript">$('span').filter(function () {
+    return Object.keys(this.attribs).length === 0;
+}).each(function () {
+    $(this).replaceWith($(this).html());
+});
+</code></pre>
+<h2 id="downloading-linked-media">Downloading linked media</h2>
+<p>As a last tweak to our ingester, it seems that one of the articles we are ingesting has an embedded video: <a href="https://creativecommons.org/2018/01/18/art-every-day/">"Art and the Every Day with Mike Winkelmann (AKA beeple)"</a>.
+(Again, if you are doing this walkthrough later, that article might not be in the batch you ingested.)
+We want to download this video and save it as an asset as well.</p>
+<blockquote>
+<p><strong>NOTE:</strong> This works a bit differently from saving images as assets.
+The video doesn't get put into the hatch directly; instead, a placeholder is created, and the video is downloaded later in the next processing step.
+This keeps the hatch creation time quick.
+It also allows transcoding the video in order to use a free codec or a different resolution.</p>
+</blockquote>
+<blockquote>
+<p><strong>NOTE:</strong> This section nearly doubles the size of the ingester code and requires a Vimeo account.
+If you aren't interested in downloading videos, you can safely skip it, or save it for later.</p>
+</blockquote>
+<p>As might be expected from the Creative Commons blog, the video has a license that makes it freely distributable, and it is available for download from Vimeo.
+We'll add some code to our ingester that looks for embedded videos and saves their download location into the hatch.</p>
+<p>Run the following command to install the necessary packages:</p>
+<pre><code class="language-bash">npm install --save vimeo youtube-dl
+</code></pre>
+<p>We use the <code>vimeo</code> package to access the Vimeo API, in order to get the video's metadata, and to make sure that it is OK to download.
+The <code>youtube-dl</code> package is used to get a download URL for the video.
+(Despite its name, it's not only for YouTube.)</p>
+<p>First of all, since we are accessing the Vimeo API, we'll need a Vimeo account and some credentials.
+Create an account if you don't have one, then go to https://developer.vimeo.com, log in, and click the "Create App" button in the top right corner.
+Fill in the required information and submit the form.
+After that, your newly-created app should show up under "My Apps".
+Click on it and then click on the "Authentication" tab to see the credentials.
+You need the client identifier and the client secret.
+Fill them into the appropriate places in the following code:</p>
+<pre><code class="language-javascript">const {Vimeo} = require('vimeo');
+
+const vimeoClientID = '(fill in client ID here)';
+const vimeoClientSecret = '(fill in client secret here)';
+
+const ensureVimeoClient = (function () {
+    let vimeo;
+    return async function ensureVimeoClient() {
+        if (vimeo)
+            return vimeo;
+
+        vimeo = new Vimeo(vimeoClientID, vimeoClientSecret);
+        vimeo.generateClientCredentials =
+            util.promisify(vimeo.generateClientCredentials.bind(vimeo));
+        vimeo.request = util.promisify(vimeo.request.bind(vimeo));
+
+        const {access_token: accessToken} =
+            await vimeo.generateClientCredentials(['public']);
+        vimeo.setAccessToken(accessToken);
+        return vimeo;
+    };
+})();
+</code></pre>
+<p>This makes an <a href="https://en.wikipedia.org/wiki/Immediately-invoked_function_expression">IIFE</a> called <code>ensureVimeoClient()</code> with a private <code>vimeo</code> variable representing the Vimeo client object.
+We do it this way so that the ingester doesn't need to authenticate to Vimeo if there are no articles with videos to be ingested in the current batch.</p>
+<p>Next, we note the structure of the embedded videos:</p>
+<pre><code class="language-html">&lt;div class="jetpack-video-wrapper"&gt;
+  &lt;div class="embed-vimeo"&gt;
+    &lt;iframe src="https://player.vimeo.com/video/..." ...&gt;&lt;/iframe&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>This whole thing is discarded by Fathom when cleaning up the DOM, so we need to add a Fathom rule that considers an embedded video part of the cluster of paragraph-like elements:</p>
+<pre><code class="language-javascript">rule(dom('.jetpack-video-wrapper'), props(() =&gt; ({
+    score: 100,
+    note: {length: 1},
+})).type('paragraphish')),
+</code></pre>
+<p>Then, we add some code to fix this up so that the videos are nicely in a <code>&lt;figure&gt;</code> element:</p>
+<pre><code class="language-javascript">const videosToProcess = $('.jetpack-video-wrapper')
+.map(function () {
+    const iframe = $('.embed-vimeo iframe', this).first();
+    let figure;
+    if (iframe) {
+        figure = $('&lt;figure&gt;&lt;/figure&gt;');
+        figure.append(iframe);
+        figure = figure.insertAfter(this);
+    }
+    $(this).remove();
+    return figure;
+})
+.get().filter(figure =&gt; !!figure);
+</code></pre>
+<p>In <code>videosToProcess</code> we now have a list of <code>&lt;figure&gt;</code> elements each containing an <code>&lt;iframe&gt;</code> which refers to a video that should be downloaded.</p>
+<p>In order to download each video, we first check the Vimeo API for all the metadata, such as the title and license of the video, and the tags that it is tagged with.
+We also use the Vimeo API to check that downloading is allowed.
+For performance, but also as a courtesy to Vimeo, we request only the fields that we actually use.</p>
+<p>Subsequently, we use <code>youtube-dl</code> to get a download URL, and create a video asset using the <a href="https://endlessm.github.io/libingester/#utilget_embedded_video_asset">libingester API function <code>Libingester.util.get_embedded_video_asset()</code></a>.</p>
+<p>This function replaces the <code>&lt;iframe&gt;</code> with a special placeholder element.
+Videos aren't actually downloaded in libingester.
+This is so that you can implement your own compression or transcoding if need be.
+For this reason, you can't play the video in Hatch Previewer.
+However, we'll download the video in the section below with Basin.</p>
+<pre><code class="language-javascript">await Promise.all(videosToProcess.map(async figure =&gt; {
+    const iframe = figure.find('iframe');
+    const {host, pathname} = url.parse(iframe.attr('src'));
+    if (host !== 'player.vimeo.com') {
+        $(iframe).remove();
+        return;
+    }
+
+    const [,, vimeoID] = pathname.split('/');
+    const {
+        description, license, link, name, pictures, privacy, tags,
+        release_time: releaseTime,
+        modified_time: modifiedTime,
+    } = await getVideoInfo(vimeoID);
+
+    const freeLicense = licenseFromVimeoLicense(license);
+    if (!privacy.download || !freeLicense) {
+        $(iframe).remove();
+        return;
+    }
+
+    const {url: downloadURL} = await Youtubedl.getInfo(link, [
+        '--prefer-free-formats',
+        '--format=worst',
+    ], {
+        maxBuffer: 500 * 1024,  // JSON info is big!
+    });
+    const video = Libingester.util.get_embedded_video_asset(iframe,
+        downloadURL);
+    video.set_title(name);
+    video.set_synopsis(description);
+    video.set_canonical_uri(link);
+    video.set_last_modified_date(modifiedTime);
+    video.set_date_published(releaseTime);
+    video.set_license(freeLicense);
+    video.set_tags(tagsFromVimeoTags(tags));
+
+    const posterFrame = pictures.sizes.pop();
+    const poster = Libingester.util.download_image(posterFrame.link);
+    video.set_thumbnail(poster);
+
+    hatch.save_asset(video);
+    hatch.save_asset(poster);
+}));
+</code></pre>
+<p>The functions <code>getVideoInfo()</code>, <code>licenseFromVimeoLicense()</code>, and <code>tagsFromVimeoTags()</code> are not given here, but you can see them in the <a href="tutorial/shard-full-code.html#indexjs">full code</a>.</p>
+<p>If you run this code and view the result in Hatch Previewer, you should be able to see the article with the placeholders where the videos were.</p>
+<h2 id="creating-a-shard-with-basin">Creating a shard with Basin</h2>
+<p>The tool that we use to turn a hatch into a shard is called Basin.
+Basin is available as part of the Endless SDK.
+The easiest way to use it is inside the Flatpak sandbox of the Endless SDK.
+If you haven't installed it yet, check how to do so in the <a href="install">Install</a> section.</p>
+<p>Basin is actually a suite of related tools for creating shards from content on disk, not only from hatches.
+The tool we'll use is called <code>basin-hatch</code>.
+It also downloads the videos that we didn't download in the previous section.</p>
+<p>First start a command shell in the Flatpak sandbox and give it permission to access the internet (to download the videos) and the ingester directory (to write the shard):</p>
+<pre><code class="language-bash">flatpak run --command=bash --share=network --filesystem=$(pwd) com.endlessm.apps.Sdk
+</code></pre>
+<p>Then create a directory to hold the output, and run <code>basin-hatch</code> on the hatch directory:</p>
+<pre><code class="language-bash">mkdir -p content
+basin-hatch hatch_cc-blog_20180226_082238 content
+</code></pre>
+<p>You should see the videos being downloaded, and finally the message <code>Successfully created content/output.shard</code>.
+Looking at the <code>content/</code> directory, there are actually two files in it:</p>
+<ul>
+<li>
+<code>output.shard</code> is a compressed, binary version of the hatch with all the posts, images, videos, and their metadata.</li>
+<li>
+<code>manifest.json</code> tells information about the <code>output.shard</code> file.</li>
+</ul>
+<p>These files are the form in which the content is ultimately given to the user!
+We'll learn what to do with them in the next section of the walkthrough.</p>
+<h2 id="further-remarks-and-ideas">Further remarks and ideas</h2>
+
+</div>
+
+
+		<div id="subpages">
+	<h4>Subpages</h4>
+	<div class="container-fluid">
+		<div class="row">
+						<div class="col-sm-12 col-md-4">
+				<a href="tutorial/shard-full-code.html">Full code</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>The full refined ingester code</p>
+							</div>
+					</div>
+	</div>
+</div>
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		
+<div class="panel panel-default">
+  <div class="panel-heading collapsed" id="license-toggle" data-toggle="collapse" data-target="#license-info" aria-expanded="false" aria-controls="license-info">
+    <h4 class="panel-title" data-toc-skip="true" id="license-and-copyright-info">
+      License and Copyright info
+    </h4>
+  </div>
+  <div id="license-info" class="panel-collapse collapse">
+    <div class="panel-body">
+      
+
+<div class="license-description">
+	<table>
+		<tbody>
+			<tr>
+			<td>
+				<em>Documentation in this page is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>
+				license, unless otherwise noted.</em>
+			</td>
+			<td>
+						<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+				<img src="assets/CC-BY-SAv4.0.png" class="license-logo">
+			</a>
+						</td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div class="license-description">
+	<table>
+		<tbody>
+			<tr>
+			<td>
+				<em>Code snippets in this page are licensed under a <a rel="license" href="http://spdx.org/licenses/CC0-1.0">Creative Commons Zero 1.0 Universal.</a>
+				license, unless otherwise noted.</em>
+			</td>
+			<td>
+						<a rel="license" href="http://spdx.org/licenses/CC0-1.0">
+				<img src="assets/CC0-1.0.png" class="license-logo">
+			</a>
+						</td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div class="copyrights-description">
+		<p>
+				© 								2017, 
+				2018, 
+													       	Endless Mobile, Inc. 			</p>
+	</div>
+
+
+    </div>
+  </div>
+</div>
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		<a href="https://github.com/endlessm/eos-knowledge-lib/edit/master/docs/framework/tutorial/shard.md" data-hotdoc-role="edit-button">Edit on github</a>
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+</body>
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</html>

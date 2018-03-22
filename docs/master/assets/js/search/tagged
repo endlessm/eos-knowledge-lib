@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "tagged", "urls": ["mf-index.html#page-description", "filter/tagged.html#filtertagged1"]});
+urls_downloaded_cb({"urls": ["mf-index.html#page-description", "tutorial/shard.html#downloading-linked-media", "filter/tagged.html#filtertagged1"], "token": "tagged"});
