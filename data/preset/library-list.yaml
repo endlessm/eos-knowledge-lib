@@ -38,6 +38,7 @@ vars:
 
   subset-articles-arrangement: *main-arrangement
   subset-articles-card: *main-card
+  subset-articles-order: *main-order
 
 defines:
 - &sidebar-list-slots
@@ -184,7 +185,7 @@ defines:
               type: Selection.ContentForSet
               id: article-list
               slots:
-                order: Order.Sequence
+                order: $subset-articles-order
     sidebar:
       type: Layout.InfiniteScrolling
       references:
