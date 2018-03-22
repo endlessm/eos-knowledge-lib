@@ -14,8 +14,8 @@ Youtubedl.getInfo = util.promisify(Youtubedl.getInfo);
 
 const feedURI = 'https://creativecommons.org/blog/feed/';
 
-const vimeoClientID = 'a93aca581a0d158abab5ffa737949617f92159fc';
-const vimeoClientSecret = '7Hws8xhWOYmnz4BRlM/UI4BkL5drqr9HltN5ALU5jLgnn+xm/lbJE7c4sJQW8jKeRYf0/4zQkXmoGRLkAj5rz/Gj1mGdaBvVRBov5fMyNqyF2pVoHTMcBLqAx40rDCwp';
+const vimeoClientID = '(fill in client ID here)';
+const vimeoClientSecret = '(fill in client secret here)';
 
 const ensureVimeoClient = (function () {
     let vimeo;
