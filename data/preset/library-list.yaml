@@ -2,6 +2,13 @@
 vars:
   app-banner:
     shortdef: 'Banner.Dynamic(mode: full)'
+  app-brand:
+    type: Decoration.ThemeableImage
+    properties:
+      halign: end
+      valign: end
+      expand: true
+      image-uri: 'resource:///app/assets/watermark'
 
   home-sets-arrangement:
     shortdef: 'Arrangement.Overflow(orientation: horizontal)'
@@ -81,12 +88,7 @@ defines:
               slots:
                 filter: Filter.Featured
                 order: $home-sets-order
-        - type: Decoration.ThemeableImage
-          properties:
-            halign: end
-            valign: end
-            expand: true
-            image-uri: 'resource:///app/assets/watermark'
+        - $app-brand
     basement:
       type: Layout.InfiniteScrolling
       references:

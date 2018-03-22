@@ -2,6 +2,17 @@
 vars:
   app-banner:
     type: Banner.Dynamic
+    properties:
+      mode: full
+      halign: center
+      expand: true
+  app-brand:
+    type: Decoration.ThemeableImage
+    properties:
+      halign: end
+      expand: true
+      valign: center
+      image-uri: resource:///app/assets/watermark
 
   home-articles-arrangement: &main-arrangement
     type: Arrangement.List
@@ -28,11 +39,7 @@ defines:
       shortdef: 'Layout.Box(orientation: horizontal)'
       slots:
         contents:
-        - refvar: $app-banner
-          properties:
-            mode: full
-            halign: start
-            expand: false
+        - refvar: $app-brand
         - type: ContentGroup.ContentGroup
           properties:
             valign: center
@@ -65,10 +72,6 @@ defines:
           slots:
             contents:
             - refvar: $app-banner
-              properties:
-                mode: full
-                halign: center
-                expand: true
             - shortdef: 'Layout.Box(orientation: vertical)'
               styles:
                 - ContentGroup--outercontainer

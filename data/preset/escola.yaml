@@ -2,11 +2,18 @@
 vars:
   app-banner:
     shortdef: 'Banner.Dynamic(mode: text, expand: true)'
-  app-brand:
+  app-banner-text:
     type: ContentGroup.StaticText
     properties:
       halign: center
       label: ''
+  app-brand:
+    type: Decoration.ThemeableImage
+    properties:
+      halign: end
+      expand: true
+      valign: center
+      image-uri: resource:///app/assets/watermark
 
   home-sets-arrangement:
     type: Arrangement.Grid
@@ -40,7 +47,7 @@ defines:
     - footer
   slots:
     contents:
-    - shortdef: 'Decoration.ThemeableImage(halign: end, expand: true, valign: center, image-uri: "resource:///app/assets/watermark")'
+    - $app-brand
 
 - &background
   shortdef: 'Layout.Box(orientation: vertical)'
@@ -67,7 +74,7 @@ defines:
               slots:
                 contents:
                 - refvar: $app-banner
-                - refvar: $app-brand
+                - refvar: $app-banner-text
         - shortdef: 'Layout.Box(orientation: vertical)'
           slots:
             contents:
