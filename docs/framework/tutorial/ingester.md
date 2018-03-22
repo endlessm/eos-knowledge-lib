@@ -62,13 +62,8 @@ function ingestArticle({date, title}) {
 }
 
 async function main() {
-    try {
-        const items = await Libingester.util.fetch_rss_entries(feedURI);
-        items.forEach(ingestArticle);
-    } catch(err) {
-        console.log('there was an error', err);
-        process.exitCode = 1;
-    }
+    const items = await Libingester.util.fetch_rss_entries(feedURI);
+    items.forEach(ingestArticle);
 }
 
 main();
@@ -259,15 +254,10 @@ To create the hatch, we change our `main()` function a bit, and change our `inge
 async function main() {
     const hatch = new Libingester.Hatch('cc-blog', 'en');
     const paginator = Libingester.util.create_wordpress_paginator(feedURI);
-    try {
-        const items = await Libingester.util.fetch_rss_entries(paginator,
-            Infinity, 90);
-        await Promise.all(items.map(entry => ingestArticle(hatch, entry)));
-        hatch.finish();
-    } catch(err) {
-        console.log('there was an error', err);
-        process.exitCode = 1;
-    }
+    const items = await Libingester.util.fetch_rss_entries(paginator,
+        Infinity, 90);
+    await Promise.all(items.map(entry => ingestArticle(hatch, entry)));
+    hatch.finish();
 }
 ```
 
