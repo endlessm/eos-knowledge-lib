@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
 import argparse
+import difflib
+import itertools
+import json
 import re
 import subprocess
 
@@ -9,6 +12,13 @@ from os import listdir, path
 CURRENT_DIR = path.dirname(path.realpath(__file__))
 
 KERMIT_OUTPUT_PARSER_REGEX = re.compile("([0-9a-f]+) - ([a-z\/\-]+) - \"(.*)\" - Offset ([0-9]+)")
+
+IGNORED_METADATA_KEYS = [
+    'contentType',
+    'license',
+    'outgoingLinks',
+    'temporalCoverage',
+]
 
 def _get_shards(shard_dir):
     shards = []
@@ -37,7 +47,7 @@ def parse_shard(assets, shard_path):
         mime_type = parsed_asset.group(2)
 
         asset = {
-            'asset_id': parsed_asset.group(1),
+            'ekn_id': parsed_asset.group(1),
             'mime_type': mime_type,
             'offset': parsed_asset.group(4),
             'shard': shard_short_name,
@@ -61,6 +71,21 @@ def get_duplicate_articles(assets):
 
         if len(articles) > 1:
             yield articles
+
+def get_metadata(shard_dir, shard_id, ekn_id):
+    kermit_output = subprocess.check_output(['kermit',
+                                             'dump',
+                                             path.join(shard_dir, '{}.shard'.format(shard_id)),
+                                             ekn_id,
+                                             'metadata']).decode('utf8')
+
+    metadata_object = json.loads(kermit_output)
+    metadata_object['shard_id'] = shard_id
+
+    for ignored_key in IGNORED_METADATA_KEYS:
+        del metadata_object[ignored_key]
+
+    return metadata_object
 
 def process_duplicates(shard_dir):
     print('Examining shard dir: {}'.format(shard_dir))
@@ -98,11 +123,27 @@ def process_duplicates(shard_dir):
     for duplicate_article in get_duplicate_articles(assets):
         title = duplicate_article[0]['title']
         print('Duplicate ({}x): "{}"'.format(len(duplicate_article), title))
+        print()
 
+        metadatas = []
         for article_asset in duplicate_article:
             shard = article_asset['shard']
-            asset_id = article_asset['asset_id']
-            print(' - Shard: {}, Asset ID: {}'.format(shard, asset_id))
+            ekn_id = article_asset['ekn_id']
+            print(' - Shard: {}, Ekn ID: {}'.format(shard, ekn_id))
+
+            metadatas.append(get_metadata(shard_dir, shard, ekn_id))
+
+        print()
+
+        for combination in itertools.combinations(metadatas, 2):
+            obj1, obj2 = combination
+            print(' Comparing {} with {}'.format(obj1['@id'], obj2['@id']))
+
+            obj1_text = json.dumps(obj1, indent=4, sort_keys=True).splitlines()
+            obj2_text = json.dumps(obj2, indent=4, sort_keys=True).splitlines()
+
+            for line in difflib.unified_diff(obj1_text, obj2_text):
+                print(line)
 
         print()
 
