@@ -241,6 +241,18 @@ async function ingestArticle(hatch, {title, link, date, author}) {
     })
     .get().filter(figure => !!figure);
 
+    // Do some extra cleanup to minimize the size
+    const all = $('*');
+    all.removeAttr('class');
+    all.removeAttr('style');
+    const imgs = $('img');
+    ['attachment-id', 'comments-opened', 'image-description', 'image-meta',
+        'image-title', 'large-file', 'medium-file', 'orig-file',
+        'orig-size', 'permalink']
+        .forEach(data => imgs.removeAttr(`data-${data}`));
+    imgs.removeAttr('srcset');  // For simplicity, only use one size
+    imgs.removeAttr('sizes');
+
     await Promise.all(videosToProcess.map(async figure => {
         const iframe = figure.find('iframe');
         const {host, pathname} = url.parse(iframe.attr('src'));
@@ -288,18 +300,6 @@ async function ingestArticle(hatch, {title, link, date, author}) {
         hatch.save_asset(video);
         hatch.save_asset(poster);
     }));
-
-    // Do some extra cleanup to minimize the size
-    const all = $('*');
-    all.removeAttr('class');
-    all.removeAttr('style');
-    const imgs = $('img');
-    ['attachment-id', 'comments-opened', 'image-description', 'image-meta',
-        'image-title', 'large-file', 'medium-file', 'orig-file',
-        'orig-size', 'permalink']
-        .forEach(data => imgs.removeAttr(`data-${data}`));
-    imgs.removeAttr('srcset');  // For simplicity, only use one size
-    imgs.removeAttr('sizes');
 
     // Clean up useless <span>s with no attributes
     $('span').filter(function () {

@@ -319,6 +319,8 @@ await Promise.all(videosToProcess.map(async figure => {
 
 The functions `getVideoInfo()`, `licenseFromVimeoLicense()`, and `tagsFromVimeoTags()` are not given here, but you can see them in the [full code](tutorial/shard-full-code.md#indexjs).
 
+> **NOTE**: Make sure to put this code _after_ the code that cleans up the `class` attributes on all elements, because `Libingester.util.get_embedded_video_asset()` adds some new `class` attributes that are necessary in the final result.
+
 If you run this code and view the result in Hatch Previewer, you should be able to see the article with the placeholders where the videos were.
 
 [embedded-video]: https://creativecommons.org/2018/01/18/art-every-day/
