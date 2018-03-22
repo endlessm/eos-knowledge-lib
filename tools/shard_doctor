@@ -20,6 +20,13 @@ IGNORED_METADATA_KEYS = [
     'temporalCoverage',
 ]
 
+COLORS = {
+    'cyan': '\033[36m',
+    'green': '\033[32m',
+    'red': '\033[31m',
+    'reset': '\033[0m',
+}
+
 def _get_shards(shard_dir):
     shards = []
 
@@ -87,6 +94,17 @@ def get_metadata(shard_dir, shard_id, ekn_id):
 
     return metadata_object
 
+def print_color_diff(line):
+    color_prefix = COLORS['reset']
+    if line.startswith('+'):
+        color_prefix = COLORS['green']
+    elif line.startswith('-'):
+        color_prefix = COLORS['red']
+    elif line.startswith('@@ '):
+        color_prefix = COLORS['cyan']
+
+    print('{}{}{}'.format(color_prefix, line, COLORS['reset']))
+
 def process_duplicates(shard_dir):
     print('Examining shard dir: {}'.format(shard_dir))
 
@@ -143,7 +161,7 @@ def process_duplicates(shard_dir):
             obj2_text = json.dumps(obj2, indent=4, sort_keys=True).splitlines()
 
             for line in difflib.unified_diff(obj1_text, obj2_text):
-                print(line)
+                print_color_diff(line)
 
         print()
 
