@@ -40,6 +40,15 @@ var TopMenu = new Module.Class({
     Properties: {
         'menu-open': GObject.ParamSpec.boolean('menu-open', 'Menu open',
             'Whether the menu is showing', GObject.ParamFlags.READABLE, false),
+
+        /**
+         * Property: hide-on-scroll
+         * Whether to hide the menu after scrolling down on content.
+         */
+        'hide-on-scroll': GObject.ParamSpec.boolean('hide-on-scroll',
+            'Hide on scroll', 'Whether to hide menu after scrolling on content',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            true),
     },
 
     Slots: {
@@ -85,7 +94,8 @@ var TopMenu = new Module.Class({
         this._grid.add(content);
 
         if (content instanceof Gtk.ScrolledWindow) {
-            content.vadjustment.connect('value-changed', this._on_scroll.bind(this));
+            if (this.hide_on_scroll)
+                content.vadjustment.connect('value-changed', this._on_scroll.bind(this));
             let scrolled_widget = content.get_child();
             if (scrolled_widget instanceof Gtk.Viewport)
                 scrolled_widget = scrolled_widget.get_child();
