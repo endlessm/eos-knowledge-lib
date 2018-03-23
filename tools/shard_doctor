@@ -7,7 +7,8 @@ import json
 import re
 import subprocess
 
-from os import listdir, path
+from os import listdir, path, isatty
+from sys import stdout
 
 CURRENT_DIR = path.dirname(path.realpath(__file__))
 
@@ -95,6 +96,11 @@ def get_metadata(shard_dir, shard_id, ekn_id):
     return metadata_object
 
 def print_color_diff(line):
+    # Only show color if running in interactive terminal
+    if not isatty(stdout.fileno()):
+        print(line)
+        return
+
     color_prefix = COLORS['reset']
     if line.startswith('+'):
         color_prefix = COLORS['green']
