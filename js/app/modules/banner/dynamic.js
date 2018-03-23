@@ -44,6 +44,13 @@ var Dynamic = new Module.Class({
          */
         'mode': GObject.ParamSpec.string('mode', 'mode', 'mode',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, 'text'),
+         /**
+         * Property: Layout
+         *
+         * The layout of the logo in full mode, it can be auto, horizontal or vertical.
+         */
+        'layout': GObject.ParamSpec.string('layout', 'layout', 'layout',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, 'auto'),
         /**
          * Property: format-string
          * The format string for this title. Defaults to an empty string.
@@ -72,6 +79,7 @@ var Dynamic = new Module.Class({
         }
 
         this._logo.mode = this.mode;
+        this._logo.layout = this.layout;
 
         let text = '';
         let app_info = Utils.get_desktop_app_info();

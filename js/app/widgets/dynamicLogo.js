@@ -59,6 +59,13 @@ var DynamicLogo = new Knowledge.Class({
          */
         'mode': GObject.ParamSpec.string('mode', 'mode', 'mode',
             GObject.ParamFlags.READWRITE, ''),
+         /**
+         * Property: Layout
+         *
+         * The layout of the logo in full mode, it can be auto, horizontal or vertical.
+         */
+        'layout': GObject.ParamSpec.string('layout', 'layout', 'layout',
+            GObject.ParamFlags.READWRITE, 'auto'),
     },
 
     StyleProperties: {
@@ -102,10 +109,11 @@ var DynamicLogo = new Knowledge.Class({
     _init: function (props={}) {
         this._image_uri = '';
         this._mode = 'text';
+        this._layout = 'auto';
         this._text = '';
         this._sizing = 'auto';
         this._text_transform = 'none';
-        this._layout = null;
+        this._pango_layout = null;
         this._image = null;
         this._max_width = Width.MAX;
         this._max_height = Height.MAX;
@@ -137,6 +145,17 @@ var DynamicLogo = new Knowledge.Class({
 
     get mode() {
         return this._mode;
+    },
+
+    set layout(value) {
+        if (this._layout === value)
+            return;
+        this._layout = value;
+        this.queue_draw();
+    },
+
+    get layout() {
+        return this._layout;
     },
 
     set text(value) {
@@ -212,9 +231,9 @@ var DynamicLogo = new Knowledge.Class({
             default:
                 transformed = this._text;
         }
-        if (!this._layout)
-            this._layout = this.create_pango_layout(null);
-        this._layout.set_text(transformed, -1);
+        if (!this._pango_layout)
+            this._pango_layout = this.create_pango_layout(null);
+        this._pango_layout.set_text(transformed, -1);
     },
 
     _get_fresh_state_context: function () {
@@ -335,13 +354,23 @@ var DynamicLogo = new Knowledge.Class({
     },
 
     _draw_text_mode: function (cr, max_width, max_height) {
-        let [width, height] = this._layout.get_pixel_size();
+        let [width, height] = this._pango_layout.get_pixel_size();
         this._translate_and_scale(cr, width, height, max_width, max_height);
-        Gtk.render_layout(this.get_style_context(), cr, 0, 0, this._layout);
+        Gtk.render_layout(this.get_style_context(), cr, 0, 0, this._pango_layout);
     },
 
     _draw_full_mode: function (cr, max_width, max_height) {
-        let is_horizontal = max_width > max_height * HEIGHT_WIDTH_RATIO;
+        let is_horizontal;
+        switch(this._layout) {
+            case 'horizontal':
+                is_horizontal = true;
+                break;
+            case 'vertical':
+                is_horizontal = false;
+                break;
+            default:
+                is_horizontal = max_width > max_height * HEIGHT_WIDTH_RATIO;
+        }
 
         let image_width, image_height, text_width, text_height;
         if (is_horizontal) {
@@ -358,7 +387,7 @@ var DynamicLogo = new Knowledge.Class({
 
         let image_scale, text_scale, text_size, image_size, ink_size;
         if (is_horizontal) {
-            [ink_size, text_size] = this._layout.get_pixel_extents();
+            [ink_size, text_size] = this._pango_layout.get_pixel_extents();
             text_scale = Math.min(text_width / text_size.width, text_height / text_size.height);
             image_size = this._image.get_dimensions();
             // XXX this is a cheaper way to keep image and text equal in height
@@ -372,7 +401,7 @@ var DynamicLogo = new Knowledge.Class({
         } else {
             image_size = this._image.get_dimensions();
             image_scale = Math.min(image_width / image_size.width, image_height / image_size.height);
-            [ ,text_size] = this._layout.get_pixel_extents();
+            [ ,text_size] = this._pango_layout.get_pixel_extents();
             text_scale = Math.min(text_width / text_size.width, text_height / text_size.height);
         }
 
@@ -400,7 +429,7 @@ var DynamicLogo = new Knowledge.Class({
         cr.save();
         cr.translate(text_translate_x, text_translate_y);
         cr.scale(text_scale, text_scale);
-        Gtk.render_layout(this.get_style_context(), cr, 0, 0, this._layout);
+        Gtk.render_layout(this.get_style_context(), cr, 0, 0, this._pango_layout);
         cr.restore();
     },
 });
