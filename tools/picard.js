@@ -1,9 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gdk = imports.gi.Gdk;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
+const {DModel, Gdk, Gio, GLib, GObject, Gtk} = imports.gi;
 const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
@@ -76,7 +71,7 @@ const SPACING_UNIT = 6;
 const DEFAULT_CARD_SPACING = 6;
 const MAX_CARD_SPACING = 24;
 
-const OBJECT_MODEL_TYPE = [ 'ArticleObjectModel', 'VideoObjectModel', 'AudioObjectModel' ];
+const OBJECT_MODEL_TYPE = ['Article', 'Video', 'Audio'];
 
 // A little animation to guide the eye where to click first.
 const CSS = '\
@@ -362,7 +357,7 @@ function change_models () {
     load_arrangement(widgets.arrangement_combo_box.get_active_text(),
         widgets.card_combo_box.get_active_text());
     models.forEach((model) => {
-        let new_model = Eknc[object_model].new_from_props({
+        let new_model = new DModel[object_model]({
             title: model.title,
             synopsis: model.synopsis,
             thumbnail_uri: model.thumbnail_uri,
@@ -401,12 +396,12 @@ function connect_signals () {
             child_tags: ['House Lannister'],
         },
     ];
-    let sets = data.map((obj) => Eknc.SetObjectModel.new_from_props(obj));
+    let sets = data.map(props => new DModel.Set(props));
     SetMap.init_map_with_models(sets);
 
     widgets.add_box.connect('clicked', () => {
         let object_model = widgets.object_model_combo_box.get_active_text();
-        let model = Eknc[object_model].new_from_props({
+        let model = new DModel[object_model]({
             title: ARTICLE_TITLE,
             synopsis: ARTICLE_SYNOPSIS,
             thumbnail_uri: IMAGES_DIR + ARTICLE_IMAGES[GLib.random_int_range(0, ARTICLE_IMAGES.length - 1)],

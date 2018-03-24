@@ -1,6 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gdk = imports.gi.Gdk;
-const Gtk = imports.gi.Gtk;
+const {DModel, Gdk, Gtk} = imports.gi;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -86,11 +84,11 @@ var MediaLightbox = new Module.Class({
         this._loading_new_lightbox = true;
         let new_index = this._current_index + delta;
         let resource = this._context[new_index];
-        if (resource instanceof Eknc.ContentObjectModel) {
+        if (resource instanceof DModel.Content) {
             this._preview_media_object(resource);
             this._loading_new_lightbox = false;
         } else {
-            Eknc.Engine.get_default().get_object_promise(resource)
+            DModel.Engine.get_default().get_object_promise(resource)
             .then((media_object) => {
                 this._loading_new_lightbox = false;
 
@@ -110,7 +108,7 @@ var MediaLightbox = new Module.Class({
         let resources = this._context;
 
         this._current_index = resources.map((item) => {
-            if (item instanceof Eknc.ContentObjectModel) {
+            if (item instanceof DModel.Content) {
                 return item.ekn_id;
             }
             return item;
@@ -136,7 +134,7 @@ var MediaLightbox = new Module.Class({
         // specified, try to determine content type and show it accordingly.
         let content_type = media_object.content_type;
         if (widget === null) {
-            if (media_object instanceof Eknc.VideoObjectModel) {
+            if (media_object instanceof DModel.Video) {
                 widget = new EosKnowledgePrivate.MediaBin();
                 widget.set_uri(media_object.ekn_id);
             } else if (content_type === 'application/pdf') {

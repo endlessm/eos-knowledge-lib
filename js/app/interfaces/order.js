@@ -14,7 +14,7 @@ const Module = imports.app.interfaces.module;
  * A module implementing this interface can be added to the "order" slot of an
  * <Arrangement>.
  * It tells the arrangement in which order to display its cards, based on
- * data from each card's <ContentObjectModel>.
+ * data from each card's `DModel.Content`.
  *
  * To write an <Order> implementation, implement the <compare_impl()> method.
  *
@@ -52,8 +52,8 @@ var Order = new Lang.Interface({
      * Determine the sort order of two models
      *
      * Parameters:
-     *   left - a <ContentObjectModel>
-     *   right - a <ContentObjectModel>
+     *   left - a `DModel.Content`
+     *   right - a `DModel.Content`
      *
      * Returns:
      *   A value less than 0 if @left should sort before @right.
@@ -91,10 +91,10 @@ var Order = new Lang.Interface({
      * <Order.modify_xapian_query_impl>.
      *
      * Parameters:
-     *   query - an <EosKnowledgeContent.QueryObject>
+     *   query - a `DModel.Query`
      *
      * Returns:
-     *   a new <EosKnowledgeContent.QueryObject>, may be the same object
+     *   a new `DModel.Query`, may be the same object
      */
     modify_xapian_query: function (query) {
         // You can't sort by two things with our current API wrapping Xapian.
@@ -133,10 +133,10 @@ var Order = new Lang.Interface({
      * Your implementation must work correctly even if it is never called.
      *
      * Parameters:
-     *   query - an <EosKnowledgeContent.QueryObject>
+     *   query - a `DModel.Query`
      *
      * Returns:
-     *   a new <EosKnowledgeContent.QueryObject>, may be the same object
+     *   a new `DModel.Query`, may be the same object
      */
     modify_xapian_query_impl: null,
 });

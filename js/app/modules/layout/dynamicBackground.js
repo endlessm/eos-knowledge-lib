@@ -37,7 +37,7 @@ const _cssTemplate = '.LayoutDynamicBackground {\
  * and a beige overlay that covers the bottom.
  *
  * The tinted overlay color is extracted from thumbnail image of a
- * <ContentObjectModel>.
+ * `DModel.Content`.
  */
 var DynamicBackground = new Module.Class({
     Name: 'Layout.DynamicBackground',

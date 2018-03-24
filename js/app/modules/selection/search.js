@@ -2,7 +2,7 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
+const {DModel} = imports.gi;
 
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
@@ -23,6 +23,6 @@ var Search = new Module.Class({
         let search_terms = HistoryStore.get_default().current_search_terms;
         if (query_index > 0 || search_terms.length === 0)
             return null;
-        return new Eknc.QueryObject({search_terms, limit});
+        return new DModel.Query({search_terms, limit});
     },
 });

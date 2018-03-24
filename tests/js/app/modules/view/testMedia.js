@@ -1,8 +1,7 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gtk = imports.gi.Gtk;
-const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
+const {DModel, Gtk} = imports.gi;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
+const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
@@ -11,12 +10,12 @@ const {Media} = imports.app.modules.view.media;
 Gtk.init(null);
 
 describe('View.Media', function () {
-    Object.defineProperty(Eknc.ImageObjectModel.prototype, 'ekn_id', {
+    Object.defineProperty(DModel.Image.prototype, 'ekn_id', {
         get: function() { return null; }
     });
 
     it('has labels that understand Pango markup', function () {
-        let model = Eknc.ImageObjectModel.new_from_props({
+        let model = new DModel.Image({
             copyright_holder: '!!!',
             caption: '@@@',
         });
@@ -34,7 +33,7 @@ describe('View.Media', function () {
         let attribution_button;
 
         it ('displays license file when license is known', function () {
-            let model = Eknc.ImageObjectModel.new_from_props({
+            let model = new DModel.Image({
                 license: 'CC BY 4.0',
                 copyright_holder: copyright_holder,
             });
@@ -48,7 +47,7 @@ describe('View.Media', function () {
         });
 
         it ('does not display license file when license is unknown', function () {
-            let model = Eknc.ImageObjectModel.new_from_props({
+            let model = new DModel.Image({
                 license: 'foobar',
                 copyright_holder: copyright_holder,
             });

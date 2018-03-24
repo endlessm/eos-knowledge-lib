@@ -1,5 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const GObject = imports.gi.GObject;
+const {DModel, GObject} = imports.gi;
 const Lang = imports.lang;
 
 var MockEngine = new Lang.Class({
@@ -41,6 +40,6 @@ var MockEngine = new Lang.Class({
 // in a beforeEach to have a new engine each test iteration.
 var mock_default = () => {
     let engine = new MockEngine();
-    spyOn(Eknc.Engine, 'get_default').and.returnValue(engine);
+    spyOn(DModel.Engine, 'get_default').and.returnValue(engine);
     return engine;
 };

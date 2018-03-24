@@ -2,13 +2,8 @@
 
 /* exported ArticleStack */
 
-const Eknc = imports.gi.EosKnowledgeContent;
+const {DModel, Gdk, GLib, GObject, Gtk, WebKit2} = imports.gi;
 const Gettext = imports.gettext;
-const Gdk = imports.gi.Gdk;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
-const WebKit2 = imports.gi.WebKit2;
 
 const Actions = imports.app.actions;
 const Config = imports.app.config;
@@ -162,9 +157,9 @@ var ArticleStack = new Module.Class({
             article_content_props.nav_content = nav_content;
 
         let slot = 'article';
-        if (model instanceof Eknc.VideoObjectModel) {
+        if (model instanceof DModel.Video) {
             slot = 'video';
-        } else if (model instanceof Eknc.AudioObjectModel) {
+        } else if (model instanceof DModel.Audio) {
             slot = 'audio';
         }
         let article_content = this.create_submodule(slot, article_content_props);
@@ -211,7 +206,7 @@ var ArticleStack = new Module.Class({
 
     _on_show_tooltip: function (tooltip_presenter, tooltip, uri) {
         if (GLib.uri_parse_scheme(uri) === 'ekn') {
-            Eknc.Engine.get_default().get_object_promise(uri)
+            DModel.Engine.get_default().get_object_promise(uri)
             .then((article_model) => {
                 this._webview_tooltip_presenter.show_default_tooltip(tooltip, article_model.title);
             })

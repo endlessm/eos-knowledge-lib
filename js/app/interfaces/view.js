@@ -1,7 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
+const {DModel, GLib, GObject, Gtk} = imports.gi;
 const Lang = imports.lang;
 
 const {Module} = imports.app.interfaces.module;
@@ -25,19 +22,13 @@ var View = new Lang.Interface({
          * Record backing this view
          *
          * Every view is backed by a record in the database.
-         * A view's record is represented by a <ContentObjectModel> or one of
+         * A view's record is represented by a `DModel.Content` or one of
          * its subclasses.
-         *
-         * Type:
-         *   <ContentObjectModel>
-         *
-         * Flags:
-         *   Construct only
          */
         'model': GObject.ParamSpec.object('model', 'Model',
             'Model with which to create this view',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            Eknc.ContentObjectModel),
+            DModel.Content),
     },
 
     /**

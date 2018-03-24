@@ -2,7 +2,7 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
+const {DModel} = imports.gi;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -21,7 +21,7 @@ var AllSets = new Module.Class({
     construct_query_object: function (limit, query_index) {
         if (query_index > 0)
             return null;
-        return new Eknc.QueryObject({
+        return new DModel.Query({
             limit: limit,
             tags_match_all: ['EknSetObject'],
         });

@@ -27,9 +27,6 @@ if test -z "$NOCONFIGURE"; then
 fi
 
 # Run the actual tools to prepare the clean checkout
-pushd ekncontent > /dev/null
-    gtkdocize || exit $?
-popd
 autoreconf -fi || exit $?
 rm -f po/Makevars.template
 

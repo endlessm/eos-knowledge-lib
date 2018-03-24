@@ -1,5 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const GObject = imports.gi.GObject;
+const {DModel, GObject} = imports.gi;
 const Lang = imports.lang;
 
 const Utils = imports.app.utils;
@@ -205,7 +204,7 @@ placerat varius non id dui.',
 
     _generate_set_object: function (data) {
         data.synopsis = this._SYNOPSIS;
-        return Eknc.SetObjectModel.new_from_props(data);
+        return new DModel.Set(data);
     },
 
     _generate_audio_object: function (data) {
@@ -213,7 +212,7 @@ placerat varius non id dui.',
         data.content_type = 'audio/webm';
         data.title = AUDIO_TITLE;
         data.ekn_id = IMAGES_DIR + VIDEO_FILENAME + '/'.repeat(this._audio_count++);
-        let audio = Eknc.AudioObjectModel.new_from_props(data);
+        let audio = new DModel.Audio(data);
         this._audio_models.push(audio);
         return audio;
     },
@@ -225,7 +224,7 @@ placerat varius non id dui.',
         // Extra slashes are ignored during the resource lookup so we always get the same
         // file. However this does ensure we have unique ekn_ids
         data.ekn_id = IMAGES_DIR + VIDEO_FILENAME + '/'.repeat(this._video_count++);
-        let video = Eknc.VideoObjectModel.new_from_props(data);
+        let video = new DModel.Video(data);
         this._video_models.push(video);
         return video;
     },
@@ -236,7 +235,7 @@ placerat varius non id dui.',
         data.source = 'wikipedia';
         data.license = 'CC-BY-SA 3.0';
         data.ekn_id = 'ekn://moltres/article' + this._article_count++;
-        let article = Eknc.ArticleObjectModel.new_from_props(data);
+        let article = new DModel.Article(data);
 
         // Save this model. We can't just generate them on the fly and then
         // discard them because later the client could request this same article
@@ -250,7 +249,7 @@ placerat varius non id dui.',
 // Override the default engine singleton with our own, moltres Engine.
 function override_engine() {
     let engine = new MoltresEngine();
-    Eknc.Engine.get_default = function () {
+    DModel.Engine.get_default = function () {
         return engine;
     };
 };

@@ -1,6 +1,5 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
 const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;

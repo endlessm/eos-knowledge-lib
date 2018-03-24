@@ -1,7 +1,7 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gtk = imports.gi.Gtk;
+const {DModel, Gtk} = imports.gi;
+
 Gtk.init(null);
 
 const MockFactory = imports.tests.mockFactory;
@@ -26,8 +26,7 @@ describe('Order.PublishedDate', function () {
     ];
 
     beforeEach(function () {
-        models = UNSORTED_DATES.map(date =>
-            Eknc.ArticleObjectModel.new_from_props({ published: date }));
+        models = UNSORTED_DATES.map(published => new DModel.Article({published}));
     });
 
     describe('ascending', function () {
@@ -47,9 +46,9 @@ describe('Order.PublishedDate', function () {
         });
 
         it('queries models by date', function () {
-            let query = order.modify_xapian_query(new Eknc.QueryObject());
-            expect(query.order).toEqual(Eknc.QueryObjectOrder.ASCENDING);
-            expect(query.sort).toEqual(Eknc.QueryObjectSort.DATE);
+            let query = order.modify_xapian_query(new DModel.Query());
+            expect(query.order).toEqual(DModel.QueryOrder.ASCENDING);
+            expect(query.sort).toEqual(DModel.QuerySort.DATE);
         });
     });
 
@@ -69,9 +68,9 @@ describe('Order.PublishedDate', function () {
         });
 
         it('queries models by date', function () {
-            let query = order.modify_xapian_query(new Eknc.QueryObject());
-            expect(query.order).toEqual(Eknc.QueryObjectOrder.DESCENDING);
-            expect(query.sort).toEqual(Eknc.QueryObjectSort.DATE);
+            let query = order.modify_xapian_query(new DModel.Query());
+            expect(query.order).toEqual(DModel.QueryOrder.DESCENDING);
+            expect(query.sort).toEqual(DModel.QuerySort.DATE);
         });
     });
 });

@@ -2,8 +2,7 @@
 
 /* exported Alphabetical */
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const GObject = imports.gi.GObject;
+const {DModel, GObject} = imports.gi;
 
 const Module = imports.app.interfaces.module;
 const Order = imports.app.interfaces.order;
@@ -40,9 +39,9 @@ var Alphabetical = new Module.Class({
     },
 
     modify_xapian_query_impl: function (query) {
-        return Eknc.QueryObject.new_from_object(query, {
-            order: Eknc.QueryObjectOrder[this.ascending? 'ASCENDING' : 'DESCENDING'],
-            sort: Eknc.QueryObjectSort.ALPHABETICAL,
+        return DModel.Query.new_from_object(query, {
+            order: DModel.QueryOrder[this.ascending? 'ASCENDING' : 'DESCENDING'],
+            sort: DModel.QuerySort.ALPHABETICAL,
         });
     },
 });

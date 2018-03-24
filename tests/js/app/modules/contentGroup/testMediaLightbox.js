@@ -1,5 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gtk = imports.gi.Gtk;
+const {DModel, Gtk} = imports.gi;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -32,10 +31,10 @@ describe('ContentGroup.MediaLightbox', function () {
             },
         });
 
-        media_model = Eknc.MediaObjectModel.new_from_props({
+        media_model = new DModel.Media({
             ekn_id: 'ekn://foo/bar',
         });
-        article_model = Eknc.ArticleObjectModel.new_from_props({
+        article_model = new DModel.Article({
             resources: ['ekn://foo/bar'],
         });
     });
@@ -63,9 +62,7 @@ describe('ContentGroup.MediaLightbox', function () {
         });
         expect(factory.get_created('view').length).toBe(1);
 
-        let nonexistent_media_object = Eknc.MediaObjectModel.new_from_props({
-            ekn_id: 'ekn://no/media',
-        });
+        let nonexistent_media_object = new DModel.Media();
         store.set_current_item_from_props({
             page_type: Pages.ARTICLE,
             context: article_model.resources,

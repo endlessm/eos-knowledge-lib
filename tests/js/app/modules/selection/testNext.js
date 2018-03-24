@@ -1,5 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gtk = imports.gi.Gtk;
+const {DModel, Gtk} = imports.gi;
 
 const Next = imports.app.modules.selection.next;
 const Pages = imports.app.pages;
@@ -13,11 +12,8 @@ Gtk.init(null);
 const EKN_ID = 'ekn:///e430d1587a3710f5c1444d96b07eb3ee7a2b2a1e';
 
 function setup (store) {
-    let model = Eknc.ArticleObjectModel.new_from_props({
-      ekn_id: 'ekn:///d3eee75ff0beef2c001c00b424e632280e671f32',
-    });
-
-    let next_model = Eknc.ArticleObjectModel.new_from_props({
+    let model = new DModel.Article();
+    let next_model = new DModel.Article({
       ekn_id: EKN_ID,
     });
 

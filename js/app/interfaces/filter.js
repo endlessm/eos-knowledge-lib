@@ -14,7 +14,7 @@ const Module = imports.app.interfaces.module;
  * A module implementing this interface can be added to the "filter" slot of an
  * <Arrangement>.
  * It tells the arrangement which cards to display and which to hide, based on
- * data from each card's <ContentObjectModel>.
+ * data from each card's `DModel.Content`.
  *
  * Filters are always applied after <Orders> are.
  *
@@ -66,7 +66,7 @@ var Filter = new Lang.Interface({
      * Determine whether an arrangement should show a model as a card
      *
      * Parameters:
-     *   model - a <ContentObjectModel>
+     *   model - a `DModel.Content`
      *
      * Returns:
      *   True if @model should be included, false if it should not.
@@ -104,10 +104,10 @@ var Filter = new Lang.Interface({
      * <Filter.modify_xapian_query_impl>.
      *
      * Parameters:
-     *   query - an <EosKnowledgeContent.QueryObject>
+     *   query - a `DModel.Query`
      *
      * Returns:
-     *   a new <EosKnowledgeContent.QueryObject>, may be the same object
+     *   a new `DModel.Query`, may be the same object
      */
     modify_xapian_query: function (query) {
         let modified_query = query;
@@ -144,10 +144,10 @@ var Filter = new Lang.Interface({
      * Your implementation must work correctly even if it is never called.
      *
      * Parameters:
-     *   query - an <EosKnowledgeContent.QueryObject>
+     *   query - a `DModel.Query`
      *
      * Returns:
-     *   a new <EosKnowledgeContent.QueryObject>, may be the same object
+     *   a new `DModel.Query`, may be the same object
      */
     modify_xapian_query_impl: null,
 });

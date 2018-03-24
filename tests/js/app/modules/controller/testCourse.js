@@ -1,8 +1,6 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
+const {DModel, GObject, Gtk} = imports.gi;
 
 Gtk.init(null);
 
@@ -31,10 +29,10 @@ describe('Controller.Course', function () {
 
     beforeEach(function () {
 
-        set_models = [0, 1, 2].map(() => Eknc.SetObjectModel.new_from_props({
+        set_models = [0, 1, 2].map(() => new DModel.Set({
             tags: ['foo'],
         }));
-        let parent = Eknc.SetObjectModel.new_from_props({
+        let parent = new DModel.Set({
             child_tags: ['foo'],
         });
         set_models.push(parent);

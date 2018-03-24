@@ -2,8 +2,7 @@
 
 /* exported CurrentSet */
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const GObject = imports.gi.GObject;
+const {DModel, GObject} = imports.gi;
 
 const Filter = imports.app.interfaces.filter;
 const HistoryStore = imports.app.historyStore;
@@ -62,12 +61,12 @@ var CurrentSet = new Module.Class({
     // Filter implementation
     modify_xapian_query_impl: function (query) {
         if (this.invert) {
-            return Eknc.QueryObject.new_from_object(query, {
+            return DModel.Query.new_from_object(query, {
                 excluded_tags: Utils.union(query.excluded_tags,
                     this._current_set.child_tags),
             });
         }
-        return Eknc.QueryObject.new_from_object(query, {
+        return DModel.Query.new_from_object(query, {
             tags_match_any: Utils.union(query.tags_match_any,
                 this._current_set.child_tags)
         });

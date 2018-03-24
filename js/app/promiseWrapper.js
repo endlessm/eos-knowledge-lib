@@ -1,6 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gio = imports.gi.Gio;
-const Soup = imports.gi.Soup;
+const {DModel, Gio, Soup} = imports.gi;
 
 function wrapPromise (obj, cancellable, async_name) {
     let in_args = Array.prototype.slice.call(arguments, 3);
@@ -18,15 +16,15 @@ function wrapPromise (obj, cancellable, async_name) {
 }
 
 function wrapPromises () {
-    Eknc.Engine.prototype.get_object_promise = function (id, cancellable=null) {
+    DModel.Engine.prototype.get_object_promise = function (id, cancellable=null) {
         return wrapPromise(this, cancellable, 'get_object', id);
     };
 
-    Eknc.Engine.prototype.get_object_for_app_promise = function (id, app_id, cancellable=null) {
+    DModel.Engine.prototype.get_object_for_app_promise = function (id, app_id, cancellable=null) {
         return wrapPromise(this, cancellable, 'get_object_for_app', id, app_id);
     };
 
-    Eknc.Engine.prototype.query_promise = function (query, cancellable=null) {
+    DModel.Engine.prototype.query_promise = function (query, cancellable=null) {
         return wrapPromise(this, cancellable, 'query', query);
     };
 

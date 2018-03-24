@@ -2,10 +2,7 @@
 
 /* exported Arrangement, place_card, get_spare_pixels_for_card_index */
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gdk = imports.gi.Gdk;
-const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
+const {DModel, Gdk, GObject, Gtk} = imports.gi;
 const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
@@ -74,10 +71,10 @@ var Arrangement = new Lang.Interface({
          * Emitted when one of the arrangement's cards is clicked
          *
          * Parameters:
-         *   model - the <ContentObjectModel> of the card that was clicked
+         *   model - the `DModel.Content` of the card that was clicked
          */
         'card-clicked': {
-            param_types: [ Eknc.ContentObjectModel ],
+            param_types: [DModel.Content],
         },
     },
 
@@ -145,7 +142,7 @@ var Arrangement = new Lang.Interface({
      * more specialized relatives will not add a model to the arrangement.
      *
      * Parameters:
-     *   models - an array of <ContentObjectModel>s
+     *   models - an array of `DModel.Content`
      */
     set_models: function (models) {
         // unpack all cards
@@ -212,7 +209,7 @@ var Arrangement = new Lang.Interface({
      * Get the created <Card> for a card model
      *
      * Parameters:
-     *   model - a <ContentObjectModel>
+     *   model - a `DModel.Content`
      *
      * Returns:
      *   A <Card> whose <Card.model> property is @model, or **undefined** if

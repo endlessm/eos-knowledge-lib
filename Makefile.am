@@ -8,7 +8,7 @@
 ## Please keep this file well-commented.
 
 # Subdirectories where we also want to run make
-SUBDIRS = @subdirs@ po . docs
+SUBDIRS = po . docs
 
 # Our Autoconf macros are kept in the m4/ directory
 ACLOCAL_AMFLAGS = -I m4
@@ -26,10 +26,8 @@ pkglib_LTLIBRARIES =
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 AM_CFLAGS = $(STRICT_CFLAGS)
 
-# Make sure to build gtk-doc for ekncontent when doing 'make distcheck'
 AM_DISTCHECK_CONFIGURE_FLAGS = \
 	--enable-strict-flags \
-	--enable-gtk-doc \
 	$(NULL)
 if EOS_ENABLE_COVERAGE
 AM_DISTCHECK_CONFIGURE_FLAGS += --enable-coverage --with-coverage-dir=@EOS_COVERAGE_DIR@
@@ -341,8 +339,8 @@ $(subst_files): %: %.in Makefile
 
 uninstalled_subst = $(SED) \
 	-e 's,%pkgdatadir%,$(abs_top_builddir),g' \
-	-e 's,%pkglibdir%,$(abs_top_builddir)/.libs:$(abs_top_builddir)/ekncontent/.libs,g' \
-	-e 's,%typelibdir%,$(abs_top_builddir):$(abs_top_builddir)/ekncontent,g' \
+	-e 's,%pkglibdir%,$(abs_top_builddir)/.libs,g' \
+	-e 's,%typelibdir%,$(abs_top_builddir),g' \
 	$(NULL)
 
 uninstalled_subst_files = \
@@ -612,10 +610,9 @@ YAML_LOG_COMPILER = $(top_srcdir)/tests/autobahn/testautobahn.sh
 TESTS_ENVIRONMENT = \
 	export NO_AT_BRIDGE=1; \
 	export GJS_DISABLE_JIT=1; \
-	export GJS_PATH="$(top_srcdir):$(top_srcdir)/js:$(top_builddir)/js:$(top_srcdir)/ekncontent:$(top_builddir)/ekncontent"; \
-	export GI_TYPELIB_PATH="$(top_builddir):$(top_builddir)/ekncontent$${GI_TYPELIB_PATH:+:$$GI_TYPELIB_PATH}"; \
-	export LD_LIBRARY_PATH="$(top_builddir)/.libs:$(top_builddir)/ekncontent/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
-	export GIO_EXTRA_MODULES="$(top_builddir)/ekncontent/.libs"; \
+	export GJS_PATH="$(top_srcdir):$(top_srcdir)/js:$(top_builddir)/js"; \
+	export GI_TYPELIB_PATH="$(top_builddir)$${GI_TYPELIB_PATH:+:$$GI_TYPELIB_PATH}"; \
+	export LD_LIBRARY_PATH="$(top_builddir)/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
 	export G_TEST_SRCDIR="$(abs_srcdir)/tests"; \
 	export G_TEST_BUILDDIR="$(abs_builddir)/tests"; \
 	export LC_ALL=C; \

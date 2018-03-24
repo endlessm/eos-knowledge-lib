@@ -1,7 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
+const {DModel, Gio, GLib, Gtk} = imports.gi;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -66,7 +63,7 @@ describe('ContentGroup.ContentGroup', function () {
     });
 
     it('dispatches item clicked', function () {
-        let model = Eknc.ContentObjectModel.new_from_props();
+        let model = new DModel.Content();
         selection.get_models.and.returnValue([model]);
         content_group.load();
         arrangement.emit('card-clicked', model);

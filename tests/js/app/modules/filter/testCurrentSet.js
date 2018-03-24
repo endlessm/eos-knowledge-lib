@@ -1,6 +1,6 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
+const {DModel} = imports.gi;
 
 const CurrentSet = imports.app.modules.filter.currentSet;
 const HistoryStore = imports.app.historyStore;
@@ -10,29 +10,24 @@ const SetMap = imports.app.setMap;
 
 describe('Filter.CurrentSet', function () {
     const SETS = [
-        Eknc.SetObjectModel.new_from_props({
-            ekn_id: 'ekn://set',
+        new DModel.Set({
             tags: ['EknSetObject'],
             child_tags: ['set'],
         }),
-        Eknc.SetObjectModel.new_from_props({
-            ekn_id: 'ekn://subset',
+        new DModel.Set({
             tags: ['set', 'EknSetObject'],
             child_tags: ['subset'],
         }),
     ];
 
     const ARTICLES = [
-        Eknc.ContentObjectModel.new_from_props({
-            ekn_id: 'ekn://belongs_to_set',
+        new DModel.Content({
             tags: ['set', 'EknArticleObject'],
         }),
-        Eknc.ContentObjectModel.new_from_props({
-            ekn_id: 'ekn://belongs_to_subset',
+        new DModel.Content({
             tags: ['set', 'subset', 'EknArticleObject'],
         }),
-        Eknc.ContentObjectModel.new_from_props({
-            ekn_id: 'ekn://belongs_to_none',
+        new DModel.Content({
             tags: ['EknArticleObject'],
         }),
     ];
@@ -72,7 +67,7 @@ describe('Filter.CurrentSet', function () {
         });
 
         it('will match the set tag', function () {
-            let query = filter.modify_xapian_query(new Eknc.QueryObject());
+            let query = filter.modify_xapian_query(new DModel.Query());
             expect(query.tags_match_any).toContain('set');
         });
     });
@@ -89,7 +84,7 @@ describe('Filter.CurrentSet', function () {
         });
 
         it('will not match the set tag', function () {
-            let query = filter.modify_xapian_query(new Eknc.QueryObject());
+            let query = filter.modify_xapian_query(new DModel.Query());
             expect(query.excluded_tags).toContain('set');
         });
     });

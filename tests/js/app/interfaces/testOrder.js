@@ -1,4 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
+const {DModel} = imports.gi;
 
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
@@ -33,8 +33,7 @@ describe('Order interface', function () {
             },
         });
         let order = factory.create_root_module();
-        let models = UNSORTED.map(properties =>
-            Eknc.ContentObjectModel.new_from_props(properties));
+        let models = UNSORTED.map(props => new DModel.Content(props));
 
         expect(models.sort(order.compare.bind(order)).map((model) => {
             return { title: model.title, synopsis: model.synopsis };
@@ -46,7 +45,7 @@ describe('Order interface', function () {
             type: Minimal.MinimalXapianOrder,
         });
         let order = factory.create_root_module();
-        let query = new Eknc.QueryObject({
+        let query = new DModel.Query({
             search_terms: 'foobar',
         });
         query = order.modify_xapian_query(query);
@@ -66,7 +65,7 @@ describe('Order interface', function () {
             },
         });
         let order = factory.create_root_module();
-        let query = new Eknc.QueryObject({
+        let query = new DModel.Query({
             search_terms: 'foobar',
         });
         query = order.modify_xapian_query(query);
@@ -86,7 +85,7 @@ describe('Order interface', function () {
             },
         });
         let order = factory.create_root_module();
-        let query = new Eknc.QueryObject({
+        let query = new DModel.Query({
             search_terms: 'foobar',
         });
         query = order.modify_xapian_query(query);

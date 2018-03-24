@@ -1,11 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const Endless = imports.gi.Endless;
-const Gdk = imports.gi.Gdk;
+const {DModel, Endless, Gdk, Gio, GObject} = imports.gi;
 const Gettext = imports.gettext;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
 
 const Actions = imports.app.actions;
 const Config = imports.app.config;
@@ -103,12 +99,12 @@ var SearchBox = new Module.Class({
         if (search_terms.length === 0)
             return;
 
-        let query_obj = new Eknc.QueryObject({
+        let query_obj = new DModel.Query({
             search_terms,
             limit: RESULTS_SIZE,
             tags_match_any: ['EknArticleObject'],
         });
-        let engine = Eknc.Engine.get_default();
+        let engine = DModel.Engine.get_default();
         this._query_promise = engine.query_promise(query_obj, this._cancellable)
         .then((results) => {
             if (search_terms !== Utils.sanitize_search_terms(this.text))

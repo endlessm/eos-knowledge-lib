@@ -1,4 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
+const {DModel} = imports.gi;
 
 const SetMap = imports.app.setMap;
 
@@ -31,7 +31,7 @@ describe('Set Map', function () {
                 child_tags: [],
             },
         ];
-        sets = data.map((props) => Eknc.SetObjectModel.new_from_props(props));
+        sets = data.map(props => new DModel.Set(props));
         SetMap.init_map_with_models(sets);
 
         let article_data = [
@@ -47,7 +47,7 @@ describe('Set Map', function () {
             },
         ];
 
-        articles = article_data.map((props) => Eknc.ArticleObjectModel.new_from_props(props));
+        articles = article_data.map(props => new DModel.Article(props));
     });
 
     describe('tag map', function () {

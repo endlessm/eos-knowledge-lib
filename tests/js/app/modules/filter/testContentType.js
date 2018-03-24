@@ -1,15 +1,14 @@
 // Copyright 2018 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
+const {DModel} = imports.gi;
 
 const ContentType = imports.app.modules.filter.contentType;
 const MockFactory = imports.tests.mockFactory;
 
 describe('Filter.ContentType', function () {
-    const MODELS = ['text/html', 'video/real'].map(type =>
-        Eknc.ContentObjectModel.new_from_props({
-            content_type: type,
-        }));
+    const MODELS = ['text/html', 'video/real'].map(type => new DModel.Content({
+        content_type: type,
+    }));
     let filter;
 
     describe('normal mode', function () {

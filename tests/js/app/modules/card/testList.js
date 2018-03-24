@@ -1,5 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gtk = imports.gi.Gtk;
+const {DModel, Gtk} = imports.gi;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -17,7 +16,7 @@ describe('Card.List', function () {
 
     it('has labels that understand Pango markup', function () {
         let card = new List.List({
-            model: Eknc.ContentObjectModel.new_from_props({
+            model: new DModel.Content({
                 title: '!!!',
                 synopsis: '@@@',
             }),

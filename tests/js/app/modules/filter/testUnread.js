@@ -1,7 +1,6 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const GObject = imports.gi.GObject;
+const {DModel, GObject} = imports.gi;
 const Lang = imports.lang;
 
 const Unread = imports.app.modules.filter.unread;
@@ -14,10 +13,7 @@ describe('Filter.Unread', function () {
     const IDS = ['read', 'unread'];
 
     beforeEach(function () {
-        models = IDS.map(ekn_id =>
-            Eknc.ContentObjectModel.new_from_props({
-                ekn_id: ekn_id,
-            }));
+        models = IDS.map(ekn_id => new DModel.Content({ekn_id}));
         history_model = MockReadingHistoryModel.mock_default();
         history_model.mark_article_read('read');
     });
@@ -39,7 +35,7 @@ describe('Filter.Unread', function () {
         });
 
         it('does not query read IDs', function () {
-            let query = filter.modify_xapian_query(new Eknc.QueryObject());
+            let query = filter.modify_xapian_query(new DModel.Query());
             printerr('returned excluded ids =', query.excluded_ids);
             expect(query.excluded_ids).toContain('read');
         });
@@ -61,7 +57,7 @@ describe('Filter.Unread', function () {
         });
 
         it('queries only read IDs', function () {
-            let query = filter.modify_xapian_query(new Eknc.QueryObject());
+            let query = filter.modify_xapian_query(new DModel.Query());
             expect(query.ids).toContain('read');
         });
     });

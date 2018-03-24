@@ -1,9 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const EvinceDocument = imports.gi.EvinceDocument;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
-const WebKit2 = imports.gi.WebKit2;
+const {DModel, EvinceDocument, Gio, GObject, Gtk, WebKit2} = imports.gi;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -63,8 +58,7 @@ describe('View.Document', function () {
              {"hasIndex": 1, "hasIndexLabel": "2", "hasLabel": "Bar", "hasContent": "#Bar"},
              {"hasIndex": 2, "hasIndexLabel": "3", "hasLabel": "Baz", "hasContent": "#Baz"}];
 
-        model = Eknc.ArticleObjectModel.new_from_props({
-            ekn_id: 'ekn:///foo/bar',
+        model = DModel.Article.new_from_props({
             title: '!!!',
             table_of_contents: toc,
         });
@@ -103,8 +97,7 @@ describe('View.Document', function () {
     describe('with pdf model', function () {
         let pdf_model;
         beforeEach(function (done) {
-            pdf_model = Eknc.ArticleObjectModel.new_from_props({
-                ekn_id: 'ekn:///foo/bar',
+            pdf_model = DModel.Article.new_from_props({
                 content_type: 'application/pdf',
                 title: 'Pdf title',
                 table_of_contents: toc,
@@ -130,7 +123,7 @@ describe('View.Document', function () {
     describe('with html model', function () {
         let html_model;
         beforeEach(function (done) {
-            html_model = Eknc.ArticleObjectModel.new_from_props({
+            html_model = DModel.Article.new_from_props({
                 ekn_id: 'ekn:///foo/bar',
                 content_type: 'text/html',
                 title: 'Html title',

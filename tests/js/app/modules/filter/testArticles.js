@@ -1,16 +1,16 @@
 // Copyright 2017 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
+const {DModel} = imports.gi;
 
 const MockFactory = imports.tests.mockFactory;
 const Articles = imports.app.modules.filter.articles;
 
 describe('Filter.Articles', function () {
     const MODELS = [
-        Eknc.ContentObjectModel.new_from_props({
+        new DModel.Content({
             tags: ['a', 'b', 'EknSetObject'],
         }),
-        Eknc.SetObjectModel.new_from_props({
+        new DModel.Set({
             tags: ['a', 'b', 'EknArticleObject'],
         }),
     ];
@@ -33,7 +33,7 @@ describe('Filter.Articles', function () {
         });
 
         it('queries only articles', function () {
-            let query = filter.modify_xapian_query(new Eknc.QueryObject());
+            let query = filter.modify_xapian_query(new DModel.Query());
             expect(query.tags_match_all).toContain('EknArticleObject');
         });
     });
@@ -54,7 +54,7 @@ describe('Filter.Articles', function () {
         });
 
         it('queries only non-articles', function () {
-            let query = filter.modify_xapian_query(new Eknc.QueryObject());
+            let query = filter.modify_xapian_query(new DModel.Query());
             expect(query.excluded_tags).toContain('EknArticleObject');
         });
     });

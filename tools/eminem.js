@@ -1,11 +1,8 @@
 // Copyright 2016 Endless Mobile, Inc.
 
 const ByteArray = imports.byteArray;
-const Eknc = imports.gi.EosKnowledgeContent;
-const EosShard = imports.gi.EosShard;
+const {DModel, EosShard, GLib, Gio} = imports.gi;
 const Format = imports.format;
-const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
 const System = imports.system;
 
 // For those interested in eminem's etymology, it goes roughly like this:
@@ -65,13 +62,13 @@ function regenerate (path) {
 function inspect_app_id (app_id) {
     let cancellable = null;
 
-    let data_dir = Eknc.get_data_dir(app_id, null);
+    let data_dir = DModel.get_data_dir(app_id, null);
     print(Format.vprintf("data dir: %s", [data_dir.get_path()]));
 
-    let ekn_version = Eknc.get_ekn_version(app_id, null);
+    let ekn_version = DModel.get_ekn_version(app_id, null);
     print(Format.vprintf("EKN_VERSION: %s", [ekn_version]));
 
-    let domain_obj = Eknc.Engine.get_default().get_domain_for_app(app_id);
+    let domain_obj = DModel.Engine.get_default().get_domain_for_app(app_id);
 
     let subscription_id = domain_obj.get_subscription_id();
     print(Format.vprintf("subscription ID: %s", [subscription_id]));

@@ -2,7 +2,7 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
+const {DModel} = imports.gi;
 
 const Module = imports.app.interfaces.module;
 const Selection = imports.app.modules.selection.selection;
@@ -12,7 +12,7 @@ const Selection = imports.app.modules.selection.selection;
  * A general, superclass for populating selection content using xapian
  * queries. Note that this superclass cannot be used directly itself. You must
  * subclass it and implement the construct_query_object method, which should
- * return a <Eknc.QueryObject> determining what content to fetch from
+ * return a `DModel.Query` determining what content to fetch from
  * a xapian database.
  *
  * This superclass handles continuation-passing on the queue_load_more method.
@@ -70,7 +70,7 @@ var Xapian = new Module.Class({
         if (this.loading)
             return;
 
-        let engine = Eknc.Engine.get_default();
+        let engine = DModel.Engine.get_default();
         let query = this._next_query;
 
         if (!query) {
@@ -90,7 +90,7 @@ var Xapian = new Module.Class({
         // The heuristic of limit * 3 is a guess.
         if ((this._order && !this._order.can_modify_xapian_query()) ||
             (this._filter && !this._filter.can_modify_xapian_query())) {
-            query = Eknc.QueryObject.new_from_object(query, {
+            query = DModel.Query.new_from_object(query, {
                 limit: query.limit * 3,
             });
         }
@@ -137,7 +137,7 @@ var Xapian = new Module.Class({
                 // got back, the first 5 passed the filter, then our new offset
                 // is 5. But if, out of those 10, it was the latter 5 which
                 // passed the filter, then our new offset should be 10.
-                more_results_query = Eknc.QueryObject.new_from_object(query, {
+                more_results_query = DModel.Query.new_from_object(query, {
                     offset: query.offset + offset_for_next_query,
                 });
             }
