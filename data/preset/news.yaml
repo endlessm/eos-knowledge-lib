@@ -60,6 +60,8 @@ defines:
 # Reused components
 - &menu
   type: Layout.TopMenu
+  properties:
+    hide-on-scroll: false
   slots: &menu-slots
     top-menu:
       type: Layout.ResponsiveMargins
