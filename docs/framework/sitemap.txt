@@ -3,6 +3,7 @@ index.md
 		modules.md
 			modules/window.md
 		concepts/yaml_format.md
+		concepts/presets.md
 	tutorial/index.md
 		tutorial/install.md
 		tutorial/ingester.md
