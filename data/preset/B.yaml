@@ -18,7 +18,7 @@ vars:
   home-sets-order: &order
     type: Order.Sequence
 
-  set-setcontent-order: *order
+  set-articles-order: *order
 
   noresults-message-text:
     shortdef: 'ContentGroup.NoResultsMessage(valign: center, halign: center, justify: center)'
@@ -90,7 +90,7 @@ defines:
               type: Selection.ContentForSet
               id: set-sidebar
               slots:
-                order: $set-setcontent-order
+                order: $set-articles-order
 
 - &search-page
   <<: *sidebar-right
@@ -136,7 +136,7 @@ defines:
               type: Selection.ArticleContext
               id: article-list
               slots:
-                order: $set-setcontent-order
+                order: $set-articles-order
 
 root:
   shortdef: 'Controller.Mesh(theme: preset_b)'
