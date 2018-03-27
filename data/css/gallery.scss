@@ -59,8 +59,7 @@
         margin-top: 50px;
 
         slider {
-            min-width: 6px;
-            background-color: #787c7d;
+            background-color: transparentize(#787c7d, 1 - 0.50);
         }
     }
 }
