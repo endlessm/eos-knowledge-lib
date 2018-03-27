@@ -69,7 +69,7 @@ var ThemeableImage = new Knowledge.Class({
             /* Read 4k chunks until we get the image size */
             do {
                 let chunk = stream.read_bytes(4096, null);
-                if (chunk === null)
+                if (chunk === null || chunk.get_size() === 0)
                     break;
                 loader.write_bytes(chunk);
             } while (this._pixbuf_width === undefined);
