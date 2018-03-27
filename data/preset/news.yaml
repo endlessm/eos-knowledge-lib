@@ -14,9 +14,9 @@ vars:
 
   home-highlighted-articles-order:
     shortdef: 'Order.PublishedDate(ascending: false)'
-  home-preview-setcontent-arrangement:
+  home-preview-set-content-arrangement:
     shortdef: 'Arrangement.Thirties(max-rows: 2)'
-  home-preview-setcontent-card: *main-card
+  home-preview-set-content-card: *main-card
 
 
   set-articles-arrangement:
@@ -25,9 +25,9 @@ vars:
       row-spacing: 20
   set-articles-card:
     shortdef: 'Card.List(hexpand: true)'
-  set-preview-setcontent-arrangement:
+  set-preview-set-content-arrangement:
     shortdef: 'Arrangement.Thirties(max-rows: 2)'
-  set-preview-setcontent-card: *main-card
+  set-preview-set-content-card: *main-card
   set-supplementary-articles-arrangement: &supplementary-arrangement
     shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
   set-supplementary-articles-card: &supplementary-card
@@ -154,9 +154,9 @@ defines:
                                     halign: start
                                 trigger: *see-more-trigger
                                 arrangement:
-                                  refvar: $home-preview-setcontent-arrangement
+                                  refvar: $home-preview-set-content-arrangement
                                   slots:
-                                    card: $home-preview-setcontent-card
+                                    card: $home-preview-set-content-card
                                 selection:
                                   type: Selection.ContentForSet
                                   slots:
@@ -215,9 +215,9 @@ defines:
                                         halign: start
                                     trigger: *see-more-trigger
                                     arrangement:
-                                      refvar: $set-preview-setcontent-arrangement
+                                      refvar: $set-preview-set-content-arrangement
                                       slots:
-                                        card: $set-preview-setcontent-card
+                                        card: $set-preview-set-content-card
                                     selection:
                                       type: Selection.ContentForSet
                                       slots:

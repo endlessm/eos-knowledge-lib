@@ -10,11 +10,11 @@ vars:
       - 1
   home-highlighted-articles-order:
     shortdef: 'Order.PublishedDate(ascending: false)'
-  home-preview-setcontent-arrangement:
+  home-preview-set-content-arrangement:
     type: Arrangement.SquareGuys
     properties:
       max-rows: 2
-  home-preview-setcontent-card: &main-card
+  home-preview-set-content-card: &main-card
     type: Card.Default
     properties:
       excluded_types:
@@ -32,9 +32,9 @@ vars:
     properties:
       label: !translate "Browse by topic"
 
-  set-preview-setcontent-arrangement:
+  set-preview-set-content-arrangement:
     type: Arrangement.Half
-  set-preview-setcontent-card: *main-card
+  set-preview-set-content-card: *main-card
   set-preview-allsets-arrangement: *allsets-arrangement
   set-preview-allsets-card: *allsets-card
   set-preview-allsets-text: *allsets-text
@@ -156,9 +156,9 @@ defines:
                               properties:
                                 halign: start
                             arrangement:
-                              refvar: $home-preview-setcontent-arrangement
+                              refvar: $home-preview-set-content-arrangement
                               slots:
-                                card: $home-preview-setcontent-card
+                                card: $home-preview-set-content-card
                             selection:
                               type: Selection.ContentForSet
                               slots:
@@ -225,9 +225,9 @@ defines:
                             - ContentGroup--previewset
                           slots:
                             arrangement:
-                              refvar: $set-preview-setcontent-arrangement
+                              refvar: $set-preview-set-content-arrangement
                               slots:
-                                card: $set-preview-setcontent-card
+                                card: $set-preview-set-content-card
                             title:
                               type: ContentGroup.DynamicTitle
                               properties:

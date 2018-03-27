@@ -41,7 +41,7 @@ vars:
   noresults-message-text:
     shortdef: 'ContentGroup.NoResultsMessage(valign: center, halign: center, justify: center)'
 
-  set-setcontent-order: *main-order
+  set-content-order: *main-order
 
   subset-articles-arrangement: *main-arrangement
   subset-articles-card: *main-card
@@ -131,7 +131,7 @@ defines:
               type: Selection.ContentForSet
               id: set-sidebar
               slots:
-                order: $set-setcontent-order
+                order: $set-content-order
 
 - &search-page
   shortdef: 'Layout.Box(orientation: vertical)'
@@ -204,7 +204,7 @@ defines:
               id: subset-list
               slots:
                 filter: Filter.Sets
-                order: $set-setcontent-order
+                order: $set-content-order
 
 - &article-page
   type: Layout.ArticleStack
