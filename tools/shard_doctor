@@ -4,15 +4,15 @@ import argparse
 import difflib
 import itertools
 import json
-import re
-import subprocess
-
-from os import listdir, path, isatty
+from os import isatty, listdir, path
 from sys import stdout
 
-CURRENT_DIR = path.dirname(path.realpath(__file__))
+import gi
 
-KERMIT_OUTPUT_PARSER_REGEX = re.compile("([0-9a-f]+) - ([a-z\/\-]+) - \"(.*)\" - Offset ([0-9]+)")
+gi.require_version('EosShard', '0')
+from gi.repository import EosShard
+
+CURRENT_DIR = path.dirname(path.realpath(__file__))
 
 IGNORED_METADATA_KEYS = [
     'contentType',
@@ -28,7 +28,8 @@ COLORS = {
     'reset': '\033[0m',
 }
 
-def _get_shards(shard_dir):
+
+def get_shards(shard_dir):
     shards = []
 
     for filename in listdir(shard_dir):
@@ -39,61 +40,48 @@ def _get_shards(shard_dir):
         if not filename.endswith('.shard'):
             continue
 
-        shards.append(full_filename)
+        shard = EosShard.ShardFile(path=full_filename)
+        shard.init(None)
+        shards.append(shard)
 
-    return sorted(shards)
+    return shards
 
-def parse_shard(assets, shard_path):
-    shard_short_name = path.splitext(path.basename(shard_path))[0]
-    shard_raw_items = subprocess.check_output(['kermit', 'list', shard_path]).decode('utf8') \
-                                                                             .splitlines()
-    articles = 0
-    for raw_asset in shard_raw_items:
-        parsed_asset = KERMIT_OUTPUT_PARSER_REGEX.search(raw_asset)
 
-        title = parsed_asset.group(3)
-        mime_type = parsed_asset.group(2)
+def parse_shard(assets, shard):
+    shard_name = path.basename(shard.get_property('path'))
+    assets_count = 0
+    articles_count = 0
 
-        asset = {
-            'ekn_id': parsed_asset.group(1),
-            'mime_type': mime_type,
-            'offset': parsed_asset.group(4),
-            'shard': shard_short_name,
-            'title': title,
-        }
+    for record in shard.list_records():
+        if record.metadata is None:
+            continue
 
-        assets[title] = assets.get(title, []) + [asset]
+        asset = json.loads(record.metadata.load_contents().get_data().decode('utf-8'))
 
-        if mime_type == 'text/html':
-            articles += 1
+        asset['shard'] = shard_name
 
-    print(' - {} ({} assets, {} articles)'.format(shard_short_name,
-                                                  len(shard_raw_items),
-                                                  articles))
+        title = asset.get('title', 'Unknown title')
+        assets.setdefault(title, [])
+        assets[title].append(asset)
 
-    return articles
+        assets_count += 1
+        if asset['contentType'] == 'text/html':
+            articles_count += 1
+
+    print(' - {} ({} assets, {} articles)'.format(shard_name,
+                                                  assets_count,
+                                                  articles_count))
+
+    return articles_count
+
 
 def get_duplicate_articles(assets):
     for article_assets in assets.values():
-        articles = [asset for asset in article_assets if asset['mime_type'] == 'text/html']
+        articles = [asset for asset in article_assets if asset['contentType'] == 'text/html']
 
         if len(articles) > 1:
             yield articles
 
-def get_metadata(shard_dir, shard_id, ekn_id):
-    kermit_output = subprocess.check_output(['kermit',
-                                             'dump',
-                                             path.join(shard_dir, '{}.shard'.format(shard_id)),
-                                             ekn_id,
-                                             'metadata']).decode('utf8')
-
-    metadata_object = json.loads(kermit_output)
-    metadata_object['shard_id'] = shard_id
-
-    for ignored_key in IGNORED_METADATA_KEYS:
-        del metadata_object[ignored_key]
-
-    return metadata_object
 
 def print_color_diff(line):
     # Only show color if running in interactive terminal
@@ -111,10 +99,11 @@ def print_color_diff(line):
 
     print('{}{}{}'.format(color_prefix, line, COLORS['reset']))
 
+
 def process_duplicates(shard_dir):
     print('Examining shard dir: {}'.format(shard_dir))
 
-    shards = _get_shards(shard_dir)
+    shards = get_shards(shard_dir)
     print('Found shards:')
     for shard in shards:
         print(' - {}'.format(shard))
@@ -152,10 +141,10 @@ def process_duplicates(shard_dir):
         metadatas = []
         for article_asset in duplicate_article:
             shard = article_asset['shard']
-            ekn_id = article_asset['ekn_id']
+            ekn_id = article_asset['@id']
             print(' - Shard: {}, Ekn ID: {}'.format(shard, ekn_id))
 
-            metadatas.append(get_metadata(shard_dir, shard, ekn_id))
+            metadatas.append(article_asset)
 
         print()
 
@@ -172,7 +161,8 @@ def process_duplicates(shard_dir):
         print()
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Examines groups of shards and identifies problems')
+    parser = argparse.ArgumentParser(
+        description='Examines groups of shards and identifies problems')
 
     parser.add_argument('-d', '--shard-dir',
                         default=CURRENT_DIR,
