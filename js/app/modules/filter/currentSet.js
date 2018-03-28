@@ -50,25 +50,23 @@ var CurrentSet = new Module.Class({
         return belongs_to_set && !belongs_to_subset;
     },
 
-    // Filter override
-    // This Filter can modify the Xapian query, but it can't express its whole
-    // filtering logic in the Xapian query, so we still need to request more
-    // models in case some returned models must be dropped.
-    can_modify_xapian_query: function () {
-        return false;
-    },
-
     // Filter implementation
     modify_xapian_query_impl: function (query) {
+        let tags = this._current_set.child_tags;
+        let subtags = [];
+        SetMap.get_children_sets(this._current_set).forEach(set => {
+            subtags.push(...set.child_tags);
+        });
+
         if (this.invert) {
             return DModel.Query.new_from_object(query, {
-                excluded_tags: Utils.union(query.excluded_tags,
-                    this._current_set.child_tags),
+                tags_match_any: Utils.union(query.tags_match_any, subtags),
+                excluded_tags: Utils.union(query.excluded_tags, tags),
             });
         }
         return DModel.Query.new_from_object(query, {
-            tags_match_any: Utils.union(query.tags_match_any,
-                this._current_set.child_tags)
+            tags_match_any: Utils.union(query.tags_match_any, tags),
+            excluded_tags: Utils.union(query.excluded_tags, subtags),
         });
     },
 });

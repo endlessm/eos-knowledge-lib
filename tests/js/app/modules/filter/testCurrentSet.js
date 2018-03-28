@@ -70,6 +70,11 @@ describe('Filter.CurrentSet', function () {
             let query = filter.modify_xapian_query(new DModel.Query());
             expect(query.tags_match_any).toContain('set');
         });
+
+        it('will not match the subset tag', function () {
+            let query = filter.modify_xapian_query(new DModel.Query());
+            expect(query.excluded_tags).toContain('subset');
+        });
     });
 
     describe('inverted', function () {
@@ -86,6 +91,11 @@ describe('Filter.CurrentSet', function () {
         it('will not match the set tag', function () {
             let query = filter.modify_xapian_query(new DModel.Query());
             expect(query.excluded_tags).toContain('set');
+        });
+
+        it('will match the subset tag', function () {
+            let query = filter.modify_xapian_query(new DModel.Query());
+            expect(query.tags_match_any).toContain('subset');
         });
     });
 });
