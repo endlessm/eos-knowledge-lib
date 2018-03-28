@@ -45,8 +45,7 @@ function set_hand_cursor_on_widget(widget) {
         Gdk.EventMask.LEAVE_NOTIFY_MASK);
 
     let enter_id = widget.connect('enter-notify-event', function (widget) {
-        let cursor = Gdk.Cursor.new_for_display(Gdk.Display.get_default(),
-            Gdk.CursorType.HAND1);
+        let cursor = Gdk.Cursor.new_from_name(widget.get_display(), "pointer");
         widget.window.set_cursor(cursor);
         return Gdk.EVENT_PROPAGATE;
     });
