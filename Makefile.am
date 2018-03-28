@@ -367,6 +367,7 @@ bin_SCRIPTS += \
 	tools/introspect \
 	tools/kermit \
 	tools/picard \
+	tools/shard_doctor \
 	$(NULL)
 
 # so clients can find our paths
