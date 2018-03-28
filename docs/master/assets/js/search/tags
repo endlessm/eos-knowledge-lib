@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/ingester.html#obtaining-metadata", "tutorial/shard.html#screenshot-of-hatch-previewer", "tutorial/shard.html#downloading-linked-media"], "token": "tags"});
+urls_downloaded_cb({"token": "tags", "urls": ["tutorial/ingester.html#obtaining-metadata", "tutorial/shard.html#screenshot-of-hatch-previewer", "tutorial/shard.html#downloading-linked-media"]});

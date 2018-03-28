@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["navigation/searchBox.html#editingcanceled"], "token": "canceled"});
+urls_downloaded_cb({"token": "canceled", "urls": ["navigation/searchBox.html#editingcanceled"]});

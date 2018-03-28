@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/ingester.html#cleaning-up-the-blog-posts", "tutorial/shard.html#fixing-the-missing-images", "tutorial/shard.html#creating-a-shard-with-basin"], "token": "internet"});
+urls_downloaded_cb({"token": "internet", "urls": ["tutorial/ingester.html#cleaning-up-the-blog-posts", "tutorial/shard.html#fixing-the-missing-images", "tutorial/shard.html#creating-a-shard-with-basin"]});
