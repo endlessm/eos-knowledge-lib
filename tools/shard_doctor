@@ -4,22 +4,14 @@ import argparse
 import difflib
 import itertools
 import json
-from os import isatty, listdir, path
-from sys import stdout
+import os
+import sys
 
 import gi
-
 gi.require_version('EosShard', '0')
 from gi.repository import EosShard
 
-CURRENT_DIR = path.dirname(path.realpath(__file__))
-
-IGNORED_METADATA_KEYS = [
-    'contentType',
-    'license',
-    'outgoingLinks',
-    'temporalCoverage',
-]
+CURRENT_DIR = os.getcwd()
 
 COLORS = {
     'cyan': '\033[36m',
@@ -28,13 +20,12 @@ COLORS = {
     'reset': '\033[0m',
 }
 
-
 def get_shards(shard_dir):
     shards = []
 
-    for filename in listdir(shard_dir):
-        full_filename = path.join(shard_dir, filename)
-        if not path.isfile(path.join(shard_dir, filename)):
+    for filename in os.listdir(shard_dir):
+        full_filename = os.path.join(shard_dir, filename)
+        if not os.path.isfile(os.path.join(shard_dir, filename)):
             continue
 
         if not filename.endswith('.shard'):
@@ -48,7 +39,7 @@ def get_shards(shard_dir):
 
 
 def parse_shard(assets, shard):
-    shard_name = path.basename(shard.get_property('path'))
+    shard_name = os.path.basename(shard.get_property('path'))
     assets_count = 0
     articles_count = 0
 
@@ -85,7 +76,7 @@ def get_duplicate_articles(assets):
 
 def print_color_diff(line):
     # Only show color if running in interactive terminal
-    if not isatty(stdout.fileno()):
+    if not os.isatty(sys.stdout.fileno()):
         print(line)
         return
 
@@ -164,10 +155,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Examines groups of shards and identifies problems')
 
-    parser.add_argument('-d', '--shard-dir',
+    parser.add_argument('shard_dir',
+                        nargs='?',
                         default=CURRENT_DIR,
-                        help='Root directory containing all the shards')
+                        help='Root directory containing all the shards'
+                             ' (default: "{}")'.format(CURRENT_DIR))
 
-    args = vars(parser.parse_args())
+    args = parser.parse_args()
 
-    process_duplicates(args['shard_dir'])
+    process_duplicates(args.shard_dir)
