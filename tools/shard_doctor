@@ -1,17 +1,30 @@
 #!/usr/bin/env python3
 
+"""
+This CLI tool is used to detect and show any duplicate articles
+in the `shard_dir` provided or the app manifest (if available).
+
+Examples:
+
+    $ ./shard_doctor
+    $ ./shard_doctor /path/to/shards
+"""
+
 import argparse
+import configparser
 import difflib
+import gi
 import itertools
 import json
 import os
 import sys
 
-import gi
 gi.require_version('EosShard', '0')
 from gi.repository import EosShard
 
 CURRENT_DIR = os.getcwd()
+
+FLATPAK_INFO = '/.flatpak-info'
 
 COLORS = {
     'cyan': '\033[36m',
@@ -20,25 +33,118 @@ COLORS = {
     'reset': '\033[0m',
 }
 
-def get_shards(shard_dir):
+
+def find_app_manifest():
+    """
+    Finds the app manifest if it is available to the current
+    runtime or environment that you are running in.
+
+    :returns: Path to the manifest, if available. None otherwise.
+
+    """
+    running_in_flatpak = os.path.isfile(FLATPAK_INFO)
+    if not running_in_flatpak:
+        return None
+
+    config = configparser.ConfigParser()
+    config.read(FLATPAK_INFO)
+
+    # Check if we are in an app runtime
+    if 'Application' not in config.sections():
+        return None
+
+    # Assemble the manifest name
+    app_id = config.get('Application', 'name')
+    manifest_prefix = os.getenv('XDG_DATA_HOME')
+    manifest_path = os.path.join(manifest_prefix,
+                                 'ekncontent.{}.manifest.json'.format(app_id))
+
+    # Sanity check
+    if not os.path.isfile(manifest_path):
+        print('Could not find manifest at {}!'.format(manifest_path))
+        return None
+
+    print('Manifest found: {}'.format(manifest_path))
+    return manifest_path
+
+
+def get_shard(shard_path):
+    """
+    Loads the shard with introspection and returns the loaded object
+
+    :param shard_path: Path to the shard
+    :returns: Loaded shard object
+
+    """
+    print('Loading shard: {}'.format(os.path.basename(shard_path)))
+    if not os.path.isfile(shard_path):
+        return None
+
+    if not shard_path.endswith('.shard'):
+        return None
+
+    shard = EosShard.ShardFile(path=shard_path)
+    shard.init(None)
+
+    return shard
+
+
+def get_shards_in_dir(shard_dir):
+    """
+    Finds all shards in a directory and returns them as introspection-
+    loaded objects.
+
+    :params shard_dir: Path to the shard parent directory
+    :returns: Array of loaded shard objects
+    """
+    print('Examining shard dir: {}'.format(shard_dir))
     shards = []
-
     for filename in os.listdir(shard_dir):
-        full_filename = os.path.join(shard_dir, filename)
-        if not os.path.isfile(os.path.join(shard_dir, filename)):
-            continue
+        shard_path = os.path.join(shard_dir, filename)
+        shard = get_shard(shard_path)
+        if shard:
+            shards.append(shard)
 
-        if not filename.endswith('.shard'):
-            continue
+    return shards
 
-        shard = EosShard.ShardFile(path=full_filename)
-        shard.init(None)
-        shards.append(shard)
+
+def get_shards_in_manifest(manifest_path):
+    """
+    Finds all shards specified in the app manifest and returns
+    them as introspection-loaded objects.
+
+    :param manifest_path: Path to the app ekn manifest
+    :returns: Array of loaded shard objects
+    """
+    print('Examining manifest: {}'.format(manifest_path))
+
+    manifest_dir = os.path.dirname(manifest_path)
+
+    data = json.load(open(manifest_path))
+    shard_paths = [shard['path'] for shard in data['xapian_databases']]
+
+    # Resolve relative paths and make paths absolute
+    shard_paths = [os.path.abspath(os.path.join(manifest_dir, shard))
+                   for shard in shard_paths]
+
+    shards = []
+    for shard_path in shard_paths:
+        shard = get_shard(shard_path)
+        if shard:
+            shards.append(shard)
 
     return shards
 
 
 def parse_shard(assets, shard):
+    """
+    Parses the shard object and appends any articles it finds to the
+    `assets` dictionary under the `asset.title` key
+
+    :param assets: Current state of the asset dictionary
+    :param shard: Shard object to parse
+    :returns: Nothing but `assets` object does change
+    """
     shard_name = os.path.basename(shard.get_property('path'))
     assets_count = 0
     articles_count = 0
@@ -47,17 +153,23 @@ def parse_shard(assets, shard):
         if record.metadata is None:
             continue
 
-        asset = json.loads(record.metadata.load_contents().get_data().decode('utf-8'))
+        assets_count += 1
+
+        asset = json.loads(record.metadata.load_contents()
+                           .get_data()
+                           .decode('utf-8'))
+
+        # Skip inspecting non-article assets
+        if asset.get('contentType', None) != 'text/html':
+            continue
+
+        articles_count += 1
 
         asset['shard'] = shard_name
 
         title = asset.get('title', 'Unknown title')
         assets.setdefault(title, [])
         assets[title].append(asset)
-
-        assets_count += 1
-        if asset['contentType'] == 'text/html':
-            articles_count += 1
 
     print(' - {} ({} assets, {} articles)'.format(shard_name,
                                                   assets_count,
@@ -67,14 +179,30 @@ def parse_shard(assets, shard):
 
 
 def get_duplicate_articles(assets):
+    """
+    Goes through the assets list and returns any that have duplicates
+
+    :param assets: Current state of the asset dictionary
+    :returns: Iterator for the list of articles with duplicate entries
+    """
     for article_assets in assets.values():
-        articles = [asset for asset in article_assets if asset['contentType'] == 'text/html']
+        articles = [asset
+                    for asset in article_assets
+                    if asset.get('contentType', None) == 'text/html']
 
         if len(articles) > 1:
             yield articles
 
 
 def print_color_diff(line):
+    """
+    Colorizes the output since the passed-in format highly
+    resembless the standard patch format and is easier on the
+    eyes
+
+    :param line: Line to be printed
+    :returns: None
+    """
     # Only show color if running in interactive terminal
     if not os.isatty(sys.stdout.fileno()):
         print(line)
@@ -91,13 +219,22 @@ def print_color_diff(line):
     print('{}{}{}'.format(color_prefix, line, COLORS['reset']))
 
 
-def process_duplicates(shard_dir):
-    print('Examining shard dir: {}'.format(shard_dir))
+def process_duplicates(shard_dir=None, manifest=None):
+    """
+    Goes through either the shard_dir or manifest shards and shows
+    any duplicate articles along with their metadata diffs.
 
-    shards = get_shards(shard_dir)
-    print('Found shards:')
-    for shard in shards:
-        print(' - {}'.format(shard))
+    :param shard_dir: Directory to look into. Takes precedence over
+                      manifest param
+    :param manifest: If specified, contains path to the app manifest
+    :returns: None
+    """
+    shards = None
+    if shard_dir:
+        shards = get_shards_in_dir(shard_dir)
+    else:
+        shards = get_shards_in_manifest(manifest)
+
     print()
 
     assets = {}
@@ -119,8 +256,8 @@ def process_duplicates(shard_dir):
         print('No duplicate articles found!')
         return
 
-    # Otherwise, assume that we have duplicates
-    print('WARNING! There seems to be {} duplicate articles in these shards!'.format(
+    # Otherwise, assume we have duplicates or some articles are not parsable
+    print('WARNING! There seems to be {} article difference in these shards!'.format(
         total_articles - total_unique_articles))
     print()
 
@@ -151,16 +288,23 @@ def process_duplicates(shard_dir):
 
         print()
 
+
 if __name__ == '__main__':
+    app_manifest = find_app_manifest()
+
+    # Allow us to skip shard_dir if manifest is found
+    shard_dir_nargs = None
+    if app_manifest:
+        shard_dir_nargs = '?'
+
     parser = argparse.ArgumentParser(
         description='Examines groups of shards and identifies problems')
 
     parser.add_argument('shard_dir',
-                        nargs='?',
-                        default=CURRENT_DIR,
-                        help='Root directory containing all the shards'
-                             ' (default: "{}")'.format(CURRENT_DIR))
+                        nargs=shard_dir_nargs,
+                        default=None,
+                        help='Root directory containing all the shards '
+                             '(optional if launched in an app runtime)')
 
     args = parser.parse_args()
-
-    process_duplicates(args.shard_dir)
+    process_duplicates(shard_dir=args.shard_dir, manifest=app_manifest)
