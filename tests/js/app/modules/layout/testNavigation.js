@@ -1,6 +1,9 @@
 const Gtk = imports.gi.Gtk;
 Gtk.init(null);
 
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
 const HistoryStore = imports.app.historyStore;
 const MockFactory = imports.tests.mockFactory;
 const Navigation = imports.app.modules.layout.navigation;

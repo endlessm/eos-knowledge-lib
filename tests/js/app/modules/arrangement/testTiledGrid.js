@@ -1,12 +1,13 @@
 const Gtk = imports.gi.Gtk;
-
 Gtk.init(null);
+
+const Utils = imports.tests.utils;
+Utils.register_gresource();
 
 const Compliance = imports.tests.compliance;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const TiledGrid = imports.app.modules.arrangement.tiledGrid;
-const Utils = imports.tests.utils;
 
 Compliance.test_arrangement_compliance(TiledGrid.TiledGrid);
 

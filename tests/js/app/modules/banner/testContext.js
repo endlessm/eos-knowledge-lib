@@ -3,6 +3,9 @@
 const Gtk = imports.gi.Gtk;
 Gtk.init(null);
 
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
 const Context = imports.app.modules.banner.context;
 const HistoryStore = imports.app.historyStore;
 const Pages = imports.app.pages;

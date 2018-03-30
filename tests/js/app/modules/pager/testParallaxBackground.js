@@ -1,13 +1,14 @@
 const Gtk = imports.gi.Gtk;
 Gtk.init(null);
 
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+Utils.register_test_gresource();
+
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HistoryStore = imports.app.historyStore;
 const MockFactory = imports.tests.mockFactory;
 const ParallaxBackground = imports.app.modules.pager.parallaxBackground;
-
-const Utils = imports.tests.utils;
-Utils.register_test_gresource();
 
 describe('Pager.ParallaxBackground', function () {
     let pager, store;

@@ -1,11 +1,13 @@
 const Gtk = imports.gi.Gtk;
 Gtk.init(null);
 
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
 const Actions = imports.app.actions;
 const BrandPage = imports.app.modules.layout.brandPage;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
-const Utils = imports.tests.utils;
 
 describe('Layout.BrandPage', function () {
     let module, factory, dispatcher, brand, content;

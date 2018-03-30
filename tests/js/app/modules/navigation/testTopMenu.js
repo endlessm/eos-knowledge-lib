@@ -1,12 +1,13 @@
 // Copyright 2016 Endless Mobile, Inc.
 
 const Gtk = imports.gi.Gtk;
-
 Gtk.init(null);
+
+const Utils = imports.tests.utils;
+Utils.register_gresource();
 
 const MockFactory = imports.tests.mockFactory;
 const TopMenu = imports.app.modules.navigation.topMenu;
-const Utils = imports.tests.utils;
 
 describe('Navigation.TopMenu', function () {
     let module;
