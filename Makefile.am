@@ -136,32 +136,19 @@ scss_theme_partials = \
 	$(NULL)
 
 scss_template_toplevels = \
-	$(srcdir)/data/templates/css/exploration-custom.scss \
-	$(srcdir)/data/templates/css/prensa-libre.scss \
-	$(srcdir)/data/templates/css/wikihow.scss \
-	$(srcdir)/data/templates/css/wikimedia.scss \
 	$(srcdir)/data/templates/css/clipboard.scss \
 	$(srcdir)/data/templates/css/share-actions.scss \
 	$(NULL)
 
-scss_template_partials = \
-	$(srcdir)/data/templates/css/_eos-modal.scss \
-	$(srcdir)/data/templates/css/_eos-no-link.scss \
-	$(NULL)
-
 scss_toplevels = $(scss_theme_toplevels) $(scss_template_toplevels)
-scss_partials = $(scss_theme_partials) $(scss_template_partials)
 
 scss_targets = $(patsubst $(srcdir)/%.scss,$(builddir)/%.css,$(scss_toplevels))
-
-# Rebuild the css files whenever a partial changes
-$(scss_targets): $(scss_partials)
 
 # scss build rule
 .scss.css:
 	$(scss_verbose)$(MKDIR_P) $(@D) && $(SCSS) -a $< $@
 
-EXTRA_DIST += $(scss_template_toplevels) $(scss_template_partials)
+EXTRA_DIST += $(scss_template_toplevels)
 CLEANFILES += $(scss_targets)
 clean-local::
 	rm -rf .sass-cache
