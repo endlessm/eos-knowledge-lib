@@ -5,8 +5,16 @@
 }
 
 .home-page {
+    .BannerDynamic__logo {
+        margin: 30px;
+        min-height: 100px;
+        .composite & {
+            min-height: 40px;
+        }
+    }
+
     .ArrangementOverflow {
-        margin: 60px 150px 20px 150px;
+        margin: 40px 150px 20px 150px;
         .CardDefault {
             margin: 5px;
         }

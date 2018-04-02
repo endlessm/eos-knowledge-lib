@@ -1,7 +1,7 @@
 ---
 vars:
   app-banner:
-    shortdef: 'Banner.Dynamic(mode: full)'
+    shortdef: 'Banner.Dynamic(mode: full, halign: center)'
   app-brand:
     type: Decoration.ThemeableImage
     properties:
