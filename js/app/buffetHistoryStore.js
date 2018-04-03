@@ -2,10 +2,8 @@
 
 /* exported BuffetHistoryStore */
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gdk = imports.gi.Gdk;
+const {DModel, Gdk, GObject} = imports.gi;
 const Gettext = imports.gettext;
-const GObject = imports.gi.GObject;
 
 const Actions = imports.app.actions;
 const Config = imports.app.config;
@@ -42,7 +40,7 @@ var BuffetHistoryStore = new GObject.Class({
                     });
                     break;
                 case Actions.ITEM_CLICKED:
-                    if (payload.model instanceof Eknc.SetObjectModel) {
+                    if (payload.model instanceof DModel.Set) {
                         this.set_current_item_from_props({
                             page_type: Pages.SET,
                             model: payload.model,

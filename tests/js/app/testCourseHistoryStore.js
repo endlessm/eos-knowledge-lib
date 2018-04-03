@@ -1,4 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
+const {DModel} = imports.gi;
 
 const Actions = imports.app.actions;
 const AppUtils = imports.app.utils;
@@ -32,7 +32,7 @@ describe('CourseHistoryStore', function () {
                 child_tags: ['bar'],
             },
         ];
-        let sets = data.map((obj) => Eknc.SetObjectModel.new_from_props(obj));
+        let sets = data.map(props => new DModel.Set(props));
         engine.query_promise.and.returnValue(Promise.resolve({ models: sets }));
         SetMap.init_map_with_models(sets);
     });
@@ -52,9 +52,7 @@ describe('CourseHistoryStore', function () {
     });
 
     it('shows the set page when a set model is clicked', function () {
-        let model = Eknc.SetObjectModel.new_from_props({
-            ekn_id: 'ekn://foo/set',
-        });
+        let model = new DModel.Set();
         dispatcher.dispatch({
             action_type: Actions.ITEM_CLICKED,
             model: model,
@@ -64,8 +62,7 @@ describe('CourseHistoryStore', function () {
 
     it('updates current-subset when a subset model is clicked', function () {
         spyOn(store, 'set_current_subset');
-        let model = Eknc.SetObjectModel.new_from_props({
-            ekn_id: 'ekn://foo/set',
+        let model = new DModel.Set({
             tags: ['foo'],
         });
         dispatcher.dispatch({
@@ -78,12 +75,8 @@ describe('CourseHistoryStore', function () {
 
     function test_close_lightbox (action, descriptor) {
         it('closes the lightbox when ' + descriptor, function () {
-            let model = Eknc.ArticleObjectModel.new_from_props({
-                ekn_id: 'ekn://foo/bar',
-            });
-            let media_model = Eknc.MediaObjectModel.new_from_props({
-                ekn_id: 'ekn://foo/pix',
-            });
+            let model = new DModel.Article();
+            let media_model = new DModel.Media();
             store.set_current_item_from_props({
                 page_type: Pages.ARTICLE,
                 model: model,
@@ -101,15 +94,9 @@ describe('CourseHistoryStore', function () {
     describe('when an media object card is clicked', function () {
         let prev_model, next_model, model;
         beforeEach(function () {
-            model = Eknc.MediaObjectModel.new_from_props({
-                ekn_id: 'ekn://test/article',
-            });
-            prev_model = Eknc.MediaObjectModel.new_from_props({
-                ekn_id: 'ekn://test/prev',
-            });
-            next_model = Eknc.MediaObjectModel.new_from_props({
-                ekn_id: 'ekn://test/next',
-            });
+            model = new DModel.Media();
+            prev_model = new DModel.Media();
+            next_model = new DModel.Media();
 
             dispatcher.dispatch({
                 action_type: Actions.ITEM_CLICKED,
@@ -127,9 +114,7 @@ describe('CourseHistoryStore', function () {
     describe('when an article object card is clicked', function () {
         let model;
         beforeEach(function () {
-            model = Eknc.ArticleObjectModel.new_from_props({
-                ekn_id: 'ekn://test/article',
-            });
+            model = new DModel.Article();
 
             dispatcher.dispatch({
                 action_type: Actions.ITEM_CLICKED,
@@ -146,7 +131,7 @@ describe('CourseHistoryStore', function () {
         let model;
 
         beforeEach(function () {
-            model = Eknc.ArticleObjectModel.new_from_props({
+            model = new DModel.Article({
                 ekn_id: 'ekn:///foo',
             });
             engine.get_object_promise.and.returnValue(Promise.resolve(model));

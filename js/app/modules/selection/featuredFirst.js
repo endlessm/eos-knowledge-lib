@@ -2,8 +2,7 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const GLib = imports.gi.GLib;
+const {DModel} = imports.gi;
 
 const Module = imports.app.interfaces.module;
 const Xapian = imports.app.modules.selection.xapian;
@@ -29,12 +28,12 @@ var FeaturedFirst = new Module.Class({
 
     construct_query_object: function (limit, query_index) {
         if (query_index == 0) {
-            return new Eknc.QueryObject({
+            return new DModel.Query({
                 limit: limit,
                 tags_match_all: ['EknFeaturedTag'],
             });
         } else if (query_index == 1) {
-            return new Eknc.QueryObject({
+            return new DModel.Query({
                 limit: limit,
                 excluded_tags: ['EknFeaturedTag'],
             });

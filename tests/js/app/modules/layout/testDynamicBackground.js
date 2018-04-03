@@ -1,8 +1,6 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gio = imports.gi.Gio;
-const Gtk = imports.gi.Gtk;
+const {DModel, Gio, Gtk} = imports.gi;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -54,7 +52,7 @@ describe('Layout.DynamicBackground', function () {
     it('listens to the corresponding event', function () {
         let color = /#604C28/;
         let image = 'resource:///com/endlessm/thrones/red_wedding.jpg';
-        let model = Eknc.ContentObjectModel.new_from_props({
+        let model = new DModel.Content({
             thumbnail_uri: image,
         });
         selection.add_model(model);
@@ -65,7 +63,7 @@ describe('Layout.DynamicBackground', function () {
     });
 
     it('handles models without thumbnail', function () {
-        let model = Eknc.ContentObjectModel.new_from_props();
+        let model = new DModel.Content();
         selection.add_model(model);
         selection.emit('models-changed');
         Utils.update_gui();

@@ -1,5 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const {GObject, Gtk, Gio} = imports.gi;
+const {DModel, GObject, Gtk, Gio} = imports.gi;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -82,8 +81,8 @@ describe('History Store', function () {
     });
 
     it('tracks the current set', function () {
-        let set1 = Eknc.SetObjectModel.new_from_props({ title: 'blah' });
-        let set2 = Eknc.SetObjectModel.new_from_props({ title: 'gah' });
+        let set1 = new DModel.Set({title: 'blah'});
+        let set2 = new DModel.Set({title: 'gah'});
         history_store.set_current_item_from_props({
             page_type: Pages.SET,
             model: set1,
@@ -130,7 +129,7 @@ describe('History Store', function () {
     });
 
     it('records metrics when using nav buttons', function () {
-        model = Eknc.ArticleObjectModel.new_from_props({
+        model = new DModel.Article({
             ekn_id: 'ekn://article1',
         });
         history_store.set_current_item_from_props({
@@ -138,7 +137,7 @@ describe('History Store', function () {
             model: model
         });
 
-        model = Eknc.ArticleObjectModel.new_from_props({
+        model = new DModel.Article({
             ekn_id: 'ekn://article2',
         });
         history_store.set_current_item_from_props({
@@ -160,7 +159,7 @@ describe('History Store', function () {
     });
 
     it('marks items as read', function () {
-        let item = Eknc.ContentObjectModel.new_from_props({ ekn_id: 'foo', title: 'blah' });
+        let item = new DModel.Content({ ekn_id: 'foo', title: 'blah' });
         spyOn(reading_history, 'mark_article_read');
 
         dispatcher.dispatch({
@@ -187,9 +186,8 @@ describe('History Store', function () {
     function test_share_action (network, network_uri_matcher) {
         history_store.set_current_item_from_props({
             page_type: Pages.ARTICLE,
-            model: Eknc.ArticleObjectModel.new_from_props({
+            model: new DModel.Article({
                 title: 'Endless OS',
-                ekn_id: 'ekn:///043fd69fe153ac69a05000b60bfea9cff110f14c',
                 original_uri: 'http://endlessm.com',
             }),
         });

@@ -1,4 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
+const {DModel} = imports.gi;
 
 const HistoryItem = imports.app.historyItem;
 const Pages = imports.app.pages;
@@ -29,22 +29,20 @@ describe('History Item', function () {
         it('checks ekn ids on models', function () {
             let item1 = new HistoryItem.HistoryItem({
                 page_type: 'foo',
-                model: Eknc.ContentObjectModel.new_from_props({
+                model: new DModel.Content({
                     ekn_id: 'ekn://aaaaaaaaaaaaaaaa',
                 }),
             });
             let item2 = new HistoryItem.HistoryItem({
                 page_type: 'foo',
-                model: Eknc.ContentObjectModel.new_from_props({
+                model: new DModel.Content({
                     ekn_id: 'ekn://aaaaaaaaaaaaaaaa',
                 }),
             });
             expect(item1.equals(item2)).toBeTruthy();
             item2 = new HistoryItem.HistoryItem({
                 page_type: 'foo',
-                model: Eknc.ContentObjectModel.new_from_props({
-                    ekn_id: 'ekn://bbbbbbbbbbbbbbbb',
-                }),
+                model: new DModel.Content(),
             });
             expect(item1.equals(item2)).toBeFalsy();
         });
@@ -54,9 +52,7 @@ describe('History Item', function () {
         let item1 = new HistoryItem.HistoryItem({
             page_type: 'foo',
             search_terms: 'bar',
-            model: Eknc.ContentObjectModel.new_from_props({
-                ekn_id: 'ekn://aaaaaaaaaaaaaaaa',
-            }),
+            model: new DModel.Content(),
         });
         let item2 = new HistoryItem.HistoryItem.new_from_object(item1);
         expect(item1).not.toBe(item2);
@@ -67,18 +63,16 @@ describe('History Item', function () {
     it('determines whether it can be shared', function () {
         let item1 = new HistoryItem.HistoryItem({
             page_type: Pages.ARTICLE,
-            model: Eknc.ArticleObjectModel.new_from_props({
+            model: new DModel.Article({
                 title: 'Endless OS',
-                ekn_id: 'ekn:///043fd69fe153ac69a05000b60bfea9cff110f14c',
             }),
         });
         expect(item1.can_share).toBeFalsy();
 
         let item2 = new HistoryItem.HistoryItem({
             page_type: Pages.ARTICLE,
-            model: Eknc.ArticleObjectModel.new_from_props({
+            model: new DModel.Article({
                 title: 'Endless OS',
-                ekn_id: 'ekn:///043fd69fe153ac69a06000b60bfea9cff110f14e',
                 original_uri: 'http://endlessm.com',
             }),
         });

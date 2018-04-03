@@ -1,5 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gtk = imports.gi.Gtk;
+const {DModel, Gtk} = imports.gi;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -65,7 +64,7 @@ describe('Layout.ArticleStack', function () {
         module = factory.get_created('contents')[0];
         spyOn(AppUtils, 'get_web_plugin_dbus_name').and.returnValue('test0');
 
-        article_model = Eknc.ArticleObjectModel.new_from_props();
+        article_model = new DModel.Article();
         store.set_current_item_from_props({
             page_type: Pages.ARTICLE,
             model: article_model,
@@ -92,7 +91,7 @@ describe('Layout.ArticleStack', function () {
 
     it('loads a new article when selection changes', function () {
         spyOn(selection, 'get_models');
-        let different_article_model = Eknc.ArticleObjectModel.new_from_props();
+        let different_article_model = new DModel.Article();
         selection.get_models.and.returnValue([different_article_model]);
         selection.emit('models-changed');
         Utils.update_gui();

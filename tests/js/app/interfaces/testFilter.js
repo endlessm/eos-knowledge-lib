@@ -1,5 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const GObject = imports.gi.GObject;
+const {DModel, GObject} = imports.gi;
 
 const Filter = imports.app.interfaces.filter;
 const Minimal = imports.tests.minimal;
@@ -45,8 +44,7 @@ describe('Filter interface', function () {
             },
         });
         let filter = factory.create_root_module();
-        let models = MODELS.map(properties =>
-            Eknc.ContentObjectModel.new_from_props(properties));
+        let models = MODELS.map(props => new DModel.Set(props));
 
         expect(filter.include(models[0])).toBeFalsy();
         expect(filter.include(models[1])).toBeFalsy();
@@ -60,7 +58,7 @@ describe('Filter interface', function () {
             type: Minimal.MinimalXapianFilter,
         });
         let filter = factory.create_root_module();
-        let query = new Eknc.QueryObject();
+        let query = new DModel.Query();
         query = filter.modify_xapian_query(query);
         expect(query.tags_match_all).toEqual(['EknIncludeMe']);
     });
@@ -78,7 +76,7 @@ describe('Filter interface', function () {
             },
         });
         let filter = factory.create_root_module();
-        let query = new Eknc.QueryObject();
+        let query = new DModel.Query();
         query = filter.modify_xapian_query(query);
         expect(query.tags_match_all).toEqual(['EknIncludeMe', 'EknAnotherTag']);
     });
@@ -110,7 +108,7 @@ describe('Filter interface', function () {
             },
         });
         let filter = factory.create_root_module();
-        let query = new Eknc.QueryObject();
+        let query = new DModel.Query();
         query = filter.modify_xapian_query(query);
         expect(query.tags_match_all).toEqual(['EknIncludeMe']);
     });

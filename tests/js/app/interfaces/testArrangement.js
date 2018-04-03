@@ -1,5 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gtk = imports.gi.Gtk;
+const {DModel, Gtk} = imports.gi;
 
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
@@ -26,12 +25,12 @@ describe('Arrangement interface', function () {
     it("pays attention to the implementation's fade_card_in()", function () {
         spyOn(arrangement, 'fade_card_in');
         arrangement.fade_cards = true;
-        arrangement.set_models([Eknc.ContentObjectModel.new_from_props()]);
+        arrangement.set_models([new DModel.Content()]);
         expect(arrangement.fade_card_in).toHaveBeenCalled();
     });
 
     it('emits a signal when the card is clicked', function (done) {
-        let model = Eknc.ContentObjectModel.new_from_props();
+        let model = new DModel.Content();
         arrangement.set_models([model]);
         arrangement.connect('card-clicked', (arrangement, clicked_model) => {
             expect(clicked_model).toBe(model);

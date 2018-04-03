@@ -1,11 +1,6 @@
 /* exported HistoryStore, get_default, set_default */
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gdk = imports.gi.Gdk;
-const Gtk = imports.gi.Gtk;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
+const {DModel, Gdk, Gio, GLib, Gtk, GObject} = imports.gi;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
@@ -52,14 +47,14 @@ var HistoryStore = new Lang.Class({
          * The model for the current set in the history store.
          */
         'current-set': GObject.ParamSpec.object('current-set', 'current-set', 'current-set',
-            GObject.ParamFlags.READABLE, Eknc.SetObjectModel),
+            GObject.ParamFlags.READABLE, DModel.Set),
         /**
          * Property: current-subset
          *
          * The model for the current subset in the history store.
          */
         'current-subset': GObject.ParamSpec.object('current-subset', 'current-subset', 'current-subset',
-            GObject.ParamFlags.READABLE, Eknc.SetObjectModel),
+            GObject.ParamFlags.READABLE, DModel.Set),
         /**
          * Property: current-search-terms
          *
@@ -143,7 +138,7 @@ var HistoryStore = new Lang.Class({
             this.get_previous_item() : this.get_next_item();
         let item = this.get_current_item();
 
-        if (!(item.model instanceof Eknc.MediaObjectModel) &&
+        if (!(item.model instanceof DModel.Media) &&
             old_item && old_item.model && old_item.page_type === Pages.ARTICLE &&
             (!item.model || old_item.model.ekn_id !== item.model.ekn_id))
             Utils.stop_content_access_metric(old_item.model);
@@ -311,20 +306,20 @@ var HistoryStore = new Lang.Class({
     // the same after a link click, factoring out this common function. When we
     // diverge in future interactions we should revisit this decomposition.
     show_ekn_id: function (ekn_id) {
-        Eknc.Engine.get_default().get_object_promise(ekn_id)
+        DModel.Engine.get_default().get_object_promise(ekn_id)
         .then((model) => {
-            if (model instanceof Eknc.ArticleObjectModel) {
+            if (model instanceof DModel.Article) {
                 this.set_current_item_from_props({
                     page_type: Pages.ARTICLE,
                     model: model,
                 }, EntryPoints.ARTICLE_LINK_CLICKED);
-            } else if (model instanceof Eknc.SetObjectModel) {
+            } else if (model instanceof DModel.Set) {
                 this.set_current_item_from_props({
                     page_type: Pages.SET,
                     model: model,
                     context_label: model.title,
                 });
-            } else if (model instanceof Eknc.MediaObjectModel) {
+            } else if (model instanceof DModel.Media) {
                 let old_item = this.get_current_item();
                 this.set_current_item_from_props({
                     page_type: old_item.page_type,
@@ -340,18 +335,18 @@ var HistoryStore = new Lang.Class({
     },
 
     load_dbus_item: function (ekn_id, search_terms, timestamp) {
-        Eknc.Engine.get_default().get_object_promise(ekn_id)
+        DModel.Engine.get_default().get_object_promise(ekn_id)
         .then((model) => {
-            if (model instanceof Eknc.ArticleObjectModel ||
-                model instanceof Eknc.VideoObjectModel ||
-                model instanceof Eknc.AudioObjectModel) {
+            if (model instanceof DModel.Article ||
+                model instanceof DModel.Video ||
+                model instanceof DModel.Audio) {
                 this.set_current_item_from_props({
                     page_type: Pages.ARTICLE,
                     model: model,
                     search_terms: search_terms,
                     timestamp: timestamp || Gdk.CURRENT_TIME,
                 }, EntryPoints.DBUS_CALL);
-            } else if (model instanceof Eknc.SetObjectModel) {
+            } else if (model instanceof DModel.Set) {
                 this.set_current_item_from_props({
                     page_type: Pages.SET,
                     model: model,

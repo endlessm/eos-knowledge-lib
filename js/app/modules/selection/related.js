@@ -2,7 +2,7 @@
 
 // Copyright 2017 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
+const {DModel} = imports.gi;
 
 const Module = imports.app.interfaces.module;
 const HistoryStore = imports.app.historyStore;
@@ -36,7 +36,7 @@ var Related = new Module.Class({
 
         let tags = item.model.tags.filter(tag => !tag.startsWith('Ekn'));
 
-        return new Eknc.QueryObject({
+        return new DModel.Query({
             limit: limit,
             tags_match_any: tags,
         });

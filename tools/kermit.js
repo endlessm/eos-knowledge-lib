@@ -1,7 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const EosShard = imports.gi.EosShard;
-const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
+const {DModel, EosShard, GLib, Gio} = imports.gi;
 const System = imports.system;
 
 const USAGE = [
@@ -18,7 +15,7 @@ const USAGE = [
 // For those interested in kermit's etymology, it goes roughly like this:
 // EosShard -> Dark Shard -> Dark Crystal -> Jim Henson -> Kermit
 
-// size of EkncEngine result batches
+// size of DModel.Engine result batches
 const BATCH_SIZE = 10;
 
 function main () {
@@ -458,8 +455,8 @@ function _pretty_print_table (elements) {
 }
 
 function query (app_id, search_terms) {
-    let engine = Eknc.Engine.get_default();
-    let query_obj = new Eknc.QueryObject({
+    let engine = DModel.Engine.get_default();
+    let query_obj = new DModel.Query({
         search_terms,
         limit: BATCH_SIZE,
         app_id: app_id,
@@ -484,7 +481,7 @@ function perform_query (engine, query_obj) {
             if (results.models.length < BATCH_SIZE) {
                 System.exit(0);
             } else {
-                let more_results_query = Eknc.QueryObject.new_from_object(query_obj, {
+                let more_results_query = DModel.Query.new_from_object(query_obj, {
                     offset: query_obj.offset + results.models.length,
                 });
                 perform_query(engine, more_results_query);

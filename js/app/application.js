@@ -1,15 +1,8 @@
 imports.gi.versions.WebKit2 = '4.0';
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const Endless = imports.gi.Endless;
-const EvinceDocument = imports.gi.EvinceDocument;
+const {DModel, Endless, EvinceDocument, Gdk, Gio, GLib, GObject, Gtk} = imports.gi;
 const Format = imports.format;
-const Gdk = imports.gi.Gdk;
 const Gettext = imports.gettext;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 const System = imports.system;
 
 const Actions = imports.app.actions;
@@ -79,7 +72,7 @@ var Application = new Knowledge.Class({
         this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
         this.image_attribution_file = Gio.File.new_for_uri(CREDITS_URI);
 
-        Eknc.Engine.get_default().default_app_id = this.application_id;
+        DModel.Engine.get_default().default_app_id = this.application_id;
 
         this.add_main_option('theme-name', 't'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.STRING,
                              'Use a stock theme with given name instead of any application theme overrides', null);
@@ -142,7 +135,7 @@ var Application = new Knowledge.Class({
             MoltresEngine.override_engine();
 
         if (has_option('content-path')) {
-            let engine = Eknc.Engine.get_default();
+            let engine = DModel.Engine.get_default();
             engine.add_domain_for_path(this.application_id, get_option_string('content-path'));
         }
 
@@ -200,10 +193,10 @@ var Application = new Knowledge.Class({
     },
 
     _initialize_vfs: function () {
-        let engine = Eknc.Engine.get_default();
+        let engine = DModel.Engine.get_default();
         let domain = engine.get_domain();
         let shards = domain.get_shards();
-        Eknc.default_vfs_set_shards(shards);
+        DModel.default_vfs_set_shards(shards);
 
         GLib.idle_add(GLib.PRIORITY_LOW, () => {
             this._remove_legacy_symlinks(domain.get_subscription_ids());
@@ -217,7 +210,7 @@ var Application = new Knowledge.Class({
 
         try {
             this._initialize_vfs();
-        } catch (e if e.matches(Eknc.DomainError, Eknc.DomainError.EMPTY)) {
+        } catch (e if e.matches(DModel.DomainError, DModel.DomainError.EMPTY)) {
             let dialog = new NoContentDialog.NoContentDialog();
             dialog.run();
         }
@@ -254,7 +247,7 @@ var Application = new Knowledge.Class({
     },
 
     _initialize_set_map: function () {
-        Eknc.Engine.get_default().query_promise(new Eknc.QueryObject({
+        DModel.Engine.get_default().query_promise(new DModel.Query({
             tags_match_all: ['EknSetObject'],
         }))
         .then((results) => {

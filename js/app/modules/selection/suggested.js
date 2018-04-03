@@ -2,8 +2,7 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const GLib = imports.gi.GLib;
+const {DModel, GLib} = imports.gi;
 
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
@@ -31,7 +30,7 @@ var Suggested = new Module.Class({
         // FIXME: We still need a better way to issue a query for
         // 'random' articles. This just gets a random offset and then
         // requests articles (in order) starting from that point.
-        return new Eknc.QueryObject({
+        return new DModel.Query({
             offset: this._hash % this._TOTAL_ARTICLES,
             limit: limit,
         });

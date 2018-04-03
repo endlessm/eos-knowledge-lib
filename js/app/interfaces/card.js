@@ -2,15 +2,9 @@
 
 /* exported Card, MinSize, MaxSize */
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const {DModel, EosKnowledgePrivate, GdkPixbuf, Gio, GLib, GObject, Gtk} = imports.gi;
 const Format = imports.format;
-const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gettext = imports.gettext;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
@@ -283,14 +277,14 @@ var Card = new Lang.Interface({
 
     // O promises, where art thou?
     _count_set: function (set_obj, callback) {
-        let query = new Eknc.QueryObject({
+        let query = new DModel.Query({
             tags_match_any: set_obj.child_tags,
         });
-        Eknc.Engine.get_default().query_promise(query)
+        DModel.Engine.get_default().query_promise(query)
         .then((results) => {
             let reached_bottom = true;
             results.models.forEach((obj) => {
-                if (obj instanceof Eknc.SetObjectModel) {
+                if (obj instanceof DModel.Set) {
                     reached_bottom = false;
                     this._count_set(obj, callback);
                 } else {
@@ -330,7 +324,7 @@ var Card = new Lang.Interface({
      */
     create_context_widget_from_model: function () {
         let widget;
-        if (this.model instanceof Eknc.SetObjectModel) {
+        if (this.model instanceof DModel.Set) {
             widget = this._create_inventory_widget();
         } else {
             widget = this._create_contextual_tag_widget();
@@ -365,9 +359,9 @@ var Card = new Lang.Interface({
 
     _set_media_class_from_model: function (widget) {
         /* Add media type class to frame */
-        if (this.model instanceof Eknc.VideoObjectModel)
+        if (this.model instanceof DModel.Video)
             widget.get_style_context().add_class('video');
-        else if (this.model instanceof Eknc.AudioObjectModel)
+        else if (this.model instanceof DModel.Audio)
             widget.get_style_context().add_class('audio');
         else
             return false;

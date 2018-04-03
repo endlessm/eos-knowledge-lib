@@ -1,4 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
+const {DModel} = imports.gi;
 
 const Actions = imports.app.actions;
 const AppUtils = imports.app.utils;
@@ -39,9 +39,7 @@ describe('MeshHistoryStore', function () {
     });
 
     it('shows the set page when a set model is clicked', function () {
-        let model = Eknc.SetObjectModel.new_from_props({
-            ekn_id: 'ekn://foo/set',
-        });
+        let model = new DModel.Set();
         dispatcher.dispatch({
             action_type: Actions.ITEM_CLICKED,
             model: model,
@@ -50,9 +48,7 @@ describe('MeshHistoryStore', function () {
     });
 
     it('shows the article page when item clicked', function () {
-        let model = Eknc.ArticleObjectModel.new_from_props({
-            ekn_id: 'ekn://foo/bar',
-        });
+        let model = new DModel.Article();
         dispatcher.dispatch({
             action_type: Actions.ITEM_CLICKED,
             model: model,
@@ -120,9 +116,7 @@ describe('MeshHistoryStore', function () {
     });
 
     it('sets the appropriate state when item clicked with a query (e.g. autocomplete)', function () {
-        let model = Eknc.ArticleObjectModel.new_from_props({
-            ekn_id: 'ekn://foo/bar',
-        });
+        let model = new DModel.Article();
         dispatcher.dispatch({
             action_type: Actions.ITEM_CLICKED,
             model: model,
@@ -136,12 +130,8 @@ describe('MeshHistoryStore', function () {
 
     function test_close_lightbox (action, descriptor) {
         it('closes the lightbox when ' + descriptor, function () {
-            let model = Eknc.ArticleObjectModel.new_from_props({
-                ekn_id: 'ekn://foo/bar',
-            });
-            let media_model = Eknc.MediaObjectModel.new_from_props({
-                ekn_id: 'ekn://foo/pix',
-            });
+            let model = new DModel.Article();
+            let media_model = new DModel.Media();
             store.set_current_item_from_props({
                 page_type: Pages.ARTICLE,
                 model: model,
@@ -179,7 +169,7 @@ describe('MeshHistoryStore', function () {
 
     describe('when link in article clicked', function () {
         beforeEach(function() {
-            let model = Eknc.ArticleObjectModel.new_from_props({
+            let model = new DModel.Article({
                 ekn_id: 'ekn://foo/bar',
             });
             engine.get_object_promise.and.returnValue(Promise.resolve(model));
@@ -203,7 +193,7 @@ describe('MeshHistoryStore', function () {
 
     describe('when a media link in article clicked', function () {
         it('shows lightbox', function () {
-            let model = Eknc.MediaObjectModel.new_from_props({
+            let model = new DModel.Media({
                 ekn_id: 'ekn://foo/pix',
             });
             engine.get_object_promise.and.returnValue(Promise.resolve(model));
@@ -220,7 +210,7 @@ describe('MeshHistoryStore', function () {
         let model;
 
         it('loads an item', function () {
-            model = Eknc.ArticleObjectModel.new_from_props({
+            model = new DModel.Article({
                 ekn_id: 'ekn:///foo',
             });
             engine.get_object_promise.and.returnValue(Promise.resolve(model));
@@ -236,7 +226,7 @@ describe('MeshHistoryStore', function () {
         });
 
         it('goes to the article page if an article was opened', function () {
-            model = Eknc.ArticleObjectModel.new_from_props({
+            model = new DModel.Article({
                 ekn_id: 'ekn:///foo',
             });
             engine.get_object_promise.and.returnValue(Promise.resolve(model));
@@ -251,7 +241,7 @@ describe('MeshHistoryStore', function () {
         });
 
         it('records a metric if an article was opened', function () {
-            model = Eknc.ArticleObjectModel.new_from_props({
+            model = new DModel.Article({
                 ekn_id: 'ekn:///foo',
             });
             engine.get_object_promise.and.returnValue(Promise.resolve(model));
@@ -268,7 +258,7 @@ describe('MeshHistoryStore', function () {
         });
 
         it('goes to the set page if a set was opened', function () {
-            model = Eknc.SetObjectModel.new_from_props({
+            model = new DModel.Set({
                 ekn_id: 'ekn:///foo',
             });
             engine.get_object_promise.and.returnValue(Promise.resolve(model));
@@ -285,7 +275,7 @@ describe('MeshHistoryStore', function () {
         ['Video', 'Audio'].forEach(kind => {
             describe(`when a ${kind.toLowerCase()} was opened`, function () {
                 beforeEach(function () {
-                    model = Eknc[`${kind}ObjectModel`].new_from_props({
+                    model = new DModel[kind]({
                         ekn_id: 'ekn:///99bac9189b30bb0877f60e1bc16ded7ad94af37f',
                     });
                     engine.get_object_promise.and.returnValue(Promise.resolve(model));

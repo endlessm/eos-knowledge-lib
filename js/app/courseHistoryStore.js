@@ -2,9 +2,7 @@
 
 /* exported CourseHistoryStore */
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gdk = imports.gi.Gdk;
-const GObject = imports.gi.GObject;
+const {DModel, Gdk, GObject} = imports.gi;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -35,7 +33,7 @@ var CourseHistoryStore = new GObject.Class({
                     });
                     break;
                 case Actions.ITEM_CLICKED: {
-                    if (payload.model instanceof Eknc.SetObjectModel) {
+                    if (payload.model instanceof DModel.Set) {
                         if (!SetMap.get_parent_set(payload.model)) {
                             let props = { model: payload.model };
                             props['page_type'] = Pages.SET;
@@ -44,7 +42,7 @@ var CourseHistoryStore = new GObject.Class({
                         } else {
                             this.set_current_subset(payload.model);
                         }
-                    } else if (payload.model instanceof Eknc.MediaObjectModel) {
+                    } else if (payload.model instanceof DModel.Media) {
                         this.set_current_item_from_props({
                             media_model: payload.model,
                             context: payload.context,
@@ -87,13 +85,13 @@ var CourseHistoryStore = new GObject.Class({
     },
 
     _load_first_subset: function (model) {
-        let query = new Eknc.QueryObject({
+        let query = new DModel.Query({
             limit: 1,
             tags_match_any: model.child_tags,
             tags_match_all: ['EknSetObject'],
-            sort: Eknc.QueryObjectSort.SEQUENCE_NUMBER,
+            sort: DModel.QuerySort.SEQUENCE_NUMBER,
         });
-        Eknc.Engine.get_default().query_promise(query)
+        DModel.Engine.get_default().query_promise(query)
         .then((results) => {
             if (results.models.length > 0) {
                 this.set_current_subset(results.models[0]);

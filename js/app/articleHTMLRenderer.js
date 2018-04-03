@@ -1,9 +1,5 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const Endless = imports.gi.Endless;
+const {DModel, Endless, GLib, Gio, GObject} = imports.gi;
 const Gettext = imports.gettext;
-const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
 
 const Config = imports.app.config;
 const Knowledge = imports.app.knowledge;
@@ -136,7 +132,9 @@ var ArticleHTMLRenderer = new Knowledge.Class({
     },
 
     _get_html: function (model) {
-        let [success, bytes, mime] = Eknc.Engine.get_default().get_domain().read_uri(model.ekn_id);
+        let engine = DModel.Engine.get_default();
+        let domain = engine.get_domain();
+        let [, bytes] = domain.read_uri(model.ekn_id);
         return bytes.get_data().toString();
     },
 
@@ -211,7 +209,7 @@ var ArticleHTMLRenderer = new Knowledge.Class({
     },
 
     _get_crosslink_data: function (model) {
-        let engine = Eknc.Engine.get_default();
+        let engine = DModel.Engine.get_default();
         let links = model.outgoing_links.map((link) => engine.test_link(link));
         return JSON.stringify(links);
     },

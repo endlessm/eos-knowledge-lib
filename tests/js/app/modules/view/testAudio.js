@@ -1,5 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gtk = imports.gi.Gtk;
+const {DModel, Gtk} = imports.gi;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -18,7 +17,7 @@ describe('View.Audio', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
         view = new Audio({
-            model: Eknc.ContentObjectModel.new_from_props({
+            model: new DModel.Content({
                 title: '!!!',
             }),
         });

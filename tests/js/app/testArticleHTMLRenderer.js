@@ -1,5 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gio = imports.gi.Gio;
+const {DModel, Gio} = imports.gi;
 
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const Utils = imports.tests.utils;
@@ -13,7 +12,7 @@ describe('Article HTML Renderer', function () {
 
     beforeEach(function () {
         Utils.register_gresource();
-        let engine = Eknc.Engine.get_default();
+        let engine = DModel.Engine.get_default();
         const html = AppUtils.string_to_bytes('<html><body><p>dummy html</p></body></html>');
         spyOn(engine, 'get_domain').and.returnValue({
             read_uri: () => [true, html, 'text/html']
@@ -23,7 +22,7 @@ describe('Article HTML Renderer', function () {
         });
 
         renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
-        wikipedia_model = Eknc.ArticleObjectModel.new_from_props({
+        wikipedia_model = new DModel.Article({
             source_uri: 'http://en.wikipedia.org/wiki/When_It_Hits_the_Fan',
             original_uri: 'http://en.wikipedia.org/wiki/When_It_Hits_the_Fan',
             content_type: 'text/html',
@@ -32,7 +31,7 @@ describe('Article HTML Renderer', function () {
             license: 'CC-BY-SA 3.0',
             title: 'Wikipedia title',
         });
-        wikisource_model = Eknc.ArticleObjectModel.new_from_props({
+        wikisource_model = new DModel.Article({
             source_uri: 'http://en.wikisource.org/wiki/When_It_Hits_the_Fan',
             original_uri: 'http://en.wikisource.org/wiki/When_It_Hits_the_Fan',
             content_type: 'text/html',
@@ -41,7 +40,7 @@ describe('Article HTML Renderer', function () {
             license: 'CC-BY-SA 3.0',
             title: 'Wikibooks title',
         });
-        wikihow_model = Eknc.ArticleObjectModel.new_from_props({
+        wikihow_model = new DModel.Article({
             source_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
             original_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
             content_type: 'text/html',
@@ -50,7 +49,7 @@ describe('Article HTML Renderer', function () {
             license: 'Owner permission',
             title: 'Wikihow & title',
         });
-        wikibooks_model = Eknc.ArticleObjectModel.new_from_props({
+        wikibooks_model = new DModel.Article({
             source_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
             original_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
             content_type: 'text/html',
@@ -171,7 +170,7 @@ describe('Article HTML Renderer', function () {
         let nonfeaturedSetModel;
 
         beforeEach(function () {
-            model = Eknc.ArticleObjectModel.new_from_props({
+            model = new DModel.Article({
                 source_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
                 original_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
                 content_type: 'text/html',
@@ -181,18 +180,16 @@ describe('Article HTML Renderer', function () {
                 title: 'Wikibooks title',
                 tags: ['Famous Books']
             });
-            setModel = Eknc.SetObjectModel.new_from_props({
+            setModel = new DModel.Set({
                 tags: ['EknSetObject'],
                 title: 'Famous Books - Set Title',
                 featured: true,
-                ekn_id: 'ekn:///id',
                 child_tags: ['Famous Books']
             });
-            nonfeaturedSetModel = Eknc.SetObjectModel.new_from_props({
+            nonfeaturedSetModel = new DModel.Set({
                 tags: ['EknSetObject'],
                 title: 'Infamous Books - Set Title',
                 featured: false,
-                ekn_id: 'ekn:///otherId',
                 child_tags: ['Infamous Books']
             });
 
@@ -225,8 +222,8 @@ describe('Article HTML Renderer', function () {
         let engine;
 
         beforeEach(function () {
-            engine = Eknc.Engine.get_default();
-            model = Eknc.ArticleObjectModel.new_from_props({
+            engine = DModel.Engine.get_default();
+            model = new DModel.Article({
                 source_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
                 original_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
                 content_type: 'text/html',
@@ -258,7 +255,7 @@ describe('Article HTML Renderer', function () {
         let html;
 
         beforeEach(function () {
-            let model = Eknc.ArticleObjectModel.new_from_props({
+            let model = new DModel.Article({
                 source: 'prensa-libre',
             });
             html = renderer.render(model);
@@ -273,7 +270,7 @@ describe('Article HTML Renderer', function () {
         let server_templated_model, html;
 
         beforeEach(function() {
-            server_templated_model = Eknc.ArticleObjectModel.new_from_props({
+            server_templated_model = new DModel.Article({
                 content_type: 'text/html',
                 is_server_templated: true,
                 title: 'Some good server templated content',

@@ -1,5 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gtk = imports.gi.Gtk;
+const {DModel, Gtk} = imports.gi;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -16,7 +15,7 @@ describe('Card.Default', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         card = new Default.Default({
-            model: Eknc.ContentObjectModel.new_from_props({
+            model: new DModel.Content({
                 title: '!!!',
             }),
         });

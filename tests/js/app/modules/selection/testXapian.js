@@ -1,6 +1,7 @@
 // Copyright 2017 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
+const {DModel} = imports.gi;
+
 const Minimal = imports.tests.minimal;
 const Module = imports.app.interfaces.module;
 const MockEngine = imports.tests.mockEngine;
@@ -18,13 +19,13 @@ var SampleXapianSelection = new Module.Class({
 
     construct_query_object: function (limit, query_index) {
         if (query_index == 0) {
-            return new Eknc.QueryObject({
-                limit: limit,
+            return new DModel.Query({
+                limit,
                 tags_match_all: ['foobar'],
             });
         } else if (query_index == 1) {
-            return new Eknc.QueryObject({
-                limit: limit,
+            return new DModel.Query({
+                limit,
                 tags_match_all: ['baz'],
             });
         }
@@ -57,7 +58,7 @@ describe('Selection.Xapian superclass', function () {
                 });
             }
             return Promise.resolve({
-                models: [new Eknc.ContentObjectModel()],
+                models: [new DModel.Content()],
                 upper_bound: 1,
             });
         });

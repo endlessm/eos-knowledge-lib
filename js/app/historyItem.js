@@ -1,6 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
+const {DModel, GLib, GObject} = imports.gi;
 
 const Knowledge = imports.app.knowledge;
 
@@ -32,14 +30,14 @@ var HistoryItem = new Knowledge.Class({
          * Property: model
          * Content object model representing this page
          *
-         * For 'article' pages, a <ArticleObjectModel> of the currently
-         * displayed article. For 'section' pages, a <ContentObjectModel> of the
+         * For 'article' pages, a `DModel.Article` of the currently
+         * displayed article. For 'section' pages, a `DModel.Content` of the
          * currently displayed set. Null for other pages.
          */
         'model': GObject.ParamSpec.object('model', 'Model',
             'Content object model representing this page',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            Eknc.ContentObjectModel),
+            DModel.Content),
         /**
          * Property: media-model
          * Content object model representing lightboxed media on this page
@@ -54,7 +52,7 @@ var HistoryItem = new Knowledge.Class({
             'Media model',
             'Content object model representing lightboxed media on this page',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            Eknc.ContentObjectModel),
+            DModel.Content),
         /**
          * Property: search-terms
          *

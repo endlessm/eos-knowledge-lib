@@ -1,11 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
+const {DModel, Gio, GLib, GObject, Gtk} = imports.gi;
 const Lang = imports.lang;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 const Mainloop = imports.mainloop;
 
 const Utils = imports.tests.utils;
@@ -37,9 +33,9 @@ describe('Card interface', function () {
                 child_tags: ['bar'],
             },
         ];
-        let sets = data.map((obj) => Eknc.SetObjectModel.new_from_props(obj));
+        let sets = data.map(props => new DModel.Set(props));
         SetMap.init_map_with_models(sets);
-        model = Eknc.ArticleObjectModel.new_from_props({
+        model = new DModel.Article({
             title: 'record title &',
             thumbnail_uri: 'file:///dev/zero',
             authors: ['record author &'],

@@ -4,10 +4,7 @@
 MinimalHomePage, MinimalModule, MinimalNavigationCard, MinimalOrder,
 MinimalView, MinimalXapianFilter, MinimalXapianOrder, TitleFilter */
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
+const {DModel, GLib, GObject, Gtk} = imports.gi;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const ArticleContent = imports.app.interfaces.articleContent;
@@ -142,7 +139,7 @@ var MinimalSelection = new Module.Class({
 
     queue_load_more: function (num_desired=5) {
         for (let i = 0; i < num_desired; i++) {
-            let model = Eknc.ContentObjectModel.new_from_props();
+            let model = new DModel.Content();
             this.add_model(model);
         }
         this.emit('models-changed');
@@ -180,7 +177,7 @@ var MinimalXapianOrder = new Module.Class({
     Implements: [Order.Order],
 
     modify_xapian_query_impl: function (query) {
-        return Eknc.QueryObject.new_from_object(query, {
+        return DModel.Query.new_from_object(query, {
             search_terms: `${query.search_terms} ${this.model_prop}`,
         });
     },
@@ -212,7 +209,7 @@ var MinimalXapianFilter = new Module.Class({
     },
 
     modify_xapian_query_impl: function (query) {
-        return Eknc.QueryObject.new_from_object(query, {
+        return DModel.Query.new_from_object(query, {
             tags_match_all: (query.tags_match_all || []).concat(this.tag_to_include),
         });
     },
@@ -221,7 +218,7 @@ var MinimalXapianFilter = new Module.Class({
 function add_cards(arrangement, ncards) {
     let models = [];
     for (let i = 0; i < ncards; i++)
-        models.push(Eknc.ContentObjectModel.new_from_props());
+        models.push(new DModel.Content());
     arrangement.set_models(arrangement.get_models().concat(models));
     return models;
 }

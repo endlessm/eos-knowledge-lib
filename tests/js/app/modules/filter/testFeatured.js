@@ -1,15 +1,12 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
+const {DModel} = imports.gi;
 
 const Featured = imports.app.modules.filter.featured;
 const MockFactory = imports.tests.mockFactory;
 
 describe('Filter.Featured', function () {
-    const MODELS = [true, false].map(featured =>
-        Eknc.ContentObjectModel.new_from_props({
-            featured: featured,
-        }));
+    const MODELS = [true, false].map(featured => new DModel.Content({featured}));
     let filter;
 
     describe('normal mode', function () {

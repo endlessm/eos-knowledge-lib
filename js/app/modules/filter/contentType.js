@@ -2,8 +2,7 @@
 
 /* exported ContentType */
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const GObject = imports.gi.GObject;
+const {DModel, GObject} = imports.gi;
 
 const Filter = imports.app.interfaces.filter;
 const Module = imports.app.interfaces.module;
@@ -35,13 +34,13 @@ var ContentType = new Module.Class({
         if (this.invert) {
             if (query.excluded_content_type && query.excluded_content_type.startsWith(this.content_type))
                 return query;
-            return Eknc.QueryObject.new_from_object(query, {
+            return DModel.Query.new_from_object(query, {
                 excluded_content_type: this.content_type,
             });
         } else {
             if (query.content_type && query.content_type.startsWith(this.content_type))
                 return query;
-            return Eknc.QueryObject.new_from_object(query, {
+            return DModel.Query.new_from_object(query, {
                 content_type: this.content_type,
             });
         }

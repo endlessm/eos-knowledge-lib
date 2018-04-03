@@ -1,7 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gtk = imports.gi.Gtk;
+const {DModel, Gtk} = imports.gi;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -73,7 +72,7 @@ describe('Navigation.SearchBox', function () {
     });
 
     it('dispatches autocomplete-selected when a item is selected', function () {
-        let model = Eknc.ContentObjectModel.new_from_props({
+        let model = new DModel.Content({
             ekn_id: 'ekn://aaaabbbbccccdddd',
             title: 'foo',
         });

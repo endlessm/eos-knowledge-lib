@@ -2,8 +2,7 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const GObject = imports.gi.GObject;
+const {DModel, GObject} = imports.gi;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -77,7 +76,7 @@ var ContentForSet = new Module.Class({
         if (!this.model)
             return null;
 
-        return new Eknc.QueryObject({
+        return new DModel.Query({
             limit: limit,
             tags_match_any: this.model.child_tags,
         });

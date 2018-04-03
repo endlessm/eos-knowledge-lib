@@ -1,7 +1,6 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gtk = imports.gi.Gtk;
+const {DModel, Gtk} = imports.gi;
 
 const Compliance = imports.tests.compliance;
 const Minimal = imports.tests.minimal;
@@ -25,7 +24,7 @@ describe('Arrangement.Thirties', function () {
             max_rows: 1,
             fade_cards: true,
         });
-        let model = Eknc.ContentObjectModel.new_from_props();
+        let model = new DModel.Content();
         arrangement.set_models([model]);
         expect(arrangement.get_card_for_model(model).fade_in)
             .not.toHaveBeenCalled();

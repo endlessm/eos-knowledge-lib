@@ -2,8 +2,7 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const GObject = imports.gi.GObject;
+const {DModel, GObject} = imports.gi;
 const Lang = imports.lang;
 
 const HistoryStore = imports.app.historyStore;
@@ -38,7 +37,7 @@ var Selection = new Module.Class({
          * Property: model
          *
          * Type:
-         *   <ContentObjectModel>
+         *   `DModel.Content`
          *
          * Content object model to back this selection. For some selections, it is provided
          * on construction. If not, then it will get its model from global state.
@@ -46,8 +45,7 @@ var Selection = new Module.Class({
          */
         'model': GObject.ParamSpec.object('model', 'Model',
             'Content model to back this selection',
-            GObject.ParamFlags.READWRITE,
-            Eknc.ContentObjectModel),
+            GObject.ParamFlags.READWRITE, DModel.Content),
     },
 
     Signals: {

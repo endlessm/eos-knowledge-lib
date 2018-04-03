@@ -1,6 +1,6 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
+const {DModel} = imports.gi;
 
 const Alphabetical = imports.app.modules.order.alphabetical;
 const MockFactory = imports.tests.mockFactory;
@@ -15,8 +15,7 @@ describe('Order.Alphabetical', function () {
         'Jellyfish', 'Jellyfish', 'Kangaroo', 'Ocelot', 'Pistol shrimp', 'Squid'];
 
     beforeEach(function () {
-        models = UNSORTED_TITLES.map(title =>
-            Eknc.ContentObjectModel.new_from_props({ title: title }));
+        models = UNSORTED_TITLES.map(title => new DModel.Content({title}));
         factory = new MockFactory.MockFactory({
             type: Alphabetical.Alphabetical,
         });

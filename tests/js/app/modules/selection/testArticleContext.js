@@ -1,5 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gtk = imports.gi.Gtk;
+const {DModel, Gtk} = imports.gi;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -14,7 +13,7 @@ Gtk.init(null);
 function setup (store) {
     store.set_current_item_from_props({
         page_type: Pages.SET,
-        model: Eknc.SetObjectModel.new_from_props(),
+        model: new DModel.Set(),
     });
 }
 

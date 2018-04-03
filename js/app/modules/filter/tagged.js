@@ -2,8 +2,7 @@
 
 /* exported Tagged */
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const GObject = imports.gi.GObject;
+const {DModel, GObject} = imports.gi;
 
 const Filter = imports.app.interfaces.filter;
 const Module = imports.app.interfaces.module;
@@ -35,13 +34,13 @@ var Tagged = new Module.Class({
         if (this.invert) {
             if (query.excluded_tags.indexOf(this.tag) !== -1)
                 return query;
-            return Eknc.QueryObject.new_from_object(query, {
+            return DModel.Query.new_from_object(query, {
                 excluded_tags: query.excluded_tags.concat([this.tag]),
             });
         } else {
             if (query.tags_match_all.indexOf(this.tag) !== -1)
                 return query;
-            return Eknc.QueryObject.new_from_object(query, {
+            return DModel.Query.new_from_object(query, {
                 tags_match_all: query.tags_match_all.concat([this.tag]),
             });
         }

@@ -1,7 +1,6 @@
 // Copyright 2017 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gtk = imports.gi.Gtk;
+const {DModel, Gtk} = imports.gi;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -78,7 +77,7 @@ describe('Filter.OtherGroup', function () {
         });
 
         it('will not match IDs included in the other selection', function () {
-            let query = filter.modify_xapian_query(new Eknc.QueryObject());
+            let query = filter.modify_xapian_query(new DModel.Query());
             expect(query.excluded_ids.length).toEqual(ids_in_other_group.length);
             ids_in_other_group.forEach(id => {
                 expect(query.excluded_ids).toContain(id);
@@ -92,7 +91,7 @@ describe('Filter.OtherGroup', function () {
         });
 
         it('will only match IDs included in the other selection', function () {
-            let query = filter.modify_xapian_query(new Eknc.QueryObject());
+            let query = filter.modify_xapian_query(new DModel.Query());
             expect(query.ids.length).toEqual(ids_in_other_group.length);
             ids_in_other_group.forEach(id => {
                 expect(query.ids).toContain(id);

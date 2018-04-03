@@ -207,6 +207,7 @@ PKG_CHECK_MODULES([SCROLL_PLUGIN], [
 ])
 
 # Check installed GIRs for Javascript overrides
+EOS_CHECK_GJS_GIR([DModel], [0])
 EOS_CHECK_GJS_GIR([Emeus], [1.0])
 EOS_CHECK_GJS_GIR([Endless], [0])
 EOS_CHECK_GJS_GIR([EosShard], [0])
@@ -275,9 +276,6 @@ AC_CONFIG_FILES([
     js/app/config.js.in
 ])
 AC_CONFIG_HEADERS([config.h])  dnl Header with system-dependent #defines
-
-# Call ekncontent ./configure
-AC_CONFIG_SUBDIRS([ekncontent])
 
 # Do the output
 AC_OUTPUT

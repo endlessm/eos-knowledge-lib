@@ -1,12 +1,5 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const Endless = imports.gi.Endless;
+const {DModel, Endless, Gdk, Gio, GLib, GObject, Gtk, WebKit2} = imports.gi;
 const ByteArray = imports.byteArray;
-const Gdk = imports.gi.Gdk;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
-const WebKit2 = imports.gi.WebKit2;
 
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const Config = imports.app.config;
@@ -115,9 +108,9 @@ var EknWebview = new Knowledge.Class({
     },
 
     _load_object: function (id) {
-        return Eknc.Engine.get_default().get_object_promise(id)
+        return DModel.Engine.get_default().get_object_promise(id)
         .then((model) => {
-            if (model instanceof Eknc.ArticleObjectModel) {
+            if (model instanceof DModel.Article) {
                 let html = this.renderer.render(model);
                 let bytes = ByteArray.fromString(html).toGBytes();
                 let stream = Gio.MemoryInputStream.new_from_bytes(bytes);

@@ -2,8 +2,7 @@
 
 /* exported Unread */
 
-const Eknc = imports.gi.EosKnowledgeContent;
-const GObject = imports.gi.GObject;
+const {DModel, GObject} = imports.gi;
 
 const Filter = imports.app.interfaces.filter;
 const Module = imports.app.interfaces.module;
@@ -27,9 +26,9 @@ var Unread = new Module.Class({
             let ids = [...id_set];
             if (query.ids.length)
                 ids = Utils.intersection(query.ids, ids);
-            return Eknc.QueryObject.new_from_object(query, { ids: ids });
+            return DModel.Query.new_from_object(query, {ids});
         }
-        return Eknc.QueryObject.new_from_object(query, {
+        return DModel.Query.new_from_object(query, {
             excluded_ids: Utils.union(query.excluded_ids, [...id_set]),
         });
     },

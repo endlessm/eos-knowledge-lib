@@ -1,5 +1,4 @@
-const Eknc = imports.gi.EosKnowledgeContent;
-const Gtk = imports.gi.Gtk;
+const {DModel, Gtk} = imports.gi;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -16,7 +15,7 @@ Gtk.init(null);
 function setup (store) {
     store.set_current_item_from_props({
         page_type: 'set',
-        model: Eknc.SetObjectModel.new_from_props(),
+        model: new DModel.Set(),
     });
 }
 
@@ -35,7 +34,7 @@ describe('Selection.SetCrossSection', function () {
     });
 
     it('dispatches item-clicked when asked to show more', function () {
-        let model = Eknc.SetObjectModel.new_from_props();
+        let model = new DModel.Set();
         selection.model = model;
         selection.show_more();
         expect(dispatcher.last_payload_with_type(Actions.ITEM_CLICKED))

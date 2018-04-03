@@ -2,7 +2,7 @@
 
 // Copyright 2016 Endless Mobile, Inc.
 
-const Eknc = imports.gi.EosKnowledgeContent;
+const {DModel} = imports.gi;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -29,7 +29,7 @@ var SetCrossSection = new Module.Class({
         let current_set = HistoryStore.get_default().current_set;
         if (current_set)
             tags = tags.concat(current_set.child_tags);
-        return new Eknc.QueryObject({
+        return new DModel.Query({
             limit: limit,
             tags_match_all: tags,
         });

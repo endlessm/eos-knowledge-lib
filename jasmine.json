@@ -3,9 +3,8 @@
     "options": "--verbose",
     "environment": {
         "GJS_PATH": ".:js",
-        "GI_TYPELIB_PATH": ".:ekncontent",
-        "LD_LIBRARY_PATH": ".libs:ekncontent/.libs",
-        "GIO_EXTRA_MODULES": "ekncontent/.libs",
+        "GI_TYPELIB_PATH": ".",
+        "LD_LIBRARY_PATH": ".libs",
         "LC_ALL": "C"
     }
 }
