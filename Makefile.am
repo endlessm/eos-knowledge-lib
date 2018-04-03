@@ -135,12 +135,7 @@ scss_theme_partials = \
 	$(scss_theme_widgets_partials) \
 	$(NULL)
 
-scss_template_toplevels = \
-	$(srcdir)/data/templates/css/clipboard.scss \
-	$(srcdir)/data/templates/css/share-actions.scss \
-	$(NULL)
-
-scss_toplevels = $(scss_theme_toplevels) $(scss_template_toplevels)
+scss_toplevels = $(scss_theme_toplevels)
 
 scss_targets = $(patsubst $(srcdir)/%.scss,$(builddir)/%.css,$(scss_toplevels))
 

@@ -34,20 +34,11 @@
     <file preprocess="xml-stripblanks" compressed="true">data/images/arrow-symbolic.svg</file>
     <file preprocess="xml-stripblanks">data/images/deckbg.svg</file>
     <file>data/images/separator.png</file>
-    <file compressed="true">data/templates/article-wrapper.mst</file>
-    <file compressed="true">data/templates/css/clipboard.css</file>
-    <file compressed="true">data/templates/css/exploration-custom.css</file>
-    <file compressed="true">data/templates/css/share-actions.css</file>
     <file>data/templates/images/background.png</file>
     <file>data/templates/images/noise.png</file>
     <file>data/templates/images/object-view.png</file>
     <file compressed="true" preprocess="xml-stripblanks">data/templates/images/prensa-libre.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">data/templates/images/quote.svg</file>
-    <file compressed="true">data/templates/js/chunk.js</file>
-    <file compressed="true">data/templates/js/clipboard-manager.js</file>
-    <file compressed="true">data/templates/js/crosslink.js</file>
-    <file compressed="true">data/templates/js/jquery-min.js</file>
-    <file compressed="true">data/templates/js/share-actions.js</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/app.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/dynamic.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/search.ui</file>
