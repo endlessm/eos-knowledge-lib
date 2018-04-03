@@ -88,7 +88,6 @@ scss_theme_content_partials = \
 	$(NULL)
 scss_theme_layout_partials = \
 	$(srcdir)/data/css/modules/layout/_dynamicBackground.scss \
-	$(srcdir)/data/css/modules/layout/_hamburgerBasement.scss \
 	$(srcdir)/data/css/modules/layout/_infiniteScrolling.scss \
 	$(srcdir)/data/css/modules/layout/_navigation.scss \
 	$(srcdir)/data/css/modules/layout/_placeholder.scss \
@@ -477,7 +476,6 @@ javascript_tests = \
 	tests/js/app/modules/layout/testBox.js \
 	tests/js/app/modules/layout/testBrandPage.js \
 	tests/js/app/modules/layout/testDynamicBackground.js \
-	tests/js/app/modules/layout/testHamburgerBasement.js \
 	tests/js/app/modules/layout/testInfiniteScrolling.js \
 	tests/js/app/modules/layout/testNavigation.js \
 	tests/js/app/modules/layout/testOverlay.js \
