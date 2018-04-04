@@ -44,10 +44,10 @@ scss_theme_toplevels = \
 	$(srcdir)/data/css/encyclopedia.scss \
 	$(srcdir)/data/css/escola.scss \
 	$(srcdir)/data/css/gallery.scss \
+	$(srcdir)/data/css/library.scss \
 	$(srcdir)/data/css/library_list.scss \
 	$(srcdir)/data/css/news.scss \
 	$(srcdir)/data/css/picard.scss \
-	$(srcdir)/data/css/preset_a.scss \
 	$(srcdir)/data/css/preset_b.scss \
 	$(srcdir)/data/css/video_list.scss \
 	$(NULL)
@@ -411,13 +411,13 @@ dist_themewidgets_DATA = $(scss_theme_widgets_partials)
 # so we can package our .yaml files
 yamlpresetdir = $(pkgdatadir)/preset
 dist_yamlpreset_DATA = \
-	data/preset/A.yaml \
 	data/preset/B.yaml \
 	data/preset/blog.yaml \
 	data/preset/buffet.yaml \
 	data/preset/encyclopedia.yaml \
 	data/preset/escola.yaml \
 	data/preset/gallery.yaml \
+	data/preset/library.yaml \
 	data/preset/library-list.yaml \
 	data/preset/news.yaml \
 	data/preset/video_list.yaml \

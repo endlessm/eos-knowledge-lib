@@ -10,8 +10,7 @@ const Module = imports.app.interfaces.module;
 /**
  * Class: Mesh
  *
- * The Mesh controller model controls the Encyclopedia and presets formerly
- * known as templates A and B.
+ * The Mesh controller model controls the Encyclopedia, Library and B presets.
  * A very exploratory controller, the content is organized into categories and
  * may have filters, but can be reached through many different paths.
  */
