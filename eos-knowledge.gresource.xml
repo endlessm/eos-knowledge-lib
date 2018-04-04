@@ -2,10 +2,10 @@
 <gresources>
   <gresource prefix="/com/endlessm/knowledge">
     <file compressed="true">data/css/blog.css</file>
-    <file compressed="true">data/css/buffet.css</file>
     <file compressed="true">data/css/default.css</file>
     <file compressed="true">data/css/encyclopedia.css</file>
     <file compressed="true">data/css/escola.css</file>
+    <file compressed="true">data/css/exploration.css</file>
     <file compressed="true">data/css/gallery.css</file>
     <file compressed="true">data/css/library.css</file>
     <file compressed="true">data/css/library_list.css</file>
@@ -38,9 +38,9 @@
     <file compressed="true">data/templates/news-article.mst</file>
     <file compressed="true">data/templates/article-wrapper.mst</file>
     <file compressed="true">data/templates/css/clipboard.css</file>
+    <file compressed="true">data/templates/css/exploration-custom.css</file>
     <file compressed="true">data/templates/css/share-actions.css</file>
     <file compressed="true">data/templates/css/prensa-libre.css</file>
-    <file compressed="true">data/templates/css/buffet-custom.css</file>
     <file compressed="true">data/templates/css/wikihow.css</file>
     <file compressed="true">data/templates/css/wikimedia.css</file>
     <file>data/templates/images/background.png</file>
