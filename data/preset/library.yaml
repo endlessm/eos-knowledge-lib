@@ -4,7 +4,7 @@ vars:
     shortdef: 'Banner.Dynamic(mode: full, halign: center)'
 
   home-sets-arrangement:
-    shortdef: 'Arrangement.Overflow(orientation: horizontal)'
+    type: Arrangement.Grid
   home-sets-card:
     type: &card Card.Default
     properties:
@@ -53,48 +53,33 @@ vars:
 
 defines:
 - &home-page
-  type: Layout.HamburgerBasement
-  properties:
-    show-upper-button:
-      binding:
-        source-id: sets-group
-        property: has-more-content
+  type: Layout.Scrolling
   slots:
-    top: $app-banner
-    middle: 'Navigation.SearchBox(halign: center, focus-on-map: true)'
-    bottom:
-      type: ContentGroup.ContentGroup
-      id: sets-group
+    content:
+      type: Layout.Box
       properties:
-        expand: true
-        halign: center
-        valign: center
+        orientation: vertical
       slots:
-        arrangement:
-          refvar: $home-sets-arrangement
-          slots:
-            card: $home-sets-card
-        selection:
-          type: Selection.AllSets
-          slots:
-            order: $home-sets-order
-    basement:
-      type: Layout.InfiniteScrolling
-      references:
-        lazy-load: basement-sets
-      slots:
-        content:
-          shortdef: 'ContentGroup.ContentGroup(expand: true)'
+        contents:
+        - $app-banner
+        - 'Navigation.SearchBox(halign: center, focus-on-map: true)'
+        - type: ContentGroup.ContentGroup
+          id: sets-group
+          properties:
+            cards-per-page: 6
+            expand: true
+            halign: fill
+            paginate: true
+            valign: center
           slots:
             arrangement:
-              refvar: $home-allsets-arrangement
+              refvar: $home-sets-arrangement
               slots:
-                card: $home-allsets-card
+                card: $home-sets-card
             selection:
               type: Selection.AllSets
-              id: basement-sets
               slots:
-                order: $home-allsets-order
+                order: $home-sets-order
 
 - &set-page
   shortdef: 'Layout.Box(orientation: vertical)'
