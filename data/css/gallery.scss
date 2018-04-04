@@ -51,15 +51,10 @@
     margin-top: 0;
 }
 
-.WindowSimple {
-    scrollbar {
-        padding: 3px;
-        background-color: transparent;
-        // margin-top is for being covered by Layout.TopMenu
-        margin-top: 50px;
-
-        slider {
-            background-color: transparentize(#787c7d, 1 - 0.50);
-        }
+.WindowSimple scrollbar {
+    padding: 3px;
+    background-color: transparent;
+    slider {
+        background-color: transparentize(#787c7d, 1 - 0.50);
     }
 }
