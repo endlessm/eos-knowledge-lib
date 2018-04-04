@@ -74,16 +74,15 @@ var MoltresEngine = new Lang.Class({
     },
 
     _get_sets: function (query) {
-        let set_models = this._set_models.filter((model) => {
-            if (query.tags_match_any.length === 0)
-                return true;
-            return query.tags_match_any.some((tag) => {
-                return model.tags.indexOf(tag) >= 0;
-            });
-        });
+        let set_models = this._set_models;
+
+        if (query.tags_match_any.length > 0) {
+            set_models = set_models.filter(model =>
+                query.tags_match_any.some(tag => model.tags.includes(tag)));
+        }
 
         return {
-            models: set_models,
+            models: set_models.slice(query.offset, query.limit + query.offset),
             upper_bound: set_models.length,
         };
     },
