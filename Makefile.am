@@ -39,10 +39,10 @@ scss_verbose_0 = @echo "  SCSS     $@";
 
 scss_theme_toplevels = \
 	$(srcdir)/data/css/blog.scss \
-	$(srcdir)/data/css/buffet.scss \
 	$(srcdir)/data/css/default.scss \
 	$(srcdir)/data/css/encyclopedia.scss \
 	$(srcdir)/data/css/escola.scss \
+	$(srcdir)/data/css/exploration.scss \
 	$(srcdir)/data/css/gallery.scss \
 	$(srcdir)/data/css/library.scss \
 	$(srcdir)/data/css/library_list.scss \
@@ -136,8 +136,8 @@ scss_theme_partials = \
 	$(NULL)
 
 scss_template_toplevels = \
+	$(srcdir)/data/templates/css/exploration-custom.scss \
 	$(srcdir)/data/templates/css/prensa-libre.scss \
-	$(srcdir)/data/templates/css/buffet-custom.scss \
 	$(srcdir)/data/templates/css/wikihow.scss \
 	$(srcdir)/data/templates/css/wikimedia.scss \
 	$(srcdir)/data/templates/css/clipboard.scss \
@@ -412,8 +412,8 @@ dist_themewidgets_DATA = $(scss_theme_widgets_partials)
 yamlpresetdir = $(pkgdatadir)/preset
 dist_yamlpreset_DATA = \
 	data/preset/blog.yaml \
-	data/preset/buffet.yaml \
 	data/preset/encyclopedia.yaml \
+	data/preset/exploration.yaml \
 	data/preset/escola.yaml \
 	data/preset/gallery.yaml \
 	data/preset/library.yaml \
