@@ -1,7 +1,12 @@
 ---
 vars:
   app-banner:
-    shortdef: 'Banner.Dynamic(mode: full, show-subtitle: false, valign: center)'
+    type: Banner.Dynamic
+    properties:
+      mode: full
+      layout: horizontal
+      show-subtitle: false
+      valign: center
 
   home-articles-arrangement: &main-arrangement
     type: Arrangement.SquareGuys

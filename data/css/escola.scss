@@ -36,16 +36,12 @@ $display-font: 'Raleway Black' !default;
       min-height: 400px;
     }
 
-    .BannerDynamic {
-      &__logo {
-        -EknDynamicLogo-sizing: "size-min";
+    .BannerDynamic__logo {
         color: white;
-        min-height: 120px;
-        min-width: 400px;
-        font-weight: normal;
         font-family: $display-font;
-        font-size: 72px;
-      }
+        margin: 30px;
+        min-height: 350px;
+        font-weight: normal;
     }
 
     .ContentGroupStaticText {

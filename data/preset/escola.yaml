@@ -1,7 +1,7 @@
 ---
 vars:
   app-banner:
-    shortdef: 'Banner.Dynamic(mode: text, expand: true)'
+    shortdef: 'Banner.Dynamic(mode: full, expand: true)'
   app-banner-text:
     type: ContentGroup.StaticText
     properties:

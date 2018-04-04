@@ -4,6 +4,7 @@ vars:
     type: Banner.Dynamic
     properties:
       mode: full
+      layout: horizontal
       valign: center
       halign: center
 
