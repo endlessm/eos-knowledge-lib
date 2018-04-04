@@ -224,7 +224,7 @@ let stock_theme_chooser = new Gtk.ComboBoxText({
     'library',
     'library_list',
     'news',
-    'preset_b',
+    'thematic',
     'video_list',
 ].forEach((item) => {
     stock_theme_chooser.append(item, item);
