@@ -7,6 +7,7 @@ data/widgets/tooltips.ui
 js/app/application.js
 js/app/articleHTMLRenderer.js
 js/app/buffetHistoryStore.js
+js/app/meshHistoryStore.js
 js/app/historyStore.js
 js/app/interfaces/card.js
 js/app/modules/banner/context.js

@@ -59,6 +59,13 @@ describe('MeshHistoryStore', function () {
                 EntryPoints.LINK_CLICKED);
     });
 
+    it('shows the all-sets page when all-sets clicked', function () {
+        dispatcher.dispatch({
+            action_type: Actions.ALL_SETS_CLICKED,
+        });
+        expect(store.get_current_item().page_type).toBe(Pages.ALL_SETS);
+    });
+
     it('goes back to the home page via the sidebar from search page', function () {
         store.set_current_item_from_props({
             page_type: Pages.SEARCH,
