@@ -51,11 +51,11 @@ To use it, include this in your app's YAML:
 !import 'thematic'
 ```
 
-## Buffet
+## Exploration
 
-![The Buffet preset](images/presets/buffet.svg)
+![The Exploration preset](images/presets/exploration.svg)
 
-Buffet is a highly exploratory experience that aims to provide no restrictions to the user’s curiosity. The preset allows the user to view fresh content from the beginning, navigate freely and easily among categories and sub-categories, and find more content along the way. It integrates a sliding side menu for more constant navigation control.
+Provides a highly exploratory experience that aims to provide no restrictions to the user’s curiosity. The preset allows the user to view fresh content from the beginning, navigate freely and easily among categories and sub-categories, and find more content along the way. It integrates a sliding side menu for more constant navigation control.
 
 * **Requires** that each article belongs to two categories, at least.
 * Supports HTML and PDF articles.
@@ -63,7 +63,7 @@ Buffet is a highly exploratory experience that aims to provide no restrictions t
 To use it, include this in your app's YAML:
 
 ```yaml
-!import 'buffet'
+!import 'exploration'
 ```
 
 ## Encyclopedia

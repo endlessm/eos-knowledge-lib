@@ -396,7 +396,7 @@ defines:
           properties:
             show-titles: false
             show-toc: false
-            custom-css: buffet-custom.css
+            custom-css: exploration-custom.css
         nav-content:
           type: ContentGroup.ContentGroup
           properties:
@@ -411,7 +411,7 @@ defines:
               type: Selection.Next
 
 root:
-  shortdef: 'Controller.Buffet(theme: buffet)'
+  shortdef: 'Controller.Buffet(theme: exploration)'
   slots:
     window:
       type: Window.Simple
