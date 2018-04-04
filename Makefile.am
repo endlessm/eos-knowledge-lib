@@ -543,6 +543,8 @@ yaml_tests = \
 	tests/autobahn/test-autobahn-catalog \
 	tests/autobahn/test-autobahn-translation \
 	$(NULL)
+perf_test = \
+	$(NULL)
 test_content = \
 	tests/test-content/backgroundHome \
 	tests/test-content/pdf-sample1.pdf \
@@ -551,6 +553,7 @@ test_content = \
 EXTRA_DIST += \
 	$(javascript_tests) \
 	$(yaml_tests) \
+	$(perf_test) \
 	$(patsubst %.yaml,%.json,$(yaml_tests)) \
 	tests/autobahn/basic.pot \
 	tests/autobahn/basic.po \
@@ -588,12 +591,13 @@ noinst_DATA = tests/test-content/test-content.gresource
 TESTS = \
 	$(javascript_tests) \
 	$(yaml_tests) \
+	$(perf_tests) \
 	run_coverage.coverage \
 	$(NULL)
 LOG_COMPILER = gtester
 AM_LOG_FLAGS = -k --verbose
 
-TEST_EXTENSIONS = .js .yaml .coverage
+TEST_EXTENSIONS = .js .yaml .coverage .perf
 
 JS_LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) $(top_srcdir)/tap-driver.sh
 JS_LOG_DRIVER_FLAGS = --comments
@@ -601,6 +605,12 @@ JS_LOG_COMPILER = jasmine
 AM_JS_LOG_FLAGS = --tap --no-config @JASMINE_REPORT_ARGUMENT@
 
 YAML_LOG_COMPILER = $(top_srcdir)/tests/autobahn/testautobahn.sh
+
+PERF_LOG_DRIVER = eos-profile
+PERF_LOG_DRIVER_FLAGS = convert --format=json
+
+%.perf: %.js
+	EOS_PROFILE=capture:$(top_builddir)/tests/performance/$(@F) $(JS_LOG_COMPILER) $<
 
 # Use locally built versions of EosKnowledgePrivate-1.0.gir, JS modules, and
 # libraries. We clobber GJS_PATH and include the js directory and the
