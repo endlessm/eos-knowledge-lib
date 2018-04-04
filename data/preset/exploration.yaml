@@ -411,7 +411,7 @@ defines:
               type: Selection.Next
 
 root:
-  shortdef: 'Controller.Buffet(theme: exploration)'
+  shortdef: 'Controller.Mesh(theme: exploration)'
   slots:
     window:
       type: Window.Simple

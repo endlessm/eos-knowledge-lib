@@ -198,7 +198,7 @@ defines:
                             order: 'Order.PublishedDate(ascending: false)'
 
 root:
-  type: Controller.Buffet
+  type: Controller.Mesh
   slots:
     window:
       type: Window.Simple
