@@ -349,7 +349,7 @@ defines:
         audio: 'View.Audio(show-title: false, show-synopsis: false)'
 
 root:
-  shortdef: 'Controller.Buffet(theme: news)'
+  shortdef: 'Controller.Mesh(theme: news)'
   slots:
     window:
       type: Window.Simple

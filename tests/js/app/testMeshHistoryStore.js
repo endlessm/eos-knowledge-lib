@@ -52,11 +52,21 @@ describe('MeshHistoryStore', function () {
         dispatcher.dispatch({
             action_type: Actions.ITEM_CLICKED,
             model: model,
+            context: [model],
+            context_label: 'Some Context',
+
         });
         expect(store.get_current_item().page_type).toBe(Pages.ARTICLE);
         expect(AppUtils.start_content_access_metric)
             .toHaveBeenCalledWith(store.get_current_item().model,
                 EntryPoints.LINK_CLICKED);
+    });
+
+    it('shows the all-sets page when all-sets clicked', function () {
+        dispatcher.dispatch({
+            action_type: Actions.ALL_SETS_CLICKED,
+        });
+        expect(store.get_current_item().page_type).toBe(Pages.ALL_SETS);
     });
 
     it('goes back to the home page via the sidebar from search page', function () {
