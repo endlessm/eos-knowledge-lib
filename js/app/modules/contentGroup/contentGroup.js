@@ -173,13 +173,13 @@ var ContentGroup = new Module.Class({
                 halign: Gtk.Align.CENTER,
                 label: _("See more"),
                 no_show_all: true,
-                visible: this.paginate,
+                visible: this._selection.can_load_more,
             });
             Utils.set_hand_cursor_on_widget(see_more_button);
 
             see_more_button.get_style_context().add_class(Utils.get_element_style_class(ContentGroup, 'paginate'));
             see_more_button.connect('clicked', () => {
-                if (this._selection.can_load_more && this.paginate)
+                if (this._selection.can_load_more)
                     this._selection.queue_load_more(this.cards_per_page);
             });
             this._selection.connect('notify::can-load-more', () => {
