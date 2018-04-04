@@ -81,11 +81,11 @@ To use it, include this in your app's YAML:
 !import 'encyclopedia'
 ```
 
-## Escola
+## Course
 
-![The Escola preset](images/presets/escola.svg)
+![The Course preset](images/presets/course.svg)
 
-Escola is a focused experience that guides the user directly to the content through categories. Recommended for sequential educational content.
+Course is a focused experience that guides the user directly to the content through categories. Recommended for sequential educational content.
 
 * **Requires** one level of categories.
 * Supports video and audio articles.
@@ -93,7 +93,7 @@ Escola is a focused experience that guides the user directly to the content thro
 To use it, include this in your app's YAML:
 
 ```yaml
-!import 'escola'
+!import 'course'
 ```
 
 ## Gallery

@@ -162,7 +162,7 @@ defines:
             - <<: *footer
 
 root:
-  shortdef: 'Controller.Course(theme: escola)'
+  shortdef: 'Controller.Course(theme: course)'
   slots:
     window:
       type: Window.Simple

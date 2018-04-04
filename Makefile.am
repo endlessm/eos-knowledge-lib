@@ -39,9 +39,9 @@ scss_verbose_0 = @echo "  SCSS     $@";
 
 scss_theme_toplevels = \
 	$(srcdir)/data/css/blog.scss \
+	$(srcdir)/data/css/course.scss \
 	$(srcdir)/data/css/default.scss \
 	$(srcdir)/data/css/encyclopedia.scss \
-	$(srcdir)/data/css/escola.scss \
 	$(srcdir)/data/css/exploration.scss \
 	$(srcdir)/data/css/gallery.scss \
 	$(srcdir)/data/css/library.scss \
@@ -412,9 +412,9 @@ dist_themewidgets_DATA = $(scss_theme_widgets_partials)
 yamlpresetdir = $(pkgdatadir)/preset
 dist_yamlpreset_DATA = \
 	data/preset/blog.yaml \
+	data/preset/course.yaml \
 	data/preset/encyclopedia.yaml \
 	data/preset/exploration.yaml \
-	data/preset/escola.yaml \
 	data/preset/gallery.yaml \
 	data/preset/library.yaml \
 	data/preset/library-list.yaml \
