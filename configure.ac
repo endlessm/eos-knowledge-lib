@@ -187,6 +187,7 @@ PKG_CHECK_MODULES([EOS_KNOWLEDGE_PRIVATE], [
     epoxy
 ])
 PKG_CHECK_MODULES([GRESOURCE_PLUGIN], [
+    eknr-0,
     gio-2.0
     glib-2.0
     gmodule-2.0
