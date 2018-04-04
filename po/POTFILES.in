@@ -6,7 +6,6 @@ data/widgets/layout/sideMenu.ui
 data/widgets/tooltips.ui
 js/app/application.js
 js/app/articleHTMLRenderer.js
-js/app/buffetHistoryStore.js
 js/app/meshHistoryStore.js
 js/app/historyStore.js
 js/app/interfaces/card.js
@@ -14,7 +13,6 @@ js/app/modules/banner/context.js
 js/app/modules/banner/search.js
 js/app/modules/contentGroup/contentGroup.js
 js/app/modules/contentGroup/noResultsMessage.js
-js/app/modules/controller/buffet.js
 js/app/modules/layout/articleStack.js
 js/app/modules/layout/hamburgerBasement.js
 js/app/modules/layout/placeholder.js
