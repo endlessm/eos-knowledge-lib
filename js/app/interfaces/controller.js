@@ -43,7 +43,7 @@ var Controller = new Lang.Interface({
          * The template type for the Knowledge app.
          *
          * The legacy template type to be used by the Knowledge app. Possible values
-         * are "A", "B" and "encyclopedia".
+         * are "library", "B" and "encyclopedia".
          *
          * Flags:
          *   Construct only

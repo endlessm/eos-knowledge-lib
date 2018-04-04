@@ -5,11 +5,11 @@ short-description: Description of the pre-defined app experiencies or presets
 
 The Modular framework has been used for building dozens of apps. As a result, many experience patterns have emerged and turned into pre-defined app experiences or presets. These presets can be re-used and customized by app developers to create new apps. This document is meant to present and describe each of these presets.
 
-## Library (A)
+## Library
 
-![The Library (A) preset](images/presets/A.svg)
+![The Library preset](images/presets/library.svg)
 
-Library (A) is a focused experience that guides the user directly to the content through categories. The preset highlights a few featured categories first before revealing all categories, and integrates a table of contents in the article view. Recommended for long-form educational content.
+Library is a focused experience that guides the user directly to the content through categories. The preset highlights a few featured categories first before revealing all categories, and integrates a table of contents in the article view. Recommended for long-form educational content.
 
 * **Requires** one level of categories.
 * Supports HTML, PDF, video and audio articles.
@@ -17,7 +17,7 @@ Library (A) is a focused experience that guides the user directly to the content
 To use it, include this in your app's YAML:
 
 ```yaml
-!import 'A'
+!import 'library'
 ```
 
 ## Blog
@@ -40,7 +40,7 @@ To use it, include this in your app's YAML:
 
 ![The Thematic (B) preset](images/presets/B.svg)
 
-Thematic (B) is a focused experience that guides the user directly to the content through a few large categories, and integrates a fixed side menu in the article view to explore more content in that category. Originally designed to be a more visual iteration of the Library (A) preset, and recommended for long-form educational content.
+Thematic (B) is a focused experience that guides the user directly to the content through a few large categories, and integrates a fixed side menu in the article view to explore more content in that category. Originally designed to be a more visual iteration of the Library preset, and recommended for long-form educational content.
 
 * **Requires** one level of categories.
 * Supports HTML, PDF, video and audio articles.
@@ -116,7 +116,7 @@ To use it, include this in your app's YAML:
 
 ![The Library List preset](images/presets/library-list.svg)
 
-Library-List is a variation of the Library (A) preset that offers a similarly focused experience, guiding the user directly to the content through categories, with the addition of sub-categories. Recommended for long-form educational content.
+Library-List is a variation of the Library preset that offers a similarly focused experience, guiding the user directly to the content through categories, with the addition of sub-categories. Recommended for long-form educational content.
 
 * **Requires** two levels of categories.
 * Supports HTML, PDF, video and audio articles.

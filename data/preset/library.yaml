@@ -155,7 +155,7 @@ defines:
     audio: 'View.Audio(show-title: false, show-synopsis: false)'
 
 root:
-  shortdef: 'Controller.Mesh(theme: preset_a)'
+  shortdef: 'Controller.Mesh(theme: library)'
   slots:
     window:
       type: Window.Simple
