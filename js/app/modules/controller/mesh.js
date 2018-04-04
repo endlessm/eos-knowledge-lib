@@ -10,9 +10,10 @@ const Module = imports.app.interfaces.module;
 /**
  * Class: Mesh
  *
- * The Mesh controller model controls the Encyclopedia, Library and B presets.
- * A very exploratory controller, the content is organized into categories and
- * may have filters, but can be reached through many different paths.
+ * The Mesh controller model controls the Encyclopedia, Library and Thematic
+ * presets. A very exploratory controller, the content is organized into
+ * categories and may have filters, but can be reached through many different
+ * paths.
  */
 var Mesh = new Module.Class({
     Name: 'Controller.Mesh',

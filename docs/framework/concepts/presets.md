@@ -36,11 +36,11 @@ To use it, include this in your app's YAML:
 !import 'blog'
 ```
 
-## Thematic (B)
+## Thematic
 
-![The Thematic (B) preset](images/presets/B.svg)
+![The Thematic preset](images/presets/thematic.svg)
 
-Thematic (B) is a focused experience that guides the user directly to the content through a few large categories, and integrates a fixed side menu in the article view to explore more content in that category. Originally designed to be a more visual iteration of the Library preset, and recommended for long-form educational content.
+Thematic is a focused experience that guides the user directly to the content through a few large categories, and integrates a fixed side menu in the article view to explore more content in that category. Originally designed to be a more visual iteration of the Library preset, and recommended for long-form educational content.
 
 * **Requires** one level of categories.
 * Supports HTML, PDF, video and audio articles.
@@ -48,7 +48,7 @@ Thematic (B) is a focused experience that guides the user directly to the conten
 To use it, include this in your app's YAML:
 
 ```yaml
-!import 'B'
+!import 'thematic'
 ```
 
 ## Buffet

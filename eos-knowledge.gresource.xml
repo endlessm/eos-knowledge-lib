@@ -11,8 +11,8 @@
     <file compressed="true">data/css/library_list.css</file>
     <file compressed="true">data/css/news.css</file>
     <file compressed="true">data/css/picard.css</file>
-    <file compressed="true">data/css/preset_b.css</file>
     <file compressed="true">data/css/keybindings.css</file>
+    <file compressed="true">data/css/thematic.css</file>
     <file compressed="true">data/css/video_list.css</file>
     <file preprocess="xml-stripblanks">data/icons/scalable/actions/eos-play-symbolic.svg</file>
     <file preprocess="xml-stripblanks">data/icons/scalable/actions/document-save-symbolic.svg</file>

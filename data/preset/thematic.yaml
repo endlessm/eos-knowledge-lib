@@ -140,7 +140,7 @@ defines:
                 order: $set-articles-order
 
 root:
-  shortdef: 'Controller.Mesh(theme: preset_b)'
+  shortdef: 'Controller.Mesh(theme: thematic)'
   slots:
     window:
       type: Window.Simple

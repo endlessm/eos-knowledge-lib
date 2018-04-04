@@ -49,7 +49,7 @@ describe('Controller.Mesh', function () {
             type: Mesh.Mesh,
             properties: {
                 'application': application,
-                'template-type': 'B',
+                'template-type': 'thematic',
                 'theme': '',
             },
             slots: {
