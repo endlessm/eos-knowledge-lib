@@ -70,6 +70,7 @@ defines:
             expand: true
             halign: fill
             paginate: true
+            paginate-label: !translate See all categories
             valign: center
           slots:
             arrangement:

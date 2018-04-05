@@ -71,6 +71,22 @@ var ContentGroup = new Module.Class({
             'The number of cards to be displayed per page.',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             1, GLib.MAXUINT16, 10),
+        /**
+         * Property: paginate-label
+         * Text for the pagination button
+         *
+         * If the `paginate` property is enabled, then a button will show below
+         * the content group when there is more content to load. This property
+         * controls the text with which this button is labelled.
+         *
+         * The default is to show "See more" translated into the user's locale.
+         * Set it to something else if you require a more specific text in your
+         * application.
+         */
+        'paginate-label': GObject.ParamSpec.string('paginate-label',
+            'Paginate label', 'Text for the pagination button',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ''),
     },
 
     _init: function (props={}) {
@@ -171,7 +187,7 @@ var ContentGroup = new Module.Class({
         if (this.paginate) {
             let see_more_button = new Gtk.Button({
                 halign: Gtk.Align.CENTER,
-                label: _("See more"),
+                label: this.paginate_label ? this.paginate_label : _("See more"),
                 no_show_all: true,
                 visible: this._selection.can_load_more,
             });
