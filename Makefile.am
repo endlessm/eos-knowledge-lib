@@ -435,6 +435,7 @@ javascript_tests = \
 	tests/js/app/interfaces/testFilter.js \
 	tests/js/app/interfaces/testModule.js \
 	tests/js/app/interfaces/testOrder.js \
+	tests/js/app/interfaces/testScrolling.js \
 	tests/js/app/modules/arrangement/testAccordion.js \
 	tests/js/app/modules/arrangement/testConstrained.js \
 	tests/js/app/modules/arrangement/testGrid.js \
