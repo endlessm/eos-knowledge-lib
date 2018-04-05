@@ -113,6 +113,30 @@ defines:
     article: 'View.Document(show-titles: false, show-toc: false)'
     video: 'View.Video(show-title: false, show-synopsis: false)'
     audio: 'View.Audio(show-title: false, show-synopsis: false)'
+    nav-content:
+      type: ContentGroup.ContentGroup
+      styles:
+        - ContentGroup--complementarycontent
+      properties:
+        valign: center
+      slots:
+        title:
+          type: ContentGroup.StaticText
+          properties:
+            label: !translate 'Related posts'
+            halign: start
+        arrangement:
+          shortdef: 'Arrangement.SquareGuys(max-rows: 1)'
+          slots:
+            card: *main-card
+        selection:
+          type: Selection.Related
+          slots:
+            filter:
+              type: Filter.Articles
+              slots:
+                sub-filter: Filter.Unread
+            order: 'Order.PublishedDate(ascending: false)'
 
 - &set-page
   shortdef: 'Layout.InfiniteScrolling(expand: true)'
