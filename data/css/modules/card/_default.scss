@@ -245,7 +245,7 @@
         }
 
         .CardDefault__content_grid {
-            background-image: linear-gradient(to top, transparentize(black, 1 - 0.80) 0%, transparentize(black, 1 - 0.65) 15%, transparentize(black, 1 - 0.40) 25%, transparentize(black, 1) 40%);
+            background-image: linear-gradient(to top, transparentize(black, 1 - 0.85) 0%, transparentize(black, 1 - 0.60) 20%, transparentize(black, 1 - 0.40) 35%, transparent 60%);
             min-height: 140px;  /* 90px, compensated for 20px padding */
         }
 
