@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/endless-os/public/\n"
 "POT-Creation-Date: 2018-02-22 16:19-0300\n"
-"PO-Revision-Date: 2018-02-22 20:37+0000\n"
-"Last-Translator: Martin Abente Lahaye <tch@sugarlabs.org>\n"
+"PO-Revision-Date: 2018-03-14 04:48+0000\n"
+"Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
 "Language-Team: Hindi (http://www.transifex.com/endless-os/eos-knowledge-lib/language/hi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,15 +27,15 @@ msgstr "ओह! कोई सामग्री नहीं है."
 msgid ""
 "The application could not find content to show. Please uninstall and re-"
 "install the application from the App Center."
-msgstr ""
+msgstr "दिखाने के लिए इस ऐप्लीकेशन को कोई सामग्री नहीं मिली। \nकृपया इस ऐप्लीकेशन की स्थापना रद्द करके ऐप सेंटर से पुनःस्थापित करें।"
 
 #: data/widgets/noContentDialog.ui:23
 msgid "Open App Center"
-msgstr ""
+msgstr "ऐप सेंटर खोलें"
 
 #: data/widgets/noContentDialog.ui:36
 msgid "Close"
-msgstr ""
+msgstr "बंद करें"
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
@@ -136,7 +136,7 @@ msgstr "“%s” के लिए परिणाम प्राप्त ह�
 
 #: js/app/historyStore.js:414
 msgid "Shared from Endless"
-msgstr ""
+msgstr "Endless से साझा किया गया"
 
 #: js/app/interfaces/card.js:252
 #, javascript-format
@@ -211,16 +211,16 @@ msgstr "और"
 
 #: js/app/widgets/webShareDialog.js:179
 msgid "Retry"
-msgstr ""
+msgstr "पुनःप्रयास करें"
 
 #: js/app/widgets/webShareDialog.js:362
 msgid "Please sign in again to share this link"
-msgstr ""
+msgstr "इस लिंक को साझा करने के लिए कृपया पुनः साइन इन हों"
 
 #: js/app/widgets/webShareDialog.js:363 js/app/widgets/webShareDialog.js:415
 msgid "Sign In"
-msgstr ""
+msgstr "साइन इन हों"
 
 #: js/app/widgets/webShareDialog.js:414
 msgid "Please sign in to share this link"
-msgstr ""
+msgstr "इस लिंक को साझा करने के लिए कृपया साइन इन हों"
