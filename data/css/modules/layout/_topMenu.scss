@@ -22,7 +22,9 @@
         }
     }
 
+    .WindowSimple & scrollbar,
     &__content {
+        /* 50px is hard-coded as the menu minimum height */
         margin-top: 50px;
     }
 
