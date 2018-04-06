@@ -69,6 +69,10 @@ If you were using libingester's `BlogAsset` and `NewsAsset`, this is done for yo
 
 ## Release notes ##
 
+### SDK 3.3 (April 9, 2018) ###
+
+- Services: We now display content in the discovery feed even if it wasn't created with a discovery-feed-specific title.
+
 ### SDK 3.2 (March 14, 2018) ###
 
 - This is an irregular hotfix release.
