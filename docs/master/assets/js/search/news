@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "news", "urls": ["concepts/yaml_format.html#imports"]});
+urls_downloaded_cb({"urls": ["concepts/presets.html#news", "concepts/presets.html#the-news-preset", "concepts/yaml_format.html#imports"], "token": "news"});

@@ -32,10 +32,10 @@
 
 <script src="assets/js/lines_around_headings.js"></script>
 
-<script src="assets/js/trie.js"></script>
 <script src="assets/js/prism-core.js"></script>
 <script src="assets/js/prism-autoloader.js"></script>
 <script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
 
 <link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
 <link rel="shortcut icon" href="assets/images/favicon-32x32.png">
@@ -120,7 +120,7 @@ $('body').removeClass('no-script');
 	<p>A general, superclass for populating selection content using xapian
 queries. Note that this superclass cannot be used directly itself. You must
 subclass it and implement the construct_query_object method, which should
-return a &lt;Eknc.QueryObject&gt; determining what content to fetch from
+return a <code>DModel.Query</code> determining what content to fetch from
 a xapian database.</p>
 <p>This superclass handles continuation-passing on the queue_load_more method.
 If the selection determines that both more results are available

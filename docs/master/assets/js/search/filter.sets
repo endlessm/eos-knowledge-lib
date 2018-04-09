@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "filter.sets", "urls": ["filter/sets.html#filtersets1", "filter/sets.html#filtersets"]});
+urls_downloaded_cb({"urls": ["filter/sets.html#filtersets1", "filter/sets.html#filtersets"], "token": "filter.sets"});

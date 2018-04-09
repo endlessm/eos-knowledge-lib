@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "long", "urls": ["card/list.html#cardlist1", "tutorial/index.html#walkthrough"]});
+urls_downloaded_cb({"urls": ["concepts/presets.html#the-library-preset", "concepts/presets.html#the-thematic-preset", "concepts/presets.html#the-library-list-preset", "card/list.html#cardlist1", "tutorial/index.html#walkthrough"], "token": "long"});

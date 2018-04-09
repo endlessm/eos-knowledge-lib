@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "nice", "urls": ["controller/buffet.html#controllerbuffet1", "tutorial/ingester.html#creating-a-hatch"]});
+urls_downloaded_cb({"urls": ["tutorial/ingester.html#creating-a-hatch"], "token": "nice"});
