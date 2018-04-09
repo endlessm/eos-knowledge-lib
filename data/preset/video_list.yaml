@@ -162,11 +162,8 @@ root:
           type: ContentGroup.MediaLightbox
           slots:
             content:
-              type: Layout.Navigation
+              type: Pager.Simple
               slots:
-                content:
-                  type: Pager.Simple
-                  slots:
-                    home-page: *home-page
-                    search-page: *search-page
-                    article-page: *article-page
+                home-page: *home-page
+                search-page: *search-page
+                article-page: *article-page
