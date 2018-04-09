@@ -462,7 +462,6 @@ javascript_tests = \
 	tests/js/app/modules/card/testTitle.js \
 	tests/js/app/modules/contentGroup/testContentGroup.js \
 	tests/js/app/modules/contentGroup/testMediaLightbox.js \
-	tests/js/app/modules/controller/testBuffet.js \
 	tests/js/app/modules/controller/testCourse.js \
 	tests/js/app/modules/controller/testMesh.js \
 	tests/js/app/modules/filter/testArticles.js \
@@ -511,7 +510,6 @@ javascript_tests = \
 	tests/js/app/modules/view/testVideo.js \
 	tests/js/app/modules/window/testSimple.js \
 	tests/js/app/testArticleHTMLRenderer.js \
-	tests/js/app/testBuffetHistoryStore.js \
 	tests/js/app/testCourseHistoryStore.js \
 	tests/js/app/testDispatcher.js \
 	tests/js/app/testDominantColor.js \

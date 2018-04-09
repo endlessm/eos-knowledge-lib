@@ -80,7 +80,6 @@
     <file>js/app/actions.js</file>
     <file>js/app/application.js</file>
     <file>js/app/articleHTMLRenderer.js</file>
-    <file>js/app/buffetHistoryStore.js</file>
     <file>js/app/config.js</file>
     <file>js/app/courseHistoryStore.js</file>
     <file>js/app/dispatcher.js</file>
@@ -134,7 +133,6 @@
     <file>js/app/modules/contentGroup/mediaLightbox.js</file>
     <file>js/app/modules/contentGroup/noResultsMessage.js</file>
     <file>js/app/modules/contentGroup/staticText.js</file>
-    <file>js/app/modules/controller/buffet.js</file>
     <file>js/app/modules/controller/course.js</file>
     <file>js/app/modules/controller/mesh.js</file>
     <file>js/app/modules/decoration/separator.js</file>
