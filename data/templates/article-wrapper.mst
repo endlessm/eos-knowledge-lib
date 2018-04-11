@@ -24,6 +24,7 @@
             window.crosslink_init({{{crosslink-data}}});
             window.chunk_init({{{chunk-data}}});
             window.share_actions_init();
+            window.nav_content_init();
         </script>
     </body>
 </html>

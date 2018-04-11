@@ -91,6 +91,7 @@ var ArticleHTMLRenderer = new Knowledge.Class({
             'crosslink.js',
             'chunk.js',
             'share-actions.js',
+            'nav-content.js',
         ];
     },
 
