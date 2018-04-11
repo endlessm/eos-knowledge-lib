@@ -1,10 +1,4 @@
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
-const EvinceDocument = imports.gi.EvinceDocument;
-const EvinceView = imports.gi.EvinceView;
-const Gdk = imports.gi.Gdk;
-const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
-const Gtk = imports.gi.Gtk;
+const {EosKnowledgePrivate, EvinceDocument, EvinceView, Gdk, GLib, Gio, GObject, Gtk} = imports.gi;
 
 const Knowledge = imports.app.knowledge;
 
@@ -25,10 +19,29 @@ var PDFView = new Knowledge.Class({
     Name: 'PDFView',
     Extends: Gtk.ScrolledWindow,
 
+    Properties: {
+        /**
+         * Property: nav-content
+         */
+        'nav-content': GObject.ParamSpec.object('nav-content',
+            'Navigation Content', 'Navigation Content',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, Gtk.Widget),
+    },
+
     _init: function (props) {
         props = props || {};
         props.halign = Gtk.Align.CENTER;
         this.parent(props);
+
+        if (this.nav_content) {
+            this._box = new Gtk.Box({
+                orientation: Gtk.Orientation.VERTICAL,
+                visible: true,
+            });
+            this.add(this._box);
+
+            this._box.pack_end(this.nav_content, true, true, 0);
+        }
     },
 
     /**
@@ -74,7 +87,7 @@ var PDFView = new Knowledge.Class({
                 })
             });
 
-            popover.add (mediabin);
+            popover.add(mediabin);
 
             popover.connect('closed', () => {
                 mediabin.stop();
@@ -88,10 +101,14 @@ var PDFView = new Knowledge.Class({
             mediabin.play();
         });
 
-        let child = this.get_child();
-        if (child !== null)
-            this.remove(child);
-        this.add(view);
+        let parent = this._box || this;
+
+        if (this._view)
+            parent.remove(this._view);
+
+        parent.add(view);
+
+        this._view = view;
     },
 
     vfunc_get_preferred_width: function () {
