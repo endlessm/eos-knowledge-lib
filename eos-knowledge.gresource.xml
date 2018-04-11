@@ -34,6 +34,7 @@
     <file preprocess="xml-stripblanks" compressed="true">data/images/arrow-symbolic.svg</file>
     <file preprocess="xml-stripblanks">data/images/deckbg.svg</file>
     <file>data/images/separator.png</file>
+    <file>data/templates/js/nav-content.js</file>
     <file compressed="true">data/templates/article-wrapper.mst</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/app.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/banner/dynamic.ui</file>
