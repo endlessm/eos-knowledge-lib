@@ -101,15 +101,27 @@ var ArticleStack = new Module.Class({
             return;
 
         for (let child of this.get_children()) {
-            if (child !== this.visible_child) {
-                [child.previous_card, child.next_card, child].forEach(this.drop_submodule, this);
+            if (child === this.visible_child)
+              continue;
 
-                /* FIXME: Calling this.remove(child) does not destroy the widget
+            [child.previous_card, child.next_card, child].forEach(this.drop_submodule, this);
+            this.remove(child);
+
+            if (child.content_view instanceof WebKit2.WebView) {
+                let webview = child.content_view;
+
+                for (let c of webview.get_children())
+                    webview.remove(c);
+
+                child.content_view = null;
+                child.remove(webview);
+
+                /* FIXME: Calling child.remove(child.content_view) does not destroy the widget
                  * probably because we are holding a JS reference to it.
                  * So to avoid having a WebKitWebView leak each time we show a
                  * new article, we destroy the widget explicitly.
                  */
-                child.destroy();
+                webview.destroy();
             }
         }
     },

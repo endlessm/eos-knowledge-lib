@@ -1,4 +1,4 @@
-const {DModel, Endless, Gdk, Gio, GLib, GObject, Gtk, WebKit2} = imports.gi;
+const {DModel, Endless, Gdk, Gio, GLib, GObject, Gtk, WebKit2, Maxwell} = imports.gi;
 const ByteArray = imports.byteArray;
 
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
@@ -29,11 +29,11 @@ function should_enable_inspector() {
  * HTML document has finished loading
  *
  * Parent class:
- *     WebKit2.WebView
+ *     Maxwell.WebView
  */
 var EknWebview = new Knowledge.Class({
     Name: 'Webview',
-    Extends: WebKit2.WebView,
+    Extends: Maxwell.WebView,
 
     Properties: {
         /**

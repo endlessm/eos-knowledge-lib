@@ -2,7 +2,6 @@
 
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
-const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -16,13 +15,12 @@ const HistoryStore = imports.app.historyStore;
 const InArticleSearch = imports.app.widgets.inArticleSearch;
 const Module = imports.app.interfaces.module;
 const PDFView = imports.app.widgets.PDFView;
-const {slidingPanelOverlay, spinnerReplacement} = imports.app.widgets;
+const {spinnerReplacement} = imports.app.widgets;
 const TableOfContents = imports.app.widgets.tableOfContents;
 const Utils = imports.app.utils;
 const {View} = imports.app.interfaces.view;
 
 // Make sure included for glade template
-void slidingPanelOverlay;
 void spinnerReplacement;
 
 const SPINNER_PAGE_NAME = 'spinner';
@@ -76,7 +74,7 @@ var Document = new Module.Class({
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/view/document.ui',
     InternalChildren: [ 'title-label', 'top-title-label', 'toolbar-frame',
-        'content-frame', 'content-grid', 'panel-overlay', 'spinner', 'stack' ],
+        'content-frame', 'content-grid', 'spinner', 'stack' ],
     Children: [ 'toc' ],
 
 
@@ -108,9 +106,6 @@ var Document = new Module.Class({
         this.set_title_label_from_model(this._title_label);
         this.set_title_label_from_model(this._top_title_label);
 
-        if (this.nav_content)
-            this._content_panel = this._panel_overlay.add_panel_widget(this.nav_content,
-                                                                       Gtk.PositionType.BOTTOM);
         this.show_all();
 
         this._setup_toc();
@@ -195,10 +190,18 @@ var Document = new Module.Class({
                 // when showing error page :)
 
                 this.content_view.load_uri(this.model.ekn_id);
+
+                /* Add nav content widget to webview */
+                if (this.nav_content) {
+                    this.nav_content.name = 'nav_content';
+                    this.content_view.add(this.nav_content);
+                    this.nav_content.show_all();
+                }
             } else if (this.model.content_type === 'application/pdf') {
                 let stream = this.model.get_content_stream();
                 let content_type = this.model.content_type;
                 this.content_view = new PDFView.PDFView({
+                    nav_content: this.nav_content,
                     expand: true,
                     width_request: this.MIN_CONTENT_WIDTH,
                     height_request: this.MIN_CONTENT_HEIGHT,
@@ -212,7 +215,7 @@ var Document = new Module.Class({
                 reject(new Error("Unknown article content type: ", this.model.content_type));
             }
 
-            this._panel_overlay.add(this.content_view);
+            this._content_grid.attach(this.content_view, 0, 1, 1, 1);
         });
     },
 
@@ -268,25 +271,6 @@ var Document = new Module.Class({
         webview.renderer.show_title = !this.show_toc;
         if (this.custom_css)
             webview.renderer.set_custom_css_files([this.custom_css]);
-
-        // If we ever want nav-content to work with PDFs we'll need to
-        // generalize the show panel logic here.
-        let exited_top_area = false;
-        Gio.DBus.session.signal_subscribe(null,
-                                          'com.endlessm.Knowledge.WebviewScroll',
-                                          null,
-                                          Utils.dbus_object_path_for_webview(webview),
-                                          null,
-                                          0,
-                                          (connection, sender, path, name, signal, variant) => {
-            let [scroll_height, scroll_height_max] = variant.deep_unpack();
-            let in_top_area = scroll_height < 25;
-            let in_bottom_area = (scroll_height_max - scroll_height) < 25;
-            if (this._content_panel)
-                this._content_panel.reveal_panel = in_bottom_area;
-            if (!in_top_area)
-                exited_top_area = true;
-        });
 
         webview.connect('notify::uri', function () {
             if (webview.uri.indexOf('#') >= 0) {
