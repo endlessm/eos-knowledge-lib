@@ -59,7 +59,7 @@ var HamburgerBasement = new Module.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/layout/hamburgerBasement.ui',
-    InternalChildren: [ 'upper-grid', 'inner-grid', 'basement-grid' ],
+    InternalChildren: ['upper-grid', 'inner-grid', 'basement-overlay'],
 
     _BUTTON_TRANSITION_TIME: 500,
 
@@ -80,12 +80,14 @@ var HamburgerBasement = new Module.Class({
         this._upper_grid.attach(this._bottom, 0, 1, 1, 1);
 
         this._basement = this.create_submodule('basement');
-        this._basement_grid.attach(this._basement, 0, 1, 1, 1);
+        this._basement_overlay.add(this._basement);
 
-        this._top_panel = this._setup_panel_button(Gtk.PositionType.TOP);
-        this._bottom_panel = this._setup_panel_button(Gtk.PositionType.BOTTOM);
+        this._top_panel = this._setup_panel_button(Gtk.PositionType.TOP,
+            Gtk.Align.START);
+        this._bottom_panel = this._setup_panel_button(Gtk.PositionType.BOTTOM,
+            Gtk.Align.END);
 
-        this._basement_grid.attach(this._top_panel, 0, 0, 1, 1);
+        this._basement_overlay.add_overlay(this._top_panel);
         this._upper_grid.attach(this._bottom_panel, 0, 2, 1, 1);
 
         this.set_visible_child(this._upper_grid);
@@ -99,27 +101,30 @@ var HamburgerBasement = new Module.Class({
     _update_panel_button: function() {
         if (this.transition_running)
             return;
-        if (this.get_visible_child() === this._basement_grid) {
+        if (this.get_visible_child() === this._basement_overlay) {
             this._top_panel.reveal_panel = true;
         } else {
             this._bottom_panel.reveal_panel = this.show_upper_button;
         }
      },
 
-    _setup_panel_button: function (position) {
+    _setup_panel_button: function (position, valign) {
         let is_bottom = (position === Gtk.PositionType.BOTTOM);
         let button = new TabButton.TabButton({
             position: position,
+            valign,
             visible: true,
             label: is_bottom ? this.upper_button_label : this.basement_button_label,
         });
         let panel = new SlidingPanel.SlidingPanel({
+            valign,
             panel_widget: button,
             hide_direction: position,
             transition_duration: this._BUTTON_TRANSITION_TIME,
         });
         button.connect('clicked', () => {
-            let next_page = is_bottom ? this._basement_grid : this._upper_grid;
+            let next_page = is_bottom ? this._basement_overlay :
+                this._upper_grid;
             let id = panel.connect('notify::panel-revealed', () => {
                 this.set_visible_child(next_page);
                 panel.disconnect(id);
