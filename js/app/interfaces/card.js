@@ -271,6 +271,7 @@ var Card = new Lang.Interface({
                 });
                 widget.add(second_tag);
             }
+            widget.show_all();
         }
         return widget;
     },
@@ -306,6 +307,7 @@ var Card = new Lang.Interface({
 
         this._count_set(this.model, (count) => {
             label.label = ngettext("%d item", "%d items", count).format(count);
+            label.show();
         });
         return label;
     },
@@ -329,12 +331,12 @@ var Card = new Lang.Interface({
         } else {
             widget = this._create_contextual_tag_widget();
         }
+        widget.set_no_show_all(true);
 
         let context = widget.get_style_context();
         context.add_class(Utils.get_element_style_class('Card', 'context'));
         context.add_class(Utils.get_element_style_class(this.constructor, 'context'));
 
-        widget.show_all();
         return widget;
     },
 
