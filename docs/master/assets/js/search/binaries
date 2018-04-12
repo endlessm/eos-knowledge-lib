@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/install.html#installing-nodejs"], "token": "binaries"});
+urls_downloaded_cb({"token": "binaries", "urls": ["tutorial/install.html#installing-nodejs"]});

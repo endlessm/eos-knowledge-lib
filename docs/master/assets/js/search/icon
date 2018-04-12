@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tools.html#installing", "tutorial/shard.html#viewing-the-blog-posts"], "token": "icon"});
+urls_downloaded_cb({"token": "icon", "urls": ["tools.html#installing", "tutorial/shard.html#viewing-the-blog-posts"]});

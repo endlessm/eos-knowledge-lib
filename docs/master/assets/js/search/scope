@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/install.html#installing-flatpak"], "token": "scope"});
+urls_downloaded_cb({"token": "scope", "urls": ["tutorial/install.html#installing-flatpak"]});
