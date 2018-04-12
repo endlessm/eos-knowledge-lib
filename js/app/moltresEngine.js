@@ -1,4 +1,4 @@
-const {DModel, GObject} = imports.gi;
+const {DModel, Gio, GObject} = imports.gi;
 const Lang = imports.lang;
 
 const Utils = imports.app.utils;
@@ -156,18 +156,34 @@ var MoltresEngine = new Lang.Class({
     _ARTICLES: [
         {
             title: 'Football',
+            content_type: 'text/html',
             tags: [],
             thumbnail_uri: IMAGES_DIR + 'football.jpg',
         },
         {
             title: 'The Importance of Studying',
+            content_type: 'text/html',
             tags: [],
             thumbnail_uri: IMAGES_DIR + 'desk.jpg',
         },
         {
             title: 'A Room With A View',
+            content_type: 'text/html',
             tags: [],
             thumbnail_uri: IMAGES_DIR + 'house.jpg',
+        },
+        {
+            title: 'Diet',
+            content_type: 'application/pdf',
+
+            tags: [],
+            thumbnail_uri: IMAGES_DIR + 'food.jpg',
+        },
+        {
+            title: 'Economy as a whole',
+            content_type: 'application/pdf',
+            tags: [],
+            thumbnail_uri: IMAGES_DIR + 'silverbars.jpg',
         },
     ],
 
@@ -231,11 +247,13 @@ placerat varius non id dui.',
 
     _generate_article_object: function (data) {
         data.synopsis = this._SYNOPSIS;
-        data.content_type = 'text/html';
         data.source = 'wikipedia';
         data.license = 'CC-BY-SA 3.0';
         data.ekn_id = 'ekn://moltres/article' + this._article_count++;
         let article = new DModel.Article(data);
+
+        if (data.content_type === 'application/pdf')
+            article.get_content_stream = () => Gio.resources_open_stream(IMAGES_DIR + 'content.pdf', 0);
 
         // Save this model. We can't just generate them on the fly and then
         // discard them because later the client could request this same article
