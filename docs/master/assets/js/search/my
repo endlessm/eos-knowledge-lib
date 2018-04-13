@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "my", "urls": ["tutorial/shard.html#downloading-linked-media"]});
+urls_downloaded_cb({"urls": ["tutorial/shard.html#downloading-linked-media"], "token": "my"});

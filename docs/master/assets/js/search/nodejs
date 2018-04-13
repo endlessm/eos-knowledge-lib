@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "nodejs", "urls": ["tutorial/install.html#installing-nodejs", "tutorial/ingester.html#writing-an-ingester"]});
+urls_downloaded_cb({"urls": ["tutorial/install.html#installing-nodejs", "tutorial/ingester.html#writing-an-ingester"], "token": "nodejs"});

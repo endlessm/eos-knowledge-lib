@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "website", "urls": ["tutorial/ingester.html#cleaning-up-the-blog-posts", "tutorial/ingester.html#further-remarks-and-ideas", "tutorial/shard.html#screenshot-of-hatch-previewer"]});
+urls_downloaded_cb({"urls": ["tutorial/ingester.html#cleaning-up-the-blog-posts", "tutorial/ingester.html#further-remarks-and-ideas", "tutorial/shard.html#screenshot-of-hatch-previewer"], "token": "website"});

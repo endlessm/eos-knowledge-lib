@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "tutorial", "urls": ["tutorial/ingester.html#parsing-the-rss-feed", "tutorial/install.html#installing-flatpak", "tutorial/install.html#installing-nodejs", "tutorial/install.html#installing-hatch-previewer"]});
+urls_downloaded_cb({"urls": ["tutorial/ingester.html#parsing-the-rss-feed", "tutorial/install.html#installing-flatpak", "tutorial/install.html#installing-nodejs", "tutorial/install.html#installing-hatch-previewer"], "token": "tutorial"});

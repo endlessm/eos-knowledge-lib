@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "history", "urls": ["layout/articleStack.html#layoutarticlestack1", "filter/thematic.html#filterthematic1"]});
+urls_downloaded_cb({"urls": ["layout/articleStack.html#layoutarticlestack1", "filter/thematic.html#filterthematic1"], "token": "history"});
