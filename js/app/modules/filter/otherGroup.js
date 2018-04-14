@@ -19,10 +19,10 @@ var OtherGroup = new Module.Class({
 
     _init: function (props) {
         this.parent(props);
-        this._other_model_ids = [];
+        this._other_model_ids = new Set();
         this.reference_module('other', (module) => {
             module.connect('models-changed', (selection) => {
-                this._other_model_ids = this._other_model_ids.concat(selection.get_models().map(({id}) => id));
+                selection.get_models().forEach(({id}) => this._other_model_ids.add(id));
                 this.emit('filter-changed');
             });
         });
@@ -30,16 +30,13 @@ var OtherGroup = new Module.Class({
 
     // Filter implementation
     include_impl: function (model) {
-        if (this._other_model_ids.length > 0) {
-            return this._other_model_ids.indexOf(model.id) < 0;
-        }
-        return true;
+        return !this._other_model_ids.has(model.id);
     },
 
     // Filter implementation
     modify_xapian_query_impl: function (query) {
         if (this.invert) {
-            let ids = this._other_model_ids;
+            let ids = [...this._other_model_ids];
             if (query.ids.length)
                 ids = Utils.intersection(query.ids, ids);
             return DModel.Query.new_from_object(query, {ids});
