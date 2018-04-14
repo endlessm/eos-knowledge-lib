@@ -135,7 +135,7 @@ var EknWebview = new Knowledge.Class({
 
         let id = req.get_uri();
 
-        let components = Utils.components_from_ekn_id(id);
+        let components = Utils.components_from_id(id);
         if (components.length === 1) {
             this._load_object(id)
             .then(([stream, content_type]) => {

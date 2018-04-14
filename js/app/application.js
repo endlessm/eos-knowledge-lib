@@ -218,11 +218,11 @@ var Application = new Knowledge.Class({
         this._initialize_set_map();
     },
 
-    LoadItem: function (ekn_id, search_terms, timestamp) {
+    LoadItem: function (id, search_terms, timestamp) {
         this._ensure_controller();
         Dispatcher.get_default().dispatch({
             action_type: Actions.DBUS_LOAD_ITEM_CALLED,
-            ekn_id: ekn_id,
+            id,
             search_terms: search_terms,
             timestamp: timestamp,
         });

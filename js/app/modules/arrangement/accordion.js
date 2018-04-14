@@ -65,7 +65,7 @@ var Accordion = new Module.Class({
         for (let i = 0; i < this.get_children().length; i++) {
             let revealer = this.get_children()[i].get_children()[0];
             let card_of_revealer = revealer.get_child();
-            if (card.model.ekn_id === card_of_revealer.model.ekn_id) {
+            if (card.model.id === card_of_revealer.model.id) {
                 revealer.remove(card_of_revealer);
                 this.remove(this.get_children()[i]);
                 break;

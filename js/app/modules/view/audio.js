@@ -63,7 +63,7 @@ var Audio = new Module.Class({
         this._synopsis_label.visible = this.show_synopsis;
         let player = new EosKnowledgePrivate.MediaBin({ audio_mode: true });
         player.get_style_context().add_class(Utils.get_element_style_class(Audio, 'player'));
-        player.set_uri(this.model.ekn_id)
+        player.set_uri(this.model.id)
         player.show_all();
         this.attach(player, 0, 3, 1, 1);
         this.content_view = player;

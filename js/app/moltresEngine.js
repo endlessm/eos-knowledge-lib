@@ -32,7 +32,7 @@ var MoltresEngine = new Lang.Class({
             let set_props = JSON.parse(JSON.stringify(this._SETS[i % this._SETS.length]));
             let child_tag = set_props.title + i;
             set_props.child_tags = [child_tag];
-            set_props.ekn_id = set_props.ekn_id + '$' + i;
+            set_props.id += '$' + i;
             this._set_models.push(this._generate_set_object(set_props));
 
             // Now create subsets for this set. The child_tag variable is what
@@ -46,7 +46,7 @@ var MoltresEngine = new Lang.Class({
                 subset_props.featured = false;
                 let subset_child_tag = subset_props.title + 'subset' + i + '' + j;
                 subset_props.child_tags = [subset_child_tag];
-                subset_props.ekn_id = subset_props.ekn_id + 'subset' + i + '' + j;
+                subset_props.id += 'subset' + i + '' + j;
                 this._set_models.push(this._generate_set_object(subset_props));
             }
         }
@@ -61,16 +61,14 @@ var MoltresEngine = new Lang.Class({
         };
     },
 
-    get_ekn_id: function () {},
+    get_id: function () {},
 
     get_object_promise: function (id) {
         return Promise.resolve(this._set_models
         .concat(this._article_models)
         .concat(this._video_models)
         .concat(this._audio_models)
-        .find((model) => {
-            return model.ekn_id === id;
-        }));
+        .find(model => model.id === id));
     },
 
     _get_sets: function (query) {
@@ -173,21 +171,21 @@ var MoltresEngine = new Lang.Class({
     _SETS: [
         {
             title: 'Nature',
-            ekn_id: 'ekn://moltres/nature',
+            id: 'ekn://moltres/nature',
             tags: ['EknSetObject'],
             thumbnail_uri: IMAGES_DIR + 'forest.jpg',
             featured: true,
         },
         {
             title: 'People',
-            ekn_id: 'ekn://moltres/people',
+            id: 'ekn://moltres/people',
             tags: ['EknSetObject'],
             thumbnail_uri: IMAGES_DIR + 'people.jpg',
             featured: true,
         },
         {
             title: 'Work',
-            ekn_id: 'ekn://moltres/work',
+            id: 'ekn://moltres/work',
             tags: ['EknSetObject'],
             thumbnail_uri: IMAGES_DIR + 'food.jpg',
             featured: true,
@@ -210,7 +208,7 @@ placerat varius non id dui.',
         data.synopsis = this._SYNOPSIS;
         data.content_type = 'audio/webm';
         data.title = AUDIO_TITLE;
-        data.ekn_id = IMAGES_DIR + VIDEO_FILENAME + '/'.repeat(this._audio_count++);
+        data.id = IMAGES_DIR + VIDEO_FILENAME + '/'.repeat(this._audio_count++);
         let audio = new DModel.Audio(data);
         this._audio_models.push(audio);
         return audio;
@@ -221,8 +219,8 @@ placerat varius non id dui.',
         data.content_type = 'video/webm';
         data.title = VIDEO_TITLE; // Override title so we can see which ones are videos
         // Extra slashes are ignored during the resource lookup so we always get the same
-        // file. However this does ensure we have unique ekn_ids
-        data.ekn_id = IMAGES_DIR + VIDEO_FILENAME + '/'.repeat(this._video_count++);
+        // file. However this does ensure we have unique IDs
+        data.id = IMAGES_DIR + VIDEO_FILENAME + '/'.repeat(this._video_count++);
         let video = new DModel.Video(data);
         this._video_models.push(video);
         return video;
@@ -233,12 +231,12 @@ placerat varius non id dui.',
         data.content_type = 'text/html';
         data.source = 'wikipedia';
         data.license = 'CC-BY-SA 3.0';
-        data.ekn_id = 'ekn://moltres/article' + this._article_count++;
+        data.id = 'ekn://moltres/article' + this._article_count++;
         let article = new DModel.Article(data);
 
         // Save this model. We can't just generate them on the fly and then
         // discard them because later the client could request this same article
-        // by ekn_id and we need to remember which tags it had. So we have to
+        // by ID and we need to remember which tags it had. So we have to
         // keep the model around.
         this._article_models.push(article);
         return article;

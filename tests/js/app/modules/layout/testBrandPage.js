@@ -68,7 +68,7 @@ describe('Layout.BrandPage', function () {
     });
     does_not_show_brand_page({
         action_type: Actions.DBUS_LOAD_ITEM_CALLED,
-        ekn_id: 'ekn:///1234512345abcdef',
+        id: 'ekn:///1234512345abcdef',
         search_terms: 'foo',
         timestamp: 0,
     });

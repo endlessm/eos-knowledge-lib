@@ -22,7 +22,7 @@ var OtherGroup = new Module.Class({
         this._other_model_ids = [];
         this.reference_module('other', (module) => {
             module.connect('models-changed', (selection) => {
-                this._other_model_ids = this._other_model_ids.concat(selection.get_models().map((model) => model.ekn_id));
+                this._other_model_ids = this._other_model_ids.concat(selection.get_models().map(({id}) => id));
                 this.emit('filter-changed');
             });
         });
@@ -31,7 +31,7 @@ var OtherGroup = new Module.Class({
     // Filter implementation
     include_impl: function (model) {
         if (this._other_model_ids.length > 0) {
-            return this._other_model_ids.indexOf(model.ekn_id) < 0;
+            return this._other_model_ids.indexOf(model.id) < 0;
         }
         return true;
     },

@@ -68,7 +68,7 @@ describe('Filter.OtherGroup', function () {
         filter = factory.get_last_created('content.selection.filter');
 
         selection.queue_load_more();
-        ids_in_other_group = selection.get_models().map(model => model.ekn_id);
+        ids_in_other_group = selection.get_models().map(({id}) => id);
     }
 
     describe('not inverted', function () {

@@ -86,7 +86,7 @@ describe('Layout.ArticleStack', function () {
         let id = 'ekn://foo/bar';
         view.emit('ekn-link-clicked', id);
         let payload = dispatcher.last_payload_with_type(Actions.ARTICLE_LINK_CLICKED);
-        expect(payload.ekn_id).toBe(id);
+        expect(payload.id).toBe(id);
     });
 
     it('loads a new article when selection changes', function () {

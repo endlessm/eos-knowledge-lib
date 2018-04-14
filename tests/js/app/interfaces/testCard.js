@@ -23,12 +23,12 @@ describe('Card interface', function () {
 
         let data = [
             {
-                ekn_id: '1',
+                id: '1',
                 title: 'Foo',
                 child_tags: ['foo'],
             },
             {
-                ekn_id: '2',
+                id: '2',
                 title: 'Bar',
                 child_tags: ['bar'],
             },

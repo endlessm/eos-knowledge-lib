@@ -7,25 +7,25 @@ describe('Set Map', function () {
     beforeEach(function () {
         let data = [
             {
-                ekn_id: '1',
+                id: '1',
                 tags: ['EknHomePage'],
                 title: 'Republicans',
                 child_tags: ['Conservatives', 'Traditionalists'],
             },
             {
-                ekn_id: '2',
+                id: '2',
                 tags: ['EknHomePage'],
                 title: 'Democrats',
                 child_tags: ['Liberals', 'Progressives'],
             },
             {
-                ekn_id: '3',
+                id: '3',
                 tags: ['Conservatives'],
                 title: 'Evangelicals',
                 child_tags: [],
             },
             {
-                ekn_id: '4',
+                id: '4',
                 tags: ['Progressives'],
                 title: 'Radicals',
                 child_tags: [],
@@ -36,12 +36,12 @@ describe('Set Map', function () {
 
         let article_data = [
             {
-                ekn_id: '5',
+                id: '5',
                 tags: ['Conservatives'],
                 title: 'Donald Trump',
             },
             {
-                ekn_id: '6',
+                id: '6',
                 tags: ['Progressives'],
                 title: 'Bernie Sanders',
             },
@@ -65,7 +65,7 @@ describe('Set Map', function () {
     describe('parent map', function () {
         it('can retrieve the parent set of a subset', function () {
             let set = SetMap.get_parent_set(sets[3]);
-            expect(set.ekn_id).toBe('2');
+            expect(set.id).toBe('2');
         });
     });
 });

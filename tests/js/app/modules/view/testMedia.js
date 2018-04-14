@@ -10,7 +10,7 @@ const {Media} = imports.app.modules.view.media;
 Gtk.init(null);
 
 describe('View.Media', function () {
-    Object.defineProperty(DModel.Image.prototype, 'ekn_id', {
+    Object.defineProperty(DModel.Image.prototype, 'id', {
         get: function() { return null; }
     });
 

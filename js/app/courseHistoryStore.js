@@ -69,7 +69,7 @@ var CourseHistoryStore = new GObject.Class({
                     this.close_lightbox();
                     break;
                 case Actions.ARTICLE_LINK_CLICKED:
-                    this.show_ekn_id(payload.ekn_id);
+                    this.show_id(payload.id);
                     break;
                 case Actions.SEARCH_TEXT_ENTERED:
                 case Actions.DBUS_LOAD_QUERY_CALLED:
@@ -77,7 +77,7 @@ var CourseHistoryStore = new GObject.Class({
                         payload.timestamp || Gdk.CURRENT_TIME);
                     break;
                 case Actions.DBUS_LOAD_ITEM_CALLED:
-                    this.load_dbus_item(payload.ekn_id, payload.search_terms,
+                    this.load_dbus_item(payload.id, payload.search_terms,
                         payload.timestamp || Gdk.CURRENT_TIME);
                     break;
             }

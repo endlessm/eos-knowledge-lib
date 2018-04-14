@@ -16,7 +16,7 @@ var Unread = new Module.Class({
 
     // Filter implementation
     include_impl: function (model) {
-        return !ReadingHistoryModel.get_default().is_read_article(model.ekn_id);
+        return !ReadingHistoryModel.get_default().is_read_article(model.id);
     },
 
     // Filter implementation

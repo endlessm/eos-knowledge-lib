@@ -73,7 +73,7 @@ describe('Navigation.SearchBox', function () {
 
     it('dispatches autocomplete-selected when a item is selected', function () {
         let model = new DModel.Content({
-            ekn_id: 'ekn://aaaabbbbccccdddd',
+            id: 'ekn://aaaabbbbccccdddd',
             title: 'foo',
         });
         engine.query_promise.and.returnValue(Promise.resolve({ models: [model] }));

@@ -36,7 +36,7 @@ var Next = new Module.Class({
             return null;
 
         // not necessarily the same object model instance
-        let index = item.context.map(m => m.ekn_id).indexOf(item.model.ekn_id);
+        let index = item.context.map(({id}) => id).indexOf(item.model.id);
 
         let next_model;
         if (index < item.context.length - 1)
@@ -46,7 +46,7 @@ var Next = new Module.Class({
 
         return new DModel.Query({
             limit: 1,
-            ids: [next_model.ekn_id],
+            ids: [next_model.id],
         });
     },
 });

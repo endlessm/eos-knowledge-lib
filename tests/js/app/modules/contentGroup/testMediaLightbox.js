@@ -32,7 +32,7 @@ describe('ContentGroup.MediaLightbox', function () {
         });
 
         media_model = new DModel.Media({
-            ekn_id: 'ekn://foo/bar',
+            id: 'ekn://foo/bar',
         });
         article_model = new DModel.Article({
             resources: ['ekn://foo/bar'],

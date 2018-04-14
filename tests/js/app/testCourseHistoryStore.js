@@ -22,12 +22,12 @@ describe('CourseHistoryStore', function () {
         spyOn(AppUtils, 'record_search_metric');
         let data = [
             {
-                ekn_id: '1',
+                id: '1',
                 title: 'Foo',
                 child_tags: ['foo'],
             },
             {
-                ekn_id: '2',
+                id: '2',
                 title: 'Bar',
                 child_tags: ['bar'],
             },
@@ -132,13 +132,13 @@ describe('CourseHistoryStore', function () {
 
         beforeEach(function () {
             model = new DModel.Article({
-                ekn_id: 'ekn:///foo',
+                id: 'ekn:///foo',
             });
             engine.get_object_promise.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                 search_terms: 'foo',
-                ekn_id: 'ekn:///foo',
+                id: 'ekn:///foo',
             });
             Utils.update_gui();
         });

@@ -124,7 +124,7 @@ describe('View.Document', function () {
         let html_model;
         beforeEach(function (done) {
             html_model = DModel.Article.new_from_props({
-                ekn_id: 'ekn:///foo/bar',
+                id: 'ekn:///foo/bar',
                 content_type: 'text/html',
                 title: 'Html title',
                 table_of_contents: toc,

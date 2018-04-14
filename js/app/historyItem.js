@@ -146,7 +146,7 @@ function _models_equal_or_both_null (a, b) {
         return true;
     if (a === null || b === null)
         return false;
-    return a.ekn_id === b.ekn_id;
+    return a.id === b.id;
 }
 
 /**

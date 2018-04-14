@@ -120,7 +120,7 @@ var Arrangement = new Lang.Interface({
         if (this._highlight_string)
             card_props.highlight_string = this._highlight_string;
         let card = this.create_submodule('card', card_props);
-        this._cards_by_id.set(model.ekn_id, card);
+        this._cards_by_id.set(model.id, card);
         card.make_ready();
 
         // It's either this or have Card require Gtk.Button, but that would be
@@ -157,18 +157,18 @@ var Arrangement = new Lang.Interface({
         if (this.get_max_cards() > -1)
             this._models = this._models.slice(0, this.get_max_cards());
 
-        let ekn_id_set = new Set();
+        let id_set = new Set();
 
         // Add cards for models that we don't have yet.
         this._models.forEach((model) => {
-            ekn_id_set.add(model.ekn_id);
+            id_set.add(model.id);
             let newly_created = false;
-            if (!this._cards_by_id.get(model.ekn_id)) {
+            if (!this._cards_by_id.get(model.id)) {
                 this._create_card(model);
                 newly_created = true;
             }
 
-            let card = this._cards_by_id.get(model.ekn_id);
+            let card = this._cards_by_id.get(model.id);
             this.pack_card(card);
             // Fading in a card that already exists on the arrangement looks weird
             // and is a performance hit.
@@ -179,11 +179,11 @@ var Arrangement = new Lang.Interface({
         });
 
         // Delete cards for models we don't need anymore
-        [...this._cards_by_id.keys()].filter((key) => !ekn_id_set.has(key))
-            .forEach((ekn_id) => {
-                let card = this._cards_by_id.get(ekn_id);
+        [...this._cards_by_id.keys()].filter((key) => !id_set.has(key))
+            .forEach(id => {
+                const card = this._cards_by_id.get(id);
                 this.drop_submodule(card);
-                this._cards_by_id.delete(ekn_id);
+                this._cards_by_id.delete(id);
             });
     },
 
@@ -217,7 +217,7 @@ var Arrangement = new Lang.Interface({
      *   it, or because @model is not in the arrangement
      */
     get_card_for_model: function (model) {
-        return this._cards_by_id.get(model.ekn_id);
+        return this._cards_by_id.get(model.id);
     },
 
     get_max_cards: function () {

@@ -156,8 +156,7 @@ var ArticleStack = new Module.Class({
     },
 
     _load_article_model: function (model) {
-        if (this.visible_child &&
-            this.visible_child.model.ekn_id === model.ekn_id)
+        if (this.visible_child && this.visible_child.model.id === model.id)
             return;
 
         let article_content_props = {
@@ -176,10 +175,10 @@ var ArticleStack = new Module.Class({
         }
         let article_content = this.create_submodule(slot, article_content_props);
 
-        article_content.connect('ekn-link-clicked', (card, ekn_id) => {
+        article_content.connect('ekn-link-clicked', (card, id) => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.ARTICLE_LINK_CLICKED,
-                ekn_id: ekn_id,
+                id,
             });
         });
         this.transition_type = this._get_transition_type();

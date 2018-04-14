@@ -37,13 +37,13 @@ var CurrentSet = new Module.Class({
             let set = SetMap.get_set_for_tag(tag);
             if (!set)
                 return;
-            if (set.ekn_id === this._current_set.ekn_id)
+            if (set.id === this._current_set.id)
                 belongs_to_set = true;
 
             let parent_set = SetMap.get_parent_set(set);
             if (!parent_set)
                 return;
-            if (parent_set.ekn_id === this._current_set.ekn_id)
+            if (parent_set.id === this._current_set.id)
                 belongs_to_subset = true;
         });
 

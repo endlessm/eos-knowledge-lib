@@ -464,7 +464,7 @@ function start_content_access_metric(model, entry_point) {
     let title = model.title || '';
     let content_type = model.content_type || '';
     recorder.record_start(CONTENT_ACCESS_METRIC_EVENT_ID,
-        new GLib.Variant('s', model.ekn_id),
+        new GLib.Variant('s', model.id),
         new GLib.Variant('(ssss)', [entry_point, app_id, title, content_type]));
 }
 
@@ -477,16 +477,16 @@ function stop_content_access_metric(model) {
     let app_id = app.application_id;
     let recorder = EosMetrics.EventRecorder.get_default();
     recorder.record_stop(CONTENT_ACCESS_METRIC_EVENT_ID,
-        new GLib.Variant('s', model.ekn_id), null);
+        new GLib.Variant('s', model.id), null);
 }
 
-function ekn_id_to_byte_array(ekn_id) {
+function id_to_byte_array(id) {
     let bytes = [];
-    const [hash] = components_from_ekn_id(ekn_id);
+    const [hash] = components_from_id(id);
     for (let pos = 0; pos < hash.length; pos += 2)
         bytes.push(Number.parseInt(hash.substr(pos, 2), 16));
     if (bytes.length !== 20)
-        throw new Error(`Invalid EKN ID ${ekn_id}`);
+        throw new Error(`Invalid ID ${id}`);
     return bytes;
 }
 
@@ -495,7 +495,7 @@ function record_share_metric(model, social_network, was_cancelled) {
     void was_cancelled;  // FIXME add when webview dialog available
 
     let app_id = Gio.Application.get_default().application_id;
-    let id = ekn_id_to_byte_array(model.ekn_id);
+    let id = id_to_byte_array(model.id);
     let recorder = EosMetrics.EventRecorder.get_default();
     recorder.record_event(SHARE_METRIC_EVENT_ID, new GLib.Variant('(sayssu)', [
         app_id,
@@ -513,15 +513,15 @@ function define_enum (values) {
     }, {});
 }
 
-function components_from_ekn_id (ekn_id) {
+function components_from_id(id) {
     // The URI is of form 'ekn://domain/hash[/resource]'.
     // Domain is part of legacy bundle support and should not be used for
     // modern content.
 
     // Chop off our constant scheme identifier.
-    let stripped_ekn_id = ekn_id.slice('ekn://'.length);
+    let stripped_id = id.slice('ekn://'.length);
 
-    let components = stripped_ekn_id.split('/');
+    let components = stripped_id.split('/');
 
     // Pop off the domain component.
     components.shift();
