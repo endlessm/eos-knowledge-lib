@@ -27,16 +27,16 @@ enhacements.
 
 Each record is accompanied by JSON metadata describing its title, its
 license, its tags, and other various kinds, along with content for it.
-This metadata is placed in the shard, indexed by its "ID", a 20-byte
+This metadata is placed in the shard, indexed by its ID, a 20-byte
 identifier.
 
 The motivation for this setup was to cut down on the use of Xapian for
-critical path data and lookup, since each use of Xapian requires an HTTP
-request to a separate server.
+critical path data and lookup, since at the time each use of Xapian
+required an HTTP request to a separate server.
 
 The Xapian database is embedded directly in the shard, allowing shard
 files to be completely self-contained pieces of searchable data. It
-is a Xapian single-file "Glass" database, containing a position table, a
+is a Xapian single-file "Honey" database, containing a position table, a
 postlist table, a record table, etc.
 
 As an example of a metadata file, here's one:
