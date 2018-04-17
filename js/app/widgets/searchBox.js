@@ -117,8 +117,7 @@ var SearchBox = GObject.registerClass({
         if (should_show_cursor) {
             if (this._has_hand_cursor)
                 return;
-            let cursor = Gdk.Cursor.new_for_display(Gdk.Display.get_default(),
-                Gdk.CursorType.HAND1);
+            let cursor = Gdk.Cursor.new_from_name(this.get_display(), 'pointer');
             this.window.set_cursor(cursor);
             this._has_hand_cursor = true;
         } else {
