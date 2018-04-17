@@ -510,6 +510,7 @@ javascript_tests = \
 	tests/js/app/widgets/testLightbox.js \
 	tests/js/app/widgets/testPDFView.js \
 	tests/js/app/widgets/testPreviewer.js \
+	tests/js/app/widgets/testSearchBox.js \
 	tests/js/app/widgets/testSlidingPanel.js \
 	tests/js/app/widgets/testSlidingPanelOverlay.js \
 	tests/js/app/widgets/testSpaceContainer.js \

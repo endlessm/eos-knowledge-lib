@@ -55,6 +55,7 @@
             &:selected {
                 background-color: transparentize(black, 1 - 0.10);
                 border: none;
+                border-radius: 3px;
             }
         }
 

@@ -1,6 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const {DModel, Endless, Gdk, Gio, GObject} = imports.gi;
+const {DModel, Gdk, Gio, GObject} = imports.gi;
 const Gettext = imports.gettext;
 
 const Actions = imports.app.actions;
@@ -9,6 +9,7 @@ const Dispatcher = imports.app.dispatcher;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const Pages = imports.app.pages;
+const {SearchBox: BaseSearchBox} = imports.app.widgets.searchBox;
 const Utils = imports.app.utils;
 
 const RESULTS_SIZE = 4;
@@ -22,7 +23,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  */
 var SearchBox = new Module.Class({
     Name: 'Navigation.SearchBox',
-    Extends: Endless.SearchBox,
+    Extends: BaseSearchBox,
 
     Properties: {
         /**
