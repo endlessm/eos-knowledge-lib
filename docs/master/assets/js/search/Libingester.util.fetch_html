@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/ingester.html#obtaining-metadata"], "token": "Libingester.util.fetch_html"});
+urls_downloaded_cb({"token": "Libingester.util.fetch_html", "urls": ["tutorial/ingester.html#obtaining-metadata"]});
