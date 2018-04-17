@@ -12,4 +12,28 @@
             border-radius: 20px;
         }
     }
+
+    .titlebar .endless-search-box {
+        background-color: #4d4d4d;
+        color: #eeeeec;
+        caret-color: #eeeeec;
+        padding: 1px 2px 1px 4px;
+        border-radius: 15px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #575757;
+        box-shadow: inset 0px 1px 1px transparentize(black, 1 - 0.1);
+        /* Can't get the actual gradient border to work, this appears as a square. */
+        /*border-image: linear-gradient(to bottom, #262626, #515151) 1 1 stretch;*/
+
+        image {
+            margin: 0px 4px;
+            color: #919191;
+        }
+
+        selection {
+            color: #2e3436;
+            background-color: #eeeeec;
+        }
+    }
 }
