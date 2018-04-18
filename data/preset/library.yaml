@@ -23,6 +23,7 @@ vars:
   home-allsets-card:
     type: *card
     properties:
+      justify: center
       excluded_types:
         - 0
         - 2
