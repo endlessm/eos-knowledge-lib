@@ -1,1 +1,1 @@
-fragment_downloaded_cb({"url": "layout/placeholder.html#text", "fragment": "text \nPlaceholder text \n"});
+fragment_downloaded_cb({"fragment": "text \nPlaceholder text \n", "url": "layout/placeholder.html#text"});
