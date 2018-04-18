@@ -75,8 +75,6 @@ var SearchBox = GObject.registerClass({
         this.connect('enter-notify-event', this._on_motion.bind(this));
         this.connect('motion-notify-event', this._on_motion.bind(this));
         this.connect('leave-notify-event', this._on_leave.bind(this));
-
-        this.get_style_context().add_class('endless-search-box');
     }
 
     // Returns true if x, y is on icon at icon_pos.
