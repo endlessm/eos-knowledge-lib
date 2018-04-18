@@ -37,11 +37,8 @@
 .Layout--footer {
     background-color: $background-dark-color;
 
-    .BannerDynamic__logo {
-        -EknDynamicLogo-sizing: "size-min";
-        min-width: 300px;
-        min-height: 100px;
-        font-weight: normal;
+    .DecorationThemeableImage {
+        margin: 30px 0px;
     }
 
     .ArrangementSideBySide {
