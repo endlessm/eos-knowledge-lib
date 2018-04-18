@@ -13,7 +13,7 @@ describe('Filter.Unread', function () {
     const IDS = ['read', 'unread'];
 
     beforeEach(function () {
-        models = IDS.map(ekn_id => new DModel.Content({ekn_id}));
+        models = IDS.map(id => new DModel.Content({id}));
         history_model = MockReadingHistoryModel.mock_default();
         history_model.mark_article_read('read');
     });

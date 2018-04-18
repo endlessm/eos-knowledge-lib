@@ -67,8 +67,8 @@ var SearchBox = new Module.Class({
                 search_terms: this.text,
             });
         });
-        this.connect('menu-item-selected', (entry, ekn_id) => {
-            let model = this._autocomplete_models.filter((model) => model.ekn_id === ekn_id)[0];
+        this.connect('menu-item-selected', (entry, id) => {
+            let model = this._autocomplete_models.filter(model => model.id === id)[0];
             Dispatcher.get_default().dispatch({
                 action_type: Actions.ITEM_CLICKED,
                 search_terms: this.text,
@@ -115,7 +115,7 @@ var SearchBox = new Module.Class({
             this.set_menu_items(this._autocomplete_models.map((model) => {
                 return {
                     title: this._get_prefixed_title(model, this.text),
-                    id: model.ekn_id,
+                    id: model.id,
                 };
             }));
         })

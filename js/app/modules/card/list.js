@@ -81,7 +81,7 @@ var List = new Module.Class({
     },
 
     _sync_checkmark_state: function () {
-        this._checkmark.visible = ReadingHistoryModel.get_default().is_read_article(this.model.ekn_id);
+        this._checkmark.visible = ReadingHistoryModel.get_default().is_read_article(this.model.id);
     },
 
     _IMAGE_WIDTH_RATIO: 1.5,

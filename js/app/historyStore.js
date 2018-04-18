@@ -100,7 +100,7 @@ var HistoryStore = new Lang.Class({
                     this.go_forward();
                     break;
                 case Actions.ITEM_CLICKED:
-                    ReadingHistoryModel.get_default().mark_article_read(payload.model.ekn_id);
+                    ReadingHistoryModel.get_default().mark_article_read(payload.model.id);
                     break;
                 case Actions.SHARE:
                     this.share(payload.network);
@@ -126,7 +126,7 @@ var HistoryStore = new Lang.Class({
     _start_content_access_metric: function(model, entry_point) {
         let old_item = this._direction === Direction.FORWARDS ?
             this.get_previous_item() : this.get_next_item();
-        if (old_item && old_item.model && old_item.model.ekn_id === model.ekn_id)
+        if (old_item && old_item.model && old_item.model.id === model.id)
             return;
 
         Utils.start_content_access_metric(model, entry_point);
@@ -140,7 +140,7 @@ var HistoryStore = new Lang.Class({
 
         if (!(item.model instanceof DModel.Media) &&
             old_item && old_item.model && old_item.page_type === Pages.ARTICLE &&
-            (!item.model || old_item.model.ekn_id !== item.model.ekn_id))
+            (!item.model || old_item.model.id !== item.model.id))
             Utils.stop_content_access_metric(old_item.model);
 
         this.change_action_state('article-search-visible',
@@ -243,7 +243,7 @@ var HistoryStore = new Lang.Class({
     set_current_subset: function (model) {
         if (!model)
             return;
-        if (!this._current_subset || (this._current_subset.ekn_id !== model.ekn_id)) {
+        if (!this._current_subset || (this._current_subset.id !== model.id)) {
             this._current_subset = model;
             this.notify('current-subset');
         }
@@ -305,8 +305,8 @@ var HistoryStore = new Lang.Class({
     // articles, sets and media. But because all our current stores handle these
     // the same after a link click, factoring out this common function. When we
     // diverge in future interactions we should revisit this decomposition.
-    show_ekn_id: function (ekn_id) {
-        DModel.Engine.get_default().get_object_promise(ekn_id)
+    show_id: function (id) {
+        DModel.Engine.get_default().get_object_promise(id)
         .then((model) => {
             if (model instanceof DModel.Article) {
                 this.set_current_item_from_props({
@@ -334,8 +334,8 @@ var HistoryStore = new Lang.Class({
         });
     },
 
-    load_dbus_item: function (ekn_id, search_terms, timestamp) {
-        DModel.Engine.get_default().get_object_promise(ekn_id)
+    load_dbus_item: function (id, search_terms, timestamp) {
+        DModel.Engine.get_default().get_object_promise(id)
         .then((model) => {
             if (model instanceof DModel.Article ||
                 model instanceof DModel.Video ||

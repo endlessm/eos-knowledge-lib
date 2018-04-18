@@ -381,17 +381,17 @@ function connect_signals () {
 
     let data = [
         {
-            ekn_id: '1',
+            id: '1',
             title: 'Westeros',
             child_tags: ['Westeros'],
         },
         {
-            ekn_id: '2',
+            id: '2',
             title: 'A Song of Ice and Fire',
             child_tags: ['A Song of Ice and Fire'],
         },
         {
-            ekn_id: '3',
+            id: '3',
             title: 'House Lannister',
             child_tags: ['House Lannister'],
         },

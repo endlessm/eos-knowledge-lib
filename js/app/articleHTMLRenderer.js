@@ -53,7 +53,7 @@ var ArticleHTMLRenderer = new Knowledge.Class({
     _get_html: function (model) {
         let engine = DModel.Engine.get_default();
         let domain = engine.get_domain();
-        let [, bytes] = domain.read_uri(model.ekn_id);
+        let [, bytes] = domain.read_uri(model.id);
         return bytes.get_data().toString();
     },
 
@@ -113,18 +113,14 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         return JSON.stringify({
             // Need to explicitly expand properties, stringify does not
             // work on GI-binded objects
-            'ParentFeaturedSets': get_parent_featured_sets().map((set) => ({
-                child_tags: set.child_tags,
-                ekn_id: set.ekn_id,
-                title: set.title,
-                tags: set.tags,
-            })),
+            'ParentFeaturedSets': get_parent_featured_sets()
+                .map(({child_tags, id, title, tags}) => ({child_tags, id, title, tags})),
         });
     },
 
     _get_metadata: function (model) {
         let metadata = {
-            id: model.ekn_id,
+            id: model.id,
             title: model.title,
             published: model.published,
             authors: model.authors,
@@ -143,7 +139,7 @@ var ArticleHTMLRenderer = new Knowledge.Class({
             if (!set)
                 return;
             metadata['sets'].push({
-                id: set.ekn_id,
+                id: set.id,
                 title: set.title,
                 featured: set.featured,
             });
@@ -181,7 +177,7 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         let template = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/data/templates/article-wrapper.mst');
 
         return this._renderer.render_mustache_document_from_file(template, new GLib.Variant('a{sv}', {
-            'id': new GLib.Variant('s', model.ekn_id),
+            'id': new GLib.Variant('s', model.id),
             'css-files': new GLib.Variant('as', css_files),
             'custom-css-files': new GLib.Variant('as', this._get_app_override_css_files()),
             'javascript-files': new GLib.Variant('as', js_files),

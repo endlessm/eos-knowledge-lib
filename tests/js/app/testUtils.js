@@ -87,41 +87,41 @@ describe('Utilities:', function () {
         });
     });
 
-    describe('components_from_ekn_id', function () {
-        it('can parse EKN IDs without resources', function () {
-            let components = Utils.components_from_ekn_id('ekn://domain/hash');
+    describe('components_from_id', function () {
+        it('can parse IDs without resources', function () {
+            let components = Utils.components_from_id('ekn://domain/hash');
             expect(components).toEqual(['hash']);
         });
 
-        it('can parse EKN IDs with resources', function () {
-            let components = Utils.components_from_ekn_id('ekn://domain/hash/resource');
+        it('can parse IDs with resources', function () {
+            let components = Utils.components_from_id('ekn://domain/hash/resource');
             expect(components).toEqual(['hash', 'resource']);
         });
 
         it('ignores domains', function () {
-            let components = Utils.components_from_ekn_id('ekn:///hash/resource');
+            let components = Utils.components_from_id('ekn:///hash/resource');
             expect(components).toEqual(['hash', 'resource']);
         });
     });
 
-    describe('ekn_id_to_byte_array', function () {
-        it('returns the EKN ID hash as an array of integers', function () {
+    describe('id_to_byte_array', function () {
+        it('returns the ID hash as an array of integers', function () {
             const id = 'ekn:///0008101820283038404850586068707880889098';
-            const array = Utils.ekn_id_to_byte_array(id);
+            const array = Utils.id_to_byte_array(id);
             expect(array).toEqual([0, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88,
                 96, 104, 112, 120, 128, 136, 144, 152]);
         });
 
-        it('handles legacy EKN IDs with domain gracefully', function () {
+        it('handles legacy IDs with domain gracefully', function () {
             const id = 'ekn://scuba-diving/0008101820283038404850586068707880889098';
-            const array = Utils.ekn_id_to_byte_array(id);
+            const array = Utils.id_to_byte_array(id);
             expect(array).toEqual([0, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88,
                 96, 104, 112, 120, 128, 136, 144, 152]);
         });
 
-        it('throws on invalid EKN ID hash', function () {
+        it('throws on invalid ID hash', function () {
             const id = 'ekn:///a0a8';
-            expect(() => Utils.ekn_id_to_byte_array(id)).toThrow();
+            expect(() => Utils.id_to_byte_array(id)).toThrow();
         });
     });
 

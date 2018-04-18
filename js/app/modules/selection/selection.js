@@ -85,7 +85,7 @@ var Selection = new Module.Class({
     contains_model: function (model) {
         if (!model)
             return false;
-        return this._models_by_id.has(model.ekn_id);
+        return this._models_by_id.has(model.id);
     },
 
     provides_context: function () {
@@ -117,13 +117,13 @@ var Selection = new Module.Class({
 
     /* Private, intended to be used from subclasses */
     add_model: function (model) {
-        if (this._models_by_id.has(model.ekn_id))
+        if (this._models_by_id.has(model.id))
             return false;
 
         if (this._filter && !this._filter.include(model))
             return false;
 
-        this._models_by_id.set(model.ekn_id, model);
+        this._models_by_id.set(model.id, model);
         return true;
     },
 

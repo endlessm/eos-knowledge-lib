@@ -21,7 +21,7 @@ var MockEngine = new Lang.Class({
         spyOn(this, 'query_promise').and.callThrough();
     },
 
-    get_ekn_id: function () {},
+    get_id: function () {},
 
     // FIXME: we launch into the callbacks synchronously because all the tests
     // in testAisleController expect it currently. Would be good to rewrite

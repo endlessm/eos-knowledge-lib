@@ -130,7 +130,7 @@ describe('History Store', function () {
 
     it('records metrics when using nav buttons', function () {
         model = new DModel.Article({
-            ekn_id: 'ekn://article1',
+            id: 'ekn://article1',
         });
         history_store.set_current_item_from_props({
             page_type: Pages.ARTICLE,
@@ -138,7 +138,7 @@ describe('History Store', function () {
         });
 
         model = new DModel.Article({
-            ekn_id: 'ekn://article2',
+            id: 'ekn://article2',
         });
         history_store.set_current_item_from_props({
             page_type: Pages.ARTICLE,
@@ -147,19 +147,22 @@ describe('History Store', function () {
 
         dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
         recent_start_call = start_content_access_metric_spy.calls.mostRecent();
-        expect(recent_start_call.args[0].ekn_id).toEqual('ekn://article1');
+        expect(recent_start_call.args[0].id).toEqual('ekn://article1');
         expect(recent_start_call.args[1]).toEqual(EntryPoints.NAV_BUTTON_CLICKED);
 
         dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
         recent_stop_call = stop_content_access_metric_spy.calls.mostRecent();
-        expect(recent_stop_call.args[0].ekn_id).toEqual('ekn://article1');
+        expect(recent_stop_call.args[0].id).toEqual('ekn://article1');
         recent_start_call = start_content_access_metric_spy.calls.mostRecent();
-        expect(recent_start_call.args[0].ekn_id).toEqual('ekn://article2');
+        expect(recent_start_call.args[0].id).toEqual('ekn://article2');
         expect(recent_start_call.args[1]).toEqual(EntryPoints.NAV_BUTTON_CLICKED);
     });
 
     it('marks items as read', function () {
-        let item = new DModel.Content({ ekn_id: 'foo', title: 'blah' });
+        let item = new DModel.Content({
+            id: 'foo',
+            title: 'blah',
+        });
         spyOn(reading_history, 'mark_article_read');
 
         dispatcher.dispatch({

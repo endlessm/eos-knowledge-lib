@@ -53,7 +53,7 @@ var Video = new Module.Class({
         this._synopsis_label.visible = this.show_synopsis;
         let video_player = new EosKnowledgePrivate.MediaBin( {
             visible: true,
-            uri: this.model.ekn_id,
+            uri: this.model.id,
             title: this.model.title,
             description: this.model.synopsis,
         });

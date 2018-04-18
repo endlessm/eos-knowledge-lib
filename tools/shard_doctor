@@ -269,8 +269,8 @@ def process_duplicates(shard_dir=None, manifest=None):
         metadatas = []
         for article_asset in duplicate_article:
             shard = article_asset['shard']
-            ekn_id = article_asset['@id']
-            print(' - Shard: {}, Ekn ID: {}'.format(shard, ekn_id))
+            id_ = article_asset['@id']
+            print(' - Shard: {}, Ekn ID: {}'.format(shard, id_))
 
             metadatas.append(article_asset)
 

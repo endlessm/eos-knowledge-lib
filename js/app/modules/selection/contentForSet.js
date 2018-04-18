@@ -53,7 +53,7 @@ var ContentForSet = new Module.Class({
             this.model = this._get_model(property_name);
             HistoryStore.get_default().connect('notify::' + property_name, () => {
                 let model = this._get_model(property_name);
-                if (!model || (this.model && model.ekn_id === this.model.ekn_id))
+                if (!model || (this.model && model.id === this.model.id))
                     return;
                 this.model = model;
                 this._set_needs_refresh(true);

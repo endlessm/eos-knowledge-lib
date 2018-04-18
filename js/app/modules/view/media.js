@@ -34,7 +34,7 @@ var Media = new Module.Class({
             visible: true,
         });
 
-        this._previewer.set_uri(this.model.ekn_id, this.model.content_type);
+        this._previewer.set_uri(this.model.id, this.model.content_type);
         this._grid.insert_row(0);
         this._grid.attach(this._previewer, 0, 0, 1, 1);
 

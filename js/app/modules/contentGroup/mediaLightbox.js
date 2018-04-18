@@ -109,10 +109,10 @@ var MediaLightbox = new Module.Class({
 
         this._current_index = resources.map((item) => {
             if (item instanceof DModel.Content) {
-                return item.ekn_id;
+                return item.id;
             }
             return item;
-        }).indexOf(media_object.ekn_id);
+        }).indexOf(media_object.id);
 
         if (this._current_index === -1)
             return;
@@ -136,7 +136,7 @@ var MediaLightbox = new Module.Class({
         if (widget === null) {
             if (media_object instanceof DModel.Video) {
                 widget = new EosKnowledgePrivate.MediaBin();
-                widget.set_uri(media_object.ekn_id);
+                widget.set_uri(media_object.id);
             } else if (content_type === 'application/pdf') {
                 let stream = media_object.get_content_stream();
                 widget = new PDFView.PDFView({

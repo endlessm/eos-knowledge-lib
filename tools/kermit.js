@@ -4,9 +4,9 @@ const System = imports.system;
 const USAGE = [
     'usage: kermit grep <shard path> <pattern>',
     '       kermit list <shard path>',
-    '       kermit dump <shard path> <ekn id> <data|metadata|another blob name>',
+    '       kermit dump <shard path> <id> <data|metadata|another blob name>',
     '       kermit query <app_id> "<querystring>"',
-    '       kermit stat <shard path> [ekn id] [-v|--verbose]',
+    '       kermit stat <shard path> [id] [-v|--verbose]',
     '       kermit crosslink <shard path> <url>',
     '',
     'kermit is a shard inspection utility for Knowledge Apps.',
@@ -107,9 +107,9 @@ function crosslink (path, url) {
         fail_with_message('No dictionary record found in this shard!');
     }
 
-    let ekn_id = dictionary.lookup_key(url);
-    if (ekn_id) {
-        let hash = normalize_ekn_id(ekn_id);
+    let id = dictionary.lookup_key(url);
+    if (id) {
+        let hash = normalize_id(id);
         print(hash);
     } else {
         print('No record found for url "' + url + '"');
@@ -167,7 +167,7 @@ function _print_tree_info (shard, ekn_resources, parent_size_bytes, is_verbose) 
 
     let total_tree_bytes = parent_size_bytes;
     let resource_table = ekn_resources.map((id) => {
-        let hash = normalize_ekn_id(id);
+        let hash = normalize_id(id);
         let record = shard.find_record_by_hex_name(hash);
         if (!record)
             return table_entry(hash, 'N/A', 'N/A');
@@ -208,12 +208,12 @@ function _print_crosslink_info (shard, links, is_verbose) {
     let dictionary = table_record.data.load_as_dictionary();
 
     let crosslink_table = links.map((url) => {
-        let ekn_id = dictionary.lookup_key(url);
-        if (!ekn_id)
+        let id = dictionary.lookup_key(url);
+        if (!id)
             return null;
         return {
             'URL': url,
-            'Linked object': normalize_ekn_id(ekn_id),
+            'Linked object': normalize_id(id),
         };
     }).filter((entry) => entry !== null);
 
@@ -472,7 +472,7 @@ function perform_query (engine, query_obj) {
         try {
             let results = engine.query_finish(task);
             results.models.forEach(function (result) {
-                let id = normalize_ekn_id(result.ekn_id);
+                let id = normalize_id(result.id);
                 print_result(id, result.content_type, result.title);
             });
 
@@ -505,7 +505,7 @@ function print_result (id, content_type, title, offset) {
 }
 
 function dump (path, id, blob_name) {
-    id = normalize_ekn_id(id);
+    id = normalize_id(id);
 
     let shard = get_shard_for_path(path);
     let record = shard.find_record_by_hex_name(id);
@@ -559,9 +559,8 @@ function fail_with_error (e) {
     System.exit(1);
 }
 
-function normalize_ekn_id (ekn_id) {
-    if (ekn_id.startsWith('ekn://')) {
-        return ekn_id.split('/').pop();
-    }
-    return ekn_id;
+function normalize_id(id) {
+    if (id.startsWith('ekn://'))
+        return id.split('/').pop();
+    return id;
 }

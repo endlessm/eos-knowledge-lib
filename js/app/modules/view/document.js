@@ -189,7 +189,7 @@ var Document = new Module.Class({
                 // an error page in the view. If we do this, make sure to hide spinner
                 // when showing error page :)
 
-                this.content_view.load_uri(this.model.ekn_id);
+                this.content_view.load_uri(this.model.id);
 
                 /* Add nav content widget to webview */
                 if (this.nav_content) {
@@ -297,7 +297,7 @@ var Document = new Module.Class({
 
             let [baseURI, hash] = decision.request.uri.split('#');
 
-            if (baseURI.startsWith(this.model.ekn_id)) {
+            if (baseURI.startsWith(this.model.id)) {
                 // If this check is true, then we are navigating to the current
                 // page or an anchor on the current page. If the anchor comes
                 // from the original content just scroll to it.

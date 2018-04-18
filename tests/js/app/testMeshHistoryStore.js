@@ -134,7 +134,7 @@ describe('MeshHistoryStore', function () {
         });
         let item = store.get_current_item();
         expect(item.page_type).toBe(Pages.ARTICLE);
-        expect(item.model.ekn_id).toBe(model.ekn_id);
+        expect(item.model.id).toBe(model.id);
         expect(item.search_terms).toBe('foo');
     });
 
@@ -180,12 +180,12 @@ describe('MeshHistoryStore', function () {
     describe('when link in article clicked', function () {
         beforeEach(function() {
             let model = new DModel.Article({
-                ekn_id: 'ekn://foo/bar',
+                id: 'ekn://foo/bar',
             });
             engine.get_object_promise.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.ARTICLE_LINK_CLICKED,
-                ekn_id: 'ekn://foo/bar',
+                id: 'ekn://foo/bar',
             });
             Utils.update_gui();
         });
@@ -196,7 +196,7 @@ describe('MeshHistoryStore', function () {
 
         it('records a metric', function () {
             recent_start_call = start_content_access_metric_spy.calls.mostRecent();
-            expect(recent_start_call.args[0].ekn_id).toEqual('ekn://foo/bar');
+            expect(recent_start_call.args[0].id).toEqual('ekn://foo/bar');
             expect(recent_start_call.args[1]).toEqual(EntryPoints.ARTICLE_LINK_CLICKED);
         });
     });
@@ -204,12 +204,12 @@ describe('MeshHistoryStore', function () {
     describe('when a media link in article clicked', function () {
         it('shows lightbox', function () {
             let model = new DModel.Media({
-                ekn_id: 'ekn://foo/pix',
+                id: 'ekn://foo/pix',
             });
             engine.get_object_promise.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.ARTICLE_LINK_CLICKED,
-                ekn_id: 'ekn://foo/pix',
+                id: 'ekn://foo/pix',
             });
             Utils.update_gui();
             expect(store.get_current_item().media_model).toBe(model);
@@ -221,13 +221,13 @@ describe('MeshHistoryStore', function () {
 
         it('loads an item', function () {
             model = new DModel.Article({
-                ekn_id: 'ekn:///foo',
+                id: 'ekn:///foo',
             });
             engine.get_object_promise.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                 search_terms: 'foo',
-                ekn_id: 'ekn:///foo',
+                id: 'ekn:///foo',
             });
 
             expect(engine.get_object_promise).toHaveBeenCalled();
@@ -237,13 +237,13 @@ describe('MeshHistoryStore', function () {
 
         it('goes to the article page if an article was opened', function () {
             model = new DModel.Article({
-                ekn_id: 'ekn:///foo',
+                id: 'ekn:///foo',
             });
             engine.get_object_promise.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                 search_terms: 'foo',
-                ekn_id: 'ekn:///foo',
+                id: 'ekn:///foo',
             });
             Utils.update_gui();
 
@@ -252,30 +252,30 @@ describe('MeshHistoryStore', function () {
 
         it('records a metric if an article was opened', function () {
             model = new DModel.Article({
-                ekn_id: 'ekn:///foo',
+                id: 'ekn:///foo',
             });
             engine.get_object_promise.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                 search_terms: 'foo',
-                ekn_id: 'ekn:///foo',
+                id: 'ekn:///foo',
             });
             Utils.update_gui();
 
             recent_start_call = start_content_access_metric_spy.calls.mostRecent();
-            expect(recent_start_call.args[0].ekn_id).toEqual('ekn:///foo');
+            expect(recent_start_call.args[0].id).toEqual('ekn:///foo');
             expect(recent_start_call.args[1]).toEqual(EntryPoints.DBUS_CALL);
         });
 
         it('goes to the set page if a set was opened', function () {
             model = new DModel.Set({
-                ekn_id: 'ekn:///foo',
+                id: 'ekn:///foo',
             });
             engine.get_object_promise.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                 search_terms: 'foo',
-                ekn_id: 'ekn:///foo',
+                id: 'ekn:///foo',
             });
             Utils.update_gui();
 
@@ -286,13 +286,13 @@ describe('MeshHistoryStore', function () {
             describe(`when a ${kind.toLowerCase()} was opened`, function () {
                 beforeEach(function () {
                     model = new DModel[kind]({
-                        ekn_id: 'ekn:///99bac9189b30bb0877f60e1bc16ded7ad94af37f',
+                        id: 'ekn:///99bac9189b30bb0877f60e1bc16ded7ad94af37f',
                     });
                     engine.get_object_promise.and.returnValue(Promise.resolve(model));
                     dispatcher.dispatch({
                         action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                         search_terms: 'foo',
-                        ekn_id: 'ekn:///99bac9189b30bb0877f60e1bc16ded7ad94af37f',
+                        id: 'ekn:///99bac9189b30bb0877f60e1bc16ded7ad94af37f',
                     });
                     Utils.update_gui();
                 });
@@ -300,12 +300,12 @@ describe('MeshHistoryStore', function () {
                 it('goes to the article page', function () {
                     let item = store.get_current_item();
                     expect(item.page_type).toBe(Pages.ARTICLE);
-                    expect(item.model.ekn_id).toEqual('ekn:///99bac9189b30bb0877f60e1bc16ded7ad94af37f');
+                    expect(item.model.id).toEqual('ekn:///99bac9189b30bb0877f60e1bc16ded7ad94af37f');
                 });
 
                 it('records a metric if a video was opened', function () {
                     recent_start_call = start_content_access_metric_spy.calls.mostRecent();
-                    expect(recent_start_call.args[0].ekn_id).toEqual('ekn:///99bac9189b30bb0877f60e1bc16ded7ad94af37f');
+                    expect(recent_start_call.args[0].id).toEqual('ekn:///99bac9189b30bb0877f60e1bc16ded7ad94af37f');
                     expect(recent_start_call.args[1]).toEqual(EntryPoints.DBUS_CALL);
                 });
             });

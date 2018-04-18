@@ -26,17 +26,17 @@ describe('History Item', function () {
             expect(item1.equals(item2)).toBeFalsy();
         });
 
-        it('checks ekn ids on models', function () {
+        it('checks IDs on models', function () {
             let item1 = new HistoryItem.HistoryItem({
                 page_type: 'foo',
                 model: new DModel.Content({
-                    ekn_id: 'ekn://aaaaaaaaaaaaaaaa',
+                    id: 'ekn://aaaaaaaaaaaaaaaa',
                 }),
             });
             let item2 = new HistoryItem.HistoryItem({
                 page_type: 'foo',
                 model: new DModel.Content({
-                    ekn_id: 'ekn://aaaaaaaaaaaaaaaa',
+                    id: 'ekn://aaaaaaaaaaaaaaaa',
                 }),
             });
             expect(item1.equals(item2)).toBeTruthy();

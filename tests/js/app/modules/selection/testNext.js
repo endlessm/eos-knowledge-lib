@@ -9,12 +9,12 @@ const MockFactory = imports.tests.mockFactory;
 
 Gtk.init(null);
 
-const EKN_ID = 'ekn:///e430d1587a3710f5c1444d96b07eb3ee7a2b2a1e';
+const ID = 'ekn:///e430d1587a3710f5c1444d96b07eb3ee7a2b2a1e';
 
 function setup (store) {
     let model = new DModel.Article();
     let next_model = new DModel.Article({
-      ekn_id: EKN_ID,
+        id: ID,
     });
 
     store.set_current_item_from_props({
@@ -41,7 +41,7 @@ describe('Selection.Next', function () {
     it('queries for the next model id', function () {
         selection.queue_load_more(1);
         let query = engine.query_promise.calls.mostRecent().args[0];
-        expect(query.ids[0]).toBe(EKN_ID);
+        expect(query.ids[0]).toBe(ID);
     });
 });
 

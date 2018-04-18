@@ -46,12 +46,13 @@ var ArticleContent = new Lang.Interface({
     Signals: {
         /**
          * Event: ekn-link-clicked
-         * Emitted when a ekn id link in the article page is clicked.
+         * Emitted when an link with an internal ID is clicked in the article
+         * page.
          * Passes the ID.
          */
         'ekn-link-clicked': {
             param_types: [
-                GObject.TYPE_STRING /* ekn-uri */,
+                GObject.TYPE_STRING /* ID */,
             ]
         },
     },
