@@ -149,17 +149,19 @@ $display-font: 'Raleway Black' !default;
 
 .ContentGroupNoResultsMessage {
   font-family: $context-font;
-  margin-top: 50px;
+  margin-top: 90px;
   padding: 0;
-  &__title,
-  &__subtitle {
-    font-size: 1.50em;
+  &__title {
+    font-size: 1.60em;
     color: white;
-    padding: 0em 1.25em 0em 1.25em;
     font-style: normal;
   }
+
   &__subtitle {
-    margin-top: 1.0em;
+    font-size: 1.25em;
+    color: white;
+    font-style: normal;
+    margin-top: 50px;
     padding: 0;
   }
 }

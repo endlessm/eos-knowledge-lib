@@ -39,6 +39,9 @@ vars:
 
   noresults-message-text:
     type: ContentGroup.NoResultsMessage
+    properties:
+      justify: center
+      halign: center
 
 defines:
 - &footer
