@@ -20,7 +20,8 @@
             background-color: $primary-dark-color;
         }
 
-        &:hover, &:focus {
+        // Workaround for https://gitlab.gnome.org/GNOME/gtk/issues/196
+        &.fake-hover, &:focus {
             background-color: transparentize(white, 1 - 0.96);
         }
 

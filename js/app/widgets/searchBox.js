@@ -78,6 +78,9 @@ var SearchBox = GObject.registerClass({
     }
 
     _on_motion(widget, event) {
+        // Workaround for https://gitlab.gnome.org/GNOME/gtk/issues/196
+        this.get_style_context().add_class('fake-hover');
+
         const [has_coords, x, y] = event.get_root_coords();
         if (!has_coords)
             return Gdk.EVENT_PROPAGATE;
@@ -99,16 +102,22 @@ var SearchBox = GObject.registerClass({
             this.window.set_cursor(cursor);
             this._has_hand_cursor = true;
         } else {
-            return this._on_leave(widget);
+            this._remove_hand_cursor();
         }
         return Gdk.EVENT_PROPAGATE;
     }
 
-    _on_leave(widget) {
+    _remove_hand_cursor() {
         if (!this._has_hand_cursor)
-            return Gdk.EVENT_PROPAGATE;
+            return;
         this.window.set_cursor(null);
         this._has_hand_cursor = false;
+    }
+
+    _on_leave(widget) {
+        // Workaround for https://gitlab.gnome.org/GNOME/gtk/issues/196
+        this.get_style_context().remove_class('fake-hover');
+        this._remove_hand_cursor();
         return Gdk.EVENT_PROPAGATE;
     }
 
