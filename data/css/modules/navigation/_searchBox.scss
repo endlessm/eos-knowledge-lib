@@ -4,7 +4,7 @@
 
     .PagerSimple & {
         background-color: transparentize(white, 1 - 0.8);
-        box-shadow: 0 3px 8px transparentize(black, 1 - 0.72);
+        box-shadow: 0 3px 8px transparentize(black, 1 - 0.35);
 
         padding: 0.75em 0.55em 0.75em 0.55em;
         color: transparentize(black, 1 - 0.80);
@@ -36,7 +36,7 @@
 
     frame {
         background-color: transparentize(white, 1 - 0.96);
-        box-shadow: 0 3px 8px transparentize(black, 1 - 0.72);
+        box-shadow: 0 3px 8px transparentize(black, 1 - 0.35);
     }
 
     .view {
