@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "fixed", "urls": ["concepts/presets.html#the-blog-preset", "concepts/presets.html#the-thematic-preset", "concepts/presets.html#the-gallery-preset"]});
+urls_downloaded_cb({"urls": ["concepts/presets.html#the-blog-preset", "concepts/presets.html#the-thematic-preset", "concepts/presets.html#the-gallery-preset"], "token": "fixed"});

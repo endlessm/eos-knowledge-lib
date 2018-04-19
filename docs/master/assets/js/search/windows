@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "windows", "urls": ["modules.html#modules", "modules/window.html#window"]});
+urls_downloaded_cb({"urls": ["modules.html#modules", "modules/window.html#window"], "token": "windows"});

@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "stable", "urls": ["tutorial/install.html#installing-the-endless-sdk"]});
+urls_downloaded_cb({"urls": ["tutorial/install.html#installing-the-endless-sdk"], "token": "stable"});

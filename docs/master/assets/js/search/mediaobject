@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "mediaobject", "urls": ["view/media.html#viewmedia1"]});
+urls_downloaded_cb({"urls": ["view/media.html#viewmedia1"], "token": "mediaobject"});
