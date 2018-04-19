@@ -22,26 +22,23 @@
 
 .search-page {
     .BannerSearch {
-        margin-top: 95px;
+        margin-top: 65px;
     }
 
     .LayoutDynamicBackground {
-        -EknLayout_DynamicBackground-background-height: 300px;
+        -EknLayout_DynamicBackground-background-height: 240px;
     }
 
     .ContentGroupNoResultsMessage {
-        margin-top: 60px;
+        margin-top: 80px;
     }
 }
 
 .Layout--footer {
     background-color: $background-dark-color;
 
-    .BannerDynamic__logo {
-        -EknDynamicLogo-sizing: "size-min";
-        min-width: 300px;
-        min-height: 100px;
-        font-weight: normal;
+    .DecorationThemeableImage {
+        margin: 30px 0px;
     }
 
     .ArrangementSideBySide {

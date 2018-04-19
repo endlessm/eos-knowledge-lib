@@ -9,7 +9,7 @@ vars:
   app-brand:
     type: Decoration.ThemeableImage
     properties:
-      halign: end
+      halign: start
       expand: true
       valign: center
       image-uri: resource:///app/assets/watermark
