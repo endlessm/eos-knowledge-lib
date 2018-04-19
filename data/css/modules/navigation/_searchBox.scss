@@ -28,6 +28,10 @@
         image {
             color: transparentize(black, 1 - 0.40);
             margin: 3px 7px 3px 5px;
+
+            &:hover {
+                color: transparentize(black, 1 - 0.80);
+            }
         }
     }
 
