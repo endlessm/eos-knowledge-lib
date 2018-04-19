@@ -2,7 +2,8 @@
 
 /* exported add_cards, MinimalArrangement, MinimalBinModule, MinimalCard,
 MinimalHomePage, MinimalModule, MinimalNavigationCard, MinimalOrder,
-MinimalView, MinimalXapianFilter, MinimalXapianOrder, TitleFilter */
+MinimalScrolling, MinimalView, MinimalXapianFilter, MinimalXapianOrder,
+TitleFilter */
 
 const {DModel, GLib, GObject, Gtk} = imports.gi;
 
@@ -13,6 +14,7 @@ const Filter = imports.app.interfaces.filter;
 const Module = imports.app.interfaces.module;
 const NavigationCard = imports.app.interfaces.navigationCard;
 const Order = imports.app.interfaces.order;
+const Scrolling = imports.app.interfaces.scrolling;
 const Selection = imports.app.modules.selection.selection;
 const {View} = imports.app.interfaces.view;
 
@@ -212,6 +214,17 @@ var MinimalXapianFilter = new Module.Class({
         return DModel.Query.new_from_object(query, {
             tags_match_all: (query.tags_match_all || []).concat(this.tag_to_include),
         });
+    },
+});
+
+var MinimalScrolling = new Module.Class({
+    Name: 'MinimalScrolling',
+    Extends: Gtk.ScrolledWindow,
+    Implements: [Scrolling.Scrolling],
+
+    _init: function (props={}) {
+        this.parent(props);
+        this.add(this.create_submodule('content'));
     },
 });
 

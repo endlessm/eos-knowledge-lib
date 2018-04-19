@@ -5,6 +5,7 @@
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 const HistoryStore = imports.app.historyStore;
+const ScrollingIface = imports.app.interfaces.scrolling;
 
 const _BATCH_SIZE = 10;
 
@@ -15,14 +16,8 @@ const _BATCH_SIZE = 10;
 var InfiniteScrolling = new Module.Class({
     Name: 'Layout.InfiniteScrolling',
     Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
+    Implements: [ScrollingIface.Scrolling],
 
-    Slots: {
-        /**
-         * Slot: content
-         * Where to put the content
-         */
-        'content': {},
-    },
     References: {
         'lazy-load': {},  // type: Selection
     },
@@ -44,16 +39,6 @@ var InfiniteScrolling = new Module.Class({
             this._selection.connect('models-changed',
                 this._on_models_changed.bind(this));
         });
-
-        HistoryStore.get_default().connect('changed', this._return_to_top.bind(this));
-    },
-
-    // return scroll position to the top of the window
-    _return_to_top: function () {
-        let lower = this.vadjustment.get_lower();
-        if (this.vadjustment.get_value() !== lower) {
-            this.vadjustment.set_value(lower);
-        }
     },
 
     _on_need_more_content: function () {
