@@ -30,6 +30,7 @@ describe('Article HTML Renderer', function () {
             source_name: 'Wikipedia',
             license: 'CC-BY-SA 3.0',
             title: 'Wikipedia title',
+            is_server_templated: false,
         });
         wikisource_model = new DModel.Article({
             source_uri: 'http://en.wikisource.org/wiki/When_It_Hits_the_Fan',
@@ -39,6 +40,7 @@ describe('Article HTML Renderer', function () {
             source_name: 'Wikibooks',
             license: 'CC-BY-SA 3.0',
             title: 'Wikibooks title',
+            is_server_templated: false,
         });
         wikihow_model = new DModel.Article({
             source_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
@@ -48,6 +50,7 @@ describe('Article HTML Renderer', function () {
             source_name: 'wikiHow',
             license: 'Owner permission',
             title: 'Wikihow & title',
+            is_server_templated: false,
         });
         wikibooks_model = new DModel.Article({
             source_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
@@ -57,6 +60,7 @@ describe('Article HTML Renderer', function () {
             source_name: 'Wikibooks',
             license: 'CC-BY-SA 3.0',
             title: 'Wikibooks title',
+            is_server_templated: false,
         });
 
         all_models = [
