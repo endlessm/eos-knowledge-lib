@@ -94,20 +94,22 @@ var SearchBox = GObject.registerClass({
 
         if (on_icon === 0 || (has_secondary && on_icon === 1)) {
             if (this._has_hand_cursor)
-                return;
+                return Gdk.EVENT_PROPAGATE;
             let cursor = Gdk.Cursor.new_from_name(this.get_display(), 'pointer');
             this.window.set_cursor(cursor);
             this._has_hand_cursor = true;
         } else {
-            this._on_leave(widget);
+            return this._on_leave(widget);
         }
+        return Gdk.EVENT_PROPAGATE;
     }
 
     _on_leave(widget) {
         if (!this._has_hand_cursor)
-            return;
+            return Gdk.EVENT_PROPAGATE;
         this.window.set_cursor(null);
         this._has_hand_cursor = false;
+        return Gdk.EVENT_PROPAGATE;
     }
 
     _on_match_selected(widget, model, iter) {
