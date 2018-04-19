@@ -255,21 +255,6 @@ describe('Article HTML Renderer', function () {
         });
     });
 
-    describe('Prensa Libre source', function () {
-        let html;
-
-        beforeEach(function () {
-            let model = new DModel.Article({
-                source: 'prensa-libre',
-            });
-            html = renderer.render(model);
-        });
-
-        it('loads the appropriate CSS file', function () {
-            expect(html).toMatch('prensa-libre.css');
-        });
-    });
-
     describe('Server templated content', function () {
         let server_templated_model, html;
 
