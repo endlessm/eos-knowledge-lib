@@ -66,8 +66,15 @@ var SearchBox = GObject.registerClass({
             this._on_match_selected.bind(this));
         this.connect('changed', () => {
             if (!this._entry_changed_by_widget) {
-                // If there is entry text, need to add the 'go' icon
-                this.secondary_icon_name = (this.text.length > 0)? 'go-next-symbolic' : null;
+                // If there is entry text, need to add the 'go' icon and allow
+                // the icons to prelight
+                if (this.text) {
+                    this.secondary_icon_name = 'go-next-symbolic';
+                    this.get_style_context().add_class('text-entered');
+                } else {
+                    this.secondary_icon_name = null;
+                    this.get_style_context().remove_class('text-entered');
+                }
                 this.emit('text-changed', this.text);
             }
             this._entry_changed_by_widget = false;
@@ -80,6 +87,11 @@ var SearchBox = GObject.registerClass({
     _on_motion(widget, event) {
         // Workaround for https://gitlab.gnome.org/GNOME/gtk/issues/196
         this.get_style_context().add_class('fake-hover');
+
+        // Don't change the mouse cursor if clicking on the icon will not do
+        // anything because there's no text entered
+        if (!this.text)
+            return Gtk.EVENT_PROPAGATE;
 
         const [has_coords, x, y] = event.get_root_coords();
         if (!has_coords)
