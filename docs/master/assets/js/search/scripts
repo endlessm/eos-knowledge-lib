@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/ingester.html#parsing-the-rss-feed"], "token": "scripts"});
+urls_downloaded_cb({"token": "scripts", "urls": ["tutorial/ingester.html#parsing-the-rss-feed"]});

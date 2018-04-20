@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/install.html#page-description"], "token": "release"});
+urls_downloaded_cb({"token": "release", "urls": ["tutorial/install.html#page-description"]});

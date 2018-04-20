@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tools.html#picard"], "token": "previewing"});
+urls_downloaded_cb({"token": "previewing", "urls": ["tools.html#picard"]});

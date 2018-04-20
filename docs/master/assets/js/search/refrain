@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/shard.html#cleaning-unused-elements"], "token": "refrain"});
+urls_downloaded_cb({"token": "refrain", "urls": ["tutorial/shard.html#cleaning-unused-elements"]});

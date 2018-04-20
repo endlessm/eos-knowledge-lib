@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tools.html#kermit", "tools.html#eminem"], "token": "retrieve"});
+urls_downloaded_cb({"token": "retrieve", "urls": ["tools.html#kermit", "tools.html#eminem"]});
