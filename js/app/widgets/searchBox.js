@@ -66,8 +66,15 @@ var SearchBox = GObject.registerClass({
             this._on_match_selected.bind(this));
         this.connect('changed', () => {
             if (!this._entry_changed_by_widget) {
-                // If there is entry text, need to add the 'go' icon
-                this.secondary_icon_name = (this.text.length > 0)? 'go-next-symbolic' : null;
+                // If there is entry text, need to add the 'go' icon and allow
+                // the icons to prelight
+                if (this.text) {
+                    this.secondary_icon_name = 'go-next-symbolic';
+                    this.get_style_context().add_class('text-entered');
+                } else {
+                    this.secondary_icon_name = null;
+                    this.get_style_context().remove_class('text-entered');
+                }
                 this.emit('text-changed', this.text);
             }
             this._entry_changed_by_widget = false;
@@ -75,61 +82,55 @@ var SearchBox = GObject.registerClass({
         this.connect('enter-notify-event', this._on_motion.bind(this));
         this.connect('motion-notify-event', this._on_motion.bind(this));
         this.connect('leave-notify-event', this._on_leave.bind(this));
-
-        this.get_style_context().add_class('endless-search-box');
-    }
-
-    // Returns true if x, y is on icon at icon_pos.
-    // Throws a string error starting with 'STOP' if the search box was not
-    // realized or not added to a toplevel window.
-    _cursor_is_on_icon(x, y, icon_pos) {
-        let rect = this.get_icon_area(icon_pos);
-        let top = this.get_toplevel();
-        if (!top.is_toplevel())
-            throw 'STOP: Search box is not contained in a toplevel.';
-        let [realized, icon_x, icon_y] = this.translate_coordinates(top,
-            rect.x, rect.y);
-        if (!realized)
-            throw 'STOP: Search box is not realized.';
-
-        return (x >= icon_x && x <= icon_x + rect.width &&
-            y >= icon_y && y <= icon_y + rect.height);
     }
 
     _on_motion(widget, event) {
-        let [has_coords, x, y] = event.get_root_coords();
-        if (!has_coords)
-            return;
-        let should_show_cursor;
-        try {
-            let on_primary = this._cursor_is_on_icon(x, y,
-                Gtk.EntryIconPosition.PRIMARY);
-            let has_secondary = this.secondary_icon_name !== null;
-            let on_secondary = has_secondary && this._cursor_is_on_icon(x, y,
-                Gtk.EntryIconPosition.SECONDARY);
-            should_show_cursor = on_primary || on_secondary;
-        } catch (e) {
-            if (typeof e === 'string' && e.startsWith('STOP'))
-                return;
-            throw e;
-        }
+        // Workaround for https://gitlab.gnome.org/GNOME/gtk/issues/196
+        this.get_style_context().add_class('fake-hover');
 
-        if (should_show_cursor) {
+        // Don't change the mouse cursor if clicking on the icon will not do
+        // anything because there's no text entered
+        if (!this.text)
+            return Gtk.EVENT_PROPAGATE;
+
+        const [has_coords, x, y] = event.get_root_coords();
+        if (!has_coords)
+            return Gdk.EVENT_PROPAGATE;
+
+        let top = this.get_toplevel();
+        if (!top.is_toplevel())
+            return Gdk.EVENT_PROPAGATE;
+        const [realized, entry_x, entry_y] = top.translate_coordinates(this, x, y);
+        if (!realized)
+            return Gdk.EVENT_PROPAGATE;
+
+        const on_icon = this.get_icon_at_pos(entry_x, entry_y);
+        const has_secondary = this.secondary_icon_name !== null;
+
+        if (on_icon === 0 || (has_secondary && on_icon === 1)) {
             if (this._has_hand_cursor)
-                return;
+                return Gdk.EVENT_PROPAGATE;
             let cursor = Gdk.Cursor.new_from_name(this.get_display(), 'pointer');
             this.window.set_cursor(cursor);
             this._has_hand_cursor = true;
         } else {
-            this._on_leave(widget);
+            this._remove_hand_cursor();
         }
+        return Gdk.EVENT_PROPAGATE;
     }
 
-    _on_leave(widget) {
+    _remove_hand_cursor() {
         if (!this._has_hand_cursor)
             return;
         this.window.set_cursor(null);
         this._has_hand_cursor = false;
+    }
+
+    _on_leave(widget) {
+        // Workaround for https://gitlab.gnome.org/GNOME/gtk/issues/196
+        this.get_style_context().remove_class('fake-hover');
+        this._remove_hand_cursor();
+        return Gdk.EVENT_PROPAGATE;
     }
 
     _on_match_selected(widget, model, iter) {
