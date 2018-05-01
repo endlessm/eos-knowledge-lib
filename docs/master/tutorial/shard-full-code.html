@@ -32,10 +32,10 @@
 
 <script src="assets/js/lines_around_headings.js"></script>
 
+<script src="assets/js/trie.js"></script>
 <script src="assets/js/prism-core.js"></script>
 <script src="assets/js/prism-autoloader.js"></script>
 <script src="assets/js/prism_autoloader_path_override.js"></script>
-<script src="assets/js/trie.js"></script>
 
 <link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
 <link rel="shortcut icon" href="assets/images/favicon-32x32.png">
@@ -120,8 +120,8 @@ Youtubedl.getInfo = util.promisify(Youtubedl.getInfo);
 
 const feedURI = 'https://creativecommons.org/blog/feed/';
 
-const vimeoClientID = 'a93aca581a0d158abab5ffa737949617f92159fc';
-const vimeoClientSecret = '7Hws8xhWOYmnz4BRlM/UI4BkL5drqr9HltN5ALU5jLgnn+xm/lbJE7c4sJQW8jKeRYf0/4zQkXmoGRLkAj5rz/Gj1mGdaBvVRBov5fMyNqyF2pVoHTMcBLqAx40rDCwp';
+const vimeoClientID = '(fill in client ID here)';
+const vimeoClientSecret = '(fill in client secret here)';
 
 const ensureVimeoClient = (function () {
     let vimeo;
@@ -347,6 +347,18 @@ async function ingestArticle(hatch, {title, link, date, author}) {
     })
     .get().filter(figure =&gt; !!figure);
 
+    // Do some extra cleanup to minimize the size
+    const all = $('*');
+    all.removeAttr('class');
+    all.removeAttr('style');
+    const imgs = $('img');
+    ['attachment-id', 'comments-opened', 'image-description', 'image-meta',
+        'image-title', 'large-file', 'medium-file', 'orig-file',
+        'orig-size', 'permalink']
+        .forEach(data =&gt; imgs.removeAttr(`data-${data}`));
+    imgs.removeAttr('srcset');  // For simplicity, only use one size
+    imgs.removeAttr('sizes');
+
     await Promise.all(videosToProcess.map(async figure =&gt; {
         const iframe = figure.find('iframe');
         const {host, pathname} = url.parse(iframe.attr('src'));
@@ -395,18 +407,6 @@ async function ingestArticle(hatch, {title, link, date, author}) {
         hatch.save_asset(poster);
     }));
 
-    // Do some extra cleanup to minimize the size
-    const all = $('*');
-    all.removeAttr('class');
-    all.removeAttr('style');
-    const imgs = $('img');
-    ['attachment-id', 'comments-opened', 'image-description', 'image-meta',
-        'image-title', 'large-file', 'medium-file', 'orig-file',
-        'orig-size', 'permalink']
-        .forEach(data =&gt; imgs.removeAttr(`data-${data}`));
-    imgs.removeAttr('srcset');  // For simplicity, only use one size
-    imgs.removeAttr('sizes');
-
     // Clean up useless &lt;span&gt;s with no attributes
     $('span').filter(function () {
         return Object.keys(this.attribs).length === 0;
@@ -423,15 +423,10 @@ async function ingestArticle(hatch, {title, link, date, author}) {
 async function main() {
     const hatch = new Libingester.Hatch('cc-blog', 'en');
     const paginator = Libingester.util.create_wordpress_paginator(feedURI);
-    try {
-        const items = await Libingester.util.fetch_rss_entries(paginator,
-            Infinity, 90);
-        await Promise.all(items.map(entry =&gt; ingestArticle(hatch, entry)));
-        hatch.finish();
-    } catch(err) {
-        console.log('there was an error', err);
-        process.exitCode = 1;
-    }
+    const items = await Libingester.util.fetch_rss_entries(paginator,
+        Infinity, 90);
+    await Promise.all(items.map(entry =&gt; ingestArticle(hatch, entry)));
+    hatch.finish();
 }
 
 main();
@@ -447,7 +442,7 @@ main();
     "cheerio": "^0.22.0",
     "fathom-web": "^2.2.0",
     "jsdom": "^11.6.2",
-    "libingester": "^2.5.1",
+    "libingester": "^2.5.6",
     "vimeo": "^2.0.1",
     "youtube-dl": "^1.12.2"
   },

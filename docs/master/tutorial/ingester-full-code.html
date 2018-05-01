@@ -32,10 +32,10 @@
 
 <script src="assets/js/lines_around_headings.js"></script>
 
+<script src="assets/js/trie.js"></script>
 <script src="assets/js/prism-core.js"></script>
 <script src="assets/js/prism-autoloader.js"></script>
 <script src="assets/js/prism_autoloader_path_override.js"></script>
-<script src="assets/js/trie.js"></script>
 
 <link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
 <link rel="shortcut icon" href="assets/images/favicon-32x32.png">
@@ -273,15 +273,10 @@ async function ingestArticle(hatch, {title, link, date, author}) {
 async function main() {
     const hatch = new Libingester.Hatch('cc-blog', 'en');
     const paginator = Libingester.util.create_wordpress_paginator(feedURI);
-    try {
-        const items = await Libingester.util.fetch_rss_entries(paginator,
-            Infinity, 90);
-        await Promise.all(items.map(entry =&gt; ingestArticle(hatch, entry)));
-        hatch.finish();
-    } catch(err) {
-        console.log('there was an error', err);
-        process.exitCode = 1;
-    }
+    const items = await Libingester.util.fetch_rss_entries(paginator,
+        Infinity, 90);
+    await Promise.all(items.map(entry =&gt; ingestArticle(hatch, entry)));
+    hatch.finish();
 }
 
 main();
@@ -298,7 +293,7 @@ main();
     "cheerio": "^0.22.0",
     "fathom-web": "^2.2.0",
     "jsdom": "^11.6.2",
-    "libingester": "^2.5.1"
+    "libingester": "^2.5.6"
   },
   "devDependencies": {
     "eslint": "^4.16.0"

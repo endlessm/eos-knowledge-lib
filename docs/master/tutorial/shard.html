@@ -32,10 +32,10 @@
 
 <script src="assets/js/lines_around_headings.js"></script>
 
+<script src="assets/js/trie.js"></script>
 <script src="assets/js/prism-core.js"></script>
 <script src="assets/js/prism-autoloader.js"></script>
 <script src="assets/js/prism_autoloader_path_override.js"></script>
-<script src="assets/js/trie.js"></script>
 
 <link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
 <link rel="shortcut icon" href="assets/images/favicon-32x32.png">
@@ -356,6 +356,9 @@ However, we'll download the video in the section below with Basin.</p>
 }));
 </code></pre>
 <p>The functions <code>getVideoInfo()</code>, <code>licenseFromVimeoLicense()</code>, and <code>tagsFromVimeoTags()</code> are not given here, but you can see them in the <a href="tutorial/shard-full-code.html#indexjs">full code</a>.</p>
+<blockquote>
+<p><strong>NOTE</strong>: Make sure to put this code <em>after</em> the code that cleans up the <code>class</code> attributes on all elements, because <code>Libingester.util.get_embedded_video_asset()</code> adds some new <code>class</code> attributes that are necessary in the final result.</p>
+</blockquote>
 <p>If you run this code and view the result in Hatch Previewer, you should be able to see the article with the placeholders where the videos were.</p>
 <h2 id="creating-a-shard-with-basin">Creating a shard with Basin</h2>
 <p>The tool that we use to turn a hatch into a shard is called Basin.

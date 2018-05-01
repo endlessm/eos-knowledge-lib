@@ -32,10 +32,10 @@
 
 <script src="assets/js/lines_around_headings.js"></script>
 
+<script src="assets/js/trie.js"></script>
 <script src="assets/js/prism-core.js"></script>
 <script src="assets/js/prism-autoloader.js"></script>
 <script src="assets/js/prism_autoloader_path_override.js"></script>
-<script src="assets/js/trie.js"></script>
 
 <link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
 <link rel="shortcut icon" href="assets/images/favicon-32x32.png">
@@ -149,13 +149,8 @@ function ingestArticle({date, title}) {
 }
 
 async function main() {
-    try {
-        const items = await Libingester.util.fetch_rss_entries(feedURI);
-        items.forEach(ingestArticle);
-    } catch(err) {
-        console.log('there was an error', err);
-        process.exitCode = 1;
-    }
+    const items = await Libingester.util.fetch_rss_entries(feedURI);
+    items.forEach(ingestArticle);
 }
 
 main();
@@ -308,15 +303,10 @@ A hatch is libingester's term for the packaged-up content: it's a hatch that you
 <pre><code class="language-javascript">async function main() {
     const hatch = new Libingester.Hatch('cc-blog', 'en');
     const paginator = Libingester.util.create_wordpress_paginator(feedURI);
-    try {
-        const items = await Libingester.util.fetch_rss_entries(paginator,
-            Infinity, 90);
-        await Promise.all(items.map(entry =&gt; ingestArticle(hatch, entry)));
-        hatch.finish();
-    } catch(err) {
-        console.log('there was an error', err);
-        process.exitCode = 1;
-    }
+    const items = await Libingester.util.fetch_rss_entries(paginator,
+        Infinity, 90);
+    await Promise.all(items.map(entry =&gt; ingestArticle(hatch, entry)));
+    hatch.finish();
 }
 </code></pre>
 <p>We're going to use one of libingester's predefined article formats, but it's also possible to write your own.

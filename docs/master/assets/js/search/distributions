@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "distributions", "urls": ["tutorial/install.html#installing-flatpak", "tutorial/install.html#installing-the-endless-sdk"]});
+urls_downloaded_cb({"urls": ["tutorial/install.html#installing-flatpak", "tutorial/install.html#installing-the-endless-sdk"], "token": "distributions"});

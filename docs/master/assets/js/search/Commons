@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "Commons", "urls": ["tutorial/ingester.html#writing-an-ingester", "tutorial/ingester.html#parsing-the-rss-feed", "tutorial/index.html#walkthrough", "tutorial/shard.html#downloading-linked-media"]});
+urls_downloaded_cb({"urls": ["tutorial/ingester.html#writing-an-ingester", "tutorial/ingester.html#parsing-the-rss-feed", "tutorial/index.html#walkthrough", "tutorial/shard.html#downloading-linked-media"], "token": "Commons"});
