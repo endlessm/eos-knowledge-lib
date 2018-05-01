@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["card/default.html#justify", "contentGroup/noResultsMessage.html#justify"], "token": "gtk.justification.left"});
+urls_downloaded_cb({"token": "gtk.justification.left", "urls": ["card/default.html#justify", "contentGroup/noResultsMessage.html#justify"]});
