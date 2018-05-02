@@ -91,7 +91,7 @@ var SearchBox = GObject.registerClass({
         // Don't change the mouse cursor if clicking on the icon will not do
         // anything because there's no text entered
         if (!this.text)
-            return Gtk.EVENT_PROPAGATE;
+            return Gdk.EVENT_PROPAGATE;
 
         const [has_coords, x, y] = event.get_root_coords();
         if (!has_coords)
