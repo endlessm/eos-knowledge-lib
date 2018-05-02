@@ -3,13 +3,13 @@
 const Endless = imports.gi.Endless;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
-const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Knowledge = imports.app.knowledge;
+const Utils = imports.app.utils;
 
 function clamp(x, low, high) {
     return (x > high) ? high : ((x < low) ? low : x);
@@ -55,32 +55,10 @@ var ThemeableImage = new Knowledge.Class({
         this.set_has_window(false);
         this._sizing = 'size-full';
 
-        let file = Gio.File.new_for_uri(this.image_uri);
-        if (file.query_exists(null)) {
-            let loader = new GdkPixbuf.PixbufLoader();
-            let stream = file.read(null);
-
-            /* We do not want to load the whole pixbuf just to extract its size */
-            loader.connect('size-prepared', (loader, width, height) => {
-                this._pixbuf_width = width;
-                this._pixbuf_height = height;
-            });
-
-            /* Read 4k chunks until we get the image size */
-            do {
-                let chunk = stream.read_bytes(4096, null);
-                if (chunk === null || chunk.get_size() === 0)
-                    break;
-                loader.write_bytes(chunk);
-            } while (this._pixbuf_width === undefined);
-
-            try {
-                /* Close stream and loader */
-                stream.close(null);
-
-                /* Ignore errors, we are only interested in the image size */
-                loader.close();
-            } catch (e) { }
+        let size = Utils.get_image_size_from_uri(this.image_uri);
+        if (size) {
+            this._pixbuf_width = size.width;
+            this._pixbuf_height = size.height;
 
             let provider = new Gtk.CssProvider();
             provider.load_from_data(
