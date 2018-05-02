@@ -343,6 +343,8 @@ First start a command shell in the Flatpak sandbox and give it permission to acc
 flatpak run --command=bash --share=network --filesystem=$(pwd) com.endlessm.apps.Sdk
 ```
 
+> **NOTE:** Use `exit` to get out of the shell when you're done with it.
+
 Then create a directory to hold the output, and run `basin-hatch` on the hatch directory:
 
 ```bash
@@ -351,6 +353,10 @@ basin-hatch hatch_cc-blog_20180226_082238 content
 ```
 
 You should see the videos being downloaded, and finally the message `Successfully created content/output.shard`.
+
+> **NOTE:** If you included the code from the [previous section](#downloading-linked-media) in your ingester, you have to do this step quickly after creating the hatch.
+> The Vimeo download links will expire after some time.
+
 Looking at the `content/` directory, there are actually two files in it:
 
 - `output.shard` is a compressed, binary version of the hatch with all the posts, images, videos, and their metadata.
