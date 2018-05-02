@@ -52,9 +52,9 @@ var ParallaxBackground = new Module.Class({
 
         this._background_image_ratio = 1.0;
         try {
-            let stream = Gio.File.new_for_uri(IMAGE_URI).read(null);
-            let bg_pixbuf = GdkPixbuf.Pixbuf.new_from_stream(stream, null);
-            this._background_image_ratio = bg_pixbuf.width / bg_pixbuf.height;
+            let size = Utils.get_image_size_from_uri(IMAGE_URI);
+            if (size)
+                this._background_image_ratio = size.width / size.height;
         } catch (error) {
             logError(error, 'Could not load background image');
         }

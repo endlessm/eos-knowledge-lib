@@ -21,6 +21,7 @@ const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EosMetrics = Config.metrics_enabled ? imports.gi.EosMetrics : MockMetricsModule;
 const Format = imports.format;
 const Gdk = imports.gi.Gdk;
+const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -583,4 +584,39 @@ function parse_uri (uri_str, parse_query) {
     }
 
     return {scheme, user, password, host, port, path, query, fragment};
+}
+
+function get_image_size_from_uri (uri) {
+    let file = Gio.File.new_for_uri(uri);
+
+    if (!file.query_exists(null))
+        return null;
+
+    let loader = new GdkPixbuf.PixbufLoader();
+    let stream = file.read(null);
+    let retval = {};
+
+    /* We do not want to load the whole pixbuf just to extract its size */
+    loader.connect('size-prepared', (loader, width, height) => {
+        retval.width = width;
+        retval.height = height;
+    });
+
+    /* Read 4k chunks until we get the image size */
+    do {
+        let chunk = stream.read_bytes(4096, null);
+        if (chunk === null || chunk.get_size() === 0)
+            break;
+        loader.write_bytes(chunk);
+    } while (retval.width === undefined);
+
+    try {
+        /* Close stream and loader */
+        stream.close(null);
+
+        /* Ignore errors, we are only interested in the image size */
+        loader.close();
+    } catch (e) { }
+
+    return (retval.width && retval.height) ? retval : null;
 }

@@ -139,18 +139,17 @@ var Default = new Module.Class({
     _get_card_type: function () {
         if (!this.model.thumbnail_uri)
             return CardType.LOW_RES_IMAGE;
-        let file = Gio.File.new_for_uri(this.model.thumbnail_uri);
-        let stream = file.read(null);
-        let pixbuf = GdkPixbuf.Pixbuf.new_from_stream(stream, null);
-        let width = pixbuf.get_width();
-        let height = pixbuf.get_height();
+        let size = Utils.get_image_size_from_uri(this.model.thumbnail_uri);
+
+        if (!size)
+            return CardType.LOW_RES_IMAGE;
 
         let chosen_type;
         Object.keys(CardType)
         .filter((key) => this.excluded_types.indexOf(CardType[key]) < 0)
         .every((key) => {
             chosen_type = CardType[key];
-            if (width > THRESHOLDS[key].width && height > THRESHOLDS[key].height) {
+            if (size.width > THRESHOLDS[key].width && size.height > THRESHOLDS[key].height) {
                 return true;
             }
             return false;
