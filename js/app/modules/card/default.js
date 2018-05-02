@@ -464,8 +464,10 @@ var Default = new Module.Class({
             );
             text_constraints = this._get_constraints_post_card(show_context);
         } else if (this._card_type === CardType.MED_RES_IMAGE) {
-            this.get_style_context().add_class('CardPolaroid');
+            let context = this.get_style_context();
+            context.add_class('CardPolaroid');
             if (orientation === Gtk.Orientation.HORIZONTAL) {
+                context.add_class('horizontal');
                 if (real_alloc_width > Card.MaxSize.E) {
                     this._main_layout(
                         real_alloc_width,
@@ -493,6 +495,7 @@ var Default = new Module.Class({
                     this._title_label.valign = Gtk.Align.CENTER;
                 }
             } else {
+                context.add_class('vertical');
                 let inner_content_grid_height;
                 if ((real_alloc_width < Card.MaxSize.C && real_alloc_height < Card.MaxSize.B) || (real_alloc_width < Card.MaxSize.B && real_alloc_height < Card.MaxSize.C)) {
                     inner_content_grid_height = CARD_POLAROID_VERTICAL_HEIGHTS.XSMALL;
