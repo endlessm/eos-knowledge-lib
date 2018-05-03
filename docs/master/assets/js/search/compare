@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "compare", "urls": ["tutorial/shard.html#screenshot-of-hatch-previewer"]});
+urls_downloaded_cb({"urls": ["tutorial/shard.html#screenshot-of-hatch-previewer"], "token": "compare"});
