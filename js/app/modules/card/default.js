@@ -467,6 +467,7 @@ var Default = new Module.Class({
             let context = this.get_style_context();
             context.add_class('CardPolaroid');
             if (orientation === Gtk.Orientation.HORIZONTAL) {
+                context.remove_class('vertical');
                 context.add_class('horizontal');
                 if (real_alloc_width > Card.MaxSize.E) {
                     this._main_layout(
@@ -495,6 +496,7 @@ var Default = new Module.Class({
                     this._title_label.valign = Gtk.Align.CENTER;
                 }
             } else {
+                context.remove_class('horizontal');
                 context.add_class('vertical');
                 let inner_content_grid_height;
                 if ((real_alloc_width < Card.MaxSize.C && real_alloc_height < Card.MaxSize.B) || (real_alloc_width < Card.MaxSize.B && real_alloc_height < Card.MaxSize.C)) {
