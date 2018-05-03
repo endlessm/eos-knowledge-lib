@@ -1,1 +1,1 @@
-fragment_downloaded_cb({"fragment": "Course is a focused experience that guides the user directly to the content through categories. Recommended for sequential educational content. \nTo use it include this in your app s YAML \n", "url": "concepts/presets.html#the-course-preset"});
+fragment_downloaded_cb({"url": "concepts/presets.html#the-course-preset", "fragment": "Course is a focused experience that guides the user directly to the content through categories. Recommended for sequential educational content. \nTo use it include this in your app s YAML \n"});
