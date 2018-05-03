@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/shard.html#downloading-linked-media"], "token": "authentication"});
+urls_downloaded_cb({"token": "authentication", "urls": ["tutorial/shard.html#downloading-linked-media"]});
