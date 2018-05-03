@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "rest", "urls": ["window/simple.html#content"]});
+urls_downloaded_cb({"urls": ["window/simple.html#content"], "token": "rest"});

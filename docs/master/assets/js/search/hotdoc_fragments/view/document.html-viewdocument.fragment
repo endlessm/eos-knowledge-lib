@@ -1,1 +1,1 @@
-fragment_downloaded_cb({"url": "view/document.html#viewdocument", "fragment": "View.Document \n"});
+fragment_downloaded_cb({"fragment": "View.Document \n", "url": "view/document.html#viewdocument"});
