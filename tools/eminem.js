@@ -65,9 +65,6 @@ function inspect_app_id (app_id) {
     let data_dir = DModel.get_data_dir(app_id, null);
     print(Format.vprintf("data dir: %s", [data_dir.get_path()]));
 
-    let ekn_version = DModel.get_ekn_version(app_id, null);
-    print(Format.vprintf("EKN_VERSION: %s", [ekn_version]));
-
     let domain_obj = DModel.Engine.get_default().get_domain_for_app(app_id);
 
     let subscription_id = domain_obj.get_subscription_id();
