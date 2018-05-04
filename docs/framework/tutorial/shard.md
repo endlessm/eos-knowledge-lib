@@ -1,11 +1,11 @@
 ---
 short-description: Refining and packaging the downloaded content
 ...
-# Creating a shard #
+# Creating shards #
 
 In this section, we'll view the blog posts we've ingested in the previous section, and make some improvements to our ingester.
 We'll add some customizations to the visual theme, and make sure videos are downloaded for offline viewing too.
-Then we will package the hatch for distribution, in an archive format called a "shard".
+Then we will package the hatch for distribution, in an archive format called a "shard", and create a second shard that determines how our content is organized in the app.
 
 We'll use Hatch Previewer to view the blog posts.
 If you haven't installed it yet, check how to do so in the [Install](tutorial/install.md#installing-hatch-previwer) section.
@@ -345,6 +345,15 @@ flatpak run --command=bash --share=network --filesystem=$(pwd) com.endlessm.apps
 
 > **NOTE:** Use `exit` to get out of the shell when you're done with it.
 
+Next, create a file inside the hatch directory, called `hatch_sets.json`, with the following content:
+```json
+{
+    "ignore-unlisted": true
+}
+```
+This file is needed because we want to categorize our content ourselves, instead of letting `basin-hatch` do it automatically based on the Wordpress tags from the ingester.
+We'll do this in the [next section](#determining-the-content-structure).
+
 Then create a directory to hold the output, and run `basin-hatch` on the hatch directory:
 
 ```bash
@@ -365,4 +374,116 @@ Looking at the `content/` directory, there are actually two files in it:
 These files are the form in which the content is ultimately given to the user!
 We'll learn what to do with them in the next section of the walkthrough.
 
+## Determining the content structure ##
+
+There's one last thing we have to do before being ready to use the content in an app.
+Most kinds of app experiences that we can build with the tools offered by the modular framework rely on organizing the content into some kind of categories.
+As promised in [a previous part of the walkthrough](tutorial/ingester.md#obtaining-metadata), it's time to learn more about how categories are represented in this toolkit's database format.
+
+From the user's point of view, there are only collections of content, which we call **sets**.
+Sets have metadata just like the assets that we've stored in the hatch so far: for example a title, or a thumbnail image.
+The biggest difference is that sets aren't stored in hatches and aren't ingested — instead, they are created by the app author.
+Sets can be displayed in many different ways depending on their metadata and the app's UI.
+Sets can also be part of other sets, and they can be marked as **featured**, although the meaning of featured depends on how the app's UI interprets it.
+
+From the database's point of view, each asset (set, image, blog post, or other content) is tagged with any number of string identifiers.
+These identifiers are called **tags**, and aren't visible to the user.
+
+Sets have a metadata property called `childTags`, which is an array of tag strings.
+Whichever tags are named in that property are considered to be part of the set.
+So, on the UI side of things, a set may contain articles from one or more tags, and tags may be in one or more sets, or not used in any set at all.
+
+> **NOTE** "Categories", "tags", and even "sets" are overloaded terms — they can mean a lot of different things in different contexts.
+> The way they're used here is quite different from the way they're used in Wordpress, for example.
+>
+> It's best to think of the modular framework's sets and tags as a starting point, not as an ending point or a particular categorization scheme that your app is forced into.
+> As a tool, and combined with different UI modules, it's flexible enough to implement many different kinds of categorization schemes.
+
+Set assets are usually provided in a separate shard from the rest of the content.
+We call this a **permanent shard**.
+(It's a common use case in apps to rotate content out in an update when it becomes old, and at the same time rotate new content in, and these shards are called in contrast **ephemeral shards**.)
+
+The categorization scheme for our app is going to work like this:
+
+- We'll have sets in a sidebar menu in the app.
+  These sets will be the most general ones, corresponding to what Wordpress calls "categories" (usually predefined for a whole blog, and maximum one for each post.)
+  These are the sets we'll mark as featured.
+- Other sets, which we will not mark as featured, will not be directly clickable in a menu in the UI.
+  These will correspond to what Wordpress calls "tags" (free-form, more than one for each post.)
+  These sets will be accessible at the bottom of each blog post; you can click on it to see which other posts included that tag.
+
+Now, in Hatch Previewer, we can scroll the left panel all the way down to see a list of tags, along with how many articles use them.
+(Remember when we first wrote the ingester, we prefixed the tags of the latter kind with `tag:` so we could tell them apart later.)
+
+We'll merge featured sets with only one post into one generic "Blog Posts" set for the purposes of this walkthrough, and create a featured set from a few free-form tags that have lots of posts associated with them.
+Normally we would not do this, since we'd have more content and the number of posts in each set will change anyway as new content rotates in and out, but for this purpose it's nice not to have sets with lone articles in them.
+
+The featured sets will be:
+
+| Set name               | Tag(s)              | Number of articles\*     |
+| ---------------------- | ------------------- | ------------------------ |
+| About Creative Commons | `About CC`          | 13                       |
+| Around the World       | `Global affiliates`, plus all the tags that mention a specific country, city, or language | 11 |
+| Policy, Advocacy & Copyright Reform | `Policy / advocacy / copyright reform` | 9 |
+| Events                 | `Events`            | 7                        |
+| Blog Posts             | `Education / OER`, `Open access`, `Weblog` | 4 |
+| Interviews             | `tag:cctalkswith`   | 3                        |
+
+<sup>\*</sup> At least, in the hatch at the time this tutorial was written.
+
+We'll also choose some of the free-form tags to be non-featured sets.
+For these it doesn't matter if they have only a lone post associated with them.
+They won't show up on the main menu, only as tags at the bottom of articles.
+For example, we'll create a "Copyright Reform" set covering the tags `tag:copyright reform`, `tag:eu copyright reform`, and `tag:#fixcopyright`.
+
+## Creating a permanent shard for the sets ##
+
+We'll write a Basin manifest for the permanent shard and use Basin to create it.
+The manifest looks something like this:
+```json
+{
+    "sets": [
+        {
+            "title": "About Creative Commons",
+            "featured": true,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "About CC"
+            ]
+        },
+
+        ...
+
+        {
+            "title": "Copyright Reform",
+            "featured": false,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "tag:#fixcopyright",
+                "tag:copyright reform",
+                "tag:eu copyright reform"
+            ]
+        },
+
+        ...
+    ]
+}
+```
+(This shows one example each of a featured set and a non-featured set.
+`EknSetObject` is a "magic" tag that the frontend requires; for now it must be added manually.)
+
+Using Basin to convert the manifest into a shard is simple:
+```bash
+basin sets.json sets.shard
+```
+
+Compare this to how we created a shard [earlier](#creating-a-shard-with-basin).
+To create this shard, we'll use the Basin tool itself instead of `basin-hatch`.
+The `basin-hatch` tool uses Basin under the hood.
+The Basin manifest is the lowest-level description of what goes into a shard, and if you are writing more complicated apps you can write a tool similar to `basin-hatch` that converts from some higher-level format into a Basin manifest and uses Basin under the hood to create the shard.
+
 ## Further remarks and ideas ##
+
+You can create more than one shard for the content and more than one shard for the sets if you want to organize your app into multiple, separately-installable "content packs."
+
+You can also associate images with your sets, but we'll skip that for the purposes of this section, since the UI we'll use in the next section doesn't have a space to display the sets' images.
