@@ -153,7 +153,7 @@ The data model for offline content that we use here, allows tagging content with
 These tags can be any string, and are not visible to users of the app.
 Later on, when we define the content structure for the app, we can create a "set" that is visible in the app's UI.
 A set includes any number of tags, and can be marked "featured" to make it more prominent in the app, or not.
-(You'll learn more about this later in the walkthrough.)
+(You'll learn more about this [later in the walkthrough](tutorial/shard.md#determining-the-content-structure).)
 
 Later on we will make Wordpress categories into featured sets, and Wordpress tags non-featured.
 For now, we will mark the tag IDs of Wordpress tags with `tag:` and leave the Wordpress categories as-is, so that we'll know what to do later.
