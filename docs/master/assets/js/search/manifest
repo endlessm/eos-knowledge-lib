@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "manifest", "urls": ["tools.html#eminem", "tutorial/ingester.html#putting-it-all-together"]});
+urls_downloaded_cb({"urls": ["tools.html#eminem", "tutorial/ingester.html#putting-it-all-together"], "token": "manifest"});

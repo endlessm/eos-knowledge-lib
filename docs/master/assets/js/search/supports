@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "supports", "urls": ["window/simple.html#search"]});
+urls_downloaded_cb({"urls": ["window/simple.html#search"], "token": "supports"});
