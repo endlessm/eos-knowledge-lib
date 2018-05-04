@@ -1,0 +1,7 @@
+overrides:
+  home-featured-articles-arrangement:
+    type: Arrangement.Half
+    styles:
+      - main-arrangement
+---
+!import blog

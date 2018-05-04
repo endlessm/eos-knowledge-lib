@@ -1,0 +1,4 @@
+_build
+_install
+_repo
+.flatpak-builder
