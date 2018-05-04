@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="660"
+   height="80"
+   viewBox="0 0 660 80"
+   version="1.1"
+   id="SVGRoot"
+   sodipodi:docname="titleImage.svg"
+   inkscape:version="0.92.2 2405546, 2018-03-11">
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="4"
+     inkscape:cx="327.23795"
+     inkscape:cy="39.509353"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:window-width="3200"
+     inkscape:window-height="1648"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:grid-bbox="true"
+     showguides="false"
+     inkscape:pagecheckerboard="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4620"
+       spacingx="2"
+       spacingy="2"
+       empspacing="8" />
+  </sodipodi:namedview>
+  <defs
+     id="defs10">
+    <filter
+       inkscape:menu-tooltip="Colorized mountain tops out of the fog"
+       inkscape:menu="Overlays"
+       inkscape:label="Scotland"
+       style="color-interpolation-filters:sRGB"
+       id="filter4735">
+      <feTurbulence
+         baseFrequency="0.03 0.1"
+         numOctaves="5"
+         type="fractalNoise"
+         result="result91"
+         id="feTurbulence4717" />
+      <feDisplacementMap
+         scale="5"
+         in2="result91"
+         id="feDisplacementMap4719"
+         xChannelSelector="A"
+         yChannelSelector="A" />
+      <feColorMatrix
+         values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 3 -1 "
+         result="result5"
+         id="feColorMatrix4721" />
+      <feComposite
+         in2="result5"
+         operator="in"
+         in="SourceGraphic"
+         result="result6"
+         id="feComposite4723" />
+      <feTurbulence
+         baseFrequency="0.03 0.1"
+         numOctaves="5"
+         type="fractalNoise"
+         result="result92"
+         id="feTurbulence4725" />
+      <feDisplacementMap
+         result="result4"
+         scale="4"
+         yChannelSelector="A"
+         xChannelSelector="R"
+         in="result6"
+         in2="result92"
+         id="feDisplacementMap4727" />
+      <feComposite
+         in2="result4"
+         operator="in"
+         result="result2"
+         in="result4"
+         id="feComposite4729" />
+      <feComposite
+         in2="result2"
+         operator="over"
+         in="result2"
+         result="result93"
+         id="feComposite4731" />
+      <feBlend
+         mode="multiply"
+         in2="result93"
+         id="feBlend4733" />
+    </filter>
+  </defs>
+  <metadata
+     id="metadata13">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1"
+     transform="translate(0,-48)">
+    <g
+       id="g4741"
+       transform="translate(117.257,27.183)">
+      <path
+         style="stroke:none;stroke-opacity:1;fill:#ffffff;fill-opacity:1"
+         d="M 63.341797 0.97070312 C 63.341797 0.97070312 61.119719 5.5674844 62.886719 8.6464844 C 63.431719 9.5934844 64.102219 10.376141 64.824219 10.994141 C 63.124219 10.235141 61.240719 9.8164062 59.261719 9.8164062 C 54.529719 9.8164062 50.214719 12.254734 47.761719 16.177734 C 45.629719 15.214734 43.313937 14.712891 40.960938 14.712891 C 35.508938 14.712891 30.543031 17.320016 27.457031 21.666016 C 24.462031 19.079016 20.632375 17.634766 16.609375 17.634766 C 7.450375 17.634766 0 25.086141 0 34.244141 C 0 36.946141 0.66192188 39.598516 1.9199219 41.978516 C 1.2109219 43.624516 0.83789062 45.414891 0.83789062 47.212891 C 0.83789062 54.047891 6.0548437 59.686375 12.714844 60.359375 L 12.714844 73 C 12.714844 74.657 14.057844 76 15.714844 76 C 17.371844 76 18.714844 74.657 18.714844 73 L 18.714844 61.115234 C 20.513844 61.840234 22.437344 62.21875 24.402344 62.21875 C 24.506344 62.21875 24.610844 62.207078 24.714844 62.205078 L 24.714844 77 C 24.714844 78.657 26.057844 80 27.714844 80 C 29.371844 80 30.714844 78.657 30.714844 77 L 30.714844 60.853516 C 31.772844 60.373516 32.780844 59.777594 33.714844 59.058594 C 36.615844 61.318594 40.163812 62.544922 43.882812 62.544922 C 45.900813 62.544922 47.867844 62.169609 49.714844 61.474609 L 49.714844 73 C 49.714844 74.657 51.057844 76 52.714844 76 C 54.371844 76 55.714844 74.657 55.714844 73 L 55.714844 59.957031 C 57.486844 60.798031 59.431969 61.246094 61.417969 61.246094 C 61.855969 61.246094 62.287844 61.222641 62.714844 61.181641 L 62.714844 77 C 62.714844 78.657 64.057844 80 65.714844 80 C 67.371844 80 68.714844 78.657 68.714844 77 L 68.714844 59.064453 C 72.362844 56.675453 74.78125 52.557859 74.78125 47.880859 C 74.78125 47.380859 74.753266 46.879859 74.697266 46.380859 C 78.065266 43.242859 79.974609 38.881188 79.974609 34.242188 C 79.974609 30.980187 78.995812 27.843594 77.257812 25.183594 C 78.003812 25.378594 78.793625 25.581547 79.640625 25.810547 C 87.339625 27.894547 92.695203 25.443891 93.908203 20.962891 C 95.121203 16.483891 89.862062 11.161172 82.164062 9.0761719 C 81.249062 8.8271719 80.283781 8.5552031 79.300781 8.2832031 C 79.415781 7.6052031 79.433828 6.8580781 79.298828 6.0800781 C 78.866828 3.5990781 75.572266 2.1015625 75.572266 2.1015625 C 75.572266 2.1015625 73.142672 4.4778125 73.388672 6.8828125 C 72.591672 6.7498125 71.823609 6.6570937 71.099609 6.6210938 C 70.899609 5.9000937 70.607313 5.1661719 70.195312 4.4511719 C 68.426313 1.3691719 63.341797 0.97070312 63.341797 0.97070312 z "
+         transform="translate(-117.257,20.817)"
+         id="path78" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:33.54764175px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.83869106"
+       x="95.993935"
+       y="126.97433"
+       id="text4817"
+       transform="scale(0.99812964,1.0018739)"><tspan
+         sodipodi:role="line"
+         x="95.993935"
+         y="126.97433"
+         id="tspan4819"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:89.46037292px;font-family:Oswald;-inkscape-font-specification:'Oswald, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffdcb8;fill-opacity:0.85390948;stroke-width:0.83869106"><tspan
+           id="tspan4821"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:89.46037292px;font-family:Oswald;-inkscape-font-specification:'Oswald, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke-width:0.83869106">COMMONS</tspan><tspan
+           style="fill:#ee5b32;fill-opacity:1"
+           id="tspan862">BLOG</tspan></tspan></text>
+  </g>
+</svg>

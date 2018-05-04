@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Commons Blog
+Exec=/usr/bin/flatpak run org.example.CreativeCommonsBlog
+Icon=org.example.CreativeCommonsBlog
+Comment=Blog posts from the Creative Commons organization, offline!

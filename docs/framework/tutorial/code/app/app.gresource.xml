@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gresources>
+    <gresource prefix="/app">
+        <file compressed="true">app.json</file>
+        <file compressed="true">app.yaml</file>
+        <file compressed="true">overrides.css</file>
+        <file compressed="true">overrides.scss</file>
+        <file compressed="true">credits.json</file>
+        <file compressed="true" preprocess="xml-stripblanks">assets/titleImage</file>
+    </gresource>
+</gresources>
