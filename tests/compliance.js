@@ -6,6 +6,9 @@ test_card_compliance, test_card_container_fade_in_compliance */
 const {DModel, Gtk} = imports.gi;
 const Lang = imports.lang;
 
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HistoryStore = imports.app.historyStore;
 const Minimal = imports.tests.minimal;
@@ -14,7 +17,6 @@ const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
-const Utils = imports.tests.utils;
 
 function test_card_compliance(CardClass, setup=function () {}) {
     describe(CardClass.$gtype.name + ' implements Card correctly', function () {
