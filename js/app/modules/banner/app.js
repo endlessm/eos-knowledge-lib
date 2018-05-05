@@ -13,12 +13,20 @@ const TITLE_IMAGE_URI = 'resource:///app/assets/titleImage';
 
 /**
  * Class: App
+ * A module for the application's logo
  *
- * A module for the application's logo.
+ * The `Banner.App` module displays a logo for the app, which should include a
+ * wordmark.
+ * Optionally it can display a subtitle below the logo.
+ *
+ * The logo must be available in the app's GResource file, at the path
+ * `/app/assets/titleImage`.
+ *
+ * Compare to [](Banner.Dynamic).
  *
  * CSS classes:
- *   app-banner - on the module itself
- *   subtitle - on the label displaying the app's subtitle
+ * - `app-banner` - on the module itself
+ * - `subtitle` - on the label displaying the app's subtitle
  */
 var App = new Module.Class({
     Name: 'Banner.App',
@@ -27,8 +35,8 @@ var App = new Module.Class({
     Properties: {
         /**
          * Property: show-subtitle
-         * Whether to show an application subtitle underneath the image.
-         * Subtitle will be taken from the desktop file description field.
+         * Whether to show the application's subtitle underneath the image.
+         * The subtitle will be taken from the desktop file description field.
          */
         'show-subtitle': GObject.ParamSpec.boolean('show-subtitle',
             'Show Subtitle', 'Show Subtitle',
