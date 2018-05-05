@@ -8,7 +8,7 @@ Here are the types of UI modules and how they fit together.
 - **Arrangement** - These modules generally have a `card` slot which a
   **Card** can go into.
   They arrange a set of dynamically created cards on the screen.
-- **Banner** - These modules represent a piece of data which is
+- **[Banner](modules/banner.md)** - These modules represent a piece of data which is
   presented to the user, such as an app's logo or a search term.
 - **Card** - These modules represent a document in the database of
   offline content, but are not a full **View** of the document.
