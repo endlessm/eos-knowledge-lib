@@ -9,7 +9,7 @@ permalink: /releases/schedule/
 | [SDK2]        | November 20, 2017 | 3.26
 | [SDK3]        | February 5, 2018  |
 | **[SDK4]**    | May 4, 2018       | 3.28
-| SDK5          | August 2, 2018    |
+| [SDK5]        | August 2, 2018    |
 | SDK6          | November 1, 2018  | 3.30
 
 ## Release cycle ##
@@ -41,3 +41,5 @@ permalink: /releases/schedule/
 [SDK2]: /eos-knowledge-lib/releases/2
 [SDK3]: /eos-knowledge-lib/releases/3
 [SDK4]: /eos-knowledge-lib/releases/4
+[SDK5]: /eos-knowledge-lib/releases/5
+[SDK6]: /eos-knowledge-lib/releases/6
