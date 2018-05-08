@@ -590,11 +590,13 @@ YAML_LOG_COMPILER = $(top_srcdir)/tests/autobahn/testautobahn.sh
 # (May need to change to AM_TESTS_ENVIRONMENT in a later version of Automake)
 # FIXME: Re-enable JIT when moving to GNOME 3.26 or patching mozjs38 (see
 # https://phabricator.endlessm.com/T18981)
+# FIXME: LD_PRELOAD=libGL.so is needed for test to work properly under xvfb-run-session
 TESTS_ENVIRONMENT = \
 	export NO_AT_BRIDGE=1; \
 	export GJS_DISABLE_JIT=1; \
 	export GJS_PATH="$(top_srcdir):$(top_srcdir)/js:$(top_builddir)/js"; \
 	export GI_TYPELIB_PATH="$(top_builddir)$${GI_TYPELIB_PATH:+:$$GI_TYPELIB_PATH}"; \
+	export LD_PRELOAD=libGL.so \
 	export LD_LIBRARY_PATH="$(top_builddir)/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
 	export G_TEST_SRCDIR="$(abs_srcdir)/tests"; \
 	export G_TEST_BUILDDIR="$(abs_builddir)/tests"; \
