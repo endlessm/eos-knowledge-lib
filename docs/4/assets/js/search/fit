@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["modules.html#modules", "tutorial/ingester.html#writing-an-ingester"], "token": "fit"});
+urls_downloaded_cb({"token": "fit", "urls": ["modules.html#modules", "tutorial/ingester.html#writing-an-ingester"]});

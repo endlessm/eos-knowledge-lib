@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tools.html#kermit", "tools.html#eminem"], "token": "com.endlessm.platform"});
+urls_downloaded_cb({"token": "com.endlessm.platform", "urls": ["tools.html#kermit", "tools.html#eminem"]});

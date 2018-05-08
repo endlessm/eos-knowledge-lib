@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tools.html#kactus", "tools.html#using2"], "token": "gui"});
+urls_downloaded_cb({"token": "gui", "urls": ["tools.html#kactus", "tools.html#using2"]});
