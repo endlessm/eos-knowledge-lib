@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/ingester.html#creating-a-hatch"], "token": "term"});
+urls_downloaded_cb({"token": "term", "urls": ["tutorial/ingester.html#creating-a-hatch"]});

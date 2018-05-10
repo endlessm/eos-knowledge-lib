@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/index.html#walkthrough"], "token": "Walkthrough"});
+urls_downloaded_cb({"token": "Walkthrough", "urls": ["tutorial/index.html#walkthrough"]});

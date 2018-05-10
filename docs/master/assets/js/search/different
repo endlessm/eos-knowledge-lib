@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/install.html#installing-hatch-previewer"], "token": "different"});
+urls_downloaded_cb({"token": "different", "urls": ["tutorial/install.html#installing-hatch-previewer"]});
