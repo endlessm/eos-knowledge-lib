@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "packaged", "urls": ["tutorial/ingester.html#creating-a-hatch"]});
+urls_downloaded_cb({"urls": ["tutorial/ingester.html#creating-a-hatch"], "token": "packaged"});

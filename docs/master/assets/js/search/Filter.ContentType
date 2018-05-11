@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "Filter.ContentType", "urls": ["filter/contentType.html#filtercontenttype1", "filter/contentType.html#filtercontenttype"]});
+urls_downloaded_cb({"urls": ["filter/contentType.html#filtercontenttype1", "filter/contentType.html#filtercontenttype"], "token": "Filter.ContentType"});

@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "unzip", "urls": ["tutorial/install.html#installing-nodejs"]});
+urls_downloaded_cb({"urls": ["tutorial/install.html#installing-nodejs"], "token": "unzip"});
