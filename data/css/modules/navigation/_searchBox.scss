@@ -4,10 +4,10 @@
 
     background-color: transparentize(white, 1 - 0.8);
 
-    padding: 0.75em 0.55em 0.75em 0.55em;
-    color: transparentize(black, 1 - 0.80);
-    caret-color: transparentize(black, 1 - 0.80);
-    font-size: 16px;
+    padding: 14px 0.55em 14px 0.55em;
+    color: transparentize(black, 1 - 0.60);
+    caret-color: transparentize(black, 1 - 0.60);
+    font-size: 21px;
 
     border-radius: 10em;
 
@@ -19,20 +19,29 @@
     // Workaround for https://gitlab.gnome.org/GNOME/gtk/issues/196
     &.fake-hover, &:focus {
         background-color: transparentize(white, 1 - 0.96);
+
+        image {
+            color: transparentize(black, 1 - 0.60);
+        }
     }
 
     image {
         color: transparentize(black, 1 - 0.40);
-        margin: 3px 7px 3px 5px;
+        margin: 4px 7px 4px 5px;
     }
 
     &.text-entered image:hover {
-        color: transparentize(black, 1 - 0.80);
+        color: transparentize(black, 1 - 0.85);
     }
 
     .PagerSimple & {
-        box-shadow: 0 3px 8px transparentize(black, 1 - 0.35);
+        box-shadow: 0 1px 2px transparentize(black, 1 - 0.30);
         min-width: 400px;
+    }
+
+    .PagerSimple &.fake-hover,
+    .PagerSimple &:focus {
+        box-shadow: 0 3px 6px transparentize(black, 1 - 0.50);
     }
 
     .composite .PagerSimple & {
@@ -40,12 +49,10 @@
     }
 
     .titlebar & {
+        background-color: transparentize(white, 1 - 0.85);
         padding: 1px 2px 1px 4px;
         border-radius: 15px;
-
-        image {
-            margin: 0px 4px;
-        }
+        font-size: 16px;
     }
 
     frame {
