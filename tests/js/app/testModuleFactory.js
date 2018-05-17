@@ -3,6 +3,10 @@
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+Utils.register_test_gresource();
+
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Knowledge = imports.app.knowledge;
@@ -468,5 +472,39 @@ describe('Module factory', function () {
             module_factory.create_module_for_slot(module1, 'optional-slot');
             expect(module2.expand).toEqual(true);
         });
+    });
+});
+
+describe('Custom Modules', function () {
+    let root, module_factory;
+
+    beforeEach(function () {
+        module_factory = new ModuleFactory.ModuleFactory({
+            app_json: {
+                version: 2,
+                root: {
+                    type: 'Layout.Box',
+                    slots: {
+                        contents: [
+                            {
+                                type: 'Custom.Custom',
+                            },
+                            {
+                                type: 'Layout.Custom',
+                            },
+                        ],
+                    },
+                },
+            },
+        });
+        root = module_factory.create_root_module();
+    });
+
+    it ('handles new modules', function () {
+        expect(root).toBeDefined();
+    });
+
+    it('handles imports between new modules', function () {
+        expect(Gtk.test_find_label(root, 'Overridden')).not.toBeNull();
     });
 });

@@ -1,9 +1,11 @@
 <?xml version="1.0" ?>
 <gresources>
-    <gresource prefix="/app/assets">
-        <file>titleImage</file>
-        <file>backgroundHome</file>
-        <file>logo</file>
+    <gresource prefix="/app">
+        <file>assets/titleImage</file>
+        <file>assets/backgroundHome</file>
+        <file>assets/logo</file>
+        <file>js/custom/custom.js</file>
+        <file>js/layout/custom.js</file>
     </gresource>
     <gresource prefix="/com/endlessm/thrones">
         <file compressed="true">joffrey.jpg</file>
