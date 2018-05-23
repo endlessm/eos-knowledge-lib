@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/shard.html#page-description"], "token": "SCSS"});
+urls_downloaded_cb({"token": "SCSS", "urls": ["tutorial/app.html#colors-and-fonts", "tutorial/app.html#theme-changes", "tutorial/shard.html#page-description"]});

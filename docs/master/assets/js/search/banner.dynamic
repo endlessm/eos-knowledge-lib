@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["banner/dynamic.html#bannerdynamic1", "banner/dynamic.html#bannerdynamic"], "token": "banner.dynamic"});
+urls_downloaded_cb({"token": "banner.dynamic", "urls": ["banner/dynamic.html#bannerdynamic1", "banner/dynamic.html#bannerdynamic", "banner/app.html#bannerapp1"]});

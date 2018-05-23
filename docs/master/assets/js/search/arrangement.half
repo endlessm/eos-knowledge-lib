@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["arrangement/half.html#arrangementhalf1", "arrangement/half.html#arrangementhalf"], "token": "arrangement.half"});
+urls_downloaded_cb({"token": "arrangement.half", "urls": ["arrangement/half.html#arrangementhalf1", "arrangement/half.html#arrangementhalf", "tutorial/app.html#customizing-the-front-page-ui"]});

@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/shard.html#downloading-linked-media"], "token": "skip"});
+urls_downloaded_cb({"token": "skip", "urls": ["tutorial/app.html#meson-build-file", "tutorial/shard.html#downloading-linked-media", "tutorial/shard.html#further-remarks-and-ideas"]});

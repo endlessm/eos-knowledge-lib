@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/ingester.html#obtaining-metadata"], "token": "marked"});
+urls_downloaded_cb({"token": "marked", "urls": ["tutorial/ingester.html#obtaining-metadata", "tutorial/shard.html#page-description"]});

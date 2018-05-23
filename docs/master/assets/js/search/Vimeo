@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/shard.html#downloading-linked-media"], "token": "Vimeo"});
+urls_downloaded_cb({"token": "Vimeo", "urls": ["tutorial/shard.html#downloading-linked-media", "tutorial/shard.html#creating-a-shard-with-basin"]});

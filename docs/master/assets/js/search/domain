@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/shard.html#fixing-the-missing-images"], "token": "domain"});
+urls_downloaded_cb({"token": "domain", "urls": ["tutorial/app.html#testing-the-content", "tutorial/shard.html#fixing-the-missing-images"]});

@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/index.html#walkthrough"], "token": "credit"});
+urls_downloaded_cb({"token": "credit", "urls": ["tutorial/app.html#attributing-the-assets", "tutorial/index.html#walkthrough"]});

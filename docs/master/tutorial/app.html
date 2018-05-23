@@ -1,0 +1,581 @@
+<html lang="en">
+<head>
+
+<base href="..">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>The app</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/isotope.pkgd.min.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+<link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
+<link rel="shortcut icon" href="assets/images/favicon-32x32.png">
+<link href="https://fonts.googleapis.com/css?family=Lato%7CMontserrat" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/custom.css">
+
+</head>
+
+<body class="no-script
+" data-spy="scroll" data-target="#toc" data-offset="70">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+  <div class="container-fluid">
+    <div class="navbar-right">
+      <a id="toc-toggle">
+        <span class="glyphicon glyphicon-menu-right"></span>
+        <span class="glyphicon glyphicon-menu-left"></span>
+      </a>
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-header">
+      <a id="sidenav-toggle">
+        <span class="glyphicon glyphicon-menu-right"></span>
+        <span class="glyphicon glyphicon-menu-left"></span>
+      </a>
+      <a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+<img src="assets/images/Endless_mark_orange.svg" style="width: 48px" alt="Home" id="home">
+      </a>
+      <form action="" class="navbar-form pull-right" id="navbar-search-form">
+        <div class="form-group has-feedback">
+          <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+          <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+        </div>
+      </form>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-wrapper">
+      <ul class="nav navbar-nav" id="menu">
+      </ul>
+      <div class="hidden-xs hidden-sm navbar-text navbar-center">
+<p><b>Modular Framework</b></p>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+<div data-extension="core" data-hotdoc-in-toplevel="True" data-hotdoc-project="framework-0" data-hotdoc-ref="tutorial/app.html" class="page_container" id="page-wrapper">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				
+<div id="page-description" data-hotdoc-source="app.md" data-hotdoc-role="main">
+<h1 id="the-app">The app</h1>
+<p>In this section we'll put the shards, that we created in the previous section, into an app, design a UI for it, and write CSS theming.
+Then we'll build that into a Flatpak bundle and learn how to distribute it.</p>
+<p>For most of the commands in this section, you'll need to enter a command shell in the Flatpak sandbox, giving it permission to access the current directory and the display server, and to export our app ID on the session bus:</p>
+<pre><code class="language-bash">flatpak run --socket=x11 --socket=wayland --own-name=org.example.CreativeCommonsBlog --filesystem=$(pwd) --command=bash com.endlessm.apps.Sdk
+</code></pre>
+<blockquote>
+<p><strong>NOTE:</strong> When you're done with the shell, use <code>exit</code> to get out of it.</p>
+</blockquote>
+<h2 id="testing-the-content">Testing the content</h2>
+<p>At this point, we have all our content and can put it in a pre-fabricated app UI just to see how it looks.</p>
+<p>An app first needs an app ID, which is a <a href="https://en.wikipedia.org/wiki/Reverse_domain_name_notation">"reverse domain name"</a>.
+We'll pick <code>org.example.CreativeCommonsBlog</code> for this tutorial.</p>
+<p>For the app, we need a description of the UI in a file called <code>app.yaml</code>.
+We build UIs using a <strong>declarative</strong> YAML syntax.
+(Declarative here means that there's no programming language in which you can program the app's behavior; only a description of which parts there are and how they fit together.)</p>
+<p>We'll describe this file format, as well as use it to customize our app, more in the <a href="tutorial/app.html#tweaking-the-app-ui">next section</a>.
+For now, we'll just import a pre-fabricated app UI template:</p>
+<pre><code class="language-yaml">!import blog
+</code></pre>
+<p>We also need a theme, which we'll cover in <a href="tutorial/app.html#theming-the-app">a following section</a>.
+For now, we'll create <code>overrides.scss</code> and import the default theme that goes along with the pre-fabricated template we picked above:</p>
+<pre><code class="language-scss">@import 'blog';
+</code></pre>
+<p>We also need a <a href="https://developer.gnome.org/gio/stable/GResource.html">GResource bundle</a>, which for testing the app can simply be empty.
+GResource bundles are a way to make auxiliary files available to an app, without worrying about what path they are installed at.
+You can read more in the <a href="https://developer.gnome.org/gio/stable/GResource.html">documentation</a>.
+To create it we'll write an empty GResource manifest file, called <code>app.gresource.xml</code>:</p>
+<pre><code class="language-xml">&lt;?xml version='1.0' encoding='utf-8'?&gt;
+&lt;gresources&gt;
+    &lt;gresource prefix="/app"&gt;
+    &lt;/gresource&gt;
+&lt;/gresources&gt;
+</code></pre>
+<p>Build the GResource with this command:</p>
+<pre><code class="language-bash">glib-compile-resources app.gresource.xml
+</code></pre>
+<p>Finally, we'll need a content manifest file.
+Copy the <code>output.shard</code> and <code>sets.shard</code> from <a href="tutorial/shard.html">the previous section</a> into the directory where you're building your app.
+Then, generate the manifest with a tool called <a href="tools.html#eminem"><code>eminem</code></a>:</p>
+<pre><code class="language-bash">eminem regenerate .
+</code></pre>
+<p>To run the app, we use a script called <code>ekn-app-runner</code>, which gets the app ID and the path to the GResource bundle.
+We also pass it a few options to tell it where to find the UI file, the theme, and the content:</p>
+<pre><code class="language-bash">ekn-app-runner org.example.CreativeCommonsBlog app.gresource -J app.yaml -O overrides.scss -p .
+</code></pre>
+<p>You should see something like this:</p>
+<p><img src="tutorial/images/ccapp-screenshot1.png" alt="Screenshot of Creative Commons Blog app" id="screenshot-of-creative-commons-blog-app"></p>
+<p>You can browse the app, try a few searches, and see that the content is all there.
+However, in the next sections we'll do some simple customizations to make it look less like a generic app and more like a Creative Commons app.</p>
+<h2 id="tweaking-the-app-ui">Tweaking the app UI</h2>
+<p>We're using the "Blog" app preset.
+You can read more about it in the <a href="concepts/presets.html#blog">presets documentation</a>.
+In this section, we're going to change a few things in order to make the app not completely a standard copy of the "Blog" preset.</p>
+<h3 id="logo">Logo</h3>
+<p>First of all we are going to add a logo to the app.
+There is already space for a logo in the Blog preset, although nothing is occupying it right now, so all we need to do is find a logo to add.
+Luckily, there's one in this tutorial that you can reuse.
+You can find it in the <a href="tutorial/app-full-code.html#assets/titleImage.svg">full code</a>; right-click to download it, and save it as <code>assets/titleImage.svg</code> in your app directory. Also make a copy <em>without the <code>.svg</code> extension</em>, as this is needed for the GResource path below.</p>
+<p>The preset includes an <code>App.Banner</code> module, and from its <a href="banner/app.html#Banner.App">documentation</a> you can see that it will look for a logo at the GResource path <code>/app/assets/titleImage</code>.
+Add a line to the GResource manifest:</p>
+<pre><code class="language-xml">&lt;file compressed="true" preprocess="xml-stripblanks"&gt;assets/titleImage&lt;/file&gt;
+</code></pre>
+<p>Then recompile the GResource bundle as above:</p>
+<pre><code class="language-bash">glib-compile-resources app.gresource.xml
+</code></pre>
+<p>Run the app with the same command as above, and you'll see the logo in its place in the upper left corner, at the top of the side menu.</p>
+<p><img src="tutorial/images/ccapp-logo.png" alt="Closeup of Creative Commons Blog app's logo" width="300" id="closeup-of-creative-commons-blog-apps-logo"></p>
+<h3 id="customizing-the-front-page-ui">Customizing the front page UI</h3>
+<p>In the presets documentation, you'll see a list of "variable names" and what parts of the UI they control.
+These variables can also be customized in the <code>app.yaml</code> file.
+The format of this file is described in <a href="concepts/yaml_format.html">the documentation</a>, and the variables are specifically described in the <a href="concepts/yaml_format.html#overrides">"Overrides" section</a>.
+We'll customize one of the variables in this section, to give you an idea of how it works.</p>
+<p>For a customization that we can see the effect of immediately, let's customize the arrangement of cards on the app's home page.
+As you can see from the <a href="concepts/presets.html#blog">Blog preset's documentation</a>, there is a variable named <code>home-featured-articles-arrangement</code> that seems to do what we want.
+Let's replace the current [Arrangement.List] with an [Arrangement.Half].
+(You can read more about arrangements through the documentation links above.)</p>
+<p>Add these lines to your <code>app.yaml</code> file before the <code>!import</code> declaration, then run the app again to see the effect:</p>
+<pre><code class="language-yaml">overrides:
+  home-featured-articles-arrangement:
+    type: Arrangement.Half
+    styles:
+      - main-arrangement
+---
+</code></pre>
+<blockquote>
+<p><strong>NOTE</strong>:The <code>styles</code> key is there to give the new module the same CSS class as the old one.
+That's a bit obscure, though. Currently the only way to find that out is to look at the <a href="https://github.com/endlessm/eos-knowledge-lib/blob/master/data/preset/blog.yaml">source code for the Blog preset</a>.)</p>
+</blockquote>
+<p><img src="tutorial/images/ccapp-screenshot2.png" alt="Screenshot of Creative Commons Blog app" id="screenshot-of-creative-commons-blog-app1"></p>
+<p>The images look a bit nicer now, since they fit better with the size of the cards in this arrangement.</p>
+<h2 id="theming-the-app">Theming the app</h2>
+<p>In this section we'll try to make the app match the Creative Commons brand from their website a bit more.</p>
+<h3 id="colors-and-fonts">Colors and fonts</h3>
+<p>First of all, we need to get the app to use the colors and typography that we also <a href="tutorial/shard.html#customizing-the-fonts-and-colors">customized in the ingester</a>.</p>
+<p>We do this in our SCSS file, much in the same way as we did it in the ingester.
+Add the following lines to <code>overrides.scss</code>, <em>above</em> the <code>@import</code> line so that the variables are picked up by the default theme:</p>
+<pre><code class="language-scss">$primary-light-color: #fb7928;
+$primary-medium-color: #ee5b32;
+$accent-light-color: #049bce;
+$accent-dark-color: #464646;
+$background-light-color: white;
+$background-dark-color: #e9e9e9;
+
+$body-font: 'Source Sans Variable';
+$title-font: 'Source Sans Variable';
+$display-font: 'Source Sans Variable';
+$logo-font: 'Source Sans Variable';
+$context-font: 'Source Sans Variable';
+$support-font: 'Source Sans Variable';
+</code></pre>
+<p>Run the app again and compare it to the earlier screenshot:</p>
+<p><img src="tutorial/images/ccapp-screenshot3.png" alt="Screenshot of Creative Commons Blog app" id="screenshot-of-creative-commons-blog-app2"></p>
+<p>The Source Sans font looks very similar to the default theme's Fira Sans font, so the difference in fonts isn't immediately obvious.</p>
+<h3 id="theme-changes">Theme changes</h3>
+<p>The default "Blog" theme was apparently intended for apps with shorter category names; our side menu doesn't look good right now.
+The category names are ellipsized, and they don't have padding on the right hand that visually balances the padding on the left.</p>
+<p>To experiment in a CSS "playground", and find out the CSS classes that need to be customized, you can run the app with the <a href="https://wiki.gnome.org/Projects/GTK%2B/Inspector">GTK inspector</a>.
+Prepend <code>GTK_DEBUG=interactive</code> to the command that you run the app with, to start the inspector.</p>
+<p>We'll use the inspector to take a look at the side menu. Use <code>Alt</code>+```` to switch to the inspector window, and click the targeting tool on the side menu.
+This will bring up some basic information about the widget, and you can see for example that it is about 250 pixels wide.
+Change from the "Miscellaneous" screen to the "CSS Selector" screen and you can see that one of the CSS selectors for the outermost widget occupying that space is <code>.sidebar</code>.</p>
+<p>This gives us all the information we need to switch to the "CSS" tab in the inspector and live-tweak the width.
+We'll use the full selector including the parent [Layout.Sidebar] module, <code>.LayoutSidebar .sidebar</code>, because a lot of the default theme is written on a module basis.
+If you use only <code>.sidebar</code> then it could conflict with other modules that might have a <code>.sidebar</code> selector, and it also might not have enough <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity">specificity</a> to override the default rule.
+Write in the CSS field:</p>
+<pre><code class="language-css">.LayoutSidebar .sidebar {
+    min-width: 400px;
+}
+</code></pre>
+<p>We can now copy this CSS into our <code>overrides.scss</code>.
+Make sure to put it <em>below</em> the <code>@import</code> line, so that it overrides the default theme.
+Try it and run the app again, and you'll see the change take effect.</p>
+<p>Next, we should make our logo a bit bigger to fit with the new width of the sidebar:</p>
+<pre><code class="language-css">.BannerApp .ThemeableImage {
+    min-width: 300px;
+}
+</code></pre>
+<p>We also want to change the background color of the sidebar since the "background-dark" theme color is still a little bit light for the white Creative Commons logo.
+Let's use the "accent-dark" color instead. Add</p>
+<pre><code class="language-scss">background-color: $accent-dark-color;
+</code></pre>
+<p>to your <code>overrides.scss</code> file.</p>
+<blockquote>
+<p><strong>NOTE</strong>: Unfortunately, since the GTK inspector uses plain CSS, not SCSS, the variables won't work there, but you can still experiment with it by putting the color directly.</p>
+</blockquote>
+<p>Let's also add a bit of shadow to the side menu.
+Fire up the app again, switch to the inspector, and write in the CSS field:</p>
+<pre><code class="language-css">.LayoutSidebar .sidebar {
+    box-shadow:
+}
+</code></pre>
+<p>You can use the online <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Background_and_Borders/Box-shadow_generator">box shadow generator</a> as a visual tool that helps you generate the CSS box shadow syntax.
+Then you can fill it in to the inspector, and see how it looks in the app.</p>
+<p>Here's an example of what the final side menu override might look like, and the final product:</p>
+<pre><code class="language-scss">.LayoutSidebar .sidebar {
+    min-width: 400px;
+    background-color: $accent-dark-color;
+    box-shadow: 3px 0px 10px $accent-dark-color;
+}
+</code></pre>
+<p><img src="tutorial/images/ccapp-screenshot4.png" alt="Screenshot of Creative Commons Blog app" id="screenshot-of-creative-commons-blog-app3"></p>
+<h2 id="creating-a-flatpak-bundle">Creating a Flatpak bundle</h2>
+<p>Now that the app is created, we'll have to package and distribute it.
+In this section we'll create a <a href="http://mesonbuild.com/">Meson build file</a> that will put everything together, and create a <a href="http://docs.flatpak.org/en/latest/manifests.html">Flatpak-builder manifest</a> with which we can create a Flatpak package.</p>
+<h3 id="meson-build-file">Meson build file</h3>
+<p>To start with, we'll need a <code>meson.build</code> file to indicate how to build and install the app, and a helper build script called <code>database_manifest.sh</code>.
+We'll skip over the details of this, but just copy the one from the <a href="tutorial/app-full-code.html#meson.build">full code</a>.</p>
+<p>In short, the <code>meson.build</code> file automates all the file-generating commands that we used above, plus a few more.
+In particular, we need to convert the human-readable <code>app.yaml</code> file into a more explicit but repetitive <code>app.json</code>, and convert the <code>overrides.scss</code> into plain CSS.
+Previously these conversions were done automatically by <code>ekn-app-runner</code> when we ran the app.
+In the Meson file you can see the Meson targets that do this:</p>
+<pre><code class="language-meson">overrides_css = custom_target('sass', input: 'overrides.scss',
+    output: 'overrides.css',
+    command: [sassc, '-I', theme_path, '@INPUT@', '@OUTPUT@'])
+
+app_json = custom_target('autobahn', input: 'app.yaml', output: 'app.json',
+    command: [autobahn, '@INPUT@', '-o', '@OUTPUT@', '-I', preset_path])
+</code></pre>
+<p>We'll also need to add the generated <code>app.json</code> and <code>overrides.css</code> files to our GResource bundle.
+It's not required to add the original <code>app.yaml</code> and <code>overrides.scss</code> files, but it makes debugging easier at a small size cost, so we'll add them as well:</p>
+<pre><code class="language-xml">&lt;file compressed="true"&gt;app.json&lt;/file&gt;
+&lt;file compressed="true"&gt;app.yaml&lt;/file&gt;
+&lt;file compressed="true"&gt;overrides.css&lt;/file&gt;
+&lt;file compressed="true"&gt;overrides.scss&lt;/file&gt;
+</code></pre>
+<p>To test the build, inside the sandbox, we can build the app and install it into a staging directory named <code>_install</code>:</p>
+<pre><code class="language-bash">mkdir _build
+meson _build
+ninja -C _build
+DESTDIR=../_install ninja -C _build install
+</code></pre>
+<h3 id="flatpak-manifest">Flatpak manifest</h3>
+<p>Next, we'll need a build manifest for Flatpak-builder.
+Here's a manifest that we can start with:</p>
+<pre><code class="language-json">{
+    "app-id": "org.example.CreativeCommonsBlog",
+    "runtime": "com.endlessm.apps.Platform",
+    "runtime-version": "4",
+    "sdk": "com.endlessm.apps.Sdk",
+    "command": "org.example.CreativeCommonsBlog",
+
+    "finish-args": [
+        "--socket=x11",
+        "--socket=wayland",
+        "--device=dri"
+    ],
+
+    "modules": [
+        {
+            "name": "org.example.CreativeCommonsBlog",
+            "buildsystem": "meson",
+            "sources": [
+                {
+                    "type": "shell",
+                    "commands": ["mkdir -p assets"]
+                },
+                { "type": "file", "path": "app.gresource.xml" },
+                { "type": "file", "path": "app.yaml" },
+                { "type": "file", "path": "database_manifest.py" },
+                { "type": "file", "path": "meson.build" },
+                { "type": "file", "path": "output.shard" },
+                { "type": "file", "path": "overrides.scss" },
+                { "type": "file", "path": "sets.json" },
+                {
+                    "type": "file",
+                    "path": "assets/titleImage.svg",
+                    "dest-filename": "assets/titleImage"
+                },
+                {
+                    "type": "script",
+                    "dest-filename": "org.example.CreativeCommonsBlog",
+                    "commands": [
+                        "ekn-app-runner org.example.CreativeCommonsBlog /app/share/app.gresource"
+                    ]
+                }
+            ],
+            "build-commands": [
+                "install -Dm755 -t /app/bin ../org.example.CreativeCommonsBlog"
+            ]
+        }
+    ]
+}
+
+</code></pre>
+<p>It lists our source files and instructs Flatpak to use Meson to build the app.
+We also include a startup script to run <code>ekn-app-runner</code>, and install it in the correct place inside the bundle.
+With <code>"finish-args"</code> we grant the app permission to access the display server and use the direct rendering device (important for accelerated graphics.)</p>
+<p>Build it with <code>flatpak-builder</code> (exit the sandbox first if you are in one):</p>
+<pre><code class="language-bash">flatpak-builder _build --force-clean --repo=_repo org.example.CreativeCommonsBlog.json
+</code></pre>
+<p>This clears out the <code>_build</code> directory and does a build of the Flatpak in it, then exports it to a Flatpak repository in the <code>repo</code> directory.
+You can then export a single-file Flatpak bundle from the repository, install it, and test it out:</p>
+<pre><code class="language-bash">flatpak build-bundle _repo test.flatpak org.example.CreativeCommonsBlog
+flatpak install --bundle test.flatpak
+flatpak run org.example.CreativeCommonsBlog
+</code></pre>
+<h3 id="fonts">Fonts</h3>
+<p>You will notice that the UI font is displayed as designed, using the Source Sans Variable font.
+However, this is just by coincidence, since you installed Source Sans locally on your machine in the <a href="tutorial/install.html">Installing</a> step.
+If you were to delete those fonts from <code>~/.fonts</code>, the fonts wouldn't show up correctly in the Flatpak version of the app.</p>
+<p>For this, we can add another section to the manifest, under <code>modules</code>:</p>
+<pre><code class="language-json">{
+    "name": "source-sans-font",
+    "buildsystem": "simple",
+    "build-commands": [
+        "install -D -m644 *.otf -t /app/share/fonts"
+    ],
+    "sources": [
+        {
+            "type": "file",
+            "url": "https://github.com/adobe-fonts/source-sans-pro/releases/download/variable-fonts/SourceSansVariable-Roman.otf",
+            "sha256": "afd685a2b43feafbb4c47deaa7a2c0fcd826940d3473abe42e4aaa56d39754af"
+        },
+        {
+            "type": "file",
+            "url": "https://github.com/adobe-fonts/source-sans-pro/releases/download/variable-fonts/SourceSansVariable-Italic.otf",
+            "sha256": "62c5d0991d6a9571a89c8e137f2b76e3ff57f671e0d1bce832af98422ce13a6d"
+        }
+    ]
+}
+</code></pre>
+<p>This downloads the same font files that we installed earlier, and installs them into the <code>/app/share/fonts</code> directory inside the bundle.</p>
+<p>Try building it again, and you can verify that the fonts are being included by removing them from your <code>~/.fonts</code> directory (though make sure to save them somewhere else if you don't want to download them again!)</p>
+<h3 id="app-icon">App icon</h3>
+<p>When you run the app you can see in your taskbar or app switcher (Alt-Tab) that the app is represented by a blank "missing image" icon.
+This doesn't look very good, so we should do something about it.</p>
+<p>We've already prepared an app icon, using the same sheep as we used for the logo.
+You can find it in the <a href="tutorial/app-full-code.html#assets/icon.svg">full code</a>; right-click to download it, and save it as <code>assets/icon.svg</code> in your app directory.
+We've also prepared 64 and 128-pixel PNG versions of the icon which you can also download.</p>
+<p>Flatpak apps can "export" certain files, and an app icon is one of them.
+In order for the OS to find the icon, we also need to export a <a href="https://standards.freedesktop.org/desktop-entry-spec/latest/">desktop file</a>.</p>
+<p>To do this, first add the icon files to the Flatpak manifest:</p>
+<pre><code class="language-json">{
+    "type": "file",
+    "path": "assets/icon.svg",
+    "dest-filename": "assets/icon.svg"
+},
+{
+    "type": "file",
+    "path": "assets/icon-64.png",
+    "dest-filename": "assets/icon-64.png"
+},
+{
+    "type": "file",
+    "path": "assets/icon-128.png",
+    "dest-filename": "assets/icon-128.png"
+},
+</code></pre>
+<p>Then create a file named <code>org.example.CreativeCommonsBlog.desktop</code>:</p>
+<pre><code>[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Commons Blog
+Exec=/usr/bin/flatpak run org.example.CreativeCommonsBlog
+Icon=org.example.CreativeCommonsBlog
+Comment=Blog posts from the Creative Commons organization, offline!
+</code></pre>
+<p>Also add it to the Flatpak manifest:</p>
+<pre><code class="language-json">{ "type": "file", "path": "org.example.CreativeCommonsBlog.desktop" },
+</code></pre>
+<p>Then add some new commands to the array of <code>build-commands</code> in the Flatpak manifest, to install the files in the location where they will be exported, and with the correct names:</p>
+<pre><code class="language-json">"install -Dm755 -t /app/bin ../org.example.CreativeCommonsBlog",
+"install -Dm644 -t /app/share/applications ../org.example.CreativeCommonsBlog.desktop",
+"install -Dm644 ../assets/icon-64.png /app/share/icons/hicolor/64x64/apps/org.example.CreativeCommonsBlog.png",
+"install -Dm644 ../assets/icon-128.png /app/share/icons/hicolor/128x128/apps/org.example.CreativeCommonsBlog.png",
+"install -Dm644 ../assets/icon.svg /app/share/icons/hicolor/scalable/apps/org.example.CreativeCommonsBlog.svg"
+</code></pre>
+<p>Now, when you rebuild the app, you should notice a few lines near the end of the build process mentioning that these four files are being exported.
+And when you run the app, you'll see the icon.</p>
+<h3 id="attributing-the-assets">Attributing the assets</h3>
+<p>We used a Creative Commons-licensed <a href="https://thenounproject.com/term/sheep/6049/">sheep icon, from The Noun Project,</a> in order to create the logo and the app icon.
+So, we need to provide proper credit to the creator of the sheep icon.
+The toolkit provides a facility for doing this.
+All we have to do is include a file called <code>credits.json</code> in a certain format in the GResource bundle.</p>
+<p>Create the file <code>credits.json</code>.
+We'll show only one entry here, but you can see the whole thing in the <a href="tutorial/app-full-code.html#credits.json">full code section</a>:</p>
+<pre><code class="language-json">[
+    {
+        "credit": "Razlan Hanafiah",
+        "credit_uri": "https://thenounproject.com/razlanisme/",
+        "license": "CC-BY 3.0",
+        "thumb_uri": "resource:///app/titleImage",
+        "uri": "https://thenounproject.com/term/sheep/6049/",
+        "comment": "Derived from 'Sheep' by Razlan Hanafiah from the Noun Project"
+    }
+]
+</code></pre>
+<p>Then add the file to the GResource bundle, by adding the following lines to <code>app.gresource.xml</code>:</p>
+<pre><code class="language-xml">&lt;file compressed="true"&gt;credits.json&lt;/file&gt;
+</code></pre>
+<p>Don't forget to add the file to the Flatpak manifest too:</p>
+<pre><code class="language-json">{ "type": "file", "path": "credits.json" },
+</code></pre>
+<p>Once that is done, rebuild the app, and you will be able to see the credits by hovering the mouse over the space just to the left of the minimize button in the title bar.
+An "info" icon will appear, and if you click on it, you'll get a credits dialog.</p>
+<h2 id="publishing-the-app">Publishing the app</h2>
+<p>The app is complete now!
+It includes content, categorization, a user interface, theming, a logo, an icon, and credits, and it all works without being connected to the internet.</p>
+<p>At this point, you can simply take the <code>test.flatpak</code> bundle, rename it to something more descriptive, and publish it as-is on your website, upload it to Dropbox, or some other way of getting your file to your users!</p>
+<p>In this walkthrough we chose the approach of exporting and distributing the app as a single-file Flatpak bundle.
+You could also take the Flatpak repository and publish that instead.
+That way, users of the app could continue to get updates through the repository, instead of having to download a new bundle every time.</p>
+<p>You may have figured out that once you distribute this app, it won't get any updates as new posts are published on the blog.
+The simplest solution is to re-run the ingester, re-build the Flatpak bundle, and re-publish it every time you want to include new posts.
+That can even be automated.
+However, it can get tedious.</p>
+<p>One idea is to write a separate manifest for the rotating content, and include <a href="http://docs.flatpak.org/en/latest/flatpak-builder-command-reference.html#flatpak-manifest"><code>"build-extension": true</code></a> in order to build an <code>org.example.CreativeComments.Content</code> extension that can be updated separately from the main app.
+This is what Endless does with many applications, and it's the reason why we split the <code>sets.json</code> shard from the content shard produced by the ingester.</p>
+<h2 id="further-remarks-and-ideas">Further remarks and ideas</h2>
+<p>You'll probably want to commit your app code to a Git repository.
+Note that instead of listing all the files as sources with <code>"type": "file"</code> in the Flatpak manifest, you can also use a <code>"type": "git"</code> source.</p>
+<p>Note that fonts often have licenses that don't allow redistribution, even if they are allowed to be downloaded by users' browsers when displaying web pages.
+Check the licenses of any fonts that you include in your Flatpak bundle.</p>
+
+</div>
+
+
+		<div id="subpages">
+	<h4>Subpages</h4>
+	<div class="container-fluid">
+		<div class="row">
+						<div class="col-sm-12 col-md-4">
+				<a href="tutorial/app-full-code.html">Full code</a>
+			</div>
+			<div class="col-sm-12 col-md-8 subpage-description">
+								<p>The full app code</p>
+							</div>
+					</div>
+	</div>
+</div>
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		
+<div class="panel panel-default">
+  <div class="panel-heading collapsed" id="license-toggle" data-toggle="collapse" data-target="#license-info" aria-expanded="false" aria-controls="license-info">
+    <h4 class="panel-title" data-toc-skip="true" id="license-and-copyright-info">
+      License and Copyright info
+    </h4>
+  </div>
+  <div id="license-info" class="panel-collapse collapse">
+    <div class="panel-body">
+      
+
+<div class="license-description">
+	<table>
+		<tbody>
+			<tr>
+			<td>
+				<em>Documentation in this page is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>
+				license, unless otherwise noted.</em>
+			</td>
+			<td>
+						<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+				<img src="assets/CC-BY-SAv4.0.png" class="license-logo">
+			</a>
+						</td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div class="license-description">
+	<table>
+		<tbody>
+			<tr>
+			<td>
+				<em>Code snippets in this page are licensed under a <a rel="license" href="http://spdx.org/licenses/CC0-1.0">Creative Commons Zero 1.0 Universal.</a>
+				license, unless otherwise noted.</em>
+			</td>
+			<td>
+						<a rel="license" href="http://spdx.org/licenses/CC0-1.0">
+				<img src="assets/CC0-1.0.png" class="license-logo">
+			</a>
+						</td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div class="copyrights-description">
+		<p>
+				© 								2017, 
+				2018, 
+													       	Endless Mobile, Inc. 			</p>
+	</div>
+
+
+    </div>
+  </div>
+</div>
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		<a href="https://github.com/endlessm/eos-knowledge-lib/edit/master/docs/framework/tutorial/app.md" data-hotdoc-role="edit-button">Edit on github</a>
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+</body>
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</html>

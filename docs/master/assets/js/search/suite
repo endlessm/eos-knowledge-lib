@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/shard.html#creating-a-shard-with-basin"], "token": "suite"});
+urls_downloaded_cb({"token": "suite", "urls": ["tutorial/shard.html#creating-a-shard-with-basin"]});

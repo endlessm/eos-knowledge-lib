@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tools.html#using", "tutorial/shard.html#viewing-the-blog-posts", "tutorial/shard.html#downloading-linked-media"], "token": "run"});
+urls_downloaded_cb({"token": "run", "urls": ["tools.html#using", "tutorial/app.html#logo", "tutorial/app.html#colors-and-fonts", "tutorial/shard.html#viewing-the-blog-posts", "tutorial/shard.html#downloading-linked-media"]});

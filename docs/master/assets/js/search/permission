@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/shard.html#creating-a-shard-with-basin"], "token": "permission"});
+urls_downloaded_cb({"token": "permission", "urls": ["tutorial/app.html#the-app", "tutorial/app.html#flatpak-manifest", "tutorial/shard.html#creating-a-shard-with-basin"]});

@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/shard.html#page-description"], "token": "obvious"});
+urls_downloaded_cb({"token": "obvious", "urls": ["tutorial/app.html#page-description", "tutorial/shard.html#page-description"]});

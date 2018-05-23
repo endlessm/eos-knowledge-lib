@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["layout/sidebar.html#layoutsidebar1", "layout/sidebar.html#layoutsidebar"], "token": "Layout.Sidebar"});
+urls_downloaded_cb({"token": "Layout.Sidebar", "urls": ["layout/sidebar.html#layoutsidebar1", "layout/sidebar.html#layoutsidebar", "tutorial/app.html#theme-changes"]});
