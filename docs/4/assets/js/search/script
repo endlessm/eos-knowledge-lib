@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/ingester.html#parsing-the-rss-feed"], "token": "script"});
+urls_downloaded_cb({"urls": ["tutorial/app.html#testing-the-content", "tutorial/app.html#meson-build-file", "tutorial/app.html#flatpak-manifest", "tutorial/ingester.html#parsing-the-rss-feed"], "token": "script"});
