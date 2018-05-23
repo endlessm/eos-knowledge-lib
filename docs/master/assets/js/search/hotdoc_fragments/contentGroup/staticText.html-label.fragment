@@ -1,1 +1,1 @@
-fragment_downloaded_cb({"fragment": "label \nThe text of the label \n", "url": "contentGroup/staticText.html#label"});
+fragment_downloaded_cb({"url": "contentGroup/staticText.html#label", "fragment": "label \nThe text of the label \n"});
