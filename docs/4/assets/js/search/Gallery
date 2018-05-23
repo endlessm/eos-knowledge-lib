@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "Gallery", "urls": ["concepts/presets.html#gallery", "concepts/presets.html#the-gallery-preset"]});
+urls_downloaded_cb({"urls": ["concepts/presets.html#gallery", "concepts/presets.html#the-gallery-preset"], "token": "Gallery"});
