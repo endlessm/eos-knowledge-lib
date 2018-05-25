@@ -1,29 +1,26 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const {DModel, Gdk, Gio, GObject} = imports.gi;
-const Gettext = imports.gettext;
 
 const Actions = imports.app.actions;
-const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const Pages = imports.app.pages;
-const {SearchBox: BaseSearchBox} = imports.app.widgets.searchBox;
+const BaseSearchBox = imports.app.widgets.searchBox;
 const Utils = imports.app.utils;
-
-const RESULTS_SIZE = 4;
-
-let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 /**
  * Class: SearchBox
  *
  * A search bar for querying information in the knowledge apps.
+ *
+ * CSS classes:
+ * - autocomplete - on the autocomplete popup (not a child of this module)
  */
 var SearchBox = new Module.Class({
     Name: 'Navigation.SearchBox',
-    Extends: BaseSearchBox,
+    Extends: BaseSearchBox.SearchBox,
 
     Properties: {
         /**
@@ -40,7 +37,6 @@ var SearchBox = new Module.Class({
         this.parent(props);
         this._autocomplete_models = {};
         this._cancellable = null;
-        this._link_action_set = false;
         this.add_events(Gdk.EventMask.FOCUS_CHANGE_MASK);
 
         HistoryStore.get_default().connect('changed',
@@ -54,9 +50,6 @@ var SearchBox = new Module.Class({
             Dispatcher.get_default().dispatch({
                 action_type: Actions.SEARCH_BOX_FOCUSED,
             });
-        });
-        this.connect('changed', () => {
-            this._update_link_action();
         });
         this.connect('text-changed', () => {
             this._on_text_changed();
@@ -76,7 +69,7 @@ var SearchBox = new Module.Class({
                 context: this._autocomplete_models,
             });
         });
-        this.completion.connect('action-activated', () => {
+        this.connect('more-activated', () => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
                 search_terms: this.text,
@@ -102,7 +95,7 @@ var SearchBox = new Module.Class({
 
         let query_obj = new DModel.Query({
             search_terms,
-            limit: RESULTS_SIZE,
+            limit: BaseSearchBox.MAX_RESULTS + 1,
             tags_match_any: ['EknArticleObject'],
         });
         let engine = DModel.Engine.get_default();
@@ -151,17 +144,5 @@ var SearchBox = new Module.Class({
         }
 
         return model.title;
-    },
-
-    _update_link_action: function () {
-        let hide_link = this._list_store.iter_n_children(null) < RESULTS_SIZE;
-
-        if (this._link_action_set && hide_link) {
-            this.completion.delete_action(0);
-            this._link_action_set = false;
-        } else if (!this._link_action_set && !hide_link) {
-            this.completion.insert_action_text(0, _("See more results"));
-            this._link_action_set = true;
-        }
     },
 });

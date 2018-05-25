@@ -41,6 +41,9 @@ var Simple = new Module.Class({
          * The `search` slot is located in the center of the window's title
          * bar.
          * It currently only supports a [](Navigation.SearchBox) module.
+         *
+         * CSS classes:
+         * - The class `in-titlebar` will be added to the module in this slot.
          */
         'search': {
             optional: true,
@@ -69,8 +72,10 @@ var Simple = new Module.Class({
         this._invisible_frame = new Gtk.Frame();
         this._search_stack.add(this._invisible_frame);
         this._search_box = this.create_submodule('search');
-        if (this._search_box)
+        if (this._search_box) {
+            this._search_box.get_style_context().add_class('in-titlebar');
             this._search_stack.add(this._search_box);
+        }
         this._search_stack.show_all();
 
         let button_box = new Gtk.Box({

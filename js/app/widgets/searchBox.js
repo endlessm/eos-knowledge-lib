@@ -1,8 +1,107 @@
-const {Gdk, GObject, Gtk, Pango} = imports.gi;
+/* exported SearchBox, MAX_RESULTS */
+
+const {Endless, Gdk, GObject, Gtk, Pango} = imports.gi;
+const Gettext = imports.gettext;
+
+const Config = imports.app.config;
+const Utils = imports.app.utils;
+
+const _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const BOX_WIDTH_CHARS = 25;
-const CELL_PADDING_X = 8;
-const CELL_PADDING_Y = 6;
+
+/**
+ * MAX_RESULTS:
+ * Number of results that the autocomplete popover can display at most.
+ * This is for the benefit of users of this code, so they can limit the results
+ * that they request.
+ */
+var MAX_RESULTS = 4;
+
+const _AutocompleteItem = GObject.registerClass({
+    CssName: 'cell',
+}, class _AutocompleteItem extends Gtk.EventBox {
+    _init(props={}, title='', id) {
+        props.visible = true;
+        this._grid = new Gtk.Grid({visible: true});
+        this._label = new Gtk.Label({
+            ellipsize: Pango.EllipsizeMode.END,
+            hexpand: true,
+            halign: Gtk.Align.START,
+            visible: true,
+            xalign: 0,
+        });
+        super._init(props);
+
+        this.title = title;
+        this.id = id;
+
+        const icon = new Gtk.Image({
+            halign: Gtk.Align.END,
+            icon_name: 'go-next-symbolic',
+            icon_size: Gtk.IconSize.BUTTON,
+            visible: true,
+        });
+        this._grid.attach(this._label, 0, 0, 1, 1);
+        this._grid.attach(icon, 1, 0, 1, 1);
+        this.add(this._grid);
+        Utils.set_hand_cursor_on_widget(this);
+    }
+
+    get title() { return this._label.label; }
+    set title(value) { this._label.label = value; }
+});
+
+const _AutocompleteListbox = GObject.registerClass(class _AutocompleteListbox extends Gtk.ListBox {
+    _init(search_box, props={}) {
+        Object.assign(props, {
+            selection_mode: Gtk.SelectionMode.NONE,
+            visible: true,
+        });
+        super._init(props);
+
+        this._search_box = search_box;
+        this._show_see_more = false;
+
+        this.set_filter_func(this._list_filter.bind(this));
+
+        this._items = Array(MAX_RESULTS).fill().map(() => new _AutocompleteItem());
+        this.see_more = new _AutocompleteItem({}, _("See more results"));
+        this._items.forEach(item => this.add(item));
+        this.add(this.see_more);
+    }
+
+    _list_filter(row) {
+        const item = row.get_child();
+        if (item.title === '')
+            return false;
+        if (item === this.see_more)
+            return this._show_see_more;
+        return true;
+    }
+
+    set_menu_items(items) {
+        this._show_see_more = (items.length > MAX_RESULTS);
+
+        items.slice(0, MAX_RESULTS).forEach(({title, id}, ix) => {
+            this._items[ix].title = title.trim();
+            this._items[ix].id = id;
+        });
+        for (let ix = items.length; ix < MAX_RESULTS; ix++)
+            this._items[ix].title = this._items[ix].id = '';
+        this.invalidate_filter();
+    }
+
+    // List box should be exactly as wide as the search box
+    vfunc_get_preferred_width() {
+        return this._search_box.get_preferred_width();
+    }
+
+    vfunc_get_preferred_width_for_height(height) {
+        void height;
+        return this._search_box.get_preferred_width();
+    }
+});
 
 /**
  * Class: SearchBox
@@ -27,6 +126,11 @@ var SearchBox = GObject.registerClass({
             param_types: [GObject.TYPE_STRING]
         },
         /**
+         * Signal: more-activated
+         * Emitted when the "See more results" item is activated.
+         */
+        'more-activated': {},
+        /**
          * Event: text-changed
          *
          * This event is triggered when the text in the search entry is changed by the user.
@@ -41,29 +145,23 @@ var SearchBox = GObject.registerClass({
             typeof props[name] === 'undefined')) {
             props.width_chars = BOX_WIDTH_CHARS;
         }
+        props.primary_icon_name = 'edit-find-symbolic';
         super._init(props);
 
-        this.primary_icon_name = 'edit-find-symbolic';
+        this._popover = new Gtk.Popover({
+            constrain_to: Gtk.PopoverConstraint.NONE,
+            modal: false,
+            position: Gtk.PositionType.BOTTOM,
+            relative_to: this,
+        });
 
-        this._auto_complete = new Gtk.EntryCompletion();
+        this._popover.get_style_context().add_class('autocomplete');
+        this._check_if_in_titlebar();
 
-        this._list_store = new Gtk.ListStore();
-        this._list_store.set_column_types([GObject.TYPE_STRING]);
-
-        this._auto_complete.set_model(this._list_store);
-        this._auto_complete.set_text_column(0);
-
-        let cells = this._auto_complete.get_cells();
-        cells[0].xpad = CELL_PADDING_X;
-        cells[0].ypad = CELL_PADDING_Y;
-        cells[0].ellipsize = Pango.EllipsizeMode.END;
-
-        this._auto_complete.set_match_func(() => true);
-        this.completion = this._auto_complete;
+        this._listbox = new _AutocompleteListbox(this);
+        this._popover.add(this._listbox);
 
         this.connect('icon-press', () => this.emit('activate'));
-        this.completion.connect('match-selected',
-            this._on_match_selected.bind(this));
         this.connect('changed', () => {
             if (!this._entry_changed_by_widget) {
                 // If there is entry text, need to add the 'go' icon and allow
@@ -82,6 +180,24 @@ var SearchBox = GObject.registerClass({
         this.connect('enter-notify-event', this._on_motion.bind(this));
         this.connect('motion-notify-event', this._on_motion.bind(this));
         this.connect('leave-notify-event', this._on_leave.bind(this));
+        this.connect('style-updated', this._check_if_in_titlebar.bind(this));
+        this.connect('focus-out-event', () => this._popover.hide());
+
+        this._listbox.connect('row-activated', (box, row) => {
+            this._popover.hide();
+            const item = row.get_child();
+            if (item === box.see_more)
+                this.emit('more-activated');
+            else
+                this.emit('menu-item-selected', item.id);
+        });
+    }
+
+    _check_if_in_titlebar() {
+        if (this.get_style_context().has_class('in-titlebar'))
+            this._popover.get_style_context().add_class('in-titlebar');
+        else
+            this._popover.get_style_context().remove_class('in-titlebar');
     }
 
     _on_motion(widget, event) {
@@ -133,12 +249,6 @@ var SearchBox = GObject.registerClass({
         return Gdk.EVENT_PROPAGATE;
     }
 
-    _on_match_selected(widget, model, iter) {
-        let index = model.get_path(iter).get_indices()[0];
-        this.emit('menu-item-selected', this._items[index]['id']);
-        return Gdk.EVENT_STOP;
-    }
-
     /* Set the entry text without triggering the text-changed signal.
     */
     set_text_programmatically(text) {
@@ -161,12 +271,14 @@ var SearchBox = GObject.registerClass({
         identify the data that was selected.
     */
     set_menu_items(items) {
-        this._items = items;
-        let model = this._auto_complete.get_model();
-        model.clear();
-        for (let i = 0; i < this._items.length; i++) {
-            model.set(model.append(), [0], [this._items[i]['title']]);
+        if (items.length === 0) {
+            this._popover.popdown();
+            return;
         }
+
+        this._listbox.set_menu_items(items);
+        this._popover.popup();
+
         this._entry_changed_by_widget = true;
         this.emit('changed');
     }
