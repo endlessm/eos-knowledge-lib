@@ -1,15 +1,58 @@
+$navsb-titlebar-font-size: 16px;
+
+@mixin searchbox-size-dependent($font-size: 18px,
+                                $hpadding: 10px,
+                                $vpadding: 12px,
+                                $icon-outside-padding: 5px,
+                                $icon-inside-padding: 7px) {
+    padding: $vpadding $hpadding;
+    border-radius: $font-size + 2 * $vpadding;
+    font-size: $font-size;
+
+    image.left {
+        margin: 4px $icon-inside-padding 4px $icon-outside-padding;
+    }
+
+    image.right {
+        margin: 4px $icon-outside-padding 4px $icon-inside-padding;
+    }
+}
+
+@mixin popover-size-dependent($font-size: 18px,
+                              $hpadding: 10px,
+                              $vpadding: 12px,
+                              $gap: 10px,
+                              $icon-outside-padding: 5px,
+                              $icon-inside-padding: 7px) {
+    $icon-size: 16px;  // unchangeable, set by GTK
+    font-size: $font-size;
+
+    list {
+        margin-top: -12px + $gap;
+
+        row grid {
+            $list-right-padding: $hpadding + $icon-outside-padding;
+            $list-left-padding: $list-right-padding + $icon-size + $icon-inside-padding;
+            // left and right must align the text and arrow to the same pixel as
+            // the search box
+            padding: $vpadding $list-right-padding $vpadding $list-left-padding;
+
+            label {
+                margin-right: $icon-inside-padding;
+            }
+        }
+    }
+}
+
 .NavigationSearchBox {
     font-family: $context-font;
     font-weight: normal;
 
     background-color: transparentize(white, 1 - 0.8);
-
-    padding: 14px 0.55em 14px 0.55em;
     color: transparentize(black, 1 - 0.60);
     caret-color: transparentize(black, 1 - 0.60);
-    font-size: 21px;
 
-    border-radius: 10em;
+    @include searchbox-size-dependent;
 
     selection {
         color: white;
@@ -17,7 +60,7 @@
     }
 
     // Workaround for https://gitlab.gnome.org/GNOME/gtk/issues/196
-    &.fake-hover, &:focus {
+    &.fake-hover, &:focus, &.text-entered {
         background-color: transparentize(white, 1 - 0.96);
 
         image {
@@ -27,57 +70,83 @@
 
     image {
         color: transparentize(black, 1 - 0.40);
-        margin: 4px 7px 4px 5px;
     }
 
     &.text-entered image:hover {
         color: transparentize(black, 1 - 0.85);
     }
 
-    .PagerSimple & {
-        box-shadow: 0 1px 2px transparentize(black, 1 - 0.30);
-        min-width: 400px;
+    &.in-titlebar {
+        background-color: transparentize(white, 1 - 0.85);
+        @include searchbox-size-dependent($navsb-titlebar-font-size,
+                                          $hpadding: 2px,
+                                          $vpadding: 1px);
     }
+}
 
-    .PagerSimple &.fake-hover,
-    .PagerSimple &:focus {
+.PagerSimple .NavigationSearchBox {
+    box-shadow: 0 1px 2px transparentize(black, 1 - 0.30);
+    min-width: 400px;
+
+    &.fake-hover, &:focus, &.text-entered {
         box-shadow: 0 3px 6px transparentize(black, 1 - 0.50);
     }
+}
 
-    .composite .PagerSimple & {
-        font-size: 20px;
-    }
+popover.autocomplete {
+    /* HACK: it's not possible to separately style the arrow, and we don't want
+     * the arrow. So make the popover itself transparent, and treat the list
+     * box inside of it as the actual window. */
+    background-color: transparent;
+    font-family: $context-font;
 
-    .titlebar & {
-        background-color: transparentize(white, 1 - 0.85);
-        padding: 1px 2px 1px 4px;
-        border-radius: 15px;
-        font-size: 16px;
-    }
+    @include popover-size-dependent;
 
-    frame {
+    list {
+        $autocomplete-border-radius: 5px;
+        border-radius: $autocomplete-border-radius;
         background-color: transparentize(white, 1 - 0.96);
         box-shadow: 0 3px 8px transparentize(black, 1 - 0.35);
-    }
-
-    .view {
-        padding: 10px;
-        .cell {
-            color: transparentize(black, 1 - 0.80);
+        row {
+            color: transparentize(black, 1 - 0.60);
             border-bottom: 1px solid transparentize(black, 1 - 0.10);
 
-            &:selected {
-                background-color: transparentize(black, 1 - 0.10);
-                border: none;
-                border-radius: 3px;
+            &:first-child {
+                border-top-left-radius: $autocomplete-border-radius;
+                border-top-right-radius: $autocomplete-border-radius;
+            }
+
+            &:last-child {
+                border-bottom-left-radius: $autocomplete-border-radius;
+                border-bottom-right-radius: $autocomplete-border-radius;
+            }
+
+            &:nth-child(5) {
+                font-weight: bold;
+            }
+
+            &:hover {
+                background-color: transparentize(#e0e0e0, 1 - 0.96);
+            }
+
+            image {
+                opacity: 0;
+            }
+
+            &:hover image {
+                opacity: 1;
             }
         }
+    }
 
-        &:nth-child(2) {
-            font-weight: bold;
-            .cell {
-                color: $accent-dark-color;
-            }
+    &.in-titlebar {
+        @include popover-size-dependent($navsb-titlebar-font-size,
+                                        $hpadding: 2px,
+                                        $vpadding: 6px,
+                                        $gap: 8px);
+
+        list {
+            box-shadow: 0 2px 3px transparentize(black, 1 - 0.40);
         }
     }
 }
