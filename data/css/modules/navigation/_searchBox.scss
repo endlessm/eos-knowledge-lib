@@ -5,7 +5,11 @@ $navsb-titlebar-font-size: 16px;
                                 $vpadding: 12px,
                                 $icon-outside-padding: 5px,
                                 $icon-inside-padding: 7px) {
-    padding: $vpadding $hpadding;
+    // Extra padding for the search icon (left) to compensate for the arrow
+    // icon containing more blank space inside it
+    $arrow-compensation: 2px;
+
+    padding: $vpadding $hpadding $vpadding ($hpadding + $arrow-compensation);
     border-radius: $font-size + 2 * $vpadding;
     font-size: $font-size;
 
@@ -25,6 +29,8 @@ $navsb-titlebar-font-size: 16px;
                               $icon-outside-padding: 5px,
                               $icon-inside-padding: 7px) {
     $icon-size: 16px;  // unchangeable, set by GTK
+    $arrow-compensation: 2px;  // see above
+
     font-size: $font-size;
 
     list {
@@ -32,7 +38,7 @@ $navsb-titlebar-font-size: 16px;
 
         row grid {
             $list-right-padding: $hpadding + $icon-outside-padding;
-            $list-left-padding: $list-right-padding + $icon-size + $icon-inside-padding;
+            $list-left-padding: $list-right-padding + $arrow-compensation + $icon-size + $icon-inside-padding;
             // left and right must align the text and arrow to the same pixel as
             // the search box
             padding: $vpadding $list-right-padding $vpadding $list-left-padding;
