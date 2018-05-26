@@ -47,6 +47,7 @@ var MediaLightbox = new Module.Class({
     },
 
     _on_history_changed: function () {
+        this._clear();
         let item = HistoryStore.get_default().get_current_item();
         if (item.media_model) {
             this._context = item.context;
@@ -57,11 +58,7 @@ var MediaLightbox = new Module.Class({
     },
 
     _on_close: function () {
-        if (this.lightbox_widget instanceof EosKnowledgePrivate.MediaBin) {
-            this.lightbox_widget.stop();
-        }
-        this.drop_submodule(this.lightbox_widget);
-        this.lightbox_widget = null;
+        this._clear();
         Dispatcher.get_default().dispatch({
             action_type: Actions.LIGHTBOX_CLOSED,
         });
@@ -73,6 +70,17 @@ var MediaLightbox = new Module.Class({
 
     _on_next_clicked: function () {
         this._lightbox_shift_image(1);
+    },
+
+    _clear() {
+        if (!this.lightbox_widget)
+            return;
+
+        if (this.lightbox_widget instanceof EosKnowledgePrivate.MediaBin) {
+            this.lightbox_widget.stop();
+        }
+        this.drop_submodule(this.lightbox_widget);
+        this.lightbox_widget = null;
     },
 
     _lightbox_shift_image: function (delta) {
@@ -117,13 +125,7 @@ var MediaLightbox = new Module.Class({
         if (this._current_index === -1)
             return;
 
-        if (this.lightbox_widget) {
-            if (this.lightbox_widget instanceof EosKnowledgePrivate.MediaBin) {
-                this.lightbox_widget.stop();
-            }
-            this.drop_submodule(this.lightbox_widget);
-            this.lightbox_widget = null;
-        }
+        this._clear();
 
         let widget = this.create_submodule('view', {
             model: media_object
