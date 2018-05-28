@@ -1,8 +1,8 @@
 {
     "app-id": "org.example.CreativeCommonsBlog",
-    "runtime": "com.endlessm.appsdev.Sdk",
+    "runtime": "com.endlessm.apps.Sdk",
     "runtime-version": "master",
-    "sdk": "com.endlessm.appsdev.Sdk",
+    "sdk": "com.endlessm.apps.Sdk",
     "command": "org.example.CreativeCommonsBlog",
 
     "finish-args": [
