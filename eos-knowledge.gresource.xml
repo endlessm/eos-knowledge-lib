@@ -20,7 +20,6 @@
     <file preprocess="xml-stripblanks">data/icons/scalable/apps/whatsapp-symbolic.svg</file>
     <file>data/images/background.png</file>
     <file>data/images/checkmark.png</file>
-    <file>data/images/pdf-background.png</file>
     <file>data/images/pdf_icon.png</file>
     <file>data/images/tools/desk.jpg</file>
     <file>data/images/tools/give_that_man_a_knighthood.webm</file>
