@@ -198,15 +198,15 @@ var Document = new Module.Class({
                     this.nav_content.show_all();
                 }
             } else if (this.model.content_type === 'application/pdf') {
-                let stream = this.model.get_content_stream();
-                let content_type = this.model.content_type;
                 this.content_view = new PDFView.PDFView({
+                    model: this.model,
                     expand: true,
                     width_request: this.MIN_CONTENT_WIDTH,
                     height_request: this.MIN_CONTENT_HEIGHT,
+                    show_panel: this.show_toc,
+                    show_title: !this.show_titles,
                     visible: true,
                 });
-                this.content_view.load_stream(stream, content_type);
                 this._stack.visible_child_name = CONTENT_PAGE_NAME;
                 this._spinner.active = false;
                 resolve();
