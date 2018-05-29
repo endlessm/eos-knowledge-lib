@@ -49,6 +49,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/sideMenu.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/layout/topMenu.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/noContentDialog.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/pdfview.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/tooltips.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/view/audio.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/view/document.ui</file>
