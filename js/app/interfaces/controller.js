@@ -1,5 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -81,7 +82,11 @@ var Controller = new Lang.Interface({
     },
 
     Slots: {
-        'window': {},
+        'window': {
+            requires: [
+                Endless.Window,
+            ],
+        },
     },
 
     make_ready: function (cb) {

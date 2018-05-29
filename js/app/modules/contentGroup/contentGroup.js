@@ -12,11 +12,13 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
+const Arrangement = imports.app.interfaces.arrangement;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const Overflow = imports.app.modules.arrangement.overflow;
+const Selection = imports.app.modules.selection.selection;
 const {SpinnerReplacement} = imports.app.widgets.spinnerReplacement;
 const Utils = imports.app.utils;
 
@@ -34,11 +36,31 @@ var ContentGroup = new Module.Class({
     Extends: Gtk.Grid,
 
     Slots: {
-        'arrangement': {},
-        'selection': {},
-        'title': {}, // optional
-        'trigger': {}, // optional
-        'no-results': {},  // optional
+        'arrangement': {
+            requires: [
+                Arrangement.Arrangement,
+            ],
+        },
+        'selection': {
+            requires: [
+                Selection.Selection,
+            ],
+        },
+        'title': {
+            requires: [
+                Gtk.Widget,
+            ],
+        }, // optional
+        'trigger': {
+            requires: [
+                Gtk.Widget,
+            ],
+        }, // optional
+        'no-results': {
+            requires: [
+                Gtk.Widget,
+            ],
+        }, // optional
     },
 
     Properties: {

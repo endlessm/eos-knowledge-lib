@@ -38,12 +38,36 @@ var Simple = new Module.Class({
     },
 
     Slots: {
-        'all-sets-page': {},  // optional
-        'article-page': {},  // optional
-        'home-page': {},
-        'search-page': {},  // optional
-        'set-page': {},  // optional
-        'subset-page': {},  // optional
+        'all-sets-page': {
+            requires: [
+                Gtk.Widget,
+            ],
+        }, // optional
+        'article-page': {
+            requires: [
+                Gtk.Widget,
+            ],
+        }, // optional
+        'home-page': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
+        'search-page': {
+            requires: [
+                Gtk.Widget,
+            ],
+        }, // optional
+        'set-page': {
+            requires: [
+                Gtk.Widget,
+            ],
+        }, // optional
+        'subset-page': {
+            requires: [
+                Gtk.Widget,
+            ],
+        }, // optional
     },
 
     _init: function (props={}) {

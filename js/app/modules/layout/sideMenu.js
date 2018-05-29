@@ -54,17 +54,29 @@ var SideMenu = new Module.Class({
          * Slot: content
          * Main content of the template
          */
-        'content': {},
+        'content': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
         /**
          * Slot: context
          * Slot for content in the center of the context bar (optional)
          */
-        'context': {},
+        'context': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
         /**
          * Slot: sidebar
          * The content in the menu that slides out (optional)
          */
-        'sidebar': {},
+        'sidebar': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/layout/sideMenu.ui',

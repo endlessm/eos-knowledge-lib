@@ -56,12 +56,20 @@ var TopMenu = new Module.Class({
          * Slot: top-menu
          * The content in the menu that slides out
          */
-        'top-menu': {},
+        'top-menu': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
         /**
          * Slot: content
          * Main content of the template
          */
-        'content': {},
+        'content': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/layout/topMenu.ui',

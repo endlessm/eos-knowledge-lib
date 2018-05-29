@@ -5,6 +5,7 @@
 const {DModel, Gdk, GObject, Gtk} = imports.gi;
 const Lang = imports.lang;
 
+const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
 
 /**
@@ -62,6 +63,9 @@ var Arrangement = new Lang.Interface({
          */
         'card': {
             multi: true,
+            requires: [
+                Card.Card,
+            ],
         },
     },
 

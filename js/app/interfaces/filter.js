@@ -49,7 +49,11 @@ var Filter = new Lang.Interface({
     },
 
     Slots: {
-        'sub-filter': {},
+        'sub-filter': {
+            requires: [
+              'self',
+            ],
+        },
     },
 
     _interface_init: function () {

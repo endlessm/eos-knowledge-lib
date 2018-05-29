@@ -52,10 +52,26 @@ var HamburgerBasement = new Module.Class({
     },
 
     Slots: {
-        'top': {},
-        'middle': {},
-        'bottom': {},
-        'basement': {},
+        'top': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
+        'middle': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
+        'bottom': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
+        'basement': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/layout/hamburgerBasement.ui',

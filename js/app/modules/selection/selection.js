@@ -6,7 +6,9 @@ const {DModel, GObject} = imports.gi;
 const Lang = imports.lang;
 
 const HistoryStore = imports.app.historyStore;
+const Filter = imports.app.interfaces.filter;
 const Module = imports.app.interfaces.module;
+const Order = imports.app.interfaces.order;
 
 /**
  * Class: Selection
@@ -53,8 +55,16 @@ var Selection = new Module.Class({
     },
 
     Slots: {
-        'order': {},
-        'filter': {},
+        'order': {
+            requires: [
+                Order.Order,
+            ],
+        },
+        'filter': {
+            requires: [
+                Filter.Filter,
+            ],
+        },
     },
 
     _init: function (props={}) {

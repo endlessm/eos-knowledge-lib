@@ -1,3 +1,5 @@
+const Gtk = imports.gi.Gtk;
+
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const HistoryStore = imports.app.historyStore;
@@ -15,7 +17,11 @@ var Navigation = new Module.Class({
     Extends: NavButtonOverlay.NavButtonOverlay,
 
     Slots: {
-        'content': {},
+        'content': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
     },
 
     _init: function (props={}) {

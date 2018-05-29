@@ -54,7 +54,11 @@ var DynamicBackground = new Module.Class({
          * Slot: content
          * A template module
          */
-        'content': {},
+        'content': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
     },
     References: {
         'selection': {},  // type: Selection

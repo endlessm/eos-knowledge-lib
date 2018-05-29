@@ -28,13 +28,20 @@ var Overlay = new Module.Class({
          * Slot: content
          * For the main module
          */
-        'content': {},
+        'content': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
         /**
          * Slot: overlays
          * A list of other modules to be positioned on top of the content
          */
         'overlays': {
             array: true,
+            requires: [
+                Gtk.Widget,
+            ],
         },
     },
 

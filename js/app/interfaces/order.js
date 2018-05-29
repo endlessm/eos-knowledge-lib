@@ -40,7 +40,11 @@ var Order = new Lang.Interface({
     },
 
     Slots: {
-        'sub-order': {},
+        'sub-order': {
+            requires: [
+                'self',
+            ],
+        },
     },
 
     _interface_init: function () {

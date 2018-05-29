@@ -18,8 +18,16 @@ var BrandPage = new Module.Class({
     Extends: Gtk.Stack,
 
     Slots: {
-        'brand': {},
-        'content': {},
+        'brand': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
+        'content': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
     },
 
     // Overridable in tests. Brand page should be visible for 2 seconds. The

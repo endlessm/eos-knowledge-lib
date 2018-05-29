@@ -34,7 +34,11 @@ var ResponsiveMargins = new Module.Class({
     },
 
     Slots: {
-        'content': {},
+        'content': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
     },
 
     _init: function (props={}) {

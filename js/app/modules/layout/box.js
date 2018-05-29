@@ -42,6 +42,9 @@ var Box = new Module.Class({
     Slots: {
         'contents': {
             array: true,
+            requires: [
+                Gtk.Widget,
+            ],
         },
     },
 

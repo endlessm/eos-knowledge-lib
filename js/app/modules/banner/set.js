@@ -3,6 +3,7 @@
 const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 
+const Card = imports.app.interfaces.card;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const Pages = imports.app.pages;
@@ -20,6 +21,9 @@ var Set = new Module.Class({
     Slots: {
         'card': {
             multi: true,
+            requires: [
+                Card.Card,
+            ],
         },
     },
 

@@ -38,12 +38,20 @@ var TopMenu = new Module.Class({
          * Slot: banner
          * Typically an image previewer to display the logo
          */
-        'banner': {},
+        'banner': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
         /**
          * Slot: menu
          * Module that contains the horizontal menu
          */
-        'menu': {},
+        'menu': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
     },
 
     _on_history_changed: function () {

@@ -7,6 +7,7 @@ const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
 const PDFView = imports.app.widgets.PDFView;
 const ShareActionBox = imports.app.widgets.shareActionBox;
+const View = imports.app.interfaces.view;
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 
@@ -20,9 +21,15 @@ var MediaLightbox = new Module.Class({
 
     Slots: {
         'view': {
-            multi: true,
+            requires: [
+                View.View,
+            ],
         },
-        'content': {},
+        'content': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
     },
 
     _init: function (props={}) {

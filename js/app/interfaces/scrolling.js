@@ -19,7 +19,11 @@ var Scrolling = new Lang.Interface({
          * Slot: content
          * Where to put the content
          */
-        'content': {},
+        'content': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
     },
 
     _interface_init() {

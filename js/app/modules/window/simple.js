@@ -34,7 +34,11 @@ var Simple = new Module.Class({
          * It takes up all of the window's screen area, except for the title
          * bar.
          */
-        'content': {},
+        'content': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
         /**
          * Slot: search
          *
@@ -45,6 +49,9 @@ var Simple = new Module.Class({
         'search': {
             optional: true,
             allowed: ['Navigation.SearchBox'],
+            requires: [
+                SearchBox.SearchBox,
+            ],
         },
     },
 

@@ -11,6 +11,7 @@ const Dispatcher = imports.app.dispatcher;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const Pages = imports.app.pages;
+const ArticleContent = imports.app.interfaces.articleContent;
 const WebviewTooltipPresenter = imports.app.webviewTooltipPresenter;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -51,15 +52,27 @@ var ArticleStack = new Module.Class({
     Slots: {
         'article': {
             multi: true,
+            requires: [
+                ArticleContent.ArticleContent,
+            ],
         },
         'nav-content': {
             multi: true,
+            requires: [
+                Gtk.Widget,
+            ],
         },
         'video': {
             multi: true,
+            requires: [
+                ArticleContent.ArticleContent,
+            ],
         },
         'audio': {
             multi: true,
+            requires: [
+                ArticleContent.ArticleContent,
+            ],
         },
     },
 

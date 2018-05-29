@@ -46,8 +46,16 @@ var Sidebar = new Module.Class({
     },
 
     Slots: {
-        'sidebar': {},
-        'content': {},
+        'sidebar': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
+        'content': {
+            requires: [
+                Gtk.Widget,
+            ],
+        },
     },
 
     _init: function (props={}) {
