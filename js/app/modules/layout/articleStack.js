@@ -11,6 +11,7 @@ const Dispatcher = imports.app.dispatcher;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
 const Pages = imports.app.pages;
+const Selection = imports.app.modules.selection.selection;
 const ArticleContent = imports.app.interfaces.articleContent;
 const WebviewTooltipPresenter = imports.app.webviewTooltipPresenter;
 
@@ -77,7 +78,11 @@ var ArticleStack = new Module.Class({
     },
 
     References: {
-        'selection': {},  // type: Selection
+        'selection': {
+            requires: [
+                Selection.Selection,
+            ],
+        },
     },
 
     CONTENT_TRANSITION_DURATION: 500,

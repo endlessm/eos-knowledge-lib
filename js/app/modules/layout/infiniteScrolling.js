@@ -5,6 +5,7 @@
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 const HistoryStore = imports.app.historyStore;
+const Selection = imports.app.modules.selection.selection;
 const ScrollingIface = imports.app.interfaces.scrolling;
 
 const _BATCH_SIZE = 10;
@@ -19,7 +20,11 @@ var InfiniteScrolling = new Module.Class({
     Implements: [ScrollingIface.Scrolling],
 
     References: {
-        'lazy-load': {},  // type: Selection
+        'lazy-load': {
+            requires: [
+                Selection.Selection,
+            ],
+        },
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/layout/infiniteScrolling.ui',

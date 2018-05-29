@@ -10,6 +10,7 @@ const Gtk = imports.gi.Gtk;
 const DominantColor = imports.app.dominantColor;
 const HistoryStore = imports.app.historyStore;
 const Module = imports.app.interfaces.module;
+const Selection = imports.app.modules.selection.selection;
 const Utils = imports.app.utils;
 
 const DEFAULT_COLOR = '#BBBCB6';
@@ -61,7 +62,11 @@ var DynamicBackground = new Module.Class({
         },
     },
     References: {
-        'selection': {},  // type: Selection
+        'selection': {
+            requires: [
+                Selection.Selection,
+            ],
+        },
     },
 
     _init: function (props={}) {

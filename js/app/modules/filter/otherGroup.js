@@ -6,6 +6,7 @@ const {DModel, GObject} = imports.gi;
 
 const Filter = imports.app.interfaces.filter;
 const Module = imports.app.interfaces.module;
+const Selection = imports.app.modules.selection.selection;
 const Utils = imports.app.utils;
 
 var OtherGroup = new Module.Class({
@@ -14,7 +15,11 @@ var OtherGroup = new Module.Class({
     Implements: [Filter.Filter],
 
     References: {
-        'other': {},
+        'other': {
+            requires: [
+                Selection.Selection,
+            ],
+        },
     },
 
     _init: function (props) {
