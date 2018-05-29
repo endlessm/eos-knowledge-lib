@@ -140,15 +140,14 @@ var MediaLightbox = new Module.Class({
                 widget = new EosKnowledgePrivate.MediaBin();
                 widget.set_uri(media_object.id);
             } else if (content_type === 'application/pdf') {
-                let stream = media_object.get_content_stream();
                 widget = new PDFView.PDFView({
+                    model: media_object,
                     expand: true,
                     // FIXME: PDFView doesn't respond to vexpand:
                     // https://phabricator.endlessm.com/T13216
                     height_request: Gdk.Screen.get_default().get_height(),
                     visible: true,
                 });
-                widget.load_stream(stream, content_type);
             } else {
                 printerr("Lightbox does not support this content type " + content_type);
                 return;
