@@ -1,3 +1,5 @@
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Actions = imports.app.actions;
@@ -10,6 +12,14 @@ var ShareActionBox = new Knowledge.Class({
     Name: 'ShareActionBox',
     Extends: Gtk.Box,
 
+    Properties: {
+        'pixel-size': GObject.ParamSpec.int('pixel-size',
+            'Pixel size',
+            'Icon pixel size',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            -1, GLib.MAXINT16, -1),
+    },
+
     _init: function (params) {
         this.parent(params);
 
@@ -19,10 +29,14 @@ var ShareActionBox = new Knowledge.Class({
     },
 
     _add_button: function (network, icon_name, css_class) {
-        let button = new Gtk.Button ({
-            image: new Gtk.Image ({ icon_name: icon_name }),
+        let button = new Gtk.Button ({ visible: true });
+        let image = new Gtk.Image ({
+            icon_name: icon_name,
+            pixel_size: this.pixel_size,
+            visible: true
         });
 
+        button.add(image);
         button.get_style_context().add_class(css_class);
         Utils.set_hand_cursor_on_widget(button);
         button.connect('clicked', () => {
@@ -33,6 +47,5 @@ var ShareActionBox = new Knowledge.Class({
         });
 
         this.add(button);
-        button.show();
     },
 });
