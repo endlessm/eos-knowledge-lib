@@ -11,3 +11,11 @@ keybinding syntax. */
 .InArticleSearch__entry {
     -gtk-key-bindings: article-search;
 }
+
+@binding-set pdf-view-binding-set {
+  bind "<ctrl>C" { "copy" () };
+}
+
+.PDFView {
+  -gtk-key-bindings: pdf-view-binding-set;
+}

@@ -1,0 +1,125 @@
+.PDFView {
+
+    background-color: $background-light-color;
+
+    /* Side Panel */
+    label.title {
+        color: $primary-medium-color;
+        font-family: $title-font;
+        font-weight: bold;
+    }
+
+    #panel {
+        background-color: $background-dark-color;
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        margin-right: 2px;
+
+        label.title {
+            font-size: 26px;
+            padding: 30px 40px;
+        }
+
+        scrollbar {
+            background-color: unset;
+            slider {
+                background-color: rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        iconview {
+            padding: 4px; /* The cell render already adds 6px */
+            color: $primary-medium-color;
+            border-radius: 8px;
+            font-family: $context-font;
+            font-weight: bold;
+            font-size: 20px;
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+
+            &:selected {
+                background-color: rgba(0, 0, 0, 0.15);
+            }
+        }
+    }
+
+    #content {
+        evview {
+            background-color: $background-light-color;
+            border-style: solid;
+            border-color: $background-light-color;
+            border-width: 25px 107px 0px 25px;
+
+            &:selected {
+                color: white;
+                background-color: black;
+            }
+        }
+
+        button {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        label.title {
+            font-size: 32px;
+            padding: 40px 147px 10px 40px;
+        }
+
+        /* Buttons */
+
+        button > image {
+            padding: 16px
+        }
+
+        .button:hover {
+            background-color: lighten($accent-light-color, 10%);
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .button:active {
+            background-color: darken($accent-light-color, 5%);
+            box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
+        }
+
+        .button {
+            padding: 0px;
+            border-radius: 26px;
+            background: $accent-light-color;
+            color: white;
+            box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            margin: 6px 0px 5px 0px;
+        }
+
+        #sharebox {
+            button.inline {
+                margin: 4px 4px 0px 4px;
+            }
+
+            .ShareActionBox {
+                margin: 0px 4px 4px 4px;
+            }
+
+            button.button > image {
+                border-radius: 26px;
+            }
+
+            button.inline > image,
+            .ShareActionBox > button > image {
+                border-radius: 22px;
+                padding: 12px;
+            }
+
+            button:hover > image {
+                background-color: lighten($accent-light-color, 15%);
+                color: white;
+            }
+
+            button:active > image {
+                background-color: darken($accent-light-color, 15%);
+                color: white;
+            }
+        }
+    }
+}
