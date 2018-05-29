@@ -3,6 +3,7 @@ const Lang = imports.lang;
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Knowledge = imports.app.knowledge;
+const Module = imports.app.interfaces.module;
 const Warehouse = imports.app.warehouse;
 
 const ROOT_NAME = 'root';
@@ -62,6 +63,7 @@ var ModuleFactory = new Knowledge.Class({
         this._id_to_module = new Map();
         this._id_to_pending_callbacks = new Map();
         this._extract_ids(this.app_json[ROOT_NAME], false);
+        this._path_to_requirements = new Map();
     },
 
     get version() {
@@ -93,6 +95,10 @@ var ModuleFactory = new Knowledge.Class({
         let styles = ('styles' in description) ? description['styles'] : null;
 
         let module_class = this.warehouse.type_to_class(description['type']);
+
+        // Ensure this module class complies with slot requirements
+        this._check_module_requirements(module_class, path);
+
         let module_bindings = {};
         let module_props = {
             factory: this,
@@ -208,9 +214,13 @@ var ModuleFactory = new Knowledge.Class({
             throw new Error('You are creating more than one instance of a ' +
                 'submodule that is not in a multi slot: ' + path);
 
+        // Register the requirements needed for this slot
+        this._register_module_requirements(parent_module, path, slots_info[slot]);
+
         // The module is not an array, we treat it as a single module
-        if (!slots_info[slot].array)
+        if (!slots_info[slot].array) {
             return this._create_module(path, slot_value, extra_props);
+        }
 
         if (!Array.isArray(slot_value))
             throw new Error('Slot ' + slot + ' is expected to be an array of submodules!');
@@ -325,5 +335,40 @@ var ModuleFactory = new Knowledge.Class({
         let module_class = this.warehouse.type_to_class(module_type);
         if (typeof module_class.prototype.get_style_context === 'undefined')
             throw new Error('No styles support in ' + module_type);
+    },
+
+    _register_module_requirements: function (parent_module, path, slot_info) {
+        if (!slot_info.requires)
+            return;
+        if (this._path_to_requirements.has(path))
+            return;
+
+        let requirements = slot_info.requires;
+        let index = requirements.indexOf('self');
+        if (index !== -1) {
+            // XXX one way or another this is probably wrong
+            requirements = requirements.concat(
+                GObject.type_interfaces(parent_module.constructor.$gtype));
+            requirements.splice(index, 1);
+        }
+
+        this._path_to_requirements.set(path, requirements);
+    },
+
+    _check_module_requirements: function (module_class, path) {
+        // Check that it is actually a Module
+        let requirements = [Module.Module.$gtype];
+        if (this._path_to_requirements.has(path))
+            requirements = requirements.concat(this._path_to_requirements.get(path));
+
+        requirements.forEach(req => {
+            if (!(module_class === req ||
+                 (typeof req === 'function' && module_class.prototype instanceof req) ||
+                 (typeof req === 'object' && GObject.type_interfaces(module_class.$gtype).indexOf(req) !== -1) ||
+                 (typeof req === 'function' && GObject.type_interfaces(module_class.$gtype).indexOf(req.$gtype) !== -1)))
+                throw new Error(module_class + ' at ' + path + ' requires ' + req);
+        });
+
+        this._path_to_requirements.delete(path);
     },
 });
