@@ -7,6 +7,7 @@ const Module = imports.app.interfaces.module;
 const Warehouse = imports.app.warehouse;
 
 const ROOT_NAME = 'root';
+const ID_PREFIX = 'id:'
 
 /**
  * Class: ModuleFactory
@@ -251,6 +252,13 @@ var ModuleFactory = new Knowledge.Class({
             callback(null);
             return;
         }
+
+        if (reference_slot in module.constructor.__references__) {
+            let references_info = module.constructor.__references__;
+            let info = references_info[reference_slot];
+            this._register_module_requirements(module, ID_PREFIX + id, info);
+        }
+
         this._register_module_callback(id, callback);
     },
 
@@ -267,6 +275,7 @@ var ModuleFactory = new Knowledge.Class({
         let id = module.factory_id;
         if (!this._id_to_pending_callbacks.has(id))
             return;
+        this._check_module_requirements(module.constructor, ID_PREFIX + id);
         this._id_to_pending_callbacks.get(id).forEach((callback) => {
             callback(module);
         });
@@ -275,7 +284,9 @@ var ModuleFactory = new Knowledge.Class({
 
     _register_module_callback: function (id, callback) {
         if (this._id_to_module.has(id)) {
-            callback(this._id_to_module.get(id));
+            let module = this._id_to_module.get(id);
+            this._check_module_requirements(module.constructor, ID_PREFIX + id);
+            callback(module);
             return;
         }
         if (!this._id_to_pending_callbacks.has(id)) {
@@ -369,6 +380,7 @@ var ModuleFactory = new Knowledge.Class({
                 throw new Error(module_class + ' at ' + path + ' requires ' + req);
         });
 
-        this._path_to_requirements.delete(path);
+        if (path.startsWith(ROOT_NAME))
+            this._path_to_requirements.delete(path);
     },
 });
