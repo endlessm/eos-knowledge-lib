@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/app.html#app-icon"], "token": "taskbar"});
+urls_downloaded_cb({"token": "taskbar", "urls": ["tutorial/app.html#app-icon"]});

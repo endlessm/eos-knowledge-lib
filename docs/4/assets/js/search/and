@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/app.html#app-icon"], "token": "and"});
+urls_downloaded_cb({"token": "and", "urls": ["tutorial/app.html#app-icon"]});

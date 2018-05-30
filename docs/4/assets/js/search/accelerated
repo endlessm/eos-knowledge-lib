@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/app.html#flatpak-manifest"], "token": "accelerated"});
+urls_downloaded_cb({"token": "accelerated", "urls": ["tutorial/app.html#flatpak-manifest"]});

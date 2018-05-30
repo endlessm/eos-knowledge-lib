@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/app.html#attributing-the-assets"], "token": "forget"});
+urls_downloaded_cb({"token": "forget", "urls": ["tutorial/app.html#attributing-the-assets"]});

@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/app.html#customizing-the-front-page-ui"], "token": "obscure"});
+urls_downloaded_cb({"token": "obscure", "urls": ["tutorial/app.html#customizing-the-front-page-ui"]});

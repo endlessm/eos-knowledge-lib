@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["layout/sidebar.html#sidebarfirst"], "token": "reading"});
+urls_downloaded_cb({"token": "reading", "urls": ["layout/sidebar.html#sidebarfirst"]});

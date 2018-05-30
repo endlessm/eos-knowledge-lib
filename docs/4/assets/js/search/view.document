@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["view/document.html#viewdocument1", "view/document.html#viewdocument"], "token": "view.document"});
+urls_downloaded_cb({"token": "view.document", "urls": ["view/document.html#viewdocument1", "view/document.html#viewdocument"]});

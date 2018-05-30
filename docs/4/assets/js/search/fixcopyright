@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/shard.html#page-description"], "token": "fixcopyright"});
+urls_downloaded_cb({"token": "fixcopyright", "urls": ["tutorial/shard.html#page-description"]});

@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/ingester.html#creating-a-hatch", "tutorial/shard.html#cleaning-unused-elements"], "token": "remove"});
+urls_downloaded_cb({"token": "remove", "urls": ["tutorial/ingester.html#creating-a-hatch", "tutorial/shard.html#cleaning-unused-elements"]});

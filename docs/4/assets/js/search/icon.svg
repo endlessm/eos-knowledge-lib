@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/app-full-code.html#assetsiconsvg", "tutorial/app.html#app-icon"], "token": "icon.svg"});
+urls_downloaded_cb({"token": "icon.svg", "urls": ["tutorial/app-full-code.html#assetsiconsvg", "tutorial/app.html#app-icon"]});

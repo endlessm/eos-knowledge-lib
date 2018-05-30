@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/shard.html#page-description", "selection/xapian.html#selectionxapian1"], "token": "database"});
+urls_downloaded_cb({"token": "database", "urls": ["tutorial/shard.html#page-description", "selection/xapian.html#selectionxapian1"]});

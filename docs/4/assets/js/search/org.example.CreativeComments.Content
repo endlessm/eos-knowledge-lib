@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/app.html#publishing-the-app"], "token": "org.example.CreativeComments.Content"});
+urls_downloaded_cb({"token": "org.example.CreativeComments.Content", "urls": ["tutorial/app.html#publishing-the-app"]});

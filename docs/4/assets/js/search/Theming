@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/app.html#theming-the-app"], "token": "Theming"});
+urls_downloaded_cb({"token": "Theming", "urls": ["tutorial/app.html#theming-the-app"]});

@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/app.html#customizing-the-front-page-ui"], "token": "declaration"});
+urls_downloaded_cb({"token": "declaration", "urls": ["tutorial/app.html#customizing-the-front-page-ui"]});
