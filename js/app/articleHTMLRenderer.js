@@ -153,13 +153,27 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         if (!model.original_uri || model.original_uri === '')
             return '';
 
+        function get_svg (uri) {
+            let file = Gio.file_new_for_uri(uri);
+
+            try {
+                let [, svg] = file.load_contents(null);
+                return svg.toString();
+            } catch(e) {
+                return null;
+            };
+        }
+
         function get_button_markup (network) {
-            let file = Gio.file_new_for_uri(`resource:///com/endlessm/knowledge/data/icons/scalable/apps/${network}-symbolic.svg`);
-            let [success, svg] = file.load_contents(null);
+            let markup = get_svg(`file:///usr/share/runtime/share/icons/EndlessOS/scalable/apps/${network}-symbolic.svg`);
+
+            if (!markup)
+                markup = get_svg(`resource:///com/endlessm/knowledge/data/icons/scalable/apps/${network}-symbolic.svg`);
+
             return `
             <a class="share-action"
                onclick="window.webkit.messageHandlers.share_on_${network}.postMessage(0)">
-               ${svg.toString()}
+               ${markup}
             </a>`;
         }
 
