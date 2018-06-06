@@ -1,11 +1,10 @@
-const EvinceDocument = imports.gi.EvinceDocument;
-const EvinceView = imports.gi.EvinceView;
-const Gio = imports.gi.Gio;
-const Gtk = imports.gi.Gtk;
+const { EvinceDocument, EvinceView, Gio, Gtk } = imports.gi;
+
+const Utils = imports.tests.utils;
+Utils.register_gresource();
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const PDFView = imports.app.widgets.PDFView;
-const Utils = imports.tests.utils;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
