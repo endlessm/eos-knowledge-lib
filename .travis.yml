@@ -1,0 +1,18 @@
+language: c
+dist: trusty
+sudo: false
+cache: ccache
+group: edge
+
+services: docker
+
+before_install:
+    - docker pull ebassi/endlessci:sdk
+
+before_script:
+    - echo 'FROM ebassi/endlessci:sdk' > Dockerfile
+    - echo 'ADD . /root/source/eos-knowledge-lib' >> Dockerfile
+    - docker build -t withgit .
+
+script:
+    - docker run --volume $HOME/.ccache:/root/.ccache withgit /bin/sh -c '/usr/bin/endless-build-module --check --with-xvfb eos-knowledge-lib'
