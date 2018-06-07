@@ -5,13 +5,14 @@
 # Translators:
 # Philip Chimento <philip.chimento@gmail.com>, 2017
 # Stefan Schroeder <ondekoza@gmail.com>, 2016
+# XorgMC <xorgmc@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/endless-os/public/\n"
 "POT-Creation-Date: 2018-02-22 16:19-0300\n"
-"PO-Revision-Date: 2018-02-22 20:37+0000\n"
-"Last-Translator: Martin Abente Lahaye <tch@sugarlabs.org>\n"
+"PO-Revision-Date: 2018-05-20 20:48+0000\n"
+"Last-Translator: XorgMC <xorgmc@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/endless-os/eos-knowledge-lib/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,15 +28,15 @@ msgstr "Huch! Kein Inhalt."
 msgid ""
 "The application could not find content to show. Please uninstall and re-"
 "install the application from the App Center."
-msgstr ""
+msgstr "Die Anwendung konnte keine Inhalte zum Anzeigen finden. Bitte installiere die Anwendung aus dem App-Center neu."
 
 #: data/widgets/noContentDialog.ui:23
 msgid "Open App Center"
-msgstr ""
+msgstr "App-Center öffnen"
 
 #: data/widgets/noContentDialog.ui:36
 msgid "Close"
-msgstr ""
+msgstr "Schließen"
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
@@ -51,7 +52,7 @@ msgstr "Huch! Ein Fehler ist aufgetreten"
 
 #: data/widgets/contentGroup/contentGroup.ui:40
 msgid "Download support info"
-msgstr "Unterstützung beim Herunterladen"
+msgstr "Hilfe herunterladen"
 
 #: data/widgets/contentGroup/contentGroup.ui:44
 msgid ""
@@ -70,7 +71,7 @@ msgstr "Wir empfehlen dir:\n\nÜberprüfe die Rechtschreibung\nVersuche es mit a
 
 #: data/widgets/layout/sideMenu.ui:95
 msgid "Home"
-msgstr ""
+msgstr "Start"
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license"
@@ -136,14 +137,14 @@ msgstr "Es gibt Ergebnisse für »%s«"
 
 #: js/app/historyStore.js:414
 msgid "Shared from Endless"
-msgstr ""
+msgstr "Geteilt aus Endless"
 
 #: js/app/interfaces/card.js:252
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s:%s Minute"
+msgstr[1] "%s:%s Minuten"
 
 #: js/app/interfaces/card.js:315
 #, javascript-format
@@ -174,7 +175,7 @@ msgstr "Ergebnisse für »%s«"
 
 #: js/app/modules/contentGroup/contentGroup.js:173
 msgid "See more"
-msgstr ""
+msgstr "Mehr"
 
 #: js/app/modules/contentGroup/noResultsMessage.js:52
 msgid "We're sorry, there are no results that match your search."
@@ -190,7 +191,7 @@ msgstr "Persönlicher Ordner"
 
 #: js/app/modules/layout/placeholder.js:25
 msgid "Placeholder"
-msgstr ""
+msgstr "Platzhalter"
 
 #: js/app/modules/navigation/searchBox.js:166
 msgid "See more results"
@@ -211,16 +212,16 @@ msgstr "und"
 
 #: js/app/widgets/webShareDialog.js:179
 msgid "Retry"
-msgstr ""
+msgstr "Erneut versuchen"
 
 #: js/app/widgets/webShareDialog.js:362
 msgid "Please sign in again to share this link"
-msgstr ""
+msgstr "Bitte melde dich erneut an um diesen Link zu teilen"
 
 #: js/app/widgets/webShareDialog.js:363 js/app/widgets/webShareDialog.js:415
 msgid "Sign In"
-msgstr ""
+msgstr "Anmelden"
 
 #: js/app/widgets/webShareDialog.js:414
 msgid "Please sign in to share this link"
-msgstr ""
+msgstr "Bitte melde dich an um diesen Link zu teilen"

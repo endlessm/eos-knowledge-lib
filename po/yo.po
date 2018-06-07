@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: yo\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/widgets/noContentDialog.ui:8
 msgid "Oops! No content."
@@ -141,14 +141,12 @@ msgstr ""
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
 msgstr[0] ""
-msgstr[1] ""
 
 #: js/app/interfaces/card.js:315
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] ""
-msgstr[1] ""
 
 #: js/app/modules/banner/context.js:38 js/app/modules/banner/context.js:49
 msgid "Highlights"
