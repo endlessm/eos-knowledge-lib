@@ -60,12 +60,23 @@ Some app presets were renamed:
 - "B" is now "Thematic"
 - "Buffet" is now "Exploration"
 - "Escola" is now "Course"
+
 If you were importing these presets in your `app.yaml` file, or their themes in your `overrides.scss` file, you should change the name.
 For up-to-date documentation on the app presets, see [the presets documentation](http://endlessm.github.io/eos-knowledge-lib/docs/4/concepts/presets.html).
 
 You will have to rebuild any databases in your app to work with the new version of Xapian.
 
 ## Release notes ##
+
+### SDK 4.1 (June 7, 2018) ###
+
+- Services: Some bugfixes to keep apps using older SDK versions working correctly.
+- Services: Fixed a crash that could occur sometimes.
+- Documentation: Expanded the [tutorial](http://endlessm.github.io/eos-knowledge-lib/docs/4/tutorial/index.html) and made some minor fixes in the text.
+- Modular framework: Some visual improvements to search boxes.
+- Modular framework: Fixed a bug whereby `vertical` and `horizontal` CSS classes were not added to cards correctly.
+- Modular framework: Minor performance improvements.
+- Renderer: Fixed a bug whereby extra bullets were added to bulleted lists.
 
 ### SDK 4.0 (May 4, 2018) ###
 This is the first release in the SDK4 series.
