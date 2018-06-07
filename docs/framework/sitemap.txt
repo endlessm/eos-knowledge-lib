@@ -14,4 +14,6 @@ index.md
 		tutorial/app.md
 			tutorial/app-full-code.md
 	tools.md
+		electron-tutorial.md
+		electron-knowledge-tutorial.md
 	mf-index
