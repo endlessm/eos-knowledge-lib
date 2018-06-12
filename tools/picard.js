@@ -1,15 +1,15 @@
 const {DModel, Gdk, Gio, GLib, GObject, Gtk} = imports.gi;
 const Lang = imports.lang;
 
-const Card = imports.app.interfaces.card;
-const Knowledge = imports.app.knowledge;
-const Module = imports.app.interfaces.module;
-const ModuleFactory = imports.app.moduleFactory;
-const ReadingHistoryModel = imports.app.readingHistoryModel;
-const Selection = imports.app.modules.selection.selection;
-const SetMap = imports.app.setMap;
-const Utils = imports.app.utils;
-const {View} = imports.app.interfaces.view;
+const Card = imports.framework.interfaces.card;
+const Knowledge = imports.framework.knowledge;
+const Module = imports.framework.interfaces.module;
+const ModuleFactory = imports.framework.moduleFactory;
+const ReadingHistoryModel = imports.framework.readingHistoryModel;
+const Selection = imports.framework.modules.selection.selection;
+const SetMap = imports.framework.setMap;
+const Utils = imports.framework.utils;
+const {View} = imports.framework.interfaces.view;
 
 // Patch in a reading history model that works without a GApplication.
 const DummyReadingHistoryModel = new Knowledge.Class({
@@ -146,7 +146,7 @@ function load_arrangement (arrangement_type, card_type) {
 }
 
 function get_available_modules_for_type (type) {
-    let modules_dir = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/js/app/modules/' + type.toLowerCase());
+    let modules_dir = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/js/framework/modules/' + type.toLowerCase());
     let iter = modules_dir.enumerate_children('standard::*',
         Gio.FileQueryInfoFlags.NONE, null);
     let info;

@@ -18,7 +18,7 @@
     "html_extra_theme": "theme",
     "extra_assets": ["images"],
 
-    "mf_sources": ["../../js/app/modules/*/*.js"],
+    "mf_sources": ["../../js/framework/modules/*/*.js"],
     "mf_smart_index": true,
 
     "edit_on_github_repository": "https://github.com/endlessm/eos-knowledge-lib"

@@ -42,7 +42,7 @@ All properties accessible from the declarative file are treated as construct-onl
 Modules have **slots** and **references**, which are named spots where other modules can be contained or referenced.
 
 Here are the types of UI modules and how they fit together.
-See `js/app/modules/` for the code.
+See `js/framework/modules/` for the code.
 
 - **Arrangement** - These modules generally have a `card` slot which a **Card** can go into.
   They arrange a set of dynamically created cards on the screen.

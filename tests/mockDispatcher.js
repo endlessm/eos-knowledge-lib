@@ -2,8 +2,8 @@
 
 const GObject = imports.gi.GObject;
 
-const Dispatcher = imports.app.dispatcher;
-const Knowledge = imports.app.knowledge;
+const Dispatcher = imports.framework.dispatcher;
+const Knowledge = imports.framework.knowledge;
 
 // Similar to our actual dispatcher, but entirely synchronous and does not catch
 // errors, which will make our tests easier to write and fail faster.

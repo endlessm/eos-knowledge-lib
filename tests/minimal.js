@@ -7,16 +7,16 @@ TitleFilter */
 
 const {DModel, GLib, GObject, Gtk} = imports.gi;
 
-const Arrangement = imports.app.interfaces.arrangement;
-const ArticleContent = imports.app.interfaces.articleContent;
-const Card = imports.app.interfaces.card;
-const Filter = imports.app.interfaces.filter;
-const Module = imports.app.interfaces.module;
-const NavigationCard = imports.app.interfaces.navigationCard;
-const Order = imports.app.interfaces.order;
-const Scrolling = imports.app.interfaces.scrolling;
-const Selection = imports.app.modules.selection.selection;
-const {View} = imports.app.interfaces.view;
+const Arrangement = imports.framework.interfaces.arrangement;
+const ArticleContent = imports.framework.interfaces.articleContent;
+const Card = imports.framework.interfaces.card;
+const Filter = imports.framework.interfaces.filter;
+const Module = imports.framework.interfaces.module;
+const NavigationCard = imports.framework.interfaces.navigationCard;
+const Order = imports.framework.interfaces.order;
+const Scrolling = imports.framework.interfaces.scrolling;
+const Selection = imports.framework.modules.selection.selection;
+const {View} = imports.framework.interfaces.view;
 
 var MinimalArrangement = new Module.Class({
     Name: 'MinimalArrangement',

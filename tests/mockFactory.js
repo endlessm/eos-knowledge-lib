@@ -2,9 +2,9 @@
 
 const GObject = imports.gi.GObject;
 
-const Knowledge = imports.app.knowledge;
+const Knowledge = imports.framework.knowledge;
 const Minimal = imports.tests.minimal;
-const ModuleFactory = imports.app.moduleFactory;
+const ModuleFactory = imports.framework.moduleFactory;
 
 const _MockWarehouse = new Knowledge.Class({
     Name: 'MockWarehouse',

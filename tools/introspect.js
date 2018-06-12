@@ -35,7 +35,7 @@ function main() {
         module_path = module_name.split('.');
         classname = module_path[module_path.length - 1];
         module_path = module_path.map(lowerFirst);
-        importer = imports.app.modules;
+        importer = imports.framework.modules;
     }
 
     let module = module_path.reduce((prev, curr) => prev[curr], importer);

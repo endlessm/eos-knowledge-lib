@@ -41,7 +41,7 @@ SCRIPT="const Gio = imports.gi.Gio;
 Gio.Resource.load('%pkgdatadir%/eos-knowledge.gresource')._register();
 imports.searchPath.unshift('resource:///com/endlessm/knowledge/js');
 
-const Application = imports.app.application;
+const Application = imports.framework.application;
 let application = new Application.Application({
     application_id: '$APP_ID',
     resource_path: '$RESOURCE_PATH',
