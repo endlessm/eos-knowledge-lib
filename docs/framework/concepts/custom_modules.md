@@ -11,7 +11,7 @@ A custom module can look as simple as the example below. Note that the custom `F
 
 ```javascript
 const Gtk = imports.gi.Gtk;
-const Module = imports.app.interfaces.module;
+const Module = imports.framework.interfaces.module;
 
 var Fixed = new Module.Class({
     Name: 'Banner.Fixed',
