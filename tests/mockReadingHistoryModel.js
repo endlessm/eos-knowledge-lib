@@ -2,8 +2,8 @@
 
 const GObject = imports.gi.GObject;
 
-const Knowledge = imports.app.knowledge;
-const ReadingHistoryModel = imports.app.readingHistoryModel;
+const Knowledge = imports.framework.knowledge;
+const ReadingHistoryModel = imports.framework.readingHistoryModel;
 
 var MockReadingHistoryModel = new Knowledge.Class({
     Name: 'MockReadingHistoryModel',

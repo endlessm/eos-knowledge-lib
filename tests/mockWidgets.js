@@ -6,9 +6,9 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const WebKit2 = imports.gi.WebKit2;
 
-const Knowledge = imports.app.knowledge;
+const Knowledge = imports.framework.knowledge;
 const Minimal = imports.tests.minimal;
-const Module = imports.app.interfaces.module;
+const Module = imports.framework.interfaces.module;
 
 const _Renderer = new Knowledge.Class({
     Name: 'MockRenderer',

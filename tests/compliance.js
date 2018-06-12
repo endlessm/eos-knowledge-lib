@@ -10,7 +10,7 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const HistoryStore = imports.app.historyStore;
+const HistoryStore = imports.framework.historyStore;
 const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;

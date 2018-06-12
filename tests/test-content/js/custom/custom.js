@@ -3,7 +3,7 @@
 /* exported Custom */
 
 const Gtk = imports.gi.Gtk;
-const Module = imports.app.interfaces.module;
+const Module = imports.framework.interfaces.module;
 
 var Custom = new Module.Class({
     Name: 'Custom.Custom',

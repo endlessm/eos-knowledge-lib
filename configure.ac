@@ -276,7 +276,7 @@ AC_CONFIG_FILES([
     data/eos-knowledge-0.pc
     docs/Makefile
     po/Makefile.in
-    js/app/config.js.in
+    js/framework/config.js.in
 ])
 AC_CONFIG_HEADERS([config.h])  dnl Header with system-dependent #defines
 

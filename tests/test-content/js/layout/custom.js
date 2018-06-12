@@ -2,7 +2,7 @@
 
 /* exported Custom */
 
-const Module = imports.app.interfaces.module;
+const Module = imports.framework.interfaces.module;
 const OCustom = custom_modules.custom.custom;
 
 var Custom = new Module.Class({
