@@ -1,0 +1,119 @@
+{
+    "app-id" : "org.example.CreativeCommonsBlog",
+    "runtime" : "com.endlessm.apps.Sdk",
+    "runtime-version" : "master",
+    "sdk" : "com.endlessm.apps.Sdk",
+    "command" : "org.example.CreativeCommonsBlog",
+    "finish-args" : [
+        "--socket=x11",
+        "--socket=wayland",
+        "--device=dri"
+    ],
+    "modules" : [
+        {
+            "name" : "source-sans-font",
+            "buildsystem" : "simple",
+            "build-commands" : [
+                "install -D -m644 *.otf -t /app/share/fonts"
+            ],
+            "sources" : [
+                {
+                    "type" : "file",
+                    "url" : "https://github.com/adobe-fonts/source-sans-pro/releases/download/variable-fonts/SourceSansVariable-Roman.otf",
+                    "sha256" : "afd685a2b43feafbb4c47deaa7a2c0fcd826940d3473abe42e4aaa56d39754af"
+                },
+                {
+                    "type" : "file",
+                    "url" : "https://github.com/adobe-fonts/source-sans-pro/releases/download/variable-fonts/SourceSansVariable-Italic.otf",
+                    "sha256" : "62c5d0991d6a9571a89c8e137f2b76e3ff57f671e0d1bce832af98422ce13a6d"
+                }
+            ]
+        },
+        {
+            "name" : "org.example.CreativeCommonsBlog",
+            "buildsystem" : "meson",
+            "sources" : [
+                {
+                    "type" : "shell",
+                    "commands" : [
+                        "mkdir -p assets"
+                    ]
+                },
+                {
+                    "type" : "file",
+                    "path" : "app.gresource.xml"
+                },
+                {
+                    "type" : "file",
+                    "path" : "app.yaml"
+                },
+                {
+                    "type" : "file",
+                    "path" : "credits.json"
+                },
+                {
+                    "type" : "file",
+                    "path" : "database_manifest.py"
+                },
+                {
+                    "type" : "file",
+                    "path" : "meson.build"
+                },
+                {
+                    "type" : "file",
+                    "path" : "org.example.CreativeCommonsBlog.desktop"
+                },
+                {
+                    "type" : "file",
+                    "path" : "output.shard"
+                },
+                {
+                    "type" : "file",
+                    "path" : "overrides.scss"
+                },
+                {
+                    "type" : "file",
+                    "path" : "sets.json"
+                },
+                {
+                    "type" : "file",
+                    "path" : "assets/icon.svg",
+                    "dest-filename" : "assets/icon.svg"
+                },
+                {
+                    "type" : "file",
+                    "path" : "assets/icon-64.png",
+                    "dest-filename" : "assets/icon-64.png"
+                },
+                {
+                    "type" : "file",
+                    "path" : "assets/icon-128.png",
+                    "dest-filename" : "assets/icon-128.png"
+                },
+                {
+                    "type" : "file",
+                    "path" : "assets/titleImage",
+                    "dest-filename" : "assets/titleImage"
+                },
+                {
+                    "type" : "script",
+                    "dest-filename" : "org.example.CreativeCommonsBlog",
+                    "commands" : [
+                        "ekn-app-runner org.example.CreativeCommonsBlog /app/share/org.example.CreativeCommonsBlog/app.gresource $@"
+                    ]
+                }
+            ],
+            "build-commands" : [
+                "install -Dm755 -t /app/bin ../org.example.CreativeCommonsBlog",
+                "install -Dm644 -t /app/share/applications ../org.example.CreativeCommonsBlog.desktop",
+                "install -Dm644 ../assets/icon-64.png /app/share/icons/hicolor/64x64/apps/org.example.CreativeCommonsBlog.png",
+                "install -Dm644 ../assets/icon-128.png /app/share/icons/hicolor/128x128/apps/org.example.CreativeCommonsBlog.png",
+                "install -Dm644 ../assets/icon.svg /app/share/icons/hicolor/scalable/apps/org.example.CreativeCommonsBlog.svg"
+            ]
+        }
+    ],
+    "build-options" : {
+        "env" : {
+        }
+    }
+}
