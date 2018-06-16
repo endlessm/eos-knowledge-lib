@@ -6,7 +6,7 @@ const AppUtils = imports.framework.utils;
 const SetMap = imports.framework.setMap;
 
 describe('Article HTML Renderer', function () {
-    let wikihow_model, wikibooks_model, wikipedia_model, wikisource_model;
+    let wikihow_model, wikibooks_model, wikipedia_model;
     let all_models;
     let renderer;
 
@@ -32,16 +32,6 @@ describe('Article HTML Renderer', function () {
             title: 'Wikipedia title',
             is_server_templated: false,
         });
-        wikisource_model = new DModel.Article({
-            source_uri: 'http://en.wikisource.org/wiki/When_It_Hits_the_Fan',
-            original_uri: 'http://en.wikisource.org/wiki/When_It_Hits_the_Fan',
-            content_type: 'text/html',
-            source: 'wikisource',
-            source_name: 'Wikibooks',
-            license: 'CC-BY-SA 3.0',
-            title: 'Wikibooks title',
-            is_server_templated: false,
-        });
         wikihow_model = new DModel.Article({
             source_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
             original_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
@@ -65,7 +55,6 @@ describe('Article HTML Renderer', function () {
 
         all_models = [
             wikipedia_model,
-            wikisource_model,
             wikihow_model,
             wikibooks_model,
         ];
@@ -79,29 +68,6 @@ describe('Article HTML Renderer', function () {
         let html = renderer.render(wikibooks_model);
         expect(html.match(/<html>/g).length).toBe(1);
         expect(html.match(/<body>/g).length).toBe(1);
-    });
-
-    it('shows a title only when told to', function () {
-        let html_no_title = renderer.render(wikibooks_model);
-        renderer.show_title = true;
-        let html_with_title = renderer.render(wikibooks_model);
-        expect(html_with_title).toMatch('<h1>Wikibooks title</h1>');
-        expect(html_no_title).not.toMatch('<h1>Wikibooks title</h1>');
-    });
-
-    it('links to creative commons license on wikimedia pages', function () {
-        let html = renderer.render(wikibooks_model);
-        expect(html).toMatch('license://CC-BY-SA%203.0');
-    });
-
-    it('links to original wikihow articles', function () {
-        let html = renderer.render(wikihow_model);
-        expect(html).toMatch('http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas');
-    });
-
-    it('includes correct css for article type', function () {
-        expect(renderer.render(wikihow_model)).toMatch('wikihow.css');
-        expect(renderer.render(wikibooks_model)).toMatch('wikimedia.css');
     });
 
     it('includes correct auxillary css on any model type', function () {
@@ -143,29 +109,6 @@ describe('Article HTML Renderer', function () {
     it('includes article html unescaped', function () {
         let html = renderer.render(wikihow_model);
         expect(html).toMatch('<p>dummy html</p>');
-    });
-
-    it('includes scroll_manager.js only when told to', function () {
-        let html_without_scroll_manager = renderer.render(wikibooks_model);
-        renderer.enable_scroll_manager = true;
-        let html_with_scroll_manager = renderer.render(wikibooks_model);
-
-        expect(html_with_scroll_manager).toMatch('scroll-manager.js');
-        expect(html_without_scroll_manager).not.toMatch('scroll-manager.js');
-    });
-
-    it('includes MathJax in rendered Wikipedia, Wikibooks, and Wikisource articles', function () {
-        let html = renderer.render(wikibooks_model);
-        expect(html).toMatch('<script type="text/x-mathjax-config">');
-        html = renderer.render(wikipedia_model);
-        expect(html).toMatch('<script type="text/x-mathjax-config">');
-        html = renderer.render(wikisource_model);
-        expect(html).toMatch('<script type="text/x-mathjax-config">');
-    });
-
-    it('does not include MathJax in articles from other sources', function () {
-        let html = renderer.render(wikihow_model);
-        expect(html).not.toMatch('<script type="text/x-mathjax-config">');
     });
 
     describe('Model with custom tags', function () {
