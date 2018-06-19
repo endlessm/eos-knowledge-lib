@@ -68,7 +68,7 @@ defines:
         selection:
           type: Selection.AllSets
           slots:
-            type: $home-sets-order
+            order: $home-sets-order
 
 - &set-page
   <<: *sidebar-right
