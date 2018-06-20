@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "Customizing", "urls": ["tutorial/shard.html#page-description", "tutorial/app.html#customizing-the-front-page-ui"]});
+urls_downloaded_cb({"urls": ["tutorial/shard.html#page-description", "tutorial/app.html#customizing-the-front-page-ui"], "token": "Customizing"});

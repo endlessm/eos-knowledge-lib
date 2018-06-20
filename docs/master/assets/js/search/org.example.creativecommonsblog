@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "org.example.creativecommonsblog", "urls": ["tutorial/app.html#testing-the-content"]});
+urls_downloaded_cb({"urls": ["tutorial/app.html#testing-the-content"], "token": "org.example.creativecommonsblog"});

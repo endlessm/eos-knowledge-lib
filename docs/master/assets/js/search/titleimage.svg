@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "titleimage.svg", "urls": ["tutorial/app.html#logo"]});
+urls_downloaded_cb({"urls": ["tutorial/app.html#logo"], "token": "titleimage.svg"});

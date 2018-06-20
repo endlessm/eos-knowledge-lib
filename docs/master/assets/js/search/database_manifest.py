@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "database_manifest.py", "urls": ["tutorial/app-full-code.html#database_manifestpy"]});
+urls_downloaded_cb({"urls": ["tutorial/app-full-code.html#database_manifestpy"], "token": "database_manifest.py"});

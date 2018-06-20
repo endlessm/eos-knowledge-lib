@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "wide", "urls": ["concepts/yaml_format.html#the-yaml-format", "tutorial/app.html#theme-changes", "banner/context.html#wrap", "banner/search.html#wrap", "contentGroup/staticText.html#wrap", "contentGroup/dynamicTitle.html#wrap"]});
+urls_downloaded_cb({"urls": ["concepts/yaml_format.html#the-yaml-format", "tutorial/app.html#theme-changes", "banner/context.html#wrap", "banner/search.html#wrap", "contentGroup/staticText.html#wrap", "contentGroup/dynamicTitle.html#wrap"], "token": "wide"});

@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "gtk", "urls": ["tutorial/app.html#theme-changes", "pager/parallaxBackground.html#pagerparallaxbackground1"]});
+urls_downloaded_cb({"urls": ["tutorial/app.html#theme-changes", "pager/parallaxBackground.html#pagerparallaxbackground1"], "token": "gtk"});

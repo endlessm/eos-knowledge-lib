@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "titleimage", "urls": ["tutorial/app-full-code.html#assetstitleimage", "tutorial/app.html#logo", "banner/app.html#bannerapp1"]});
+urls_downloaded_cb({"urls": ["tutorial/app-full-code.html#assetstitleimage", "tutorial/app.html#logo", "banner/app.html#bannerapp1"], "token": "titleimage"});

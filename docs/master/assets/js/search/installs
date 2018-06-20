@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "installs", "urls": ["tutorial/app.html#fonts"]});
+urls_downloaded_cb({"urls": ["tutorial/app.html#fonts"], "token": "installs"});

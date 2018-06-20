@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "plain", "urls": ["tutorial/app.html#theme-changes", "tutorial/app.html#meson-build-file"]});
+urls_downloaded_cb({"urls": ["tutorial/app.html#theme-changes", "tutorial/app.html#meson-build-file"], "token": "plain"});

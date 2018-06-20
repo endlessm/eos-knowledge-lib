@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "credits", "urls": ["tutorial/app.html#attributing-the-assets", "tutorial/app.html#publishing-the-app"]});
+urls_downloaded_cb({"urls": ["tutorial/app.html#attributing-the-assets", "tutorial/app.html#publishing-the-app"], "token": "credits"});

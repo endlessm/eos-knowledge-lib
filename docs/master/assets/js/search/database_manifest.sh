@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "database_manifest.sh", "urls": ["tutorial/app.html#meson-build-file"]});
+urls_downloaded_cb({"urls": ["tutorial/app.html#meson-build-file"], "token": "database_manifest.sh"});
