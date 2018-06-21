@@ -1,15 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Endless Mobile, Inc.
-# This file is distributed under the same license as the eos-knowledge package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: eos-knowledge 0.4.0\n"
-"Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
-"inc\n"
-"POT-Creation-Date: 2017-06-14 22:54+0000\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-06-20 17:25-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +17,24 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: data/widgets/noContentDialog.ui:8
+msgid "Oops! No content."
+msgstr ""
+
+#: data/widgets/noContentDialog.ui:9
+msgid ""
+"The application could not find content to show. Please uninstall and re-"
+"install the application from the App Center."
+msgstr ""
+
+#: data/widgets/noContentDialog.ui:23
+msgid "Open App Center"
+msgstr ""
+
+#: data/widgets/noContentDialog.ui:36
+msgid "Close"
+msgstr ""
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
@@ -58,58 +75,21 @@ msgstr ""
 msgid "View the license"
 msgstr ""
 
-#: js/app/application.js:182
-msgid "Oops! No content."
-msgstr ""
-
-#: js/app/application.js:183
-msgid ""
-"If you have an internet connection, we are downloading more content right "
-"now. Try again in a few minutes after this message disappears."
-msgstr ""
-
-#. TRANSLATORS: anything inside curly braces '{}' is going
-#. to be substituted in code. Please make sure to leave the
-#. curly braces around any words that have them and DO NOT
-#. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:85
-msgid ""
-"This page contains content from {original-link}, available under a {license-"
-"link} license."
-msgstr ""
-
-#. TRANSLATORS: Replace this with a link to the homepage of
-#. wikiHow in your language.
-#: js/app/articleHTMLRenderer.js:92
-msgid "http://wikihow.com"
-msgstr ""
-
-#. TRANSLATORS: anything inside curly braces '{}' is going
-#. to be substituted in code. Please make sure to leave the
-#. curly braces around any words that have them and DO NOT
-#. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:97
-msgid ""
-"See {wikihow-article-link} for more details, videos, pictures and "
-"attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
-"to do anything."
-msgstr ""
-
-#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:273
+#: js/framework/articleHTMLRenderer.js:198
 msgid "Copy"
 msgstr ""
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:305
+#: js/framework/articleHTMLRenderer.js:222
 msgid "Content taken from {blog-link}."
 msgstr ""
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:310
+#: js/framework/articleHTMLRenderer.js:227
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr ""
 
@@ -117,71 +97,72 @@ msgstr ""
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:317
+#: js/framework/articleHTMLRenderer.js:234
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr ""
 
-#: js/app/buffetHistoryStore.js:53
+#: js/framework/meshHistoryStore.js:58
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr ""
 
-#: js/app/interfaces/card.js:279
+#: js/framework/historyStore.js:409
+msgid "Shared from Endless"
+msgstr ""
+
+#: js/framework/interfaces/card.js:245
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/app/interfaces/card.js:343
+#: js/framework/interfaces/card.js:309
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/app/modules/banner/context.js:38 js/app/modules/banner/context.js:49
+#: js/framework/modules/banner/context.js:38
+#: js/framework/modules/banner/context.js:49
 msgid "Highlights"
 msgstr ""
 
-#: js/app/modules/banner/context.js:52
+#: js/framework/modules/banner/context.js:52
 msgid "All Categories"
 msgstr ""
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep the %s token in your translation.
-#: js/app/modules/banner/context.js:61
+#: js/framework/modules/banner/context.js:61
 #, javascript-format
 msgid "Search results for “%s”"
 msgstr ""
 
-#: js/app/modules/banner/search.js:45
+#: js/framework/modules/banner/search.js:46
 #, javascript-format
 msgid "Results for “%s”"
 msgstr ""
 
-#: js/app/modules/contentGroup/contentGroup.js:171
+#: js/framework/modules/contentGroup/contentGroup.js:190
 msgid "See more"
 msgstr ""
 
-#: js/app/modules/contentGroup/noResultsMessage.js:52
+#: js/framework/modules/contentGroup/noResultsMessage.js:52
 msgid "We're sorry, there are no results that match your search."
 msgstr ""
 
-#: js/app/modules/layout/hamburgerBasement.js:35
+#: js/framework/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
 msgstr ""
 
-#: js/app/modules/layout/hamburgerBasement.js:51
+#: js/framework/modules/layout/hamburgerBasement.js:51
 msgid "HOME"
 msgstr ""
 
-#: js/app/modules/layout/placeholder.js:25
+#: js/framework/modules/layout/placeholder.js:25
 msgid "Placeholder"
-msgstr ""
-
-#: js/app/modules/navigation/searchBox.js:162
-msgid "See more results"
 msgstr ""
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
@@ -189,10 +170,32 @@ msgstr ""
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:100
+#: js/framework/utils.js:115
 msgid "by {author}"
 msgstr ""
 
-#: js/app/utils.js:100
+#: js/framework/utils.js:115
 msgid "and"
+msgstr ""
+
+#: js/framework/widgets/searchBox.js:69
+msgid "See more results"
+msgstr ""
+
+#: js/framework/widgets/webShareDialog.js:181
+msgid "Retry"
+msgstr ""
+
+#. Show expired session message
+#: js/framework/widgets/webShareDialog.js:364
+msgid "Please sign in again to share this link"
+msgstr ""
+
+#: js/framework/widgets/webShareDialog.js:365
+#: js/framework/widgets/webShareDialog.js:417
+msgid "Sign In"
+msgstr ""
+
+#: js/framework/widgets/webShareDialog.js:416
+msgid "Please sign in to share this link"
 msgstr ""
