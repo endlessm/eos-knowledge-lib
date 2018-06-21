@@ -1,4 +1,5 @@
-const { DModel, EosKnowledgePrivate, EvinceDocument, EvinceView, Gdk, GLib, Gio, GObject, Gtk } = imports.gi;
+const ByteArray = imports.byteArray;
+const { DModel, EosKnowledgePrivate, EvinceDocument, EvinceView, Gdk, GdkPixbuf, GLib, Gio, GObject, Gtk } = imports.gi;
 const ShareActionBox = imports.framework.widgets.shareActionBox;
 const Knowledge = imports.framework.knowledge;
 const Utils = imports.framework.utils;
@@ -212,45 +213,90 @@ var PDFView = new Knowledge.Class({
     },
 
     _update_thumb_idle: function () {
-        let index = this._liststore.get_value(this._iter, 0) - 1;
-        let [w, h] = this._document.get_page_size(index);
+        let [retval, iter] = this._liststore.iter_nth_child(null, this._thumb_index);
+        let page = this._document.get_page(this._thumb_index);
+
+        if (!retval || !page) {
+            this._thumbs_id = 0;
+            return GLib.SOURCE_REMOVE;
+        }
+
+        /* Calculate thumbnail size */
+        let [w, h] = this._document.get_page_size(this._thumb_index);
         let scale = THUMB_WIDTH * 1.0 / w;
+        let height = h * scale;
 
-        let ctx = new EvinceDocument.RenderContext();
-        ctx.set_scale(scale);
-        ctx.set_rotation(0);
-        ctx.set_target_size(THUMB_WIDTH, h*scale);
-        ctx.set_page(this._document.get_page(index));
+        /* This is undocumented, but without the lock generating the
+         * thumbnail might crash the app
+         */
+        EvinceDocument.Document.doc_mutex_lock();
 
+        /* Generate thumbnail */
+        let ctx = EvinceDocument.RenderContext.new(page, 0, scale);
+        ctx.set_target_size(THUMB_WIDTH, height);
         let thumb = this._document.get_thumbnail(ctx);
-        this._liststore.set(this._iter, [1], [thumb]);
+        ctx = null;
 
-        return (this._liststore.iter_next(this._iter)) ?
-            GLib.SOURCE_CONTINUE : GLib.SOURCE_REMOVE;
+        EvinceDocument.Document.doc_mutex_unlock();
+
+        /* Copy thumb content to blank pixbuf, this prevents IconView redraw */
+        let pixbuf = this._liststore.get_value(iter, 1);
+        thumb.copy_area(0, 0, THUMB_WIDTH, height, pixbuf, 0, 0);
+
+        this._thumb_index++;
+
+        /* Check if more thumbs need to be generated */
+        if (this._thumb_index < this._n_pages)
+            return GLib.SOURCE_CONTINUE;
+
+        /* We are done generating thumbs, queue a redraw just in case some are
+         * still blank
+         */
+        this._iconview.queue_draw();
+
+        this._thumbs_id = 0;
+        return GLib.SOURCE_REMOVE;
     },
 
     _populate_liststore: function () {
         if (!this._document)
             return;
 
-        let n_pages = this._document.get_n_pages();
+        if (this._thumbs_id) {
+            GLib.source_remove (this._thumbs_id);
+            this._thumbs_id = 0;
+        }
+
+        this._thumb_index = 0;
+        this._n_pages = this._document.get_n_pages();
         this._liststore.clear();
 
-        for (let i = 0; i < n_pages; i++) {
+        /* Populate liststore with page numbers and blank thumb */
+        for (let i = 0; i < this._n_pages; i++) {
             let iter = this._liststore.append();
             let label = this._document.get_page_label(i);
-            this._liststore.set(iter, [0, 2], [i+1, label]);
+            let [w, h] = this._document.get_page_size(i);
+
+            let thumb = GdkPixbuf.Pixbuf.new (
+                GdkPixbuf.Colorspace.RGB,
+                true,
+                8,
+                THUMB_WIDTH,
+                h * (THUMB_WIDTH/w));
+
+            /* Make it all white */
+            thumb.fill(0xffffffff);
+
+            this._liststore.set(iter, [0, 1, 2], [i+1, thumb, label]);
         }
 
         let [retval, iter] = this._liststore.get_iter_first();
         if (retval) {
-            this._iter = iter;
-
             /* Select first icon */
             this._iconview.select_path(this._liststore.get_path(iter));
 
-            /* Update thumbs on an idle callback one at a time */
-            GLib.idle_add(GLib.PRIORITY_LOW, this._update_thumb_idle.bind(this));
+            /* Queue thumbnail update after half a second */
+            this._thumbs_id = GLib.idle_add(GLib.PRIORITY_LOW, this._update_thumb_idle.bind(this));
         }
     },
 
