@@ -145,17 +145,10 @@ async function ingestArticle(hatch, {title, link, date, author}) {
         hatch.save_asset(figureAsset);
     });
 
-    // Do some extra cleanup to minimize the size
-    const all = $('*');
-    all.removeAttr('class');
-    all.removeAttr('style');
-    const imgs = $('img');
-    ['attachment-id', 'comments-opened', 'image-description', 'image-meta',
-        'image-title', 'large-file', 'medium-file', 'orig-file',
-        'orig-size', 'permalink']
-        .forEach(data => imgs.removeAttr(`data-${data}`));
-    imgs.removeAttr('srcset');  // For simplicity, only use one size
-    imgs.removeAttr('sizes');
+    // Clean up unwanted HTML tags, attributes, and comments. The
+    // defaults are good in this case but they can be overwritten or
+    // extended.
+    Libingester.util.cleanup_body($.root());
 
     postAsset.set_body($);
     postAsset.render();
