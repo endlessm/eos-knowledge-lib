@@ -242,6 +242,16 @@ imgs.removeAttr('srcset');  // For simplicity, only use one size
 imgs.removeAttr('sizes');
 ```
 
+Or even better, just use the `util.cleanup_body()` utility. It has good defaults so it already does all the above and more.
+And you can overwrite or extend the defaults if the pages you are ingesting needs a customized cleanup.
+
+```javascript
+$ = Cheerio.load('<article>');
+$('article').append(html);
+
+Libingester.util.cleanup_body($.root());
+```
+
 ## Creating a hatch ##
 
 We're now going to render the ingested pages into one of libingester's _article formats_, and then save the result in a _hatch_.

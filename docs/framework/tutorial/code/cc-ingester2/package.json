@@ -7,7 +7,7 @@
     "cheerio": "^0.22.0",
     "fathom-web": "^2.2.0",
     "jsdom": "^11.6.2",
-    "libingester": "^2.5.6",
+    "libingester": "^2.6.9",
     "vimeo": "^2.0.1",
     "youtube-dl": "^1.12.2"
   },
