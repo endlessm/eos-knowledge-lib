@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Endless Mobile, Inc.
-# This file is distributed under the same license as the eos-knowledge package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
 # e2f_in c7 <e2f_in_c7@outlook.com>, 2016-2017
@@ -8,10 +8,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
-"Report-Msgid-Bugs-To: https://www.transifex.com/endless-os/public/\n"
-"POT-Creation-Date: 2018-02-22 16:19-0300\n"
-"PO-Revision-Date: 2018-03-14 04:48+0000\n"
-"Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-06-20 17:31-0700\n"
+"PO-Revision-Date: 2018-06-21 00:33+0000\n"
+"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Hindi (http://www.transifex.com/endless-os/eos-knowledge-lib/language/hi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -76,48 +76,21 @@ msgstr "मुखपृष्ठ"
 msgid "View the license"
 msgstr "लाइसेंस देखें"
 
-#. TRANSLATORS: anything inside curly braces '{}' is going
-#. to be substituted in code. Please make sure to leave the
-#. curly braces around any words that have them and DO NOT
-#. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:85
-msgid ""
-"This page contains content from {original-link}, available under a {license-"
-"link} license."
-msgstr "इस पृष्ठ में {original-link} की सामग्री होती है, जो {license-link} लाइसेंस के अंतर्गत उपलब्ध होती है."
-
-#. TRANSLATORS: Replace this with a link to the homepage of
-#. wikiHow in your language.
-#: js/app/articleHTMLRenderer.js:92
-msgid "http://wikihow.com"
-msgstr "http://wikihow.com"
-
-#. TRANSLATORS: anything inside curly braces '{}' is going
-#. to be substituted in code. Please make sure to leave the
-#. curly braces around any words that have them and DO NOT
-#. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:97
-msgid ""
-"See {wikihow-article-link} for more details, videos, pictures and "
-"attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
-"to do anything."
-msgstr "अधिक विवरण, वीडियो, चित्रों और विशेषता के लिए {wikihow-article-link} देखें. {wikihow-link} को श्रेय, जहाँ कोई भी आसानी से सीख सकता है कि कुछ भी कैसे करना है."
-
-#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:296
+#: js/framework/articleHTMLRenderer.js:198
 msgid "Copy"
 msgstr "प्रतिलिपि करें"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:329
+#: js/framework/articleHTMLRenderer.js:222
 msgid "Content taken from {blog-link}."
 msgstr "{blog-link} से ली गई सामग्री."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:334
+#: js/framework/articleHTMLRenderer.js:227
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "{blog-link} के सामग्री सौजन्य से. अनुमति से उपयोग की गई."
 
@@ -125,102 +98,105 @@ msgstr "{blog-link} के सामग्री सौजन्य से. अ�
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:341
+#: js/framework/articleHTMLRenderer.js:234
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "{blog-link} केे सामग्री सौजन्य से, {license-link} के अंतर्गत लाइसेंसीकृत."
 
-#: js/app/buffetHistoryStore.js:54
+#: js/framework/meshHistoryStore.js:58
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "“%s” के लिए परिणाम प्राप्त हुए"
 
-#: js/app/historyStore.js:414
+#: js/framework/historyStore.js:409
 msgid "Shared from Endless"
 msgstr "Endless से साझा किया गया"
 
-#: js/app/interfaces/card.js:252
+#: js/framework/interfaces/card.js:245
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
 msgstr[0] "%s:%s मिनट"
 msgstr[1] "%s:%s मिनट"
 
-#: js/app/interfaces/card.js:315
+#: js/framework/interfaces/card.js:309
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d आइटम"
 msgstr[1] "%d आइटम्स"
 
-#: js/app/modules/banner/context.js:38 js/app/modules/banner/context.js:49
+#: js/framework/modules/banner/context.js:38
+#: js/framework/modules/banner/context.js:49
 msgid "Highlights"
 msgstr "हाइलाइट"
 
-#: js/app/modules/banner/context.js:52
+#: js/framework/modules/banner/context.js:52
 msgid "All Categories"
 msgstr "सभी श्रेणियाँ"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep the %s token in your translation.
-#: js/app/modules/banner/context.js:61
+#: js/framework/modules/banner/context.js:61
 #, javascript-format
 msgid "Search results for “%s”"
 msgstr "“%s” के लिए परिणाम खोजें"
 
-#: js/app/modules/banner/search.js:46
+#: js/framework/modules/banner/search.js:46
 #, javascript-format
 msgid "Results for “%s”"
 msgstr "“%s” के लिए परिणाम"
 
-#: js/app/modules/contentGroup/contentGroup.js:173
+#: js/framework/modules/contentGroup/contentGroup.js:190
 msgid "See more"
 msgstr "अधिक देखें"
 
-#: js/app/modules/contentGroup/noResultsMessage.js:52
+#: js/framework/modules/contentGroup/noResultsMessage.js:52
 msgid "We're sorry, there are no results that match your search."
 msgstr "आपकी खोज से मिलान करने वाले कोई परिणाम नहीं हैं"
 
-#: js/app/modules/layout/hamburgerBasement.js:35
+#: js/framework/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
 msgstr "सभी श्रेणियाँ देखें"
 
-#: js/app/modules/layout/hamburgerBasement.js:51
+#: js/framework/modules/layout/hamburgerBasement.js:51
 msgid "HOME"
 msgstr "मुखपृष्ठ"
 
-#: js/app/modules/layout/placeholder.js:25
+#: js/framework/modules/layout/placeholder.js:25
 msgid "Placeholder"
 msgstr "प्लेसहोल्डर"
-
-#: js/app/modules/navigation/searchBox.js:166
-msgid "See more results"
-msgstr "अधिक परिणाम देखें"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:115
+#: js/framework/utils.js:115
 msgid "by {author}"
 msgstr "{author} की ओर से"
 
-#: js/app/utils.js:115
+#: js/framework/utils.js:115
 msgid "and"
 msgstr "और"
 
-#: js/app/widgets/webShareDialog.js:179
+#: js/framework/widgets/searchBox.js:69
+msgid "See more results"
+msgstr "अधिक परिणाम देखें"
+
+#: js/framework/widgets/webShareDialog.js:181
 msgid "Retry"
 msgstr "पुनःप्रयास करें"
 
-#: js/app/widgets/webShareDialog.js:362
+#. Show expired session message
+#: js/framework/widgets/webShareDialog.js:364
 msgid "Please sign in again to share this link"
 msgstr "इस लिंक को साझा करने के लिए कृपया पुनः साइन इन हों"
 
-#: js/app/widgets/webShareDialog.js:363 js/app/widgets/webShareDialog.js:415
+#: js/framework/widgets/webShareDialog.js:365
+#: js/framework/widgets/webShareDialog.js:417
 msgid "Sign In"
 msgstr "साइन इन हों"
 
-#: js/app/widgets/webShareDialog.js:414
+#: js/framework/widgets/webShareDialog.js:416
 msgid "Please sign in to share this link"
 msgstr "इस लिंक को साझा करने के लिए कृपया साइन इन हों"

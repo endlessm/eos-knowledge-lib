@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Endless Mobile, Inc.
-# This file is distributed under the same license as the eos-knowledge package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
 # Cheng-Chia Tseng <pswo10680@gmail.com>, 2017
@@ -8,10 +8,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
-"Report-Msgid-Bugs-To: https://www.transifex.com/endless-os/public/\n"
-"POT-Creation-Date: 2018-02-22 16:19-0300\n"
-"PO-Revision-Date: 2018-03-13 18:11+0000\n"
-"Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-06-20 17:31-0700\n"
+"PO-Revision-Date: 2018-06-21 00:33+0000\n"
+"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/endless-os/eos-knowledge-lib/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -76,48 +76,21 @@ msgstr "首頁"
 msgid "View the license"
 msgstr "檢視授權條款"
 
-#. TRANSLATORS: anything inside curly braces '{}' is going
-#. to be substituted in code. Please make sure to leave the
-#. curly braces around any words that have them and DO NOT
-#. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:85
-msgid ""
-"This page contains content from {original-link}, available under a {license-"
-"link} license."
-msgstr "此頁面含有來自 {original-link} 的內容，由 {license-link} 所授權。"
-
-#. TRANSLATORS: Replace this with a link to the homepage of
-#. wikiHow in your language.
-#: js/app/articleHTMLRenderer.js:92
-msgid "http://wikihow.com"
-msgstr "http://zh.wikihow.com/%E9%A6%96%E9%A1%B5"
-
-#. TRANSLATORS: anything inside curly braces '{}' is going
-#. to be substituted in code. Please make sure to leave the
-#. curly braces around any words that have them and DO NOT
-#. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:97
-msgid ""
-"See {wikihow-article-link} for more details, videos, pictures and "
-"attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
-"to do anything."
-msgstr "請參閱 {wikihow-article-link} 瞭解其他詳細資訊、影片、相片及姓名標示聲明。內容來自 {wikihow-link}，所有人都可以在這裡輕易學會任何事。"
-
-#: js/app/articleHTMLRenderer.js:155 js/app/articleHTMLRenderer.js:296
+#: js/framework/articleHTMLRenderer.js:198
 msgid "Copy"
 msgstr "複製"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:329
+#: js/framework/articleHTMLRenderer.js:222
 msgid "Content taken from {blog-link}."
 msgstr "內容取自 {blog-link}。"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:334
+#: js/framework/articleHTMLRenderer.js:227
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "內容來自 {blog-link}，已經過同意使用。"
 
@@ -125,100 +98,103 @@ msgstr "內容來自 {blog-link}，已經過同意使用。"
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:341
+#: js/framework/articleHTMLRenderer.js:234
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "內容承蒙 {blog-link} 許可，依 {license-link} 授權。"
 
-#: js/app/buffetHistoryStore.js:54
+#: js/framework/meshHistoryStore.js:58
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "「%s」的搜尋結果"
 
-#: js/app/historyStore.js:414
+#: js/framework/historyStore.js:409
 msgid "Shared from Endless"
 msgstr "已從 Endless 分享"
 
-#: js/app/interfaces/card.js:252
+#: js/framework/interfaces/card.js:245
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
 msgstr[0] "%s:%s 分鐘"
 
-#: js/app/interfaces/card.js:315
+#: js/framework/interfaces/card.js:309
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d 個項目"
 
-#: js/app/modules/banner/context.js:38 js/app/modules/banner/context.js:49
+#: js/framework/modules/banner/context.js:38
+#: js/framework/modules/banner/context.js:49
 msgid "Highlights"
 msgstr "劃重點"
 
-#: js/app/modules/banner/context.js:52
+#: js/framework/modules/banner/context.js:52
 msgid "All Categories"
 msgstr "全部類別"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep the %s token in your translation.
-#: js/app/modules/banner/context.js:61
+#: js/framework/modules/banner/context.js:61
 #, javascript-format
 msgid "Search results for “%s”"
 msgstr "搜尋「%s」的結果"
 
-#: js/app/modules/banner/search.js:46
+#: js/framework/modules/banner/search.js:46
 #, javascript-format
 msgid "Results for “%s”"
 msgstr "針對「%s」的結果"
 
-#: js/app/modules/contentGroup/contentGroup.js:173
+#: js/framework/modules/contentGroup/contentGroup.js:190
 msgid "See more"
 msgstr "查看更多"
 
-#: js/app/modules/contentGroup/noResultsMessage.js:52
+#: js/framework/modules/contentGroup/noResultsMessage.js:52
 msgid "We're sorry, there are no results that match your search."
 msgstr "沒有符合您搜尋的結果。"
 
-#: js/app/modules/layout/hamburgerBasement.js:35
+#: js/framework/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
 msgstr "查看所有類別"
 
-#: js/app/modules/layout/hamburgerBasement.js:51
+#: js/framework/modules/layout/hamburgerBasement.js:51
 msgid "HOME"
 msgstr "首頁"
 
-#: js/app/modules/layout/placeholder.js:25
+#: js/framework/modules/layout/placeholder.js:25
 msgid "Placeholder"
 msgstr "預留位置"
-
-#: js/app/modules/navigation/searchBox.js:166
-msgid "See more results"
-msgstr "查看更多結果"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:115
+#: js/framework/utils.js:115
 msgid "by {author}"
 msgstr "作者為 {author}"
 
-#: js/app/utils.js:115
+#: js/framework/utils.js:115
 msgid "and"
 msgstr "和"
 
-#: js/app/widgets/webShareDialog.js:179
+#: js/framework/widgets/searchBox.js:69
+msgid "See more results"
+msgstr "查看更多結果"
+
+#: js/framework/widgets/webShareDialog.js:181
 msgid "Retry"
 msgstr "重試"
 
-#: js/app/widgets/webShareDialog.js:362
+#. Show expired session message
+#: js/framework/widgets/webShareDialog.js:364
 msgid "Please sign in again to share this link"
 msgstr "請重新登入來分享這個連結"
 
-#: js/app/widgets/webShareDialog.js:363 js/app/widgets/webShareDialog.js:415
+#: js/framework/widgets/webShareDialog.js:365
+#: js/framework/widgets/webShareDialog.js:417
 msgid "Sign In"
 msgstr "登入"
 
-#: js/app/widgets/webShareDialog.js:414
+#: js/framework/widgets/webShareDialog.js:416
 msgid "Please sign in to share this link"
 msgstr "請登入來分享這個連結"
