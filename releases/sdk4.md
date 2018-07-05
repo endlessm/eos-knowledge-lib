@@ -68,6 +68,16 @@ You will have to rebuild any databases in your app to work with the new version 
 
 ## Release notes ##
 
+### SDK 4.2 (July 5, 2018) ###
+
+- Modular Framework: Media content now stops playing after closing the lightbox view.
+- Modular Framework: Thematic apps can again order home page cards.
+- Modular Framework: Suggested content properly hides when leaving the article view.
+- Renderer: Links to wikihow sources are properly displayed.
+- Services: Evergreen content always shows in the Feed.
+- Services: Removed a memory leak.
+- Services: More documentation.
+
 ### SDK 4.1 (June 7, 2018) ###
 
 - Services: Some bugfixes to keep apps using older SDK versions working correctly.
