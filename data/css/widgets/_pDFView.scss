@@ -2,6 +2,11 @@
 
     background-color: $background-light-color;
 
+    /* Both panel and content */
+    scrollbar.vertical slider {
+        min-height: 50px;
+    }
+
     /* Side Panel */
     label.title {
         color: $primary-medium-color;
