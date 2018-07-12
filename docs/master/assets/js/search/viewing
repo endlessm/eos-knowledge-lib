@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/shard.html#viewing-the-blog-posts", "tutorial/ingester.html#creating-a-hatch", "tutorial/index.html#walkthrough", "tutorial/shard.html#creating-shards"], "token": "viewing"});
+urls_downloaded_cb({"token": "viewing", "urls": ["tutorial/shard.html#viewing-the-blog-posts", "tutorial/ingester.html#creating-a-hatch", "tutorial/index.html#walkthrough", "tutorial/shard.html#creating-shards"]});

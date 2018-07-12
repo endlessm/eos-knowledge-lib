@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["concepts/yaml_format.html#references"], "token": "some"});
+urls_downloaded_cb({"token": "some", "urls": ["concepts/yaml_format.html#references"]});

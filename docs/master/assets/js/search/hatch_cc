@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/shard-full-code.html#page-description", "tutorial/shard.html#viewing-the-blog-posts"], "token": "hatch_cc"});
+urls_downloaded_cb({"token": "hatch_cc", "urls": ["tutorial/shard-full-code.html#page-description", "tutorial/shard.html#viewing-the-blog-posts"]});

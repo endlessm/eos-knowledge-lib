@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/app.html#logo", "tutorial/app.html#publishing-the-app"], "token": "extension"});
+urls_downloaded_cb({"token": "extension", "urls": ["tutorial/app.html#logo", "tutorial/app.html#publishing-the-app"]});

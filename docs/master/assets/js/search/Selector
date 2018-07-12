@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/app.html#theme-changes"], "token": "Selector"});
+urls_downloaded_cb({"token": "Selector", "urls": ["tutorial/app.html#theme-changes"]});

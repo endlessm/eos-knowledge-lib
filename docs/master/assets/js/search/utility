@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tools.html#autobahn", "tutorial/ingester.html#parsing-the-rss-feed"], "token": "utility"});
+urls_downloaded_cb({"token": "utility", "urls": ["tools.html#autobahn", "tutorial/ingester.html#parsing-the-rss-feed", "tutorial/ingester.html#cleaning-up-the-blog-posts"]});

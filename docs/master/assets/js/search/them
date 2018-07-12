@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/app.html#app-icon", "tutorial/shard.html#page-description"], "token": "them"});
+urls_downloaded_cb({"token": "them", "urls": ["tutorial/app.html#app-icon", "tutorial/shard.html#page-description"]});

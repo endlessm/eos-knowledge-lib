@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/app.html#tweaking-the-app-ui"], "token": "tweaking"});
+urls_downloaded_cb({"token": "tweaking", "urls": ["tutorial/app.html#tweaking-the-app-ui"]});

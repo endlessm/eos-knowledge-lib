@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/app.html#flatpak-manifest"], "token": "graphics"});
+urls_downloaded_cb({"token": "graphics", "urls": ["tutorial/app.html#flatpak-manifest"]});

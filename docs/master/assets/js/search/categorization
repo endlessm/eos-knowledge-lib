@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/app.html#publishing-the-app", "tutorial/shard.html#page-description"], "token": "categorization"});
+urls_downloaded_cb({"token": "categorization", "urls": ["tutorial/app.html#publishing-the-app", "tutorial/shard.html#page-description"]});

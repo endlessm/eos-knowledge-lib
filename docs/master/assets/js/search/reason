@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/app.html#publishing-the-app", "tutorial/shard.html#downloading-linked-media"], "token": "reason"});
+urls_downloaded_cb({"token": "reason", "urls": ["tutorial/app.html#publishing-the-app", "tutorial/shard.html#downloading-linked-media"]});

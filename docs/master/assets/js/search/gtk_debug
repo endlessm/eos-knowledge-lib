@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/app.html#theme-changes"], "token": "gtk_debug"});
+urls_downloaded_cb({"token": "gtk_debug", "urls": ["tutorial/app.html#theme-changes"]});

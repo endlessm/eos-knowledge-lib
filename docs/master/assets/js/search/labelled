@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["contentGroup/contentGroup.html#paginatelabel"], "token": "labelled"});
+urls_downloaded_cb({"token": "labelled", "urls": ["contentGroup/contentGroup.html#paginatelabel"]});

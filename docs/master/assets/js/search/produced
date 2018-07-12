@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/app.html#publishing-the-app"], "token": "produced"});
+urls_downloaded_cb({"token": "produced", "urls": ["tutorial/app.html#publishing-the-app"]});

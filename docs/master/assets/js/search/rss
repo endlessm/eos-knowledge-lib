@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/ingester.html#parsing-the-rss-feed", "tutorial/ingester.html#writing-an-ingester", "tutorial/ingester.html#obtaining-metadata", "tutorial/ingester.html#further-remarks-and-ideas"], "token": "rss"});
+urls_downloaded_cb({"token": "rss", "urls": ["tutorial/ingester.html#parsing-the-rss-feed", "tutorial/ingester.html#writing-an-ingester", "tutorial/ingester.html#obtaining-metadata", "tutorial/ingester.html#further-remarks-and-ideas"]});

@@ -1,1 +1,1 @@
-urls_downloaded_cb({"urls": ["tutorial/app.html#page-description"], "token": "nicer"});
+urls_downloaded_cb({"token": "nicer", "urls": ["tutorial/app.html#page-description"]});
