@@ -330,15 +330,16 @@ var PDFView = new Knowledge.Class({
         if (!this._document)
             return;
 
-        let chooser = new Gtk.FileChooserDialog({
+        let chooser = new Gtk.FileChooserNative({
             title: 'Save as',
             action: Gtk.FileChooserAction.SAVE,
-            transient_for: this.get_toplevel(),
             do_overwrite_confirmation: true,
+            accept_label: '_Save',
+            cancel_label: '_Cancel',
         });
 
-        chooser.add_button('_Cancel', Gtk.ResponseType.CANCEL);
-        chooser.add_button('_Save', Gtk.ResponseType.ACCEPT);
+        if (this.model && this.model.title)
+            chooser.set_current_name(this.model.title + '.pdf');
 
         if (chooser.run() === Gtk.ResponseType.ACCEPT)
             this._document.save(chooser.get_uri());
