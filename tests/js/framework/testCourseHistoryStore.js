@@ -153,4 +153,23 @@ describe('CourseHistoryStore', function () {
             expect(store.get_current_item().page_type).toBe(Pages.ARTICLE);
         });
     });
+
+    describe('when desktop search result opened for media', function () {
+        let model;
+
+        beforeEach(function () {
+            model = new DModel.Media();
+            engine.get_object_promise.and.returnValue(Promise.resolve(model));
+            dispatcher.dispatch({
+                action_type: Actions.DBUS_LOAD_ITEM_CALLED,
+                search_terms: 'foo',
+                id: 'ekn:///foo',
+            });
+            Utils.update_gui();
+        });
+
+        it('shows it in lightbox', function () {
+            expect(store.get_current_item().media_model).toBe(model);
+        });
+    });
 });

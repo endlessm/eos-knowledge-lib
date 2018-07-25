@@ -84,6 +84,38 @@ var CourseHistoryStore = new GObject.Class({
         });
     },
 
+    // HistoryStore override
+    load_dbus_item: function (id, search_terms, timestamp) {
+        DModel.Engine.get_default().get_object_promise(id)
+        .then((model) => {
+            if (model instanceof DModel.Media) {
+                this.set_current_item_from_props({
+                    media_model: model,
+                    context: [model],
+                    search_terms: search_terms,
+                    timestamp: timestamp || Gdk.CURRENT_TIME,
+                }, EntryPoints.DBUS_CALL);
+            } else if (model instanceof DModel.Article) {
+                this.set_current_item_from_props({
+                    page_type: Pages.ARTICLE,
+                    model: model,
+                    search_terms: search_terms,
+                    timestamp: timestamp || Gdk.CURRENT_TIME,
+                }, EntryPoints.DBUS_CALL);
+            } else if (model instanceof DModel.Set) {
+                this.set_current_item_from_props({
+                    page_type: Pages.SET,
+                    model: model,
+                    context_label: model.title,
+                    timestamp: timestamp || Gdk.CURRENT_TIME,
+                });
+            }
+        })
+        .catch(function (error) {
+            logError(error);
+        });
+    },
+
     _load_first_subset: function (model) {
         let query = new DModel.Query({
             limit: 1,
