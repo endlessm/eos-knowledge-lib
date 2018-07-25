@@ -349,6 +349,7 @@ bin_SCRIPTS += \
 	tools/kermit \
 	tools/picard \
 	tools/shard_doctor \
+	tools/shard_stats \
 	$(NULL)
 
 # so clients can find our paths
