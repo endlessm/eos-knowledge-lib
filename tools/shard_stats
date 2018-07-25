@@ -1,0 +1,258 @@
+#!/usr/bin/env python3
+
+"""
+This CLI tool is used provide for stats on the shards contents.
+
+Examples:
+    $ ./shard_stats /path/to/subscription/shards
+"""
+
+import argparse, gi, json, os
+
+gi.require_version('EosShard', '0')
+from gi.repository import EosShard, Gio
+
+
+STATS_FORMAT = """
+shards:              {}
+objects:             {}
+articles:            {}
+thumbnails:          {}
+resources:           {}
+other images:        {}
+media:               {}
+sets:                {}
+objects(per-shard):  {}
+dict(per-shard):     {} B
+dict(sum):           {} B
+db(per-shard):       {} B
+db(per-obj):         {} B
+db(per-art):         {} B
+db(sum):             {} B
+blobs(per-shard):    {} B
+blobs(per-obj):      {} B
+blobs(sum):          {} B
+metadata(per-shard): {} B
+metadata(per-obj):   {} B
+metadata(sum):       {} B
+total(sum)           {} B
+"""
+
+
+def get_shard(shard_path):
+    shard = EosShard.ShardFile(path=shard_path)
+    shard.init(None)
+    return shard
+
+
+def get_shards_in_dir(shard_dir):
+    shards = []
+    for filename in os.listdir(shard_dir):
+        if not filename.endswith('.shard'):
+            continue
+        shard_path = os.path.join(shard_dir, filename)
+        shard = get_shard(shard_path)
+        if shard:
+            print("Found {}".format(filename))
+            shards.append(shard)
+
+    return shards
+
+
+def get_stats(shard):
+    object_count = 0
+    article_count = 0
+    resource_count = 0
+    thumbnail_count = 0
+    media_count = 0
+    sets_count = 0
+
+    db_packed_size = 0
+    db_unpacked_size = 0
+
+    dict_packed_size = 0
+    dict_unpacked_size = 0
+
+    blob_packed_size = 0
+    blob_unpacked_size = 0
+
+    meta_count = 0
+    meta_packed_size = 0
+    meta_unpacked_size = 0
+
+    images = set()
+    known_images = set()
+
+    for record in shard.list_records():
+        record_id = record.get_hex_name()
+
+        # xapian DB
+        if record_id == '209cc19d2a6d85dc097bb7950c2342b81b5c2dea':
+            db_packed_size += record.data.get_packed_content_size()
+            db_unpacked_size +=  record.data.get_content_size()
+            continue
+        # dictionary
+        if record_id == '4dba9091495e8f277893e0d400e9e092f9f6f551':
+            dict_packed_size += record.data.get_packed_content_size()
+            dict_unpacked_size +=  record.data.get_content_size()
+            continue
+
+        # articles, media, resources, etc
+        object_count += 1
+
+        # just in case
+        if not record.metadata:
+            print("skipping {}".format(record_id))
+            continue
+
+        metadata = json.loads(record.metadata.load_contents()
+                              .get_data()
+                              .decode('utf-8'))
+
+        if metadata['@type'] == 'ekn://_vocab/ArticleObject':
+            article_count += 1
+
+        if metadata['@type'] == 'ekn://_vocab/ImageObject':
+            images.add('ekn:///' + record_id)
+
+        if metadata['@type'] in ['ekn://_vocab/AudioObject',
+                                 'ekn://_vocab/MediaObject',
+                                 'ekn://_vocab/VideoObject']:
+            media_count += 1
+
+        if metadata['@type'] == 'ekn://_vocab/SetObject':
+            sets_count += 1
+
+        if 'resources' in metadata:
+            resource_count += len(metadata['resources'])
+            for resource in metadata['resources']:
+                known_images.add(resource)
+
+        if 'thumbnail' in metadata:
+            thumbnail_count += 1
+            known_images.add(metadata['thumbnail'])
+
+        meta_count += 1
+        meta_packed_size += record.metadata.get_packed_content_size()
+        meta_unpacked_size += record.metadata.get_content_size()
+
+        # sets
+        if not record.data:
+            continue
+
+        blob_packed_size += record.data.get_packed_content_size()
+        blob_unpacked_size +=  record.data.get_content_size()
+
+    return {
+        'object_count': object_count,
+        'article_count': article_count,
+        'resource_count': resource_count,
+        'thumbnail_count': thumbnail_count,
+        'media_count': media_count,
+        'sets_count': sets_count,
+        'blob_packed_size': blob_packed_size,
+        'blob_unpacked_size': blob_unpacked_size,
+        'meta_count': meta_count,
+        'meta_packed_size': meta_packed_size,
+        'meta_unpacked_size': meta_unpacked_size,
+        'db_packed_size': db_packed_size,
+        'db_unpacked_size': db_unpacked_size,
+        'dict_packed_size': dict_packed_size,
+        'dict_unpacked_size': dict_unpacked_size,
+        'images': images,
+        'known_images': known_images,
+    }
+
+
+def gen_stats(shard_dir):
+    shards = get_shards_in_dir(shard_dir)
+
+    shard_count = 0
+    object_count = 0
+    article_count = 0
+    thumbnail_count = 0
+    resource_count = 0
+    media_count = 0
+    sets_count = 0
+
+    db_packed_size = 0
+    db_unpacked_size = 0
+
+    dict_packed_size = 0
+    dict_unpacked_size = 0
+
+    blob_packed_size = 0
+    blob_unpacked_size = 0
+
+    meta_count = 0
+    meta_packed_size = 0
+    meta_unpacked_size = 0
+
+    images = set()
+    known_images = set()
+
+    for shard in shards:
+        stats = get_stats(shard)
+
+        shard_count += 1
+        object_count += stats['object_count']
+        article_count += stats['article_count']
+        thumbnail_count += stats['thumbnail_count']
+        resource_count += stats['resource_count']
+        media_count += stats['media_count']
+        sets_count += stats['sets_count']
+
+        db_packed_size += stats['db_packed_size']
+        db_unpacked_size += stats['db_unpacked_size']
+
+        dict_packed_size += stats['dict_packed_size']
+        dict_unpacked_size += stats['dict_unpacked_size']
+
+        blob_packed_size += stats['blob_packed_size']
+        blob_unpacked_size += stats['blob_unpacked_size']
+
+        meta_count += stats['meta_count']
+        meta_packed_size += stats['meta_packed_size']
+        meta_unpacked_size += stats['meta_unpacked_size']
+
+        images = images.union(stats['images'])
+        known_images = known_images.union(stats['known_images'])
+
+    other_images = len(images - known_images)
+
+    print(STATS_FORMAT.format(
+              shard_count,
+              object_count,
+              article_count,
+              thumbnail_count,
+              resource_count,
+              other_images,
+              media_count,
+              sets_count,
+              (object_count // shard_count) if shard_count else 0,
+              (dict_packed_size // shard_count) if shard_count else 0,
+              dict_packed_size,
+              (db_packed_size // shard_count) if shard_count else 0,
+              (db_packed_size // object_count) if object_count else 0,
+              (db_packed_size // article_count) if article_count else 0,
+              db_packed_size,
+              (blob_packed_size // shard_count) if shard_count else 0,
+              (blob_packed_size // object_count) if object_count else 0,
+              blob_packed_size,
+              (meta_packed_size // shard_count) if shard_count else 0,
+              (meta_packed_size // meta_count) if meta_count else 0,
+              meta_packed_size,
+              dict_packed_size + db_packed_size + blob_packed_size + meta_packed_size))
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('shard_dir',
+                        type=str,
+                        help='Root directory containing all the shards')
+    args = parser.parse_args()
+
+    gen_stats(args.shard_dir)
+
+if __name__ == '__main__':
+    main()
