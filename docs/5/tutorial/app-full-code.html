@@ -1,0 +1,658 @@
+<html lang="en">
+<head>
+
+<base href="..">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>Full code</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/isotope.pkgd.min.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/trie.js"></script>
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+
+<link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
+<link rel="shortcut icon" href="assets/images/favicon-32x32.png">
+<link href="https://fonts.googleapis.com/css?family=Lato%7CMontserrat" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/custom.css">
+
+</head>
+
+<body class="no-script
+" data-spy="scroll" data-target="#toc" data-offset="70">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+  <div class="container-fluid">
+    <div class="navbar-right">
+      <a id="toc-toggle">
+        <span class="glyphicon glyphicon-menu-right"></span>
+        <span class="glyphicon glyphicon-menu-left"></span>
+      </a>
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-header">
+      <a id="sidenav-toggle">
+        <span class="glyphicon glyphicon-menu-right"></span>
+        <span class="glyphicon glyphicon-menu-left"></span>
+      </a>
+      <a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+<img src="assets/images/Endless_mark_orange.svg" style="width: 48px" alt="Home" id="home">
+      </a>
+      <form action="" class="navbar-form pull-right" id="navbar-search-form">
+        <div class="form-group has-feedback">
+          <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+          <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+        </div>
+      </form>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-wrapper">
+      <ul class="nav navbar-nav" id="menu">
+      </ul>
+      <div class="hidden-xs hidden-sm navbar-text navbar-center">
+<p><b>Modular Framework</b></p>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+<div data-extension="core" data-hotdoc-in-toplevel="True" data-hotdoc-project="framework-0" data-hotdoc-ref="tutorial/app-full-code.html" class="page_container" id="page-wrapper">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				
+<div id="page-description" data-hotdoc-source="app-full-code.md" data-hotdoc-role="main">
+<h2 id="appgresourcexml">app.gresource.xml</h2>
+<pre><code class="language-markup">&lt;?xml version='1.0' encoding='utf-8'?&gt;
+&lt;gresources&gt;
+    &lt;gresource prefix="/app"&gt;
+        &lt;file compressed="true"&gt;app.json&lt;/file&gt;
+        &lt;file compressed="true"&gt;app.yaml&lt;/file&gt;
+        &lt;file compressed="true"&gt;overrides.css&lt;/file&gt;
+        &lt;file compressed="true"&gt;overrides.scss&lt;/file&gt;
+        &lt;file compressed="true"&gt;credits.json&lt;/file&gt;
+        &lt;file compressed="true" preprocess="xml-stripblanks"&gt;assets/titleImage&lt;/file&gt;
+    &lt;/gresource&gt;
+&lt;/gresources&gt;
+
+</code></pre>
+<h2 id="appyaml">app.yaml</h2>
+<pre><code class="language-yaml">overrides:
+  home-featured-articles-arrangement:
+    type: Arrangement.Half
+    styles:
+      - main-arrangement
+---
+!import blog
+
+</code></pre>
+<h2 id="assetsiconsvg">assets/icon.svg</h2>
+<p><img src="tutorial/tutorial/code/app/assets/icon.svg" alt="icon.svg" id="iconsvg"></p>
+<h2 id="assetsicon64png">assets/icon-64.png</h2>
+<p><img src="tutorial/tutorial/code/app/assets/icon-64.png" alt="icon-64.png" id="icon64png"></p>
+<h2 id="assetsicon128png">assets/icon-128.png</h2>
+<p><img src="tutorial/tutorial/code/app/assets/icon-128.png" alt="icon-128.png" id="icon128png"></p>
+<h2 id="assetstitleimage">assets/titleImage</h2>
+<p><img src="tutorial/code/app/assets/titleImage.svg" alt="titleImage.svg" id="titleimagesvg"></p>
+<h2 id="creditsjson">credits.json</h2>
+<pre><code class="language-json">[
+    {
+        "credit": "Razlan Hanafiah",
+        "credit_uri": "https://thenounproject.com/razlanisme/",
+        "license": "CC-BY 3.0",
+        "thumb_uri": "resource:///app/assets/titleImage",
+        "uri": "https://thenounproject.com/term/sheep/6049/",
+        "comment": "Derived from 'Sheep' by Razlan Hanafiah from the Noun Project"
+    },
+    {
+        "credit": "Razlan Hanafiah",
+        "credit_uri": "https://thenounproject.com/razlanisme/",
+        "license": "CC-BY 3.0",
+        "thumb_uri": "file:///app/share/icons/hicolor/scalable/apps/org.example.CreativeCommonsBlog.svg",
+        "uri": "https://thenounproject.com/term/sheep/6049/",
+        "comment": "Derived from 'Sheep' by Razlan Hanafiah from the Noun Project"
+    }
+]
+
+</code></pre>
+<h2 id="database_manifestpy">database_manifest.py</h2>
+<pre><code class="language-python">#!/usr/bin/env python3
+
+import hashlib
+import json
+import os
+import subprocess
+
+meson_introspect = os.getenv('MESONINTROSPECT')
+prefix = os.getenv('MESON_INSTALL_DESTDIR_PREFIX')
+
+project_info = subprocess.check_output(meson_introspect.split() +
+                                       ['--projectinfo'],
+                                       universal_newlines=True)
+app_id = json.loads(project_info)['name']
+hasher = hashlib.sha256()
+hasher.update(app_id.encode())
+subscription_id = hasher.hexdigest()
+subscription_dir = os.path.join(prefix, 'share', 'ekn', 'data', app_id,
+                                'com.endlessm.subscriptions', subscription_id)
+
+subprocess.check_call(['eminem', 'regenerate', subscription_dir])
+
+</code></pre>
+<h2 id="mesonbuild">meson.build</h2>
+<pre><code class="language-build">project('org.example.CreativeCommonsBlog', version: '0.0.0', license: 'CC0-1.0',
+    meson_version: '&gt;= 0.40.0')
+app_id = meson.project_name()
+subscription_id = run_command('python3', '-c',
+    'import hashlib; h = hashlib.sha256(); h.update("@0@".encode()); print(h.hexdigest())'
+    .format(app_id)).stdout().strip()
+
+gnome = import('gnome')
+
+pkg_config = find_program('pkg-config')
+sassc = find_program('sassc')
+autobahn = find_program('autobahn')
+basin = find_program('basin')
+
+subscription_dir = join_paths(get_option('datadir'), 'ekn', 'data', app_id,
+    'com.endlessm.subscriptions', subscription_id)
+pkgdatadir = join_paths(get_option('datadir'), app_id)
+theme_path = run_command(pkg_config, '--variable', 'eos_theme_path',
+    'eos-knowledge-0').stdout().strip()
+preset_path = run_command(pkg_config, '--variable', 'eos_preset_path',
+    'eos-knowledge-0').stdout().strip()
+
+overrides_css = custom_target('sass', input: 'overrides.scss',
+    output: 'overrides.css',
+    command: [sassc, '-I', theme_path, '@INPUT@', '@OUTPUT@'])
+
+app_json = custom_target('autobahn', input: 'app.yaml', output: 'app.json',
+    command: [autobahn, '@INPUT@', '-o', '@OUTPUT@', '-I', preset_path])
+
+sets_shard = custom_target('sets', input: 'sets.json', output: 'sets.shard',
+    build_by_default: true, install: true, install_dir: subscription_dir,
+    command: [basin, '@INPUT@', '@OUTPUT@'])
+
+resource = gnome.compile_resources('app', 'app.gresource.xml',
+    gresource_bundle: true, install: true, install_dir: pkgdatadir,
+    dependencies: [app_json, overrides_css])
+
+install_data('output.shard', install_dir: subscription_dir)
+
+meson.add_install_script('database_manifest.py')
+
+</code></pre>
+<h2 id="orgexamplecreativecommonsblogdesktop">org.example.CreativeCommonsBlog.desktop</h2>
+<pre><code class="language-desktop">[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Commons Blog
+Exec=/usr/bin/flatpak run org.example.CreativeCommonsBlog
+Icon=org.example.CreativeCommonsBlog
+Comment=Blog posts from the Creative Commons organization, offline!
+
+</code></pre>
+<h2 id="orgexamplecreativecommonsblogjson">org.example.CreativeCommonsBlog.json</h2>
+<pre><code class="language-json">{
+    "app-id": "org.example.CreativeCommonsBlog",
+    "runtime": "com.endlessm.apps.Sdk",
+    "runtime-version": "master",
+    "sdk": "com.endlessm.apps.Sdk",
+    "command": "org.example.CreativeCommonsBlog",
+
+    "finish-args": [
+        "--socket=x11",
+        "--socket=wayland",
+        "--device=dri"
+    ],
+
+    "modules": [
+        {
+            "name": "source-sans-font",
+            "buildsystem": "simple",
+            "build-commands": [
+                "install -D -m644 *.otf -t /app/share/fonts"
+            ],
+            "sources": [
+                {
+                    "type": "file",
+                    "url": "https://github.com/adobe-fonts/source-sans-pro/releases/download/variable-fonts/SourceSansVariable-Roman.otf",
+                    "sha256": "afd685a2b43feafbb4c47deaa7a2c0fcd826940d3473abe42e4aaa56d39754af"
+                },
+                {
+                    "type": "file",
+                    "url": "https://github.com/adobe-fonts/source-sans-pro/releases/download/variable-fonts/SourceSansVariable-Italic.otf",
+                    "sha256": "62c5d0991d6a9571a89c8e137f2b76e3ff57f671e0d1bce832af98422ce13a6d"
+                }
+            ]
+        },
+        {
+            "name": "org.example.CreativeCommonsBlog",
+            "buildsystem": "meson",
+            "sources": [
+                {
+                    "type": "shell",
+                    "commands": ["mkdir -p assets"]
+                },
+                { "type": "file", "path": "app.gresource.xml" },
+                { "type": "file", "path": "app.yaml" },
+                { "type": "file", "path": "credits.json" },
+                { "type": "file", "path": "database_manifest.py" },
+                { "type": "file", "path": "meson.build" },
+                { "type": "file", "path": "org.example.CreativeCommonsBlog.desktop" },
+                { "type": "file", "path": "output.shard" },
+                { "type": "file", "path": "overrides.scss" },
+                { "type": "file", "path": "sets.json" },
+                {
+                    "type": "file",
+                    "path": "assets/icon.svg",
+                    "dest-filename": "assets/icon.svg"
+                },
+                {
+                    "type": "file",
+                    "path": "assets/icon-64.png",
+                    "dest-filename": "assets/icon-64.png"
+                },
+                {
+                    "type": "file",
+                    "path": "assets/icon-128.png",
+                    "dest-filename": "assets/icon-128.png"
+                },
+                {
+                    "type": "file",
+                    "path": "assets/titleImage",
+                    "dest-filename": "assets/titleImage"
+                },
+                {
+                    "type": "script",
+                    "dest-filename": "org.example.CreativeCommonsBlog",
+                    "commands": [
+                        "ekn-app-runner org.example.CreativeCommonsBlog /app/share/org.example.CreativeCommonsBlog/app.gresource $@"
+                    ]
+                }
+            ],
+            "build-commands": [
+                "install -Dm755 -t /app/bin ../org.example.CreativeCommonsBlog",
+                "install -Dm644 -t /app/share/applications ../org.example.CreativeCommonsBlog.desktop",
+                "install -Dm644 ../assets/icon-64.png /app/share/icons/hicolor/64x64/apps/org.example.CreativeCommonsBlog.png",
+                "install -Dm644 ../assets/icon-128.png /app/share/icons/hicolor/128x128/apps/org.example.CreativeCommonsBlog.png",
+                "install -Dm644 ../assets/icon.svg /app/share/icons/hicolor/scalable/apps/org.example.CreativeCommonsBlog.svg"
+            ]
+        }
+    ]
+}
+
+</code></pre>
+<h2 id="overridesscss">overrides.scss</h2>
+<pre><code class="language-scss">$primary-light-color: #fb7928;
+$primary-medium-color: #ee5b32;
+$accent-light-color: #049bce;
+$accent-dark-color: #464646;
+$background-light-color: white;
+$background-dark-color: #e9e9e9;
+
+$body-font: 'Source Sans Variable';
+$title-font: 'Source Sans Variable';
+$display-font: 'Source Sans Variable';
+$logo-font: 'Source Sans Variable';
+$context-font: 'Source Sans Variable';
+$support-font: 'Source Sans Variable';
+
+@import 'blog';
+
+.LayoutSidebar .sidebar {
+    min-width: 400px;
+    background-color: $accent-dark-color;
+    box-shadow: 3px 0px 10px $accent-dark-color;
+}
+
+.BannerApp .ThemeableImage {
+    min-width: 300px;
+}
+
+</code></pre>
+<h2 id="setsjson">sets.json</h2>
+<pre><code class="language-json">{
+    "sets": [
+        {
+            "title": "About Creative Commons",
+            "featured": true,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "About CC"
+            ]
+        },
+        {
+            "title": "Around the World",
+            "featured": true,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "Global affiliates",
+                "tag:Canada",
+                "tag:Creative Commons Global Network",
+                "tag:EU",
+                "tag:EU-Mercosur",
+                "tag:European Union",
+                "tag:Ghana",
+                "tag:Mercosur",
+                "tag:Mexico",
+                "tag:Portuguese",
+                "tag:Spanish",
+                "tag:Toronto",
+                "tag:africa",
+                "tag:chinese"
+            ]
+        },
+        {
+            "title": "Events",
+            "featured": true,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "Events"
+            ]
+        },
+        {
+            "title": "Interviews",
+            "featured": true,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "tag:cctalkswith"
+            ]
+        },
+        {
+            "title": "Policy, Advocacy, &amp; Copyright Reform",
+            "featured": true,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "Policy / advocacy / copyright reform"
+            ]
+        },
+        {
+            "title": "Blog Posts",
+            "featured": true,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "Arts / culture",
+                "Education / OER",
+                "Global affiliates",
+                "Legal tools / licenses",
+                "Open access",
+                "Weblog"
+            ]
+        },
+        {
+            "title": "Advocacy",
+            "featured": false,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "tag:advocacy"
+            ]
+        },
+        {
+            "title": "Art",
+            "featured": false,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "tag:art"
+            ]
+        },
+        {
+            "title": "Arts &amp; Culture",
+            "featured": false,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "Arts / culture"
+            ]
+        },
+        {
+            "title": "CC Licenses",
+            "featured": false,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "Legal tools / licenses"
+            ]
+        },
+        {
+            "title": "Copyright Reform",
+            "featured": false,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "tag:#fixcopyright",
+                "tag:copyright reform",
+                "tag:eu copyright reform"
+            ]
+        },
+        {
+            "title": "Copyright Week",
+            "featured": false,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "tag:#copyrightweek",
+                "tag:#coyrightweek",
+                "tag:Copyright Week 2018"
+            ]
+        },
+        {
+            "title": "Education &amp; OER",
+            "featured": false,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "Education / OER"
+            ]
+        },
+        {
+            "title": "Emerging Media",
+            "featured": false,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "tag:AR",
+                "tag:VR",
+                "tag:augmented reality",
+                "tag:emerging media",
+                "tag:immersive media",
+                "tag:virtual reality"
+            ]
+        },
+        {
+            "title": "Global Summit",
+            "featured": false,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "tag:CC Global Summit",
+                "tag:CC summit",
+                "tag:Global Summit",
+                "tag:ccglobalsummit",
+                "tag:ccsummit",
+                "tag:ccsummit18",
+                "tag:global summit 2018"
+            ]
+        },
+        {
+            "title": "Humans of the Commons",
+            "featured": false,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "tag:humans of the commons",
+                "tag:humansofthecommons"
+            ]
+        },
+        {
+            "title": "Net Neutrality",
+            "featured": false,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "tag:#netneutrality",
+                "tag:net neutrality",
+                "tag:FCC"
+            ]
+        },
+        {
+            "title": "Open access",
+            "featured": false,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "Open access"
+            ]
+        },
+        {
+            "title": "Policy",
+            "featured": false,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "tag:policy",
+                "tag:public policy"
+            ]
+        },
+        {
+            "title": "Public Domain",
+            "featured": false,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "tag:public domain",
+                "tag:CC0"
+            ]
+        },
+        {
+            "title": "Trade Agreements",
+            "featured": false,
+            "tags": ["EknSetObject"],
+            "childTags": [
+                "tag:free trade agreement",
+                "tag:trade agreements"
+            ]
+        }
+    ]
+}
+
+</code></pre>
+
+</div>
+
+
+		
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		
+<div class="panel panel-default">
+  <div class="panel-heading collapsed" id="license-toggle" data-toggle="collapse" data-target="#license-info" aria-expanded="false" aria-controls="license-info">
+    <h4 class="panel-title" data-toc-skip="true" id="license-and-copyright-info">
+      License and Copyright info
+    </h4>
+  </div>
+  <div id="license-info" class="panel-collapse collapse">
+    <div class="panel-body">
+      
+
+<div class="license-description">
+	<table>
+		<tbody>
+			<tr>
+			<td>
+				<em>Documentation in this page is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>
+				license, unless otherwise noted.</em>
+			</td>
+			<td>
+						<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+				<img src="assets/CC-BY-SAv4.0.png" class="license-logo">
+			</a>
+						</td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div class="license-description">
+	<table>
+		<tbody>
+			<tr>
+			<td>
+				<em>Code snippets in this page are licensed under a <a rel="license" href="http://spdx.org/licenses/CC0-1.0">Creative Commons Zero 1.0 Universal.</a>
+				license, unless otherwise noted.</em>
+			</td>
+			<td>
+						<a rel="license" href="http://spdx.org/licenses/CC0-1.0">
+				<img src="assets/CC0-1.0.png" class="license-logo">
+			</a>
+						</td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div class="copyrights-description">
+		<p>
+				© 								2017, 
+				2018, 
+													       	Endless Mobile, Inc. 			</p>
+	</div>
+
+
+    </div>
+  </div>
+</div>
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		<a href="https://github.com/endlessm/eos-knowledge-lib/edit/master/docs/framework/tutorial/app-full-code.md" data-hotdoc-role="edit-button">Edit on github</a>
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+</body>
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</html>

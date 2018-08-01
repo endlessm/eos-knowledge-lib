@@ -1,0 +1,72 @@
+/* General tweaks to HTML elements */
+
+h2, h3, h4, h5, h6 {
+    margin-top: 1em;
+}
+
+pre {
+    font-size: 80%;
+}
+
+/* Increase padding around the body text, in order to not cram so many
+ * characters onto a line. Right side is larger in order to balance out the
+ * widths of the two sidebars in >1200px mode */
+#main > * {
+    padding-left: 30px;
+    padding-right: 3.333vw;
+}
+
+/* Navigation sidebar customizations */
+
+/* Make the font a bit smaller, too big leads to word wrapping */
+#site-navigation .panel-title {
+    font-size: 16px;
+}
+
+@media (min-width: 1200px) {
+    /* Increase the width, also to prevent word wrapping */
+    #sidenav {
+        width: 20vw;
+    }
+    #body {
+        left: 20vw;
+    }
+}
+
+/* Remove the green border on the side navigation, it looks clunky */
+.sidenav-panel-current > .panel-heading,
+.sidenav-panel-current > span > .panel-heading {
+    border-left: 0px;
+}
+
+/* Making the licenses collapsible (see footer.html) */
+
+#license-toggle {
+    margin-top: 1em;
+}
+
+#license-toggle h4:after {
+    font-family: 'Glyphicons Halflings';
+    content: '\e114';
+    float: right;
+    color: grey;
+}
+
+#license-toggle.collapsed h4:after {
+    content: '\e080';
+}
+
+/* Fix the "Edit on Github" button so it's an accent color, not the primary */
+
+a[data-hotdoc-role='edit-button'] {
+    text-transform: uppercase;
+    font-size: 75%;
+    background-color: #07afa7;
+    border-color: #068d86;  /* darken success-color 7% */
+}
+
+a[data-hotdoc-role='edit-button']:hover:hover {
+    font-size: 75%;
+    background-color: #068d86;  /* darken success-color 7% */
+    border-color: #297e52;  /* darken success-color 15% */
+}

@@ -1,0 +1,12 @@
+@require(members, member_designation)
+
+@if members:
+	<div class="member_details">
+		<h4>@member_designation</h4>
+		<div class="container-fluid">
+			@for member in members:
+			@member.detailed_description
+			@end
+		</div>
+	</div>
+@end
