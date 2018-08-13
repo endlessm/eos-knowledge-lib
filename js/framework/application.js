@@ -141,8 +141,10 @@ var Application = new Knowledge.Class({
 
         if (has_option('web-overrides-path')) {
             this._web_overrides_path = get_option_string('web-overrides-path');
-            if (!this._web_overrides_path.endsWith('.scss'))
-                this._compiled_web_overrides_path = this._web_overrides_path;
+            if (!this._web_overrides_path.endsWith('.scss')) {
+                const uri = Gio.File.new_for_path(this._web_overrides_path).get_uri();
+                this._compiled_web_overrides_uri = uri;
+            }
         }
 
         return -1;
