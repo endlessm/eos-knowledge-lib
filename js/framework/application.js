@@ -86,6 +86,9 @@ var Application = new Knowledge.Class({
                              'Same as --recompile-overrides --recompile-app-json', null);
         this.add_main_option('resource-path', 'R'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Path to a different gresource to use with the application', null);
+        this.add_main_option('extra-resource-path', 'E'.charCodeAt(),
+            GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME_ARRAY,
+            'Path(s) to extra gresources to use with the application', null);
         this.add_main_option('theme-overrides-path', 'O'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Path to a overrides scss or css file to theme the application', null);
         this.add_main_option('web-overrides-path', 'w'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
@@ -105,11 +108,21 @@ var Application = new Knowledge.Class({
         function get_option_string (option) {
             return options.lookup_value(option, null).deep_unpack().toString();
         }
+        function register_resource(path) {
+            const resource = Gio.Resource.load(path);
+            resource._register();
+        }
 
         if (has_option('resource-path'))
             this.resource_path = get_option_string('resource-path');
-        let app_resource = Gio.Resource.load(this.resource_path);
-        app_resource._register();
+        register_resource(this.resource_path);
+
+        if (has_option('extra-resource-path')) {
+            const extra_resource_paths =
+                options.lookup_value('extra-resource-path', null).deep_unpack();
+            extra_resource_paths.forEach(bytes =>
+                register_resource(bytes.toString()));
+        }
 
         if (has_option('default-theme'))
             this._theme = 'default';
