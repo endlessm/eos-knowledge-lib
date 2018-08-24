@@ -104,6 +104,7 @@ stamp*
 /po/quot.sed
 /po/remove-potcdate.sed
 /po/remove-potcdate.sin
+/po/*.tmp.pot
 /tap-driver.sh
 /test-driver
 

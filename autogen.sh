@@ -2,8 +2,6 @@
 # Bootstrap script for Endless OS Knowledge Apps
 # Run this script on a clean source checkout to get ready for building.
 
-POT_FILE=po/eos-knowledge.pot
-
 test -n "$srcdir" || srcdir=`dirname "$0"`
 test -n "$srcdir" || srcdir=.
 olddir=`pwd`
@@ -13,10 +11,6 @@ test -f configure.ac || {
     echo "You must run this script in the top-level checkout directory"
     exit 1
 }
-
-# GNU gettext automake support doesn't get along with git
-# https://bugzilla.gnome.org/show_bug.cgi?id=661128
-touch -t 200001010000 $POT_FILE
 
 # NOCONFIGURE is used by gnome-common
 if test -z "$NOCONFIGURE"; then
