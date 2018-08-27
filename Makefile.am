@@ -144,6 +144,15 @@ scss_targets = $(patsubst $(srcdir)/%.scss,$(builddir)/%.css,$(scss_toplevels))
 .scss.css:
 	$(scss_verbose)$(MKDIR_P) $(@D) && $(SCSS) -a $< $@
 
+# rule to generate pot files from yaml files.
+.yaml.pot:
+	for yaml in $(dist_yamlpreset_DATA); do \
+		root="$$(basename $$yaml | cut -d'.' -f1)";\
+		po_dir="$$(dirname $$yaml)/po/$$root";\
+		$(MKDIR_P) $$po_dir;\
+		./tools/autobahn $$yaml -c -o $$po_dir/$$root.pot;\
+	done
+
 EXTRA_DIST += $(scss_template_toplevels)
 CLEANFILES += $(scss_targets)
 clean-local::
