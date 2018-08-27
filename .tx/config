@@ -7,3 +7,62 @@ source_file = po/eos-knowledge.pot
 source_lang = en
 type = PO
 
+[eos-knowledge-lib.data_preset_blog]
+file_filter = data/preset/po/blog/<lang>.po
+source_file = data/preset/po/blog/blog.pot
+source_lang = en
+type = PO
+
+[eos-knowledge-lib.data_preset_course]
+file_filter = data/preset/po/course/<lang>.po
+source_file = data/preset/po/course/course.pot
+source_lang = en
+type = PO
+
+[eos-knowledge-lib.data_preset_encyclopedia]
+file_filter = data/preset/po/encyclopedia/<lang>.po
+source_file = data/preset/po/encyclopedia/encyclopedia.pot
+source_lang = en
+type = PO
+
+[eos-knowledge-lib.data_preset_exploration]
+file_filter = data/preset/po/exploration/<lang>.po
+source_file = data/preset/po/exploration/exploration.pot
+source_lang = en
+type = PO
+
+[eos-knowledge-lib.data_preset_gallery]
+file_filter = data/preset/po/gallery/<lang>.po
+source_file = data/preset/po/gallery/gallery.pot
+source_lang = en
+type = PO
+
+[eos-knowledge-lib.data_preset_library_list]
+file_filter = data/preset/po/library-list/<lang>.po
+source_file = data/preset/po/library-list/library-list.pot
+source_lang = en
+type = PO
+
+[eos-knowledge-lib.data_preset_library]
+file_filter = data/preset/po/library/<lang>.po
+source_file = data/preset/po/library/library.pot
+source_lang = en
+type = PO
+
+[eos-knowledge-lib.data_preset_news]
+file_filter = data/preset/po/news/<lang>.po
+source_file = data/preset/po/news/news.pot
+source_lang = en
+type = PO
+
+[eos-knowledge-lib.data_preset_thematic]
+file_filter = data/preset/po/thematic/<lang>.po
+source_file = data/preset/po/thematic/thematic.pot
+source_lang = en
+type = PO
+
+[eos-knowledge-lib.data_preset_video_list]
+file_filter = data/preset/po/video_list/<lang>.po
+source_file = data/preset/po/video_list/video_list.pot
+source_lang = en
+type = PO
