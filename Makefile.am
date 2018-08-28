@@ -144,6 +144,19 @@ scss_targets = $(patsubst $(srcdir)/%.scss,$(builddir)/%.css,$(scss_toplevels))
 .scss.css:
 	$(scss_verbose)$(MKDIR_P) $(@D) && $(SCSS) -a $< $@
 
+.yaml.pot:
+	tmp_dir="/tmp/eos-knowledge-lib/pot";\
+	po_dir="data/preset/po";\
+	$(MKDIR_P) $$tmp_dir;\
+	$(MKDIR_P) $$po_dir;\
+	for yaml in $(dist_yamlpreset_DATA); do \
+		root="$$(basename $$yaml | cut -d'.' -f1)";\
+		./tools/autobahn $$yaml -c -o $$tmp_dir/$$root.pot;\
+	done;\
+	msgcat $$tmp_dir/*.pot -o $$po_dir/presets.pot;\
+	rm -rf $$tmp_dir
+
+
 EXTRA_DIST += $(scss_template_toplevels)
 CLEANFILES += $(scss_targets)
 clean-local::
