@@ -1,0 +1,29 @@
+#!/bin/bash
+usage() { echo "Usage: $0 [-d <po_directory>] <yaml_files>" 1>&2; exit 1; }
+
+while getopts ":d:" opt; do
+    case "${opt}" in
+    d)
+        d=${OPTARG}
+        ;;
+    *)
+        usage
+        ;;
+    esac
+done;
+shift $((OPTIND-1))
+
+if [ -z "${d}" ]; then
+    usage
+fi
+
+toplevel_dir=$(dirname $(readlink -f "$0"))/..
+tmp_dir=$(mktemp -d eos-knowledge-lib-XXXXXX -p /tmp)
+po_dir=${d}
+mkdir -p $po_dir
+
+for yaml in ${@:1}; do
+    $toplevel_dir/tools/autobahn $yaml -c -o $tmp_dir/$(basename $yaml).pot;
+done
+msgcat $tmp_dir/*.pot -o $po_dir/presets.pot
+rm -rf $tmp_dir
