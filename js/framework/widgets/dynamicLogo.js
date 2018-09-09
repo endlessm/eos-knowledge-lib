@@ -407,11 +407,11 @@ var DynamicLogo = new Knowledge.Class({
 
         let image_translate_x, image_translate_y, text_translate_x, text_translate_y;
         if (is_horizontal) {
-            let complete_width = (image_size.width * image_scale * DEFAULT_SPACING_RATIO) + (text_size.width * text_scale);
+            const complete_width = (image_size.width * image_scale * DEFAULT_SPACING_RATIO) + (ink_size.width * text_scale);
             image_translate_x = (max_width / 2) - (complete_width / 2);
             image_translate_y = (max_height / 2) - ((image_size.height * image_scale) / 2);
             text_translate_x =  image_translate_x + (image_size.width * image_scale * DEFAULT_SPACING_RATIO);
-            text_translate_y = (max_height / 2) - ((text_size.height * text_scale) / 2);
+            text_translate_y = (max_height / 2) - ((ink_size.height * text_scale) / 2) - ink_size.y * text_scale;
         } else {
             let complete_height = (image_size.height * image_scale) + (text_size.height * text_scale);
             image_translate_x = (max_width / 2) - ((image_size.width * image_scale) / 2);
