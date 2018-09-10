@@ -410,6 +410,9 @@ dist_yamlpreset_DATA = \
 	data/preset/video_list.yaml \
 	$(NULL)
 
+popresetdir = $(yamlpresetdir)/po
+dist_popreset_DATA = data/preset/po/*.po
+
 EXTRA_DIST += \
 	tools/autobahn \
 	data/eos-knowledge-0.pc.in
