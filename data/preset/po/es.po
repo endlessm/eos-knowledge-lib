@@ -1,58 +1,57 @@
-# 
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Endless Mobile, Inc.
+# This file is distributed under the same license as the eos-subscriptions-apps package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+# #-#-#-#-#  es.po  #-#-#-#-#
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2018-09-11 15:12+0000\n"
-"Language-Team: Spanish (https://www.transifex.com/endless-os/teams/9016/es/)\n"
+"Project-Id-Version: eos-knowledge-lib 0\n"
+"Report-Msgid-Bugs-To: info@endlessm.com\n"
+"POT-Creation-Date: 2017-06-20 17:58+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Nuritzi Sanchez <ns@endlessm.com>, 2017\n"
+"Language-Team: Spanish (https://www.transifex.com/endless-mobile-inc/teams/9016/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: data/preset/blog.yaml:31
 msgid "Sorry, there are no results that match your search."
-msgstr ""
+msgstr "Desafortunadamente no hay resultados para tu búsqueda."
 
-#: data/preset/blog.yaml:37
 msgid "Latest posts"
-msgstr ""
+msgstr "Últimas publicaciones"
 
-#: data/preset/blog.yaml:125 data/preset/news.yaml:359
 msgid "Related posts"
-msgstr ""
+msgstr "Artículos relacionados"
 
-#: data/preset/exploration.yaml:32
 msgid "Browse by topic"
-msgstr ""
+msgstr "busca por categoría"
 
-#: data/preset/exploration.yaml:45
 msgid "Next Article"
-msgstr ""
+msgstr "Siguiente artículo"
 
-#: data/preset/exploration.yaml:62
 msgid "You might be interested in..."
-msgstr ""
+msgstr "podrías estar interesado en"
 
-#: data/preset/exploration.yaml:81 data/preset/news.yaml:97
 msgid "See more from %s"
-msgstr ""
+msgstr "Ver más sobre %s"
 
-#: data/preset/exploration.yaml
 msgid "See more categories"
-msgstr ""
+msgstr "ve más categorías"
 
-#: data/preset/gallery.yaml:44
 msgid "You might also be interested in..."
 msgstr ""
 
-#: data/preset/gallery.yaml:212
 msgid "See more"
 msgstr ""
 
-#: data/preset/news.yaml:53
 msgid "you might be interested in..."
-msgstr ""
+msgstr "podrías estar interesado en"
 
-#: data/preset/news.yaml
 msgid "other news"
-msgstr ""
+msgstr "otras noticias"

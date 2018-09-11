@@ -1,58 +1,55 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Endless Mobile, Inc.
+# This file is distributed under the same license as the eos-subscriptions-apps package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
+#, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2018-09-11 15:12+0000\n"
-"Language-Team: Indonesian (https://www.transifex.com/endless-os/teams/9016/id/)\n"
+"Project-Id-Version: eos-knowledge-lib 0\n"
+"Report-Msgid-Bugs-To: info@endlessm.com\n"
+"POT-Creation-Date: 2017-06-20 17:58+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Hartono <hartono.s10@gmail.com>, 2017\n"
+"Language-Team: Indonesian (https://www.transifex.com/endless-mobile-inc/teams/9016/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: id\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: data/preset/blog.yaml:31
-msgid "Sorry, there are no results that match your search."
-msgstr ""
-
-#: data/preset/blog.yaml:37
-msgid "Latest posts"
-msgstr ""
-
-#: data/preset/blog.yaml:125 data/preset/news.yaml:359
 msgid "Related posts"
-msgstr ""
+msgstr "Artikel Terkait"
 
-#: data/preset/exploration.yaml:32
-msgid "Browse by topic"
-msgstr ""
+msgid "Sorry, there are no results that match your search."
+msgstr "Maaf, tidak ditemukan hasil pencarian yang sesuai."
 
-#: data/preset/exploration.yaml:45
-msgid "Next Article"
-msgstr ""
+msgid "Latest posts"
+msgstr "Artikel terbaru"
 
-#: data/preset/exploration.yaml:62
-msgid "You might be interested in..."
-msgstr ""
-
-#: data/preset/exploration.yaml:81 data/preset/news.yaml:97
 msgid "See more from %s"
-msgstr ""
+msgstr "Lihat lebih banyak dari %s"
 
-#: data/preset/exploration.yaml
+msgid "you might be interested in..."
+msgstr "Anda mungkin tertarik dengan..."
+
+msgid "other news"
+msgstr "berita-berita lain"
+
+msgid "You might be interested in..."
+msgstr "Anda mungkin tertarik dengan..."
+
+msgid "Browse by topic"
+msgstr "Telusuri berdasarkan topik"
+
+msgid "Next Article"
+msgstr "Artikel Selanjutnya"
+
 msgid "See more categories"
-msgstr ""
+msgstr "Lihat kategori lainnya"
 
-#: data/preset/gallery.yaml:44
 msgid "You might also be interested in..."
 msgstr ""
 
-#: data/preset/gallery.yaml:212
 msgid "See more"
-msgstr ""
-
-#: data/preset/news.yaml:53
-msgid "you might be interested in..."
-msgstr ""
-
-#: data/preset/news.yaml
-msgid "other news"
 msgstr ""
