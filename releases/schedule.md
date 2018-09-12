@@ -10,7 +10,7 @@ permalink: /releases/schedule/
 | [SDK3]        | February 5, 2018  |
 | **[SDK4]**    | May 4, 2018       | 3.28
 | [SDK5]        | August 2, 2018    |
-| SDK6          | November 1, 2018  | 3.30
+| SDK6          | T.B.D             | 3.30
 
 ## Release cycle ##
 
