@@ -45,5 +45,12 @@ No changes are required for apps using the modular framework.
 
 ## Release notes ##
 
+### SDK 5.1 (September 13, 2018) ###
+- Runtime: Update existing translations
+- Runtime: Fixed GPU acceleration for HTML content rendering for ARM architecture.
+- Modular Framework: Add translations for preset files.
+- Modular Framework: Cache compilation of scss files for applications.
+- Modular Framework: Allow to use extra gresources into an application.
+
 ### SDK 5.0 (August 2, 2018) ###
 This is the first release in the SDK5 series.
