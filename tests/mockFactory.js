@@ -52,7 +52,7 @@ const MockFactory = new Knowledge.Class({
     _create_module: function (path, description, extra_props={}) {
         let module = this.parent(path, description, extra_props);
 
-        let key = path.replace(/\.[0-9]+/, '', 'g').replace(/^root\./, '');
+        let key = path.replace(/\.[0-9]+/g, '').replace(/^root\./, '');
         if (!this._created_modules.has(key))
             this._created_modules.set(key, []);
 

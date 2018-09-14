@@ -71,7 +71,7 @@ describe('Layout.ArticleStack', function () {
         });
 
         selection = factory.get_last_created('contents.selection');
-        view = factory.get_last_created('contents.article.0');
+        view = factory.get_last_created('contents.article');
     });
 
     it('transitions in new content when state changes to article page', function () {
@@ -95,7 +95,7 @@ describe('Layout.ArticleStack', function () {
         selection.get_models.and.returnValue([different_article_model]);
         selection.emit('models-changed');
         Utils.update_gui();
-        let new_view = factory.get_created('contents.article.1')[0];
+        let new_view = factory.get_created('contents.article')[1];
         expect(new_view).toBeDefined();
         expect(module).toHaveDescendant(new_view);
     });
