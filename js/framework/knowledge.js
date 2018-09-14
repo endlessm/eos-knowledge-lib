@@ -92,7 +92,7 @@ var Class = new Lang.Class({
                     // gjs, which will have proptotype.__name__ set
                     let iface_name = iface.prototype.__name__;
                     if (is_widget && iface_name)
-                        this.get_style_context().add_class(iface_name.replace('.', '', 'g'));
+                        this.get_style_context().add_class(iface_name.replace(/\./g, ''));
                 });
             }
             this._interfaces_inited = true;

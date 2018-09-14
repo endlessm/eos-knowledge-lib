@@ -63,7 +63,7 @@ var ContentForSet = new Module.Class({
     },
 
     _get_model: function (property_name) {
-        let model = HistoryStore.get_default()[property_name.replace('-', '_', 'g')];
+        let model = HistoryStore.get_default()[property_name.replace(/-/g, '_')];
         if (model && this.track_parent)
             model = SetMap.get_parent_set(model);
         return model;

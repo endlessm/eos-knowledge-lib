@@ -533,7 +533,9 @@ function components_from_id(id) {
 function ensure_directory (dir) {
     try {
         dir.make_directory_with_parents(null);
-    } catch (e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS)) {
+    } catch (e) {
+        if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
+            throw e;
         // Directory already exists, we're good.
     }
 }
