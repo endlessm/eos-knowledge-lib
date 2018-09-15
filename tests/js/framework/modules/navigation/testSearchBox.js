@@ -66,9 +66,9 @@ describe('Navigation.SearchBox', function () {
     });
 
     it('calls into engine for auto complete results', function () {
-        engine.query_promise.and.returnValue(Promise.resolve({ models: [] }));
+        engine.query.and.returnValue(Promise.resolve({models: []}));
         box.text = 'foo';
-        expect(engine.query_promise).toHaveBeenCalled();
+        expect(engine.query).toHaveBeenCalled();
     });
 
     it('dispatches autocomplete-selected when a item is selected', function () {
@@ -76,7 +76,7 @@ describe('Navigation.SearchBox', function () {
             id: 'ekn://aaaabbbbccccdddd',
             title: 'foo',
         });
-        engine.query_promise.and.returnValue(Promise.resolve({ models: [model] }));
+        engine.query.and.returnValue(Promise.resolve({models: [model]}));
         box.text = 'foo';
         Utils.update_gui();
         box.emit('menu-item-selected', 'ekn://aaaabbbbccccdddd');

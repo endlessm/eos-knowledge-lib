@@ -43,7 +43,7 @@ describe('Controller.Mesh', function () {
         application.application_id = 'foobar';
 
         engine = MockEngine.mock_default();
-        engine.query_promise.and.returnValue(Promise.resolve({ models: [] }));
+        engine.query.and.returnValue(Promise.resolve({models: []}));
 
         [mesh, factory] = MockFactory.setup_tree({
             type: Mesh.Mesh,

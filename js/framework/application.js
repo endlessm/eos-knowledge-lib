@@ -22,8 +22,6 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 // Initialize libraries
 EvinceDocument.init();
-// Set up promise wrappers
-PromiseWrapper.wrapPromises();
 
 const KnowledgeSearchIface = '\
 <node> \
@@ -178,17 +176,16 @@ var Application = new Knowledge.Class({
     _remove_legacy_symlinks_from_path: function (path, id) {
         let subscription_dir = GLib.build_filenamev([path, id]);
         let subscription = Gio.File.new_for_path(subscription_dir);
-        return PromiseWrapper.wrapPromise(subscription, null,
-            'enumerate_children_async', 'standard::*',
-            Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, GLib.PRIORITY_LOW)
-        .then(enumerator => PromiseWrapper.wrapPromise(enumerator, null,
-            'next_files_async', GLib.MAXINT16, GLib.PRIORITY_LOW))
+        const prio = GLib.PRIORITY_LOW;
+        return subscription.enumerate_children_async('standard::*',
+            Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, prio, null)
+        .then(enumerator => enumerator.next_files_async(GLib.MAXINT16, prio, null))
         .then(infos =>
-            Promise.all(infos.map(info =>
-                PromiseWrapper.wrapPromise(subscription.get_child(info.get_name()),
-                    null, 'delete_async', GLib.PRIORITY_LOW))))
-        .then(() => PromiseWrapper.wrapPromise(subscription, null,
-            'delete_async', GLib.PRIORITY_LOW))
+            Promise.all(infos.map(info => {
+                const legacy_file = subscription.get_child(info.get_name());
+                legacy_file.delete_async(prio, null);
+            })))
+        .then(() => subscription.delete_async(prio, null))
         .catch(err => {
             if (err.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
                 return;
@@ -265,9 +262,9 @@ var Application = new Knowledge.Class({
     },
 
     _initialize_set_map: function () {
-        DModel.Engine.get_default().query_promise(new DModel.Query({
+        DModel.Engine.get_default().query(new DModel.Query({
             tags_match_all: ['EknSetObject'],
-        }))
+        }), null)
         .then((results) => {
             SetMap.init_map_with_models(results.models);
         })

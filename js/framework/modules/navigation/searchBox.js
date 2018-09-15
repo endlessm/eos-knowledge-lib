@@ -99,7 +99,7 @@ var SearchBox = new Module.Class({
             tags_match_any: ['EknArticleObject'],
         });
         let engine = DModel.Engine.get_default();
-        this._query_promise = engine.query_promise(query_obj, this._cancellable)
+        engine.query(query_obj, this._cancellable)
         .then((results) => {
             if (search_terms !== Utils.sanitize_search_terms(this.text))
                 return;

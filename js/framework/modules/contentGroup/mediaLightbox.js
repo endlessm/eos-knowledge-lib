@@ -96,7 +96,7 @@ var MediaLightbox = new Module.Class({
             this._preview_media_object(resource);
             this._loading_new_lightbox = false;
         } else {
-            DModel.Engine.get_default().get_object_promise(resource)
+            DModel.Engine.get_default().get_object(resource, null)
             .then((media_object) => {
                 this._loading_new_lightbox = false;
 

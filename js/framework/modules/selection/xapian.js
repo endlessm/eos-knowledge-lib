@@ -97,7 +97,7 @@ var Xapian = new Module.Class({
 
         this._loading = true;
         this.notify('loading');
-        engine.query_promise(query)
+        engine.query(query, null)
         .then(({ models, upper_bound }) => {
             this._loading = false;
             this._set_needs_refresh(false);
