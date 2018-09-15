@@ -86,7 +86,7 @@ var CourseHistoryStore = new GObject.Class({
 
     // HistoryStore override
     load_dbus_item: function (id, search_terms, timestamp) {
-        DModel.Engine.get_default().get_object_promise(id)
+        DModel.Engine.get_default().get_object(id, null)
         .then((model) => {
             if (model instanceof DModel.Media) {
                 this.set_current_item_from_props({
@@ -123,7 +123,7 @@ var CourseHistoryStore = new GObject.Class({
             tags_match_all: ['EknSetObject'],
             sort: DModel.QuerySort.SEQUENCE_NUMBER,
         });
-        DModel.Engine.get_default().query_promise(query)
+        DModel.Engine.get_default().query(query, null)
         .then((results) => {
             if (results.models.length > 0) {
                 this.set_current_subset(results.models[0]);

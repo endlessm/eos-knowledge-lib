@@ -40,7 +40,7 @@ describe('Selection.Next', function () {
 
     it('queries for the next model id', function () {
         selection.queue_load_more(1);
-        let query = engine.query_promise.calls.mostRecent().args[0];
+        const [query] = engine.query.calls.mostRecent().args;
         expect(query.ids[0]).toBe(ID);
     });
 });

@@ -49,7 +49,7 @@ describe('Selection.Xapian superclass', function () {
 
     it('modifies the Xapian query when retrieving subsequent query indices', function (done) {
         let returnedEmpty = false;
-        engine.query_promise.and.callFake(query => {
+        engine.query.and.callFake(() => {
             if (!returnedEmpty) {
                 returnedEmpty = true;
                 return Promise.resolve({
@@ -65,8 +65,8 @@ describe('Selection.Xapian superclass', function () {
 
         selection.queue_load_more(1);
         let connectionId = selection.connect('models-changed', () => {
-            let query1 = engine.query_promise.calls.argsFor(0)[0];
-            let query2 = engine.query_promise.calls.argsFor(1)[0];
+            const [query1] = engine.query.calls.argsFor(0);
+            const [query2] = engine.query.calls.argsFor(1);
             expect(query1.search_terms).toEqual('null title');
             expect(query1.tags_match_all).toEqual(['foobar', 'EknIncludeMe']);
             expect(query2.search_terms).toEqual('null title');

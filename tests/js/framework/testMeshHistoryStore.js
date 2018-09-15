@@ -182,7 +182,7 @@ describe('MeshHistoryStore', function () {
             let model = new DModel.Article({
                 id: 'ekn://foo/bar',
             });
-            engine.get_object_promise.and.returnValue(Promise.resolve(model));
+            engine.get_object.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.ARTICLE_LINK_CLICKED,
                 id: 'ekn://foo/bar',
@@ -206,7 +206,7 @@ describe('MeshHistoryStore', function () {
             let model = new DModel.Media({
                 id: 'ekn://foo/pix',
             });
-            engine.get_object_promise.and.returnValue(Promise.resolve(model));
+            engine.get_object.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.ARTICLE_LINK_CLICKED,
                 id: 'ekn://foo/pix',
@@ -223,15 +223,15 @@ describe('MeshHistoryStore', function () {
             model = new DModel.Article({
                 id: 'ekn:///foo',
             });
-            engine.get_object_promise.and.returnValue(Promise.resolve(model));
+            engine.get_object.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                 search_terms: 'foo',
                 id: 'ekn:///foo',
             });
 
-            expect(engine.get_object_promise).toHaveBeenCalled();
-            expect(engine.get_object_promise.calls.mostRecent().args[0])
+            expect(engine.get_object).toHaveBeenCalled();
+            expect(engine.get_object.calls.mostRecent().args[0])
                 .toBe('ekn:///foo');
         });
 
@@ -239,7 +239,7 @@ describe('MeshHistoryStore', function () {
             model = new DModel.Article({
                 id: 'ekn:///foo',
             });
-            engine.get_object_promise.and.returnValue(Promise.resolve(model));
+            engine.get_object.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                 search_terms: 'foo',
@@ -254,7 +254,7 @@ describe('MeshHistoryStore', function () {
             model = new DModel.Article({
                 id: 'ekn:///foo',
             });
-            engine.get_object_promise.and.returnValue(Promise.resolve(model));
+            engine.get_object.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                 search_terms: 'foo',
@@ -271,7 +271,7 @@ describe('MeshHistoryStore', function () {
             model = new DModel.Set({
                 id: 'ekn:///foo',
             });
-            engine.get_object_promise.and.returnValue(Promise.resolve(model));
+            engine.get_object.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                 search_terms: 'foo',
@@ -288,7 +288,7 @@ describe('MeshHistoryStore', function () {
                     model = new DModel[kind]({
                         id: 'ekn:///99bac9189b30bb0877f60e1bc16ded7ad94af37f',
                     });
-                    engine.get_object_promise.and.returnValue(Promise.resolve(model));
+                    engine.get_object.and.returnValue(Promise.resolve(model));
                     dispatcher.dispatch({
                         action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                         search_terms: 'foo',

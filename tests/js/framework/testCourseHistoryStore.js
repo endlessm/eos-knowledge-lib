@@ -33,7 +33,7 @@ describe('CourseHistoryStore', function () {
             },
         ];
         let sets = data.map(props => new DModel.Set(props));
-        engine.query_promise.and.returnValue(Promise.resolve({ models: sets }));
+        engine.query.and.returnValue(Promise.resolve({models: sets}));
         SetMap.init_map_with_models(sets);
     });
 
@@ -134,7 +134,7 @@ describe('CourseHistoryStore', function () {
             model = new DModel.Article({
                 id: 'ekn:///foo',
             });
-            engine.get_object_promise.and.returnValue(Promise.resolve(model));
+            engine.get_object.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                 search_terms: 'foo',
@@ -144,8 +144,8 @@ describe('CourseHistoryStore', function () {
         });
 
         it('loads an item', function () {
-            expect(engine.get_object_promise).toHaveBeenCalled();
-            expect(engine.get_object_promise.calls.mostRecent().args[0])
+            expect(engine.get_object).toHaveBeenCalled();
+            expect(engine.get_object.calls.mostRecent().args[0])
                 .toBe('ekn:///foo');
         });
 
@@ -159,7 +159,7 @@ describe('CourseHistoryStore', function () {
 
         beforeEach(function () {
             model = new DModel.Media();
-            engine.get_object_promise.and.returnValue(Promise.resolve(model));
+            engine.get_object.and.returnValue(Promise.resolve(model));
             dispatcher.dispatch({
                 action_type: Actions.DBUS_LOAD_ITEM_CALLED,
                 search_terms: 'foo',

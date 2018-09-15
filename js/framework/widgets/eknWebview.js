@@ -109,7 +109,7 @@ var EknWebview = new Knowledge.Class({
     },
 
     _load_object: function (id) {
-        return DModel.Engine.get_default().get_object_promise(id)
+        return DModel.Engine.get_default().get_object(id, null)
         .then((model) => {
             if (model instanceof DModel.Article) {
                 let html = this.renderer.render(model);
