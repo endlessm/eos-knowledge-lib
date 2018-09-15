@@ -38,7 +38,7 @@ describe('Controller.Course', function () {
         set_models.push(parent);
 
         engine = MockEngine.mock_default();
-        engine.query_promise.and.returnValue(Promise.resolve({ models: set_models }));
+        engine.query.and.returnValue(Promise.resolve({models: set_models}));
 
         [course, factory] = MockFactory.setup_tree({
             type: Course.Course,

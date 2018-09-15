@@ -1,42 +1,42 @@
-const {DModel, Gio, Soup} = imports.gi;
+const {DModel, Gio} = imports.gi;
 
-function wrapPromise (obj, cancellable, async_name) {
-    let in_args = Array.prototype.slice.call(arguments, 3);
-    let finish_name = async_name.replace('_async', '').concat('_finish');
-    return new Promise((resolve, reject) => {
-        obj[async_name](...in_args, cancellable, (obj, res) => {
-            try {
-                let results = obj[finish_name](res);
-                resolve(results);
-            } catch (e) {
-                reject(e);
-            }
+function _promisify(proto, asyncFunc, finishFunc) {
+    proto[`_original_${asyncFunc}`] = proto[asyncFunc];
+    proto[asyncFunc] = function(...args) {
+        if (!args.every(arg => typeof arg !== 'function'))
+            return this[`_original_${asyncFunc}`](...args);
+        return new Promise((resolve, reject) => {
+            const callStack = new Error().stack.split('\n')
+                .filter(line => !line.match(/promisify/))
+                .join('\n');
+            this[`_original_${asyncFunc}`](...args, function(source, res) {
+                try {
+                    const result = source[finishFunc](res);
+                    if (Array.isArray(result) && result.length > 1 && result[0] === true)
+                        result.shift();
+                    resolve(result);
+                } catch (error) {
+                    if (error.stack)
+                        error.stack += `### Promise created here: ###\n${callStack}`;
+                    else
+                        error.stack = callStack;
+                    reject(error);
+                }
+            });
         });
-    });
-}
-
-function wrapPromises () {
-    DModel.Engine.prototype.get_object_promise = function (id, cancellable=null) {
-        return wrapPromise(this, cancellable, 'get_object', id);
-    };
-
-    DModel.Engine.prototype.get_object_for_app_promise = function (id, app_id, cancellable=null) {
-        return wrapPromise(this, cancellable, 'get_object_for_app', id, app_id);
-    };
-
-    DModel.Engine.prototype.query_promise = function (query, cancellable=null) {
-        return wrapPromise(this, cancellable, 'query', query);
-    };
-
-    Gio.InputStream.prototype.read_bytes_promise = function (count, priority, cancellable=null) {
-        return wrapPromise(this, cancellable, 'read_bytes_async', count, priority);
-    };
-
-    Gio.OutputStream.prototype.splice_promise = function (source, flags, priority, cancellable=null) {
-        return wrapPromise(this, cancellable, 'splice_async', source, flags, priority);
-    };
-
-    Soup.Request.prototype.send_promise = function (cancellable=null) {
-        return wrapPromise(this, cancellable, 'send_async');
     };
 }
+
+// The following Gio APIs will be built into GJS in GNOME 3.30 and can be
+// removed then
+Gio._promisify = _promisify;
+Gio._LocalFilePrototype = Gio.File.new_for_path('').constructor.prototype;
+
+Gio._promisify(DModel.Engine.prototype, 'get_object', 'get_object_finish');
+Gio._promisify(DModel.Engine.prototype, 'query', 'query_finish');
+Gio._promisify(Gio.OutputStream.prototype, 'splice_async', 'splice_finish');
+Gio._promisify(Gio._LocalFilePrototype, 'enumerate_children_async',
+    'enumerate_children_finish');
+Gio._promisify(Gio._LocalFilePrototype, 'delete_async', 'delete_finish');
+Gio._promisify(Gio.FileEnumerator.prototype, 'next_files_async',
+    'next_files_finish');

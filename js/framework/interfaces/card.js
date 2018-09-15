@@ -281,7 +281,7 @@ var Card = new Lang.Interface({
         let query = new DModel.Query({
             tags_match_any: set_obj.child_tags,
         });
-        DModel.Engine.get_default().query_promise(query)
+        DModel.Engine.get_default().query(query, null)
         .then((results) => {
             let reached_bottom = true;
             results.models.forEach((obj) => {

@@ -63,7 +63,7 @@ var MoltresEngine = new Lang.Class({
 
     get_id: function () {},
 
-    get_object_promise: function (id) {
+    get_object(id) {
         return Promise.resolve(this._set_models
         .concat(this._article_models)
         .concat(this._video_models)
@@ -136,7 +136,7 @@ var MoltresEngine = new Lang.Class({
         return to_return;
     },
 
-    query_promise: function (query) {
+    query(query) {
         if (query.tags_match_all.indexOf('EknSetObject') >= 0) {
             return Promise.resolve(this._get_sets(query));
         } else if (query.tags_match_all.indexOf('EknArticleObject') >= 0) {

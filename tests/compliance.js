@@ -249,7 +249,7 @@ function test_selection_compliance (SelectionClass, setup=function () {}, extra_
             // Not all Selections might use the Xapian engine, but I can't think
             // of a better place to put this
             let engine = MockEngine.mock_default();
-            engine.query_promise.and.returnValue(Promise.resolve({ models: [] }));
+            engine.query.and.returnValue(Promise.resolve({models: []}));
         });
 
         function add_models (c, num) {
@@ -362,7 +362,7 @@ function test_xapian_selection_compliance(SelectionClass, setup=function () {}, 
             jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
             engine = MockEngine.mock_default();
-            engine.query_promise.and.returnValue(Promise.resolve({ models: [] }));
+            engine.query.and.returnValue(Promise.resolve({models: []}));
         });
 
         it('continues the query based on how many results were added', function () {
@@ -372,24 +372,24 @@ function test_xapian_selection_compliance(SelectionClass, setup=function () {}, 
                 let model = new DModel.Content();
                 models.push(model);
             }
-            engine.query_promise.and.returnValue(Promise.resolve({ models: models, upper_bound: 10 }));
+            engine.query.and.returnValue(Promise.resolve({models, upper_bound: 10}));
             selection.queue_load_more(3);
             Utils.update_gui();
-            let first_query = engine.query_promise.calls.mostRecent().args[0];
+            const [first_query] = engine.query.calls.mostRecent().args;
             // Since we requested 3, we should only add three models to the
             // selection, regardless of how many actually came back.
             expect(selection.add_model.calls.count()).toBe(3);
             selection.queue_load_more(10);
             // When we request more models, we should start the offset from
             // where we left off
-            let second_query = engine.query_promise.calls.mostRecent().args[0];
+            const [second_query] = engine.query.calls.mostRecent().args;
             expect(second_query.offset).toEqual(first_query.offset + 3);
         });
 
         it('by going into an error state when the engine throws an exception', function () {
             spyOn(window, 'logError');  // silence console message
             expect(selection.in_error_state).toBeFalsy();
-            engine.query_promise.and.returnValue(Promise.reject(new Error('asplode')));
+            engine.query.and.returnValue(Promise.reject(new Error('asplode')));
             selection.queue_load_more(1);
             Utils.update_gui();
             expect(selection.in_error_state).toBeTruthy();
@@ -397,7 +397,7 @@ function test_xapian_selection_compliance(SelectionClass, setup=function () {}, 
 
         it('saves the exception that was thrown', function () {
             spyOn(window, 'logError');  // silence console message
-            engine.query_promise.and.returnValue(Promise.reject(new Error('asplode')));
+            engine.query.and.returnValue(Promise.reject(new Error('asplode')));
             selection.queue_load_more(1);
             Utils.update_gui();
             expect(selection.get_error().message).toEqual('asplode');
