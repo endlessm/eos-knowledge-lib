@@ -2,6 +2,7 @@
 
 /* exported DynamicLogo */
 
+const ByteArray = imports.byteArray;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -191,13 +192,40 @@ var DynamicLogo = new Knowledge.Class({
             logError(error);
         }
         this._update_text();
+        this._recolor_image();
      },
+
+    _recolor_image() {
+        if (!this._escaped_svg_data)
+            return;
+
+        const context = this.get_style_context();
+        const fill_rgba = context.get_color(this.get_state_flags());
+        const fill_color = fill_rgba.to_string();
+        const recolored_svg_data = `
+            <svg version="1.1"
+                 xmlns="http://www.w3.org/2000/svg"
+                 xmlns:xi="http://www.w3.org/2001/XInclude"
+                 width="100" height="100">
+              <style type="text/css">
+                rect,path,ellipse,circle,polygon {
+                  fill: ${fill_color} !important;
+                }
+              </style>
+              <xi:include href="data:text/xml,${this._escaped_svg_data}"/>
+            </svg>`;
+
+        this._image = Rsvg.Handle.new_from_data(ByteArray.fromString(recolored_svg_data));
+    },
 
     _load_image: function () {
         try {
             let file = Gio.File.new_for_uri(this._image_uri);
-            let stream = file.read(null);
-            this._image = Rsvg.Handle.new_from_stream_sync(stream, file, 0, null);
+            const [, svg_bytes] = file.load_contents(null);
+            // FIXME: Use ByteArray.toString(svg_bytes) in GNOME 3.30
+            const svg_data = svg_bytes.toString();
+            this._escaped_svg_data = GLib.markup_escape_text(svg_data, -1);
+            this._recolor_image();
         } catch (e) {
             logError(e, 'Could not read image data');
         }
