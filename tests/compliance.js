@@ -32,7 +32,7 @@ function test_card_compliance(CardClass, setup=function () {}) {
                 }),
             });
             let pretty_name = CardClass.$gtype.name.slice('Ekn'.length)
-                .replace(/_/, '', 'g');
+                .replace(/_/g, '');
             expect(card).toHaveCssClass('Card--pdf');
             expect(card).toHaveCssClass(pretty_name + '--pdf');
             card = new CardClass({

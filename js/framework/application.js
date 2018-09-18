@@ -225,7 +225,9 @@ var Application = new Knowledge.Class({
 
         try {
             this._initialize_vfs();
-        } catch (e if e.matches(DModel.DomainError, DModel.DomainError.EMPTY)) {
+        } catch (e) {
+            if (!e.matches(DModel.DomainError, DModel.DomainError.EMPTY))
+                throw e;
             let dialog = new NoContentDialog.NoContentDialog();
             dialog.run();
         }
@@ -307,7 +309,9 @@ var Application = new Knowledge.Class({
         try {
             [, contents] = theme_file.load_contents(null);
             contents = contents.toString();
-        } catch (error if !this._overrides_path && error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND)) {
+        } catch (e) {
+            if (this._overrides_path || !e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
+                throw e;
             // No overrides, fallback to stock theme
             return '';
         }
