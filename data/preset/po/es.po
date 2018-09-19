@@ -1,57 +1,60 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Endless Mobile, Inc.
-# This file is distributed under the same license as the eos-subscriptions-apps package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-# #-#-#-#-#  es.po  #-#-#-#-#
-#
-#, fuzzy
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: eos-knowledge-lib 0\n"
-"Report-Msgid-Bugs-To: info@endlessm.com\n"
-"POT-Creation-Date: 2017-06-20 17:58+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Nuritzi Sanchez <ns@endlessm.com>, 2017\n"
-"Language-Team: Spanish (https://www.transifex.com/endless-mobile-inc/teams/9016/es/)\n"
+"POT-Creation-Date: 2018-09-18 18:59+0000\n"
+"Language-Team: Spanish (https://www.transifex.com/endless-os/teams/9016/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:31
 msgid "Sorry, there are no results that match your search."
-msgstr "Desafortunadamente no hay resultados para tu búsqueda."
+msgstr ""
 
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:37
 msgid "Latest posts"
-msgstr "Últimas publicaciones"
+msgstr ""
 
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:125
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:359
 msgid "Related posts"
-msgstr "Artículos relacionados"
+msgstr ""
 
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:32
 msgid "Browse by topic"
-msgstr "busca por categoría"
+msgstr ""
 
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:45
 msgid "Next Article"
-msgstr "Siguiente artículo"
+msgstr ""
 
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:62
 msgid "You might be interested in..."
-msgstr "podrías estar interesado en"
+msgstr ""
 
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:81
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:97
 msgid "See more from %s"
-msgstr "Ver más sobre %s"
+msgstr ""
 
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml
 msgid "See more categories"
-msgstr "ve más categorías"
+msgstr ""
 
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/gallery.yaml:44
 msgid "You might also be interested in..."
 msgstr ""
 
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/gallery.yaml:212
 msgid "See more"
 msgstr ""
 
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:53
 msgid "you might be interested in..."
-msgstr "podrías estar interesado en"
+msgstr ""
 
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml
 msgid "other news"
-msgstr "otras noticias"
+msgstr ""
