@@ -357,12 +357,10 @@ var Application = new Knowledge.Class({
     },
 
     RestartAsync([file_fds, resource_fds, shard_fds, options], invocation, fdlist) {
-        void options;  // no options at this time
-
         const fds = fdlist.peek_fds();
 
         _determine_restart_args(file_fds, resource_fds, shard_fds, fds)
-        .then(args => this._restart_app(args))
+        .then(args => this._restart_app(args, options))
         .then(() => {
             invocation.return_value(null);
             this.quit();
@@ -389,15 +387,19 @@ var Application = new Knowledge.Class({
         });
     },
 
-    _restart_app(args) {
+    _restart_app(args, options) {
         const FlatpakPortal = Gio.DBusProxy.makeProxyWrapper(FlatpakPortalIface);
         const portal = new FlatpakPortal(this.get_dbus_connection(),
             'org.freedesktop.portal.Flatpak', '/org/freedesktop/portal/Flatpak');
+
         const env = {
             // this is not a valid value, but it works well enough to stop the
             // bad value of GIO_USE_VFS that flatpak-portal passes
             GIO_USE_VFS: 'none',
         };
+        if ('inspector' in options)
+            env.GTK_DEBUG = 'interactive';
+
         let argv = [this.application_id].concat(args);
 
         // Work around GJS bug https://gitlab.gnome.org/GNOME/gjs/issues/203
