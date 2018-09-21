@@ -2,7 +2,7 @@
 get_web_plugin_dbus_name, get_web_plugin_dbus_name_for_webview, intersection,
 record_search_metric, start_content_access_metric, stop_content_access_metric,
 shows_descendant_with_type, split_out_conditional_knobs, union,
-vfunc_draw_background_default */
+vfunc_draw_background_default, wrap_dbus_implementation_with_fd_list */
 
 const MockMetricsModule = {
     EventRecorder: {
@@ -17,16 +17,10 @@ const MockMetricsModule = {
 const Config = imports.framework.config;
 
 const ByteArray = imports.byteArray;
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const {EosKnowledgePrivate, Gdk, GdkPixbuf, Gio, GjsPrivate, GLib, Gtk, Soup} = imports.gi;
 const EosMetrics = Config.metrics_enabled ? imports.gi.EosMetrics : MockMetricsModule;
 const Format = imports.format;
-const Gdk = imports.gi.Gdk;
-const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gettext = imports.gettext;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
-const Soup = imports.gi.Soup;
 
 const Dispatcher = imports.framework.dispatcher;
 const Knowledge = imports.framework.knowledge;
@@ -621,4 +615,89 @@ function get_image_size_from_uri (uri) {
     } catch (e) { }
 
     return (retval.width && retval.height) ? retval : null;
+}
+
+// Adapted version of _handleMethodCall() from gjs/modules/overrides/Gio.js
+// which handles a DBus message with attached Gio.UnixFDList.
+// Eventually this will be included in GJS, see upstream issue
+// https://gitlab.gnome.org/GNOME/gjs/issues/204
+function _handle_method_call_with_fd_list(info, impl, method_name, parameters, invocation) {
+    // prefer a sync version if available
+    if (this[method_name]) {
+        let retval;
+        try {
+            const fdlist = invocation.get_message().get_unix_fd_list();
+            retval = this[method_name](...parameters.deep_unpack(), fdlist);
+        } catch (e) {
+            if (e instanceof GLib.Error) {
+                invocation.return_gerror(e);
+            } else {
+                let {name} = e;
+                if (!name.includes('.')) {
+                    // likely to be a normal JS error
+                    name = `org.gnome.gjs.JSError.${name}`;
+                }
+                logError(e, `Exception in method call ${method_name}`);
+                invocation.return_dbus_error(name, e.message);
+            }
+            return;
+        }
+        if (typeof retval === 'undefined') {
+            // undefined (no return value) is the empty tuple
+            retval = new GLib.Variant('()', []);
+        }
+        try {
+            if (!(retval instanceof GLib.Variant)) {
+                // attempt packing according to out signature
+                const methodInfo = info.lookup_method(method_name);
+                const outArgs = methodInfo.out_args;
+                const outSignature = `(${outArgs.map(a => a.signature).join('')})`;
+                if (outArgs.length === 1) {
+                    // if one arg, we don't require the handler wrapping it
+                    // into an Array
+                    retval = [retval];
+                }
+                retval = new GLib.Variant(outSignature, retval);
+            }
+            invocation.return_value(retval);
+        } catch (e) {
+            // if we don't do this, the other side will never see a reply
+            invocation.return_dbus_error('org.gnome.gjs.JSError.ValueError',
+                'Service implementation returned an incorrect value type');
+        }
+    } else if (this[`${method_name}Async`]) {
+        const fdlist = invocation.get_message().get_unix_fd_list();
+        this[`${method_name}Async`](parameters.deep_unpack(), invocation,
+            fdlist);
+    } else {
+        log(`Missing handler for DBus method ${method_name}`);
+        invocation.return_gerror(new Gio.DBusError({
+            code: Gio.DBusError.UNKNOWN_METHOD,
+            message: `Method ${method_name} is not implemented`,
+        }));
+    }
+}
+
+// Adapted version of _wrapJSObject() from gjs/modules/overrides/Gio.js
+// which handles a DBus message with attached Gio.UnixFDList.
+// Eventually this will be included in GJS, see upstream issue
+// https://gitlab.gnome.org/GNOME/gjs/issues/204
+function wrap_dbus_implementation_with_fd_list(interface_info, js_obj) {
+    let info;
+    if (interface_info instanceof Gio.DBusInterfaceInfo)
+        info = interface_info;
+    else
+        info = Gio.DBusInterfaceInfo.new_for_xml(interface_info);
+    info.cache_build();
+
+    const impl = new GjsPrivate.DBusImplementation({g_interface_info: info});
+    impl.connect('handle-method-call', (self, method_name, parameters, invocation) =>
+        _handle_method_call_with_fd_list.call(js_obj, info, self, method_name,
+            parameters, invocation));
+    impl.connect('handle-property-get', (self, property_name) =>
+        Gio._handlePropertyGet.call(js_obj, info, self, property_name));
+    impl.connect('handle-property-set', (self, property_name, value) =>
+        Gio._handlePropertySet.call(js_obj, info, self, property_name, value));
+
+    return impl;
 }

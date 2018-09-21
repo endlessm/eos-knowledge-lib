@@ -1,6 +1,7 @@
 imports.gi.versions.WebKit2 = '4.0';
 
 const {DModel, Endless, EvinceDocument, Gdk, Gio, GLib, GObject, Gtk} = imports.gi;
+const ByteArray = imports.byteArray;
 const Format = imports.format;
 const Gettext = imports.gettext;
 const System = imports.system;
@@ -38,6 +39,48 @@ const KnowledgeSearchIface = '\
   </interface> \
 </node>';
 
+const KnowledgeControlIface = `
+<node>
+  <interface name="com.endlessm.KnowledgeControl">
+    <method name="Restart">
+      <arg type="a{sh}" name="paths" direction="in"/>
+      <arg type="ah" name="gresources" direction="in"/>
+      <arg type="ah" name="shards" direction="in"/>
+      <arg type="a{sv}" name="options" direction="in"/>
+    </method>
+  </interface>
+</node>
+`;
+
+// portal XML taken from flatpak/data/org.freedesktop.portal.Flatpak.xml
+// License: LGPLv2
+const FlatpakPortalIface = `
+<node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd">
+  <interface name='org.freedesktop.portal.Flatpak'>
+    <property name="version" type="u" access="read"/>
+    <method name="Spawn">
+      <annotation name="org.gtk.GDBus.C.UnixFD" value="true"/>
+      <arg type='ay' name='cwd_path' direction='in'/>
+      <arg type='aay' name='argv' direction='in'/>
+      <arg type='a{uh}' name='fds' direction='in'/>
+      <arg type='a{ss}' name='envs' direction='in'/>
+      <arg type='u' name='flags' direction='in'/>
+      <arg type="a{sv}" name="options" direction="in"/>
+      <arg type='u' name='pid' direction='out'/>
+    </method>
+    <method name="SpawnSignal">
+      <arg type='u' name='pid' direction='in'/>
+      <arg type='u' name='signal' direction='in'/>
+      <arg type='b' name='to_process_group' direction='in'/>
+    </method>
+    <signal name="SpawnExited">
+      <arg type='u' name='pid' direction='out'/>
+      <arg type='u' name='exit_status' direction='out'/>
+    </signal>
+  </interface>
+</node>
+`;
+
 const CREDITS_URI = 'resource:///app/credits.json';
 const APP_JSON_URI = 'resource:///app/app.json';
 const APP_YAML_URI = 'resource:///app/app.yaml';
@@ -46,6 +89,60 @@ const OVERRIDES_SCSS_URI = 'resource:///app/overrides.scss';
 
 const AUTOBAHN_COMMAND = 'autobahn -I ' + Config.YAML_PRESET_DIR + ' ';
 const SCSS_COMMAND = 'sassc -a -I ' + Config.TOP_THEME_DIR + ' ';
+
+async function _create_temp_file(basename, fd) {
+    const istream = new Gio.UnixInputStream({fd, close_fd: true});
+
+    const datadir = Gio.File.new_for_path(GLib.get_user_data_dir());
+    const file = datadir.get_child(basename);
+    const ostream = await file.replace_async(null, false,
+        Gio.FileCreateFlags.NONE, GLib.PRIORITY_HIGH, null);
+
+    const flags = Gio.OutputStreamSpliceFlags.CLOSE_SOURCE |
+        Gio.OutputStreamSpliceFlags.CLOSE_TARGET;
+    await ostream.splice_async(istream, flags, GLib.PRIORITY_HIGH, null);
+
+    return file.get_path();
+}
+
+async function _determine_restart_args(file_fds, resource_fds, shard_fds, fds) {
+    const args = [];
+
+    if ('theme' in file_fds) {
+        const path = await _create_temp_file('overrides.css', fds[file_fds.theme]);
+        args.push('-O', path);
+    }
+    if ('webcss' in file_fds) {
+        const path = await _create_temp_file('web.css', fds[file_fds.webcss]);
+        args.push('-w', path);
+    }
+    if ('ui' in file_fds) {
+        const path = await _create_temp_file('app.json', fds[file_fds.ui]);
+        args.push('-J', path);
+    }
+
+    await Promise.all(resource_fds.map(async (fd_index, ix) => {
+        const path = await _create_temp_file(`extra${ix}.gresource`, fds[fd_index]);
+        args.push('-E', path);
+    }));
+
+    // Deal with supplementary content. For this, we must have passed in both a
+    // manifest.json and shards
+    if ('manifest' in file_fds) {
+        if (shard_fds.length === 0)
+            throw new Error('You must include shards when including a manifest.json');
+        await _create_temp_file('manifest.json', fds[file_fds.manifest]);
+    }
+    await Promise.all(shard_fds.map((fd_index, ix) =>
+        _create_temp_file(`content${ix}.shard`, fds[fd_index])));
+    if (shard_fds.length > 0) {
+        if (!('manifest' in file_fds))
+            throw new Error('You must include a manifest.json when including shards');
+        args.push('-p', GLib.get_user_data_dir());
+    }
+
+    return args;
+}
 
 /**
  * Class: Application
@@ -68,6 +165,8 @@ var Application = new Knowledge.Class({
         this.parent(props);
         this._controller = null;
         this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
+        this._knowledge_control_impl =
+            Utils.wrap_dbus_implementation_with_fd_list(KnowledgeControlIface, this);
         this.image_attribution_file = Gio.File.new_for_uri(CREDITS_URI);
 
         DModel.Engine.get_default().default_app_id = this.application_id;
@@ -164,6 +263,7 @@ var Application = new Knowledge.Class({
     vfunc_dbus_register: function (connection, path) {
         this.parent(connection, path);
         this._knowledge_search_impl.export(connection, path);
+        this._knowledge_control_impl.export(connection, path);
         return true;
     },
 
@@ -171,6 +271,8 @@ var Application = new Knowledge.Class({
         this.parent(connection, path);
         if (this._knowledge_search_impl.has_connection(connection))
             this._knowledge_search_impl.unexport_from_connection(connection);
+        if (this._knowledge_control_impl.has_connection(connection))
+            this._knowledge_control_impl.unexport_from_connection(connection);
     },
 
     _remove_legacy_symlinks_from_path: function (path, id) {
@@ -254,12 +356,70 @@ var Application = new Knowledge.Class({
         });
     },
 
+    RestartAsync([file_fds, resource_fds, shard_fds, options], invocation, fdlist) {
+        const fds = fdlist.peek_fds();
+
+        _determine_restart_args(file_fds, resource_fds, shard_fds, fds)
+        .then(args => this._restart_app(args, options))
+        .then(() => {
+            invocation.return_value(null);
+            this.quit();
+        })
+        .catch(e => {
+            logError(e);
+            if (e instanceof GLib.Error) {
+                invocation.return_gerror(e);
+            } else {
+                let {name} = e;
+                if (!name.includes('.'))
+                    name = `org.gnome.gjs.JSError.${name}`;
+                invocation.return_dbus_error(name, e.message);
+            }
+        });
+    },
+
     vfunc_activate: function () {
         this.parent();
         this._ensure_controller();
         Dispatcher.get_default().dispatch({
             action_type: Actions.LAUNCHED_FROM_DESKTOP,
             timestamp: Gdk.CURRENT_TIME,
+        });
+    },
+
+    _restart_app(args, options) {
+        const FlatpakPortal = Gio.DBusProxy.makeProxyWrapper(FlatpakPortalIface);
+        const portal = new FlatpakPortal(this.get_dbus_connection(),
+            'org.freedesktop.portal.Flatpak', '/org/freedesktop/portal/Flatpak');
+
+        const env = {
+            // this is not a valid value, but it works well enough to stop the
+            // bad value of GIO_USE_VFS that flatpak-portal passes
+            GIO_USE_VFS: 'none',
+        };
+        if ('inspector' in options)
+            env.GTK_DEBUG = 'interactive';
+
+        let argv = [this.application_id].concat(args);
+
+        // Work around GJS bug https://gitlab.gnome.org/GNOME/gjs/issues/203
+        // Fixed in org.gnome.Platform//3.30. In that version, just pass strings
+        // to SpawnSync() instead of byte arrays.
+        function zeroTerminatedByteArray(string) {
+            const b = ByteArray.fromString(string);
+            b[b.length] = 0;
+            return b;
+        }
+        argv = argv.map(zeroTerminatedByteArray);
+        const cwd = zeroTerminatedByteArray(GLib.get_current_dir());
+
+        return new Promise((resolve, reject) => {
+            portal.SpawnRemote(cwd, argv, [], env, 0, {}, (out, err) => {
+                if (err)
+                    reject(err);
+                else
+                    resolve(out);
+            });
         });
     },
 
