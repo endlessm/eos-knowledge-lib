@@ -1,60 +1,55 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Endless Mobile, Inc.
+# This file is distributed under the same license as the eos-subscriptions-apps package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
+#, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2018-09-18 18:59+0000\n"
-"Language-Team: Thai (https://www.transifex.com/endless-os/teams/9016/th/)\n"
+"Project-Id-Version: eos-knowledge-lib 0\n"
+"Report-Msgid-Bugs-To: info@endlessm.com\n"
+"POT-Creation-Date: 2017-06-20 17:58+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Roddy Shuler <roddy@endlessm.com>, 2016\n"
+"Language-Team: Thai (https://www.transifex.com/endless-mobile-inc/teams/9016/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: th\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:31
-msgid "Sorry, there are no results that match your search."
-msgstr ""
-
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:37
-msgid "Latest posts"
-msgstr ""
-
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:125
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:359
 msgid "Related posts"
-msgstr ""
+msgstr "โพสต์ที่เกี่ยวข้อง"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:32
-msgid "Browse by topic"
-msgstr ""
+msgid "Sorry, there are no results that match your search."
+msgstr "ขออภัย ไม่มีผลลัพธ์ที่ตรงกับคำค้นหาของคุณ"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:45
-msgid "Next Article"
-msgstr ""
+msgid "Latest posts"
+msgstr "โพสต์ล่าสุด"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:62
-msgid "You might be interested in..."
-msgstr ""
-
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:81
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:97
 msgid "See more from %s"
-msgstr ""
+msgstr "ดูเพิ่มเติมจาก %s"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml
+msgid "you might be interested in..."
+msgstr "คุณอาจสนใจ..."
+
+msgid "other news"
+msgstr "ข่าวสารอื่นๆ"
+
+msgid "You might be interested in..."
+msgstr "คุณอาจสนใจ..."
+
+msgid "Browse by topic"
+msgstr "ค้นหาตามหัวข้อ"
+
+msgid "Next Article"
+msgstr "บทความถัดไป"
+
 msgid "See more categories"
-msgstr ""
+msgstr "ดูหมวดหมู่อื่นๆ"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/gallery.yaml:44
 msgid "You might also be interested in..."
 msgstr ""
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/gallery.yaml:212
 msgid "See more"
-msgstr ""
-
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:53
-msgid "you might be interested in..."
-msgstr ""
-
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml
-msgid "other news"
 msgstr ""
