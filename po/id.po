@@ -7,12 +7,12 @@
 # Kukuh Syafaat <syafaatkukuh@gmail.com>, 2017-2018
 # Philip Chimento <philip.chimento@gmail.com>, 2017
 # princeofgiri <princeofgiri@di.blankon.in>, 2018
-# Roddy Shuler <roddy@stanfordalumni.org>, 2016
+# Roddy Shuler <roddy@endlessm.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 18:59+0000\n"
+"POT-Creation-Date: 2018-06-20 17:31-0700\n"
 "PO-Revision-Date: 2018-06-21 00:33+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Indonesian (http://www.transifex.com/endless-os/eos-knowledge-lib/language/id/)\n"
