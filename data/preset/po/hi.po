@@ -1,60 +1,55 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Endless Mobile, Inc.
+# This file is distributed under the same license as the eos-subscriptions-apps package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
+#, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2018-09-18 18:59+0000\n"
-"Language-Team: Hindi (https://www.transifex.com/endless-os/teams/9016/hi/)\n"
+"Project-Id-Version: eos-knowledge-lib 0\n"
+"Report-Msgid-Bugs-To: info@endlessm.com\n"
+"POT-Creation-Date: 2017-06-20 17:58+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: e2f_in c7 <e2f_in_c7@outlook.com>, 2016\n"
+"Language-Team: Hindi (https://www.transifex.com/endless-mobile-inc/teams/9016/hi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: hi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:31
-msgid "Sorry, there are no results that match your search."
-msgstr ""
-
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:37
-msgid "Latest posts"
-msgstr ""
-
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:125
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:359
 msgid "Related posts"
-msgstr ""
+msgstr "संबंधित पोस्ट"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:32
-msgid "Browse by topic"
-msgstr ""
+msgid "Sorry, there are no results that match your search."
+msgstr "क्षमा करें, आपकी खोज से मिलते-जुलते कोई परिणाम मौजूद नहीं हैं."
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:45
-msgid "Next Article"
-msgstr ""
+msgid "Latest posts"
+msgstr "नवीनतम पोस्ट"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:62
-msgid "You might be interested in..."
-msgstr ""
-
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:81
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:97
 msgid "See more from %s"
-msgstr ""
+msgstr "%s की ओर से अधिक देखें"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml
+msgid "you might be interested in..."
+msgstr "आपकी निम्न में रुचि हो सकती है..."
+
+msgid "other news"
+msgstr "अन्य समाचार"
+
+msgid "You might be interested in..."
+msgstr "आपकी निम्न में रुचि हो सकती है..."
+
+msgid "Browse by topic"
+msgstr "विषय के आधार पर ब्राउज़ करें"
+
+msgid "Next Article"
+msgstr "अगला आलेख"
+
 msgid "See more categories"
-msgstr ""
+msgstr "अधिक श्रेणियाँ देखें"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/gallery.yaml:44
 msgid "You might also be interested in..."
 msgstr ""
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/gallery.yaml:212
 msgid "See more"
-msgstr ""
-
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:53
-msgid "you might be interested in..."
-msgstr ""
-
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml
-msgid "other news"
 msgstr ""
