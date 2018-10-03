@@ -6,6 +6,7 @@
 # Fernando Farfan <fernando@endlessm.com>, 2015
 # Ivan G. Gonçalves <i@endlessm.com>, 2015
 # Joaquim Rocha <jrocha@endlessm.com>, 2018
+# Leandro Stanger <leandrostanger@hotmail.com>, 2018
 # Mariana Barbosa <mariana@endlessm.com>, 2016-2017
 # Mariana Barbosa <mari@endlessm.com>, 2015-2016
 # Mariela Balbona Blank <mariela@endlessm.com>, 2018
@@ -18,9 +19,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-20 17:31-0700\n"
-"PO-Revision-Date: 2018-06-21 00:33+0000\n"
-"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
+"POT-Creation-Date: 2018-06-26 21:57-0700\n"
+"PO-Revision-Date: 2018-09-28 15:19+0000\n"
+"Last-Translator: Leandro Stanger <leandrostanger@hotmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/endless-os/eos-knowledge-lib/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,11 +37,11 @@ msgstr "Opa! Sem conteúdo."
 msgid ""
 "The application could not find content to show. Please uninstall and re-"
 "install the application from the App Center."
-msgstr "O programa não encontrou conteúdo para mostrar. Por favor desinstale e instale novamente o programa a partir da Central de Programas."
+msgstr "O programa não encontrou conteúdo para mostrar. Por favor desinstale e instale novamente o programa a partir da Central de Aplicativos"
 
 #: data/widgets/noContentDialog.ui:23
 msgid "Open App Center"
-msgstr "Abrir a Central de Programas"
+msgstr "Abrir a Endless Store"
 
 #: data/widgets/noContentDialog.ui:36
 msgid "Close"

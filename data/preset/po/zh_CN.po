@@ -1,55 +1,60 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Endless Mobile, Inc.
-# This file is distributed under the same license as the eos-subscriptions-apps package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
-#, fuzzy
+# Translators:
+# Fabián Orccón <fabian@endlessm.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: eos-knowledge-lib 0\n"
-"Report-Msgid-Bugs-To: info@endlessm.com\n"
-"POT-Creation-Date: 2017-06-20 17:58+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: CN C2 <e2f48d4sf5ds@outlook.com>, 2017\n"
-"Language-Team: Chinese (China) (https://www.transifex.com/endless-mobile-inc/teams/9016/zh_CN/)\n"
+"POT-Creation-Date: 2018-09-11 15:23+0000\n"
+"Last-Translator: Fabián Orccón <fabian@endlessm.com>, 2018\n"
+"Language-Team: Chinese (China) (https://www.transifex.com/endless-os/teams/9016/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-msgid "Related posts"
-msgstr "相关文章"
-
+#: data/preset/blog.yaml:31
 msgid "Sorry, there are no results that match your search."
 msgstr "很抱歉，没有符合搜索条件的结果。"
 
+#: data/preset/blog.yaml:37
 msgid "Latest posts"
 msgstr "最新文章"
 
-msgid "See more from %s"
-msgstr "在%s查看更多"
+#: data/preset/blog.yaml:125 data/preset/news.yaml:359
+msgid "Related posts"
+msgstr "相关文章"
 
-msgid "you might be interested in..."
-msgstr "您可能对...感兴趣"
-
-msgid "other news"
-msgstr "其他消息"
-
-msgid "You might be interested in..."
-msgstr "您可能对...感兴趣"
-
+#: data/preset/exploration.yaml:32
 msgid "Browse by topic"
 msgstr "根据主题浏览"
 
+#: data/preset/exploration.yaml:45
 msgid "Next Article"
 msgstr "下一篇文章"
 
+#: data/preset/exploration.yaml:62
+msgid "You might be interested in..."
+msgstr "您可能对...感兴趣"
+
+#: data/preset/exploration.yaml:81 data/preset/news.yaml:97
+msgid "See more from %s"
+msgstr "在%s查看更多"
+
+#: data/preset/exploration.yaml
 msgid "See more categories"
 msgstr "查看更多类别"
 
+#: data/preset/gallery.yaml:44
 msgid "You might also be interested in..."
 msgstr ""
 
+#: data/preset/gallery.yaml:212
 msgid "See more"
 msgstr ""
+
+#: data/preset/news.yaml:53
+msgid "you might be interested in..."
+msgstr "您可能对...感兴趣"
+
+#: data/preset/news.yaml
+msgid "other news"
+msgstr "其他消息"
