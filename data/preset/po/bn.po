@@ -1,55 +1,60 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Endless Mobile, Inc.
-# This file is distributed under the same license as the eos-subscriptions-apps package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
-#, fuzzy
+# Translators:
+# Fabián Orccón <fabian@endlessm.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: eos-knowledge-lib 0\n"
-"Report-Msgid-Bugs-To: info@endlessm.com\n"
-"POT-Creation-Date: 2017-06-20 17:58+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Aditi Kabir <aditi.kabir@gmail.com>, 2016\n"
-"Language-Team: Bengali (https://www.transifex.com/endless-mobile-inc/teams/9016/bn/)\n"
+"POT-Creation-Date: 2018-09-11 15:23+0000\n"
+"Last-Translator: Fabián Orccón <fabian@endlessm.com>, 2018\n"
+"Language-Team: Bengali (https://www.transifex.com/endless-os/teams/9016/bn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: bn\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgid "Related posts"
-msgstr ""
-
+#: data/preset/blog.yaml:31
 msgid "Sorry, there are no results that match your search."
 msgstr ""
 
+#: data/preset/blog.yaml:37
 msgid "Latest posts"
 msgstr ""
 
-msgid "See more from %s"
-msgstr "%s থেকে আরও দেখুন "
+#: data/preset/blog.yaml:125 data/preset/news.yaml:359
+msgid "Related posts"
+msgstr ""
 
-msgid "you might be interested in..."
-msgstr "আপনি হয়তো আগ্রহী হতে পারেন... "
-
-msgid "other news"
-msgstr "অন্যান্য খবর "
-
-msgid "You might be interested in..."
-msgstr "আপনি হয়তো আগ্রহী হতে পারেন... "
-
+#: data/preset/exploration.yaml:32
 msgid "Browse by topic"
 msgstr "বিষয় ধরে খুঁজুন  "
 
+#: data/preset/exploration.yaml:45
 msgid "Next Article"
 msgstr ""
 
+#: data/preset/exploration.yaml:62
+msgid "You might be interested in..."
+msgstr "আপনি হয়তো আগ্রহী হতে পারেন... "
+
+#: data/preset/exploration.yaml:81 data/preset/news.yaml:97
+msgid "See more from %s"
+msgstr "%s থেকে আরও দেখুন "
+
+#: data/preset/exploration.yaml
 msgid "See more categories"
 msgstr "আরও বিভাগ দেখুন  "
 
+#: data/preset/gallery.yaml:44
 msgid "You might also be interested in..."
 msgstr ""
 
+#: data/preset/gallery.yaml:212
 msgid "See more"
 msgstr ""
+
+#: data/preset/news.yaml:53
+msgid "you might be interested in..."
+msgstr "আপনি হয়তো আগ্রহী হতে পারেন... "
+
+#: data/preset/news.yaml
+msgid "other news"
+msgstr "অন্যান্য খবর "
