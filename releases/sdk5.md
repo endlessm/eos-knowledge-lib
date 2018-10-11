@@ -45,6 +45,12 @@ No changes are required for apps using the modular framework.
 
 ## Release notes ##
 
+### SDK 5.2 (October 11, 2018) ###
+- Modular Framework: Improvement in design by fixing the logo height to the title height.
+- Modular Framework: Allow to change the color of the logo.
+- Modular Framework: Add promisify functions from upstream GJS.
+- Modular Framework: Add functionality to autorestart the applications via D-Bus.
+
 ### SDK 5.1 (September 13, 2018) ###
 - Runtime: Update existing translations
 - Runtime: Fixed GPU acceleration for HTML content rendering for ARM architecture.
