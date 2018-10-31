@@ -200,11 +200,17 @@ def translate(loader, node):
 
 def import_yaml(loader, node):
     if not include_path:
-        raise ValueError('You must specify the path for the .yaml files.');
+        raise ValueError('You must specify a path for the .yaml files.')
     yaml_file = node.value + os.extsep + 'yaml'
-    filename = os.path.join(include_path, yaml_file)
-    with open(filename, 'r') as stream:
-        return yaml.load(stream)
+    for try_path in include_path:
+        filename = os.path.join(try_path, yaml_file)
+        try:
+            with open(filename, 'r') as stream:
+                return yaml.load(stream)
+        except FileNotFoundError:
+            pass
+    else:
+        raise ValueError('{} not found in any include path'.format(yaml_file))
 
 
 # Shared state
@@ -217,7 +223,7 @@ pot.metadata = {
 }
 po = None
 infile_name = None
-include_path = None
+include_path = []
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Preprocess app.json.')
@@ -232,7 +238,7 @@ if __name__ == '__main__':
     parser.add_argument('-t', '--translations',
                         type=argparse.FileType('r', encoding='utf-8'),
                         help='.po file to use for translations (default: none)')
-    parser.add_argument('-I', '--include', type=str, default=None,
+    parser.add_argument('-I', '--include', action='append', default=None,
                         help='Path to the .yaml files (default: none)')
     args = parser.parse_args()
 
