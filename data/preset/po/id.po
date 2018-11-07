@@ -1,60 +1,63 @@
 # Translators:
 # Fabián Orccón <fabian@endlessm.com>, 2018
+# 
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2018-09-11 15:23+0000\n"
+"POT-Creation-Date: 2018-10-31 23:06+0000\n"
 "Last-Translator: Fabián Orccón <fabian@endlessm.com>, 2018\n"
 "Language-Team: Indonesian (https://www.transifex.com/endless-os/teams/9016/id/)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: id\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: data/preset/blog.yaml:31
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:31
 msgid "Sorry, there are no results that match your search."
 msgstr "Maaf, tidak ditemukan hasil pencarian yang sesuai."
 
-#: data/preset/blog.yaml:37
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:37
 msgid "Latest posts"
 msgstr "Artikel terbaru"
 
-#: data/preset/blog.yaml:125 data/preset/news.yaml:359
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:125
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:359
 msgid "Related posts"
 msgstr "Artikel Terkait"
 
-#: data/preset/exploration.yaml:32
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:32
 msgid "Browse by topic"
 msgstr "Telusuri berdasarkan topik"
 
-#: data/preset/exploration.yaml:45
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:45
 msgid "Next Article"
 msgstr "Artikel Selanjutnya"
 
-#: data/preset/exploration.yaml:62
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:62
 msgid "You might be interested in..."
 msgstr "Anda mungkin tertarik dengan..."
 
-#: data/preset/exploration.yaml:81 data/preset/news.yaml:97
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:81
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:97
 msgid "See more from %s"
 msgstr "Lihat lebih banyak dari %s"
 
-#: data/preset/exploration.yaml
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml
 msgid "See more categories"
 msgstr "Lihat kategori lainnya"
 
-#: data/preset/gallery.yaml:44
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/gallery.yaml:44
 msgid "You might also be interested in..."
 msgstr ""
 
-#: data/preset/gallery.yaml:212
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/gallery.yaml:212
 msgid "See more"
 msgstr ""
 
-#: data/preset/news.yaml:53
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:53
 msgid "you might be interested in..."
 msgstr "Anda mungkin tertarik dengan..."
 
-#: data/preset/news.yaml
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml
 msgid "other news"
 msgstr "berita-berita lain"
