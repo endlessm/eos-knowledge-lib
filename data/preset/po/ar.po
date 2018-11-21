@@ -3,7 +3,7 @@
 # 
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2018-10-31 23:06+0000\n"
+"POT-Creation-Date: 2018-11-14 05:57+0000\n"
 "Last-Translator: Fabián Orccón <fabian@endlessm.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/endless-os/teams/9016/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -12,52 +12,50 @@ msgstr ""
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:31
+#: data/preset/blog.yaml:31
 msgid "Sorry, there are no results that match your search."
 msgstr "عذراً، لا توجد نتائج تطابق بحثك."
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:37
+#: data/preset/blog.yaml:37
 msgid "Latest posts"
 msgstr "آخر المشاركات"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:125
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:359
+#: data/preset/blog.yaml:125 data/preset/news.yaml:359
 msgid "Related posts"
 msgstr "المنشورات ذات الصلة"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:32
+#: data/preset/exploration.yaml:32
 msgid "Browse by topic"
 msgstr "التصفح طبقاً للموضوع"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:45
+#: data/preset/exploration.yaml:45
 msgid "Next Article"
 msgstr "الموضوع التالي"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:62
+#: data/preset/exploration.yaml:62
 msgid "You might be interested in..."
 msgstr "قد يهمك..."
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:81
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:97
+#: data/preset/exploration.yaml:81 data/preset/news.yaml:97
 msgid "See more from %s"
 msgstr "انظر المزيد من %s"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml
+#: data/preset/exploration.yaml
 msgid "See more categories"
 msgstr "انظر المزيد من الفئات"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/gallery.yaml:44
+#: data/preset/gallery.yaml:44
 msgid "You might also be interested in..."
 msgstr ""
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/gallery.yaml:212
+#: data/preset/gallery.yaml:212
 msgid "See more"
 msgstr ""
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:53
+#: data/preset/news.yaml:53
 msgid "you might be interested in..."
 msgstr "قد يهمك... "
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml
+#: data/preset/news.yaml
 msgid "other news"
 msgstr "أخبار أخرى"
