@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Heimen Stoffels <vistausss@outlook.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-31 23:06+0000\n"
-"PO-Revision-Date: 2018-09-28 15:19+0000\n"
-"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
+"POT-Creation-Date: 2018-11-14 05:57+0000\n"
+"PO-Revision-Date: 2018-11-17 18:58+0000\n"
+"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/endless-os/eos-knowledge-lib/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,43 +20,43 @@ msgstr ""
 
 #: data/widgets/noContentDialog.ui:8
 msgid "Oops! No content."
-msgstr ""
+msgstr "Oeps! Geen inhoud."
 
 #: data/widgets/noContentDialog.ui:9
 msgid ""
 "The application could not find content to show. Please uninstall and re-"
 "install the application from the App Center."
-msgstr ""
+msgstr "De app kan geen te tonen inhoud vinden. Herinstalleer de app via de app-winkel."
 
 #: data/widgets/noContentDialog.ui:23
 msgid "Open App Center"
-msgstr ""
+msgstr "App-winkel openen"
 
 #: data/widgets/noContentDialog.ui:36
 msgid "Close"
-msgstr ""
+msgstr "Sluiten"
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
-msgstr ""
+msgstr "Volgend artikel"
 
 #: data/widgets/card/sequence.ui:60
 msgid "Previous Article"
-msgstr ""
+msgstr "Vorig artikel"
 
 #: data/widgets/contentGroup/contentGroup.ui:26
 msgid "Oops! There was an error."
-msgstr ""
+msgstr "Oeps! Er is een fout opgetreden."
 
 #: data/widgets/contentGroup/contentGroup.ui:40
 msgid "Download support info"
-msgstr ""
+msgstr "Ondersteuningsinformatie downloaden"
 
 #: data/widgets/contentGroup/contentGroup.ui:44
 msgid ""
 "Click here to download a file with information that will help us track down "
 "the problem."
-msgstr ""
+msgstr "Klik hier om een bestand te downloaden met informatie die ons helpt het probleem op te lossen."
 
 #: data/widgets/contentGroup/noResultsMessage.ui:37
 msgid ""
@@ -64,33 +65,33 @@ msgid ""
 "Check your spelling\n"
 "Try other words that mean the same thing\n"
 "Try using more general words"
-msgstr ""
+msgstr "We raden aan:\n\n-om je spelling te controleren;\n-om andere woorden met dezelfde betekenis te proberen;\n-om algemenere woorden te proberen."
 
 #: data/widgets/layout/sideMenu.ui:95
 msgid "Home"
-msgstr ""
+msgstr "Startpagina"
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license"
-msgstr ""
+msgstr "Licentie bekijken"
 
 #: js/framework/articleHTMLRenderer.js:198
 msgid "Copy"
-msgstr ""
+msgstr "Kopiëren"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
 #: js/framework/articleHTMLRenderer.js:222
 msgid "Content taken from {blog-link}."
-msgstr ""
+msgstr "De inhoud is afkomstig van {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
 #: js/framework/articleHTMLRenderer.js:227
 msgid "Content courtesy of {blog-link}. Used with kind permission."
-msgstr ""
+msgstr "De inhoud is afkomstig van {blog-link}, aangeboden met toestemming."
 
 #. TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
 #. is going to be substituted in code. Please make sure that your
@@ -98,71 +99,71 @@ msgstr ""
 #. translated.
 #: js/framework/articleHTMLRenderer.js:234
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
-msgstr ""
+msgstr "De inhoud is afkomstig van {blog-link}, met de licentie {license-link}."
 
 #: js/framework/meshHistoryStore.js:58
 #, javascript-format
 msgid "Results were found for “%s”"
-msgstr ""
+msgstr "Er zijn resultaten gevonden voor \"%s\""
 
 #: js/framework/historyStore.js:409
 msgid "Shared from Endless"
-msgstr ""
+msgstr "Gedeeld vanaf Endless"
 
 #: js/framework/interfaces/card.js:245
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s:%s minuut"
+msgstr[1] "%s:%s minuten"
 
 #: js/framework/interfaces/card.js:309
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d item"
+msgstr[1] "%d items"
 
 #: js/framework/modules/banner/context.js:38
 #: js/framework/modules/banner/context.js:49
 msgid "Highlights"
-msgstr ""
+msgstr "Uitgelicht"
 
 #: js/framework/modules/banner/context.js:52
 msgid "All Categories"
-msgstr ""
+msgstr "Alle categorieën"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep the %s token in your translation.
 #: js/framework/modules/banner/context.js:61
 #, javascript-format
 msgid "Search results for “%s”"
-msgstr ""
+msgstr "Zoekresultaten voor \"%s\""
 
 #: js/framework/modules/banner/search.js:46
 #, javascript-format
 msgid "Results for “%s”"
-msgstr ""
+msgstr "Resultaten voor \"%s\""
 
 #: js/framework/modules/contentGroup/contentGroup.js:190
 msgid "See more"
-msgstr ""
+msgstr "Meer bekijken"
 
 #: js/framework/modules/contentGroup/noResultsMessage.js:52
 msgid "We're sorry, there are no results that match your search."
-msgstr ""
+msgstr "Sorry, er zijn geen resultaten die overeenkomen met je zoekopdracht."
 
 #: js/framework/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
-msgstr ""
+msgstr "ALLE CATEGORIEËN BEKIJKEN"
 
 #: js/framework/modules/layout/hamburgerBasement.js:51
 msgid "HOME"
-msgstr ""
+msgstr "STARTPAGINA"
 
 #: js/framework/modules/layout/placeholder.js:25
 msgid "Placeholder"
-msgstr ""
+msgstr "Opvulling"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that
@@ -171,30 +172,30 @@ msgstr ""
 #. example: "Jane Austen and Henry Miller and William Clifford"
 #: js/framework/utils.js:109
 msgid "by {author}"
-msgstr ""
+msgstr "door {author}"
 
 #: js/framework/utils.js:109
 msgid "and"
-msgstr ""
+msgstr "en"
 
 #: js/framework/widgets/searchBox.js:69
 msgid "See more results"
-msgstr ""
+msgstr "Meer resultaten bekijken"
 
 #: js/framework/widgets/webShareDialog.js:181
 msgid "Retry"
-msgstr ""
+msgstr "Opnieuw"
 
 #. Show expired session message
 #: js/framework/widgets/webShareDialog.js:364
 msgid "Please sign in again to share this link"
-msgstr ""
+msgstr "Log opnieuw in om deze link te delen"
 
 #: js/framework/widgets/webShareDialog.js:365
 #: js/framework/widgets/webShareDialog.js:417
 msgid "Sign In"
-msgstr ""
+msgstr "Inloggen"
 
 #: js/framework/widgets/webShareDialog.js:416
 msgid "Please sign in to share this link"
-msgstr ""
+msgstr "Log in om deze link te delen"
