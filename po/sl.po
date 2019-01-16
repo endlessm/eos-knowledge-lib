@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Shaddai, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-14 05:57+0000\n"
-"PO-Revision-Date: 2018-09-28 15:19+0000\n"
-"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
+"POT-Creation-Date: 2019-01-09 05:57+0000\n"
+"PO-Revision-Date: 2019-01-11 10:53+0000\n"
+"Last-Translator: Shaddai\n"
 "Language-Team: Slovenian (http://www.transifex.com/endless-os/eos-knowledge-lib/language/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,43 +20,43 @@ msgstr ""
 
 #: data/widgets/noContentDialog.ui:8
 msgid "Oops! No content."
-msgstr ""
+msgstr "Oops! Ni vsebine."
 
 #: data/widgets/noContentDialog.ui:9
 msgid ""
 "The application could not find content to show. Please uninstall and re-"
 "install the application from the App Center."
-msgstr ""
+msgstr "Aplikacija ni mogla najti vsebine za prikaz. Prosim odstranite in znova namestite aplikacijo iz Centera Aplikacij."
 
 #: data/widgets/noContentDialog.ui:23
 msgid "Open App Center"
-msgstr ""
+msgstr "Odprite Center Aplikacij"
 
 #: data/widgets/noContentDialog.ui:36
 msgid "Close"
-msgstr ""
+msgstr "Zapri"
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
-msgstr ""
+msgstr "Naslednji Članek"
 
 #: data/widgets/card/sequence.ui:60
 msgid "Previous Article"
-msgstr ""
+msgstr "Prejšnji Članek"
 
 #: data/widgets/contentGroup/contentGroup.ui:26
 msgid "Oops! There was an error."
-msgstr ""
+msgstr "Oops! Prišlo je do napake."
 
 #: data/widgets/contentGroup/contentGroup.ui:40
 msgid "Download support info"
-msgstr ""
+msgstr "Prenesite informacije o podpori"
 
 #: data/widgets/contentGroup/contentGroup.ui:44
 msgid ""
 "Click here to download a file with information that will help us track down "
 "the problem."
-msgstr ""
+msgstr "Kliknite tukaj za prenos datoteke z informacijami, ki nam bodo pomagale najti težavo."
 
 #: data/widgets/contentGroup/noResultsMessage.ui:37
 msgid ""
@@ -64,33 +65,33 @@ msgid ""
 "Check your spelling\n"
 "Try other words that mean the same thing\n"
 "Try using more general words"
-msgstr ""
+msgstr "Priporočamo, da:\n\nPreverite črkovanje\nPoskusite druge besede, ki pomenijo isto stvar\nPoskusite uporabiti splošnejše besede"
 
 #: data/widgets/layout/sideMenu.ui:95
 msgid "Home"
-msgstr ""
+msgstr "Domov"
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license"
-msgstr ""
+msgstr "Poglej si licenco"
 
 #: js/framework/articleHTMLRenderer.js:198
 msgid "Copy"
-msgstr ""
+msgstr "Kopiraj"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
 #: js/framework/articleHTMLRenderer.js:222
 msgid "Content taken from {blog-link}."
-msgstr ""
+msgstr "Vsebina je vzeta iz {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
 #: js/framework/articleHTMLRenderer.js:227
 msgid "Content courtesy of {blog-link}. Used with kind permission."
-msgstr ""
+msgstr "Vsebina ustreza {blog-link}. Uporablja se z dovoljenjem."
 
 #. TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
 #. is going to be substituted in code. Please make sure that your
@@ -98,75 +99,75 @@ msgstr ""
 #. translated.
 #: js/framework/articleHTMLRenderer.js:234
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
-msgstr ""
+msgstr "Vsebina odobrena z {blog-link}, pod licenco {license-link}."
 
 #: js/framework/meshHistoryStore.js:58
 #, javascript-format
 msgid "Results were found for “%s”"
-msgstr ""
+msgstr "Rezultati so bili najdeni za \"%s\""
 
 #: js/framework/historyStore.js:409
 msgid "Shared from Endless"
-msgstr ""
+msgstr "Deljeno od Endless"
 
 #: js/framework/interfaces/card.js:245
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%s:%s minut"
+msgstr[1] "%s:%s minut"
+msgstr[2] "%s:%s minut"
+msgstr[3] "%s:%s minut"
 
 #: js/framework/interfaces/card.js:309
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%d predmet"
+msgstr[1] "%d predmet"
+msgstr[2] "%d"
+msgstr[3] "%dpredmeti"
 
 #: js/framework/modules/banner/context.js:38
 #: js/framework/modules/banner/context.js:49
 msgid "Highlights"
-msgstr ""
+msgstr "Poudarki"
 
 #: js/framework/modules/banner/context.js:52
 msgid "All Categories"
-msgstr ""
+msgstr "Vse Kategorije"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep the %s token in your translation.
 #: js/framework/modules/banner/context.js:61
 #, javascript-format
 msgid "Search results for “%s”"
-msgstr ""
+msgstr "Rezultati iskanja \"%s\""
 
 #: js/framework/modules/banner/search.js:46
 #, javascript-format
 msgid "Results for “%s”"
-msgstr ""
+msgstr "Rezultati za \"%s\""
 
 #: js/framework/modules/contentGroup/contentGroup.js:190
 msgid "See more"
-msgstr ""
+msgstr "Poglej več"
 
 #: js/framework/modules/contentGroup/noResultsMessage.js:52
 msgid "We're sorry, there are no results that match your search."
-msgstr ""
+msgstr "Žal ni rezultatov, ki se ujemajo z vašim iskanjem."
 
 #: js/framework/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
-msgstr ""
+msgstr "GLEJ VSE KATEGORIJE"
 
 #: js/framework/modules/layout/hamburgerBasement.js:51
 msgid "HOME"
-msgstr ""
+msgstr "DOMOV"
 
 #: js/framework/modules/layout/placeholder.js:25
 msgid "Placeholder"
-msgstr ""
+msgstr "Nositelj"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that
@@ -175,30 +176,30 @@ msgstr ""
 #. example: "Jane Austen and Henry Miller and William Clifford"
 #: js/framework/utils.js:109
 msgid "by {author}"
-msgstr ""
+msgstr "od {author}"
 
 #: js/framework/utils.js:109
 msgid "and"
-msgstr ""
+msgstr "in"
 
 #: js/framework/widgets/searchBox.js:69
 msgid "See more results"
-msgstr ""
+msgstr "Oglejte si več rezultatov"
 
 #: js/framework/widgets/webShareDialog.js:181
 msgid "Retry"
-msgstr ""
+msgstr "Poskusite znova"
 
 #. Show expired session message
 #: js/framework/widgets/webShareDialog.js:364
 msgid "Please sign in again to share this link"
-msgstr ""
+msgstr "Ponovno se prijavite, če želite dati to povezavo v skupno rabo"
 
 #: js/framework/widgets/webShareDialog.js:365
 #: js/framework/widgets/webShareDialog.js:417
 msgid "Sign In"
-msgstr ""
+msgstr "Prijava"
 
 #: js/framework/widgets/webShareDialog.js:416
 msgid "Please sign in to share this link"
-msgstr ""
+msgstr "Prijavite se, če želite dati to povezavo v skupno rabo"

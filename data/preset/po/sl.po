@@ -1,7 +1,10 @@
+# Translators:
+# Shaddai, 2019
 # 
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2018-11-14 05:57+0000\n"
+"POT-Creation-Date: 2019-01-09 05:57+0000\n"
+"Last-Translator: Shaddai, 2019\n"
 "Language-Team: Slovenian (https://www.transifex.com/endless-os/teams/9016/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -11,48 +14,48 @@ msgstr ""
 
 #: data/preset/blog.yaml:31
 msgid "Sorry, there are no results that match your search."
-msgstr ""
+msgstr "Žal ni rezultatov, ki se ujemajo z vašim iskanjem."
 
 #: data/preset/blog.yaml:37
 msgid "Latest posts"
-msgstr ""
+msgstr "Zadnje objave"
 
 #: data/preset/blog.yaml:125 data/preset/news.yaml:359
 msgid "Related posts"
-msgstr ""
+msgstr "Sorodne objave"
 
 #: data/preset/exploration.yaml:32
 msgid "Browse by topic"
-msgstr ""
+msgstr "Brskajte po temah"
 
 #: data/preset/exploration.yaml:45
 msgid "Next Article"
-msgstr ""
+msgstr "Naslednji članek"
 
 #: data/preset/exploration.yaml:62
 msgid "You might be interested in..."
-msgstr ""
+msgstr "Morda vas zanima ..."
 
 #: data/preset/exploration.yaml:81 data/preset/news.yaml:97
 msgid "See more from %s"
-msgstr ""
+msgstr "Glej več od %s"
 
 #: data/preset/exploration.yaml
 msgid "See more categories"
-msgstr ""
+msgstr "Poglej več kategorij"
 
 #: data/preset/gallery.yaml:44
 msgid "You might also be interested in..."
-msgstr ""
+msgstr "Morda vas bo zanimalo tudi ..."
 
 #: data/preset/gallery.yaml:212
 msgid "See more"
-msgstr ""
+msgstr "Poglej več"
 
 #: data/preset/news.yaml:53
 msgid "you might be interested in..."
-msgstr ""
+msgstr "morda vas zanima ..."
 
 #: data/preset/news.yaml
 msgid "other news"
-msgstr ""
+msgstr "druge novice"
