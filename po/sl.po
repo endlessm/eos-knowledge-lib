@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-09 05:57+0000\n"
-"PO-Revision-Date: 2019-01-11 10:53+0000\n"
+"POT-Creation-Date: 2019-01-16 06:06+0000\n"
+"PO-Revision-Date: 2019-01-17 15:11+0000\n"
 "Last-Translator: Shaddai\n"
 "Language-Team: Slovenian (http://www.transifex.com/endless-os/eos-knowledge-lib/language/sl/)\n"
 "MIME-Version: 1.0\n"
@@ -159,7 +159,7 @@ msgstr "Žal ni rezultatov, ki se ujemajo z vašim iskanjem."
 
 #: js/framework/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
-msgstr "GLEJ VSE KATEGORIJE"
+msgstr "POGLEJ VSE KATEGORIJE"
 
 #: js/framework/modules/layout/hamburgerBasement.js:51
 msgid "HOME"
