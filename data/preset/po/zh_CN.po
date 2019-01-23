@@ -3,7 +3,7 @@
 # 
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2019-01-09 05:57+0000\n"
+"POT-Creation-Date: 2019-01-16 06:06+0000\n"
 "Last-Translator: Fabián Orccón <fabian@endlessm.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/endless-os/teams/9016/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -12,50 +12,52 @@ msgstr ""
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: data/preset/blog.yaml:31
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:31
 msgid "Sorry, there are no results that match your search."
 msgstr "很抱歉，没有符合搜索条件的结果。"
 
-#: data/preset/blog.yaml:37
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:37
 msgid "Latest posts"
 msgstr "最新文章"
 
-#: data/preset/blog.yaml:125 data/preset/news.yaml:359
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:125
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:359
 msgid "Related posts"
 msgstr "相关文章"
 
-#: data/preset/exploration.yaml:32
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:32
 msgid "Browse by topic"
 msgstr "根据主题浏览"
 
-#: data/preset/exploration.yaml:45
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:45
 msgid "Next Article"
 msgstr "下一篇文章"
 
-#: data/preset/exploration.yaml:62
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:62
 msgid "You might be interested in..."
 msgstr "您可能对...感兴趣"
 
-#: data/preset/exploration.yaml:81 data/preset/news.yaml:97
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:81
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:97
 msgid "See more from %s"
 msgstr "在%s查看更多"
 
-#: data/preset/exploration.yaml
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml
 msgid "See more categories"
 msgstr "查看更多类别"
 
-#: data/preset/gallery.yaml:44
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/gallery.yaml:44
 msgid "You might also be interested in..."
 msgstr ""
 
-#: data/preset/gallery.yaml:212
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/gallery.yaml:212
 msgid "See more"
 msgstr ""
 
-#: data/preset/news.yaml:53
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:53
 msgid "you might be interested in..."
 msgstr "您可能对...感兴趣"
 
-#: data/preset/news.yaml
+#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml
 msgid "other news"
 msgstr "其他消息"
