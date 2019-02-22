@@ -85,7 +85,7 @@ var ArticleHTMLRenderer = new Knowledge.Class({
     },
 
     _get_wrapper_js_files: function () {
-        return [
+        const js_files = [
             'jquery-min.js',
             'clipboard-manager.js',
             'crosslink.js',
@@ -93,6 +93,16 @@ var ArticleHTMLRenderer = new Knowledge.Class({
             'share-actions.js',
             'nav-content.js',
         ];
+
+        if (this.enable_scroll_manager) {
+            js_files.push('scroll-manager.js');
+        }
+
+        if (!this.show_title) {
+            js_files.push('title-hider.js');
+        }
+
+        return js_files;
     },
 
     _get_crosslink_data: function (model) {

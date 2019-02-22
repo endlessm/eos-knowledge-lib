@@ -25,6 +25,9 @@
             window.chunk_init({{{chunk-data}}});
             window.share_actions_init();
             window.nav_content_init();
+            if (window.title_hider_init) {
+                window.title_hider_init();
+            }
         </script>
     </body>
 </html>
