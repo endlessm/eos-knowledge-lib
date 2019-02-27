@@ -15,6 +15,7 @@ permalink: /releases/5/
 | Thu Sep 13 2018 | SDK5.1 bugfix release
 | Thu Oct 4 2018  | SDK5.2 hard code freeze
 | Thu Oct 11 2018 | SDK5.2 bugfix release
+| Thu Dec 31 2018 | SDK5.3 bugfix release
 
 ## Major features ##
 
@@ -44,6 +45,10 @@ Several fixes to the [walkthrough](http://endlessm.github.io/eos-knowledge-lib/d
 No changes are required for apps using the modular framework.
 
 ## Release notes ##
+
+### SDK 5.3 (December 31, 2018) ###
+- Modular Framework: Support multiple include paths in autobahn
+- Runtime: Patch GStreamer to prevent a white glitch when a video is displayed.
 
 ### SDK 5.2 (October 11, 2018) ###
 - Modular Framework: Improvement in design by fixing the logo height to the title height.
