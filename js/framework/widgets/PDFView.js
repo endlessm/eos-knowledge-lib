@@ -81,6 +81,7 @@ var PDFView = new Knowledge.Class({
 
         this._view.set_model(this._document_model);
         this._view.connect('external-link', this.handle_external_link.bind(this));
+        this._view.connect('selection-changed', this._on_selection_changed.bind(this));
         this._save.connect('clicked', this._on_save.bind(this));
         this._print.connect('clicked', this._on_print.bind(this));
         this._zoom_in.connect('clicked', () => {
@@ -140,7 +141,7 @@ var PDFView = new Knowledge.Class({
         this._scrolled_window.add(this._view);
         this._share_revealer.add(actionbox);
 
-        this.connect('copy', () => { this._view.copy(); });
+        this.connect('copy', this._on_copy.bind(this));
 
         if (this.model) {
             let model = this.model;
@@ -206,9 +207,13 @@ var PDFView = new Knowledge.Class({
     load_stream: function (stream, content_type) {
         this._document = EvinceDocument.Document.factory_get_document_for_stream(
             stream, content_type, EvinceDocument.DocumentLoadFlags.NONE, null);
+
         this._document_model.set_document(this._document);
         this._document_model.sizing_mode = EvinceView.SizingMode.FIT_WIDTH;
         this._zoom_level = 0;
+
+        this._update_document_actions();
+
         this._populate_liststore();
     },
 
@@ -258,6 +263,19 @@ var PDFView = new Knowledge.Class({
         return GLib.SOURCE_REMOVE;
     },
 
+    _update_document_actions: function () {
+        if (!this._document)
+            return;
+
+        let info = this._document.get_info();
+
+        this._ok_to_print = Boolean(info.permissions & EvinceDocument.DocumentPermissions.OK_TO_PRINT);
+        this._ok_to_copy = Boolean(info.permissions & EvinceDocument.DocumentPermissions.OK_TO_COPY);
+
+        this._print.set_visible(this._ok_to_print);
+        this._save.set_visible(this._ok_to_copy);
+    },
+
     _populate_liststore: function () {
         if (!this._document)
             return;
@@ -304,6 +322,9 @@ var PDFView = new Knowledge.Class({
         if (!this._document)
             return;
 
+        if (!this._ok_to_print)
+            return;
+
         let job = EvinceView.JobPrint.new(this._document);
         let op = new Gtk.PrintOperation({
             current_page: this._document_model.page,
@@ -330,6 +351,9 @@ var PDFView = new Knowledge.Class({
         if (!this._document)
             return;
 
+        if (!this._ok_to_copy)
+            return;
+
         let chooser = new Gtk.FileChooserNative({
             title: 'Save as',
             action: Gtk.FileChooserAction.SAVE,
@@ -345,6 +369,22 @@ var PDFView = new Knowledge.Class({
             this._document.save(chooser.get_uri());
 
         chooser.destroy();
+    },
+
+    _on_selection_changed: function () {
+        if (!this._document)
+            return;
+
+        // TODO: Reset primary clipboard based on this._ok_to_copy?
+    },
+
+    _on_copy: function () {
+        if (!this._document)
+            return;
+
+        // TODO: Disable text selection based on this._ok_to_copy?
+
+        this._view.copy();
     },
 
     vfunc_get_preferred_width: function () {
