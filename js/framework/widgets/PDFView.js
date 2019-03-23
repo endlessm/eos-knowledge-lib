@@ -81,7 +81,6 @@ var PDFView = new Knowledge.Class({
 
         this._view.set_model(this._document_model);
         this._view.connect('external-link', this.handle_external_link.bind(this));
-        this._view.connect('selection-changed', this._on_selection_changed.bind(this));
         this._save.connect('clicked', this._on_save.bind(this));
         this._print.connect('clicked', this._on_print.bind(this));
         this._zoom_in.connect('clicked', () => {
@@ -269,11 +268,16 @@ var PDFView = new Knowledge.Class({
 
         let info = this._document.get_info();
 
-        this._ok_to_print = Boolean(info.permissions & EvinceDocument.DocumentPermissions.OK_TO_PRINT);
-        this._ok_to_copy = Boolean(info.permissions & EvinceDocument.DocumentPermissions.OK_TO_COPY);
+        if (info) {
+            this._ok_to_print = Boolean(info.permissions & EvinceDocument.DocumentPermissions.OK_TO_PRINT);
+            this._ok_to_export = Boolean(info.permissions & EvinceDocument.DocumentPermissions.OK_TO_COPY);
+        } else {
+            this._ok_to_print = true;
+            this._ok_to_export = true;
+        }
 
         this._print.set_visible(this._ok_to_print);
-        this._save.set_visible(this._ok_to_copy);
+        this._save.set_visible(this._ok_to_export);
     },
 
     _populate_liststore: function () {
@@ -351,7 +355,7 @@ var PDFView = new Knowledge.Class({
         if (!this._document)
             return;
 
-        if (!this._ok_to_copy)
+        if (!this._ok_to_export)
             return;
 
         let chooser = new Gtk.FileChooserNative({
@@ -371,19 +375,7 @@ var PDFView = new Knowledge.Class({
         chooser.destroy();
     },
 
-    _on_selection_changed: function () {
-        if (!this._document)
-            return;
-
-        // TODO: Reset primary clipboard based on this._ok_to_copy?
-    },
-
     _on_copy: function () {
-        if (!this._document)
-            return;
-
-        // TODO: Disable text selection based on this._ok_to_copy?
-
         this._view.copy();
     },
 
