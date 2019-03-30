@@ -511,8 +511,8 @@ ekn_media_bin_gl_check (GtkWidget *widget)
       GdkGLContext *context;
       GdkWindow *window;
 
-      if ((window  = gtk_widget_get_window (widget)) &&
-           (context = gdk_window_create_gl_context (window, &error)))
+      if ((window = ekn_private_new_input_output_window_offscreen (widget)) &&
+          (context = gdk_window_create_gl_context (window, &error)))
         {
           const gchar *vendor, *renderer;
 
@@ -541,6 +541,8 @@ ekn_media_bin_gl_check (GtkWidget *widget)
             GST_WARNING ("Could not window to create GL context, %s", error->message);
             g_error_free (error);
           }
+
+      gdk_window_destroy (window);
 
       g_once_init_leave (&gl_works, works);
     }
