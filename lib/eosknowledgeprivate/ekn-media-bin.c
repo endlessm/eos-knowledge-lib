@@ -245,12 +245,16 @@ static gboolean
 revealer_timeout (gpointer data)
 {
   EknMediaBinPrivate *priv = EMB_PRIVATE (data);
+  GdkWindow *window;
 
   if (++priv->timeout_count < priv->autohide_timeout)
     return G_SOURCE_CONTINUE;
+  
+  window = gtk_widget_get_window (priv->overlay);
+  
+  if (window != NULL)
+    gdk_window_set_cursor (window, priv->blank_cursor);
 
-  gdk_window_set_cursor (gtk_widget_get_window (priv->overlay),
-                         priv->blank_cursor);
   gtk_revealer_set_reveal_child (priv->top_revealer, FALSE);
   gtk_revealer_set_reveal_child (priv->bottom_revealer, FALSE);
 
@@ -804,6 +808,18 @@ on_ekn_media_bin_realize (GtkWidget *widget, EknMediaBin *self)
   g_signal_handlers_disconnect_by_func (widget, on_ekn_media_bin_realize, self);
 }
 
+static void
+on_ekn_media_bin_unrealize (GtkWidget *widget, EknMediaBin *self)
+{
+  EknMediaBinPrivate *priv = EMB_PRIVATE (self);
+
+  /* Remove controls timeout */
+  ensure_no_timeout (priv);
+
+  /* Disconnect after completion */
+  g_signal_handlers_disconnect_by_func (widget, on_ekn_media_bin_unrealize, self);
+}
+
 static gboolean
 ekn_media_bin_error (EknMediaBin *self, GError *error)
 {
@@ -899,6 +915,8 @@ ekn_media_bin_finalize (GObject *object)
 {
   EknMediaBin *self = EKN_MEDIA_BIN (object);
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
+
+  ensure_no_timeout(priv);
 
   /* Clear position query */
   g_clear_pointer (&priv->position_query, gst_query_unref);
@@ -1192,6 +1210,7 @@ ekn_media_bin_class_init (EknMediaBinClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, EknMediaBin, audio_playback_image);
 
   gtk_widget_class_bind_template_callback (widget_class, on_ekn_media_bin_realize);
+  gtk_widget_class_bind_template_callback (widget_class, on_ekn_media_bin_unrealize);
 
   gtk_widget_class_bind_template_callback (widget_class, on_overlay_motion_notify_event);
   gtk_widget_class_bind_template_callback (widget_class, on_overlay_button_press_event);
