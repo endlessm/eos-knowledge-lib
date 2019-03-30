@@ -19,6 +19,8 @@ G_BEGIN_DECLS
 
 GdkWindow *ekn_private_new_input_output_window (GtkWidget *widget);
 
+GdkWindow *ekn_private_new_input_output_window_offscreen (GtkWidget *widget);
+
 gboolean ekn_param_spec_is_enum (GParamSpec *pspec);
 
 gboolean ekn_param_spec_enum_value_from_string (GParamSpecEnum *pspec,
