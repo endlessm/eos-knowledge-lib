@@ -41,11 +41,13 @@ function set_hand_cursor_on_widget(widget) {
 
     let enter_id = widget.connect('enter-notify-event', function (widget) {
         let cursor = Gdk.Cursor.new_from_name(widget.get_display(), "pointer");
-        widget.window.set_cursor(cursor);
+        if (widget.window)
+            widget.window.set_cursor(cursor);
         return Gdk.EVENT_PROPAGATE;
     });
     let leave_id = widget.connect('leave-notify-event', function (widget) {
-        widget.window.set_cursor(null);
+        if (widget.window)
+            widget.window.set_cursor(null);
         return Gdk.EVENT_PROPAGATE;
     });
 
