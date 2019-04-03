@@ -266,7 +266,7 @@ var Document = new Module.Class({
     _get_webview: function () {
         let webview = this._create_webview();
 
-        webview.renderer.enable_scroll_manager = true;
+        webview.renderer.enable_scroll_manager = this.toc.visible;
         webview.renderer.show_title = !this.show_toc;
         if (this.custom_css)
             webview.renderer.set_custom_css_files([this.custom_css]);
