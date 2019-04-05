@@ -16,6 +16,7 @@ permalink: /releases/5/
 | Thu Oct 4 2018  | SDK5.2 hard code freeze
 | Thu Oct 11 2018 | SDK5.2 bugfix release
 | Thu Dec 31 2018 | SDK5.3 bugfix release
+| Fri Apr 5 2019  | SDK5.4 bugfix release
 
 ## Major features ##
 
@@ -45,6 +46,10 @@ Several fixes to the [walkthrough](http://endlessm.github.io/eos-knowledge-lib/d
 No changes are required for apps using the modular framework.
 
 ## Release notes ##
+
+### SDK 5.4 (April 5, 2019) ###
+- Modular Framework: Support Scroll Manager for non-legacy articles
+- Runtime: Fixed video playback for ARM machines
 
 ### SDK 5.3 (December 31, 2018) ###
 - Modular Framework: Support multiple include paths in autobahn
