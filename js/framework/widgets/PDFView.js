@@ -268,8 +268,8 @@ var PDFView = new Knowledge.Class({
             export: false
         };
         let document_permissions = {
-            print: false,
-            export: false
+            print: true,
+            export: true
         };
 
         if (this.model) {
@@ -277,11 +277,13 @@ var PDFView = new Knowledge.Class({
             model_permissions.export = this.model.can_export;
         }
 
-        if (this._document) {
-            let document_info = this._document.get_info();
-            document_permissions.print = Boolean(document_info.permissions & EvinceDocument.DocumentPermissions.OK_TO_PRINT);
-            document_permissions.export = Boolean(document_info.permissions & EvinceDocument.DocumentPermissions.OK_TO_COPY);
-        }
+        // On hold due to Evince issue #1125:
+        // <https://gitlab.gnome.org/GNOME/evince/issues/1125>
+        // if (this._document) {
+        //     let document_info = this._document.get_info();
+        //     document_permissions.print = Boolean(document_info.permissions & EvinceDocument.DocumentPermissions.OK_TO_PRINT);
+        //     document_permissions.export = Boolean(document_info.permissions & EvinceDocument.DocumentPermissions.OK_TO_COPY);
+        // }
 
         this._ok_to_print = model_permissions.print && document_permissions.print;
         this._ok_to_export = model_permissions.export && document_permissions.export;
