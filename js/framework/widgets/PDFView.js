@@ -263,18 +263,28 @@ var PDFView = new Knowledge.Class({
     },
 
     _update_document_actions: function () {
-        if (!this._document)
-            return;
+        let model_permissions = {
+            print: false,
+            export: false
+        };
+        let document_permissions = {
+            print: false,
+            export: false
+        };
 
-        let info = this._document.get_info();
-
-        if (info) {
-            this._ok_to_print = Boolean(info.permissions & EvinceDocument.DocumentPermissions.OK_TO_PRINT);
-            this._ok_to_export = Boolean(info.permissions & EvinceDocument.DocumentPermissions.OK_TO_COPY);
-        } else {
-            this._ok_to_print = true;
-            this._ok_to_export = true;
+        if (this.model) {
+            model_permissions.print = this.model.can_print;
+            model_permissions.export = this.model.can_export;
         }
+
+        if (this._document) {
+            let document_info = this._document.get_info();
+            document_permissions.print = Boolean(document_info.permissions & EvinceDocument.DocumentPermissions.OK_TO_PRINT);
+            document_permissions.export = Boolean(document_info.permissions & EvinceDocument.DocumentPermissions.OK_TO_COPY);
+        }
+
+        this._ok_to_print = model_permissions.print && document_permissions.print;
+        this._ok_to_export = model_permissions.export && document_permissions.export;
 
         this._print.set_visible(this._ok_to_print);
         this._save.set_visible(this._ok_to_export);
