@@ -37,21 +37,13 @@ ekn_private_new_input_output_window (GtkWidget *widget)
 GdkWindow *
 ekn_private_new_input_output_window_offscreen (GtkWidget *widget)
 {
-  GtkAllocation allocation;
-  gtk_widget_get_allocation (widget,
-                             &allocation);
   GdkWindowAttr attributes = {
-    .x = allocation.x,
-    .y = allocation.y,
-    .width = allocation.width,
-    .height = allocation.height,
     .window_type = GDK_WINDOW_OFFSCREEN,
     .wclass = GDK_INPUT_OUTPUT,
     .visual = gtk_widget_get_visual (widget)
   };
-  gint attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL;
-  return gdk_window_new (gtk_widget_get_parent_window (widget),
-                         &attributes, attributes_mask);
+  gint attributes_mask = GDK_WA_VISUAL;
+  return gdk_window_new (NULL, &attributes, attributes_mask);
 }
 
 /**
