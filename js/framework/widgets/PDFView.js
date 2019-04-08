@@ -140,7 +140,7 @@ var PDFView = new Knowledge.Class({
         this._scrolled_window.add(this._view);
         this._share_revealer.add(actionbox);
 
-        this.connect('copy', () => { this._view.copy(); });
+        this.connect('copy', this._on_copy.bind(this));
 
         if (this.model) {
             let model = this.model;
@@ -206,9 +206,13 @@ var PDFView = new Knowledge.Class({
     load_stream: function (stream, content_type) {
         this._document = EvinceDocument.Document.factory_get_document_for_stream(
             stream, content_type, EvinceDocument.DocumentLoadFlags.NONE, null);
+
         this._document_model.set_document(this._document);
         this._document_model.sizing_mode = EvinceView.SizingMode.FIT_WIDTH;
         this._zoom_level = 0;
+
+        this._update_document_actions();
+
         this._populate_liststore();
     },
 
@@ -258,6 +262,36 @@ var PDFView = new Knowledge.Class({
         return GLib.SOURCE_REMOVE;
     },
 
+    _update_document_actions: function () {
+        let model_permissions = {
+            print: false,
+            export: false
+        };
+        let document_permissions = {
+            print: true,
+            export: true
+        };
+
+        if (this.model) {
+            model_permissions.print = this.model.can_print;
+            model_permissions.export = this.model.can_export;
+        }
+
+        // On hold due to Evince issue #1125:
+        // <https://gitlab.gnome.org/GNOME/evince/issues/1125>
+        // if (this._document) {
+        //     let document_info = this._document.get_info();
+        //     document_permissions.print = Boolean(document_info.permissions & EvinceDocument.DocumentPermissions.OK_TO_PRINT);
+        //     document_permissions.export = Boolean(document_info.permissions & EvinceDocument.DocumentPermissions.OK_TO_COPY);
+        // }
+
+        this._ok_to_print = model_permissions.print && document_permissions.print;
+        this._ok_to_export = model_permissions.export && document_permissions.export;
+
+        this._print.set_visible(this._ok_to_print);
+        this._save.set_visible(this._ok_to_export);
+    },
+
     _populate_liststore: function () {
         if (!this._document)
             return;
@@ -304,6 +338,9 @@ var PDFView = new Knowledge.Class({
         if (!this._document)
             return;
 
+        if (!this._ok_to_print)
+            return;
+
         let job = EvinceView.JobPrint.new(this._document);
         let op = new Gtk.PrintOperation({
             current_page: this._document_model.page,
@@ -330,6 +367,9 @@ var PDFView = new Knowledge.Class({
         if (!this._document)
             return;
 
+        if (!this._ok_to_export)
+            return;
+
         let chooser = new Gtk.FileChooserNative({
             title: 'Save as',
             action: Gtk.FileChooserAction.SAVE,
@@ -345,6 +385,10 @@ var PDFView = new Knowledge.Class({
             this._document.save(chooser.get_uri());
 
         chooser.destroy();
+    },
+
+    _on_copy: function () {
+        this._view.copy();
     },
 
     vfunc_get_preferred_width: function () {
