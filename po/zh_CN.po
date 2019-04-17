@@ -4,9 +4,9 @@
 # 
 # Translators:
 # chenzibing <chenzibing_endless@126.com>, 2016
-# CN C2 <e2f48d4sf5ds@outlook.com>, 2017
+# 759b81c7bb2252a11f36c89344f31007, 2017
 # e2f_cn c5 <jarvisn@ecinnovations.com>, 2017
-# e2f_cn c9 <e2f_cn_c9@outlook.com>, 2018
+# 5c1f498cdfcd3e8829513039a952cd0d, 2018
 # e2f_STM STM <STMcnhktw@outlook.com>, 2017
 # Philip Chimento <philip.chimento@gmail.com>, 2017
 # Roddy Shuler <roddy@stanfordalumni.org>, 2016
@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 06:06+0000\n"
+"POT-Creation-Date: 2019-04-10 04:57+0000\n"
 "PO-Revision-Date: 2018-09-28 15:19+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/endless-os/eos-knowledge-lib/language/zh_CN/)\n"
@@ -82,21 +82,21 @@ msgstr "主页"
 msgid "View the license"
 msgstr "查看许可证"
 
-#: js/framework/articleHTMLRenderer.js:198
+#: js/framework/articleHTMLRenderer.js:208
 msgid "Copy"
 msgstr "复制"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/framework/articleHTMLRenderer.js:222
+#: js/framework/articleHTMLRenderer.js:232
 msgid "Content taken from {blog-link}."
 msgstr "来源于{blog-link}的内容。"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/framework/articleHTMLRenderer.js:227
+#: js/framework/articleHTMLRenderer.js:237
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "内容由{blog-link}提供。经授权许可使用。"
 
@@ -104,7 +104,7 @@ msgstr "内容由{blog-link}提供。经授权许可使用。"
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/framework/articleHTMLRenderer.js:234
+#: js/framework/articleHTMLRenderer.js:244
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "内容由{blog-link}提供，已得到{license-link}许可认证。"
 

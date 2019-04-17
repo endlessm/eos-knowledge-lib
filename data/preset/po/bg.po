@@ -1,7 +1,7 @@
 # 
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2019-01-16 06:06+0000\n"
+"POT-Creation-Date: 2019-04-10 04:57+0000\n"
 "Language-Team: Bulgarian (https://www.transifex.com/endless-os/teams/9016/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -9,52 +9,50 @@ msgstr ""
 "Language: bg\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:31
+#: data/preset/blog.yaml:31
 msgid "Sorry, there are no results that match your search."
 msgstr ""
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:37
+#: data/preset/blog.yaml:37
 msgid "Latest posts"
 msgstr ""
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:125
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:359
+#: data/preset/blog.yaml:125 data/preset/news.yaml:359
 msgid "Related posts"
 msgstr ""
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:32
+#: data/preset/exploration.yaml:32
 msgid "Browse by topic"
 msgstr ""
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:45
+#: data/preset/exploration.yaml:45
 msgid "Next Article"
 msgstr ""
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:62
+#: data/preset/exploration.yaml:62
 msgid "You might be interested in..."
 msgstr ""
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:81
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:97
+#: data/preset/exploration.yaml:81 data/preset/news.yaml:97
 msgid "See more from %s"
 msgstr ""
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml
+#: data/preset/exploration.yaml
 msgid "See more categories"
 msgstr ""
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/gallery.yaml:44
+#: data/preset/gallery.yaml:44
 msgid "You might also be interested in..."
 msgstr ""
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/gallery.yaml:212
+#: data/preset/gallery.yaml:212
 msgid "See more"
 msgstr ""
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:53
+#: data/preset/news.yaml:53
 msgid "you might be interested in..."
 msgstr ""
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml
+#: data/preset/news.yaml
 msgid "other news"
 msgstr ""

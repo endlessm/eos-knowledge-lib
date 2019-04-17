@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 06:06+0000\n"
+"POT-Creation-Date: 2019-04-10 04:57+0000\n"
 "PO-Revision-Date: 2018-09-28 15:19+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: French (http://www.transifex.com/endless-os/eos-knowledge-lib/language/fr/)\n"
@@ -76,21 +76,21 @@ msgstr "Page d'accueil"
 msgid "View the license"
 msgstr "Voir la licence"
 
-#: js/framework/articleHTMLRenderer.js:198
+#: js/framework/articleHTMLRenderer.js:208
 msgid "Copy"
 msgstr "Copier"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/framework/articleHTMLRenderer.js:222
+#: js/framework/articleHTMLRenderer.js:232
 msgid "Content taken from {blog-link}."
 msgstr "Contenu issu de {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/framework/articleHTMLRenderer.js:227
+#: js/framework/articleHTMLRenderer.js:237
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "Permission de contenu de {blog-link}. Utilisé grâce à une aimable permission."
 
@@ -98,7 +98,7 @@ msgstr "Permission de contenu de {blog-link}. Utilisé grâce à une aimable per
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/framework/articleHTMLRenderer.js:234
+#: js/framework/articleHTMLRenderer.js:244
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Permission de contenu de {blog-link}, sous licence {license-link}."
 
