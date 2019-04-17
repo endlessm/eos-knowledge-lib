@@ -3,7 +3,7 @@
 # 
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2019-01-16 06:06+0000\n"
+"POT-Creation-Date: 2019-04-10 04:57+0000\n"
 "Last-Translator: Heimen Stoffels <vistausss@outlook.com>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/endless-os/teams/9016/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -12,52 +12,50 @@ msgstr ""
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:31
+#: data/preset/blog.yaml:31
 msgid "Sorry, there are no results that match your search."
 msgstr "Sorry, er zijn geen resultaten die overeenkomen met je zoekopdracht."
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:37
+#: data/preset/blog.yaml:37
 msgid "Latest posts"
 msgstr "Nieuwste artikelen"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:125
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:359
+#: data/preset/blog.yaml:125 data/preset/news.yaml:359
 msgid "Related posts"
 msgstr "Gerelateerde artikelen"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:32
+#: data/preset/exploration.yaml:32
 msgid "Browse by topic"
 msgstr "Bladeren op onderwerp"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:45
+#: data/preset/exploration.yaml:45
 msgid "Next Article"
 msgstr "Volgend artikel"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:62
+#: data/preset/exploration.yaml:62
 msgid "You might be interested in..."
 msgstr "Wellicht ben je geïnteresseerd in..."
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:81
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:97
+#: data/preset/exploration.yaml:81 data/preset/news.yaml:97
 msgid "See more from %s"
 msgstr "Meer bekijken van %s"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml
+#: data/preset/exploration.yaml
 msgid "See more categories"
 msgstr "Meer categorieën bekijken"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/gallery.yaml:44
+#: data/preset/gallery.yaml:44
 msgid "You might also be interested in..."
 msgstr "Wellicht ben je óók geïnteresseerd in..."
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/gallery.yaml:212
+#: data/preset/gallery.yaml:212
 msgid "See more"
 msgstr "Meer bekijken"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:53
+#: data/preset/news.yaml:53
 msgid "you might be interested in..."
 msgstr "wellicht ben je geïnteresseerd in..."
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml
+#: data/preset/news.yaml
 msgid "other news"
 msgstr "ander nieuws"

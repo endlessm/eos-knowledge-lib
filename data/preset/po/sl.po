@@ -3,7 +3,7 @@
 # 
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2019-01-16 06:06+0000\n"
+"POT-Creation-Date: 2019-04-10 04:57+0000\n"
 "Last-Translator: Shaddai, 2019\n"
 "Language-Team: Slovenian (https://www.transifex.com/endless-os/teams/9016/sl/)\n"
 "MIME-Version: 1.0\n"
@@ -12,52 +12,50 @@ msgstr ""
 "Language: sl\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);\n"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:31
+#: data/preset/blog.yaml:31
 msgid "Sorry, there are no results that match your search."
 msgstr "Žal ni rezultatov, ki se ujemajo z vašim iskanjem."
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:37
+#: data/preset/blog.yaml:37
 msgid "Latest posts"
 msgstr "Zadnje objave"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/blog.yaml:125
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:359
+#: data/preset/blog.yaml:125 data/preset/news.yaml:359
 msgid "Related posts"
 msgstr "Sorodne objave"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:32
+#: data/preset/exploration.yaml:32
 msgid "Browse by topic"
 msgstr "Brskajte po temah"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:45
+#: data/preset/exploration.yaml:45
 msgid "Next Article"
 msgstr "Naslednji članek"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:62
+#: data/preset/exploration.yaml:62
 msgid "You might be interested in..."
 msgstr "Morda vas zanima ..."
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml:81
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:97
+#: data/preset/exploration.yaml:81 data/preset/news.yaml:97
 msgid "See more from %s"
 msgstr "Glej več od %s"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/exploration.yaml
+#: data/preset/exploration.yaml
 msgid "See more categories"
 msgstr "Poglej več kategorij"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/gallery.yaml:44
+#: data/preset/gallery.yaml:44
 msgid "You might also be interested in..."
 msgstr "Morda vas bo zanimalo tudi ..."
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/gallery.yaml:212
+#: data/preset/gallery.yaml:212
 msgid "See more"
 msgstr "Poglej več"
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml:53
+#: data/preset/news.yaml:53
 msgid "you might be interested in..."
 msgstr "morda vas zanima ..."
 
-#: _flapjack/checkout/eos-knowledge-lib/data/preset/news.yaml
+#: data/preset/news.yaml
 msgid "other news"
 msgstr "druge novice"
