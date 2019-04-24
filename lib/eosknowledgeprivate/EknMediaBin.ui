@@ -36,6 +36,7 @@
     <property name="can_focus">True</property>
     <property name="orientation">vertical</property>
     <signal name="realize" handler="on_ekn_media_bin_realize" swapped="no"/>
+    <signal name="unrealize" handler="on_ekn_media_bin_unrealize" swapped="no"/>
     <child>
       <object class="GtkStack" id="stack">
         <property name="visible">True</property>
