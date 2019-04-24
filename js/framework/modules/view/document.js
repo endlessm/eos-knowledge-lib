@@ -297,7 +297,7 @@ var Document = new Module.Class({
 
             let [baseURI, hash] = decision.request.uri.split('#');
 
-            if (baseURI.startsWith(this.model.id)) {
+            if (baseURI.startsWith(encodeURI(this.model.id))) {
                 // If this check is true, then we are navigating to the current
                 // page or an anchor on the current page. If the anchor comes
                 // from the original content just scroll to it.

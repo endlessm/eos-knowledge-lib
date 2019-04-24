@@ -65,6 +65,9 @@ var EknWebview = new Knowledge.Class({
         context.get_security_manager().register_uri_scheme_as_local('ekn');
         context.register_uri_scheme('ekn', this._load_ekn_uri.bind(this));
 
+        context.get_security_manager().register_uri_scheme_as_local('ekn+zim');
+        context.register_uri_scheme('ekn+zim', this._load_zim_uri.bind(this));
+
         this.parent(params);
         this.renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
 
@@ -147,11 +150,9 @@ var EknWebview = new Knowledge.Class({
             this._load_object(
                 `ekn:///${components[0]}`,
                 components.length === 1 ? null : components[1],
-            )
-            .then(([stream, content_type]) => {
+            ).then(([stream, content_type]) => {
                 req.finish(stream, -1, content_type);
-            })
-            .catch(function (error) {
+            }).catch(function (error) {
                 fail_with_error(error);
             });
         } else {
@@ -164,6 +165,26 @@ var EknWebview = new Knowledge.Class({
                 fail_with_error(error);
             }
         }
+    },
+
+    _load_zim_uri: function (req) {
+        let fail_with_error = (error) => {
+            logError(error);
+            req.finish_error(new Gio.IOErrorEnum({
+                message: error.message,
+                code: 0,
+            }));
+        };
+
+        let id = req.get_uri();
+
+        this._load_object(id)
+            .then(([stream, content_type]) => {
+                req.finish(stream, -1, content_type);
+            })
+            .catch(function (error) {
+                fail_with_error(error);
+            });
     },
 
     // Tell MathJax to stop any processing; should improve performance when
