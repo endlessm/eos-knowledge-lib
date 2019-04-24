@@ -62,8 +62,12 @@ var EknWebview = new Knowledge.Class({
             let well_known_name = new GLib.Variant('s', Utils.get_web_plugin_dbus_name());
             context.set_web_extensions_initialization_user_data(well_known_name);
         });
+
         context.get_security_manager().register_uri_scheme_as_local('ekn');
         context.register_uri_scheme('ekn', this._load_ekn_uri.bind(this));
+
+        context.get_security_manager().register_uri_scheme_as_local('zim');
+        context.register_uri_scheme('zim', this._load_zim_uri.bind(this));
 
         this.parent(params);
         this.renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
@@ -108,19 +112,39 @@ var EknWebview = new Knowledge.Class({
         });
     },
 
+    // TODO: There are many nested conditions here that look the same.
+    //       Need a sanity check.
+
     _load_object: function (id) {
         return DModel.Engine.get_default().get_object(id, null)
-        .then((model) => {
-            if (model instanceof DModel.Article) {
-                let html = this.renderer.render(model);
-                let bytes = ByteArray.fromString(html).toGBytes();
+            .then((model) => {
+                if (model instanceof DModel.Article) {
+                    return this._render_article_model(model);
+                } else {
+                    let stream = model.get_content_stream();
+                    return [stream, model.content_type];
+                }
+            });
+    },
+
+    _render_article_model: function (model) {
+        if (model.content_type == 'text/html') {
+            let html = this.renderer.render(model);
+            let bytes = ByteArray.fromString(html).toGBytes();
+            let stream = Gio.MemoryInputStream.new_from_bytes(bytes);
+            return [stream, 'text/html; charset=utf-8'];
+        } else {
+            let engine = DModel.Engine.get_default();
+            let domain = engine.get_domain();
+            let [, bytes] = domain.read_uri(model.id);
+            if (bytes) {
                 let stream = Gio.MemoryInputStream.new_from_bytes(bytes);
-                return [stream, 'text/html; charset=utf-8'];
+                return [stream, model.content_type];
             } else {
                 let stream = model.get_content_stream();
-                return [stream, null];
+                return [stream, model.content_type];
             }
-        });
+        }
     },
 
     _load_ekn_uri: function (req) {
@@ -137,14 +161,15 @@ var EknWebview = new Knowledge.Class({
         let id = req.get_uri();
 
         let components = Utils.components_from_id(id);
-        if (components.length === 1) {
+
+        if (components.length == 1) {
             this._load_object(id)
-            .then(([stream, content_type]) => {
-                req.finish(stream, -1, content_type);
-            })
-            .catch(function (error) {
-                fail_with_error(error);
-            });
+                .then(([stream, content_type]) => {
+                    req.finish(stream, -1, content_type);
+                })
+                .catch(function (error) {
+                    fail_with_error(error);
+                });
         } else {
             try {
                 let file = Gio.File.new_for_uri(id);
@@ -155,6 +180,26 @@ var EknWebview = new Knowledge.Class({
                 fail_with_error(error);
             }
         }
+    },
+
+    _load_zim_uri: function (req) {
+        let fail_with_error = (error) => {
+            logError(error);
+            req.finish_error(new Gio.IOErrorEnum({
+                message: error.message,
+                code: 0,
+            }));
+        };
+
+        let id = req.get_uri();
+
+        this._load_object(id)
+            .then(([stream, content_type]) => {
+                req.finish(stream, -1, content_type);
+            })
+            .catch(function (error) {
+                fail_with_error(error);
+            });
     },
 
     // Tell MathJax to stop any processing; should improve performance when

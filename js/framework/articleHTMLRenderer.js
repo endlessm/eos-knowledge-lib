@@ -198,10 +198,19 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         let css_files = this._get_wrapper_css_files();
         let js_files = this._get_wrapper_js_files();
 
+        let base_uri;
+
+        if (model.id.startsWith('ekn://')) {
+            base_uri = `${model.id}/`;
+        } else {
+            base_uri = `${model.id}`;
+        }
+
         let template = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/data/templates/article-wrapper.mst');
 
-        return this._renderer.render_mustache_document_from_file(template, new GLib.Variant('a{sv}', {
+        let result = this._renderer.render_mustache_document_from_file(template, new GLib.Variant('a{sv}', {
             'id': new GLib.Variant('s', model.id),
+            'base-uri': new GLib.Variant('s', base_uri),
             'css-files': new GLib.Variant('as', css_files),
             'custom-css-files': new GLib.Variant('as', this._get_app_override_css_files()),
             'javascript-files': new GLib.Variant('as', js_files),
@@ -212,6 +221,8 @@ var ArticleHTMLRenderer = new Knowledge.Class({
             'chunk-data': new GLib.Variant('s', this._get_chunk_data(model)),
             'content-metadata': new GLib.Variant('s', this._get_metadata(model)),
         }));
+
+        return result;
     },
 
     /*

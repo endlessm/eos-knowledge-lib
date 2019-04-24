@@ -321,10 +321,12 @@ var HistoryStore = new Lang.Class({
                 });
             } else if (model instanceof DModel.Media) {
                 let old_item = this.get_current_item();
+                let context = old_item.model ? old_item.model.resources : [];
+
                 this.set_current_item_from_props({
                     page_type: old_item.page_type,
                     model: old_item.model,
-                    context: old_item.model ? old_item.model.resources : [],
+                    context: context,
                     media_model: model,
                 }, EntryPoints.ARTICLE_LINK_CLICKED);
             }

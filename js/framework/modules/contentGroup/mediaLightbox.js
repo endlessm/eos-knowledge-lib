@@ -122,9 +122,6 @@ var MediaLightbox = new Module.Class({
             return item;
         }).indexOf(media_object.id);
 
-        if (this._current_index === -1)
-            return;
-
         this._clear();
 
         let widget = this.create_submodule('view', {

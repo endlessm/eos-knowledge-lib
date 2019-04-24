@@ -195,6 +195,7 @@
     <file>js/framework/widgets/tableOfContents.js</file>
     <file>js/framework/widgets/themeableImage.js</file>
     <file>js/framework/widgets/webShareDialog.js</file>
+    <file>js/framework/zimEngine.js</file>
     <file>tools/eminem.js</file>
     <file>tools/introspect.js</file>
     <file>tools/kermit.js</file>

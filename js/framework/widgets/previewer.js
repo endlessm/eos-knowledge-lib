@@ -86,6 +86,31 @@ var Previewer = new Knowledge.Class({
         }
     },
 
+    set_content: function (stream, content_type) {
+        this._clear();
+
+        if (stream === null)
+            return;
+
+        if (content_type.startsWith('video/') || content_type.startsWith('audio/'))
+            throw new Error('Previewer.set_content does not support video or audio content');
+
+        if (!this._image_previewer)
+            this._image_previewer = new ImagePreviewer.ImagePreviewer({
+                enforce_minimum_size: true,
+                minimum_size: 500,
+            });
+
+        this._stream = stream;
+
+        if (this._image_previewer.supports_type(content_type)) {
+            this._image_previewer.set_content(this._stream);
+            this.add(this._image_previewer);
+        } else {
+            throw new Error('Previewer does not support type ' + content_type);
+        }
+    },
+
     get aspect () {
         let child = this.get_child();
         if (child !== null) {
