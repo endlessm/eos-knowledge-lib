@@ -1,7 +1,10 @@
+# Translators:
+# Muha Aliss <muhaaliss@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2019-04-10 04:57+0000\n"
+"POT-Creation-Date: 2019-05-01 04:57+0000\n"
+"Last-Translator: Muha Aliss <muhaaliss@gmail.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/endless-os/teams/9016/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -11,48 +14,48 @@ msgstr ""
 
 #: data/preset/blog.yaml:31
 msgid "Sorry, there are no results that match your search."
-msgstr ""
+msgstr "Üzgünüz, aramanızla eşleşen sonuç bulunamadı."
 
 #: data/preset/blog.yaml:37
 msgid "Latest posts"
-msgstr ""
+msgstr "Son Gönderiler"
 
 #: data/preset/blog.yaml:125 data/preset/news.yaml:359
 msgid "Related posts"
-msgstr ""
+msgstr "İlgili Mesajlar"
 
 #: data/preset/exploration.yaml:32
 msgid "Browse by topic"
-msgstr ""
+msgstr "Konuya göre göz at"
 
 #: data/preset/exploration.yaml:45
 msgid "Next Article"
-msgstr ""
+msgstr "Sonraki Makale"
 
 #: data/preset/exploration.yaml:62
 msgid "You might be interested in..."
-msgstr ""
+msgstr "İlginizi çekebilir..."
 
 #: data/preset/exploration.yaml:81 data/preset/news.yaml:97
 msgid "See more from %s"
-msgstr ""
+msgstr "%s daha fazlasını gör"
 
 #: data/preset/exploration.yaml
 msgid "See more categories"
-msgstr ""
+msgstr "Daha fazla kategoriye bakın"
 
 #: data/preset/gallery.yaml:44
 msgid "You might also be interested in..."
-msgstr ""
+msgstr "Ayrıca ilginizi çekebilir..."
 
 #: data/preset/gallery.yaml:212
 msgid "See more"
-msgstr ""
+msgstr "Daha fazla gör"
 
 #: data/preset/news.yaml:53
 msgid "you might be interested in..."
-msgstr ""
+msgstr "İlginizi çekebilir..."
 
 #: data/preset/news.yaml
 msgid "other news"
-msgstr ""
+msgstr "diğer haberler"

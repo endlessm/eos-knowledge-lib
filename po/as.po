@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-10 04:57+0000\n"
+"POT-Creation-Date: 2019-05-01 04:57+0000\n"
 "PO-Revision-Date: 2018-09-28 15:19+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Assamese (http://www.transifex.com/endless-os/eos-knowledge-lib/language/as/)\n"
@@ -169,11 +169,11 @@ msgstr ""
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/framework/utils.js:109
+#: js/framework/utils.js:111
 msgid "by {author}"
 msgstr ""
 
-#: js/framework/utils.js:109
+#: js/framework/utils.js:111
 msgid "and"
 msgstr ""
 
