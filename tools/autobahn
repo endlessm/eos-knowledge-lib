@@ -32,9 +32,9 @@ def expand_slot_shorthand(module):
 
 
 # This is a shorthand which allows you to specify type and properties in one
-# string: 'MyModule{prop: value, prop2: value2}'. The properties part is a YAML
+# string: 'MyModule(prop: value, prop2: value2)'. The properties part is a YAML
 # dictionary. Note that you do have to enclose the string in quotes in YAML,
-# because {, }, and : are active characters.
+# because : is an active character.
 def expand_shortdef(module):
     if ('type' in module or 'properties' in module) and 'shortdef' in module:
         raise ValueError('If you use "shortdef" then you cannot also have '
