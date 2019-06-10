@@ -20,20 +20,20 @@ For other Linux distributions, check [Flatpak's installation instructions][flatp
 You'll need the Endless SDK, which is a Flatpak runtime.
 Flatpak runtimes are split into the **platform**, which contains the minimum needed for _running_ an app, and the **SDK**, which contains all the development tools needed for _creating_ an app.
 You will need both.
-We'll use the latest stable version, which at the time of writing is 4.
+We'll use the latest stable version, which at the time of writing is 5.
 
 If you're using Endless OS, you will already have the software source set up, and the platform runtime will already be installed.
 You only need to install the SDK runtime:
 
 ```bash
-flatpak install eos-sdk com.endlessm.apps.Sdk//4
+flatpak install eos-sdk com.endlessm.apps.Sdk//5
 ```
 
 For other distributions, you will need to add the software source and install both runtimes:
 ```bash
 flatpak remote-add --from eos-sdk http://endlessm.github.io/eos-knowledge-lib/eos-sdk.flatpakrepo
-flatpak install eos-sdk com.endlessm.apps.Platform//4
-flatpak install eos-sdk com.endlessm.apps.Sdk//4
+flatpak install eos-sdk com.endlessm.apps.Platform//5
+flatpak install eos-sdk com.endlessm.apps.Sdk//5
 ```
 See also [the installation instructions][endless-sdk-install].
 
