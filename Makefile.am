@@ -145,7 +145,7 @@ scss_targets = $(patsubst $(srcdir)/%.scss,$(builddir)/%.css,$(scss_toplevels))
 	$(scss_verbose)$(MKDIR_P) $(@D) && $(SCSS) -a $< $@
 
 data/preset/po/presets.pot: $(dist_yamlpreset_DATA)
-	$(top_srcdir)/scripts/genpotfile -d $(@D) $^
+	$(top_srcdir)/tools/genpotfile -d $(@D) $^
 
 EXTRA_DIST += $(scss_template_toplevels)
 CLEANFILES += $(scss_targets)
