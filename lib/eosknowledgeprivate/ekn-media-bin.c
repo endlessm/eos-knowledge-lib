@@ -672,6 +672,8 @@ ekn_media_bin_fullscreen_apply (EknMediaBin *self, gboolean fullscreen)
   EknMediaBinPrivate *priv = EMB_PRIVATE (self);
   gint64 position = -1;
 
+  g_critical("ekn_media_bin_fullscreen_apply: %p, %d", (void*)self, fullscreen);
+
   if ((fullscreen && priv->fullscreen_window) ||
       (!fullscreen && !priv->fullscreen_window))
     return;
@@ -760,6 +762,7 @@ ekn_media_bin_fullscreen_apply (EknMediaBin *self, gboolean fullscreen)
    */
   if (priv->play == NULL)
     {
+      g_critical("ekn_media_bin_fullscreen_apply priv->play is null");
       ekn_media_bin_init_playbin (self);
       ekn_media_bin_init_video_sink (self);
 
