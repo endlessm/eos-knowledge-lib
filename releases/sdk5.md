@@ -47,12 +47,17 @@ No changes are required for apps using the modular framework.
 
 ## Release notes ##
 
+### SDK 5.5 (July 18, 2019)
+- Modular Framework: Disable copy and print actions based on document model metadata.
+- Modular Framework: Add a native Quit action to EosApplication.
+- Runtime: Fix crash with fullscreen video playback for ARM architecture.
+
 ### SDK 5.4 (April 5, 2019) ###
-- Modular Framework: Support Scroll Manager for non-legacy articles
-- Runtime: Fixed video playback for ARM machines
+- Modular Framework: Support Scroll Manager for non-legacy articles.
+- Runtime: Fixed video playback for ARM machines.
 
 ### SDK 5.3 (December 31, 2018) ###
-- Modular Framework: Support multiple include paths in autobahn
+- Modular Framework: Support multiple include paths in autobahn.
 - Runtime: Patch GStreamer to prevent a white glitch when a video is displayed.
 
 ### SDK 5.2 (October 11, 2018) ###
