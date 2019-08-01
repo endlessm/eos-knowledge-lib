@@ -17,6 +17,7 @@ permalink: /releases/5/
 | Thu Oct 11 2018 | SDK5.2 bugfix release
 | Thu Dec 31 2018 | SDK5.3 bugfix release
 | Fri Apr 5 2019  | SDK5.4 bugfix release
+| Thu Jul 18 2019  | SDK5.5 bugfix release
 
 ## Major features ##
 
