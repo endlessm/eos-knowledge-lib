@@ -46,7 +46,7 @@ var Suggested = new Module.Class({
             GLib.random_set_seed(this._hash);
 
             // Generate a pseudorandom sequence of numbers to use to shuffle the array
-            let rand_sequence = Array.apply(null, {length: this._models_by_id.size}).map(GLib.random_double);
+            let rand_sequence = Array.from({length: this._models_by_id.size}, () => GLib.random_double());
             return Utils.shuffle(models, rand_sequence);
         }
         return models;
