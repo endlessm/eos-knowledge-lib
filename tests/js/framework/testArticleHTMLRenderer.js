@@ -1,8 +1,8 @@
 const {DModel, Gio} = imports.gi;
+const ByteArray = imports.byteArray;
 
 const ArticleHTMLRenderer = imports.framework.articleHTMLRenderer;
 const Utils = imports.tests.utils;
-const AppUtils = imports.framework.utils;
 const SetMap = imports.framework.setMap;
 
 describe('Article HTML Renderer', function () {
@@ -12,10 +12,11 @@ describe('Article HTML Renderer', function () {
 
     beforeEach(function () {
         Utils.register_gresource();
-        let engine = DModel.Engine.get_default();
-        const html = AppUtils.string_to_bytes('<html><body><p>dummy html</p></body></html>');
+        const engine = DModel.Engine.get_default();
+        const html_byteArray = ByteArray.fromString('<html><body><p>dummy html</p></body></html>');
+        const html_gbytes = ByteArray.toGBytes(html_byteArray);
         spyOn(engine, 'get_domain').and.returnValue({
-            read_uri: () => [true, html, 'text/html']
+            read_uri: () => [true, html_gbytes, 'text/html']
         });
         spyOn(Gio.Application, 'get_default').and.returnValue({
             get_web_overrides_css: function () { return []; },

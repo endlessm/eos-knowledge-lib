@@ -1,4 +1,5 @@
 const {DModel, Eknr, Endless, GLib, Gio, GObject} = imports.gi;
+const ByteArray = imports.byteArray;
 const Gettext = imports.gettext;
 
 const Config = imports.framework.config;
@@ -53,8 +54,9 @@ var ArticleHTMLRenderer = new Knowledge.Class({
     _get_html: function (model) {
         let engine = DModel.Engine.get_default();
         let domain = engine.get_domain();
-        let [, bytes] = domain.read_uri(model.id);
-        return bytes.get_data().toString();
+        let [, data_gbytes] = domain.read_uri(model.id);
+        let data_uint8array = ByteArray.fromGBytes(data_gbytes);
+        return ByteArray.toString(data_uint8array);
     },
 
     _render_content: function (model) {
@@ -167,8 +169,7 @@ var ArticleHTMLRenderer = new Knowledge.Class({
             let file = Gio.file_new_for_uri(uri);
 
             try {
-                let [, svg] = file.load_contents(null);
-                return svg.toString();
+                return Utils.load_string_from_file(file);
             } catch(e) {
                 return null;
             };

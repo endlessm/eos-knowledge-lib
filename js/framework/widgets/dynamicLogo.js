@@ -11,6 +11,7 @@ const GObject = imports.gi.GObject;
 const Rsvg = imports.gi.Rsvg;
 
 const Knowledge = imports.framework.knowledge;
+const Utils = imports.framework.utils;
 
 const HEIGHT_WIDTH_RATIO = 1.5;
 const DEFAULT_SPACING_RATIO = 1.15;
@@ -215,15 +216,15 @@ var DynamicLogo = new Knowledge.Class({
               <xi:include href="data:text/xml,${this._escaped_svg_data}"/>
             </svg>`;
 
-        this._image = Rsvg.Handle.new_from_data(ByteArray.fromString(recolored_svg_data));
+        
+        let data_bytes = ByteArray.fromString(recolored_svg_data);
+        this._image = Rsvg.Handle.new_from_data(data_bytes);
     },
 
     _load_image: function () {
         try {
             let file = Gio.File.new_for_uri(this._image_uri);
-            const [, svg_bytes] = file.load_contents(null);
-            // FIXME: Use ByteArray.toString(svg_bytes) in GNOME 3.30
-            const svg_data = svg_bytes.toString();
+            const svg_data = Utils.load_string_from_file(file);
             this._escaped_svg_data = GLib.markup_escape_text(svg_data, -1);
             this._recolor_image();
         } catch (e) {

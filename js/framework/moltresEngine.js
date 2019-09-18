@@ -1,5 +1,6 @@
 const {DModel, GObject} = imports.gi;
 const Lang = imports.lang;
+const ByteArray = imports.byteArray;
 
 const Utils = imports.framework.utils;
 
@@ -53,9 +54,10 @@ var MoltresEngine = new Lang.Class({
     },
 
     get_domain: function () {
-        const html = Utils.string_to_bytes('<html><body><p>Some content</p></body></html>');
+        const html_byteArray = ByteArray.fromString('<html><body><p>Some content</p></body></html>');
+        const html_gbytes = ByteArray.toGBytes(html_byteArray);
         return {
-            read_uri: () => [true, html, 'text/html'],
+            read_uri: () => [true, html_gbytes, 'text/html'],
             get_shards: () => [],
             get_subscription_ids: () => [],
         };

@@ -1,4 +1,3 @@
-const ByteArray = imports.byteArray;
 const { DModel, EosKnowledgePrivate, EvinceDocument, EvinceView, Gdk, GdkPixbuf, GLib, Gio, GObject, Gtk } = imports.gi;
 const ShareActionBox = imports.framework.widgets.shareActionBox;
 const Knowledge = imports.framework.knowledge;

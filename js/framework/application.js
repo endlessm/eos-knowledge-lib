@@ -406,8 +406,8 @@ var Application = new Knowledge.Class({
         // Fixed in org.gnome.Platform//3.30. In that version, just pass strings
         // to SpawnSync() instead of byte arrays.
         function zeroTerminatedByteArray(string) {
-            const b = ByteArray.fromString(string);
-            b[b.length] = 0;
+            const bytes = ByteArray.fromString(string);
+            bytes[bytes.length] = 0;
             return b;
         }
         argv = argv.map(zeroTerminatedByteArray);
@@ -464,8 +464,7 @@ var Application = new Knowledge.Class({
         else
             theme_file = Gio.File.new_for_uri(this._recompile_overrides ? OVERRIDES_SCSS_URI : OVERRIDES_CSS_URI);
         try {
-            [, contents] = theme_file.load_contents(null);
-            contents = contents.toString();
+            contents = Utils.load_string_from_file(theme_file);
         } catch (e) {
             if (this._overrides_path || !e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
                 throw e;
@@ -511,8 +510,7 @@ var Application = new Knowledge.Class({
             app_json_file = Gio.File.new_for_path(this._app_json_path);
         else
             app_json_file = Gio.File.new_for_uri(this._recompile_app_json ? APP_YAML_URI : APP_JSON_URI);
-        [, contents] = app_json_file.load_contents(null);
-        contents = contents.toString();
+        contents = Utils.load_string_from_file(app_json_file);
         if (!app_json_file.get_uri().endsWith('.yaml'))
             return contents;
         // This uri might be a gresource, and the autobahn command cannot read

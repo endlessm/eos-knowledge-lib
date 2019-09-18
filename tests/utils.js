@@ -2,9 +2,12 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 
+const ByteArray = imports.byteArray;
+
 function parse_object_from_path (path) {
     let file = Gio.file_new_for_path(path);
-    let [success, data] = file.load_contents(null);
+    let [, data_uint8array] = file.load_contents(null);
+    let data = ByteArray.toString(data_uint8array);
     return JSON.parse(data);
 }
 

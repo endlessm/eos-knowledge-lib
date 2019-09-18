@@ -113,8 +113,9 @@ var EknWebview = new Knowledge.Class({
         .then((model) => {
             if (model instanceof DModel.Article) {
                 let html = this.renderer.render(model);
-                let bytes = ByteArray.fromString(html).toGBytes();
-                let stream = Gio.MemoryInputStream.new_from_bytes(bytes);
+                let stream = Gio.MemoryInputStream.new_from_bytes(
+                    ByteArray.fromString(html)
+                );
                 return [stream, 'text/html; charset=utf-8'];
             } else {
                 let stream = model.get_content_stream();
