@@ -38,8 +38,9 @@ var Media = new Module.Class({
         this._grid.insert_row(0);
         this._grid.attach(this._previewer, 0, 0, 1, 1);
 
+        let caption = this.model.caption || '';
         this.set_label_or_hide(this._caption_label,
-                               this.model.caption.split('\n').join(' '));
+                               caption.split('\n').join(' '));
 
         this.license_uri = '';
         let attributions = [];
