@@ -319,7 +319,7 @@ var HistoryStore = new Lang.Class({
                     model: model,
                     context_label: model.title,
                 });
-            } else if (model instanceof DModel.Media) {
+            } else if (model instanceof DModel.Media || model instanceof DModel.Audio) {
                 let old_item = this.get_current_item();
                 let context = old_item.model ? old_item.model.resources : [];
                 if (!context.includes(model.id)) {
