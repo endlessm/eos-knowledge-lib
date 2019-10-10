@@ -400,18 +400,8 @@ var Application = new Knowledge.Class({
         if ('inspector' in options)
             env.GTK_DEBUG = 'interactive';
 
-        let argv = [this.application_id].concat(args);
-
-        // Work around GJS bug https://gitlab.gnome.org/GNOME/gjs/issues/203
-        // Fixed in org.gnome.Platform//3.30. In that version, just pass strings
-        // to SpawnSync() instead of byte arrays.
-        function zeroTerminatedByteArray(string) {
-            const bytes = ByteArray.fromString(string);
-            bytes[bytes.length] = 0;
-            return b;
-        }
-        argv = argv.map(zeroTerminatedByteArray);
-        const cwd = zeroTerminatedByteArray(GLib.get_current_dir());
+        const argv = [this.application_id].concat(args);
+        const cwd = GLib.get_current_dir();
 
         return new Promise((resolve, reject) => {
             portal.SpawnRemote(cwd, argv, [], env, 0, {}, (out, err) => {
