@@ -50,7 +50,7 @@ def expand_shortdef(module):
         return module
 
     typename, propstring = match.group(1, 2)
-    module['properties'] = yaml.load('{' + propstring + '}')
+    module['properties'] = yaml.load('{' + propstring + '}', Loader=yaml.FullLoader)
     module['type'] = typename
 
     return module
@@ -150,7 +150,7 @@ def preprocess(infile):
     global overrides
     global preset
 
-    docs = yaml.load_all(infile)
+    docs = yaml.load_all(infile, Loader=yaml.FullLoader)
     doc = next(docs)
 
     if 'overrides' in doc:
@@ -206,7 +206,7 @@ def import_yaml(loader, node):
         filename = os.path.join(try_path, yaml_file)
         try:
             with open(filename, 'r') as stream:
-                return yaml.load(stream)
+                return yaml.load(stream, Loader=yaml.FullLoader)
         except FileNotFoundError:
             pass
     else:
@@ -245,8 +245,8 @@ if __name__ == '__main__':
     infile_name = args.input.name
     include_path = args.include
 
-    yaml.add_constructor('!translate', translate)
-    yaml.add_constructor('!import', import_yaml)
+    yaml.add_constructor('!translate', translate, Loader=yaml.FullLoader)
+    yaml.add_constructor('!import', import_yaml, Loader=yaml.FullLoader)
 
     if args.translations:
         po = polib.pofile(args.translations.read())
