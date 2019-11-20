@@ -18,6 +18,7 @@ permalink: /releases/5/
 | Thu Dec 31 2018 | SDK5.3 bugfix release
 | Fri Apr 5 2019  | SDK5.4 bugfix release
 | Thu Jul 18 2019  | SDK5.5 bugfix release
+| Thu Nov 21 2019  | SDK5.6 bugfix release
 
 ## Major features ##
 
@@ -47,6 +48,11 @@ Several fixes to the [walkthrough](http://endlessm.github.io/eos-knowledge-lib/d
 No changes are required for apps using the modular framework.
 
 ## Release notes ##
+
+### SDK 5.6 (November 21, 2019)
+- Modular Framework: Add support for opening audio files in a MediaLightbox.
+- Modular Framework: Allow MediaLightbox to show content that is not a child ("resource") of another model.
+- Modular Framework: Tweak search behaviour to improve matching with partial words.
 
 ### SDK 5.5 (July 18, 2019)
 - Modular Framework: Disable copy and print actions based on document model metadata.
