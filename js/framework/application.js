@@ -8,6 +8,7 @@ const System = imports.system;
 
 const Actions = imports.framework.actions;
 const Config = imports.framework.config;
+const Promisify = imports.framework.promisify;
 const Dispatcher = imports.framework.dispatcher;
 const HistoryStore = imports.framework.historyStore;
 const Knowledge = imports.framework.knowledge;
@@ -15,7 +16,6 @@ const ModuleFactory = imports.framework.moduleFactory;
 const MoltresEngine = imports.framework.moltresEngine;
 const NoContentDialog = imports.framework.widgets.noContentDialog;
 const Pages = imports.framework.pages;
-const PromiseWrapper = imports.framework.promiseWrapper;
 const SetMap = imports.framework.setMap;
 const Utils = imports.framework.utils;
 
@@ -23,6 +23,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 // Initialize libraries
 EvinceDocument.init();
+Promisify.promisifyGio();
 
 const KnowledgeSearchIface = '\
 <node> \
