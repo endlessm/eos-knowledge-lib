@@ -95,6 +95,13 @@ async function _create_temp_file(basename, fd) {
     const istream = new Gio.UnixInputStream({fd, close_fd: true});
 
     const datadir = Gio.File.new_for_path(GLib.get_user_data_dir());
+    try {
+        datadir.make_directory_with_parents(null);
+    } catch (error) {
+        if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
+            logError(error);
+    }
+
     const file = datadir.get_child(basename);
     const ostream = await file.replace_async(null, false,
         Gio.FileCreateFlags.NONE, GLib.PRIORITY_HIGH, null);
