@@ -155,6 +155,7 @@ var SearchBox = GObject.registerClass({
             relative_to: this,
         });
 
+        this._popover.get_style_context().add_class('eos-reset');
         this._popover.get_style_context().add_class('autocomplete');
         this._check_if_in_titlebar();
 
