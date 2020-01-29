@@ -136,7 +136,7 @@ var MediaLightbox = new Module.Class({
         // specified, try to determine content type and show it accordingly.
         let content_type = media_object.content_type;
         if (widget === null) {
-            if (media_object instanceof DModel.Video) {
+            if (media_object instanceof DModel.Video || media_object instanceof DModel.Audio) {
                 widget = new EosKnowledgePrivate.MediaBin();
                 widget.set_uri(media_object.id);
             } else if (content_type === 'application/pdf') {

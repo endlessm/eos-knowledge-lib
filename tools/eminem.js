@@ -1,9 +1,10 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const ByteArray = imports.byteArray;
 const {DModel, EosShard, GLib, Gio} = imports.gi;
+const ByteArray = imports.byteArray;
 const Format = imports.format;
 const System = imports.system;
+const Utils = imports.framework.utils;
 
 // For those interested in eminem's etymology, it goes roughly like this:
 // Subscriptions -> Netflix -> Chill -> Ice Cube -> Eminem
@@ -53,10 +54,9 @@ function regenerate (path) {
     let manifest_str = JSON.stringify(manifest, null, 2);
 
     let manifest_file = subscription_dir.get_child('manifest.json');
-    let bytes = ByteArray.fromString(manifest_str).toGBytes();
 
     let out_stream = manifest_file.replace(null, false, Gio.FileCreateFlags.NONE, cancellable);
-    out_stream.write_bytes(bytes, null);
+    out_stream.write_bytes(ByteArray.fromString(manifest_str), null);
 }
 
 function inspect_app_id (app_id) {

@@ -63,8 +63,7 @@ var ReadingHistoryModel = new Knowledge.Class({
         let json_contents;
 
         try {
-            let [success, data] = this._reading_history_file.load_contents(null);
-            json_contents = data;
+            json_contents = Utils.load_string_from_file(this._reading_history_file);
         } catch (error) {
             if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND)) {
                 logError(error, 'Could not read reading history file');

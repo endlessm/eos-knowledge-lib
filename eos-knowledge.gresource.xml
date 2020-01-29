@@ -167,7 +167,7 @@
     <file>js/framework/modules/window/simple.js</file>
     <file>js/framework/moltresEngine.js</file>
     <file>js/framework/pages.js</file>
-    <file>js/framework/promiseWrapper.js</file>
+    <file>js/framework/promisify.js</file>
     <file>js/framework/readingHistoryModel.js</file>
     <file>js/framework/setMap.js</file>
     <file>js/framework/toggleTweener.js</file>

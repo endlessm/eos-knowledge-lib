@@ -62,10 +62,15 @@ function unset_hand_cursor_on_widget(widget) {
     }
 }
 
+function load_string_from_file(file) {
+    let [, data_uint8array] = file.load_contents(null);
+    return ByteArray.toString(data_uint8array);
+}
+
 /* Helper function to load a JSON object from a file */
 function parse_object_from_file (file) {
     try {
-        let [success, data] = file.load_contents(null);
+        let data = load_string_from_file(file);
         return JSON.parse(data);
     } catch(e) {
         logError(e);
@@ -534,10 +539,6 @@ function ensure_directory (dir) {
             throw e;
         // Directory already exists, we're good.
     }
-}
-
-function string_to_bytes(string) {
-    return ByteArray.fromString(string).toGBytes();
 }
 
 // Set-like operations for arrays: union, intersection

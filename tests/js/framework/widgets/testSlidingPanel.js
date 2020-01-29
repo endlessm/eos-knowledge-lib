@@ -36,6 +36,7 @@ describe('Sliding panel', function () {
                 hide_direction: direction,
             });
             expect(panel).toHaveCssClass(klass);
+            panel.panel_widget = null;
             panel.destroy();
         };
         test_direction_and_class(Gtk.PositionType.TOP, Gtk.STYLE_CLASS_TOP);

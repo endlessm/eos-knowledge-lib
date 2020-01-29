@@ -8,6 +8,7 @@ const System = imports.system;
 
 const Actions = imports.framework.actions;
 const Config = imports.framework.config;
+const Promisify = imports.framework.promisify;
 const Dispatcher = imports.framework.dispatcher;
 const HistoryStore = imports.framework.historyStore;
 const Knowledge = imports.framework.knowledge;
@@ -15,7 +16,6 @@ const ModuleFactory = imports.framework.moduleFactory;
 const MoltresEngine = imports.framework.moltresEngine;
 const NoContentDialog = imports.framework.widgets.noContentDialog;
 const Pages = imports.framework.pages;
-const PromiseWrapper = imports.framework.promiseWrapper;
 const SetMap = imports.framework.setMap;
 const Utils = imports.framework.utils;
 
@@ -23,6 +23,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 // Initialize libraries
 EvinceDocument.init();
+Promisify.promisifyGio();
 
 const KnowledgeSearchIface = '\
 <node> \
@@ -94,6 +95,13 @@ async function _create_temp_file(basename, fd) {
     const istream = new Gio.UnixInputStream({fd, close_fd: true});
 
     const datadir = Gio.File.new_for_path(GLib.get_user_data_dir());
+    try {
+        datadir.make_directory_with_parents(null);
+    } catch (error) {
+        if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
+            logError(error);
+    }
+
     const file = datadir.get_child(basename);
     const ostream = await file.replace_async(null, false,
         Gio.FileCreateFlags.NONE, GLib.PRIORITY_HIGH, null);
@@ -400,18 +408,8 @@ var Application = new Knowledge.Class({
         if ('inspector' in options)
             env.GTK_DEBUG = 'interactive';
 
-        let argv = [this.application_id].concat(args);
-
-        // Work around GJS bug https://gitlab.gnome.org/GNOME/gjs/issues/203
-        // Fixed in org.gnome.Platform//3.30. In that version, just pass strings
-        // to SpawnSync() instead of byte arrays.
-        function zeroTerminatedByteArray(string) {
-            const b = ByteArray.fromString(string);
-            b[b.length] = 0;
-            return b;
-        }
-        argv = argv.map(zeroTerminatedByteArray);
-        const cwd = zeroTerminatedByteArray(GLib.get_current_dir());
+        const argv = [this.application_id].concat(args);
+        const cwd = GLib.get_current_dir();
 
         return new Promise((resolve, reject) => {
             portal.SpawnRemote(cwd, argv, [], env, 0, {}, (out, err) => {
@@ -464,8 +462,7 @@ var Application = new Knowledge.Class({
         else
             theme_file = Gio.File.new_for_uri(this._recompile_overrides ? OVERRIDES_SCSS_URI : OVERRIDES_CSS_URI);
         try {
-            [, contents] = theme_file.load_contents(null);
-            contents = contents.toString();
+            contents = Utils.load_string_from_file(theme_file);
         } catch (e) {
             if (this._overrides_path || !e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
                 throw e;
@@ -511,8 +508,7 @@ var Application = new Knowledge.Class({
             app_json_file = Gio.File.new_for_path(this._app_json_path);
         else
             app_json_file = Gio.File.new_for_uri(this._recompile_app_json ? APP_YAML_URI : APP_JSON_URI);
-        [, contents] = app_json_file.load_contents(null);
-        contents = contents.toString();
+        contents = Utils.load_string_from_file(app_json_file);
         if (!app_json_file.get_uri().endsWith('.yaml'))
             return contents;
         // This uri might be a gresource, and the autobahn command cannot read

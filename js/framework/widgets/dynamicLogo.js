@@ -11,6 +11,7 @@ const GObject = imports.gi.GObject;
 const Rsvg = imports.gi.Rsvg;
 
 const Knowledge = imports.framework.knowledge;
+const Utils = imports.framework.utils;
 
 const HEIGHT_WIDTH_RATIO = 1.5;
 const DEFAULT_SPACING_RATIO = 1.15;
@@ -196,7 +197,7 @@ var DynamicLogo = new Knowledge.Class({
      },
 
     _recolor_image() {
-        if (!this._escaped_svg_data)
+        if (!this._svg_data_base64)
             return;
 
         const context = this.get_style_context();
@@ -212,19 +213,17 @@ var DynamicLogo = new Knowledge.Class({
                   fill: ${fill_color} !important;
                 }
               </style>
-              <xi:include href="data:text/xml,${this._escaped_svg_data}"/>
+              <xi:include href="data:text/xml;base64,${this._svg_data_base64}"/>
             </svg>`;
 
-        this._image = Rsvg.Handle.new_from_data(ByteArray.fromString(recolored_svg_data));
+        this._image = Rsvg.Handle.new_from_data(recolored_svg_data);
     },
 
     _load_image: function () {
         try {
             let file = Gio.File.new_for_uri(this._image_uri);
-            const [, svg_bytes] = file.load_contents(null);
-            // FIXME: Use ByteArray.toString(svg_bytes) in GNOME 3.30
-            const svg_data = svg_bytes.toString();
-            this._escaped_svg_data = GLib.markup_escape_text(svg_data, -1);
+            const svg_data = Utils.load_string_from_file(file);
+            this._svg_data_base64 = GLib.base64_encode(svg_data);
             this._recolor_image();
         } catch (e) {
             logError(e, 'Could not read image data');
