@@ -317,6 +317,8 @@ subst_files = \
 	tools/introspect \
 	tools/kermit \
 	tools/picard \
+	tools/shard_doctor \
+	tools/shard_stats \
 	$(NULL)
 
 $(subst_files): %: %.in Makefile
@@ -411,7 +413,7 @@ dist_yamlpreset_DATA = \
 	$(NULL)
 
 popresetdir = $(yamlpresetdir)/po
-dist_popreset_DATA = data/preset/po/*.po
+dist_popreset_DATA = $(wildcard data/preset/po/*.po)
 
 EXTRA_DIST += \
 	tools/autobahn \
