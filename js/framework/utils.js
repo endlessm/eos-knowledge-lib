@@ -515,6 +515,19 @@ function define_enum (values) {
     }, {});
 }
 
+function is_model_web_view_based(model) {
+    return [
+        'text/html',
+        'application/x-kolibri-html5-zip',
+    ].includes(model.content_type);
+}
+
+function is_model_archive(model) {
+    return [
+        'application/x-kolibri-html5-zip',
+    ].includes(model.content_type);
+}
+
 function components_from_id(id) {
     // The URI is of form 'ekn://domain/hash[/resource]'.
     // Domain is part of legacy bundle support and should not be used for

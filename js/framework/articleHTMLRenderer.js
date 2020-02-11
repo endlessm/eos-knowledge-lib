@@ -52,9 +52,17 @@ var ArticleHTMLRenderer = new Knowledge.Class({
     },
 
     _get_html: function (model) {
-        let engine = DModel.Engine.get_default();
-        let domain = engine.get_domain();
-        let [, data_gbytes] = domain.read_uri(model.id);
+        let data_gbytes;
+        if (Utils.is_model_archive(model)) {
+            let stream = model.get_archive_member_content_stream('index.html');
+            // This is the best way I've found to read all bytes from a stream
+            data_gbytes = stream.read_bytes(4294967295, null);
+        } else {
+            let engine = DModel.Engine.get_default();
+            let domain = engine.get_domain();
+            data_gbytes = domain.read_uri(model.id)[1];
+        }
+
         let data_uint8array = ByteArray.fromGBytes(data_gbytes);
         return ByteArray.toString(data_uint8array);
     },
