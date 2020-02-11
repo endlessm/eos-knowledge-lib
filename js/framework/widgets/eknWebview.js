@@ -183,7 +183,7 @@ var EknWebview = new Knowledge.Class({
                     }
 
                     let license = GLib.uri_unescape_string(uri.replace('license://', ''), null);
-                    this._license_view.index_uri = Endless.get_license_file(license).get_uri(); 
+                    this._license_view.index_uri = Endless.get_license_file(license).get_uri();
                 } else {
                     Gtk.show_uri(null, uri, Gdk.CURRENT_TIME);
                 }
