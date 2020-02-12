@@ -310,6 +310,7 @@ function build_ui () {
     // Add the .WindowSimple class so we get styling on the scrollbars
     widgets.window.get_style_context().add_class('WindowSimple');
     widgets.reset_theme_box = new ResetThemeBox();
+    widgets.reset_theme_box.get_style_context().add_class('eos-window-inner')
     widgets.window.set_titlebar(widgets.titlebar);
     add_remove.add(widgets.add_box);
     add_remove.add(widgets.remove_box);
