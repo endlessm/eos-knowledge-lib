@@ -108,17 +108,22 @@ var EknWebview = new Knowledge.Class({
         });
     },
 
-    _load_object: function (id) {
+    _load_object: function (id, memberName) {
         return DModel.Engine.get_default().get_object(id, null)
         .then((model) => {
-            if (model instanceof DModel.Article) {
-                let html = this.renderer.render(model);
-                let stream = Gio.MemoryInputStream.new_from_bytes(
-                    ByteArray.fromString(html)
-                );
-                return [stream, 'text/html; charset=utf-8'];
+            if (!memberName) {
+                if (model instanceof DModel.Article) {
+                    let html = this.renderer.render(model);
+                    let stream = Gio.MemoryInputStream.new_from_bytes(
+                        ByteArray.fromString(html)
+                    );
+                    return [stream, 'text/html; charset=utf-8'];
+                } else {
+                    let stream = model.get_content_stream();
+                    return [stream, null];
+                }
             } else {
-                let stream = model.get_content_stream();
+                let stream = model.get_archive_member_content_stream(memberName);
                 return [stream, null];
             }
         });
@@ -137,9 +142,12 @@ var EknWebview = new Knowledge.Class({
 
         let id = req.get_uri();
 
-        let components = Utils.components_from_id(id);
-        if (components.length === 1) {
-            this._load_object(id)
+        if (id.startsWith('ekn://')) {
+            let components = Utils.components_from_id(id);
+            this._load_object(
+                `ekn:///${components[0]}`,
+                components.length === 1 ? null : components[1],
+            )
             .then(([stream, content_type]) => {
                 req.finish(stream, -1, content_type);
             })
@@ -183,7 +191,7 @@ var EknWebview = new Knowledge.Class({
                     }
 
                     let license = GLib.uri_unescape_string(uri.replace('license://', ''), null);
-                    this._license_view.index_uri = Endless.get_license_file(license).get_uri(); 
+                    this._license_view.index_uri = Endless.get_license_file(license).get_uri();
                 } else {
                     Gtk.show_uri(null, uri, Gdk.CURRENT_TIME);
                 }

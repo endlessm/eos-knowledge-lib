@@ -156,7 +156,7 @@ var Document = new Module.Class({
         return new Promise((resolve, reject) => {
             this._stack.visible_child_name = SPINNER_PAGE_NAME;
             this._spinner.active = true;
-            if (this.model.content_type === 'text/html') {
+            if (Utils.is_model_web_view_based(this.model)) {
                 this.content_view = this._get_webview();
 
                 let article_search = new InArticleSearch.InArticleSearch(this.content_view);
