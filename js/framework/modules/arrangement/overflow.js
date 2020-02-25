@@ -22,4 +22,21 @@ var Overflow = new Module.Class({
         else
             this.insert(card, position);
     },
+
+    /* Getters and setters copied from SpaceContainer so gjs can use them.
+     * This is a workaround for gjs issue #306:
+     * <https://gitlab.gnome.org/GNOME/gjs/issues/306>
+     */
+
+    get orientation() {
+        return this._orientation;
+    },
+
+    set orientation(value) {
+        if (this._orientation === value)
+            return;
+        this._orientation = value;
+        this.notify('orientation');
+        this.queue_resize();
+    },
 });
