@@ -391,9 +391,12 @@ var PDFView = new Knowledge.Class({
     },
 
     vfunc_get_preferred_width: function () {
-        let width = this.get_screen().get_width();
         let [minimal, ] = this.parent();
-        return [minimal, width];
+
+        let gdk_window = this.get_window();
+        let gdk_monitor = gdk_window.get_display().get_monitor_at_window(gdk_window);
+        let natural = gdk_monitor.get_geometry().width;
+
+        return [minimal, natural];
     }
 });
-
