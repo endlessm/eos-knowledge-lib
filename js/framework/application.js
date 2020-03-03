@@ -211,7 +211,7 @@ var Application = new Knowledge.Class({
             return options.lookup_value(option, null) !== null;
         }
         function get_option_string (option) {
-            return options.lookup_value(option, null).deep_unpack().toString();
+            return ByteArray.toString(options.lookup_value(option, null).deep_unpack());
         }
         function register_resource(path) {
             const resource = Gio.Resource.load(path);
@@ -226,7 +226,7 @@ var Application = new Knowledge.Class({
             const extra_resource_paths =
                 options.lookup_value('extra-resource-path', null).deep_unpack();
             extra_resource_paths.forEach(bytes =>
-                register_resource(bytes.toString()));
+                register_resource(ByteArray.toString(bytes)));
         }
 
         if (has_option('default-theme'))
