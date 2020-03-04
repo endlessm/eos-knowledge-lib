@@ -3,6 +3,7 @@
 imports.gi.versions.Gdk = '3.0';
 imports.gi.versions.Gtk = '3.0';
 
+const ByteArray = imports.byteArray;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -96,11 +97,11 @@ function show_message (text) {
     dialog.destroy();
 }
 
-function read_sream (stream) {
+function read_stream (stream) {
     let output = '', buffer;
     do {
         buffer = stream.read_bytes(1024 * 8, null);
-        output += buffer.get_data().toString();
+        output += ByteArray.toString(buffer.get_data());
     } while (buffer.get_size() !== 0);
     return output;
 }
@@ -282,7 +283,7 @@ done_button.connect('clicked', () => {
         win.set_sensitive(true);
         if (app_process.get_if_exited() && app_process.get_exit_status() === 0)
             return;
-        show_output_dialog(read_sream(app_process.get_stdout_pipe()));
+        show_output_dialog(read_stream(app_process.get_stdout_pipe()));
     });
 });
 
