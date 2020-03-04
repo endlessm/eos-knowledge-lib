@@ -1,4 +1,5 @@
 const {DModel, EosShard, GLib, Gio} = imports.gi;
+const ByteArray = imports.byteArray;
 const System = imports.system;
 
 const USAGE = [
@@ -77,7 +78,8 @@ function grep (path, pattern) {
             return;
         }
 
-        let metadata_text = record.metadata.load_contents().get_data().toString();
+        let metadata_uint8array = record.metadata.load_contents().get_data();
+        let metadata_text = ByteArray.toString(metadata_uint8array);
 
         if (metadata_text.match(regex) !== null) {
             let metadata = JSON.parse(metadata_text);
@@ -137,8 +139,12 @@ function stat_record (path, id, is_verbose) {
         };
     });
 
-    let metadata_text = record.metadata.load_contents().get_data().toString();
+    let metadata_uint8array = record.metadata.load_contents().get_data();
+    let metadata_text = ByteArray.toString(metadata_uint8array);
     let metadata = JSON.parse(metadata_text);
+
+    let resources = metadata['resources'];
+    let outgoingLinks = metadata['outgoingLinks'];
 
     print('Record info:');
     print('Hash:', id);
@@ -149,8 +155,8 @@ function stat_record (path, id, is_verbose) {
     print();
     print('Record blob info:');
     _pretty_print_table(blob_table);
-    _print_tree_info(shard, metadata.resources, total_blob_bytes, is_verbose);
-    _print_crosslink_info(shard, metadata.outgoingLinks, is_verbose);
+    _print_tree_info(shard, resources, total_blob_bytes, is_verbose);
+    _print_crosslink_info(shard, outgoingLinks, is_verbose);
 }
 
 function _print_tree_info (shard, ekn_resources, parent_size_bytes, is_verbose) {
