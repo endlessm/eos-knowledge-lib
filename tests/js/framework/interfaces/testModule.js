@@ -93,6 +93,7 @@ describe('Module metaclass', function () {
     it('pulls in slots from implemented interfaces', function () {
         const MySlotInterface = new Lang.Interface({
             Name: 'MySlotInterface',
+            GTypeName: 'MySlotInterface',
             Requires: [Module.Module],
             Slots: {
                 'interface-slot': {},

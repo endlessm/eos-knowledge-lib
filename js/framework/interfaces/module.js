@@ -106,6 +106,7 @@ function _freeze_recurse(o) {
  */
 var Module = new Lang.Interface({
     Name: 'Module',
+    GTypeName: 'EknModule',
     Requires: [ GObject.Object ],
 
     Properties: {
