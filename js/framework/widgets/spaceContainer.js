@@ -161,7 +161,7 @@ var SpaceContainer = new Knowledge.Class({
         let [min, nat] = this._child_get_preferred_size(children[0], primary, space);
         nat += children.slice(1).reduce((accum, child) => {
             let [child_min, child_nat] = this._child_get_preferred_size(child, primary, space);
-            return accum + child_nat + this._spacing;
+            return accum + child_nat + this.spacing;
         }, 0);
         return [min + extra, nat + extra];
     },
@@ -188,7 +188,7 @@ var SpaceContainer = new Knowledge.Class({
                 this._child_get_preferred_size(child, primary, secondary_space);
             cum_min_size += child_min;
             if (ix > 0)
-                cum_min_size += this._spacing;
+                cum_min_size += this.spacing;
             if (!ran_out_of_space && cum_min_size <= available_space) {
                 shown_children_info.push({
                     minimum: child_min,
@@ -213,7 +213,7 @@ var SpaceContainer = new Knowledge.Class({
         // Start by giving each visible child its minimum height.
         let allocated_sizes = shown_children_info.map((info) => info.minimum);
         let extra_space = available_space -
-            (shown_children_info.length - 1) * this._spacing -
+            (shown_children_info.length - 1) * this.spacing -
             _sum(allocated_sizes);
 
         // If there is extra space, give each visible child more height up to
@@ -328,7 +328,7 @@ var SpaceContainer = new Knowledge.Class({
         // spacing; one widget begins where the previous widget ends, plus the
         // spacing.
         let cum_primary_sizes = _cumsum(allocated_primary_sizes.map((size) =>
-            size + this._spacing));
+            size + this.spacing));
         let cum_rel_positions = cum_primary_sizes.slice();
         cum_rel_positions.unshift(0);
 

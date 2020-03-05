@@ -57,11 +57,14 @@ var Class = new Lang.Class({
         .forEach(iface => {
             let iface_props =
                 EosKnowledgePrivate.interface_gtype_list_properties(iface.$gtype);
-            iface_props.forEach(prop => {
-                props.Properties[prop.name] =
-                    GObject.ParamSpec.override(prop.name, iface);
+            iface_props
+                .filter(prop => !props.Properties[prop.name])
+                .forEach(prop => {
+                        props.Properties[prop.name] =
+                            GObject.ParamSpec.override(prop.name, iface);
+                    }
+                );
             });
-        });
 
         // Remove StyleProperties before chaining
         let style_properties = props.StyleProperties || {};

@@ -48,4 +48,4 @@ let application = new Application.Application({
 });
 application.run(['$0'].concat(ARGV));"
 
-$DEBUG_COMMAND gjs -c "$SCRIPT" "$@"
+$DEBUG_COMMAND gjs $GJS_ARGS -c "$SCRIPT" "$@"
