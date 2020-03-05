@@ -475,12 +475,13 @@ var Application = new Knowledge.Class({
         // from a gresource, so save the file contents to a tmp file.
         [theme_file,] = Gio.File.new_tmp(null);
         theme_file.replace_contents(contents, null, false, 0, null);
-        let [, stdout, stderr, status] = GLib.spawn_command_line_sync(SCSS_COMMAND + theme_file.get_path());
+        let [, stdout_bytes, stderr_bytes, status] = GLib.spawn_command_line_sync(SCSS_COMMAND + theme_file.get_path());
         if (status !== 0) {
-            printerr(new Error(stderr.toString()));
+            let stderr = ByteArray.toString(stderr_bytes)
+            printerr(new Error(stderr));
             System.exit(1);
         }
-        return stdout.toString();
+        return ByteArray.toString(stdout_bytes);
     },
 
     get_web_overrides_css: function () {
@@ -494,9 +495,10 @@ var Application = new Knowledge.Class({
         this._compiled_web_overrides_uri = file.get_uri();
         let command = SCSS_COMMAND + this._web_overrides_path + ' ' +
             file.get_path();
-        let [,, stderr, status] = GLib.spawn_command_line_sync(command);
+        let [,, stderr_bytes, status] = GLib.spawn_command_line_sync(command);
         if (status !== 0) {
-            printerr(new Error(command + ': ' + stderr.toString()));
+            let stderr = ByteArray.toString(stderr_bytes);
+            printerr(new Error(command + ': ' + stderr));
             System.exit(1);
         }
         return [this._compiled_web_overrides_uri];
@@ -515,12 +517,13 @@ var Application = new Knowledge.Class({
         // from a gresource, so save the file contents to a tmp file.
         [app_json_file,] = Gio.File.new_tmp(null);
         app_json_file.replace_contents(contents, null, false, 0, null);
-        let [, stdout, stderr, status] = GLib.spawn_command_line_sync(AUTOBAHN_COMMAND + app_json_file.get_path());
+        let [, stdout_bytes, stderr_bytes, status] = GLib.spawn_command_line_sync(AUTOBAHN_COMMAND + app_json_file.get_path());
         if (status !== 0) {
-            printerr(new Error(stderr.toString()));
+            let stderr = ByteArray.toString(stderr_bytes);
+            printerr(new Error(stderr));
             System.exit(1);
         }
-        return stdout.toString();
+        return ByteArray.toString(stdout_bytes);
     },
 
     vfunc_shutdown: function () {
