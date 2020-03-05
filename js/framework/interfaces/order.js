@@ -23,6 +23,7 @@ const Module = imports.framework.interfaces.module;
  */
 var Order = new Lang.Interface({
     Name: 'Order',
+    GTypeName: 'EknOrder',
     Requires: [ Module.Module ],
 
     Properties: {

@@ -42,6 +42,7 @@ describe('Syntactic sugar metaclass', function () {
     it('overrides properties automatically (this test should not warn)', function () {
         const MyGObjectInterface = new Lang.Interface({
             Name: 'MyGObjectInterface',
+            GTypeName: 'MyGObjectInterface',
             Requires: [GObject.Object],
             Properties: {
                 'foo': GObject.ParamSpec.boolean('foo', '', '',
@@ -140,6 +141,7 @@ describe('Syntactic sugar metaclass', function () {
     });
     const MyInitGObjectInterface = new Lang.Interface({
         Name: 'MyInitGObjectInterface',
+        GTypeName: 'MyInitGObjectInterface',
         Requires: [GObject.Object],
         _interface_init: function () {
             this.my_gobject_interface_inited = true;

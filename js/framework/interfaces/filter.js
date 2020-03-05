@@ -26,6 +26,7 @@ const Module = imports.framework.interfaces.module;
  */
 var Filter = new Lang.Interface({
     Name: 'Filter',
+    GTypeName: 'EknFilter',
     Requires: [ Module.Module ],
 
     Properties: {
