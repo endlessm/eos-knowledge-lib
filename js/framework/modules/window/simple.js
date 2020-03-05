@@ -69,7 +69,7 @@ var Simple = new Module.Class({
         //  - our top bar will always be constant sized
         //  - showing the search bar will not trigger a window resize
         this._search_stack = new Gtk.Stack();
-        this._invisible_frame = new Gtk.Frame();
+        this._invisible_frame = new Gtk.Box();
         this._search_stack.add(this._invisible_frame);
         this._search_box = this.create_submodule('search');
         if (this._search_box) {
@@ -84,7 +84,7 @@ var Simple = new Module.Class({
 
         button_box.add(this._home_button);
         button_box.add(this._history_buttons);
-
+        button_box.set_spacing(6);
 
         this._content = this.create_submodule('content');
         this.page_manager.add(this._content, {
