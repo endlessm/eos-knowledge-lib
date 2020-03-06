@@ -241,24 +241,3 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         return this._render_wrapper(content, model);
     },
 });
-
-function _get_display_string_for_license(license) {
-    if (license === Endless.LICENSE_NO_LICENSE)
-        // TRANSLATORS: the text inside curly braces {blog-link} is going to be
-        // substituted in code. Please make sure that your translation contains
-        // {blog-link} and it is not translated.
-        return _("Content taken from {blog-link}.");
-    if (license === Endless.LICENSE_OWNER_PERMISSION)
-        // TRANSLATORS: the text inside curly braces {blog-link} is going to be
-        // substituted in code. Please make sure that your translation contains
-        // {blog-link} and it is not translated.
-        return _("Content courtesy of {blog-link}. Used with kind permission.");
-
-    let license_link = _to_license_link(license);
-    // TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
-    // is going to be substituted in code. Please make sure that your
-    // translation contains both {blog-link} and {license-link} and they are not
-    // translated.
-    return _("Content courtesy of {blog-link}, licensed under {license-link}.")
-        .replace('{license-link}', license_link);
-}
