@@ -66,7 +66,7 @@ var TopMenu = new Module.Class({
     },
 
     _init: function (props={}) {
-        this.hexpand = true;
+        props['hexpand'] = true;
         this.parent(props);
 
         this._banner = new Gtk.Button();
