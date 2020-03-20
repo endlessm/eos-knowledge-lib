@@ -213,20 +213,16 @@ var Application = new Knowledge.Class({
         function get_option_string (option) {
             return ByteArray.toString(options.lookup_value(option, null).deep_unpack());
         }
-        function register_resource(path) {
-            const resource = Gio.Resource.load(path);
-            resource._register();
-        }
 
         if (has_option('resource-path'))
             this.resource_path = get_option_string('resource-path');
-        register_resource(this.resource_path);
 
+        this._extra_resource_paths = [];
         if (has_option('extra-resource-path')) {
-            const extra_resource_paths =
-                options.lookup_value('extra-resource-path', null).deep_unpack();
-            extra_resource_paths.forEach(bytes =>
-                register_resource(ByteArray.toString(bytes)));
+            this._extra_resource_paths =
+                options
+                    .lookup_value('extra-resource-path', null)
+                    .deep_unpack().map(path_bytes => ByteArray.toString(path_bytes));
         }
 
         if (has_option('default-theme'))
@@ -326,7 +322,15 @@ var Application = new Knowledge.Class({
         });
     },
 
+    get_all_resource_paths: function () {
+        return this._extra_resource_paths.concat(this.resource_path);
+    },
+
     vfunc_startup: function () {
+        for (const resource_path of this.get_all_resource_paths()) {
+            Gio.Resource.load(resource_path)._register();
+        }
+
         this.parent();
         Gtk.IconTheme.get_default().add_resource_path('/com/endlessm/knowledge/data/icons');
 

@@ -56,11 +56,20 @@ var EknWebview = new Knowledge.Class({
     _init: function (params) {
         let context = new WebKit2.WebContext();
         params.web_context = context;
+
+        let application = Gio.Application.get_default();
+
         // Need to handle this signal before we make a webview
         context.connect('initialize-web-extensions', () => {
             context.set_web_extensions_directory(Config.WEB_EXTENSION_DIR);
-            let well_known_name = new GLib.Variant('s', Utils.get_web_plugin_dbus_name());
-            context.set_web_extensions_initialization_user_data(well_known_name);
+            let web_extension_data = new GLib.Variant(
+                '(sas)',
+                [
+                    Utils.get_web_plugin_dbus_name(),
+                    application.get_all_resource_paths(),
+                ],
+            );
+            context.set_web_extensions_initialization_user_data(web_extension_data);
         });
         context.get_security_manager().register_uri_scheme_as_local('ekn');
         context.register_uri_scheme('ekn', this._load_ekn_uri.bind(this));
