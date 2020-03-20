@@ -2,18 +2,15 @@
     <head>
         <base href="{{base-uri}}">
         <meta charset="UTF-8">
-        {{#css-files}}
+        {{#system-css-files}}
         <link rel="stylesheet" type="text/css" href="resource:///com/endlessm/knowledge/data/templates/css/{{{.}}}"/>
-        {{/css-files}}
-        {{#custom-css-files}}
-        <link rel="stylesheet" type="text/css" href="{{{.}}}"/>
-        {{/custom-css-files}}
+        {{/system-css-files}}
     </head>
     <body>
         <div id="copy-button">{{copy-button-text}}</div>
-        {{#javascript-files}}
+        {{#system-js-files}}
         <script type="text/javascript" src="resource:///com/endlessm/knowledge/data/templates/js/{{{.}}}"></script>
-        {{/javascript-files}}
+        {{/system-js-files}}
 
         <script type="text/javascript">
             window.contentMetadata = {{{content-metadata}}};
@@ -29,5 +26,11 @@
                 window.title_hider_init();
             }
         </script>
+        {{#custom-css-files}}
+        <link rel="stylesheet" type="text/css" href="{{{.}}}"/>
+        {{/custom-css-files}}
+        {{#custom-js-files}}
+        <script type="text/javascript" src="{{{.}}}"></script>
+        {{/custom-js-files}}
     </body>
 </html>

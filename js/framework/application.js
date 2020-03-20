@@ -87,6 +87,9 @@ const APP_JSON_URI = 'resource:///app/app.json';
 const APP_YAML_URI = 'resource:///app/app.yaml';
 const OVERRIDES_CSS_URI = 'resource:///app/overrides.css';
 const OVERRIDES_SCSS_URI = 'resource:///app/overrides.scss';
+const WEB_CSS_OVERRIDES_URI = 'resource:///app/web_css_overrides.css';
+const WEB_SCSS_OVERRIDES_URI = 'resource:///app/web_css_overrides.scss';
+const WEB_JS_OVERRIDES_URI = 'resource:///app/web_js_overrides.js';
 
 const AUTOBAHN_COMMAND = 'autobahn -I ' + Config.YAML_PRESET_DIR + ' ';
 const SCSS_COMMAND = 'sassc -a -I ' + Config.TOP_THEME_DIR + ' ';
@@ -185,10 +188,12 @@ var Application = new Knowledge.Class({
                              'Same as --theme-name=default', null);
         this.add_main_option('recompile-theme-overrides', 'o'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
                              'Recompile the applications overrides.css file from the source scss', null);
+        this.add_main_option('recompile-web-css-overrides', 0, GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
+                             'Recompile rendered HTML SCSS overrides', null);
         this.add_main_option('recompile-app-json', 'j'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
                              'Recompile the app json file from the source yaml', null);
         this.add_main_option('recompile-all', 'r'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
-                             'Same as --recompile-overrides --recompile-app-json', null);
+                             'Same as --recompile-theme-overrides --recompile-web-css-overrides --recompile-app-json', null);
         this.add_main_option('resource-path', 'R'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Path to a different gresource to use with the application', null);
         this.add_main_option('extra-resource-path', 'E'.charCodeAt(),
@@ -198,6 +203,8 @@ var Application = new Knowledge.Class({
                              'Path to a overrides scss or css file to theme the application', null);
         this.add_main_option('web-overrides-path', 'w'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Path to a scss or css file to theme any rendered HTML', null);
+        this.add_main_option('web-js-overrides-path', 'k'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
+                             'Path to a JavaScript file to be injected to the rendered HTML', null);
         this.add_main_option('app-json-path', 'J'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
                              'Path to a yaml or json file to use as a preset', null);
         this.add_main_option('dummy-content', 'm'.charCodeAt(), GLib.OptionFlags.NONE, GLib.OptionArg.NONE,
@@ -211,7 +218,8 @@ var Application = new Knowledge.Class({
             return options.lookup_value(option, null) !== null;
         }
         function get_option_string (option) {
-            return ByteArray.toString(options.lookup_value(option, null).deep_unpack());
+            const option_value = options.lookup_value(option, null);
+            return option_value !== null ? ByteArray.toString(option_value.deep_unpack()) : null;
         }
 
         if (has_option('resource-path'))
@@ -232,18 +240,17 @@ var Application = new Knowledge.Class({
         if (has_option('default-theme') && has_option('theme-name'))
             logError(new Error('Both --default-theme and --theme-name set; using theme ' + this._theme));
 
-        this._recompile_overrides = has_option('recompile-all') || has_option('recompile-theme-overrides');
+        this._recompile_theme_overrides = has_option('recompile-all') || has_option('recompile-theme-overrides');
+        this._recompile_web_css_overrides = has_option('recompile-all') || has_option('recompile-web-css-overrides');
         this._recompile_app_json = has_option('recompile-all') || has_option('recompile-app-json');
 
-        if (has_option('theme-overrides-path')) {
+        this._theme_overrides_path = get_option_string('theme-overrides-path');
+        if (this._theme_overrides_path) {
             if (this._theme) {
                 logError(new Error('Both a stock theme and overrides css set, ignoring theme.' + this._theme));
                 this._theme = undefined;
             }
-            this._overrides_path = get_option_string('theme-overrides-path');
         }
-        if (has_option('app-json-path'))
-            this._app_json_path = get_option_string('app-json-path');
 
         if (has_option('dummy-content'))
             MoltresEngine.override_engine();
@@ -253,13 +260,9 @@ var Application = new Knowledge.Class({
             engine.add_domain_for_path(this.application_id, get_option_string('content-path'));
         }
 
-        if (has_option('web-overrides-path')) {
-            this._web_overrides_path = get_option_string('web-overrides-path');
-            if (!this._web_overrides_path.endsWith('.scss')) {
-                const uri = Gio.File.new_for_path(this._web_overrides_path).get_uri();
-                this._compiled_web_overrides_uri = uri;
-            }
-        }
+        this._app_json_path = get_option_string('app-json-path');
+        this._web_css_overrides_path = get_option_string('web-overrides-path');
+        this._web_js_overrides_path = get_option_string('web-js-overrides-path');
 
         return -1;
     },
@@ -459,53 +462,106 @@ var Application = new Knowledge.Class({
         }
     },
 
-    _get_overrides_css: function () {
-        let contents, theme_file;
-        if (this._overrides_path)
-            theme_file = Gio.File.new_for_path(this._overrides_path);
-        else
-            theme_file = Gio.File.new_for_uri(this._recompile_overrides ? OVERRIDES_SCSS_URI : OVERRIDES_CSS_URI);
-        try {
-            contents = Utils.load_string_from_file(theme_file);
-        } catch (e) {
-            if (this._overrides_path || !e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
-                throw e;
-            // No overrides, fallback to stock theme
-            return '';
+    _recompile_scss_resource: function (override_path, force_recompile, scss_uri, css_uri) {
+        let override_file;
+
+        if (override_path) {
+            override_file = Gio.File.new_for_path(override_path);
+            if (!override_file.query_exists(null)) {
+                throw Gio.IOErrorEnum.NOT_FOUND;
+            }
+        } else {
+            override_file = Gio.File.new_for_uri(force_recompile ? scss_uri : css_uri);
         }
-        if (!theme_file.get_uri().endsWith('.scss'))
-            return contents;
-        // This uri might be a gresource, and the scss command cannot read
-        // from a gresource, so save the file contents to a tmp file.
-        [theme_file,] = Gio.File.new_tmp(null);
-        theme_file.replace_contents(contents, null, false, 0, null);
-        let [, stdout_bytes, stderr_bytes, status] = GLib.spawn_command_line_sync(SCSS_COMMAND + theme_file.get_path());
+
+        if (!override_file.get_uri().endsWith('.scss')) {
+            return override_file;
+        }
+
+        let source_file;
+        if (override_file.get_uri().startsWith('resource://')) {
+            // The scss command cannot read from a gresource, so save
+            // the file contents to a tmp file.
+            [source_file,] = Gio.File.new_tmp(null);
+            source_file.replace_contents(
+                Utils.load_string_from_file(override_file),
+                null, false, 0, null
+            );
+        } else {
+            source_file = override_file;
+        }
+
+        const [compiled_file,] = Gio.File.new_tmp(null);
+
+        let command =
+            SCSS_COMMAND +
+            override_file.get_path() + ' ' +
+            compiled_file.get_path();
+
+        let [,, stderr_bytes, status] = GLib.spawn_command_line_sync(command);
+
         if (status !== 0) {
-            let stderr = ByteArray.toString(stderr_bytes)
-            printerr(new Error(stderr));
+            printerr(new Error(ByteArray.toString(stderr_bytes)));
             System.exit(1);
         }
-        return ByteArray.toString(stdout_bytes);
+
+        return compiled_file;
     },
 
-    get_web_overrides_css: function () {
-        if (!this._web_overrides_path)
-            return [];
-        if (this._compiled_web_overrides_uri)
-            return [this._compiled_web_overrides_uri];
-
-        // For now, we don't support gresource URIs here
-        let [file] = Gio.File.new_tmp('customXXXXXX.css');
-        this._compiled_web_overrides_uri = file.get_uri();
-        let command = SCSS_COMMAND + this._web_overrides_path + ' ' +
-            file.get_path();
-        let [,, stderr_bytes, status] = GLib.spawn_command_line_sync(command);
-        if (status !== 0) {
-            let stderr = ByteArray.toString(stderr_bytes);
-            printerr(new Error(command + ': ' + stderr));
-            System.exit(1);
+    _get_overrides_css: function () {
+        const file = this._recompile_scss_resource(
+            this._theme_overrides_path,
+            this._recompile_theme_overrides,
+            OVERRIDES_SCSS_URI,
+            OVERRIDES_CSS_URI
+        );
+        if (!file) {
+            return '';
         }
-        return [this._compiled_web_overrides_uri];
+        return Utils.load_string_from_file(file);
+    },
+
+    get_web_css_overrides: function () {
+        if (this._compiled_web_css_overrides_uris === undefined) {
+            const file = this._recompile_scss_resource(
+                this._web_css_overrides_path,
+                this._recompile_web_css_overrides,
+                WEB_SCSS_OVERRIDES_URI,
+                WEB_CSS_OVERRIDES_URI,
+            );
+            if (file) {
+                this._compiled_web_overrides_uris = [file.get_uri()];
+            } else {
+                this._compiled_web_overrides_uris = [];
+            }
+        }
+
+        return this._compiled_web_overrides_uris;
+    },
+
+    get_web_js_overrides: function () {
+        if (this._web_js_overrides_uris === undefined) {
+            let file;
+            if (this._web_js_overrides_path) {
+                file = Gio.File.new_for_path(this._web_js_overrides_path);
+                if (!file.query_exists(null)) {
+                    throw Gio.IOErrorEnum.NOT_FOUND;
+                }
+            } else {
+                file = Gio.File.new_for_uri(WEB_JS_OVERRIDES_URI);
+                if (!file.query_exists(null)) {
+                    file = null;
+                }
+            }
+
+            if (file) {
+                this._web_js_overrides_uris = [file.get_uri()];
+            } else {
+                this._web_js_overrides_uris = [];
+            }
+        }
+
+        return this._web_js_overrides_uris;
     },
 
     _get_app_json: function () {

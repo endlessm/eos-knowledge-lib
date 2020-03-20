@@ -40,15 +40,15 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         this.parent(props);
         this._renderer = new Eknr.Renderer();
         this._custom_css_files = [];
+        this._custom_js_files = [];
     },
 
     set_custom_css_files: function (custom_css_files) {
         this._custom_css_files = custom_css_files;
     },
 
-    _get_app_override_css_files: function () {
-        let app = Gio.Application.get_default();
-        return app.get_web_overrides_css();
+    set_custom_js_files: function (custom_js_files) {
+        this._custom_js_files = custom_js_files;
     },
 
     _get_html: function (model) {
@@ -90,11 +90,14 @@ var ArticleHTMLRenderer = new Knowledge.Class({
             this.enable_scroll_manager);
     },
 
-    _get_wrapper_css_files: function () {
-        return ['clipboard.css', 'share-actions.css'].concat(this._custom_css_files);
+    _get_system_css_files: function () {
+        return [
+            'clipboard.css',
+            'share-actions.css',
+        ];
     },
 
-    _get_wrapper_js_files: function () {
+    _get_system_js_files: function () {
         const js_files = [
             'jquery-min.js',
             'clipboard-manager.js',
@@ -204,9 +207,6 @@ var ArticleHTMLRenderer = new Knowledge.Class({
     },
 
     _render_wrapper: function (content, model) {
-        let css_files = this._get_wrapper_css_files();
-        let js_files = this._get_wrapper_js_files();
-
         let base_uri;
 
         if (model.id.startsWith('ekn://')) {
@@ -220,9 +220,10 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         return this._renderer.render_mustache_document_from_file(template, new GLib.Variant('a{sv}', {
             'id': new GLib.Variant('s', model.id),
             'base-uri': new GLib.Variant('s', base_uri),
-            'css-files': new GLib.Variant('as', css_files),
-            'custom-css-files': new GLib.Variant('as', this._get_app_override_css_files()),
-            'javascript-files': new GLib.Variant('as', js_files),
+            'system-css-files': new GLib.Variant('as', this._get_system_css_files()),
+            'custom-css-files': new GLib.Variant('as', this._custom_css_files),
+            'system-js-files': new GLib.Variant('as', this._get_system_js_files()),
+            'custom-js-files': new GLib.Variant('as', this._custom_js_files),
             'copy-button-text': new GLib.Variant('s', _("Copy")),
             'share-actions': new GLib.Variant('s', this._get_share_actions_markup(model)),
             'content': new GLib.Variant('s', content),

@@ -268,8 +268,6 @@ var Document = new Module.Class({
 
         webview.renderer.enable_scroll_manager = this.toc.visible;
         webview.renderer.show_title = !this.show_toc;
-        if (this.custom_css)
-            webview.renderer.set_custom_css_files([this.custom_css]);
 
         webview.connect('notify::uri', function () {
             if (webview.uri.indexOf('#') >= 0) {

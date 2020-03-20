@@ -79,6 +79,8 @@ var EknWebview = new Knowledge.Class({
 
         this.parent(params);
         this.renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
+        this.renderer.set_custom_css_files(application.get_web_css_overrides());
+        this.renderer.set_custom_js_files(application.get_web_js_overrides());
 
         let web_settings = this.get_settings();
         web_settings.enable_developer_extras = should_enable_inspector();

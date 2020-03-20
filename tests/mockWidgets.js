@@ -23,7 +23,6 @@ const _Renderer = new Knowledge.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             false),
     },
-    set_custom_css_files: function () {},
     render: function () {
         return '<html><body></body></html>';
     },
