@@ -509,10 +509,35 @@ ekn_media_bin_gl_check (GtkWidget *widget)
       GError *error = NULL;
       gsize works = 1;
       GdkGLContext *context;
+      gboolean realized;
       GdkWindow *window;
 
-      if ((window  = gtk_widget_get_window (widget)) &&
-           (context = gdk_window_create_gl_context (window, &error)))
+      window = gtk_widget_get_window (widget);
+
+      if (window)
+        context = gdk_window_create_gl_context (window, &error);
+
+      if (error)
+        {
+          GST_WARNING ("Could not create GL context, %s", error->message);
+          g_error_free (error);
+        }
+
+      if (context)
+        realized = gdk_gl_context_realize (context, &error);
+
+      if (error)
+        {
+          GST_WARNING ("Could not realize GL context, %s", error->message);
+          g_error_free (error);
+        }
+
+      if (realized && gdk_gl_context_get_use_es (context))
+        {
+          // We don't bother checking EGL implementations
+          works = 2;
+        }
+      else if (realized)
         {
           const gchar *vendor, *renderer;
 
@@ -535,12 +560,6 @@ ekn_media_bin_gl_check (GtkWidget *widget)
 
           gdk_gl_context_clear_current ();
         }
-
-        if (error)
-          {
-            GST_WARNING ("Could not window to create GL context, %s", error->message);
-            g_error_free (error);
-          }
 
       g_once_init_leave (&gl_works, works);
     }
