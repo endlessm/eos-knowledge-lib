@@ -187,4 +187,5 @@ describe('View.Document', function () {
                 expect(view.toc.target_section).toBe(2);
             });
         });
+    });
 });
