@@ -86,8 +86,22 @@ AC_PATH_PROG([SCSS], [sassc], [notfound])
 AS_IF([test x$SCSS = xnotfound], [AC_MSG_ERROR([Sass compiler not found.
 Try installing "sassc" or its equivalent package.])])
 AC_ARG_VAR([SCSS], [Path to SCSS compiler])
+
+# --with-eos-hotdoc-theme-dir: Use eos-hotdoc-theme from a location besides the default /usr/share
+AC_ARG_WITH([eos-hotdoc-theme-dir], AS_HELP_STRING([--with-eos-hotdoc-theme-dir],
+    [Use eos-hotdoc-theme from a location besides the default /usr/share]),
+    [EOS_HOTDOC_THEME_DIR=$withval],
+    [EOS_HOTDOC_THEME_DIR=/usr/share/eos-hotdoc-theme])
+AC_MSG_CHECKING([for eos-hotdoc-theme directory])
+if test -d $EOS_HOTDOC_THEME_DIR; then
+    AC_MSG_RESULT([yes])
+    AC_SUBST([EOS_HOTDOC_THEME_DIR])
+else
+    AC_MSG_ERROR([Cannot find eos-hotdoc-theme directory])
+fi
+
 AS_IF([test x$enable_documentation = xyes],
-    [AC_CHECK_FILE([$prefix/share/eos-hotdoc-theme],,
+    [AC_CHECK_FILE([$EOS_HOTDOC_THEME_DIR],,
         [AC_MSG_ERROR([eos-hotdoc-theme is required for --enable-documentation.])])])
 
 AC_CACHE_SAVE
