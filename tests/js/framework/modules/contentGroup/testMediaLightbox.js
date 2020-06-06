@@ -68,7 +68,7 @@ describe('ContentGroup.MediaLightbox', function () {
             context: article_model.resources,
             media_model: nonexistent_media_object,
         });
-        expect(factory.get_created('view').length).toBe(1);
+        expect(factory.get_created('view').length).toBe(2);
     });
 
     it('closes the lightbox on history item without media model', function () {

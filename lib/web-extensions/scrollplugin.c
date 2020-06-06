@@ -100,8 +100,8 @@ void
 webkit_web_extension_initialize_with_user_data (WebKitWebExtension *extension,
                                                 const GVariant     *data_from_app)
 {
-  const gchar *well_known_name = g_variant_get_string ((GVariant *) data_from_app,
-                                                       NULL);
+  gchar *well_known_name;
+  g_variant_get ((GVariant *) data_from_app, "(sas)", &well_known_name, NULL);
 
   g_signal_connect (extension, "page-created",
                     G_CALLBACK (on_page_created), NULL);

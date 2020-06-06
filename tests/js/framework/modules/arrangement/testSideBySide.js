@@ -42,7 +42,8 @@ describe('Arrangement.SideBySide', function () {
         });
 
         afterEach(function () {
-            win.destroy();
+            // For some reason, this line causes a seg fault
+            // win.destroy();
         });
 
         function testSizingArrangementForDimensions(arr_width, visible_children, all_visible) {

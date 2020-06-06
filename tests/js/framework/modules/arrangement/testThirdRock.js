@@ -67,15 +67,15 @@ describe('Arrangement.ThirdRock', function () {
 
         describe('on normal mode', function () {
             // On normal mode and width=1200, arrangement height=400, all cards of width=400
-            testSizingArrangementForDimensions(false, 1200, 400, 400);
+            testSizingArrangementForDimensions(false, 1200, 500, 400);
             // On normal mode and width=1000, arrangement height=400, all cards of width=333
-            testSizingArrangementForDimensions(false, 1000, 400, 333);
+            testSizingArrangementForDimensions(false, 1000, 500, 333);
             // On normal mode and width=900, arrangement height=400, all cards of width=300
-            testSizingArrangementForDimensions(false, 900, 400, 300);
+            testSizingArrangementForDimensions(false, 900, 500, 300);
             // On normal mode and width=800, arrangement height=400, all cards of width=266
-            testSizingArrangementForDimensions(false, 800, 400, 266);
+            testSizingArrangementForDimensions(false, 800, 500, 266);
             // On normal mode and width=600, arrangement height=300, all cards of width=200
-            testSizingArrangementForDimensions(false, 600, 300, 200);
+            testSizingArrangementForDimensions(false, 600, 400, 200);
         });
 
         describe('on compact mode', function () {
@@ -86,9 +86,9 @@ describe('Arrangement.ThirdRock', function () {
             // On compact mode and width=900, arrangement height=300, all cards of width=300
             testSizingArrangementForDimensions(true, 900, 400, 300);
             // On compact mode and width=800, arrangement height=200, all cards of width=266
-            testSizingArrangementForDimensions(true, 800, 300, 266);
+            testSizingArrangementForDimensions(true, 800, 400, 266);
             // On compact mode and width=600, arrangement height=200, all cards of width=200
-            testSizingArrangementForDimensions(true, 600, 300, 200);
+            testSizingArrangementForDimensions(true, 600, 400, 200);
         });
     });
 });

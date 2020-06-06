@@ -187,25 +187,5 @@ describe('View.Document', function () {
                 expect(view.toc.target_section).toBe(2);
             });
         });
-
-        it('adds custom CSS if requested', function (done) {
-            view = new Document({
-                model: html_model,
-                custom_css: 'some_custom.css',
-            });
-            spyOn(view, '_create_webview').and.callFake(() => {
-                let webview = new MockWidgets.MockEknWebview();
-                spyOn(webview.renderer, 'set_custom_css_files');
-                return webview;
-            });
-            view.load_content_promise()
-            .then(() => {
-                expect(view.content_view.renderer.set_custom_css_files)
-                    .toHaveBeenCalledWith(jasmine.arrayContaining(['some_custom.css']));
-                done();
-            });
-            view.content_view.emit('load-changed', WebKit2.LoadEvent.COMMITTED);
-            view.content_view.emit('load-changed', WebKit2.LoadEvent.FINISHED);
-        });
     });
 });

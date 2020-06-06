@@ -161,7 +161,7 @@ describe('Introspection', function () {
 
     it('provides implemented interfaces', function () {
         expect(info.interfaces).toEqual(jasmine.arrayContaining([
-            'Gjs_Module',
+            'EknModule',
             'EknArrangement',
         ]));
     });

@@ -40,15 +40,15 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         this.parent(props);
         this._renderer = new Eknr.Renderer();
         this._custom_css_files = [];
+        this._custom_js_files = [];
     },
 
     set_custom_css_files: function (custom_css_files) {
         this._custom_css_files = custom_css_files;
     },
 
-    _get_app_override_css_files: function () {
-        let app = Gio.Application.get_default();
-        return app.get_web_overrides_css();
+    set_custom_js_files: function (custom_js_files) {
+        this._custom_js_files = custom_js_files;
     },
 
     _get_html: function (model) {
@@ -90,11 +90,14 @@ var ArticleHTMLRenderer = new Knowledge.Class({
             this.enable_scroll_manager);
     },
 
-    _get_wrapper_css_files: function () {
-        return ['clipboard.css', 'share-actions.css'].concat(this._custom_css_files);
+    _get_system_css_files: function () {
+        return [
+            'clipboard.css',
+            'share-actions.css',
+        ];
     },
 
-    _get_wrapper_js_files: function () {
+    _get_system_js_files: function () {
         const js_files = [
             'jquery-min.js',
             'clipboard-manager.js',
@@ -204,16 +207,23 @@ var ArticleHTMLRenderer = new Knowledge.Class({
     },
 
     _render_wrapper: function (content, model) {
-        let css_files = this._get_wrapper_css_files();
-        let js_files = this._get_wrapper_js_files();
+        let base_uri;
+
+        if (model.id.startsWith('ekn://')) {
+            base_uri = `${model.id}/`;
+        } else {
+            base_uri = `${model.id}`;
+        }
 
         let template = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/data/templates/article-wrapper.mst');
 
         return this._renderer.render_mustache_document_from_file(template, new GLib.Variant('a{sv}', {
             'id': new GLib.Variant('s', model.id),
-            'css-files': new GLib.Variant('as', css_files),
-            'custom-css-files': new GLib.Variant('as', this._get_app_override_css_files()),
-            'javascript-files': new GLib.Variant('as', js_files),
+            'base-uri': new GLib.Variant('s', base_uri),
+            'system-css-files': new GLib.Variant('as', this._get_system_css_files()),
+            'custom-css-files': new GLib.Variant('as', this._custom_css_files),
+            'system-js-files': new GLib.Variant('as', this._get_system_js_files()),
+            'custom-js-files': new GLib.Variant('as', this._custom_js_files),
             'copy-button-text': new GLib.Variant('s', _("Copy")),
             'share-actions': new GLib.Variant('s', this._get_share_actions_markup(model)),
             'content': new GLib.Variant('s', content),
@@ -232,24 +242,3 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         return this._render_wrapper(content, model);
     },
 });
-
-function _get_display_string_for_license(license) {
-    if (license === Endless.LICENSE_NO_LICENSE)
-        // TRANSLATORS: the text inside curly braces {blog-link} is going to be
-        // substituted in code. Please make sure that your translation contains
-        // {blog-link} and it is not translated.
-        return _("Content taken from {blog-link}.");
-    if (license === Endless.LICENSE_OWNER_PERMISSION)
-        // TRANSLATORS: the text inside curly braces {blog-link} is going to be
-        // substituted in code. Please make sure that your translation contains
-        // {blog-link} and it is not translated.
-        return _("Content courtesy of {blog-link}. Used with kind permission.");
-
-    let license_link = _to_license_link(license);
-    // TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
-    // is going to be substituted in code. Please make sure that your
-    // translation contains both {blog-link} and {license-link} and they are not
-    // translated.
-    return _("Content courtesy of {blog-link}, licensed under {license-link}.")
-        .replace('{license-link}', license_link);
-}

@@ -56,17 +56,31 @@ var EknWebview = new Knowledge.Class({
     _init: function (params) {
         let context = new WebKit2.WebContext();
         params.web_context = context;
+
+        let application = Gio.Application.get_default();
+
         // Need to handle this signal before we make a webview
         context.connect('initialize-web-extensions', () => {
             context.set_web_extensions_directory(Config.WEB_EXTENSION_DIR);
-            let well_known_name = new GLib.Variant('s', Utils.get_web_plugin_dbus_name());
-            context.set_web_extensions_initialization_user_data(well_known_name);
+            let web_extension_data = new GLib.Variant(
+                '(sas)',
+                [
+                    Utils.get_web_plugin_dbus_name(),
+                    application.get_all_resource_paths(),
+                ],
+            );
+            context.set_web_extensions_initialization_user_data(web_extension_data);
         });
         context.get_security_manager().register_uri_scheme_as_local('ekn');
         context.register_uri_scheme('ekn', this._load_ekn_uri.bind(this));
 
+        context.get_security_manager().register_uri_scheme_as_local('ekn+zim');
+        context.register_uri_scheme('ekn+zim', this._load_zim_uri.bind(this));
+
         this.parent(params);
         this.renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
+        this.renderer.set_custom_css_files(application.get_web_css_overrides());
+        this.renderer.set_custom_js_files(application.get_web_js_overrides());
 
         let web_settings = this.get_settings();
         web_settings.enable_developer_extras = should_enable_inspector();
@@ -147,11 +161,9 @@ var EknWebview = new Knowledge.Class({
             this._load_object(
                 `ekn:///${components[0]}`,
                 components.length === 1 ? null : components[1],
-            )
-            .then(([stream, content_type]) => {
+            ).then(([stream, content_type]) => {
                 req.finish(stream, -1, content_type);
-            })
-            .catch(function (error) {
+            }).catch(function (error) {
                 fail_with_error(error);
             });
         } else {
@@ -164,6 +176,26 @@ var EknWebview = new Knowledge.Class({
                 fail_with_error(error);
             }
         }
+    },
+
+    _load_zim_uri: function (req) {
+        let fail_with_error = (error) => {
+            logError(error);
+            req.finish_error(new Gio.IOErrorEnum({
+                message: error.message,
+                code: 0,
+            }));
+        };
+
+        let id = req.get_uri();
+
+        this._load_object(id)
+            .then(([stream, content_type]) => {
+                req.finish(stream, -1, content_type);
+            })
+            .catch(function (error) {
+                fail_with_error(error);
+            });
     },
 
     // Tell MathJax to stop any processing; should improve performance when

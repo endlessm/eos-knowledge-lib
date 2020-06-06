@@ -286,8 +286,7 @@ webkit_web_extension_initialize_with_user_data (WebKitWebExtension *extension,
                                                 const GVariant     *data_from_app)
 {
   TooltipPluginContext *ctxt = g_new0 (TooltipPluginContext, 1);
-  ctxt->base_name = g_strdup (g_variant_get_string ((GVariant *) data_from_app,
-                                                     NULL));
+  g_variant_get ((GVariant *) data_from_app, "(sas)", &ctxt->base_name, NULL);
 
   g_signal_connect (extension, "page-created", G_CALLBACK (on_page_created),
                     ctxt);

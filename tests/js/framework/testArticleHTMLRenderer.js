@@ -91,7 +91,14 @@ describe('Article HTML Renderer', function () {
     it('includes custom css on any model type', function () {
         renderer.set_custom_css_files(['custom.css'])
         all_models.forEach(m =>
-            expect(renderer.render(m)).toMatch('custom.css')
+            expect(renderer.render(m)).toMatch('<link rel="stylesheet" type="text/css" href="custom.css"/>')
+        );
+    });
+
+    it('includes custom js on any model type', function () {
+        renderer.set_custom_js_files(['custom.js'])
+        all_models.forEach(m =>
+            expect(renderer.render(m)).toMatch('<script type="text/javascript" src="custom.js"></script>')
         );
     });
 
