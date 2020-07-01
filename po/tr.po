@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-01 04:57+0000\n"
-"PO-Revision-Date: 2019-05-07 03:45+0000\n"
+"POT-Creation-Date: 2019-08-14 04:57+0000\n"
+"PO-Revision-Date: 2019-09-05 00:42+0000\n"
 "Last-Translator: Muha Aliss <muhaaliss@gmail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/endless-os/eos-knowledge-lib/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -50,7 +50,7 @@ msgstr "Ups! Bir hata oluştu."
 
 #: data/widgets/contentGroup/contentGroup.ui:40
 msgid "Download support info"
-msgstr ""
+msgstr "Destek bilgisini indirin"
 
 #: data/widgets/contentGroup/contentGroup.ui:44
 msgid ""
@@ -114,8 +114,8 @@ msgstr ""
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s:%s dakika"
+msgstr[1] "%s:%s dakika"
 
 #: js/framework/interfaces/card.js:309
 #, javascript-format
@@ -131,31 +131,31 @@ msgstr ""
 
 #: js/framework/modules/banner/context.js:52
 msgid "All Categories"
-msgstr ""
+msgstr "Tüm Kategoriler"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep the %s token in your translation.
 #: js/framework/modules/banner/context.js:61
 #, javascript-format
 msgid "Search results for “%s”"
-msgstr ""
+msgstr "\"%s\" için arama sonuçları"
 
 #: js/framework/modules/banner/search.js:46
 #, javascript-format
 msgid "Results for “%s”"
-msgstr ""
+msgstr "\"%s\" için sonuçlar"
 
 #: js/framework/modules/contentGroup/contentGroup.js:190
 msgid "See more"
-msgstr ""
+msgstr "Daha fazla"
 
 #: js/framework/modules/contentGroup/noResultsMessage.js:52
 msgid "We're sorry, there are no results that match your search."
-msgstr ""
+msgstr "Üzgünüz, aramanızla eşleşen sonuç bulunamadı."
 
 #: js/framework/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
-msgstr ""
+msgstr "TÜM KATEGORİLERİ GÖR"
 
 #: js/framework/modules/layout/hamburgerBasement.js:51
 msgid "HOME"
@@ -172,30 +172,30 @@ msgstr ""
 #. example: "Jane Austen and Henry Miller and William Clifford"
 #: js/framework/utils.js:111
 msgid "by {author}"
-msgstr ""
+msgstr "{author} tarafından"
 
 #: js/framework/utils.js:111
 msgid "and"
-msgstr ""
+msgstr "ve"
 
 #: js/framework/widgets/searchBox.js:69
 msgid "See more results"
-msgstr ""
+msgstr "Daha fazla sonuç gör"
 
 #: js/framework/widgets/webShareDialog.js:181
 msgid "Retry"
-msgstr ""
+msgstr "Tekrar"
 
 #. Show expired session message
 #: js/framework/widgets/webShareDialog.js:364
 msgid "Please sign in again to share this link"
-msgstr ""
+msgstr "Bu bağlantıyı paylaşmak için lütfen tekrar oturum açın"
 
 #: js/framework/widgets/webShareDialog.js:365
 #: js/framework/widgets/webShareDialog.js:417
 msgid "Sign In"
-msgstr ""
+msgstr "Oturum aç"
 
 #: js/framework/widgets/webShareDialog.js:416
 msgid "Please sign in to share this link"
-msgstr ""
+msgstr "Bu bağlantıyı paylaşmak için lütfen oturum açın"

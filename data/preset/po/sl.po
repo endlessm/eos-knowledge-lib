@@ -1,9 +1,10 @@
+# 
 # Translators:
 # Shaddai, 2019
 # 
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2019-05-01 04:57+0000\n"
+"POT-Creation-Date: 2019-08-14 04:57+0000\n"
 "Last-Translator: Shaddai, 2019\n"
 "Language-Team: Slovenian (https://www.transifex.com/endless-os/teams/9016/sl/)\n"
 "MIME-Version: 1.0\n"

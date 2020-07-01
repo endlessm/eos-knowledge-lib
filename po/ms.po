@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# abuyop <abuyop@gmail.com>, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-01 04:57+0000\n"
-"PO-Revision-Date: 2018-09-28 15:19+0000\n"
-"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
+"POT-Creation-Date: 2019-08-14 04:57+0000\n"
+"PO-Revision-Date: 2019-09-19 08:32+0000\n"
+"Last-Translator: abuyop <abuyop@gmail.com>\n"
 "Language-Team: Malay (http://www.transifex.com/endless-os/eos-knowledge-lib/language/ms/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,43 +20,43 @@ msgstr ""
 
 #: data/widgets/noContentDialog.ui:8
 msgid "Oops! No content."
-msgstr ""
+msgstr "Alamak! Tiada apa-apa kandungan."
 
 #: data/widgets/noContentDialog.ui:9
 msgid ""
 "The application could not find content to show. Please uninstall and re-"
 "install the application from the App Center."
-msgstr ""
+msgstr "Aplikasi tidak menemui apa-apa kandungan untuk dipaparkan. Sila nyahpasang dan pasang-semula aplikasi melalui Pusat Apl."
 
 #: data/widgets/noContentDialog.ui:23
 msgid "Open App Center"
-msgstr ""
+msgstr "Buka Pusat Aplikasi"
 
 #: data/widgets/noContentDialog.ui:36
 msgid "Close"
-msgstr ""
+msgstr "Tutup"
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
-msgstr ""
+msgstr "Artikel Berikutnya"
 
 #: data/widgets/card/sequence.ui:60
 msgid "Previous Article"
-msgstr ""
+msgstr "Artikel Terdahulu"
 
 #: data/widgets/contentGroup/contentGroup.ui:26
 msgid "Oops! There was an error."
-msgstr ""
+msgstr "Alamak! Ada ralat berlaku."
 
 #: data/widgets/contentGroup/contentGroup.ui:40
 msgid "Download support info"
-msgstr ""
+msgstr "Muat turun maklumat sokongan"
 
 #: data/widgets/contentGroup/contentGroup.ui:44
 msgid ""
 "Click here to download a file with information that will help us track down "
 "the problem."
-msgstr ""
+msgstr "Klik di sini untuk memuat turun fail dengan maklumat yang dapat membantu kami menjejak masalah tersebut."
 
 #: data/widgets/contentGroup/noResultsMessage.ui:37
 msgid ""
@@ -64,33 +65,33 @@ msgid ""
 "Check your spelling\n"
 "Try other words that mean the same thing\n"
 "Try using more general words"
-msgstr ""
+msgstr "Kami menyarankan anda:\n\nPeriksa ejaan anda\nCuba perkataan lain yang seerti\nCuba menggunakan perkataan-perkataan lebih umum"
 
 #: data/widgets/layout/sideMenu.ui:95
 msgid "Home"
-msgstr ""
+msgstr "Rumah"
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license"
-msgstr ""
+msgstr "Lihat lesen"
 
 #: js/framework/articleHTMLRenderer.js:208
 msgid "Copy"
-msgstr ""
+msgstr "Salin"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
 #: js/framework/articleHTMLRenderer.js:232
 msgid "Content taken from {blog-link}."
-msgstr ""
+msgstr "Kandungan diambil daripada {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
 #: js/framework/articleHTMLRenderer.js:237
 msgid "Content courtesy of {blog-link}. Used with kind permission."
-msgstr ""
+msgstr "Kandungan atas budi-bicara daripada {blog-link}. Digunakan dengan keizinan."
 
 #. TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
 #. is going to be substituted in code. Please make sure that your
@@ -98,69 +99,69 @@ msgstr ""
 #. translated.
 #: js/framework/articleHTMLRenderer.js:244
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
-msgstr ""
+msgstr "Kandungan atas budi-bicara daripada {blog-link}. dilesenkan bawah {license-link}."
 
 #: js/framework/meshHistoryStore.js:58
 #, javascript-format
 msgid "Results were found for “%s”"
-msgstr ""
+msgstr "Keputusan ditemui bagi \"%s\""
 
 #: js/framework/historyStore.js:409
 msgid "Shared from Endless"
-msgstr ""
+msgstr "Dikongsi daripada Endless"
 
 #: js/framework/interfaces/card.js:245
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
-msgstr[0] ""
+msgstr[0] "%s:%s minit"
 
 #: js/framework/interfaces/card.js:309
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
-msgstr[0] ""
+msgstr[0] "%d item"
 
 #: js/framework/modules/banner/context.js:38
 #: js/framework/modules/banner/context.js:49
 msgid "Highlights"
-msgstr ""
+msgstr "Sorotan"
 
 #: js/framework/modules/banner/context.js:52
 msgid "All Categories"
-msgstr ""
+msgstr "Semua Kategori"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep the %s token in your translation.
 #: js/framework/modules/banner/context.js:61
 #, javascript-format
 msgid "Search results for “%s”"
-msgstr ""
+msgstr "Hasil gelintar bagi \"%s\""
 
 #: js/framework/modules/banner/search.js:46
 #, javascript-format
 msgid "Results for “%s”"
-msgstr ""
+msgstr "Keputusan bagi \"%s\""
 
 #: js/framework/modules/contentGroup/contentGroup.js:190
 msgid "See more"
-msgstr ""
+msgstr "Lihat lagi"
 
 #: js/framework/modules/contentGroup/noResultsMessage.js:52
 msgid "We're sorry, there are no results that match your search."
-msgstr ""
+msgstr "Mohon maaf, tiada keputusan yang sepadan dengan penggelintaran anda."
 
 #: js/framework/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
-msgstr ""
+msgstr "LIHAT SEMUA KATEGORI"
 
 #: js/framework/modules/layout/hamburgerBasement.js:51
 msgid "HOME"
-msgstr ""
+msgstr "RUMAH"
 
 #: js/framework/modules/layout/placeholder.js:25
 msgid "Placeholder"
-msgstr ""
+msgstr "Pemegang Tempat"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that
@@ -169,30 +170,30 @@ msgstr ""
 #. example: "Jane Austen and Henry Miller and William Clifford"
 #: js/framework/utils.js:111
 msgid "by {author}"
-msgstr ""
+msgstr "mengikut {author}"
 
 #: js/framework/utils.js:111
 msgid "and"
-msgstr ""
+msgstr "dan"
 
 #: js/framework/widgets/searchBox.js:69
 msgid "See more results"
-msgstr ""
+msgstr "Lihat lagi keputusan"
 
 #: js/framework/widgets/webShareDialog.js:181
 msgid "Retry"
-msgstr ""
+msgstr "Cuba lagi"
 
 #. Show expired session message
 #: js/framework/widgets/webShareDialog.js:364
 msgid "Please sign in again to share this link"
-msgstr ""
+msgstr "Sila daftar masuk sekali lagi untuk kongsikan pautan ini"
 
 #: js/framework/widgets/webShareDialog.js:365
 #: js/framework/widgets/webShareDialog.js:417
 msgid "Sign In"
-msgstr ""
+msgstr "Daftar masuk"
 
 #: js/framework/widgets/webShareDialog.js:416
 msgid "Please sign in to share this link"
-msgstr ""
+msgstr "Sila daftar masuk untuk kongsikan pautan ini"
