@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-14 04:57+0000\n"
-"PO-Revision-Date: 2018-09-28 15:19+0000\n"
+"POT-Creation-Date: 2020-07-01 00:34+0000\n"
+"PO-Revision-Date: 2020-07-01 00:38+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Thai (http://www.transifex.com/endless-os/eos-knowledge-lib/language/th/)\n"
 "MIME-Version: 1.0\n"
@@ -75,38 +75,16 @@ msgstr "โฮม"
 msgid "View the license"
 msgstr "ดูใบอนุญาต"
 
-#: js/framework/articleHTMLRenderer.js:208
+#: js/framework/articleHTMLRenderer.js:227
 msgid "Copy"
 msgstr "คัดลอก"
-
-#. TRANSLATORS: the text inside curly braces {blog-link} is going to be
-#. substituted in code. Please make sure that your translation contains
-#. {blog-link} and it is not translated.
-#: js/framework/articleHTMLRenderer.js:232
-msgid "Content taken from {blog-link}."
-msgstr "เนื้อหานำมาจาก {blog-link}"
-
-#. TRANSLATORS: the text inside curly braces {blog-link} is going to be
-#. substituted in code. Please make sure that your translation contains
-#. {blog-link} and it is not translated.
-#: js/framework/articleHTMLRenderer.js:237
-msgid "Content courtesy of {blog-link}. Used with kind permission."
-msgstr "เนื้อหาจาก {blog-link}  นำมาใช้งานโดยได้รับอนุญาตแล้ว"
-
-#. TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
-#. is going to be substituted in code. Please make sure that your
-#. translation contains both {blog-link} and {license-link} and they are not
-#. translated.
-#: js/framework/articleHTMLRenderer.js:244
-msgid "Content courtesy of {blog-link}, licensed under {license-link}."
-msgstr "เนื้อหาจาก {blog-link} สงวนลิขสิทธิ์ภายใต้ {license-link}"
 
 #: js/framework/meshHistoryStore.js:58
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "ผลลัพธ์ที่พบสำหรับ “%s”"
 
-#: js/framework/historyStore.js:409
+#: js/framework/historyStore.js:413
 msgid "Shared from Endless"
 msgstr "แชร์จาก Endless"
 
@@ -168,11 +146,11 @@ msgstr "ผู้รับผิดชอบ "
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/framework/utils.js:111
+#: js/framework/utils.js:116
 msgid "by {author}"
 msgstr "โดย {author} "
 
-#: js/framework/utils.js:111
+#: js/framework/utils.js:116
 msgid "and"
 msgstr "และ"
 

@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-14 04:57+0000\n"
-"PO-Revision-Date: 2019-04-12 11:34+0000\n"
-"Last-Translator: Ardit Dani <ardit.dani@gmail.com>\n"
+"POT-Creation-Date: 2020-07-01 00:34+0000\n"
+"PO-Revision-Date: 2020-07-01 00:38+0000\n"
+"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Albanian (http://www.transifex.com/endless-os/eos-knowledge-lib/language/sq/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -75,38 +75,16 @@ msgstr "Shtëpi"
 msgid "View the license"
 msgstr "Shikoni liçensën"
 
-#: js/framework/articleHTMLRenderer.js:208
+#: js/framework/articleHTMLRenderer.js:227
 msgid "Copy"
 msgstr "Kopje"
-
-#. TRANSLATORS: the text inside curly braces {blog-link} is going to be
-#. substituted in code. Please make sure that your translation contains
-#. {blog-link} and it is not translated.
-#: js/framework/articleHTMLRenderer.js:232
-msgid "Content taken from {blog-link}."
-msgstr "Përmbajtja e marrë nga {blog-link}."
-
-#. TRANSLATORS: the text inside curly braces {blog-link} is going to be
-#. substituted in code. Please make sure that your translation contains
-#. {blog-link} and it is not translated.
-#: js/framework/articleHTMLRenderer.js:237
-msgid "Content courtesy of {blog-link}. Used with kind permission."
-msgstr "Përmbajtja e mirësjelljes së {blog-link}. Përdoret me leje të mirë."
-
-#. TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
-#. is going to be substituted in code. Please make sure that your
-#. translation contains both {blog-link} and {license-link} and they are not
-#. translated.
-#: js/framework/articleHTMLRenderer.js:244
-msgid "Content courtesy of {blog-link}, licensed under {license-link}."
-msgstr "Përmbajtja e mirësjelljes së {blog-link}, liçensuar nën {license-link}."
 
 #: js/framework/meshHistoryStore.js:58
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "Rezultatet u gjetën për “%s”"
 
-#: js/framework/historyStore.js:409
+#: js/framework/historyStore.js:413
 msgid "Shared from Endless"
 msgstr "Ndarë nga Endless"
 
@@ -170,11 +148,11 @@ msgstr "Mbajtëse"
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/framework/utils.js:111
+#: js/framework/utils.js:116
 msgid "by {author}"
 msgstr "nga {autor}"
 
-#: js/framework/utils.js:111
+#: js/framework/utils.js:116
 msgid "and"
 msgstr "dhe"
 
