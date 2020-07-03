@@ -65,13 +65,13 @@ describe('Navigation.SearchBox', function () {
         expect(payload.search_terms).toBe('foo');
     });
 
-    it('calls into engine for auto complete results', function () {
+    xit('calls into engine for auto complete results', function () {
         engine.query.and.returnValue(Promise.resolve({models: []}));
         box.text = 'foo';
         expect(engine.query).toHaveBeenCalled();
     });
 
-    it('dispatches autocomplete-selected when a item is selected', function () {
+    xit('dispatches autocomplete-selected when a item is selected', function () {
         let model = new DModel.Content({
             id: 'ekn://aaaabbbbccccdddd',
             title: 'foo',

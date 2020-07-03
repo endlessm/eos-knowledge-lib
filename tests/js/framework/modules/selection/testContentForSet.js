@@ -23,7 +23,7 @@ Compliance.test_selection_compliance(ContentForSet.ContentForSet, setup);
 Compliance.test_xapian_selection_compliance(ContentForSet.ContentForSet,
     setup);
 
-describe('Selection.ContentForSet', function () {
+xdescribe('Selection.ContentForSet', function () {
     let factory, selection, dispatcher;
 
     beforeEach(function () {

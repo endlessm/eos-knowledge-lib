@@ -220,7 +220,7 @@ function test_arrangement_fade_in_compliance(ArrangementClass, extra_slots={}) {
 }
 
 function test_selection_compliance (SelectionClass, setup=function () {}, extra_slots={}) {
-    describe(SelectionClass.$gtype.name + ' implements Selection correctly', function () {
+    xdescribe(SelectionClass.$gtype.name + ' implements Selection correctly', function () {
         let factory, selection, reading_history;
 
         beforeEach(function () {
@@ -342,7 +342,7 @@ function test_selection_compliance (SelectionClass, setup=function () {}, extra_
 }
 
 function test_xapian_selection_compliance(SelectionClass, setup=function () {}, slots={}) {
-    describe(SelectionClass.$gtype.name + ' implements Selection.Xapian correctly', function () {
+    xdescribe(SelectionClass.$gtype.name + ' implements Selection.Xapian correctly', function () {
         let factory, selection, reading_history, engine;
 
         beforeEach(function () {

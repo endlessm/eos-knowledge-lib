@@ -18,7 +18,7 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
-describe('Layout.ArticleStack', function () {
+xdescribe('Layout.ArticleStack', function () {
     let module, view, selection, root, factory, dispatcher, article_model;
     let store;
 

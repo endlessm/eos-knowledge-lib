@@ -31,7 +31,7 @@ describe('Arrangement.SideBySide', function () {
         });
     });
 
-    describe('sizing allocation', function () {
+    xdescribe('sizing allocation', function () {
         let win;
 
         beforeEach(function () {

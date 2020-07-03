@@ -177,7 +177,7 @@ describe('MeshHistoryStore', function () {
     test_search_action(Actions.SEARCH_TEXT_ENTERED, 'search text entered');
     test_search_action(Actions.DBUS_LOAD_QUERY_CALLED, 'desktop search opened');
 
-    describe('when link in article clicked', function () {
+    xdescribe('when link in article clicked', function () {
         beforeEach(function() {
             let model = new DModel.Article({
                 id: 'ekn://foo/bar',
@@ -201,7 +201,7 @@ describe('MeshHistoryStore', function () {
         });
     });
 
-    describe('when a media link in article clicked', function () {
+    xdescribe('when a media link in article clicked', function () {
         it('shows lightbox', function () {
             let model = new DModel.Media({
                 id: 'ekn://foo/pix',
@@ -216,7 +216,7 @@ describe('MeshHistoryStore', function () {
         });
     });
 
-    describe('when desktop search result opened', function () {
+    xdescribe('when desktop search result opened', function () {
         let model;
 
         it('loads an item', function () {

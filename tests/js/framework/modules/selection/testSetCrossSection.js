@@ -23,7 +23,7 @@ Compliance.test_selection_compliance(SetCrossSection.SetCrossSection, setup);
 Compliance.test_xapian_selection_compliance(SetCrossSection.SetCrossSection,
     setup);
 
-describe('Selection.SetCrossSection', function () {
+xdescribe('Selection.SetCrossSection', function () {
     let factory, selection, dispatcher;
 
     beforeEach(function () {
