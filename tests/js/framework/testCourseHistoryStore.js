@@ -51,7 +51,7 @@ describe('CourseHistoryStore', function () {
         expect(store.get_current_item().page_type).toBe(Pages.HOME);
     });
 
-    xit('shows the set page when a set model is clicked', function () {
+    it('shows the set page when a set model is clicked', function () {
         let model = new DModel.Set();
         dispatcher.dispatch({
             action_type: Actions.ITEM_CLICKED,
@@ -60,7 +60,7 @@ describe('CourseHistoryStore', function () {
         expect(store.get_current_item().page_type).toBe(Pages.SET);
     });
 
-    xit('updates current-subset when a subset model is clicked', function () {
+    it('updates current-subset when a subset model is clicked', function () {
         spyOn(store, 'set_current_subset');
         let model = new DModel.Set({
             tags: ['foo'],
@@ -127,7 +127,7 @@ describe('CourseHistoryStore', function () {
         });
     });
 
-    xdescribe('when desktop search result opened', function () {
+    describe('when desktop search result opened', function () {
         let model;
 
         beforeEach(function () {
@@ -154,7 +154,7 @@ describe('CourseHistoryStore', function () {
         });
     });
 
-    xdescribe('when desktop search result opened for media', function () {
+    describe('when desktop search result opened for media', function () {
         let model;
 
         beforeEach(function () {

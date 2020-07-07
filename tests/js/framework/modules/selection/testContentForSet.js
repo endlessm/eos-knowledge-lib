@@ -1,4 +1,4 @@
-const {DModel, Gtk} = imports.gi;
+const {DModel, Gio, Gtk} = imports.gi;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -7,6 +7,7 @@ const Actions = imports.framework.actions;
 const ContentForSet = imports.framework.modules.selection.contentForSet;
 const Compliance = imports.tests.compliance;
 const HistoryStore = imports.framework.historyStore;
+const MockApplication = imports.tests.mockApplication;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
 
@@ -23,10 +24,11 @@ Compliance.test_selection_compliance(ContentForSet.ContentForSet, setup);
 Compliance.test_xapian_selection_compliance(ContentForSet.ContentForSet,
     setup);
 
-xdescribe('Selection.ContentForSet', function () {
+describe('Selection.ContentForSet', function () {
     let factory, selection, dispatcher;
 
     beforeEach(function () {
+        MockApplication.mock_default();
         dispatcher = MockDispatcher.mock_default();
         [selection, factory] = MockFactory.setup_tree({
             type: ContentForSet.ContentForSet,

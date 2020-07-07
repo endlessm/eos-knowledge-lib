@@ -113,14 +113,14 @@ describe('View.Document', function () {
             view.load_content_promise().then(done);
         });
 
-        xit('can be loaded', function () {});
+        it('can be loaded', function () {});
 
         it('never show a table of contents', function () {
             expect(view.toc.visible).toBe(false);
         });
     });
 
-    xdescribe('with html model', function () {
+    describe('with html model', function () {
         let html_model;
         beforeEach(function (done) {
             html_model = DModel.Article.new_from_props({
@@ -140,7 +140,7 @@ describe('View.Document', function () {
 
         it('can be loaded', function () {});
 
-        describe('table of contents', function () {
+        xdescribe('table of contents', function () {
             let win;
             const TOP_BOTTOM_BAR_HEIGHT = 36 + 30;
             beforeEach(function () {

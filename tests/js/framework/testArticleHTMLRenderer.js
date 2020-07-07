@@ -3,6 +3,7 @@ const ByteArray = imports.byteArray;
 
 const ArticleHTMLRenderer = imports.framework.articleHTMLRenderer;
 const Utils = imports.tests.utils;
+const MockApplication = imports.tests.mockApplication;
 const SetMap = imports.framework.setMap;
 
 describe('Article HTML Renderer', function () {
@@ -12,14 +13,12 @@ describe('Article HTML Renderer', function () {
 
     beforeEach(function () {
         Utils.register_gresource();
+        MockApplication.mock_default();
         const engine = DModel.Engine.get_default();
         const html_byteArray = ByteArray.fromString('<html><body><p>dummy html</p></body></html>');
         const html_gbytes = ByteArray.toGBytes(html_byteArray);
         spyOn(engine, 'get_domain').and.returnValue({
             read_uri: () => [true, html_gbytes, 'text/html']
-        });
-        spyOn(Gio.Application, 'get_default').and.returnValue({
-            get_web_overrides_css: function () { return []; },
         });
 
         renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();

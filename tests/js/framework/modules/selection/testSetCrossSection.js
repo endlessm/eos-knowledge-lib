@@ -7,6 +7,7 @@ const Actions = imports.framework.actions;
 const SetCrossSection = imports.framework.modules.selection.setCrossSection;
 const Compliance = imports.tests.compliance;
 const HistoryStore = imports.framework.historyStore;
+const MockApplication = imports.tests.mockApplication;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
 
@@ -23,10 +24,11 @@ Compliance.test_selection_compliance(SetCrossSection.SetCrossSection, setup);
 Compliance.test_xapian_selection_compliance(SetCrossSection.SetCrossSection,
     setup);
 
-xdescribe('Selection.SetCrossSection', function () {
+describe('Selection.SetCrossSection', function () {
     let factory, selection, dispatcher;
 
     beforeEach(function () {
+        MockApplication.mock_default();
         dispatcher = MockDispatcher.mock_default();
         [selection, factory] = MockFactory.setup_tree({
             type: SetCrossSection.SetCrossSection,

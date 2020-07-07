@@ -33,7 +33,7 @@ var SampleXapianSelection = new Module.Class({
     },
 });
 
-xdescribe('Selection.Xapian superclass', function () {
+describe('Selection.Xapian superclass', function () {
     let engine, factory, selection;
 
     beforeEach(function () {

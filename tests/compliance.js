@@ -19,7 +19,7 @@ const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 function test_card_compliance(CardClass, setup=function () {}) {
-    describe(CardClass.$gtype.name + ' implements Card correctly', function () {
+    xdescribe(CardClass.$gtype.name + ' implements Card correctly', function () {
         beforeEach(function () {
             jasmine.addMatchers(CssClassMatcher.customMatchers);
         });
@@ -47,7 +47,7 @@ function test_card_compliance(CardClass, setup=function () {}) {
         });
     });
 
-    describe(CardClass.$gtype.name + ' implements the highlighting part of Card', function () {
+    xdescribe(CardClass.$gtype.name + ' implements the highlighting part of Card', function () {
         let model, card, synopsis_label;
 
         beforeEach(function () {
@@ -220,7 +220,7 @@ function test_arrangement_fade_in_compliance(ArrangementClass, extra_slots={}) {
 }
 
 function test_selection_compliance (SelectionClass, setup=function () {}, extra_slots={}) {
-    xdescribe(SelectionClass.$gtype.name + ' implements Selection correctly', function () {
+    describe(SelectionClass.$gtype.name + ' implements Selection correctly', function () {
         let factory, selection, reading_history;
 
         beforeEach(function () {
@@ -342,7 +342,7 @@ function test_selection_compliance (SelectionClass, setup=function () {}, extra_
 }
 
 function test_xapian_selection_compliance(SelectionClass, setup=function () {}, slots={}) {
-    xdescribe(SelectionClass.$gtype.name + ' implements Selection.Xapian correctly', function () {
+    describe(SelectionClass.$gtype.name + ' implements Selection.Xapian correctly', function () {
         let factory, selection, reading_history, engine;
 
         beforeEach(function () {
