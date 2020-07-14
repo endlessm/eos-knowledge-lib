@@ -3,7 +3,7 @@
 /* exported test_arrangement_compliance, test_arrangement_fade_in_compliance,
 test_card_compliance, test_card_container_fade_in_compliance */
 
-const {DModel, Gtk} = imports.gi;
+const {DModel, GLib, Gtk} = imports.gi;
 const Lang = imports.lang;
 
 const Utils = imports.tests.utils;
@@ -19,7 +19,7 @@ const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 function test_card_compliance(CardClass, setup=function () {}) {
-    xdescribe(CardClass.$gtype.name + ' implements Card correctly', function () {
+    describe(CardClass.$gtype.name + ' implements Card correctly', function () {
         beforeEach(function () {
             jasmine.addMatchers(CssClassMatcher.customMatchers);
         });
@@ -47,7 +47,7 @@ function test_card_compliance(CardClass, setup=function () {}) {
         });
     });
 
-    xdescribe(CardClass.$gtype.name + ' implements the highlighting part of Card', function () {
+    describe(CardClass.$gtype.name + ' implements the highlighting part of Card', function () {
         let model, card, synopsis_label;
 
         beforeEach(function () {
@@ -71,7 +71,8 @@ function test_card_compliance(CardClass, setup=function () {}) {
             let text = layout.get_text();
             let spans = [];
             attr_list.filter(attr => {
-                spans.push(text.slice(attr.start_index, attr.end_index));
+                if (attr.end_index < GLib.MAXUINT32)
+                    spans.push(text.slice(attr.start_index, attr.end_index));
                 return false;
             });
             return spans;
