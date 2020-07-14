@@ -140,7 +140,7 @@ describe('View.Document', function () {
 
         it('can be loaded', function () {});
 
-        xdescribe('table of contents', function () {
+        describe('table of contents', function () {
             let win;
             const TOP_BOTTOM_BAR_HEIGHT = 36 + 30;
             beforeEach(function () {
