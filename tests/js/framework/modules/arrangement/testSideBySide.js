@@ -48,9 +48,10 @@ describe('Arrangement.SideBySide', function () {
 
         function testSizingArrangementForDimensions(arr_width, visible_children, all_visible) {
             let message = 'handles arrangement for width=' + arr_width;
-            let x = arr_width - (visible_children * CHILD_WIDTH);
 
             it (message, function () {
+                let x = arr_width - (visible_children * CHILD_WIDTH);
+
                 win.set_size_request(arr_width, 100);
                 Utils.update_gui();
 
@@ -79,15 +80,15 @@ describe('Arrangement.SideBySide', function () {
         testSizingArrangementForDimensions(2000, 10, true);
         // At width=1000px, all ten cards should be visible
         testSizingArrangementForDimensions(1000, 10, true);
-        // At width=950px, 9 cards should be visible
-        testSizingArrangementForDimensions(950, 9, false);
-        // At width=850px, 8 cards should be visible
-        testSizingArrangementForDimensions(850, 8, false);
-        // At width=750px, 7 cards should be visible
-        testSizingArrangementForDimensions(750, 7, false);
-        // At width=250px, 2 cards should be visible
-        testSizingArrangementForDimensions(250, 2, false);
-        // At width=150px, 1 cards should be visible
-        testSizingArrangementForDimensions(150, 1, false);
+        // At width=960px, 9 cards should be visible
+        testSizingArrangementForDimensions(960, 9, false);
+        // At width=860px, 8 cards should be visible
+        testSizingArrangementForDimensions(860, 8, false);
+        // At width=760px, 7 cards should be visible
+        testSizingArrangementForDimensions(760, 7, false);
+        // At width=260px, 2 cards should be visible
+        testSizingArrangementForDimensions(260, 2, false);
+        // At width=160px, 1 cards should be visible
+        testSizingArrangementForDimensions(160, 1, false);
     });
 });
