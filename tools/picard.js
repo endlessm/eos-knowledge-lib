@@ -101,7 +101,6 @@ function main () {
         Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
     Gtk.IconTheme.get_default().add_resource_path('/com/endlessm/knowledge/data/icons');
-    Gtk.Settings.get_for_screen(Gdk.Screen.get_default()).gtk_icon_theme_name = 'EndlessOS';
 
     build_ui();
     load_arrangement(widgets.arrangement_combo_box.get_active_text(), widgets.card_combo_box.get_active_text());
