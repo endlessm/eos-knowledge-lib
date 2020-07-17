@@ -187,7 +187,7 @@ var ArticleHTMLRenderer = new Knowledge.Class({
         }
 
         function get_button_markup (network) {
-            let markup = get_svg(`file:///usr/share/runtime/share/icons/EndlessOS/scalable/apps/${network}-symbolic.svg`);
+            let markup = get_svg(`file:///run/host/share/icons/EndlessOS/scalable/apps/${network}-symbolic.svg`);
 
             if (!markup)
                 markup = get_svg(`resource:///com/endlessm/knowledge/data/icons/scalable/apps/${network}-symbolic.svg`);
