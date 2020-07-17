@@ -347,9 +347,6 @@ var Application = new Knowledge.Class({
         }
 
         this._initialize_set_map();
-
-        let screen = Gdk.Screen.get_default();
-        Gtk.Settings.get_for_screen(screen).gtk_icon_theme_name = 'EndlessOS';
     },
 
     LoadItem: function (id, search_terms, timestamp) {
