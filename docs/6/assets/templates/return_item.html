@@ -1,0 +1,23 @@
+@require(return_item)
+
+<div class="row">
+	<div class="col-sm-12 col-md-2">
+		<p>
+		@if return_item.name:
+		<i>@return_item.name:</i>
+		@end
+		</p>
+	</div>
+	<div class="col-sm-12 col-md-6 return-value-description">
+		@return_item.formatted_doc
+	</div>
+	<div class="col-sm-12 col-md-2 return-value-link">
+		@return_item.formatted_link
+	</div>
+	<div class="col-sm-12 col-md-2 return-value-extra">
+		@for name, ex in return_item.extension_contents.items():
+		@ex
+		@end
+		</tr>
+	</div>
+</div>

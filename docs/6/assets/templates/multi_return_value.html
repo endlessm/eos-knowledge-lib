@@ -1,0 +1,15 @@
+@require(return_items)
+@if return_items:
+<div class="multi_return_value_container">
+	@if len (return_items) == 1:
+	<h4>Returns:</h4>
+	@else:
+	<h4>Returns a tuple made of</h4>
+	@end
+	<div class="container-fluid">
+		@for item in return_items:
+		@item.detailed_description
+		@end
+	</div>
+</div>
+@end
