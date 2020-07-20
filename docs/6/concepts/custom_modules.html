@@ -1,0 +1,112 @@
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+
+<title>Custom Modules</title>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+
+</head>
+
+<body>
+<div class="page_container">
+		
+<div id="page-description" data-hotdoc-source="custom_modules.md" data-hotdoc-role="main">
+<h1 id="custom-modules">Custom Modules</h1>
+<p>The framework provides <a href="modules.html">modules</a> that app creators can combine to create their apps. Now, they can also write and use their own modules using <a href="https://gitlab.gnome.org/GNOME/gjs/wikis/Home">Gjs</a>.</p>
+<h2 id="writing-a-module">Writing a Module</h2>
+<p>A custom module can look as simple as the example below. Note that the custom <code>Fixed</code> class is created from the <code>Module</code> class, which is the basic requirement. Other requirements could apply depending on what type of module it is or, more importantly, the type of <a href="modules.html">slot</a> it should go into.</p>
+<pre><code class="language-javascript">const Gtk = imports.gi.Gtk;
+const Module = imports.framework.interfaces.module;
+
+var Fixed = new Module.Class({
+    Name: 'Banner.Fixed',
+    Extends: Gtk.Label,
+
+    _init(props={}) {
+        props.label = 'Fixed';
+        this.parent(props);
+    },
+});
+</code></pre>
+<h2 id="including-a-module">Including a Module</h2>
+<p>To include a module, the file must be added under the <code>/app/js/</code> prefix in the app's <code>gresource</code> file.</p>
+<pre><code class="language-xml">&lt;?xml version="1.0" ?&gt;
+&lt;gresources&gt;
+    &lt;gresource prefix="/app/js"&gt;
+        &lt;file&gt;banner/fixed.js&lt;/file&gt;
+    &lt;/gresource&gt;
+&lt;/gresources&gt;
+</code></pre>
+<h2 id="using-a-module">Using a Module</h2>
+<p>Finally, to use a module, it must be referenced from the app's <a href="concepts/yaml_format.html">YAML</a> file.</p>
+<pre><code class="language-yaml">root:
+  type: Banner.Fixed
+</code></pre>
+<h2 id="a-custom-importer">A Custom Importer</h2>
+<p>To access a custom module class, from another custom module, an importer named <code>custom_modules</code> is provided.</p>
+<pre><code class="language-javascript">const Fixed = custom_modules.banner.fixed;
+</code></pre>
+
+</div>
+
+
+</div>
+<footer>
+		
+
+<div class="license-description">
+	<table>
+		<tbody>
+			<tr>
+			<td>
+				<em>Documentation in this page is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>
+				license, unless otherwise noted.</em>
+			</td>
+			<td>
+						<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+				<img src="assets/CC-BY-SAv4.0.png" class="license-logo">
+			</a>
+						</td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div class="license-description">
+	<table>
+		<tbody>
+			<tr>
+			<td>
+				<em>Code snippets in this page are licensed under a <a rel="license" href="http://spdx.org/licenses/CC0-1.0">Creative Commons Zero 1.0 Universal.</a>
+				license, unless otherwise noted.</em>
+			</td>
+			<td>
+						<a rel="license" href="http://spdx.org/licenses/CC0-1.0">
+				<img src="assets/CC0-1.0.png" class="license-logo">
+			</a>
+						</td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div class="copyrights-description">
+		<p>
+				© 								2017, 
+				2018, 
+													       	Endless Mobile, Inc. 			</p>
+	</div>
+
+
+</footer>
+</body>
+</html>

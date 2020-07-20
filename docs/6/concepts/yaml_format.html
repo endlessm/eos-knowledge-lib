@@ -1,0 +1,349 @@
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+
+<title>The YAML format</title>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+
+</head>
+
+<body>
+<div class="page_container">
+		
+<div id="page-description" data-hotdoc-source="yaml_format.md" data-hotdoc-role="main">
+<h1 id="the-yaml-format">The YAML format</h1>
+<p>The Modular framework provides tools for creating knowledge apps by combining existing modules.
+App creators can combine these modules and describe the visual structure of their apps by writing YAML files that follow a specific format.
+This YAML format exposes the framework API and provides helpers to write these apps' descriptions more easily.
+This document is meant to explain the format of this YAML file.
+Here's the first example:</p>
+<pre><code class="language-yaml">---
+root:
+  type: Controller.Mesh
+  slots:
+    window:
+      type: Window.Simple
+      slots:
+        content:
+          type: ContentGroup.StaticText
+          properties:
+            label: Hello World
+</code></pre>
+<p>This is the simplest working app that can be described using the YAML format.
+The app description follows a tree-like structure, always starting from a <code>root</code> node.
+Each node represents a module of the framework.
+The most basic components of a node are:</p>
+<ul>
+<li>the <code>type</code> of the module to be used in that node.</li>
+<li>the <code>properties</code> of the module.</li>
+<li>the <code>slots</code> of that module.</li>
+</ul>
+<p>A real example:</p>
+<pre><code class="language-yaml">---
+root:
+  type: Controller.Mesh
+  slots:
+    window:
+      type: Window.Simple
+      slots:
+        content:
+          type: Pager.Simple
+          slots:
+            home-page:
+              type: ContentGroup.ContentGroup
+              properties:
+                expand: true
+              slots:
+                arrangement:
+                  type: Arrangement.List
+                  properties:
+                    expand: true
+                  slots:
+                    card:
+                      type: Card.List
+                      properties:
+                        expand: true
+                selection:
+                  type: Selection.All
+                  slots:
+                    filter:
+                      type: Filter.Articles
+                    order:
+                      type: Order.Sequence
+</code></pre>
+<p>This example expands the previous one.
+Now the app is capable of handling pages and displays a list of articles sorted in a sequence, on its home page.
+Extracting one of the nodes to see its components:</p>
+<pre><code class="language-yaml">arrangement:
+  type: Arrangement.List
+  properties:
+    expand: true
+  slots:
+    card:
+</code></pre>
+<p>This is a node named <code>arrangement</code> for a module type <a href="arrangement/list.html#Arrangement.List">Arrangement.List</a>, which sets a property named <code>expand</code>, with only one slot named <code>card</code>.
+The <code>slots</code> key is used to add sub-nodes, and to construct the tree.
+The list of available <code>properties</code> and <code>slots</code> depends on each type of module.
+As shown in the full example above, we can create a wide variety of apps by combining and constructing <a href="modules.html">module trees</a>.</p>
+<h1 id="features">Features</h1>
+<h2 id="shortdef">Shortdef</h2>
+<p>To write more readable and compact apps' descriptions, the format includes a <code>shortdef</code> key.
+The example below is identical to the previous one, except that it uses the key:</p>
+<pre><code class="language-yaml">---
+root:
+  type: Controller.Mesh
+  slots:
+    window:
+      type: Window.Simple
+      slots:
+        content:
+          type: Pager.Simple
+          slots:
+            home-page:
+              shortdef: 'ContentGroup.ContentGroup(expand: true)'
+              slots:
+                arrangement:
+                  shortdef: 'Arrangement.List(expand: true)'
+                  slots:
+                    card: 'Card.List(expand: true)'
+                selection:
+                  type: Selection.All
+                  slots:
+                    filter: Filter.Articles
+                    order: Order.Sequence
+</code></pre>
+<p>In this example, the <code>type</code> and <code>properties</code> keys are combined into single lines with the help of the <code>shortdef</code> key, e.g. <code>shortdef: 'Arrangement.List(expand: true)'</code>.
+When no slots are needed, the <code>shortdef</code> key can be omitted, using the short description directly on the slot name, e.g. <code>card: 'Card.List(expand: true)'</code>.</p>
+<h2 id="references">References</h2>
+<p>Some modules need access to other modules' properties.
+To do this, the format includes the <code>id</code> and <code>references</code> keys, see the example below:</p>
+<pre><code class="language-yaml">---
+root:
+  type: Controller.Mesh
+  slots:
+    window:
+      type: Window.Simple
+      slots:
+        content:
+          type: Pager.Simple
+          slots:
+            home-page:
+              shortdef: 'Layout.InfiniteScrolling(expand: true)'
+              references:
+                lazy-load: all-articles
+              slots:
+                content:
+                  shortdef: 'ContentGroup.ContentGroup(expand: true)'
+                  slots:
+                    arrangement:
+                      shortdef: 'Arrangement.List(expand: true)'
+                      slots:
+                        card: 'Card.List(expand: true)'
+                    selection:
+                      type: Selection.All
+                      id: all-articles
+                      slots:
+                        filter: Filter.Articles
+                        order: Order.Sequence
+</code></pre>
+<p>In this example a <a href="layout/infiniteScrolling.html#Layout.InfiniteScrolling">Layout.InfiniteScrolling</a> module is added, which needs access to the <a href="selection/all.html#Selection.All">Selection.All</a> module.
+To do this, the selection module defines its identifier <code>all-articles</code> using the <code>id</code> key.
+Then, the scrolling module <code>references</code> the selection using the identifier.
+The <code>lazy-load</code> reference name is what the scrolling module uses to access this reference.
+The list of available references names depends on each type of module.</p>
+<h2 id="styles">Styles</h2>
+<p>App creators will likely need to style specific nodes and, to avoid complex CSS selectors, the easiest way to do it is by adding custom CSS classes.
+The format includes the <code>styles</code> key to add one or more CSS classes.
+See the example below:</p>
+<pre><code class="language-yaml">---
+root:
+  type: Controller.Mesh
+  slots:
+    window:
+      type: Window.Simple
+      slots:
+        content:
+          type: Pager.Simple
+          slots:
+            home-page:
+              shortdef: 'Layout.InfiniteScrolling(expand: true)'
+              references:
+                lazy-load: all-articles
+              slots:
+                content:
+                  shortdef: 'ContentGroup.ContentGroup(expand: true)'
+                  styles:
+                    - ContentGroup--articles
+                  slots:
+                    arrangement:
+                      shortdef: 'Arrangement.List(expand: true)'
+                      slots:
+                        card: 'Card.List(expand: true)'
+                    selection:
+                      type: Selection.All
+                      id: all-articles
+                      slots:
+                        filter: Filter.Articles
+                        order: Order.Sequence
+</code></pre>
+<p>In this example, a <code>ContentGroup--articles</code> <a href="https://css-tricks.com/bem-101/">BEM-style</a> CSS class is added to a node.
+After that, the CSS class can be used from the app's theme to style that specific node.</p>
+<h2 id="imports">Imports</h2>
+<p>Each app must include its own app description, but there is no need to write it from scratch.
+The framework provides pre-defined apps' descriptions or presets, for different kinds of app experiences.
+The format includes the <code>!import</code> tag to use these presets.
+See the example below:</p>
+<pre><code class="language-yaml">---
+!import 'news'
+</code></pre>
+<p>In this example the app includes its own complete copy of the <code>news</code> preset, provided by the framework.
+The copy occurs while building the app.</p>
+<h2 id="overrides">Overrides</h2>
+<p>Using a preset can be limiting, as app creators often want to customize things.
+One way to overcome this limitation is to manually copy and modify the preset, but <a href="https://simple.wikipedia.org/wiki/Fork_(software_development)">forking</a> the preset makes the maintenance of the apps harder.
+Overrides provides a better way of handling this situation, by allowing app creators to customize specific parts of a preset without forking it.
+The format includes two different override methods: variables overrides and custom overrides.</p>
+<h3 id="variables-and-overrides">Variables and Overrides</h3>
+<p>The YAML format allows to add customization points to the presets, by declaring variables in a <code>vars</code> section of the preset.
+Each variable is defined with a default value and the variables can be referenced from within the preset using the <code>refvar</code> key.
+See the example below:</p>
+<pre><code class="language-yaml">---
+vars:
+  home-arrangement:
+    shortdef: 'Arrangement.List(expand: true)'
+  home-card:
+    shortdef: 'Card.List(expand: true)'
+root:
+  type: Controller.Mesh
+  slots:
+    window:
+      type: Window.Simple
+      slots:
+        content:
+          type: Pager.Simple
+          slots:
+            home-page:
+              shortdef: 'Layout.InfiniteScrolling(expand: true)'
+              references:
+                lazy-load: all-articles
+              slots:
+                content:
+                  shortdef: 'ContentGroup.ContentGroup(expand: true)'
+                  styles:
+                    - ContentGroup--articles
+                  slots:
+                    arrangement:
+                      refvar: $home-arrangement
+                      slots:
+                        card: $home-card
+                    selection:
+                      type: Selection.All
+                      id: all-articles
+                      slots:
+                        filter: Filter.Articles
+                        order: Order.Sequence
+</code></pre>
+<p>In this example, two variables <code>home-arrangement</code> and <code>home-card</code> were added to the example from before.
+These variables are referenced from within the preset using the <code>refvar</code> key.
+Note that a <code>$</code> prefix is needed for referencing variable names.
+A short form is also available when referencing variables from a node name, e.g. <code>card: $home-card</code>.</p>
+<p>Once variables are available in a preset, the app creators can use and customize these presets by overriding the defaults.
+To override the preset defaults an <code>overrides</code> section must be added to the app description.
+See the example below:</p>
+<pre><code class="language-yaml">---
+overrides:
+  home-arrangement:
+    shortdef: 'Arrangement.Grid(expand: true)'
+  home-card:
+    shortdef: 'Card.Default(expand: true)'
+---
+!import 'example_preset'
+</code></pre>
+<p>In this example, the preset is imported and these two variables are overridden.
+Note that this requires to split the same YAML file in two documents, adding the YAML <code>---</code> separator.
+The benefit of using variables overrides is that these are more likely to be kept in future versions of the framework.
+If a variable is removed from the framework, the override will be ignored.</p>
+<h3 id="custom-overrides">Custom Overrides</h3>
+<p>There are other cases where app creators need to customize parts of a preset that are not exposed with variables.
+In these cases, custom overrides can be used as the example below:</p>
+<pre><code class="language-yaml">---
+overrides:
+  home-arrangement:
+    shortdef: 'Arrangement.Grid(expand: true)'
+  home-card:
+    shortdef: 'Card.Default(expand: true)'
+  root.window.content:
+    type: Pager.ParallaxBackground
+---
+!import 'example_preset'
+</code></pre>
+<p>In this example, a custom override was added to the overrides section to customize a node that is not exposed with a variable.
+Instead of a variable name, the node identifier is composed of the names of the nodes from the root node to the target node, forming a path, e.g. <code>root.window.content</code>.</p>
+<p>The benefit of this feature is that app creators can modify any portion of the preset.
+But power comes with a price, these paths can change if the preset changes its structure, e.g. during a refactor of the preset.
+In that case, the custom override will be ignored.
+Therefore, use this override method with care and always double check when porting apps to newer major versions of the framework.</p>
+
+</div>
+
+
+</div>
+<footer>
+		
+
+<div class="license-description">
+	<table>
+		<tbody>
+			<tr>
+			<td>
+				<em>Documentation in this page is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>
+				license, unless otherwise noted.</em>
+			</td>
+			<td>
+						<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+				<img src="assets/CC-BY-SAv4.0.png" class="license-logo">
+			</a>
+						</td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div class="license-description">
+	<table>
+		<tbody>
+			<tr>
+			<td>
+				<em>Code snippets in this page are licensed under a <a rel="license" href="http://spdx.org/licenses/CC0-1.0">Creative Commons Zero 1.0 Universal.</a>
+				license, unless otherwise noted.</em>
+			</td>
+			<td>
+						<a rel="license" href="http://spdx.org/licenses/CC0-1.0">
+				<img src="assets/CC0-1.0.png" class="license-logo">
+			</a>
+						</td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div class="copyrights-description">
+		<p>
+				© 								2017, 
+				2018, 
+													       	Endless Mobile, Inc. 			</p>
+	</div>
+
+
+</footer>
+</body>
+</html>

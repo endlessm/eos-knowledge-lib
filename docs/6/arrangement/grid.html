@@ -1,0 +1,383 @@
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+
+<title>Arrangement.Grid</title>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+
+</head>
+
+<body>
+<div class="page_container">
+		
+<div id="page-description" data-hotdoc-source="grid.js" data-hotdoc-role="main">
+<h1 id="arrangementgrid">Arrangement.Grid</h1>
+</div>
+
+
+<h2 class="symbol_section" id="Classes">Classes</h2>
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Grid">
+		<h3 id="arrangementgrid1">
+	Arrangement.Grid
+</h3>
+
+		
+
+</div>
+
+
+<h2 class="symbol_section" id="Properties">Properties</h2>
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Grid:factory-id">
+		<h3 class="method" id="factoryid">
+    <span><code>factory-id</code></span>
+</h3>
+
+		<p>Module ID</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>String</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt></dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Grid:factory-path">
+		<h3 class="method" id="factorypath">
+    <span><code>factory-path</code></span>
+</h3>
+
+		<p>Path indicating where a module comes from in the app.json</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>String</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt></dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Grid:fade-cards">
+		<h3 class="method" id="fadecards">
+    <span><code>fade-cards</code></span>
+</h3>
+
+		<p>Whether new cards should fade in gradually</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Grid:orientation">
+		<h3 class="method" id="orientation">
+    <span><code>orientation</code></span>
+</h3>
+
+		<p>The orientation of the orientable</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>GtkOrientation</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>0</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Grid:halign">
+		<h3 class="method" id="halign">
+    <span><code>halign</code></span>
+</h3>
+
+		<p>How to position in extra horizontal space</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>GtkAlign</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>0</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Grid:valign">
+		<h3 class="method" id="valign">
+    <span><code>valign</code></span>
+</h3>
+
+		<p>How to position in extra vertical space</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>GtkAlign</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>0</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Grid:hexpand">
+		<h3 class="method" id="hexpand">
+    <span><code>hexpand</code></span>
+</h3>
+
+		<p>Whether widget wants more horizontal space</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Grid:vexpand">
+		<h3 class="method" id="vexpand">
+    <span><code>vexpand</code></span>
+</h3>
+
+		<p>Whether widget wants more vertical space</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Grid:expand">
+		<h3 class="method" id="expand">
+    <span><code>expand</code></span>
+</h3>
+
+		<p>Whether widget wants to expand in both directions</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Grid:homogeneous">
+		<h3 class="method" id="homogeneous">
+    <span><code>homogeneous</code></span>
+</h3>
+
+		<p>Whether the children should all be the same size</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Grid:column-spacing">
+		<h3 class="method" id="columnspacing">
+    <span><code>column-spacing</code></span>
+</h3>
+
+		<p>The amount of horizontal space between two children</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Number</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>0</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Grid:row-spacing">
+		<h3 class="method" id="rowspacing">
+    <span><code>row-spacing</code></span>
+</h3>
+
+		<p>The amount of vertical space between two children</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Number</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>0</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Grid:min-children-per-line">
+		<h3 class="method" id="minchildrenperline">
+    <span><code>min-children-per-line</code></span>
+</h3>
+
+		<p>The minimum number of children to allocate consecutively in the given orientation.</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Number</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>0</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Grid:max-children-per-line">
+		<h3 class="method" id="maxchildrenperline">
+    <span><code>max-children-per-line</code></span>
+</h3>
+
+		<p>The maximum amount of children to request space for consecutively in the given orientation.</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Number</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>7</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Grid:activate-on-single-click">
+		<h3 class="method" id="activateonsingleclick">
+    <span><code>activate-on-single-click</code></span>
+</h3>
+
+		<p>Activate row on a single click</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>True</dt>
+</dl>
+
+</div>
+
+
+<h2 class="symbol_section" id="Slots">Slots</h2>
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Grid:card">
+		<h3 class="method" id="card">
+    <span><code>card</code></span>
+</h3>
+
+		
+
+<dl>
+  <dt>Required</dt>
+  <dd>
+    yes
+  </dd>
+  <dt>Multi</dt>
+<dd>yes</dd>
+
+</dl>
+</div>
+
+
+</div>
+<footer>
+		
+
+</footer>
+</body>
+</html>

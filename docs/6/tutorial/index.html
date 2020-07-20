@@ -1,0 +1,92 @@
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+
+<title>Walkthrough</title>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+
+</head>
+
+<body>
+<div class="page_container">
+		
+<div id="page-description" data-hotdoc-source="index.md" data-hotdoc-role="main">
+<h1 id="walkthrough">Walkthrough</h1>
+<p>Here's an example of how to use the Endless SDK to take online content and package it to be available offline in an app.</p>
+<p>We'll do the whole thing in a few steps.
+First, we'll write a program called an <strong>ingester</strong> that downloads the content and makes it suitable for offline viewing.
+The ingester creates an archive called a <strong>hatch</strong>.
+We'll use a tool called Hatch Previewer to examine the hatch and make visual improvements in the ingester.
+Then we turn the hatch into another, more compressed archive called a <strong>shard</strong>, which is used to publish the content.
+Next, we will build a user interface for the app, and test it together with the shard.
+Finally, we will show how to put the user interface and one or more shards together into an app, which can be published as a <a href="https://flatpak.org">flatpak</a> package.</p>
+<p>We're going to use the <a href="https://creativecommons.org/blog">blog of the Creative Commons organization</a> itself.
+The blog and its content are licensed CC-BY 4.0, which means that it's free to use and modify as long as we credit the original author.</p>
+<h2 id="requirements-for-following-this-walkthrough">Requirements for following this walkthrough</h2>
+<p>The walkthrough is written for Endless OS.
+It can be done on other Linux computers, but in that case you might have to adapt the instructions for yourself a bit.</p>
+<p>You should have some familiarity with using the terminal and common commands.</p>
+
+</div>
+
+
+</div>
+<footer>
+		
+
+<div class="license-description">
+	<table>
+		<tbody>
+			<tr>
+			<td>
+				<em>Documentation in this page is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>
+				license, unless otherwise noted.</em>
+			</td>
+			<td>
+						<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+				<img src="assets/CC-BY-SAv4.0.png" class="license-logo">
+			</a>
+						</td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div class="license-description">
+	<table>
+		<tbody>
+			<tr>
+			<td>
+				<em>Code snippets in this page are licensed under a <a rel="license" href="http://spdx.org/licenses/CC0-1.0">Creative Commons Zero 1.0 Universal.</a>
+				license, unless otherwise noted.</em>
+			</td>
+			<td>
+						<a rel="license" href="http://spdx.org/licenses/CC0-1.0">
+				<img src="assets/CC0-1.0.png" class="license-logo">
+			</a>
+						</td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div class="copyrights-description">
+		<p>
+				© 								2017, 
+				2018, 
+													       	Endless Mobile, Inc. 			</p>
+	</div>
+
+
+</footer>
+</body>
+</html>

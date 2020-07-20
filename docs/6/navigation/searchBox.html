@@ -1,0 +1,326 @@
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+
+<title>Navigation.SearchBox</title>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+
+</head>
+
+<body>
+<div class="page_container">
+		
+<div id="page-description" data-hotdoc-source="searchBox.js" data-hotdoc-role="main">
+<h1 id="navigationsearchbox">Navigation.SearchBox</h1>
+</div>
+
+
+<h2 class="symbol_section" id="Classes">Classes</h2>
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Navigation.SearchBox">
+		<h3 id="navigationsearchbox1">
+	Navigation.SearchBox
+</h3>
+
+		
+<div class="class_details">
+	<p>CSS classes:</p>
+<ul>
+<li>autocomplete - on the autocomplete popup (not a child of this module)</li>
+</ul>
+
+</div>
+
+</div>
+
+
+<h2 class="symbol_section" id="Properties">Properties</h2>
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Navigation.SearchBox:editing-canceled">
+		<h3 class="method" id="editingcanceled">
+    <span><code>editing-canceled</code></span>
+</h3>
+
+		<p>Indicates that editing has been canceled</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Navigation.SearchBox:factory-id">
+		<h3 class="method" id="factoryid">
+    <span><code>factory-id</code></span>
+</h3>
+
+		<p>Module ID</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>String</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt></dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Navigation.SearchBox:factory-path">
+		<h3 class="method" id="factorypath">
+    <span><code>factory-path</code></span>
+</h3>
+
+		<p>Path indicating where a module comes from in the app.json</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>String</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt></dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Navigation.SearchBox:halign">
+		<h3 class="method" id="halign">
+    <span><code>halign</code></span>
+</h3>
+
+		<p>How to position in extra horizontal space</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>GtkAlign</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>0</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Navigation.SearchBox:valign">
+		<h3 class="method" id="valign">
+    <span><code>valign</code></span>
+</h3>
+
+		<p>How to position in extra vertical space</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>GtkAlign</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>0</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Navigation.SearchBox:hexpand">
+		<h3 class="method" id="hexpand">
+    <span><code>hexpand</code></span>
+</h3>
+
+		<p>Whether widget wants more horizontal space</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Navigation.SearchBox:vexpand">
+		<h3 class="method" id="vexpand">
+    <span><code>vexpand</code></span>
+</h3>
+
+		<p>Whether widget wants more vertical space</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Navigation.SearchBox:expand">
+		<h3 class="method" id="expand">
+    <span><code>expand</code></span>
+</h3>
+
+		<p>Whether widget wants to expand in both directions</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Navigation.SearchBox:max-length">
+		<h3 class="method" id="maxlength">
+    <span><code>max-length</code></span>
+</h3>
+
+		<p>Maximum number of characters for this entry. Zero if no maximum</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Number</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>0</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Navigation.SearchBox:width-chars">
+		<h3 class="method" id="widthchars">
+    <span><code>width-chars</code></span>
+</h3>
+
+		<p>Number of characters to leave space for in the entry</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Number</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>-1</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Navigation.SearchBox:max-width-chars">
+		<h3 class="method" id="maxwidthchars">
+    <span><code>max-width-chars</code></span>
+</h3>
+
+		<p>The desired maximum width of the entry, in characters</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Number</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>-1</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Navigation.SearchBox:placeholder-text">
+		<h3 class="method" id="placeholdertext">
+    <span><code>placeholder-text</code></span>
+</h3>
+
+		<p>Show text in the entry when it's empty and unfocused</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>String</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>None</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Navigation.SearchBox:focus-on-map">
+		<h3 class="method" id="focusonmap">
+    <span><code>focus-on-map</code></span>
+</h3>
+
+		<p>If true, this widget will grab focus when shown on screen.</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
+</dl>
+
+</div>
+
+
+</div>
+<footer>
+		
+
+</footer>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+
+<title>Selection.Xapian</title>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+
+</head>
+
+<body>
+<div class="page_container">
+		
+<div id="page-description" data-hotdoc-source="xapian.js" data-hotdoc-role="main">
+<h1 id="selectionxapian">Selection.Xapian</h1>
+</div>
+
+
+<h2 class="symbol_section" id="Classes">Classes</h2>
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Selection.Xapian">
+		<h3 id="selectionxapian1">
+	Selection.Xapian
+</h3>
+
+		
+<div class="class_details">
+	<p>A general, superclass for populating selection content using xapian
+queries. Note that this superclass cannot be used directly itself. You must
+subclass it and implement the construct_query_object method, which should
+return a <code>DModel.Query</code> determining what content to fetch from
+a xapian database.</p>
+<p>This superclass handles continuation-passing on the queue_load_more method.
+If the selection determines that both more results are available
+(by examining the result set metadata returned from xapian) and that more
+results are required, it will automatically create a new query and fetch
+more content.</p>
+
+</div>
+
+</div>
+
+
+<h2 class="symbol_section" id="Properties">Properties</h2>
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Selection.Xapian:factory-id">
+		<h3 class="method" id="factoryid">
+    <span><code>factory-id</code></span>
+</h3>
+
+		<p>Module ID</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>String</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt></dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Selection.Xapian:factory-path">
+		<h3 class="method" id="factorypath">
+    <span><code>factory-path</code></span>
+</h3>
+
+		<p>Path indicating where a module comes from in the app.json</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>String</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt></dt>
+</dl>
+
+</div>
+
+
+<h2 class="symbol_section" id="Slots">Slots</h2>
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Selection.Xapian:order">
+		<h3 class="method" id="order">
+    <span><code>order</code></span>
+</h3>
+
+		
+
+<dl>
+  <dt>Required</dt>
+  <dd>
+    yes
+  </dd>
+
+</dl>
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Selection.Xapian:filter">
+		<h3 class="method" id="filter">
+    <span><code>filter</code></span>
+</h3>
+
+		
+
+<dl>
+  <dt>Required</dt>
+  <dd>
+    yes
+  </dd>
+
+</dl>
+</div>
+
+
+</div>
+<footer>
+		
+
+</footer>
+</body>
+</html>

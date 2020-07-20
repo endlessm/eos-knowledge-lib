@@ -1,0 +1,245 @@
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+
+<title>Layout.Overlay</title>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+
+</head>
+
+<body>
+<div class="page_container">
+		
+<div id="page-description" data-hotdoc-source="overlay.js" data-hotdoc-role="main">
+<h1 id="layoutoverlay">Layout.Overlay</h1>
+</div>
+
+
+<h2 class="symbol_section" id="Classes">Classes</h2>
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Layout.Overlay">
+		<h3 id="layoutoverlay1">
+	Layout.Overlay
+</h3>
+
+		
+<div class="class_details">
+	<p>This layout can be used to stack modules on top of one another.
+The module in the 'content' slot determines the size of the module, then the
+modules in the 'overlays' multi-slot are positioned on top of it.</p>
+<p>The modules' 'halign' and 'valign' properties, as well as their 'margin' CSS
+properties, determine where they are arranged on top of the main module.
+For example, a module with halign: end, valign: end, and in CSS margin: 10px
+will be positioned 10px away from the bottom right corner.</p>
+
+</div>
+
+</div>
+
+
+<h2 class="symbol_section" id="Properties">Properties</h2>
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Layout.Overlay:factory-id">
+		<h3 class="method" id="factoryid">
+    <span><code>factory-id</code></span>
+</h3>
+
+		<p>Module ID</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>String</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt></dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Layout.Overlay:factory-path">
+		<h3 class="method" id="factorypath">
+    <span><code>factory-path</code></span>
+</h3>
+
+		<p>Path indicating where a module comes from in the app.json</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>String</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt></dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Layout.Overlay:halign">
+		<h3 class="method" id="halign">
+    <span><code>halign</code></span>
+</h3>
+
+		<p>How to position in extra horizontal space</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>GtkAlign</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>0</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Layout.Overlay:valign">
+		<h3 class="method" id="valign">
+    <span><code>valign</code></span>
+</h3>
+
+		<p>How to position in extra vertical space</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>GtkAlign</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>0</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Layout.Overlay:hexpand">
+		<h3 class="method" id="hexpand">
+    <span><code>hexpand</code></span>
+</h3>
+
+		<p>Whether widget wants more horizontal space</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Layout.Overlay:vexpand">
+		<h3 class="method" id="vexpand">
+    <span><code>vexpand</code></span>
+</h3>
+
+		<p>Whether widget wants more vertical space</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Layout.Overlay:expand">
+		<h3 class="method" id="expand">
+    <span><code>expand</code></span>
+</h3>
+
+		<p>Whether widget wants to expand in both directions</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
+</dl>
+
+</div>
+
+
+<h2 class="symbol_section" id="Slots">Slots</h2>
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Layout.Overlay:content">
+		<h3 class="method" id="content">
+    <span><code>content</code></span>
+</h3>
+
+		<p>For the main module</p>
+
+
+<dl>
+  <dt>Required</dt>
+  <dd>
+    yes
+  </dd>
+
+</dl>
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Layout.Overlay:overlays">
+		<h3 class="method" id="overlays">
+    <span><code>overlays</code></span>
+</h3>
+
+		<p>A list of other modules to be positioned on top of the content</p>
+
+
+<dl>
+  <dt>Required</dt>
+  <dd>
+    yes
+  </dd>
+  <dt>Array</dt>
+<dd>yes</dd>
+
+</dl>
+</div>
+
+
+</div>
+<footer>
+		
+
+</footer>
+</body>
+</html>

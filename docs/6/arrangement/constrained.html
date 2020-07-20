@@ -1,0 +1,249 @@
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+
+<title>Arrangement.Constrained</title>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+
+</head>
+
+<body>
+<div class="page_container">
+		
+<div id="page-description" data-hotdoc-source="constrained.js" data-hotdoc-role="main">
+<h1 id="arrangementconstrained">Arrangement.Constrained</h1>
+</div>
+
+
+<h2 class="symbol_section" id="Classes">Classes</h2>
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Constrained">
+		<h3 id="arrangementconstrained1">
+	Arrangement.Constrained
+</h3>
+
+		
+<div class="class_details">
+	<p>This arrangement shows featured cards that follow a irregular pattern
+in three different card sizes. The pattern is described using Emeus
+VFL (Visual Format Language).</p>
+<p>NOTE that this arrangement design is still experimental therefore it
+visuals and behavior are subject to change.</p>
+<p>This arrangement can be extended by programmers to implement other
+constrained arrangements by simply providing a VFL description and
+the number of cards.</p>
+<p>To extend this class override the Arrangement.get_max_cards and
+Constrained.get_description.</p>
+
+</div>
+
+</div>
+
+
+<h2 class="symbol_section" id="Properties">Properties</h2>
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Constrained:factory-id">
+		<h3 class="method" id="factoryid">
+    <span><code>factory-id</code></span>
+</h3>
+
+		<p>Module ID</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>String</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt></dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Constrained:factory-path">
+		<h3 class="method" id="factorypath">
+    <span><code>factory-path</code></span>
+</h3>
+
+		<p>Path indicating where a module comes from in the app.json</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>String</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt></dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Constrained:fade-cards">
+		<h3 class="method" id="fadecards">
+    <span><code>fade-cards</code></span>
+</h3>
+
+		<p>Whether new cards should fade in gradually</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Constrained:halign">
+		<h3 class="method" id="halign">
+    <span><code>halign</code></span>
+</h3>
+
+		<p>How to position in extra horizontal space</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>GtkAlign</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>0</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Constrained:valign">
+		<h3 class="method" id="valign">
+    <span><code>valign</code></span>
+</h3>
+
+		<p>How to position in extra vertical space</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>GtkAlign</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>0</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Constrained:hexpand">
+		<h3 class="method" id="hexpand">
+    <span><code>hexpand</code></span>
+</h3>
+
+		<p>Whether widget wants more horizontal space</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Constrained:vexpand">
+		<h3 class="method" id="vexpand">
+    <span><code>vexpand</code></span>
+</h3>
+
+		<p>Whether widget wants more vertical space</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
+</dl>
+
+</div>
+
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Constrained:expand">
+		<h3 class="method" id="expand">
+    <span><code>expand</code></span>
+</h3>
+
+		<p>Whether widget wants to expand in both directions</p>
+
+
+<dl>
+    <dd>Type</dd>
+    <dt>Boolean</dt>
+</dl>
+<dl>
+    <dd>Default value</dd>
+    <dt>False</dt>
+</dl>
+
+</div>
+
+
+<h2 class="symbol_section" id="Slots">Slots</h2>
+
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="Arrangement.Constrained:card">
+		<h3 class="method" id="card">
+    <span><code>card</code></span>
+</h3>
+
+		
+
+<dl>
+  <dt>Required</dt>
+  <dd>
+    yes
+  </dd>
+  <dt>Multi</dt>
+<dd>yes</dd>
+
+</dl>
+</div>
+
+
+</div>
+<footer>
+		
+
+</footer>
+</body>
+</html>
