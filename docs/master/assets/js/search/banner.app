@@ -1,1 +1,0 @@
-urls_downloaded_cb({"token": "banner.app", "urls": ["banner/app.html#bannerapp1", "banner/app.html#bannerapp"]});
