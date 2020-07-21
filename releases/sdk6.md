@@ -6,17 +6,41 @@ permalink: /releases/6/
 
 ## Release schedule ##
 
-| Date            | Milestone
-|:----------------|:---------
-| Thu Oct 4 2018  | Feature freeze
-| Thu Oct 18 2018 | Hard code freeze
-| Thu Nov 1 2018  | SDK6.0 release
-| Thu Nov 29 2018 | SDK6.1 hard code freeze
-| Thu Dec 6 2018  | SDK6.1 bugfix release
-| Thu Dec 27 2018 | SDK6.2 hard code freeze
-| Thu Jan 3 2019  | SDK6.2 bugfix release
-| Thu Feb 7 2019  | EOL
+| Date             | Milestone
+|:-----------------|:---------
+| Mon Oct 21 2019  | Feature freeze
+| Wed Jul 15 2020  | Hard code freeze
+| Mon Jul 20 2020  | SDK 6.0 release
 
-## Planned features ##
+## Major features ##
 
-- GNOME 3.30 upgrade
+### Updated upstream and infrastructure ###
+
+- Updated the GNOME SDK to version 3.36
+- Adopted [Buildstream](https://www.buildstream.build/) as the Flatpak runtimes build stack
+
+### OpenZIM support ###
+
+Added support for loading content in knowledge apps from [OpenZIM](https://openzim.org/) files as an alternative to shard files. This allows us to reuse the potential of the [OpenZIM farm](https://farm.openzim.org/) as the provider of Wikipedia offline content.
+
+### Kolibri support ###
+
+Added support for loading [Kolibri](https://learningequality.org/kolibri/)'s zipped HTML5 content, which are basically ZIP files with a full webpage inside, being the `index.html` member file the starting point of the content. This enables more potential for interactive content in the modular framework.
+
+### General improvements ##
+
+- Make it easier for apps to add extra CSS stylesheet to rendered HTML content by reading a file from the `GResource` bundle.
+- Added support for adding extra JavaScript files to the rendered HTML.
+- Removed custom styling from the SDK to follow the system theme.
+- Fixed a problem where certain programs would never search for libraries from Flatpak extensions, such as the GL host extension.
+- Other minor bugfixes.
+
+## Migration from SDK-5 ##
+
+No changes are required for apps using the modular framework.
+
+## Release notes ##
+
+### SDK 6.0 (July 20th, 2020) ###
+
+This is the first release in the SDK-6 series.
