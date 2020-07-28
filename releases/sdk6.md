@@ -11,6 +11,7 @@ permalink: /releases/6/
 | Mon Oct 21 2019  | Feature freeze
 | Wed Jul 15 2020  | Hard code freeze
 | Mon Jul 20 2020  | SDK 6.0 release
+| Tue Jul 28 2020  | SDK 6.1 bugfix release
 
 ## Major features ##
 
@@ -44,3 +45,7 @@ No changes are required for apps using the modular framework.
 ### SDK 6.0 (July 20th, 2020) ###
 
 This is the first release in the SDK-6 series.
+
+### SDK 6.1 (July 28th, 2020) ###
+
+Update libzim to version 6.1.8 to improve OpenZIM files loading performance.
