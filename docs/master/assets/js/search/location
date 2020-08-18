@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "location", "urls": ["layout/scrolling.html#windowplacementset", "layout/infiniteScrolling.html#windowplacementset", "tutorial/shard.html#fixing-the-missing-images", "tutorial/shard.html#downloading-linked-media", "tutorial/app.html#app-icon"]});
+urls_downloaded_cb({"token": "location", "urls": ["layout/scrolling.html#windowplacementset", "layout/infiniteScrolling.html#windowplacementset", "tutorial/app.html#app-icon", "tutorial/shard.html#fixing-the-missing-images", "tutorial/shard.html#downloading-linked-media"]});

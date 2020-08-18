@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "apply", "urls": ["view/document.html#customcss", "view/audio.html#customcss", "view/video.html#customcss", "concepts/custom_modules.html#writing-a-module"]});
+urls_downloaded_cb({"token": "apply", "urls": ["concepts/custom_modules.html#writing-a-module", "view/video.html#customcss", "view/audio.html#customcss", "view/document.html#customcss"]});

@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "all", "urls": ["tutorial/shard.html#fixing-the-missing-images", "tutorial/shard.html#page-description", "tutorial/app.html#attributing-the-assets"]});
+urls_downloaded_cb({"token": "all", "urls": ["tutorial/app.html#attributing-the-assets", "tutorial/shard.html#fixing-the-missing-images", "tutorial/shard.html#page-description"]});

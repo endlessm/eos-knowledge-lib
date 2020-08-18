@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "read", "urls": ["tutorial/ingester.html#writing-an-ingester", "tutorial/ingester.html#parsing-the-rss-feed", "tutorial/app.html#testing-the-content", "tutorial/app.html#tweaking-the-app-ui", "tutorial/app.html#customizing-the-front-page-ui"]});
+urls_downloaded_cb({"token": "read", "urls": ["tutorial/app.html#testing-the-content", "tutorial/app.html#tweaking-the-app-ui", "tutorial/app.html#customizing-the-front-page-ui", "tutorial/ingester.html#writing-an-ingester", "tutorial/ingester.html#parsing-the-rss-feed"]});

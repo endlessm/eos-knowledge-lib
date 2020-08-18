@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "Create", "urls": ["tutorial/shard.html#downloading-linked-media", "tutorial/ingester.html#parsing-the-rss-feed", "tutorial/app.html#attributing-the-assets", "tutorial/install.html#installing-nodejs"]});
+urls_downloaded_cb({"token": "Create", "urls": ["tutorial/app.html#attributing-the-assets", "tutorial/install.html#installing-nodejs", "tutorial/shard.html#downloading-linked-media", "tutorial/ingester.html#parsing-the-rss-feed"]});

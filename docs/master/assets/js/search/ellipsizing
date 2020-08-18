@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "ellipsizing", "urls": ["card/title.html#maxtitlelines", "contentGroup/staticText.html#lines", "contentGroup/dynamicTitle.html#lines", "banner/context.html#lines", "banner/search.html#lines"]});
+urls_downloaded_cb({"token": "ellipsizing", "urls": ["banner/search.html#lines", "banner/context.html#lines", "card/title.html#maxtitlelines", "contentGroup/dynamicTitle.html#lines", "contentGroup/staticText.html#lines"]});
