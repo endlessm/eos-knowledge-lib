@@ -216,7 +216,7 @@ var ArticleStack = new Module.Class({
     },
 
     _on_show_tooltip: function (tooltip_presenter, tooltip, uri) {
-        if (GLib.uri_parse_scheme(uri) === 'ekn') {
+        if (GLib.uri_parse_scheme(uri).split('+')[0] === 'ekn') {
             DModel.Engine.get_default().get_object(uri, null)
             .then((article_model) => {
                 this._webview_tooltip_presenter.show_default_tooltip(tooltip, article_model.title);
