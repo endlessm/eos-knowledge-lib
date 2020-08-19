@@ -203,7 +203,6 @@ var ArticleStack = new Module.Class({
             this._set_article_content(article_content);
         if (article_content.content_view instanceof WebKit2.WebView)
             this._webview_tooltip_presenter.set_document_card(article_content);
-        
     },
 
     _on_history_changed: function () {
@@ -217,13 +216,16 @@ var ArticleStack = new Module.Class({
 
     _on_show_tooltip: function (tooltip_presenter, tooltip, uri) {
         if (GLib.uri_parse_scheme(uri).split('+')[0] === 'ekn') {
-            DModel.Engine.get_default().get_object(uri, null)
-            .then((article_model) => {
-                this._webview_tooltip_presenter.show_default_tooltip(tooltip, article_model.title);
-            })
-            .catch(function (error) {
-                logError(error, 'Could not get article model');
-            });
+            uri = uri.split('#')[0];
+            if (uri !== this.visible_child.model.id) {
+                DModel.Engine.get_default().get_object(uri, null)
+                .then((article_model) => {
+                    this._webview_tooltip_presenter.show_default_tooltip(tooltip, article_model.title);
+                })
+                .catch(function (error) {
+                    logError(error, 'Could not get article model');
+                });
+            }
         } else if (GLib.uri_parse_scheme(uri) === 'license') {
             // If the URI has the "license://" scheme, then it corresponds to a
             // license file, and we should display it as an external link.
