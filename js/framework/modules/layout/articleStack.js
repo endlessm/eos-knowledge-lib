@@ -203,7 +203,6 @@ var ArticleStack = new Module.Class({
             this._set_article_content(article_content);
         if (article_content.content_view instanceof WebKit2.WebView)
             this._webview_tooltip_presenter.set_document_card(article_content);
-        
     },
 
     _on_history_changed: function () {
