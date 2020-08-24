@@ -302,9 +302,12 @@ var Document = new Module.Class({
 
                 if (hash && !hash.startsWith(SCROLLED_PAST_PREFIX)) {
                     let index = this._find_section_index(hash);
-                    if (index !== -1)
+                    if (index !== -1) {
                         this._scroll_to_section(index);
-                    decision.ignore();
+                        decision.ignore();
+                    } else {
+                        decision.use();
+                    }
                 } else {
                     decision.use();
                 }
