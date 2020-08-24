@@ -216,7 +216,7 @@ var ArticleStack = new Module.Class({
 
     _on_show_tooltip: function (tooltip_presenter, tooltip, uri) {
         if (GLib.uri_parse_scheme(uri).split('+')[0] === 'ekn') {
-            uri = uri.split('#')[0];
+            uri = decodeURI(uri).split('#')[0];
             if (uri !== this.visible_child.model.id) {
                 DModel.Engine.get_default().get_object(uri, null)
                 .then((article_model) => {
