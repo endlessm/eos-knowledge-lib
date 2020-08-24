@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "synopsis", "urls": ["card/list.html#showsynopsis", "view/video.html#showsynopsis", "view/audio.html#showsynopsis", "view/audio.html#viewaudio1"]});
+urls_downloaded_cb({"token": "synopsis", "urls": ["card/list.html#showsynopsis", "view/audio.html#showsynopsis", "view/video.html#showsynopsis", "view/audio.html#viewaudio1"]});

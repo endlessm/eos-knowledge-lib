@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "load", "urls": ["layout/infiniteScrolling.html#lazyload", "layout/articleStack.html#layoutarticlestack1", "contentGroup/contentGroup.html#paginatelabel", "concepts/yaml_format.html#references"]});
+urls_downloaded_cb({"token": "load", "urls": ["layout/infiniteScrolling.html#lazyload", "concepts/yaml_format.html#references", "layout/articleStack.html#layoutarticlestack1", "contentGroup/contentGroup.html#paginatelabel"]});

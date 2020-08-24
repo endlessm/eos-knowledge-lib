@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "font", "urls": ["tutorial/shard.html#page-description", "tutorial/app.html#page-description", "tutorial/app.html#fonts", "tutorial/install.html#page-description"]});
+urls_downloaded_cb({"token": "font", "urls": ["tutorial/app.html#page-description", "tutorial/app.html#fonts", "tutorial/install.html#page-description", "tutorial/shard.html#page-description"]});

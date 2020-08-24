@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "published", "urls": ["tutorial/index.html#walkthrough", "tutorial/shard.html#screenshot-of-hatch-previewer", "tutorial/app.html#publishing-the-app"]});
+urls_downloaded_cb({"token": "published", "urls": ["tutorial/app.html#publishing-the-app", "tutorial/shard.html#screenshot-of-hatch-previewer", "tutorial/index.html#walkthrough"]});

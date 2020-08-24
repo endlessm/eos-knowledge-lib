@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "exactly", "urls": ["tutorial/shard.html#fixing-the-missing-images", "modules/window.html#window"]});
+urls_downloaded_cb({"token": "exactly", "urls": ["modules/window.html#window", "tutorial/shard.html#fixing-the-missing-images"]});
