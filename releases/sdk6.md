@@ -12,6 +12,7 @@ permalink: /releases/6/
 | Wed Jul 15 2020  | Hard code freeze
 | Mon Jul 20 2020  | SDK 6.0 release
 | Tue Jul 28 2020  | SDK 6.1 bugfix release
+| Mon Aug 24 2020  | SDK 6.2 bugfix release
 
 ## Major features ##
 
@@ -49,3 +50,9 @@ This is the first release in the SDK-6 series.
 ### SDK 6.1 (July 28th, 2020) ###
 
 Update libzim to version 6.1.8 to improve OpenZIM files loading performance.
+
+### SDK 6.2 (Aug 24th, 2020) ###
+
+- Add support for same page links (anchored links).
+- Fix internal links tooltips for OpenZIM files.
+- Fix duplicated search results for OpenZIM files.
