@@ -6,9 +6,10 @@ permalink: /docs/
 
 Documentation versions:
 
-- [Current stable version (5)](5)
+- [Current stable version (6)](6)
 - [Unstable development version (master)](master)
 - Old versions:
+  - [5](5)
   - [4](4)
   - [3](3)
   - [2](2)
