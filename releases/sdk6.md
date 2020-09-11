@@ -51,8 +51,12 @@ This is the first release in the SDK-6 series.
 
 Update libzim to version 6.1.8 to improve OpenZIM files loading performance.
 
-### SDK 6.2 (Aug 24th, 2020) ###
+### SDK 6.2 (August 24th, 2020) ###
 
 - Add support for same page links (anchored links).
 - Fix internal links tooltips for OpenZIM files.
 - Fix duplicated search results for OpenZIM files.
+
+### SDK 6.2 (September 10th, 2020) ###
+
+- Add support for unmaintained content extensions in libdmodel.
