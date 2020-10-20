@@ -19,6 +19,7 @@ permalink: /releases/5/
 | Fri Apr 5 2019  | SDK5.4 bugfix release
 | Thu Jul 18 2019  | SDK5.5 bugfix release
 | Thu Nov 21 2019  | SDK5.6 bugfix release
+| Thu Dec 19 2019  | SDK5.7 release
 
 ## Major features ##
 
@@ -48,6 +49,9 @@ Several fixes to the [walkthrough](http://endlessm.github.io/eos-knowledge-lib/d
 No changes are required for apps using the modular framework.
 
 ## Release notes ##
+
+### SDK 5.7 (December 19, 2019)
+- Runtime: Add aarch64 support.
 
 ### SDK 5.6 (November 21, 2019)
 - Modular Framework: Add support for opening audio files in a MediaLightbox.
