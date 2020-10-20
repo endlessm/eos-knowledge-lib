@@ -20,6 +20,7 @@ permalink: /releases/5/
 | Thu Jul 18 2019  | SDK5.5 bugfix release
 | Thu Nov 21 2019  | SDK5.6 bugfix release
 | Thu Dec 19 2019  | SDK5.7 release
+| Tue Oct 20 2020  | SDK5.8 bugfix release
 
 ## Major features ##
 
@@ -49,6 +50,9 @@ Several fixes to the [walkthrough](http://endlessm.github.io/eos-knowledge-lib/d
 No changes are required for apps using the modular framework.
 
 ## Release notes ##
+
+### SDK 5.8 (October 20, 2020)
+- Runtime: Backported a Gtk+ fix to a bug where some apps with per window screencasting features (e.g. Zoom) were unable to see SDK based windows.
 
 ### SDK 5.7 (December 19, 2019)
 - Runtime: Add aarch64 support.
