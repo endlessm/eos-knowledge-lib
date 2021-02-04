@@ -13,6 +13,7 @@ permalink: /releases/6/
 | Mon Jul 20 2020  | SDK 6.0 release
 | Tue Jul 28 2020  | SDK 6.1 bugfix release
 | Mon Aug 24 2020  | SDK 6.2 bugfix release
+| Thu Feb 04 2021  | SDK 6.3 bugfix release
 
 ## Major features ##
 
@@ -60,3 +61,9 @@ Update libzim to version 6.1.8 to improve OpenZIM files loading performance.
 ### SDK 6.2 (September 10th, 2020) ###
 
 - Add support for unmaintained content extensions in libdmodel.
+
+### SDK 6.3 (February 4th, 2021) ###
+
+- Remove icon theme Flatpak extension.
+- Update libzim to 6.3.0.
+- Add zstd required by libzim and new OpenZIM files.
