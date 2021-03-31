@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "common", "urls": ["tutorial/shard.html#page-description", "tutorial/ingester.html#parsing-the-rss-feed", "tutorial/index.html#page-description"]});
+urls_downloaded_cb({"token": "common", "urls": ["tutorial/index.html#page-description", "tutorial/shard.html#page-description", "tutorial/ingester.html#parsing-the-rss-feed"]});

@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "pick", "urls": ["tutorial/app.html#testing-the-content", "tutorial/ingester.html#creating-a-hatch"]});
+urls_downloaded_cb({"token": "pick", "urls": ["tutorial/ingester.html#creating-a-hatch", "tutorial/app.html#testing-the-content"]});

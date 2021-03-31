@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "instructions", "urls": ["tutorial/install.html#installing-flatpak", "tutorial/install.html#installing-the-endless-sdk", "tutorial/install.html#installing-hatch-previewer", "tutorial/index.html#page-description"]});
+urls_downloaded_cb({"token": "instructions", "urls": ["tutorial/index.html#page-description", "tutorial/install.html#installing-flatpak", "tutorial/install.html#installing-the-endless-sdk", "tutorial/install.html#installing-hatch-previewer"]});

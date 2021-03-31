@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "live", "urls": ["tutorial/app.html#theme-changes", "tutorial/ingester.html#page-description"]});
+urls_downloaded_cb({"token": "live", "urls": ["tutorial/ingester.html#page-description", "tutorial/app.html#theme-changes"]});
