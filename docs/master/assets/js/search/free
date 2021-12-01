@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "free", "urls": ["tutorial/index.html#walkthrough", "tutorial/shard.html#downloading-linked-media", "tutorial/shard.html#page-description", "tutorial/ingester.html#obtaining-metadata"]});
+urls_downloaded_cb({"token": "free", "urls": ["tutorial/shard.html#downloading-linked-media", "tutorial/shard.html#page-description", "tutorial/index.html#walkthrough", "tutorial/ingester.html#obtaining-metadata"]});

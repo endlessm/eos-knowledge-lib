@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "things", "urls": ["concepts/yaml_format.html#overrides", "tutorial/shard.html#page-description", "tutorial/ingester.html#obtaining-metadata", "tutorial/app.html#tweaking-the-app-ui"]});
+urls_downloaded_cb({"token": "things", "urls": ["tutorial/app.html#tweaking-the-app-ui", "tutorial/shard.html#page-description", "tutorial/ingester.html#obtaining-metadata", "concepts/yaml_format.html#overrides"]});

@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "customized", "urls": ["concepts/presets.html#presets", "tutorial/ingester.html#cleaning-up-the-blog-posts", "tutorial/app.html#customizing-the-front-page-ui", "tutorial/app.html#colors-and-fonts", "tutorial/app.html#theme-changes"]});
+urls_downloaded_cb({"token": "customized", "urls": ["tutorial/app.html#customizing-the-front-page-ui", "tutorial/app.html#colors-and-fonts", "tutorial/app.html#theme-changes", "tutorial/ingester.html#cleaning-up-the-blog-posts", "concepts/presets.html#presets"]});

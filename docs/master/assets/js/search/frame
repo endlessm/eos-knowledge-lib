@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "frame", "urls": ["banner/set.html#label", "layout/placeholder.html#label", "layout/sidebar.html#layoutsidebar1", "layout/sideMenu.html#layoutsidemenu1", "layout/dynamicBackground.html#label", "view/document.html#viewdocument1", "view/media.html#label"]});
+urls_downloaded_cb({"token": "frame", "urls": ["banner/set.html#label", "view/media.html#label", "view/document.html#viewdocument1", "layout/sideMenu.html#layoutsidemenu1", "layout/sidebar.html#layoutsidebar1", "layout/placeholder.html#label", "layout/dynamicBackground.html#label"]});

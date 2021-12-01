@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "connect", "urls": ["card/title.html#cardtitle1", "card/sequence.html#cardsequence1"]});
+urls_downloaded_cb({"token": "connect", "urls": ["card/sequence.html#cardsequence1", "card/title.html#cardtitle1"]});

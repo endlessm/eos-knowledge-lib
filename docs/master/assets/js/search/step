@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "step", "urls": ["index.html#modular-framework", "tutorial/shard.html#downloading-linked-media", "tutorial/shard.html#creating-a-shard-with-basin", "tutorial/ingester.html#writing-an-ingester", "tutorial/app.html#fonts"]});
+urls_downloaded_cb({"token": "step", "urls": ["index.html#modular-framework", "tutorial/app.html#fonts", "tutorial/shard.html#downloading-linked-media", "tutorial/shard.html#creating-a-shard-with-basin", "tutorial/ingester.html#writing-an-ingester"]});

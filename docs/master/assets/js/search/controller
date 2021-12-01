@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "controller", "urls": ["modules/window.html#window", "controller/mesh.html#controllermesh1", "controller/course.html#controllercourse1"]});
+urls_downloaded_cb({"token": "controller", "urls": ["controller/course.html#controllercourse1", "controller/mesh.html#controllermesh1", "modules/window.html#window"]});

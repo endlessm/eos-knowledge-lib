@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "with", "urls": ["tutorial/shard.html#downloading-linked-media", "tutorial/app.html#flatpak-manifest"]});
+urls_downloaded_cb({"token": "with", "urls": ["tutorial/app.html#flatpak-manifest", "tutorial/shard.html#downloading-linked-media"]});

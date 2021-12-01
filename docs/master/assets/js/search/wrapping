@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "wrapping", "urls": ["card/title.html#maxtitlelines", "banner/context.html#lines", "banner/search.html#lines", "contentGroup/dynamicTitle.html#lines", "contentGroup/staticText.html#lines"]});
+urls_downloaded_cb({"token": "wrapping", "urls": ["banner/search.html#lines", "banner/context.html#lines", "card/title.html#maxtitlelines", "contentGroup/dynamicTitle.html#lines", "contentGroup/staticText.html#lines"]});

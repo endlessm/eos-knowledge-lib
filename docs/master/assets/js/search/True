@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "True", "urls": ["layout/sidebar.html#sidebarfirst", "contentGroup/mediaLightbox.html#revealoverlays", "contentGroup/mediaLightbox.html#hasclosebutton"]});
+urls_downloaded_cb({"token": "True", "urls": ["contentGroup/mediaLightbox.html#revealoverlays", "contentGroup/mediaLightbox.html#hasclosebutton", "layout/sidebar.html#sidebarfirst"]});

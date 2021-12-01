@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "offline", "urls": ["tutorial/index.html#walkthrough", "tutorial/index.html#subpages", "tutorial/shard.html#creating-shards", "tutorial/ingester.html#obtaining-metadata", "tutorial/ingester.html#creating-a-hatch"]});
+urls_downloaded_cb({"token": "offline", "urls": ["tutorial/shard.html#creating-shards", "tutorial/index.html#walkthrough", "tutorial/index.html#subpages", "tutorial/ingester.html#obtaining-metadata", "tutorial/ingester.html#creating-a-hatch"]});

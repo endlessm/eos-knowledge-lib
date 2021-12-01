@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "building", "urls": ["concepts/presets.html#presets", "concepts/yaml_format.html#imports", "tutorial/ingester.html#writing-an-ingester", "tutorial/app.html#testing-the-content", "tutorial/app.html#fonts"]});
+urls_downloaded_cb({"token": "building", "urls": ["tutorial/app.html#testing-the-content", "tutorial/app.html#fonts", "tutorial/ingester.html#writing-an-ingester", "concepts/yaml_format.html#imports", "concepts/presets.html#presets"]});

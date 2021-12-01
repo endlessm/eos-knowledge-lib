@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "clickable", "urls": ["card/title.html#cardtitle1", "card/sequence.html#cardsequence1"]});
+urls_downloaded_cb({"token": "clickable", "urls": ["card/sequence.html#cardsequence1", "card/title.html#cardtitle1"]});
