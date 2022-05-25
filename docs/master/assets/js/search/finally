@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "finally", "urls": ["tutorial/app.html#testing-the-content", "tutorial/shard.html#creating-a-shard-with-basin", "tutorial/index.html#walkthrough", "tutorial/ingester.html#creating-a-hatch", "concepts/custom_modules.html#using-a-module"]});
+urls_downloaded_cb({"token": "finally", "urls": ["concepts/custom_modules.html#using-a-module", "tutorial/shard.html#creating-a-shard-with-basin", "tutorial/ingester.html#creating-a-hatch", "tutorial/index.html#walkthrough", "tutorial/app.html#testing-the-content"]});

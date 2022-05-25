@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "correct", "urls": ["tutorial/app.html#flatpak-manifest", "tutorial/app.html#app-icon", "tutorial/install.html#installing-nodejs"]});
+urls_downloaded_cb({"token": "correct", "urls": ["tutorial/install.html#installing-nodejs", "tutorial/app.html#flatpak-manifest", "tutorial/app.html#app-icon"]});

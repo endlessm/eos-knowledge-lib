@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "API", "urls": ["tutorial/shard.html#downloading-linked-media", "tutorial/ingester.html#parsing-the-rss-feed", "concepts/yaml_format.html#the-yaml-format"]});
+urls_downloaded_cb({"token": "API", "urls": ["concepts/yaml_format.html#the-yaml-format", "tutorial/shard.html#downloading-linked-media", "tutorial/ingester.html#parsing-the-rss-feed"]});

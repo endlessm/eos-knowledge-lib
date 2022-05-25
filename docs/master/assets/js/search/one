@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "one", "urls": ["tutorial/app.html#customizing-the-front-page-ui", "tutorial/app.html#publishing-the-app", "concepts/yaml_format.html#the-yaml-format", "concepts/yaml_format.html#overrides"]});
+urls_downloaded_cb({"token": "one", "urls": ["concepts/yaml_format.html#the-yaml-format", "concepts/yaml_format.html#overrides", "tutorial/app.html#customizing-the-front-page-ui", "tutorial/app.html#publishing-the-app"]});

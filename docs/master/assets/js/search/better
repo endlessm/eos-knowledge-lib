@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "better", "urls": ["tutorial/app.html#page-description", "tutorial/shard.html#page-description", "tutorial/ingester.html#parsing-the-rss-feed", "tutorial/ingester.html#cleaning-up-the-blog-posts", "concepts/yaml_format.html#overrides"]});
+urls_downloaded_cb({"token": "better", "urls": ["concepts/yaml_format.html#overrides", "tutorial/shard.html#page-description", "tutorial/ingester.html#parsing-the-rss-feed", "tutorial/ingester.html#cleaning-up-the-blog-posts", "tutorial/app.html#page-description"]});

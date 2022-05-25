@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "packaging", "urls": ["tutorial/index.html#subpages", "tutorial/ingester.html#creating-a-hatch", "tutorial/ingester.html#further-remarks-and-ideas", "tutorial/install.html#installing-flatpak"]});
+urls_downloaded_cb({"token": "packaging", "urls": ["tutorial/ingester.html#creating-a-hatch", "tutorial/ingester.html#further-remarks-and-ideas", "tutorial/index.html#subpages", "tutorial/install.html#installing-flatpak"]});

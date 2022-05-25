@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "boolean", "urls": ["contentGroup/mediaLightbox.html#hasforwardbutton", "contentGroup/mediaLightbox.html#hasbackbutton", "layout/navigation.html#backvisible", "layout/navigation.html#forwardvisible"]});
+urls_downloaded_cb({"token": "boolean", "urls": ["layout/navigation.html#backvisible", "layout/navigation.html#forwardvisible", "contentGroup/mediaLightbox.html#hasforwardbutton", "contentGroup/mediaLightbox.html#hasbackbutton"]});

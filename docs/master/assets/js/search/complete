@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "complete", "urls": ["tutorial/app.html#publishing-the-app", "tutorial/install.html#installing-flatpak", "concepts/yaml_format.html#imports"]});
+urls_downloaded_cb({"token": "complete", "urls": ["concepts/yaml_format.html#imports", "tutorial/install.html#installing-flatpak", "tutorial/app.html#publishing-the-app"]});
