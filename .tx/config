@@ -1,13 +1,13 @@
 [main]
 host = https://www.transifex.com
 
-[eos-knowledge-lib.library]
+[o:endless-os:p:eos-knowledge-lib:r:library]
 file_filter = po/<lang>.po
 source_file = po/eos-knowledge.pot
 source_lang = en
 type = PO
 
-[eos-knowledge-lib.presets]
+[o:endless-os:p:eos-knowledge-lib:r:presets]
 file_filter = data/preset/po/<lang>.po
 source_file = data/preset/po/presets.pot
 source_lang = en
