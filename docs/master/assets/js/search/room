@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "room", "urls": ["contentGroup/staticText.html#ellipsize", "contentGroup/dynamicTitle.html#ellipsize", "banner/search.html#ellipsize", "banner/context.html#ellipsize"]});
+urls_downloaded_cb({"token": "room", "urls": ["contentGroup/dynamicTitle.html#ellipsize", "contentGroup/staticText.html#ellipsize", "banner/search.html#ellipsize", "banner/context.html#ellipsize"]});

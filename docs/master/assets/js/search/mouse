@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "mouse", "urls": ["layout/sideMenu.html#layoutsidemenu1", "tutorial/app.html#attributing-the-assets", "contentGroup/staticText.html#selectable", "contentGroup/dynamicTitle.html#selectable", "banner/search.html#selectable", "banner/context.html#selectable"]});
+urls_downloaded_cb({"token": "mouse", "urls": ["contentGroup/dynamicTitle.html#selectable", "contentGroup/staticText.html#selectable", "layout/sideMenu.html#layoutsidemenu1", "banner/search.html#selectable", "banner/context.html#selectable", "tutorial/app.html#attributing-the-assets"]});

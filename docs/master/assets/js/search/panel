@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "panel", "urls": ["tutorial/shard.html#page-description", "selection/contentForSet.html#trackparent"]});
+urls_downloaded_cb({"token": "panel", "urls": ["selection/contentForSet.html#trackparent", "tutorial/shard.html#page-description"]});

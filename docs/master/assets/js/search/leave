@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "leave", "urls": ["tutorial/shard.html#page-description", "tutorial/ingester.html#obtaining-metadata", "navigation/searchBox.html#widthchars"]});
+urls_downloaded_cb({"token": "leave", "urls": ["navigation/searchBox.html#widthchars", "tutorial/shard.html#page-description", "tutorial/ingester.html#obtaining-metadata"]});

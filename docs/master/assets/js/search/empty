@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "empty", "urls": ["tutorial/app.html#testing-the-content", "contentGroup/dynamicTitle.html#formatstring", "navigation/searchBox.html#placeholdertext", "banner/dynamic.html#formatstring"]});
+urls_downloaded_cb({"token": "empty", "urls": ["contentGroup/dynamicTitle.html#formatstring", "navigation/searchBox.html#placeholdertext", "banner/dynamic.html#formatstring", "tutorial/app.html#testing-the-content"]});

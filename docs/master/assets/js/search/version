@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "version", "urls": ["tools.html#using", "tutorial/ingester.html#parsing-the-rss-feed", "tutorial/install.html#installing-the-endless-sdk", "tutorial/app.html#fonts"]});
+urls_downloaded_cb({"token": "version", "urls": ["tools.html#using", "tutorial/app.html#fonts", "tutorial/install.html#installing-the-endless-sdk", "tutorial/ingester.html#parsing-the-rss-feed"]});

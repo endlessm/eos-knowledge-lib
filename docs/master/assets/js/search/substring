@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "substring", "urls": ["card/sequence.html#highlightstring", "card/list.html#highlightstring", "card/deck.html#highlightstring", "card/default.html#highlightstring", "card/contentGroup.html#highlightstring", "card/title.html#highlightstring"]});
+urls_downloaded_cb({"token": "substring", "urls": ["card/list.html#highlightstring", "card/deck.html#highlightstring", "card/sequence.html#highlightstring", "card/title.html#highlightstring", "card/contentGroup.html#highlightstring", "card/default.html#highlightstring"]});
