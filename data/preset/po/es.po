@@ -1,11 +1,12 @@
 # 
 # Translators:
 # Fabián Orccón <fabian@endlessm.com>, 2018
+# João Paulo Rechi Vita <jprvita@endlessos.org>, 2023
 # 
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2022-05-18 04:57+0000\n"
-"Last-Translator: Fabián Orccón <fabian@endlessm.com>, 2018\n"
+"POT-Creation-Date: 2023-01-25 05:57+0000\n"
+"Last-Translator: João Paulo Rechi Vita <jprvita@endlessos.org>, 2023\n"
 "Language-Team: Spanish (https://www.transifex.com/endless-os/teams/9016/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -47,11 +48,11 @@ msgstr "ve más categorías"
 
 #: data/preset/gallery.yaml:44
 msgid "You might also be interested in..."
-msgstr ""
+msgstr "También podrías estar interesado en..."
 
 #: data/preset/gallery.yaml:212
 msgid "See more"
-msgstr ""
+msgstr "Ver más"
 
 #: data/preset/news.yaml:53
 msgid "you might be interested in..."

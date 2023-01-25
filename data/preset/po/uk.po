@@ -1,7 +1,7 @@
 # 
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2022-05-18 04:57+0000\n"
+"POT-Creation-Date: 2023-01-11 05:57+0000\n"
 "Language-Team: Ukrainian (https://www.transifex.com/endless-os/teams/9016/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
