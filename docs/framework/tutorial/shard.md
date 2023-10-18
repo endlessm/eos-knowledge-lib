@@ -110,7 +110,7 @@ The raw HTML for the paragraph with the missing image looks like this:
 ```html
 <p>
   <a href="https://www.eff.org/copyrightweek">
-    <img data-image-title="copyright_week_2018" data-image-description="" src="https://d15omoko64skxi.cloudfront.net/wp-content/uploads/2018/01/copyright_week_2018-1024x512.png" alt="" width="840" height="420" sizes="(max-width: 709px) 85vw, (max-width: 909px) 67vw, (max-width: 1362px) 62vw, 840px">
+    <img data-image-title="copyright_week_2018" data-image-description="" src="https://creativecommons.org/wp-content/uploads/2018/01/copyright_week_2018-1024x512.png" alt="" width="840" height="420" sizes="(max-width: 709px) 85vw, (max-width: 909px) 67vw, (max-width: 1362px) 62vw, 840px">
   </a>
   <i>
     <span>We’re taking part in </span>
