@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "center", "urls": ["window/simple.html#search", "layout/sideMenu.html#context", "pager/parallaxBackground.html#pagerparallaxbackground1", "tutorial/install.html#installing-hatch-previewer"]});
+urls_downloaded_cb({"token": "center", "urls": ["window/simple.html#search", "pager/parallaxBackground.html#pagerparallaxbackground1", "layout/sideMenu.html#context", "tutorial/install.html#installing-hatch-previewer"]});

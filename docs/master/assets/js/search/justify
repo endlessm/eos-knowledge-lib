@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "justify", "urls": ["banner/context.html#justify", "banner/search.html#justify", "card/default.html#justify", "contentGroup/staticText.html#justify", "contentGroup/dynamicTitle.html#justify", "contentGroup/noResultsMessage.html#justify"]});
+urls_downloaded_cb({"token": "justify", "urls": ["banner/search.html#justify", "banner/context.html#justify", "card/default.html#justify", "contentGroup/noResultsMessage.html#justify", "contentGroup/staticText.html#justify", "contentGroup/dynamicTitle.html#justify"]});

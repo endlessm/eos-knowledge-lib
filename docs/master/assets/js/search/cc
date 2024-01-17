@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "cc", "urls": ["tutorial/index.html#walkthrough", "tutorial/shard.html#fixing-the-missing-images", "tutorial/ingester.html#parsing-the-rss-feed"]});
+urls_downloaded_cb({"token": "cc", "urls": ["tutorial/ingester.html#parsing-the-rss-feed", "tutorial/shard.html#fixing-the-missing-images", "tutorial/index.html#walkthrough"]});

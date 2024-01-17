@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "item", "urls": ["filter/thematic.html#filterthematic1", "selection/next.html#selectionnext1"]});
+urls_downloaded_cb({"token": "item", "urls": ["selection/next.html#selectionnext1", "filter/thematic.html#filterthematic1"]});
