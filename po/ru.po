@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Victor, 2024
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-11 05:57+0000\n"
+"POT-Creation-Date: 2024-01-10 05:57+0000\n"
 "PO-Revision-Date: 2014-07-01 23:53+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Russian (http://www.transifex.com/endless-os/eos-knowledge-lib/language/ru/)\n"
+"Last-Translator: Victor, 2024\n"
+"Language-Team: Russian (http://app.transifex.com/endless-os/eos-knowledge-lib/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,43 +20,43 @@ msgstr ""
 
 #: data/widgets/noContentDialog.ui:8
 msgid "Oops! No content."
-msgstr ""
+msgstr "Упс! Ничего нет."
 
 #: data/widgets/noContentDialog.ui:9
 msgid ""
 "The application could not find content to show. Please uninstall and re-"
 "install the application from the App Center."
-msgstr ""
+msgstr "Приложению не удалось найти содержимое для отображения. Пожалуйста, удалите и переустановите приложение из Центра приложений."
 
 #: data/widgets/noContentDialog.ui:23
 msgid "Open App Center"
-msgstr ""
+msgstr "Открыть Центр приложений"
 
 #: data/widgets/noContentDialog.ui:36
 msgid "Close"
-msgstr ""
+msgstr "Закрыть"
 
 #: data/widgets/card/sequence.ui:21
 msgid "Next Article"
-msgstr ""
+msgstr "Следующая статья"
 
 #: data/widgets/card/sequence.ui:60
 msgid "Previous Article"
-msgstr ""
+msgstr "Предыдущая статья"
 
 #: data/widgets/contentGroup/contentGroup.ui:26
 msgid "Oops! There was an error."
-msgstr ""
+msgstr "Упс! Произошла ошибка."
 
 #: data/widgets/contentGroup/contentGroup.ui:40
 msgid "Download support info"
-msgstr ""
+msgstr "Скачать информацию о поддержке"
 
 #: data/widgets/contentGroup/contentGroup.ui:44
 msgid ""
 "Click here to download a file with information that will help us track down "
 "the problem."
-msgstr ""
+msgstr "Нажмите здесь, чтобы скачать файл с информацией, которая поможет нам отследить проблему."
 
 #: data/widgets/contentGroup/noResultsMessage.ui:37
 msgid ""
@@ -64,24 +65,24 @@ msgid ""
 "Check your spelling\n"
 "Try other words that mean the same thing\n"
 "Try using more general words"
-msgstr ""
+msgstr "Мы рекомендуем вам:\n\nПроверьте правильность написания\nПопробуйте другие слова, которые означают то же самое\nПопробуйте использовать более общие слова"
 
 #: data/widgets/layout/sideMenu.ui:95
 msgid "Home"
-msgstr ""
+msgstr "Главная"
 
 #: data/widgets/tooltips.ui:50
 msgid "View the license"
-msgstr ""
+msgstr "Просмотреть лицензию"
 
 #: js/framework/articleHTMLRenderer.js:227
 msgid "Copy"
-msgstr ""
+msgstr "Скопировать"
 
 #: js/framework/meshHistoryStore.js:58
 #, javascript-format
 msgid "Results were found for “%s”"
-msgstr ""
+msgstr "Были найдены результаты для \"%s\""
 
 #: js/framework/historyStore.js:413
 msgid "Shared from Endless"
@@ -91,56 +92,56 @@ msgstr ""
 #, javascript-format
 msgid "%s:%s minute"
 msgid_plural "%s:%s minutes"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%s:%s минута"
+msgstr[1] "%s:%s минуты"
+msgstr[2] "%s:%s минут"
+msgstr[3] "%s:%s минут"
 
 #: js/framework/interfaces/card.js:309
 #, javascript-format
 msgid "%d item"
 msgid_plural "%d items"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%d элемент"
+msgstr[1] "%d элемента"
+msgstr[2] "%d элементов"
+msgstr[3] "%d элементов"
 
 #: js/framework/modules/banner/context.js:38
 #: js/framework/modules/banner/context.js:49
 msgid "Highlights"
-msgstr ""
+msgstr "Основные сведения"
 
 #: js/framework/modules/banner/context.js:52
 msgid "All Categories"
-msgstr ""
+msgstr "Все категории"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep the %s token in your translation.
 #: js/framework/modules/banner/context.js:61
 #, javascript-format
 msgid "Search results for “%s”"
-msgstr ""
+msgstr "Результаты поиска для \"%s\""
 
 #: js/framework/modules/banner/search.js:46
 #, javascript-format
 msgid "Results for “%s”"
-msgstr ""
+msgstr "Результаты для \"%s\""
 
 #: js/framework/modules/contentGroup/contentGroup.js:190
 msgid "See more"
-msgstr ""
+msgstr "Смотреть еще"
 
 #: js/framework/modules/contentGroup/noResultsMessage.js:52
 msgid "We're sorry, there are no results that match your search."
-msgstr ""
+msgstr "Нам жаль, но нет результатов, соответствующих вашему поиску."
 
 #: js/framework/modules/layout/hamburgerBasement.js:35
 msgid "SEE ALL CATEGORIES"
-msgstr ""
+msgstr "СМОТРЕТЬ ВСЕ КАТЕГОРИИ"
 
 #: js/framework/modules/layout/hamburgerBasement.js:51
 msgid "HOME"
-msgstr ""
+msgstr "ГЛАВНАЯ"
 
 #: js/framework/modules/layout/placeholder.js:25
 msgid "Placeholder"
@@ -153,30 +154,30 @@ msgstr ""
 #. example: "Jane Austen and Henry Miller and William Clifford"
 #: js/framework/utils.js:116
 msgid "by {author}"
-msgstr ""
+msgstr "{author}"
 
 #: js/framework/utils.js:116
 msgid "and"
-msgstr ""
+msgstr "и"
 
 #: js/framework/widgets/searchBox.js:69
 msgid "See more results"
-msgstr ""
+msgstr "Посмотреть больше результатов"
 
 #: js/framework/widgets/webShareDialog.js:181
 msgid "Retry"
-msgstr ""
+msgstr "Повторить"
 
 #. Show expired session message
 #: js/framework/widgets/webShareDialog.js:364
 msgid "Please sign in again to share this link"
-msgstr ""
+msgstr "Пожалуйста, войдите снова, чтобы поделиться этой ссылкой"
 
 #: js/framework/widgets/webShareDialog.js:365
 #: js/framework/widgets/webShareDialog.js:417
 msgid "Sign In"
-msgstr ""
+msgstr "Войти"
 
 #: js/framework/widgets/webShareDialog.js:416
 msgid "Please sign in to share this link"
-msgstr ""
+msgstr "Пожалуйста, войдите, чтобы поделиться этой ссылкой"
