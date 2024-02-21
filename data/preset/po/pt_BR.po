@@ -5,7 +5,7 @@
 # 
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-01-03 05:57+0000\n"
+"POT-Creation-Date: 2024-02-14 05:57+0000\n"
 "Last-Translator: Leandro Stanger <leandrostanger@hotmail.com>, 2018\n"
 "Language-Team: Portuguese (Brazil) (https://app.transifex.com/endless-os/teams/9016/pt_BR/)\n"
 "MIME-Version: 1.0\n"
