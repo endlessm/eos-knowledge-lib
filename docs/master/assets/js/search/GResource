@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "GResource", "urls": ["tutorial/app.html#testing-the-content", "tutorial/app.html#logo", "tutorial/app.html#meson-build-file", "tutorial/app.html#attributing-the-assets", "banner/app.html#bannerapp1"]});
+urls_downloaded_cb({"token": "GResource", "urls": ["banner/app.html#bannerapp1", "tutorial/app.html#testing-the-content", "tutorial/app.html#logo", "tutorial/app.html#meson-build-file", "tutorial/app.html#attributing-the-assets"]});

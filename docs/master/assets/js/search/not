@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "not", "urls": ["contentGroup/dynamicTitle.html#justify", "contentGroup/staticText.html#justify", "tutorial/ingester.html#obtaining-metadata", "banner/context.html#justify", "banner/search.html#justify"]});
+urls_downloaded_cb({"token": "not", "urls": ["contentGroup/staticText.html#justify", "contentGroup/dynamicTitle.html#justify", "banner/search.html#justify", "banner/context.html#justify", "tutorial/ingester.html#obtaining-metadata"]});

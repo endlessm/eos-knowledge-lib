@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "document", "urls": ["mf-index.html#page-description", "concepts/presets.html#presets", "concepts/yaml_format.html#the-yaml-format", "layout/articleStack.html#layoutarticlestack1", "tutorial/ingester.html#cleaning-up-the-blog-posts"]});
+urls_downloaded_cb({"token": "document", "urls": ["mf-index.html#page-description", "layout/articleStack.html#layoutarticlestack1", "concepts/yaml_format.html#the-yaml-format", "concepts/presets.html#presets", "tutorial/ingester.html#cleaning-up-the-blog-posts"]});

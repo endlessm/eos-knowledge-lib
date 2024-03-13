@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "scale", "urls": ["card/title.html#backgroundsize", "card/contentGroup.html#backgroundsize", "card/deck.html#backgroundsize", "card/sequence.html#backgroundsize", "card/list.html#backgroundsize", "card/default.html#backgroundsize"]});
+urls_downloaded_cb({"token": "scale", "urls": ["card/contentGroup.html#backgroundsize", "card/list.html#backgroundsize", "card/sequence.html#backgroundsize", "card/default.html#backgroundsize", "card/title.html#backgroundsize", "card/deck.html#backgroundsize"]});

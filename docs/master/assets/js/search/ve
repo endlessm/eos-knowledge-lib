@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "ve", "urls": ["tutorial/app.html#app-icon", "tutorial/ingester.html#cleaning-up-the-blog-posts", "tutorial/ingester.html#putting-it-all-together", "tutorial/shard.html#creating-shards", "tutorial/shard.html#page-description"]});
+urls_downloaded_cb({"token": "ve", "urls": ["tutorial/ingester.html#cleaning-up-the-blog-posts", "tutorial/ingester.html#putting-it-all-together", "tutorial/shard.html#creating-shards", "tutorial/shard.html#page-description", "tutorial/app.html#app-icon"]});

@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "paginate", "urls": ["card/contentGroup.html#paginatelabel", "card/contentGroup.html#paginate", "contentGroup/contentGroup.html#paginatelabel", "contentGroup/contentGroup.html#paginate", "tutorial/ingester.html#parsing-the-rss-feed"]});
+urls_downloaded_cb({"token": "paginate", "urls": ["contentGroup/contentGroup.html#paginatelabel", "contentGroup/contentGroup.html#paginate", "card/contentGroup.html#paginatelabel", "card/contentGroup.html#paginate", "tutorial/ingester.html#parsing-the-rss-feed"]});
