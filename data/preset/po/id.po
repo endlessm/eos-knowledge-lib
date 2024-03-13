@@ -5,7 +5,7 @@
 # 
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-02-14 05:57+0000\n"
+"POT-Creation-Date: 2024-03-06 05:57+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>, 2021\n"
 "Language-Team: Indonesian (https://app.transifex.com/endless-os/teams/9016/id/)\n"
 "MIME-Version: 1.0\n"
