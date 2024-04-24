@@ -1,11 +1,12 @@
 # 
 # Translators:
 # Fabián Orccón <fabian@endlessm.com>, 2018
+# Roddy Shuler <roddy@stanfordalumni.org>, 2024
 # 
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-03-06 05:57+0000\n"
-"Last-Translator: Fabián Orccón <fabian@endlessm.com>, 2018\n"
+"POT-Creation-Date: 2024-04-17 04:57+0000\n"
+"Last-Translator: Roddy Shuler <roddy@stanfordalumni.org>, 2024\n"
 "Language-Team: Thai (https://app.transifex.com/endless-os/teams/9016/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,7 +52,7 @@ msgstr ""
 
 #: data/preset/gallery.yaml:212
 msgid "See more"
-msgstr ""
+msgstr "ดูเพิ่มเติม"
 
 #: data/preset/news.yaml:53
 msgid "you might be interested in..."

@@ -1,7 +1,11 @@
 # 
+# Translators:
+# Victor, 2024
+# 
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-03-06 05:57+0000\n"
+"POT-Creation-Date: 2024-04-17 04:57+0000\n"
+"Last-Translator: Victor, 2024\n"
 "Language-Team: Russian (https://app.transifex.com/endless-os/teams/9016/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +31,7 @@ msgstr ""
 
 #: data/preset/exploration.yaml:45
 msgid "Next Article"
-msgstr ""
+msgstr "Следующая статья"
 
 #: data/preset/exploration.yaml:62
 msgid "You might be interested in..."
@@ -47,7 +51,7 @@ msgstr ""
 
 #: data/preset/gallery.yaml:212
 msgid "See more"
-msgstr ""
+msgstr "Смотреть еще"
 
 #: data/preset/news.yaml:53
 msgid "you might be interested in..."

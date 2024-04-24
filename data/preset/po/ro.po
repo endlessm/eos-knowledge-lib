@@ -1,7 +1,12 @@
 # 
+# Translators:
+# Vicki Niu <vicki@endlessm.com>, 2024
+# georgian balan <braila222@gmail.com>, 2024
+# 
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-03-06 05:57+0000\n"
+"POT-Creation-Date: 2024-04-17 04:57+0000\n"
+"Last-Translator: georgian balan <braila222@gmail.com>, 2024\n"
 "Language-Team: Romanian (https://app.transifex.com/endless-os/teams/9016/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +32,7 @@ msgstr ""
 
 #: data/preset/exploration.yaml:45
 msgid "Next Article"
-msgstr ""
+msgstr "Articolul Urmator"
 
 #: data/preset/exploration.yaml:62
 msgid "You might be interested in..."
@@ -47,7 +52,7 @@ msgstr ""
 
 #: data/preset/gallery.yaml:212
 msgid "See more"
-msgstr ""
+msgstr "Vezi mai multe"
 
 #: data/preset/news.yaml:53
 msgid "you might be interested in..."

@@ -4,7 +4,7 @@
 # 
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-03-06 05:57+0000\n"
+"POT-Creation-Date: 2024-04-17 04:57+0000\n"
 "Last-Translator: Thomas Siegele <tsiegele@gmx.at>, 2019\n"
 "Language-Team: German (https://app.transifex.com/endless-os/teams/9016/de/)\n"
 "MIME-Version: 1.0\n"
