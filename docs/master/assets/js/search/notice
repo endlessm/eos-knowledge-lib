@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "notice", "urls": ["tutorial/shard.html#screenshot-of-hatch-previewer", "tutorial/shard.html#fixing-the-missing-images", "tutorial/app.html#fonts", "tutorial/app.html#app-icon"]});
+urls_downloaded_cb({"token": "notice", "urls": ["tutorial/app.html#fonts", "tutorial/app.html#app-icon", "tutorial/shard.html#screenshot-of-hatch-previewer", "tutorial/shard.html#fixing-the-missing-images"]});

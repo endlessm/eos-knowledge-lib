@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "video", "urls": ["concepts/presets.html#video-list", "layout/articleStack.html#video", "view/video.html#viewvideo1", "concepts/presets.html#the-video-list-preset", "tutorial/shard.html#downloading-linked-media"]});
+urls_downloaded_cb({"token": "video", "urls": ["layout/articleStack.html#video", "concepts/presets.html#video-list", "concepts/presets.html#the-video-list-preset", "view/video.html#viewvideo1", "tutorial/shard.html#downloading-linked-media"]});

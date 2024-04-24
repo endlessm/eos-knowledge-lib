@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "array", "urls": ["tutorial/ingester.html#obtaining-metadata", "tutorial/shard.html#page-description", "tutorial/app.html#app-icon"]});
+urls_downloaded_cb({"token": "array", "urls": ["tutorial/ingester.html#obtaining-metadata", "tutorial/app.html#app-icon", "tutorial/shard.html#page-description"]});

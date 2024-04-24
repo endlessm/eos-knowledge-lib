@@ -1,1 +1,1 @@
-urls_downloaded_cb({"token": "selected", "urls": ["contentGroup/staticText.html#selectable", "contentGroup/dynamicTitle.html#selectable", "banner/search.html#selectable", "banner/context.html#selectable", "tutorial/shard.html#screenshot-of-hatch-previewer"]});
+urls_downloaded_cb({"token": "selected", "urls": ["banner/search.html#selectable", "banner/context.html#selectable", "tutorial/shard.html#screenshot-of-hatch-previewer", "contentGroup/staticText.html#selectable", "contentGroup/dynamicTitle.html#selectable"]});
